@@ -137,7 +137,7 @@ An org.kuali.rice.kns.uif.control.TextControl represents a simple HTML text fiel
 
 h4. TextAreaControl
 
-This Control represents a text area on the page.  It maps to the HTML <textarea> tag.
+This Control represents a text area on the page, a control which accepts large amounts of text.  It maps to the HTML <textarea> tag.  *JAMES: SUPPORT FOR KC OPEN WINDOW TEXT AREA?*
 
 h4. FileControl
 
@@ -157,33 +157,29 @@ Certain controls let the user choose among multiple values.  All of these contro
 
 h5. SelectControl
 
-A SelectControl presents a list of clickable elements to the user, where each clickable element shows a label.  These controls map to the HTML <select> tag.  By default, only one value in a SelectControl can be chosen, but by setting the mulitple property to true, multiple rows can be chosen.
+A SelectControl presents a list of clickable elements to the user, where each clickable element shows a label.  These controls map to the HTML <select> tag.  By default, only one value in a SelectControl can be chosen, but by setting the multiple property to true, multiple rows can be chosen.
 
-||Property Name||Type||Description||
-|options|java.util.List<org.kuali.rice.core.util.KeyLabelPair>|The List of options that will be displayed in this Select Control.|
-|multiple|boolean|If true, allows any number of KeyLabelPairs in the Select Control to be chosen by ctrl- or cmd-clicking multiple values.  If false, only allows one value to be chosen.|
-|size|int|If the SelectControl is set to select multiple values, the number of rows of values that should be shown on the screen without scrolling.|
+The SelectControl has three properties.  The first is options - a List of org.kuali.rice.core.util.KeyLabelPair objects for the choices which should appear in the given SelectControl; this property is required.  The second is multiple, a boolean value which defaults to false.  If multiple is set to true, then the SelectControl will allow the user to select multiple values in the box, by ctrl- or cmd-clicking each of the various option they want to select.  If multiple is true, then likely the developer will want to select the size property: the number of options which should show at once if the SelectControl allows multiple option selection.
 
 h5. RadioGroupControl
 
 A RadioGroupControl represents several <input type="radio" /> HTML tags.  Unlike the SelectControl, which displays all of its values as one visual element, the RadioGroupControl represents each label as a value sitting by a friendly button which can be pushed.  Also in contrast to the SelectControl, RadioGroupControls only ever let one value at a time be chosen.  They're fairly rare in traditional KNS applications, being used only where there's an extremely limited number of choices, one of which must be unequivocally chosen.
 
-||Property Name||Type||Description||
-|options|java.util.List<org.kuali.rice.core.util.KeyLabelPair>|The List of options that will be displayed in this Select Control.|
+RadioGroupControl has but one special property - options, which, just like SelectControl, is injected with the List of KeyValuePair objects that represent the choices the user will have.
 
 h3. Widgets
 
-A Widget is a grouping of several related rendering items which provide a single functionality.  Take, for instance, the quickfinder: the useful magnifying glass icon that takes a user to an appropriate lookup for a field.  Here, we have an image and a created link: together, that functionality forms a widget.  Widgets are something like controls but don't map directly to HTML inputs--though several widgets are used in conjunction with Controls to make those controls more powerful.
+A Widget is a grouping of several related rendering items which provide a single functionality.  Take, for instance, the quickfinder: the useful magnifying glass icon that takes a user to an appropriate lookup for a field.  Here, we have an image and a created link: together, that functionality forms a widget.  Widgets are something like Controls in that each has a single function, but Widgets don't map directly to to a single HTML input.  Several widgets, though, are used in conjunction with Controls to make those controls more powerful.
 
 h4. BreadCrumbs
 
 Bread crumbs remember the context of a page and provide a set of links that can take the user back to a "root" page.
 
-Let's say, for instance, that a user goes from the portal to a lookup.  The current context is the lookup and the root is the portal, so the breadcrumbs will provide a link back to the portal.
+For instance, in a hypothetical KRAD application, a user goes from the portal to a lookup.  The current context is the lookup and the root is the portal, so the breadcrumbs will provide a link back to the portal.
 
-On the lookup, the user clicks a quick finder to lookup a secondary business object.  Let's say that business object is a Kuali Enterprise Workflow document type.  On this lookup, there are links back to the portal and the previous lookup.
+On the lookup, the user clicks a quick finder to lookup a secondary business object.  In this hypothetical scenario, the business object specifically is a Kuali Enterprise Workflow document type.  On this lookup, there are links back to the portal and the previous lookup.
 
-As the user gets deeper into the nest of functionality, the breadcrumbs provide links to get the user back to all previous steps in the process.  This makes it much easier for users to know where they are in the application and to get back to previous steps in the process--thus allowing users to escape from confusing or mistaken steps in a process.
+As the user gets deeper into the nest of functionality, the breadcrumbs provide links to get the user back to all previous steps in the process.  This makes it much easier for users to know where they are in the application and to get back to previous steps in the process - thus allowing users to escape from confusing or mistaken steps in a process.
 
 h4. DatePicker
 
@@ -191,7 +187,7 @@ This widget is often used in conjunction with a Text Control if the data binds t
 
 h4. Help
 
-This is an icon which pops up a window with explanatory text to help the user.  The Help widget is context aware so it knows which kind of help to display: whether it is help for an entire document (that is, the icon is placed next to a document title) or help for a single field (in which case the icon is rendered next to the field).  The source of the help is also configurable: whether it comes from text in a parameter or from a static url.  Finally, Help can be extended so that as different help contexts exist in client applications, they can be added.
+This is an icon which pops up a window with explanatory text to instruct the user.  The Help widget is context aware - it knows which kind of help to display: whether it is help for an entire document (that is, the icon is placed next to a document title) or help for a single field (in which case the icon is rendered next to the field).  The source of the help is also configurable: whether it comes from text in a parameter or from a static url.  Finally, Help can be extended so that as different help contexts exist in client applications, they can be added.
 
 h4. Inquiry
 
@@ -199,19 +195,19 @@ This widget represents a direct inquiry icon: an icon which, when pressed, opens
 
 h4. QuickFinder
 
-The traditional Kuali magnifying glass icon has been around since the first version of Kuali Financial Systems: it's as venerable as Kuali functionality gets.  Rendered next to a field, it opens a lookup so that users can choose an appropriate value for the field.
+The traditional Kuali magnifying glass icon has been around since the very first version of the Kuali Financial System: it's as venerable as Kuali functionality gets.  Rendered next to a field, it opens a lookup so that users can choose an appropriate value for the field.
 
 h3. Fields
 
-Controls are simple because, for the most part, they map directly to HTML input types.  Widgets make a lot of sense as well, since each Widget represents a single set of functionality.  Fields, though, are not at all as simple to classify.  Some--such as BlankField--are as simple and inert as elements on an HTML page get.  Some, such as AttributeField or GroupField are wildly complex, rendering a combination of Containers, Controls, and other Components.  Fields are basically the grab bag of other visual elements in KRAD.
+Controls are simple because, for the most part, they map directly to HTML input types.  Widgets make a lot of sense as well, since each Widget represents a single set of functionality.  Fields, though, are not at all as simple to classify.  Some - such as BlankField - are simple and completely inert HTML elements.  Some, such as AttributeField or GroupField are wildly complex, rendering a combination of Containers, Controls, and other Components.  Fields are basically the grab bag of other visual elements in KRAD.
 
 What all Fields have in common is that they implement the org.kuali.rice.kns.uif.field.Field interface, an interface that allows pretty much any child to have an associated label.  (Of course, there's a LabelField which itself represents a Label).
 
-Let's take a tour of the Fields that KRAD offers.
+Here's a tour of the Fields that KRAD offers.
 
 h4. ActionField
 
-An ActionField represents an element that gives the user the ability to perform an action.  Many actions kick off a web request/response cycle.  For instance, the submit button of a Form would be represented as an ActionField.  A link in a menu would be represented as an ActionField.  Even rich scripts could be represented as an ActionField as well--some of which do Ajax calls to the server to pull more data into a page, and some of which just perform some client side JavaScript call.  No matter what, an ActionField represents the user telling the application to get something done.
+An ActionField represents an element that gives the user the ability to perform an action.  Many actions kick off a web request/response cycle.  For instance, the submit button of a Form would be represented as an ActionField.  A link in a menu would be represented as an ActionField.  Even rich scripts could be represented as an ActionField as well - some of which do Ajax calls to the server to pull more data into a page, and some of which just perform some client side JavaScript call.  No matter what, an ActionField represents the user telling the application to get something done.
 
 An ActionField must have either a methodToCall or navigateToPageId set.  Setting the methodToCall will end up calling a method on a controller, and the great majority of ActionFields will populate this property.  navigateToPageId would be used for ActionFields which move the user around in a multi-page document, like the Kuali Coeus Proposal.
 
@@ -219,27 +215,27 @@ The actionParameters property is a map of parameters which will be passed along 
 
 h4. AttributeField
 
-An AttributeField represents an Attribute on a page.  This means that the Field will display a Control--for user input into the Attribute--as well as error messages associated with the Field, instructions, watermarks: basically everything the Attribute needs to display correctly on the page. This is easily the most functional of all Fields, so let's look at what all it does in detail.
+An AttributeField represents an Attribute on a page.  This means that the Field will display a Control - for user input into the Attribute - as well as error messages associated with the Field, instructions, watermarks: basically everything the Attribute needs to display correctly on the page. This is easily the most functional of all Fields, so let's look at what all it does in detail.
 
-An AttributeField correlates directly to an AttributeDefinition set on either a BusinessObject or a Document.  Every AttributeDefinition represents a single property on its related object.  The AttributeDefinition then defines a great deal of information about that property: what kind of Control it should be associated with, the maximum length of the input, labels, validation patterns, and how to format the property--so that if the property represents non-String data, it can be converted into the data type of the property.
+An AttributeField correlates directly to an AttributeDefinition set on either a BusinessObject or a Document.  Every AttributeDefinition represents a single property on its related object.  The AttributeDefinition then defines a great deal of information about that property: what kind of Control it should be associated with, the maximum length of the input, labels, validation patterns, and how to format the property - so that if the property represents non-String data, it can be converted into the data type of the property.
 
 The vast majority of properties which populate the pages of a KRAD application will be represented by DataDictionary AttributeDefinitions.  KRAD's support of translating AttributeDefinitions to all of the equivalent rendered HTML on a page through the AttributeField is very powerful.
 
-There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute--either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
+There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute - either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
 
-Of course, the DataDictionary AttributeDefinition defines a lot of text about the attribute: the label and summary texts as well as a possible default value.  The AttributeField holds all of these as well.  The AttributeField also holds the most important validation defined in AttributeDefinition--that of maxLength.  (It's the most important because if values exceed maxLength, they will likely cause exceptions when inserted into the database--that goes for data of a number of data types.)
+Of course, the DataDictionary AttributeDefinition defines a lot of text about the attribute: the label and summary texts as well as a possible default value.  The AttributeField holds all of these as well.  The AttributeField also holds the most important validation defined in AttributeDefinition - that of maxLength.  (It's the most important because if values exceed maxLength, they will likely cause exceptions when inserted into the database.)
 
 AttributeField also holds errors associated with the attribute.  If the Control associated with this attribute put in data that failed validation, or if a special warning message needs to be associated with the attribute, AttributeField encapsulates that as well, by holding these errors in an ErrorsField.  There's also an errorPlacement property which tells KRAD what aspect of the rendered field to render errors to.  *JERRY: POSSIBLE VALUES? "LEFT", "RIGHT", "ABOVE", etc?*
 
 The AttributeField also holds the Formatter responsible for taking Strings in the HTTP request and translating them into different data types.  If the attribute's control is a MultiValueControl with an OptionsFinder, the AttributeField also holds that.
 
-Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page--so that developers don't need to worry about those details.
+Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page.  Developers don't need to worry about those details.
 
-That's a lot for AttributeField to hold.  What does AttributeField render?  First, it renders a Label for the attribute, often by creating a LabelField which then can be rendered beside or above the Control as the parent View demands.  It also renders summary information for the AttributeField.  Obviously, the AttributeField will render a Control for the attribute--assuming the attribute hasn't been rendered hidden or read only by some other participant in the rendering process, such as a KIM permission.  When rendering a Control, the AttributeField will render a classic Kuali quick finder magnifying glass icon for attributes which need separate lookups, and AttributeField will render any specified constraint text for attributes which demand a specific input format.  AttributeField will also render help for the attribute if applicable.
+That's a lot of information for AttributeField to hold.  What does AttributeField render?  First, it renders a Label for the attribute, often by creating a LabelField which then can be rendered beside or above the Control as the parent View demands.  It also renders summary information for the AttributeField.  Obviously, the AttributeField will render a Control for the attribute - assuming the attribute hasn't been rendered hidden or read only by some other participant in the rendering process, such as a KIM permission.  When rendering a Control, the AttributeField will render a classic Kuali quick finder magnifying glass icon for attributes which need separate lookups, and AttributeField will render any specified constraint text for attributes which demand a specific input format.  AttributeField will also render help for the attribute if applicable.
 
-Certainly, all of this makes AttributeField the most powerful of Fields, but, importantly, it has one concern: the proper rendering if an attribute to a View.  KRAD gets a lot of power by putting metadata about attributes on documents and business objects into the Data Dictionary.  AttributeField concentrates that power by offering a single point which coordinates the full rendering of the attribute.
+Certainly, all of this makes AttributeField the most powerful of Fields, but, importantly, it has a single concern: the proper rendering if an attribute to a View.  KRAD gets a lot of power by putting metadata about attributes on documents and business objects into the Data Dictionary.  AttributeField concentrates that power by offering a focused point which coordinates the full rendering of the attribute.
 
-Of course, there's other fields yet to understand.  Let's continue our tour.
+Of course, there's other fields yet to understand.  The tour should continue.
 
 h4. BlankField
 
@@ -247,7 +243,7 @@ A BlankField represents empty visual space on a page.  *JERRY: TRUE THAT?*
 
 h4. ErrorsField
 
-This Field represents error messages, warning messages, and info messages which should be rendered in a Container.  Each set of messages--error, warning, and info--can have a unique title set as well as a unique CSS class (such that errors can show up bolded, say, and warnings can be displayed in italics).  A keyMatch String can also be passed in to the definition, which will be matched against the properties of Controls displayed within the parent Container.  That way, only messages relevant to children fields will be rendered in the ErrorsField.
+This Field represents error messages, warning messages, and info messages which should be rendered in a Container.  Each set of messages - error, warning, and info - can have a unique title set as well as a unique CSS class (such that errors can show up bolded, say, and warnings can be displayed in italics).  A keyMatch String can also be passed in to the definition, which will be matched against the properties of Controls displayed within the parent Container.  That way, only messages relevant to children fields will be rendered in the ErrorsField.
 
 h4. GroupField
 
@@ -277,6 +273,8 @@ h4. MessageField
 
 A messageField displays text on the rendered page within a span.  Its messageText property holds the text which it will display.  It also has a messageType property which helps uniquely identify all messages of this type on the screen.
 
+Those are KRAD's fields.  But how do Controls, Fields, and Widgets get the data they should display during render or populate the underlying page model when a request occurs?  That happens through Spring's Data Bindings mechanism.
+
 h3. Data Bindings{anchor:data_bindings}
 
 One of the major changes that KRAD will bring will be a move away from Apache Struts 1.2+ to Spring 3.0's Web MVC.  This means many things: changes to Controllers, some updates to Forms - though the KRAD team is working on scripts to make these changes as painless as possible.
@@ -287,11 +285,11 @@ Spring does need help on mapping parameters into classes it doesn't handle autom
 
 Creating a PropertyEditor is a straightforward process.  Java provides the java.beans.PropertyEditorSupport object which can be extended.  That class has two crucial methods to override: String getAsText(), which converts the contents of the object into text; and void setAsText(String text) which takes a String and converts it into the complex object.
 
-The Spring documentation covers how it uses data bindings in much more detail [on the SpringSource website#http://static.springsource.org/spring/docs/2.0.x/reference/validation.html]  Spring has a heavy reliance on this mechanism throughout its source code beyond populating form data.  But it does give Spring a very standard way to populate the form from the request.
+The Spring documentation covers how it uses data bindings in much more detail [on the SpringSource website#http://static.springsource.org/spring/docs/2.0.x/reference/validation.html]  Spring has a heavy reliance on this mechanism throughout its source code beyond populating form data; thankfully, Spring's developers exposed their standard way to populating business objects as an easy way KRAD can populate a form from an HTTP request's posted variables.
 
-As KRAD renders a page with form data, it will properly generate the data binding path that will properly populate the form when the page is submitted.  It will create indexed property names for values within collections and it will create nested names for all the attributes on a page...meaning that for the most part, developers will never concern themselves with data binding--KRAD will just make it happen in the background.
+As KRAD renders a page with form data, it will properly generate the data binding path that will properly populate the form when the page is submitted.  It will create indexed property names for values within collections and it will create nested names for all the attributes on a page...meaning that for the most part, developers will never concern themselves with data binding - KRAD will just make it happen in the background.
 
-New Components which want to participate in the DataBinding process should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has one method, getBindingInfo(), which returns a populated instance of org.kuali.rice.kns.uif.BindingInfo.  BindingInfo encapsulates a number of properties:
+What if the developer of a new Component wants to participate in the data binding process?  In that case, the new Component should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has one method, getBindingInfo(), which returns a populated instance of org.kuali.rice.kns.uif.BindingInfo.  BindingInfo encapsulates a number of properties:
 * bindingName - this is the name of the property to bind to, either within the form or the model.
 * modelName - if this property is supposed to bind to a model, what's the path of the model to the form?
 * bindByNamePrefix - this is a prefix generated by KRAD, typically when rendering a Collection.  Basically, it generates the proper name and index (for example, "collectionItem[0]") and holds that for the sake of the current binding.
@@ -300,28 +298,28 @@ New Components which want to participate in the DataBinding process should imple
 
 *JERRY: WHAT HAPPENS IF BINDTOMODEL AND BINDTOFORM ARE BOTH FALSE*
 
-The most important Component to implement this interface is the AttributeField.  AttributeFields display and read data on business objects and documents, so naturally they participate in the data binding process.
-*JERRY, WHY DON'T THE CONTROLS IMPLEMENT THIS?*
+Easily, the most important Component implementing this interface is the AttributeField.  AttributeFields display and read data on business objects and documents, so naturally they participate in the data binding process.
+*JERRY, WHY DON'T THE CONTROLS IMPLEMENT DATA BINDING?*
 
 h3. Component Architecture
 
-Now that we've explored each component type in detail, let's see what they share and what all KRAD visual elements have in common.
+Now that we've explored each component type in detail, let's see what they share and what all KRAD visual elements have in common. The table explains all of the properties inherited by all children of org.kuali.rice.kns.uif.Component.
 
 ||Property|Type|Explanation||
 |id|java.lang.String|The Component's unique name within the rendered HTML.|
 |componentTypeName|java.lang.String|The type name of the Component: "Text" for the Text Control, for instance, or "Quickfinder" for the Quickfinder widget|
 |template|java.lang.String|As discussed in [Tiles as Templates#tiles_as_templates], the path to the JSP representing the tile for this component|
 |componentInitializers|List<org.kuali.rice.kns.uif.initializer.ComponentIntializer>|A list of all ComponentInitializers that should be run on the component upon initialization.  Covered in more detail in [Component Intializers#component_initializers]|
-|name|java.lang.String|[JERRY: HOW DOES THIS DIFFER FROM ID?  This is the bean name and the other is the HTML id]|
+|name|java.lang.String|*JERRY: HOW DOES THIS DIFFER FROM ID?  This is the bean name and the other is the HTML id?*|
 |render|boolean|Determines if this component should be rendered.|
-|hidden|boolean|[???]|
+|hidden|boolean|*???*|
 |readOnly|boolean|Determines if the Component should be rendered as readOnly (in the case of Controls, this means just data is shown-there is no ability to input a different value)|
 |required|java.lang.Booolean|Determines whether the Component is required to be filled in.  Again, typically used in conjunction with Controls.|
 |style|java.lang.String|The style attributes of the Component.  The value of this will be rendered in a "style" attribute on the Component.|
 |styleClass|java.lang.String|The name of the CSS class which this component will render in.|
 |width|java.lang.String|The width of the Component, in any measurement that HTML supports|
 |align|java.lang.String|The horizontal alignment of the Component within its Container. *JERRY: DOES THIS USE CSS OR HTML ALIGN? I DOCUMENTED CSS VALUES* The allowed values are "left" (which is the default for Western character sets); "right"; "center"; and "justified" which attempts left and right alignment on lines.|
-|valign|java.lang.String|The vertical alignment of the Component within its Container. The allowed values are "baseline" (which aligns the baseline of the characters of this Component to align with the baseline of the parent - this is the default); "sub" (making the text align as subscript); "super" (making the text align as superscript); "top" (which aligns the text of the Component with the top of the tallest element--text or non-text--on the rest of the line); "text-top" (which aligns the text of the Component with the top of the tallest text element on the rest of the line); "middle"; "bottom"; or "text-bottom" (which, like "text-top" aligns with the bottom of only text elements on the rest of the line).|
+|valign|java.lang.String|The vertical alignment of the Component within its Container. The allowed values are "baseline" (which aligns the baseline of the characters of this Component to align with the baseline of the parent - this is the default); "sub" (making the text align as subscript); "super" (making the text align as superscript); "top" (which aligns the text of the Component with the top of the tallest element - text or non-text - on the rest of the line); "text-top" (which aligns the text of the Component with the top of the tallest text element on the rest of the line); "middle"; "bottom"; or "text-bottom" (which, like "text-top" aligns with the bottom of only text elements on the rest of the line).|
 |colSpan|int|The number of table columns in the parent Container that this Component will span.|
 |rowSpan|int|The number of table rows in the parent Container that this Component will span.|
 |decorators|java.util.Map<java.lang.String,org.kuali.rice.kns.uif.decorator.ComponentDecorator>|A Map which associates names of child Components with implementations of ComponentDecorators *JERRY: TRUE THAT?*, as discussed in the section on [Component Decorators#component_decorators]|
@@ -330,9 +328,9 @@ h4. Tiles as Templates{anchor:tiles_as_templates}
 
 In the Spring configuration for every Component, a template is injected.  This is a path to a JSP page which is actually responsible for rendering the Component.  Each KRAD JSP page utilizes Apache Tiles to do the rendering.  This means that variables are passed around from tile to tile in a standard fashion, using the tiles:putAttribute tag for writing and the tiles:useAttribute tag for reading.  Because variable passing is standardized, Tiles can nest JSP pages within each other in a much more flexible manner than standard JSP tags.
 
-This is incredibly important because the injection of a Tile template path into the Spring configuration for a Component means that rendering of all Components is entirely customizable.  If, for instance, an application developer wanted to make a change to every single text field rendered through the application - a change which could not be achieved through the already incredible flexibility of CSS stylesheets - then the developer would simply override the TextControl bean and set the template property to point to a different JSP template.  KRAD would still pass all the variables it normally would to the new Tile.  Of course, a the switching out of a major Control likely won't happen.  But adding a new Component - a Widget that makes some innovative use of the jQuery UI library, say - is incredibly easy in this scheme.  Simply create a Java bean which extends the WidgetBean base class and then create a Tile that renders the new Component and the new Component is available for use in the application.
+This is incredibly important because the injection of a Tile template path into the Spring configuration for a Component means that rendering of all Components is entirely customizable.  If, for instance, an application developer wanted to make a change to every single text field rendered through the application - a change which could not be achieved through the already incredible flexibility of CSS stylesheets - then the developer would simply override the TextControl bean and set the template property to point to a different JSP template.  KRAD would still pass all the variables it normally would to the new Tile.  Of course, the switching out of a major Control likely won't happen too often.  But adding a new Component - a Widget that makes some innovative use of the jQuery UI library, say - is incredibly easy to accomplish in KRAD's Tiles scheme.  Simply create a Java bean which extends the WidgetBean base class and then create a Tile that renders the new Component and the new Component is available for use in the application.
 
-Furthermore, since each Component bean handles its own rendering Tile template, gone will be the generic KNS tags - like kul:rowDisplay and kul:htmlControlAttribute - which depended on complex logic within the tag itself to decide rendering and which were nearly impossible to customize.  It's a huge step forward for application developers to be able to customize the user interface of their application.
+Furthermore, since each Component bean handles its own rendering Tile template, gone are the generic KNS tags - like kul:rowDisplay and kul:htmlControlAttribute - which depended on complex logic within the tag itself to decide rendering and which were nearly impossible to customize.  It's a huge step forward for application developers to be able to customize the user interface of their application.
 
 h4. Component Initializers{anchor: component_initializers}
 
@@ -344,4 +342,4 @@ h4. Component Decorators{anchor: component_decorators}
 
 Components are powerful, it's true, but putting too much power into a single Component often violates the principle of separation of concerns.  Classes which implement org.kuali.rice.kns.uif.decorator.ComponentDecorator provide a little extra functionality to another Component, without making the code for that wrapped Component more complex.
 
-For instance, many Groups represent tabs which can be opened or closed.  A Group was written simply to be a simple Container of Components--making all of them understand collapsing behavior seems a bit overkill, especially considering how general Groups are.  Therefore, a ComponentDecorator--org.kuali.rice.kns.uif.decorator.PanelGroupDecorator--was created to add collapsing behavior to Groups.  Parent Containers which want to apply collapsing behavior to child Groups will add the name of the Group and the ComponentDecorator to a map called "componentDecorators" and the collapsing behavior will be added during rendering.
+For instance, many Groups represent tabs which can be opened or closed.  A Group was written simply to be a simple Container of Components - making all of them understand collapsing behavior seems a bit overkill, especially considering how general Groups are.  Therefore, a ComponentDecorator - org.kuali.rice.kns.uif.decorator.PanelGroupDecorator - was created to add collapsing behavior to Groups.  Parent Containers which want to apply collapsing behavior to child Groups will add the name of the Group and the ComponentDecorator to a map called "componentDecorators" and the collapsing behavior will be added during rendering.

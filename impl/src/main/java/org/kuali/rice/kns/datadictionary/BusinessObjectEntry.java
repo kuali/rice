@@ -51,7 +51,7 @@ import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
  */
-public class BusinessObjectEntry extends DataDictionaryEntryBase {
+public class BusinessObjectEntry extends ObjectDictionaryEntry {
     // logger
     //private static Log LOG = LogFactory.getLog(BusinessObjectEntry.class);
 
@@ -403,4 +403,5 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 	    	}
     	}
     }
+
 }

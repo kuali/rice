@@ -410,11 +410,12 @@ public class KimTypeServiceBase implements KimTypeService {
         return null;
 	}
     
-	protected BigDecimal getAttributeExclusiveMin(AttributeDefinition definition) {
+	// JLR : switching from BigDecimal to String for exclusiveMin / inclusiveMax
+	protected /*BigDecimal*/ String getAttributeExclusiveMin(AttributeDefinition definition) {
         return definition == null ? null : definition.getExclusiveMin();
     }
 
-	protected BigDecimal getAttributeInclusiveMax(AttributeDefinition definition) {
+	protected /*BigDecimal*/ String getAttributeInclusiveMax(AttributeDefinition definition) {
         return definition == null ? null : definition.getInclusiveMax();
     }
 	
@@ -465,10 +466,11 @@ public class KimTypeServiceBase implements KimTypeService {
                     return;
                 }
             }
-            BigDecimal exclusiveMin = getAttributeExclusiveMin(definition);
+            /*BigDecimal*/ String exclusiveMin = getAttributeExclusiveMin(definition);
             if (exclusiveMin != null) {
                 try {
-                    if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
+                	BigDecimal exclusiveMinBigDecimal = new BigDecimal(exclusiveMin);
+                    if (exclusiveMinBigDecimal.compareTo(new BigDecimal(attributeValue)) >= 0) {
                         GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, exclusiveMin.toString() });
@@ -479,10 +481,11 @@ public class KimTypeServiceBase implements KimTypeService {
                     // quash; this indicates that the DD contained a min for a non-numeric attribute
                 }
             }
-            BigDecimal inclusiveMax = getAttributeInclusiveMax(definition);
+            /*BigDecimal*/ String inclusiveMax = getAttributeInclusiveMax(definition);
             if (inclusiveMax != null) {
                 try {
-                    if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
+                	BigDecimal inclusiveMaxBigDecimal = new BigDecimal(inclusiveMax);
+                    if (inclusiveMaxBigDecimal.compareTo(new BigDecimal(attributeValue)) < 0) {
                         GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, inclusiveMax.toString() });

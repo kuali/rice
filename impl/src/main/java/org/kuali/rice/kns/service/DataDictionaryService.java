@@ -111,7 +111,6 @@ public interface DataDictionaryService {
      */
     public Class<? extends Formatter> getAttributeFormatter(Class businessObjectClass, String attributeName);
 
-
     /**
      * indicates whether or not to force input text into uppercase
      */
@@ -165,6 +164,7 @@ public interface DataDictionaryService {
      */
     public String getCollectionDescription(Class businessObjectClass, String collectionName);
 
+    
     /**
      * the html control type used to render the field
      */
@@ -176,7 +176,11 @@ public interface DataDictionaryService {
      */
     public Integer getAttributeSize(String entryName, String attributeName);
 
-
+    /**
+     * the min length defined for the given attribute name.
+     */
+    public Integer getAttributeMinLength(String entryName, String attributeName);
+    
     /**
      * the max length defined for the given attribute name.
      */
@@ -187,21 +191,20 @@ public interface DataDictionaryService {
      * @param attributeName
      * @return the exclusive minimum for the specified attribute, or <code>null</code> if none.
      */
-    public BigDecimal getAttributeExclusiveMin(String entryName, String attributeName);
+    public /*BigDecimal*/ String getAttributeExclusiveMin(String entryName, String attributeName);
 
     /**
      * @param entryName
      * @param attributeName
      * @return the inclusive maximum for the specified attribute, or <code>null</code> if none.
      */
-    public BigDecimal getAttributeInclusiveMax(String entryName, String attributeName);
+    public /*BigDecimal*/ String getAttributeInclusiveMax(String entryName, String attributeName);
 
 
     /**
      * the regular expression defined to validate the given attribute name.
      */
     public Pattern getAttributeValidatingExpression(String entryName, String attributeName);
-
 
     /**
      * the label to be used for displaying the attribute.
@@ -276,7 +279,6 @@ public interface DataDictionaryService {
      * the label to be used for displaying the collection.
      */
     public String getCollectionLabel(String entryName, String collectionName);
-
 
     /**
      * the short label to be used for displaying the collection.

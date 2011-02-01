@@ -17,6 +17,7 @@
 package org.kuali.rice.kns.datadictionary;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,12 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
+import org.kuali.rice.kns.dto.CaseConstraint;
+import org.kuali.rice.kns.dto.DataType;
+import org.kuali.rice.kns.dto.LookupConstraint;
+import org.kuali.rice.kns.dto.MustOccurConstraint;
+import org.kuali.rice.kns.dto.RequiredConstraint;
+import org.kuali.rice.kns.dto.ValidCharsConstraint;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.springframework.beans.factory.InitializingBean;
@@ -43,16 +50,23 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	protected Boolean forceUppercase = Boolean.FALSE;
 
 	protected String name;
+	
+	protected DataType dataType = DataType.STRING;
+	
 	protected String label;
 	protected String shortLabel;
 	protected String displayLabelAttribute;
+	
+	protected String messageKey;
 
+	protected Integer minLength;
 	protected Integer maxLength;
 	protected Boolean unique;
 
-	protected BigDecimal exclusiveMin;
-	protected BigDecimal inclusiveMax;
+	protected String exclusiveMin;
+	protected String inclusiveMax;
 
+	@Deprecated 
 	protected ValidationPattern validationPattern;
 	protected Boolean required = Boolean.FALSE;
 
@@ -67,8 +81,27 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	protected String formatterClass;
 
 	protected AttributeSecurity attributeSecurity;
+//	protected Constraint constraint;
+	
+	protected Boolean dynamic;
+	
+	// KS-style constraints 
+	protected String customValidatorClass;
+	protected ValidCharsConstraint validChars;	
+	protected Integer minOccurs;
+	protected String maxOccurs;
+    protected CaseConstraint caseConstraint;
+    protected List<RequiredConstraint> requireConstraint;
+	protected List<MustOccurConstraint> occursConstraint;
+	protected LookupConstraint lookupDefinition;// If the user wants to match
+	// against two searches, that
+	// search must be defined as
+	// well
+	protected String lookupContextPath;
+	
 
 	public AttributeDefinition() {
+		// Empty
 	}
 
 	/**
@@ -151,7 +184,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.maxLength = maxLength;
 	}
 
-	public BigDecimal getExclusiveMin() {
+	public String getExclusiveMin() {
 		return exclusiveMin;
 	}
 
@@ -160,7 +193,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * entry editing purposes. Value can be an integer or decimal value such as
 	 * -.001 or 99.
 	 */
-	public void setExclusiveMin(BigDecimal exclusiveMin) {
+	public void setExclusiveMin(String exclusiveMin) {
 		this.exclusiveMin = exclusiveMin;
 	}
 
@@ -171,7 +204,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * 
 	 * JSTL: This field is mapped into the field named "exclusiveMax".
 	 */
-	public BigDecimal getInclusiveMax() {
+	public String getInclusiveMax() {
 		return inclusiveMax;
 	}
 
@@ -182,7 +215,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * 
 	 * JSTL: This field is mapped into the field named "exclusiveMax".
 	 */
-	public void setInclusiveMax(BigDecimal inclusiveMax) {
+	public void setInclusiveMax(String inclusiveMax) {
 		this.inclusiveMax = inclusiveMax;
 	}
 
@@ -491,4 +524,176 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.controlField = controlField;
 	}
 
+	/**
+	 * @return the minLength
+	 */
+	public Integer getMinLength() {
+		return this.minLength;
+	}
+
+	/**
+	 * @param minLength the minLength to set
+	 */
+	public void setMinLength(Integer minLength) {
+		this.minLength = minLength;
+	}
+
+	/**
+	 * @return the dataType
+	 */
+	public DataType getDataType() {
+		return this.dataType;
+	}
+
+	/**
+	 * @param dataType the dataType to set
+	 */
+	public void setDataType(DataType dataType) {
+		this.dataType = dataType;
+	}
+	
+	public void setDataType(String dataType) {
+		this.dataType = DataType.valueOf(dataType);
+	}
+
+	/**
+	 * @return the customValidatorClass
+	 */
+	public String getCustomValidatorClass() {
+		return this.customValidatorClass;
+	}
+
+	/**
+	 * @param customValidatorClass the customValidatorClass to set
+	 */
+	public void setCustomValidatorClass(String customValidatorClass) {
+		this.customValidatorClass = customValidatorClass;
+	}
+
+	/**
+	 * @return the validChars
+	 */
+	public ValidCharsConstraint getValidChars() {
+		return this.validChars;
+	}
+
+	/**
+	 * @param validChars the validChars to set
+	 */
+	public void setValidChars(ValidCharsConstraint validChars) {
+		this.validChars = validChars;
+	}
+
+	/**
+	 * @return the minOccurs
+	 */
+	public Integer getMinOccurs() {
+		return this.minOccurs;
+	}
+
+	/**
+	 * @param minOccurs the minOccurs to set
+	 */
+	public void setMinOccurs(Integer minOccurs) {
+		this.minOccurs = minOccurs;
+	}
+
+	/**
+	 * @return the maxOccurs
+	 */
+	public String getMaxOccurs() {
+		return this.maxOccurs;
+	}
+
+	/**
+	 * @param maxOccurs the maxOccurs to set
+	 */
+	public void setMaxOccurs(String maxOccurs) {
+		this.maxOccurs = maxOccurs;
+	}
+
+	/**
+	 * @return the caseConstraint
+	 */
+	public CaseConstraint getCaseConstraint() {
+		return this.caseConstraint;
+	}
+
+	/**
+	 * @param caseConstraint the caseConstraint to set
+	 */
+	public void setCaseConstraint(CaseConstraint caseConstraint) {
+		this.caseConstraint = caseConstraint;
+	}
+
+	/**
+	 * @return the requireConstraint
+	 */
+	public List<RequiredConstraint> getRequireConstraint() {
+		return this.requireConstraint;
+	}
+
+	/**
+	 * @param requireConstraint the requireConstraint to set
+	 */
+	public void setRequireConstraint(List<RequiredConstraint> requireConstraint) {
+		this.requireConstraint = requireConstraint;
+	}
+
+	/**
+	 * @return the occursConstraint
+	 */
+	public List<MustOccurConstraint> getOccursConstraint() {
+		return this.occursConstraint;
+	}
+
+	/**
+	 * @param occursConstraint the occursConstraint to set
+	 */
+	public void setOccursConstraint(List<MustOccurConstraint> occursConstraint) {
+		this.occursConstraint = occursConstraint;
+	}
+
+	/**
+	 * @return the lookupDefinition
+	 */
+	public LookupConstraint getLookupDefinition() {
+		return this.lookupDefinition;
+	}
+
+	/**
+	 * @param lookupDefinition the lookupDefinition to set
+	 */
+	public void setLookupDefinition(LookupConstraint lookupDefinition) {
+		this.lookupDefinition = lookupDefinition;
+	}
+
+	/**
+	 * @return the lookupContextPath
+	 */
+	public String getLookupContextPath() {
+		return this.lookupContextPath;
+	}
+
+	/**
+	 * @param lookupContextPath the lookupContextPath to set
+	 */
+	public void setLookupContextPath(String lookupContextPath) {
+		this.lookupContextPath = lookupContextPath;
+	}
+
+//	/**
+//	 * @return the constraint
+//	 */
+//	public Constraint getConstraint() {
+//		return this.constraint;
+//	}
+//
+//	/**
+//	 * @param constraint the constraint to set
+//	 */
+//	public void setConstraint(Constraint constraint) {
+//		this.constraint = constraint;
+//	}
+	
 }

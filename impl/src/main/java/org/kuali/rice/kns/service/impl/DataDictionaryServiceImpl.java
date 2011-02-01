@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -94,7 +93,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public DataDictionary getDataDictionary() {
         return dataDictionary;
     }
-
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getAttributeControlDefinition(java.lang.String)
      */
@@ -127,6 +126,20 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getAttributeMinLength(java.lang.String)
+     */
+    public Integer getAttributeMinLength(String entryName, String attributeName) {
+        Integer minLength = null;
+
+        AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
+        if (attributeDefinition != null) {
+        	minLength = attributeDefinition.getMinLength();
+        }
+
+        return minLength;
+    }
+    
+    /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getAttributeMaxLength(java.lang.String)
      */
     public Integer getAttributeMaxLength(String entryName, String attributeName) {
@@ -143,7 +156,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeExclusiveMin
      */
-    public BigDecimal getAttributeExclusiveMin(String entryName, String attributeName) {
+    public /*BigDecimal*/ String getAttributeExclusiveMin(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         return attributeDefinition == null ? null : attributeDefinition.getExclusiveMin();
     }
@@ -151,7 +164,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeInclusiveMax
      */
-    public BigDecimal getAttributeInclusiveMax(String entryName, String attributeName) {
+    public /*BigDecimal*/ String getAttributeInclusiveMax(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         return attributeDefinition == null ? null : attributeDefinition.getInclusiveMax();
     }
@@ -526,7 +539,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return attributeDefinition;
     }
-
+	
+    
     /**
      * @param entryName
      * @param collectionName
@@ -904,4 +918,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 		}
 		return workflowInfoService;
 	}
+
+
 }

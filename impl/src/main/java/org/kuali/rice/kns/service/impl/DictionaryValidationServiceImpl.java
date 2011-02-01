@@ -43,6 +43,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.kuali.rice.kns.datadictionary.validator.Validator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.exception.InfrastructureException;
@@ -86,6 +87,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     private WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
 
     private PersistenceStructureService persistenceStructureService;
+    
+    private Validator validator;
     
     /** 
      * creates a new IdentitySet.
@@ -237,26 +240,37 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (ObjectUtils.isNull(businessObject)) {
             return;
         }
-        try {
-        	// validate the primitive attributes of the bo
-        	validatePrimitivesFromDescriptors(businessObject.getClass().getName(), businessObject, PropertyUtils.getPropertyDescriptors(businessObject.getClass()), "", validateRequired);
-        } catch(RuntimeException e) {
-        	LOG.error(String.format("Exception while validating %s", businessObject.getClass().getName()), e);
-        	throw e;
-        }
+//        if (validator != null) {
+//        	BusinessObjectEntryDTO businessObjectEntry = getDataDictionaryService().getBusinessObjectEntry(businessObject.getClass().getName());
+//        	validator.validateObject(businessObject, businessObjectEntry);
+//        } else {
+	        try {
+	        	// validate the primitive attributes of the bo
+	        	validatePrimitivesFromDescriptors(businessObject.getClass().getName(), businessObject, PropertyUtils.getPropertyDescriptors(businessObject.getClass()), "", validateRequired);
+	        } catch(RuntimeException e) {
+	        	LOG.error(String.format("Exception while validating %s", businessObject.getClass().getName()), e);
+	        	throw e;
+	        }
+//        }
+        
     }
 
     /**
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObjectOnMaintenanceDocument(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
 	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
-		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+		
+		// JLR : uses KS style validator instead
+		validator.validateBusinessObjectOnMaintenanceDocument(businessObject, docTypeName);
+		
+		/*MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
-			validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
-		}
+	    	validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
+		}*/
 	}
 	
 	protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject, List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
+		
 		for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
 			if (itemDefinition instanceof MaintainableFieldDefinition) {
 		        if (getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName())) {
@@ -355,130 +369,144 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      * objectClassName is the docTypeName
      */
-	public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
-        boolean checkDateBounds = false; // this is used so we can check date bounds
-        Class<?> formatterClass = null;
+    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
+    	boolean checkDateBounds = false; // this is used so we can check date bounds
+    	Class<?> formatterClass = null;
 
-        if ( LOG.isDebugEnabled() ) {
-        LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
-        }
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
+    	}
 
-        /*
-         *  This will return a list of searchable attributes. so if the value is
-         *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
-         */
+    	/*
+    	 *  This will return a list of searchable attributes. so if the value is
+    	 *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
+    	 */
 
-        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue, attributeDataType);
+    	final List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue, attributeDataType);
 
-        if(attributeValues == null || attributeValues.isEmpty()) {
-			return;
-		}
+    	if(attributeValues == null || attributeValues.isEmpty()) {
+    		return;
+    	}
 
-        for(String attributeValue : attributeValues){
-        if (StringUtils.isNotBlank(attributeValue)) {
-            Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
-            if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-	                String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
-                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
-                return;
-            }
-            Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
-            if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
-	            	if ( LOG.isDebugEnabled() ) {
-                LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
-	            	}
+    	for(String attributeValue : attributeValues){
 
-            	if (!validationExpression.matcher(attributeValue).matches()) {
-            		// Retrieving formatter class
-	            		if(formatterClass == null){
-	            			// this is just a cache check... all dates ranges get called twice
-	            			formatterClass=getDataDictionaryService().getAttributeFormatter(
-                            objectClassName, attributeName);
-	            		}
+    		// JLR : Replacing this logic with KS-style validation is trickier, since KS validation requires a DataProvider object that can
+    		// look back and find other attribute values aside from the one we're working on.
+    		// Also - the date stuff below is implemented very differently.
+    		//validator.validateAttributeField(businessObject, fieldName);
+    		
+    		if (StringUtils.isNotBlank(attributeValue)) {
+    			Integer minLength = getDataDictionaryService().getAttributeMinLength(objectClassName, attributeName);
+    			if ((minLength != null) && (minLength.intValue() > attributeValue.length())) {
+    				String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+    				GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MIN_LENGTH, new String[] { errorLabel, minLength.toString() });
+    				return;
+    			}
+    			Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
+    			if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
+    				String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+    				GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
+    				return;
+    			}
+    			Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
+    			if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
+    				if ( LOG.isDebugEnabled() ) {
+    					LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+    				}
 
-                    if (formatterClass != null) {
-                    	boolean valuesAreValid = true;
-                    		boolean isError=true;
-                    		String errorKeyPrefix = "";
-                    		try {
-                    	
-                    			// this is a special case for date ranges in order to set the proper error message
-                        if (DateFormatter.class.isAssignableFrom(formatterClass)) {
-                    				String[] values = attributeInValue.split("\\.\\."); // is it a range
-                    				if(values.length == 2 && attributeValues.size() == 2){ // make sure it's not like a .. b | c
-                    					checkDateBounds = true; // now we need to check that a <= b
-                    					if(attributeValues.indexOf(attributeValue) == 0){ // only care about lower bound
-                    						errorKeyPrefix = KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX;
-                    					}
-                            }
-                        }
-                        
-                    			Method validatorMethod=formatterClass.getDeclaredMethod(
-                    					VALIDATE_METHOD, new Class<?>[] {String.class});
-                        		Object o=validatorMethod.invoke(
-                        				formatterClass.newInstance(), attributeValue);
-                        		if (o instanceof Boolean) {
-                        			isError = !((Boolean)o).booleanValue();
-                        		}
-                        		valuesAreValid &= !isError;
-                    		} catch (Exception e) {
-                    			if ( LOG.isDebugEnabled() ) {
-                    			LOG.debug(e.getMessage(), e);
-                    			}
-                    			isError =true;
-                    			valuesAreValid = false;
-                    		}
-                    		if (isError) {
-                    			checkDateBounds = false; // it's already invalid, no need to check date bounds
-                    			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                    			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                    			GlobalVariables.getMessageMap().putError(errorKeyPrefix + errorKey, errorMessageKey, errorMessageParameters);
-                    		}
-                    } else {
-	                    	// if it fails the default validation and has no formatter class then it's still a std failure.
-                    	String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-            			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-            			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
-                    }
-                }
+    				if (!validationExpression.matcher(attributeValue).matches()) {
+    					// Retrieving formatter class
+    					if(formatterClass == null){
+    						// this is just a cache check... all dates ranges get called twice
+    						formatterClass=getDataDictionaryService().getAttributeFormatter(
+    								objectClassName, attributeName);
+    					}
 
-            }
-            BigDecimal exclusiveMin = getDataDictionaryService().getAttributeExclusiveMin(objectClassName, attributeName);
-            if (exclusiveMin != null) {
-                try {
-                    if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
-	                        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
-                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
-                        // todo: Formatter for currency?
-                                new String[] { errorLabel, exclusiveMin.toString() });
-                        return;
-                    }
-                }
-                catch (NumberFormatException e) {
-                    // quash; this indicates that the DD contained a min for a non-numeric attribute
-                }
-            }
-            BigDecimal inclusiveMax = getDataDictionaryService().getAttributeInclusiveMax(objectClassName, attributeName);
-            if (inclusiveMax != null) {
-                try {
-                    if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
-	                        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
-                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
-                        // todo: Formatter for currency?
-                                new String[] { errorLabel, inclusiveMax.toString() });
-                        return;
-                    }
-                }
-                catch (NumberFormatException e) {
-                    // quash; this indicates that the DD contained a max for a non-numeric attribute
-                }
-            }
-        }
-    }
+    					if (formatterClass != null) {
+    						boolean valuesAreValid = true;
+    						boolean isError=true;
+    						String errorKeyPrefix = "";
+    						try {
 
-        if(checkDateBounds){
-        	// this means that we only have 2 values and it's a date range.
-        	java.sql.Timestamp lVal = null;
+    							// this is a special case for date ranges in order to set the proper error message
+    							if (DateFormatter.class.isAssignableFrom(formatterClass)) {
+    								String[] values = attributeInValue.split("\\.\\."); // is it a range
+    								if(values.length == 2 && attributeValues.size() == 2){ // make sure it's not like a .. b | c
+    									checkDateBounds = true; // now we need to check that a <= b
+    									if(attributeValues.indexOf(attributeValue) == 0){ // only care about lower bound
+    										errorKeyPrefix = KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX;
+    									}
+    								}
+    							}
+
+    							Method validatorMethod=formatterClass.getDeclaredMethod(
+    									VALIDATE_METHOD, new Class<?>[] {String.class});
+    							Object o=validatorMethod.invoke(
+    									formatterClass.newInstance(), attributeValue);
+    							if (o instanceof Boolean) {
+    								isError = !((Boolean)o).booleanValue();
+    							}
+    							valuesAreValid &= !isError;
+    						} catch (Exception e) {
+    							if ( LOG.isDebugEnabled() ) {
+    								LOG.debug(e.getMessage(), e);
+    							}
+    							isError =true;
+    							valuesAreValid = false;
+    						}
+    						if (isError) {
+    							checkDateBounds = false; // it's already invalid, no need to check date bounds
+    							String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+    							String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+    							GlobalVariables.getMessageMap().putError(errorKeyPrefix + errorKey, errorMessageKey, errorMessageParameters);
+    						}
+    					} else {
+    						// if it fails the default validation and has no formatter class then it's still a std failure.
+    						String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+    						String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+    						GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+    					}
+    				}
+
+    			}
+    			/*BigDecimal*/ String exclusiveMin = getDataDictionaryService().getAttributeExclusiveMin(objectClassName, attributeName);
+    			if (exclusiveMin != null) {
+    				try {
+    					BigDecimal exclusiveMinBigDecimal = new BigDecimal(exclusiveMin);
+    					if (exclusiveMinBigDecimal.compareTo(new BigDecimal(attributeValue)) >= 0) {
+    						String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+    						GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
+    								// todo: Formatter for currency?
+    								new String[] { errorLabel, exclusiveMin.toString() });
+    						return;
+    					}
+    				}
+    				catch (NumberFormatException e) {
+    					// quash; this indicates that the DD contained a min for a non-numeric attribute
+    				}
+    			}
+    			/*BigDecimal*/ String inclusiveMax = getDataDictionaryService().getAttributeInclusiveMax(objectClassName, attributeName);
+    			if (inclusiveMax != null) {
+    				try {
+    					BigDecimal inclusiveMaxBigDecimal = new BigDecimal(inclusiveMax);
+    					if (inclusiveMaxBigDecimal.compareTo(new BigDecimal(attributeValue)) < 0) {
+    						String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+    						GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
+    								// todo: Formatter for currency?
+    								new String[] { errorLabel, inclusiveMax.toString() });
+    						return;
+    					}
+    				}
+    				catch (NumberFormatException e) {
+    					// quash; this indicates that the DD contained a max for a non-numeric attribute
+    				}
+    			}
+    		}
+    	}
+
+    	if(checkDateBounds){
+    		// this means that we only have 2 values and it's a date range.
+    		java.sql.Timestamp lVal = null;
     		java.sql.Timestamp uVal = null;
     		try{
     			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
@@ -495,8 +523,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
     			GlobalVariables.getMessageMap().putError(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey + ".range", errorMessageParameters);
     		}
-        }
+    	}
     }
+
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeRequired
@@ -595,6 +624,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 if (value != null && StringUtils.isNotBlank(value.toString())) {
                     if (!TypeUtils.isTemporalClass(propertyType)) {
                         validateAttributeFormat(entryName, propertyDescriptor.getName(), value.toString(), errorPrefix + propertyDescriptor.getName());
+                        
+//                        BusinessObjectEntryDTO businessObjectEntry = getDataDictionaryService().getBusinessObjectEntry(entryName);
+//                    	validator.validateObject(object, businessObjectEntry);
                     }
                 }
                 else if (validateRequired) {
@@ -1025,4 +1057,18 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	}
     	return workflowAttributePropertyResolutionService;
     }
+
+	/**
+	 * @return the validator
+	 */
+	public Validator getValidator() {
+		return this.validator;
+	}
+
+	/**
+	 * @param validator the validator to set
+	 */
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
 }

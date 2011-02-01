@@ -64,13 +64,14 @@ public class AttributesMapBuilder {
         attributeMap.set("shortLabel", attribute.getShortLabel());
        
         attributeMap.set("maxLength", attribute.getMaxLength().toString());
-        final BigDecimal exclusiveMin = attribute.getExclusiveMin();
+        // JLR : switching from BigDecimal to String for exclusiveMin / inclusiveMax
+        final /*BigDecimal*/ String exclusiveMin = attribute.getExclusiveMin();
         if (exclusiveMin != null) {
-            attributeMap.set("exclusiveMin", exclusiveMin.toString());
+            attributeMap.set("exclusiveMin", exclusiveMin/*.toString()*/);
         }
-        final BigDecimal exclusiveMax = attribute.getInclusiveMax();
+        final /*BigDecimal*/ String exclusiveMax = attribute.getInclusiveMax();
         if (exclusiveMax != null) {
-            attributeMap.set("exclusiveMax", exclusiveMax.toString());
+            attributeMap.set("exclusiveMax", exclusiveMax/*.toString()*/);
         }
 
         attributeMap.set("required", attribute.isRequired().toString());

@@ -29,10 +29,9 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 /**
- * Tests recipient preferences 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * Tests recipient preferences
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RecipientPreferenceTest extends BusinessObjectTestCase {
     private RecipientPreference PREF;
@@ -41,7 +40,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-    
+
         prefsvc = GlobalKCBServiceLocator.getInstance().getRecipientPreferenceService();
 
         PREF = new RecipientPreference();
@@ -80,7 +79,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         assertEquals(0, prefsvc.getRecipientPreferences(PREF.getRecipientId()).size());
     }
 
-    @Test(expected=DataIntegrityViolationException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     @Override
     public void testDuplicateCreate() {
         final RecipientPreference p = new RecipientPreference();
@@ -92,7 +91,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         prefsvc.saveRecipientPreference(p);
     }
 
-    @Test(expected=DataIntegrityViolationException.class)
+    @Test(expected = DataIntegrityViolationException.class)
     @Override
     public void testInvalidCreate() {
         final RecipientPreference p = new RecipientPreference();
@@ -116,7 +115,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         assertNull(p);
     }
 
-    @Test
+    @Test(expected = DataAccessException.class)
     @Override
     public void testInvalidUpdate() {
         RecipientPreference sample = new RecipientPreference();
@@ -128,24 +127,22 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         // violates not null property constraint
         final RecipientPreference p1 = prefsvc.getRecipientPreference(PREF.getRecipientId(), PREF.getProperty());
         p1.setProperty(null);
-        try {
-            prefsvc.saveRecipientPreference(p1);
-            fail("DataAccessException did not happen");
-        } catch (DataAccessException e) {
-            //expected
-        }
+        prefsvc.saveRecipientPreference(p1);
+    }
 
-        
-        // change the property to an existing property name to violate property uniqueness constraint
+    @Test(expected = DataAccessException.class)
+    public void testInvalidUpdateUniqueConstraint() {
+        RecipientPreference sample = new RecipientPreference();
+        sample.setRecipientId("user1");
+        sample.setProperty("uniqueproperty");
+        sample.setValue("value1");
+        prefsvc.saveRecipientPreference(sample);
+
         final RecipientPreference p2 = prefsvc.getRecipientPreference(PREF.getRecipientId(), PREF.getProperty());
         p2.setProperty("uniqueproperty");
-        try {
-            prefsvc.saveRecipientPreference(p2);
-            fail("DataAccessException did not happen");
-        } catch (DataAccessException e) {
-            //expected
-        }
+        prefsvc.saveRecipientPreference(p2);
     }
+
 
     @Test
     @Override
@@ -162,7 +159,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         p.setValue("different value");
 
         prefsvc.saveRecipientPreference(p);
-        
+
         RecipientPreference p2 = prefsvc.getRecipientPreference(PREF.getRecipientId(), PREF.getProperty());
         assertEquals(p, p2);
     }

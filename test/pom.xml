@@ -40,7 +40,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skip>${skip.itests}</skip>
-                    
                 </configuration>
             </plugin>
         </plugins>

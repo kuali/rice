@@ -99,6 +99,11 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         	roleDocumentForm.setRoleId(roleId);
         }
+        String showDerivedRoles = request.getParameter(KNSConstants.LOOKUP_RESULTS_SELECTABLE_DERIVED_ROLES);
+        if (showDerivedRoles != null){
+        	roleDocumentForm.setSelectableDerivedRoles(Boolean.parseBoolean(showDerivedRoles));
+        }
+        
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
 		// TODO: move this into the UI service - action should not be making ORM-layer calls
 		setKimType(kimTypeId, roleDocumentForm);
@@ -591,5 +596,21 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		return activeDelegatesOfInactivatedRoleMembers;
 	}
 
+	/**
+	 * 
+	 * This method overrides validateRole() from IdentityManagementDocumentActionBase.
+	 * The difference with this method is that it allows derived roles.   
+	 * The base implementation returns false if the role is a derived role.
+	 * 
+	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#validateRole(java.lang.String, org.kuali.rice.kim.bo.Role, java.lang.String, java.lang.String)
+	 */
+    protected boolean validateRole( String roleId, Role role, String propertyName, String message){
+    	if ( role == null ) {
+        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
+    		return false;
+    	}
+    	return true;
+    }
+ 
 
 }

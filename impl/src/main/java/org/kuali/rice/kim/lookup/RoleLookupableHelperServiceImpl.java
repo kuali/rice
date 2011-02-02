@@ -27,6 +27,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -39,8 +40,10 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -87,6 +90,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         if (StringUtils.isNotBlank(getReturnLocation())) {
         	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
 		}
+        parameters.put(KNSConstants.LOOKUP_RESULTS_SELECTABLE_DERIVED_ROLES, "true");
         href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
@@ -97,8 +101,13 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
     	RoleImpl roleImpl = (RoleImpl) businessObject;
     	HtmlData anchorHtmlData = super.getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys, businessObjectRestrictions);
-    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
-    		((AnchorHtmlData)anchorHtmlData).setHref("");
+    	
+    	// prevent derived roles from being selectable (except for identityManagementRoleDocuments)	
+    	KualiForm myForm = (KualiForm) GlobalVariables.getUserSession().retrieveObject(getDocFormKey());
+    	if (myForm == null || !(myForm instanceof IdentityManagementRoleDocumentForm) || !((IdentityManagementRoleDocumentForm)myForm).isSelectableDerivedRoles()){
+    		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+    			((AnchorHtmlData)anchorHtmlData).setHref("");
+    		}
     	}
     	return anchorHtmlData;
     }

@@ -50,6 +50,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	protected String dmrmi;
 	protected boolean canAssignRole = true;
 	protected boolean canModifyAssignees = true;
+	protected boolean selectableDerivedRoles = false;
 	protected KimTypeInfo kimType;
 	protected KimDocumentRoleMember member;
 	{
@@ -233,6 +234,22 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	 */
 	public void setCanModifyAssignees(boolean canModifyAssignees) {
 		this.canModifyAssignees = canModifyAssignees;
+	}
+	
+	/**
+	 * Will derived roles be selectable in the lookup results.
+	 * @return the selectableDerivedRoles value.
+	 * 
+	 */
+	public boolean isSelectableDerivedRoles() {
+		return this.selectableDerivedRoles;
+	}
+
+	/**
+	 * @param selectableDerivedRoles the boolean value to set
+	 */
+	public void setSelectableDerivedRoles(boolean selectableDerivedRoles) {
+		this.selectableDerivedRoles = selectableDerivedRoles;
 	}
 	
 	public List<KimDocumentRoleMember> getMemberRows() {

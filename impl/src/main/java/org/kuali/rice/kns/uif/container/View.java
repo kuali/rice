@@ -23,8 +23,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -323,6 +325,23 @@ public class View extends ContainerBase {
 	 */
 	public void setViewHelperServiceBeanId(String viewHelperServiceBeanId) {
 		this.viewHelperServiceBeanId = viewHelperServiceBeanId;
+	}
+
+	/**
+	 * Retrieves the <code>ViewHelperService</code> configured for the view from
+	 * the application context. If a service is not found a
+	 * <code>RuntimeException</code> will be thrown.
+	 * 
+	 * @return ViewHelperService instance
+	 */
+	public ViewHelperService getViewHelperService() {
+		ViewHelperService viewHelperService = KNSServiceLocator.getService(getViewHelperServiceBeanId());
+
+		if (viewHelperService == null) {
+			throw new RuntimeException("Unable to find ViewHelperService for view: " + getId());
+		}
+
+		return viewHelperService;
 	}
 
 	/**

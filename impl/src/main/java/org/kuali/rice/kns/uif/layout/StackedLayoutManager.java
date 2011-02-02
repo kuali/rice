@@ -142,7 +142,8 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		}
 		else {
 			// managed with framework, generic map on form
-			addLineBindingPath = collectionGroup.initNewCollectionLine(model);
+			addLineBindingPath = collectionGroup.initNewCollectionLine(model, false);
+			collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
 			bindAddLineToForm = true;
 		}
 

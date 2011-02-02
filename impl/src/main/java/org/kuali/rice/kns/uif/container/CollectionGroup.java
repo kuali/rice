@@ -82,6 +82,8 @@ public class CollectionGroup extends Group implements DataBinding {
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
+	 * <li>Set fieldBindModelPath to the collection model path (since the fields
+	 * have to belong to the same model as the collection)</li>
 	 * <li>Set defaults for binding</li>
 	 * <li>Sets the dictionary entry (if blank) on each of the items to the
 	 * collection class</li>
@@ -92,6 +94,8 @@ public class CollectionGroup extends Group implements DataBinding {
 	 */
 	@Override
 	public void performInitialization(View view) {
+		setFieldBindModelPath(getBindingInfo().getModelPath());
+
 		super.performInitialization(view);
 
 		if (bindingInfo != null) {
@@ -101,6 +105,9 @@ public class CollectionGroup extends Group implements DataBinding {
 		if (addLineBindingInfo != null) {
 			addLineBindingInfo.setDefaults(view, this);
 			addLineBindingInfo.setBindingName(addLineName);
+			if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
+				addLineBindingInfo.setBindByNamePrefix(getFieldBindByNamePrefix());
+			}
 		}
 
 		for (Component item : getItems()) {
@@ -158,15 +165,18 @@ public class CollectionGroup extends Group implements DataBinding {
 	 * New collection lines are handled in the framework by maintaining a map on
 	 * the form. The map contains as a key the collection name, and as value an
 	 * instance of the collection type. An entry is created here for the
-	 * collection represented by the <code>CollectionGroup</code>. The given
-	 * model must be a subclass of <code>UifFormBase</code> in order to find the
-	 * Map.
+	 * collection represented by the <code>CollectionGroup</code> if an instance
+	 * is not available (clearLine will force a new instance). The given model
+	 * must be a subclass of <code>UifFormBase</code> in order to find the Map.
 	 * 
 	 * @param model
 	 *            - Model instance that contains the new collection lines Map
+	 * @param clearLine
+	 *            - forces a new instance to be created even if an instance is
+	 *            already available
 	 * @return String binding path for the new add line
 	 */
-	public String initNewCollectionLine(Object model) {
+	public String initNewCollectionLine(Object model, boolean clearLine) {
 		if (!(model instanceof UifFormBase)) {
 			throw new RuntimeException("Cannot create new collection line for group: " + getName()
 					+ ". Model does not extend " + UifFormBase.class.getName());
@@ -180,17 +190,22 @@ public class CollectionGroup extends Group implements DataBinding {
 			ModelUtils.setPropertyValue(model, UifPropertyPaths.NEW_COLLECTION_LINES, newCollectionLines);
 		}
 
-		// create new instance of the collection type for the add line
-		try {
-			Object newLineInstance = getCollectionObjectClass().newInstance();
-			newCollectionLines.put(getBindingInfo().getBindingName(), newLineInstance);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Cannot create new add line instance for group: " + getName()
-					+ " with collection class: " + getCollectionObjectClass().getName());
+		// if there is not an instance available or clear line is set to true
+		// create a new instance
+		if (!newCollectionLines.containsKey(getBindingInfo().getBindingPath())
+				|| (newCollectionLines.get(getBindingInfo().getBindingPath()) == null) || clearLine) {
+			// create new instance of the collection type for the add line
+			try {
+				Object newLineInstance = getCollectionObjectClass().newInstance();
+				newCollectionLines.put(getBindingInfo().getBindingPath(), newLineInstance);
+			}
+			catch (Exception e) {
+				throw new RuntimeException("Cannot create new add line instance for group: " + getName()
+						+ " with collection class: " + getCollectionObjectClass().getName());
+			}
 		}
 
-		return UifPropertyPaths.NEW_COLLECTION_LINES + "['" + getBindingInfo().getBindingName() + "']";
+		return UifPropertyPaths.NEW_COLLECTION_LINES + "['" + getBindingInfo().getBindingPath() + "']";
 	}
 
 	/**

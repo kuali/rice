@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.uif.service.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,7 @@ import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.kuali.rice.kns.uif.util.ModelUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
 
 /**
@@ -36,6 +38,8 @@ import org.kuali.rice.kns.uif.util.ViewModelUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewHelperServiceImpl implements ViewHelperService {
+
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
 	private DataDictionaryService dataDictionaryService;
 
@@ -115,11 +119,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			// add attribute field to the view's index
 			view.getViewIndex().addAttributeField((AttributeField) component);
 		}
-		
+
 		// for collection groups set defaults from dictionary entry
 		if (component instanceof CollectionGroup) {
 			// TODO: initialize from dictionary
-			
+
 			// add collection group to the view's index
 			view.getViewIndex().addCollection((CollectionGroup) component);
 		}
@@ -187,10 +191,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 */
 	@Override
 	public void performApplyModel(View view, Object model) {
-		performComponentConditionalLogic(view, view, model);
+		performComponentApplyModel(view, view, model);
 	}
 
-	protected void performComponentConditionalLogic(View view, Component component, Object model) {
+	protected void performComponentApplyModel(View view, Component component, Object model) {
 		if (component == null) {
 			return;
 		}
@@ -204,7 +208,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// get components children and recursively call perform conditional
 		// logic
 		for (Component nestedComponent : component.getNestedComponents()) {
-			performComponentConditionalLogic(view, nestedComponent, model);
+			performComponentApplyModel(view, nestedComponent, model);
 		}
 	}
 
@@ -213,6 +217,83 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 */
 	@Override
 	public void performUpdateState(View view) {
+
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, java.lang.String)
+	 */
+	@Override
+	public void processCollectionAddLine(View view, Object model, String collectionPath) {
+		// get the collection group from the view
+		CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
+		if (collectionGroup == null) {
+			logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+		}
+
+		// get the collection instance for adding the new line
+		Collection collection = (Collection) ModelUtils.getPropertyValue(model, collectionPath);
+		if (collection == null) {
+			logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
+		}
+
+		// now get the new line we need to add
+		String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+		Object addLine = ModelUtils.getPropertyValue(model, addLinePath);
+		if (addLine == null) {
+			logAndThrowRuntime("Add line instance not found for path: " + addLinePath);
+		}
+
+		processBeforeAddLine(view, collectionGroup, addLine);
+
+		// validate the line to make sure it is ok to add
+		boolean isValidLine = performAddLineValidation(view, collectionGroup, addLine);
+		if (isValidLine) {
+			collection.add(addLine);
+
+			// make a new instance for the add line
+			collectionGroup.initNewCollectionLine(model, true);
+		}
+	}
+
+	/**
+	 * Performs validation on the new collection line before it is added to the
+	 * corresponding collection
+	 * 
+	 * @param view
+	 *            - view instance that the action was taken on
+	 * @param collectionGroup
+	 *            - collection group component for the collection
+	 * @param addLine
+	 *            - new line instance to validate
+	 * @return boolean true if the line is valid and it should be added to the
+	 *         collection, false if it was not valid and should not be added to
+	 *         the collection
+	 */
+	protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object addLine) {
+		boolean isValid = true;
+
+		// TODO: this should invoke rules, sublclasses like the document view
+		// should create the document add line event
+
+		return isValid;
+	}
+
+	/**
+	 * Hook for service overrides to process the new collection line before it
+	 * is added to the collection
+	 * 
+	 * @param view
+	 *            - view instance that is being presented (the action was taken
+	 *            on)
+	 * @param collectionGroup
+	 *            - collection group component for the collection the line will
+	 *            be added to
+	 * @param addLine
+	 *            - the new line instance to be processed
+	 */
+	protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object addLine) {
 
 	}
 
@@ -243,6 +324,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 */
 	protected void performCustomApplyModel(View view, Component component, Object model) {
 
+	}
+
+	protected void logAndThrowRuntime(String message) {
+		LOG.error(message);
+		throw new RuntimeException(message);
 	}
 
 	protected DataDictionaryService getDataDictionaryService() {

@@ -38,12 +38,9 @@ public interface ViewService {
 	 * 
 	 * @param viewId
 	 *            - unique id for view configured on its definition
-	 * @param model
-	 *            - Top level object containing the data (could be the form or a
-	 *            top level business object, dto)
 	 * @return View instance associated with the id or Null if id is not found
 	 */
-	public View getViewById(String viewId, Object model);
+	public View getViewById(String viewId);
 
 	/**
 	 * Returns the <code>View</code> entry identified by the given id
@@ -70,23 +67,11 @@ public interface ViewService {
 	 *            top level business object, dto)
 	 * @return View instance associated with the id or Null if id is not found
 	 */
-	public View getView(String viewId, Map<String, String> parameters, Object model);
-
-	/**
-	 * Returns the <code>ViewHelperService</code> that is configured for
-	 * <code>View</code> instance with id equal to the given id
-	 * 
-	 * <p>
-	 * Views can have custom <code>ViewHelperService</code> that provide
-	 * additional behavior that might need to be invoked outside of the view
-	 * service. This allows retrieval of the service for those purposes
-	 * </p>
-	 * 
-	 * @param viewId
-	 *            - unique id for view configured on its definition
-	 * @return ViewHelperService instance or Null if the view was not found
-	 */
-	public ViewHelperService getViewHelperService(String viewId);
+	public View getView(String viewId, Map<String, String> parameters);
+	
+	public void updateView(View view, Object model);
+	
+	public View reconstructView(String viewId, Map<String, String> parameters, Object model);
 
 	/**
 	 * Retrieves the unique id for the <code>View</code> instance that is of

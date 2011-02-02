@@ -68,7 +68,8 @@ public class UITestForm extends UifFormBase {
 	public UITestForm() {
 		super();
 		travelAccount1 = new TravelAccount();
-		newCollectionLines.put("fiscalOfficer.accounts", new TravelAccount());
+		newCollectionLines.put("travelAccount1.fiscalOfficer.accounts", new TravelAccount());
+		newCollectionLines.put("travelAccount2.fiscalOfficer.accounts", new TravelAccount());
 	}
 
 	public String getField1() {

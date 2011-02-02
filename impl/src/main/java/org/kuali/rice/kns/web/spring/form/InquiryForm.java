@@ -74,8 +74,11 @@ public class InquiryForm extends UifFormBase {
 							+ businessObjectClassName);
 				}
 			}
+			
+			// populate view instance from the id
+			super.populate(request);
 
-			inquirable = (Inquirable) getViewService().getViewHelperService(viewId);
+			inquirable = (Inquirable) getView().getViewHelperService();
 			try {
 				inquirable.setBusinessObjectClass(Class.forName(businessObjectClassName));
 			}

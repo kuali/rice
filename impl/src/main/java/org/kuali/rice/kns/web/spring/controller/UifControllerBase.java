@@ -31,6 +31,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -126,20 +127,23 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 
 	/**
 	 * Called by the add line action for a new collection line. Method
-	 * determines which collection the add action was selected for, retrieves
-	 * the new line and collection from the model, runs the line through
-	 * business rules and invokes the view service helper. If all goes well, the
-	 * line is added to the collection and a new instance created for the add
-	 * line.
+	 * determines which collection the add action was selected for and invokes
+	 * the view helper service to add the line
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
 	public ModelAndView addLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 		
-		// get handle on View instance so we can query the collection group
-		View view = uifForm.getView();
-		
+		// TODO: remove once this is being called from binder
+		uifForm.populate(request);
+
 		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
+		if (StringUtils.isBlank(selectedCollectionPath)) {
+			throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
+		}
+
+		View view = uifForm.getView();
+		view.getViewHelperService().processCollectionAddLine(view, uifForm, selectedCollectionPath);
 
 		return getUIFModelAndView(uifForm);
 	}
@@ -147,6 +151,9 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteLine")
 	public ModelAndView deleteLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
+		
+		// TODO: remove once this is being called from binder
+		uifForm.populate(request);
 
 		return getUIFModelAndView(uifForm);
 	}
@@ -159,20 +166,42 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 		return getUIFModelAndView(form, viewId, "");
 	}
 
+	/**
+	 * Prepares the <code>View</code> instance for the rendering (including
+	 * applying the model) and builds the return <code>ModelAndView</code>
+	 * object
+	 * 
+	 * @param form
+	 *            - Form instance containing the model data
+	 * @param viewId
+	 *            - Id of the View to return
+	 * @param pageId
+	 *            - Id of the page within the view that should be rendered, can
+	 *            be left blank in which the current or default page is rendered
+	 * @return ModelAndView object with the contained form
+	 */
 	protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
-		form.setViewId(viewId);
+		// if we don't have the view instance or a different view was requested
+		// get new instance from the view service
+		View view = form.getView();
+		if ((view == null) || !StringUtils.equals(viewId, view.getId())) {
+			view = getViewService().getViewById(viewId);
+		}
 
-		View view = getViewService().getViewById(viewId, form);
+		// update the view with the model data
+		getViewService().updateView(view, form);
 
 		if (StringUtils.isNotBlank(pageId)) {
 			view.setCurrentPageId(pageId);
 		}
 
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("KualiForm", form);
-		modelAndView.addObject("View", view);
+		form.setViewId(viewId);
+		form.setView(view);
 
-		modelAndView.setViewName("View");
+		// create the spring return object pointing to View.jsp
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, form);
+		modelAndView.setViewName(UifConstants.SPRING_VIEW_ID);
 
 		return modelAndView;
 	}

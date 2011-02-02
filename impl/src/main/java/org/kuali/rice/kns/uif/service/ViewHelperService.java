@@ -84,4 +84,23 @@ public interface ViewHelperService {
 	 */
 	public void performUpdateState(View view);
 
+	/**
+	 * Invoked when the add line action is chosen for a collection. The
+	 * collection path gives the full path to the collection that action was
+	 * selected for. Here validation can be performed on the line as well as
+	 * further processing on the line such as defaults. If the action is valid
+	 * the line should be added to the collection, otherwise errors should be
+	 * added to the global <code>MessageMap</code>
+	 * 
+	 * @param view
+	 *            - view instance that is being presented (the action was taken
+	 *            on)
+	 * @param model
+	 *            - Top level object containing the view data including the
+	 *            collection and new line
+	 * @param collectionPath
+	 *            - full path to the collection on the model
+	 */
+	public void processCollectionAddLine(View view, Object model, String collectionPath);
+
 }

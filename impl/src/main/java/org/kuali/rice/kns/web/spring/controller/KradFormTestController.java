@@ -41,19 +41,19 @@ public class KradFormTestController {
 
 	private static final String testViewId = "KradFormView1";
 
-	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") KradFormTestForm kradFormTestForm, BindingResult result,
-			HttpServletRequest request, HttpServletResponse response) {
-
-		return getUIFModelAndView(kradFormTestForm, testViewId, "page1");
-	}
-
-	@RequestMapping(method=RequestMethod.POST, params = "methodToCall=save")
-	public ModelAndView save(@ModelAttribute("KualiForm") KradFormTestForm kradFormTestForm, BindingResult result,
-			HttpServletRequest request, HttpServletResponse response) {
-
-		return getUIFModelAndView(kradFormTestForm, testViewId, "page1");
-	}
+//	@RequestMapping(params = "methodToCall=start")
+//	public ModelAndView start(@ModelAttribute("KualiForm") KradFormTestForm kradFormTestForm, BindingResult result,
+//			HttpServletRequest request, HttpServletResponse response) {
+//
+//		return getUIFModelAndView(kradFormTestForm, testViewId, "page1");
+//	}
+//
+//	@RequestMapping(method=RequestMethod.POST, params = "methodToCall=save")
+//	public ModelAndView save(@ModelAttribute("KualiForm") KradFormTestForm kradFormTestForm, BindingResult result,
+//			HttpServletRequest request, HttpServletResponse response) {
+//
+//		return getUIFModelAndView(kradFormTestForm, testViewId, "page1");
+//	}
 
 //	@RequestMapping(method=RequestMethod.POST, params = "methodToCall=navigateToPage2")
 //	public ModelAndView navigateToPage2(@ModelAttribute("KualiForm") KradFormTestForm kradFormTestForm, BindingResult result,
@@ -62,18 +62,6 @@ public class KradFormTestController {
 //		return getUIFModelAndView(kradFormTestForm, testViewId, "page2");
 //	}
 
-	protected ModelAndView getUIFModelAndView(Object form, String viewId, String pageId) {
-		View view = getViewService().getViewById(viewId, form);
-		view.setCurrentPageId(pageId);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("KualiForm", form);
-		modelAndView.addObject("View", view);
-
-		modelAndView.setViewName("View");
-
-		return modelAndView;
-	}
 
 	protected ViewService getViewService() {
 		if (viewService == null) {

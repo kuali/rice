@@ -18,6 +18,9 @@ package org.kuali.rice.kns.web.spring.form;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
@@ -46,6 +49,29 @@ public class UifFormBase {
 
 	public UifFormBase() {
 		newCollectionLines = new HashMap<String, Object>();
+	}
+
+	/**
+	 * Calls <code>View</code> service to build a new View instance based on the
+	 * given view id. The view instance is then set on the form for further
+	 * processing
+	 * 
+	 * @param request
+	 *            - request object containing the query parameters
+	 */
+	public void populate(HttpServletRequest request) {
+		// TODO: remove once view is being retrieved by the binder
+		if (StringUtils.isBlank(viewId)) {
+			throw new RuntimeException("Unable to get View instance due to blank view id");
+		}
+
+		view = getViewService().getView(viewId, request.getParameterMap());
+		if (view ==  null) {
+			throw new RuntimeException("View not found for id:" + viewId);
+		}
+		
+		// TODO: remove once the view is being pulled from session or reconstructed by the binding
+		getViewService().updateView(view, this);
 	}
 
 	/**
@@ -168,6 +194,24 @@ public class UifFormBase {
 	}
 
 	/**
+	 * View instance associated with the form. Used to render the user interface
+	 * 
+	 * @return View
+	 */
+	public View getView() {
+		return this.view;
+	}
+
+	/**
+	 * Setter for the view instance
+	 * 
+	 * @param view
+	 */
+	public void setView(View view) {
+		this.view = view;
+	}
+
+	/**
 	 * Instance of the <code>ViewService</code> that can be used to retrieve
 	 * <code>View</code> instances
 	 * 
@@ -175,14 +219,6 @@ public class UifFormBase {
 	 */
 	protected ViewService getViewService() {
 		return KNSServiceLocator.getViewService();
-	}
-
-	public View getView() {
-		return this.view;
-	}
-
-	public void setView(View view) {
-		this.view = view;
 	}
 
 }

@@ -21,7 +21,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.UifConstants.ViewTypeIndexParameterNames;
@@ -32,6 +31,12 @@ import org.kuali.rice.kns.uif.service.ViewService;
 /**
  * Implementation of <code>ViewService</code>
  * 
+ * <p>
+ * Provides methods for retrieving View instances and carrying out the View
+ * lifecycle methods. Interacts with the configured
+ * <code>ViewHelperService</code> during the view lifecycle
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewServiceImpl implements ViewService {
@@ -40,11 +45,10 @@ public class ViewServiceImpl implements ViewService {
 	protected DataDictionaryService dataDictionaryService;
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewById(java.lang.String,
-	 *      java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewById(java.lang.String)
 	 */
-	public View getViewById(String viewId, Object model) {
-		return getView(viewId, new HashMap<String, String>(), model);
+	public View getViewById(String viewId) {
+		return getView(viewId, new HashMap<String, String>());
 	}
 
 	/**
@@ -53,29 +57,55 @@ public class ViewServiceImpl implements ViewService {
 	 * Initialize is then performed
 	 * 
 	 * @see org.kuali.rice.kns.uif.service.ViewService#getView(java.lang.String,
-	 *      java.util.Map, java.lang.Object)
+	 *      java.util.Map)
 	 */
-	public View getView(String viewId, Map<String, String> parameters, Object model) {
+	public View getView(String viewId, Map<String, String> parameters) {
+		LOG.debug("retrieving view instance for id: " + viewId);
+
 		View view = dataDictionaryService.getViewById(viewId);
+		if (view == null) {
+			LOG.error("View not found for id: " + viewId);
+			throw new RuntimeException("View not found for id: " + viewId);
+		}
 
 		// Initialize Phase
+		LOG.debug("performing initialize phase for view: " + viewId);
 		performInitialization(view, parameters);
-		
+
+		return view;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.ViewService#updateView(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
+	 */
+	public void updateView(View view, Object model) {
 		// Apply Model Phase
+		LOG.debug("performing apply model phase for view: " + view.getId());
 		performApplyModel(view, model);
-		
+
 		// Update State Phase
 		performUpdateState(view);
-		
+
 		// do indexing
+		LOG.info("processing indexing for view: " + view.getId());
 		view.getViewIndex().index();
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.ViewService#reconstructView(java.lang.String,
+	 *      java.util.Map, java.lang.Object)
+	 */
+	public View reconstructView(String viewId, Map<String, String> parameters, Object model) {
+		View view = getView(viewId, parameters);
+		updateView(view, model);
 
 		return view;
 	}
 
 	protected void performInitialization(View view, Map<String, String> parameters) {
 		// get the configured helper service for the view
-		ViewHelperService helperService = getHelperService(view);
+		ViewHelperService helperService = view.getViewHelperService();
 
 		// get the initial context for the view using the helper service
 		Map<String, String> context = helperService.createInitialViewContext(view, parameters);
@@ -110,7 +140,7 @@ public class ViewServiceImpl implements ViewService {
 	 */
 	protected void performApplyModel(View view, Object model) {
 		// get the configured helper service for the view
-		ViewHelperService helperService = getHelperService(view);
+		ViewHelperService helperService = view.getViewHelperService();
 
 		// invoke helper service to perform conditional logic
 		helperService.performApplyModel(view, model);
@@ -122,15 +152,6 @@ public class ViewServiceImpl implements ViewService {
 	 */
 	protected void performUpdateState(View view) {
 
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewHelperService(java.lang.String)
-	 */
-	public ViewHelperService getViewHelperService(String viewId) {
-		View view = dataDictionaryService.getViewById(viewId);
-
-		return getHelperService(view);
 	}
 
 	/**
@@ -154,26 +175,6 @@ public class ViewServiceImpl implements ViewService {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Retrieves the <code>ViewHelperService</code> configured for the view from
-	 * the application context. If a service is not found a
-	 * <code>RuntimeException</code> will be thrown.
-	 * 
-	 * @param view
-	 *            - view instance with configured service
-	 * @return ViewHelperService instance
-	 */
-	protected ViewHelperService getHelperService(View view) {
-		ViewHelperService lifecycleService = KNSServiceLocator.getService(view.getViewHelperServiceBeanId());
-
-		if (lifecycleService == null) {
-			LOG.error("Unable to find ViewHelperService for view: " + view.getId());
-			throw new RuntimeException("Unable to find ViewHelperService for view: " + view.getId());
-		}
-
-		return lifecycleService;
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

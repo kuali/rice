@@ -60,6 +60,8 @@ public class TableLayoutManager extends GridLayoutManager {
 
 	private GroupField actionFieldPrototype;
 
+	// internal counter for the data columns (not including sequence, action)
+	private int numberOfDataColumns;
 	private List<LabelField> headerFields;
 	private List<Field> dataFields;
 
@@ -81,6 +83,19 @@ public class TableLayoutManager extends GridLayoutManager {
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
 
+		CollectionGroup collectionGroup = (CollectionGroup) container;
+
+		numberOfDataColumns = getNumberOfColumns();
+
+		// adjust the number of columns if the sequence or action fields were
+		// generated
+		if (renderSequenceField) {
+			setNumberOfColumns(getNumberOfColumns() + 1);
+		}
+
+		if (collectionGroup.isRenderLineActions()) {
+			setNumberOfColumns(getNumberOfColumns() + 1);
+		}
 	}
 
 	/**
@@ -96,13 +111,10 @@ public class TableLayoutManager extends GridLayoutManager {
 	public void performApplyModel(View view, Object model, Container container) {
 		super.performApplyModel(view, model, container);
 
-		if (!(container instanceof CollectionGroup)) {
-			throw new IllegalArgumentException(
-					"Only CollectionGroup containers supported by the TableLayoutManager, found container class: "
-							+ container.getClass());
-		}
-
 		CollectionGroup collectionGroup = (CollectionGroup) container;
+
+		headerFields = new ArrayList<LabelField>();
+		dataFields = new ArrayList<Field>();
 
 		buildTableHeaderRows(collectionGroup);
 		buildTableDataRows(view, collectionGroup, model);
@@ -150,7 +162,7 @@ public class TableLayoutManager extends GridLayoutManager {
 			addHeaderField(field, cellPosition);
 
 			// add action header as last column in row
-			if ((cellPosition == getNumberOfColumns()) && collectionGroup.isRenderLineActions()) {
+			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()) {
 				actionFieldPrototype.setLabelFieldRendered(true);
 				actionFieldPrototype.setRowSpan(rowCount);
 				addHeaderField(actionFieldPrototype, cellPosition);
@@ -224,23 +236,16 @@ public class TableLayoutManager extends GridLayoutManager {
 				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
 		// for each collection row create a set of fields
-		for (int index = 0; index < modelCollection.size(); index++) {
-			String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
-			String idSuffix = "_" + index;
+		if (modelCollection != null) {
+			for (int index = 0; index < modelCollection.size(); index++) {
+				String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
+				String idSuffix = "_" + index;
 
-			buildLine(view, collectionGroup, sequenceFieldPrototype, bindingPathPrefix, idSuffix,
-					collectionGroup.getLineActions(index), false);
+				buildLine(view, collectionGroup, sequenceFieldPrototype, bindingPathPrefix, idSuffix,
+						collectionGroup.getLineActions(index), false);
+			}
 		}
 
-		// adjust the number of columns if the sequence or action fields were
-		// generated
-		if (renderSequenceField) {
-			setNumberOfColumns(getNumberOfColumns() + 1);
-		}
-
-		if (collectionGroup.isRenderLineActions()) {
-			setNumberOfColumns(getNumberOfColumns() + 1);
-		}
 	}
 
 	/**
@@ -268,7 +273,8 @@ public class TableLayoutManager extends GridLayoutManager {
 			addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
 		}
 		else {
-			addLineBindingPath = collectionGroup.initNewCollectionLine(model);
+			addLineBindingPath = collectionGroup.initNewCollectionLine(model, false);
+			collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
 			bindAddLineToForm = true;
 		}
 
@@ -313,6 +319,7 @@ public class TableLayoutManager extends GridLayoutManager {
 			sequenceField.setRowSpan(rowCount);
 
 			if (sequenceField instanceof AttributeField) {
+				((AttributeField) sequenceField).getBindingInfo().setBindByNamePrefix(lineBindingPath);
 				view.getViewIndex().addAttributeField((AttributeField) sequenceField);
 			}
 
@@ -337,7 +344,7 @@ public class TableLayoutManager extends GridLayoutManager {
 			cellPosition += lineField.getColSpan();
 
 			// action field should be in last column
-			if ((cellPosition == getNumberOfColumns()) && collectionGroup.isRenderLineActions()) {
+			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()) {
 				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
 
 				lineActionsField.setItems(actions);
@@ -364,7 +371,7 @@ public class TableLayoutManager extends GridLayoutManager {
 		}
 
 		if (cellCount != 0) {
-			rowCount = cellCount / getNumberOfColumns();
+			rowCount = cellCount / numberOfDataColumns;
 		}
 
 		return rowCount;
@@ -460,15 +467,6 @@ public class TableLayoutManager extends GridLayoutManager {
 	 */
 	public List<LabelField> getHeaderFields() {
 		return this.headerFields;
-	}
-
-	/**
-	 * Setter for the List of header fields
-	 * 
-	 * @param headerFields
-	 */
-	public void setHeaderFields(List<LabelField> headerFields) {
-		this.headerFields = headerFields;
 	}
 
 	/**
@@ -569,15 +567,6 @@ public class TableLayoutManager extends GridLayoutManager {
 	 */
 	public List<Field> getDataFields() {
 		return this.dataFields;
-	}
-
-	/**
-	 * Setter for the tables data fields
-	 * 
-	 * @param dataFields
-	 */
-	public void setDataFields(List<Field> dataFields) {
-		this.dataFields = dataFields;
 	}
 
 	/**

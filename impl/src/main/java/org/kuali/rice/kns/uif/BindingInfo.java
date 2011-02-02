@@ -21,8 +21,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Provides binding configuration for an DataBinding component (attribute or
+ * collection)
+ * 
+ * <p>
+ * From the binding configuration the binding path is determined (if not
+ * manually set) and used to set the path in the UI or to get the value from the
+ * model
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -32,6 +38,8 @@ public class BindingInfo implements Serializable {
 	private String bindingName;
 	private String bindByNamePrefix;
 	private String modelPath;
+
+	private String bindingPath;
 
 	public BindingInfo() {
 		bindToForm = false;
@@ -49,7 +57,9 @@ public class BindingInfo implements Serializable {
 
 	/**
 	 * Path to the property on the model the component binds to. Uses standard
-	 * dot notation for nested properties
+	 * dot notation for nested properties. If the binding path was manually set
+	 * it will be returned as it is, otherwise the path will be formed by using
+	 * the model path and the bind prefix
 	 * 
 	 * <p>
 	 * e.g. Property name 'foo' on a model would have binding path "foo", while
@@ -60,20 +70,34 @@ public class BindingInfo implements Serializable {
 	 * @return String binding path
 	 */
 	public String getBindingPath() {
-		String bindingPath = "";
+		if (StringUtils.isNotBlank(bindingPath)) {
+			return bindingPath;
+		}
+
+		String formedBindingPath = "";
 
 		if (!bindToForm && StringUtils.isNotBlank(modelPath)) {
-			bindingPath = modelPath + ".";
+			formedBindingPath = modelPath + ".";
 		}
 
 		if (StringUtils.isNotBlank(bindByNamePrefix)) {
-			bindingPath += bindByNamePrefix + "." + bindingName;
+			formedBindingPath += bindByNamePrefix + "." + bindingName;
 		}
 		else {
-			bindingPath += bindingName;
+			formedBindingPath += bindingName;
 		}
 
-		return bindingPath;
+		return formedBindingPath;
+	}
+
+	/**
+	 * Setter for the binding path. Can be left blank in which the path will be
+	 * determined from the binding configuration
+	 * 
+	 * @param bindingPath
+	 */
+	public void setBindingPath(String bindingPath) {
+		this.bindingPath = bindingPath;
 	}
 
 	public boolean isBindToForm() {

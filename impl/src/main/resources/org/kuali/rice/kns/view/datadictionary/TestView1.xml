@@ -172,14 +172,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </list>
             </property>
           </bean>
-          <bean parent="FieldGroup" p:label="Percents">
-            <property name="items">
-              <list>
-                <bean parent="AttributeField" p:name="subsidizedPercent" p:label="One" p:labelPlacement="RIGHT"/>
-                <bean parent="AttributeField" p:name="subsidizedPercent" p:label="Two" p:labelPlacement="RIGHT"/>
-              </list>
-            </property>
-          </bean>    
+          <bean parent="AttributeField" p:name="subsidizedPercent"/>
           <bean parent="AttributeField" p:name="createDate"/>
           <bean parent="AttributeField" p:name="foId" p:required="true"/>
         </list>
@@ -192,7 +185,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Collection Group 2"/>  
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="name" value="fiscalOfficer.accounts"/>
-      <property name="fieldBindModelPath" value="travelAccount2"/>
+      <property name="bindingInfo.modelPath" value="travelAccount2"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:name="number"/>
@@ -384,7 +377,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="testSection3" parent="PanelGridSection">
       <property name="id" value="testSection3"/>
       <property name="title" value="Test Section 3"/> 
-      <property name="fieldBindByNamePrefix" value="travelAccount3"/>
+      <property name="fieldBindModelPath" value="travelAccount3"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:name="number" p:required="true">

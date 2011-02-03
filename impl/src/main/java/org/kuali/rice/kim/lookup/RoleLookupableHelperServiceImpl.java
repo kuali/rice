@@ -90,7 +90,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         if (StringUtils.isNotBlank(getReturnLocation())) {
         	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
 		}
-        parameters.put(KNSConstants.LOOKUP_RESULTS_SELECTABLE_DERIVED_ROLES, "true");
         href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
@@ -104,7 +103,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     	
     	// prevent derived roles from being selectable (except for identityManagementRoleDocuments)	
     	KualiForm myForm = (KualiForm) GlobalVariables.getUserSession().retrieveObject(getDocFormKey());
-    	if (myForm == null || !(myForm instanceof IdentityManagementRoleDocumentForm) || !((IdentityManagementRoleDocumentForm)myForm).isSelectableDerivedRoles()){
+    	if (myForm == null || !(myForm instanceof IdentityManagementRoleDocumentForm)){
     		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
     			((AnchorHtmlData)anchorHtmlData).setHref("");
     		}

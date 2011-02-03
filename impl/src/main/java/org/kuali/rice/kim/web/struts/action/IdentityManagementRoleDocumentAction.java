@@ -99,10 +99,6 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         	roleDocumentForm.setRoleId(roleId);
         }
-        String showDerivedRoles = request.getParameter(KNSConstants.LOOKUP_RESULTS_SELECTABLE_DERIVED_ROLES);
-        if (showDerivedRoles != null){
-        	roleDocumentForm.setSelectableDerivedRoles(Boolean.parseBoolean(showDerivedRoles));
-        }
         
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
 		// TODO: move this into the UI service - action should not be making ORM-layer calls

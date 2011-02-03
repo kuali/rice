@@ -276,7 +276,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String LOOKUP_RESULTS_SEQUENCE_NUMBER = "lookupResultsSequenceNumber";
     public static final String LOOKUP_RESULTS_BO_CLASS_NAME = "lookupResultsBOClassName";
     public static final String LOOKED_UP_COLLECTION_NAME = "lookedUpCollectionName";
-    public static final String LOOKUP_RESULTS_SELECTABLE_DERIVED_ROLES = "selectableDerivedRoles";
     public static final String MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SELECTED_OBJ_IDS_PARAM = "previouslySelectedObjectIds";
     public static final String MULTIPLE_VALUE_LOOKUP_OBJ_IDS_SEPARATOR = "||";
     public static final String MULTIPLE_VALUE_LOOKUP_DISPLAYED_OBJ_ID_PARAM_PREFIX = "displayedObjId-";

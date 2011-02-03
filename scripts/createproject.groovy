@@ -247,6 +247,8 @@ if (maven) {
   def facets = new XmlParser().parse(facetXml)
 
   facets.classpathentry.each {
+    // con here is part of the classpath entry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER found in the .classpath file
+    // at this time, it uniquely ids the classpath entry for the jre
     if (it.'@kind' == 'con') {
       def tempNode = it
       facets.remove(it)

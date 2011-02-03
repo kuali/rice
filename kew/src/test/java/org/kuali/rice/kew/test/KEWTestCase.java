@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.web.jetty.JettyServer;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
+import org.kuali.rice.kew.batch.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -32,6 +32,7 @@ import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.SQLDataLoader;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -146,16 +147,28 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
 		
-		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
-		lifeCycles.add( buildJettyServer(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()));
-		lifeCycles.add(new InitializeGRL());
-		lifeCycles.add(new BaseLifecycle() {
+		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
+		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.xml"));
+		//lifeCycles.add( buildJettyServer(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()));
+		//lifeCycles.add(new InitializeGRL());
+		//lifeCycles.add(new BaseLifecycle() {
+		//	public void start() throws Exception {
+		//		KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), "DefaultSuiteTestData.xml");
+		//		super.start();
+		//	}
+		//});
+		return suiteLifecycles;
+	}
+	
+	@Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+		return new BaseLifecycle() {
 			public void start() throws Exception {
-				KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), "DefaultSuiteTestData.xml");
+				new JettyServerLifecycle(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()).start();
+				new InitializeGRL().start();
 				super.start();
 			}
-		});
-		return lifeCycles;
+		};	
 	}
 
 	@Override

@@ -17,6 +17,7 @@ package org.kuali.rice.kns.uif.service.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -250,6 +251,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// validate the line to make sure it is ok to add
 		boolean isValidLine = performAddLineValidation(view, collectionGroup, addLine);
 		if (isValidLine) {
+			// TODO: should check to see if there is an add line method on the
+			// collection parent and if so call that instead of just adding to
+			// the collection (so that sequence can be set)
 			collection.add(addLine);
 
 			// make a new instance for the add line
@@ -281,20 +285,58 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
-	 * Hook for service overrides to process the new collection line before it
-	 * is added to the collection
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#processCollectionDeleteLine(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, java.lang.String, int)
+	 */
+	public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex) {
+		// get the collection group from the view
+		CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
+		if (collectionGroup == null) {
+			logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+		}
+
+		// get the collection instance for adding the new line
+		Collection collection = (Collection) ModelUtils.getPropertyValue(model, collectionPath);
+		if (collection == null) {
+			logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
+		}
+
+		// TODO: look into other ways of identifying a line so we can deal with
+		// unordered collections
+		if (collection instanceof List) {
+			Object deleteLine = ((List) collection).get(lineIndex);
+
+			// validate the delete action is allowed for this line
+			boolean isValid = performDeleteLineValidation(view, collectionGroup, deleteLine);
+			if (isValid) {
+				((List) collection).remove(lineIndex);
+			}
+		}
+		else {
+			logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
+		}
+	}
+
+	/**
+	 * Performs validation on the collection line before it is removed from the
+	 * corresponding collection
 	 * 
 	 * @param view
-	 *            - view instance that is being presented (the action was taken
-	 *            on)
+	 *            - view instance that the action was taken on
 	 * @param collectionGroup
-	 *            - collection group component for the collection the line will
-	 *            be added to
-	 * @param addLine
-	 *            - the new line instance to be processed
+	 *            - collection group component for the collection
+	 * @param deleteLine
+	 *            - line that will be removed
+	 * @return boolean true if the action is allowed and the line should be
+	 *         removed, false if the line should not be removed
 	 */
-	protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object addLine) {
+	protected boolean performDeleteLineValidation(View view, CollectionGroup collectionGroup, Object deleteLine) {
+		boolean isValid = true;
 
+		// TODO: this should invoke rules, sublclasses like the document view
+		// should create the document delete line event
+
+		return isValid;
 	}
 
 	/**
@@ -323,6 +365,23 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 *            top level business object, dto)
 	 */
 	protected void performCustomApplyModel(View view, Component component, Object model) {
+
+	}
+
+	/**
+	 * Hook for service overrides to process the new collection line before it
+	 * is added to the collection
+	 * 
+	 * @param view
+	 *            - view instance that is being presented (the action was taken
+	 *            on)
+	 * @param collectionGroup
+	 *            - collection group component for the collection the line will
+	 *            be added to
+	 * @param addLine
+	 *            - the new line instance to be processed
+	 */
+	protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object addLine) {
 
 	}
 

@@ -345,9 +345,10 @@ public class TableLayoutManager extends GridLayoutManager {
 
 			// action field should be in last column
 			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()) {
-				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
-
+				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
 				lineActionsField.setItems(actions);
+				ComponentUtils.updateIds(lineActionsField, idSuffix);
+				
 				dataFields.add(lineActionsField);
 			}
 		}

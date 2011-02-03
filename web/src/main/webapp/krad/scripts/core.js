@@ -37,7 +37,10 @@ function collapseAllTab() {
 	return false;
 }
 
-/** executes a function on all tabs.  The function will be passed a document & partial tab name. */
+/**
+ * executes a function on all tabs. The function will be passed a document &
+ * partial tab name.
+ */
 function doToAllTabs(func) {
 	var elements = document.getElementsByTagName('div');
 	
@@ -87,7 +90,7 @@ var formHasAlreadyBeenSubmitted = false;
 var excludeSubmitRestriction = false;
 
 function hasFormAlreadyBeenSubmitted() {
-//	alert( "submitting form" );
+// alert( "submitting form" );
 	try {
 		// save the current scroll position
 		saveScrollPosition();
@@ -110,7 +113,7 @@ function hasFormAlreadyBeenSubmitted() {
 	} 
 }
 
-// Called when we want to submit the form from a field event and 
+// Called when we want to submit the form from a field event and
 // want focus to be placed on the next field according to the current tab order
 // when the page refreshes
 function setFieldToFocusAndSubmit(triggerElement) {
@@ -145,7 +148,7 @@ function submitForm() {
 }
 
 function saveScrollPosition() {
-//	alert( document.forms[0].formKey );
+// alert( document.forms[0].formKey );
 	if ( document.forms[0].formKey ) {
 		formKey = document.forms[0].formKey.value;
 		if( document.documentElement ) { 
@@ -161,10 +164,11 @@ function saveScrollPosition() {
 		document.cookie = "KulScrollPos"+formKey+"="+x+","+y+"; path="+document.location.pathname;
 	}
 	// test read cookie back
-//	matchResult = document.cookie.match(new RegExp("KulScrollPos"+formKey+"=([^;]+);?"));
-//	if ( matchResult ) {
-//		alert( "Cookie: " + matchResult[1] );
-//	}
+// matchResult = document.cookie.match(new
+// RegExp("KulScrollPos"+formKey+"=([^;]+);?"));
+// if ( matchResult ) {
+// alert( "Cookie: " + matchResult[1] );
+// }
 }
 
 function restoreScrollPosition() {
@@ -197,7 +201,10 @@ function expireCookie( cookieName ) {
 	document.cookie = cookieName+"=0,0; expires="+date.toGMTString()+"; path="+document.location.pathname;
 }
 
-/* script to prevent the return key from submitting a form unless the user is on a button or on a link. fix for KULFDBCK-555 */ 
+/*
+ * script to prevent the return key from submitting a form unless the user is on
+ * a button or on a link. fix for KULFDBCK-555
+ */ 
 function isReturnKeyAllowed(buttonPrefix , event) {
 	/* use IE naming first then firefox. */
     var elemType = event.srcElement ? event.srcElement.type : event.target.type;
@@ -207,7 +214,10 @@ function isReturnKeyAllowed(buttonPrefix , event) {
     }
 	var initiator = event.srcElement ? event.srcElement.name : event.target.name;
 	var key = event.keyCode;
-	/* initiator is undefined check is to prevent return from doing anything if not in a form field since the initiator is undefined */
+	/*
+	 * initiator is undefined check is to prevent return from doing anything if
+	 * not in a form field since the initiator is undefined
+	 */
 	/* 13 is return key code */
 	/* length &gt; 0 check is to allow user to hit return on links */
 	if ( key == 13 ) {
@@ -219,12 +229,13 @@ function isReturnKeyAllowed(buttonPrefix , event) {
     return true;
 }
 
-//The following javascript is intended to resize the route log iframe
+// The following javascript is intended to resize the route log iframe
 // to stay at an appropriate height based on the size of the documents
 // contents contained in the iframe.
-//  NOTE: this will only work when the domain serving the content of kuali
-//         is the same as the domain serving the content of workflow.
-var routeLogResizeTimer = ""; // holds the timer for the  route log iframe resizer
+// NOTE: this will only work when the domain serving the content of kuali
+// is the same as the domain serving the content of workflow.
+var routeLogResizeTimer = ""; // holds the timer for the route log iframe
+															// resizer
 var currentHeight = 500; // holds the current height of the iframe
 var safari = navigator.userAgent.toLowerCase().indexOf('safari');
 
@@ -266,7 +277,7 @@ function resizeTheRouteLogFrame() {
   setRouteLogIframeDimensions();
 }
 
-// should be in rice for direct inquiry 
+// should be in rice for direct inquiry
  function inquiryPop(boClassName, inquiryParameters){
   parameterPairs = inquiryParameters.split(",");
   queryString="businessObjectClassName="+boClassName+"&methodToCall=start"
@@ -276,7 +287,7 @@ function resizeTheRouteLogFrame() {
   	if (document.forms[0].elements[parameters[0]].value=="") 
   	{
   		alert("Please enter a value in the appropriate field.");
-  		//queryString=queryString+"&"+parameters[1]+"=directInquiryParameterNotSpecified";
+  		// queryString=queryString+"&"+parameters[1]+"=directInquiryParameterNotSpecified";
 		return false;
   	} else {
     	queryString=queryString+"&"+parameters[1]+"="+document.forms[0].elements[parameters[0]].value;
@@ -418,4 +429,19 @@ function handleActionLink(methodToCall, navigateToPageId) {
  */
 function setMethodToCall(methodToCall) {
 	$("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo($("#formComplete"));
+}
+
+/**
+ * Writes a property name/value pair as a hidden input field on the form. Called
+ * to dynamically set request parameters based on a chosen action. Assumes
+ * existence of a div named 'formComplete' where the hidden inputs will be
+ * inserted
+ * 
+ * @param propertyName -
+ *          name for the input field to write
+ * @param propertyValue -
+ *          value for the input field to write
+ */
+function writeHiddenToForm(propertyName, propertyValue) {
+	$("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo($("#formComplete"));
 }

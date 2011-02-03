@@ -76,6 +76,34 @@ public class ViewServiceImpl implements ViewService {
 	}
 
 	/**
+	 * Initializes a newly created <code>View</code> instance. Each component of
+	 * the tree is invoked to perform setup based on its configuration. In
+	 * addition helper service methods are invoked to perform custom
+	 * initialization
+	 * 
+	 * @param view
+	 *            - view instance to initialize
+	 * @param parameters
+	 *            - Map of key values pairs that provide configuration for the
+	 *            <code>View</code>, this is generally comes from the request
+	 *            and can be the request parameter Map itself. Any parameters
+	 *            not valid for the View will be filtered out
+	 */
+	protected void performInitialization(View view, Map<String, String> parameters) {
+		// get the configured helper service for the view
+		ViewHelperService helperService = view.getViewHelperService();
+
+		// get the initial context for the view using the helper service
+		Map<String, String> context = helperService.createInitialViewContext(view, parameters);
+
+		// set context on View instance for reference by its components
+		view.setContext(context);
+
+		// invoke initialize phase on the views helper service
+		helperService.performInitialization(view);
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.uif.service.ViewService#updateView(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
@@ -101,20 +129,6 @@ public class ViewServiceImpl implements ViewService {
 		updateView(view, model);
 
 		return view;
-	}
-
-	protected void performInitialization(View view, Map<String, String> parameters) {
-		// get the configured helper service for the view
-		ViewHelperService helperService = view.getViewHelperService();
-
-		// get the initial context for the view using the helper service
-		Map<String, String> context = helperService.createInitialViewContext(view, parameters);
-
-		// set context on View instance for reference by its components
-		view.setContext(context);
-
-		// invoke initialize phase on the views helper service
-		helperService.performInitialization(view);
 	}
 
 	/**

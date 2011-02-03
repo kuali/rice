@@ -51,7 +51,7 @@ import org.springframework.web.servlet.ModelAndView;
  * <ul>
  * <li>Authorization methods such as method to call check</li>
  * <li>Preparing the View instance and setup in the returned
- * <code>ModelAndView</code></li.
+ * <code>ModelAndView</code></li>
  * </ul>
  * </p>
  * 
@@ -129,11 +129,22 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 	 * Called by the add line action for a new collection line. Method
 	 * determines which collection the add action was selected for and invokes
 	 * the view helper service to add the line
+	 * 
+	 * @param uifForm
+	 *            - form instance that contains the data (should extend
+	 *            UifFormBase)
+	 * @param result
+	 *            - contains results of the data binding
+	 * @param request
+	 *            - HTTP request
+	 * @param response
+	 *            - HTTP response
+	 * @return ModelAndView
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
 	public ModelAndView addLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-		
+
 		// TODO: remove once this is being called from binder
 		uifForm.populate(request);
 
@@ -148,12 +159,43 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 		return getUIFModelAndView(uifForm);
 	}
 
+	/**
+	 * Called by the delete line action for a model collection. Method
+	 * determines which collection the action was selected for and the line
+	 * index that should be removed, then invokes the view helper service to
+	 * process the action
+	 * 
+	 * @param uifForm
+	 *            - form instance that contains the data (should extend
+	 *            UifFormBase)
+	 * @param result
+	 *            - contains results of the data binding
+	 * @param request
+	 *            - HTTP request
+	 * @param response
+	 *            - HTTP response
+	 * @return ModelAndView
+	 */
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteLine")
 	public ModelAndView deleteLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-		
+
 		// TODO: remove once this is being called from binder
 		uifForm.populate(request);
+
+		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
+		if (StringUtils.isBlank(selectedCollectionPath)) {
+			throw new RuntimeException("Selected collection was not set for delete line action, cannot delete line");
+		}
+
+		int selectedLineIndex = uifForm.getSelectedLineIndex();
+		if (selectedLineIndex == -1) {
+			throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
+		}
+
+		View view = uifForm.getView();
+		view.getViewHelperService().processCollectionDeleteLine(view, uifForm, selectedCollectionPath,
+				selectedLineIndex);
 
 		return getUIFModelAndView(uifForm);
 	}

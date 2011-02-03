@@ -32,8 +32,8 @@ public interface ViewService {
 	/**
 	 * Returns the <code>View</code> entry identified by the given id
 	 * <p>
-	 * The id matches the id configured for the View through the dictionary.
-	 * Before the View is returned it is initialized with the model data
+	 * The id matches the id configured for the View through the dictionary. The
+	 * view is initialized before being returned
 	 * </p>
 	 * 
 	 * @param viewId
@@ -45,8 +45,8 @@ public interface ViewService {
 	/**
 	 * Returns the <code>View</code> entry identified by the given id
 	 * <p>
-	 * The id matches the id configured for the View through the dictionary.
-	 * Before the View is returned it is initialized with the model data
+	 * The id matches the id configured for the View through the dictionary. The
+	 * view is initialized before being returned
 	 * </p>
 	 * <p>
 	 * Any configuration sent through the options Map is used to initialize the
@@ -61,16 +61,48 @@ public interface ViewService {
 	 *            - Map of key values pairs that provide configuration for the
 	 *            <code>View</code>, this is generally comes from the request
 	 *            and can be the request parameter Map itself. Any parameters
-	 *            not valid for the View wil be filtered out
+	 *            not valid for the View will be filtered out
+	 * @return View instance associated with the id or Null if id is not found
+	 */
+	public View getView(String viewId, Map<String, String> parameters);
+
+	/**
+	 * Applies updates to the view based on the model data. Should be called to
+	 * finalize the view before rendering
+	 * 
+	 * <p>
+	 * Performs dynamic generation of fields (such as collection rows),
+	 * conditional logic, and state updating (conditional hidden, read-only,
+	 * required). Can be called multiple times within a request based on model
+	 * updates, but can be an expensive operation so generally should only be
+	 * called once per request
+	 * </p>
+	 * 
+	 * @param view
+	 *            - view instance to update
+	 * @param model
+	 *            - Top level object containing the data (could be the form or a
+	 *            top level business object, dto)
+	 */
+	public void updateView(View view, Object model);
+
+	/**
+	 * Returns the <code>View</code> entry identified by the given id and runs
+	 * through the complete lifecycle. Can be used to reconstruct view state
+	 * that was lost (due to session timeout)
+	 * 
+	 * @param viewId
+	 *            - unique id for view configured on its definition
+	 * @param parameters
+	 *            - Map of key values pairs that provide configuration for the
+	 *            <code>View</code>, this is generally comes from the request
+	 *            and can be the request parameter Map itself. Any parameters
+	 *            not valid for the View will be filtered out
 	 * @param model
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 * @return View instance associated with the id or Null if id is not found
 	 */
-	public View getView(String viewId, Map<String, String> parameters);
-	
-	public void updateView(View view, Object model);
-	
 	public View reconstructView(String viewId, Map<String, String> parameters, Object model);
 
 	/**

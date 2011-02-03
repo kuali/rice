@@ -29,8 +29,8 @@ name and the parameter value as the input value --%>
 <c:if test="${!empty parameters}">            
   <script type="text/javascript">
     $("#" + "${componentId}").click(function() {
-  	  <c:forEach items="${parameters}" var="parameter">
-  	    $("<input type='hidden' name='${parameter.key}' value='${parameter.value}'/>").appendTo($("#formComplete"));
+  	    <c:forEach items="${parameters}" var="parameter">
+  	      writeHiddenToForm('${parameter.key}', '${parameter.value}');
     	</c:forEach>
 	  });
   </script>

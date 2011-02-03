@@ -103,4 +103,25 @@ public interface ViewHelperService {
 	 */
 	public void processCollectionAddLine(View view, Object model, String collectionPath);
 
+	/**
+	 * Invoked when the delete line action is chosen for a collection. The
+	 * collection path gives the full path to the collection that action was
+	 * selected for. Here validation can be performed to make sure the action is
+	 * allowed. If the action is valid the line should be deleted from the
+	 * collection, otherwise errors should be added to the global
+	 * <code>MessageMap</code>
+	 * 
+	 * @param view
+	 *            - view instance that is being presented (the action was taken
+	 *            on)
+	 * @param model
+	 *            - Top level object containing the view data including the
+	 *            collection
+	 * @param collectionPath
+	 *            - full path to the collection on the model
+	 * @param lineIndex
+	 *            - index of the collection line that was selected for removal
+	 */
+	public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
+
 }

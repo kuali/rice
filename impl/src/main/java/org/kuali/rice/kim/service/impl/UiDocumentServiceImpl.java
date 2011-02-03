@@ -267,9 +267,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	//				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
 	//						.getDataDictionaryAttributeDefinition();
 					ControlDefinition control = definition.getControl();
-					if (control.isSelect()) {
+					if (control.isSelect() 
+							|| control.isRadio()) {
 						Map<String,Object> controlMap = new HashMap<String,Object>();
-			            controlMap.put("select", "true");
+			            if (control.isSelect()) {
+			            	controlMap.put("select", "true");
+			            } else {
+			            	controlMap.put("radio", "true");
+			            }
 			            controlMap.put("valuesFinder", control.getValuesFinderClass());
 			            if (control.getBusinessObjectClass() != null) {
 			                controlMap.put("businessObject", control.getBusinessObjectClass());
@@ -284,7 +289,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			                controlMap.put("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
 			            }
 						attribute.put("control", controlMap);
-			        } else {
+					} else {
 			        	// FIXME: Huh!?!?, control is a Map in the above code but a ControlDefinition here?!?!?
 			        	// Maybe this should use the AttributesMapBuilder code to create this
 			        	attribute.put("control", definition.getControl());

@@ -48,6 +48,7 @@ public class UifFormBase {
 	protected Map<String, Object> newCollectionLines;
 
 	public UifFormBase() {
+		selectedLineIndex = -1;
 		newCollectionLines = new HashMap<String, Object>();
 	}
 
@@ -66,12 +67,9 @@ public class UifFormBase {
 		}
 
 		view = getViewService().getView(viewId, request.getParameterMap());
-		if (view ==  null) {
+		if (view == null) {
 			throw new RuntimeException("View not found for id:" + viewId);
 		}
-		
-		// TODO: remove once the view is being pulled from session or reconstructed by the binding
-		getViewService().updateView(view, this);
 	}
 
 	/**

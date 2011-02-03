@@ -17,6 +17,8 @@ package org.kuali.rice.kns.web.spring.form;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import edu.sampleu.travel.bo.TravelAccount;
 
 /**
@@ -70,6 +72,15 @@ public class UITestForm extends UifFormBase {
 		travelAccount1 = new TravelAccount();
 		newCollectionLines.put("travelAccount1.fiscalOfficer.accounts", new TravelAccount());
 		newCollectionLines.put("travelAccount2.fiscalOfficer.accounts", new TravelAccount());
+	}
+
+	@Override
+	public void populate(HttpServletRequest request) {
+		super.populate(request);
+
+		// TODO: remove once the view is being pulled from session or
+		// reconstructed by the binding
+		getViewService().updateView(view, this);
 	}
 
 	public String getField1() {

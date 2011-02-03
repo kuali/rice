@@ -144,19 +144,24 @@ function submitForm() {
     document.forms[0].submit();
 }
 
+function resetScrollPosition() {
+	window.scrollTo(0,0);
+	parent.window.scrollTo(0,0);
+}
+
 function saveScrollPosition() {
 //	alert( document.forms[0].formKey );
 	if ( document.forms[0].formKey ) {
 		formKey = document.forms[0].formKey.value;
 		if( document.documentElement ) { 
-			x = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft); 
-		  	y = Math.max(document.documentElement.scrollTop, document.body.scrollTop); 
+			x = Math.max(parent.document.documentElement.scrollLeft, parent.document.body.scrollLeft); 
+		  	y = Math.max(parent.document.documentElement.scrollTop, parent.document.body.scrollTop); 
 		} else if( document.body && typeof document.body.scrollTop != "undefined" ) { 
-			x = document.body.scrollLeft; 
-		  	y = document.body.scrollTop; 
+			x = parent.document.body.scrollLeft; 
+		  	y = parent.document.body.scrollTop; 
 		} else if ( typeof window.pageXOffset != "undefined" ) { 
-			x = window.pageXOffset; 
-		  	y = window.pageYOffset; 
+			x = parent.window.pageXOffset; 
+		  	y = parent.window.pageYOffset; 
 		} 
 		document.cookie = "KulScrollPos"+formKey+"="+x+","+y+"; path="+document.location.pathname;
 	}
@@ -175,6 +180,7 @@ function restoreScrollPosition() {
         if ( matchResult ) {
             var coords = matchResult[1].split( ',' );
             window.scrollTo(coords[0],coords[1]);
+            parent.window.scrollTo(coords[0],coords[1]);
             expireCookie( cookieName );
             return true;
         } else { // check for entry before form key set
@@ -183,9 +189,14 @@ function restoreScrollPosition() {
 	        if ( matchResult ) {
 	            var coords = matchResult[1].split( ',' );
 	            window.scrollTo(coords[0],coords[1]);
+	            parent.window.scrollTo(coords[0],coords[1]);
 	            expireCookie( cookieName );
 	            return true;
-	        }
+	        } //else {
+	        	//no match for cookie... new screen???
+	        	//resetScrollPosition();
+	        //}
+	        
         }
     }
     return false;

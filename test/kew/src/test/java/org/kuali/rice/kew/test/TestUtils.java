@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.test;
 
+import java.io.File;
+
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
  *
@@ -40,7 +42,8 @@ public final class TestUtils {
 
     public static String getBaseDir() {
 	if (System.getProperty(BASEDIR_PROP) == null) {
-		System.setProperty(BASEDIR_PROP, System.getProperty("user.dir") + "/test/" + getModuleBaseDir());
+		final String userDir = System.getProperty("user.dir");
+		System.setProperty(BASEDIR_PROP, userDir + ((userDir.endsWith(File.separator + "test" + File.separator + getModuleBaseDir())) ? "" : File.separator + "test" + File.separator + getModuleBaseDir()));
 	}
 	return System.getProperty(BASEDIR_PROP);
     }

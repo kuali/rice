@@ -25,6 +25,7 @@ import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,7 +170,8 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 	@Override
 	protected void setBaseDirSystemProperty(String moduleBaseDir) {
 	    if (System.getProperty("basedir") == null) {
-	        System.setProperty("basedir", System.getProperty("user.dir") + "/" + moduleBaseDir);
+	    	final String userDir = System.getProperty("user.dir");
+	        System.setProperty("basedir", userDir + ((userDir.endsWith(File.separator + moduleBaseDir)) ? "" : File.separator + moduleBaseDir));
 	    }
 	}
 }

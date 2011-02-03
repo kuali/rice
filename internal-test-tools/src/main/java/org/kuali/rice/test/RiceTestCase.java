@@ -12,6 +12,22 @@
  */
 package org.kuali.rice.test;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -28,13 +44,6 @@ import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.util.*;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 
 /**
@@ -146,7 +155,9 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      */
     protected void setBaseDirSystemProperty(String moduleBaseDir) {
         if (System.getProperty("basedir") == null) {
-            System.setProperty("basedir", System.getProperty("user.dir") + "/test/" + moduleBaseDir);
+        	final String userDir = System.getProperty("user.dir");
+        	
+            System.setProperty("basedir", userDir + ((userDir.endsWith(File.separator + "test" + File.separator + moduleBaseDir)) ? "" : File.separator + "test" + File.separator + moduleBaseDir));
         }
     }
 

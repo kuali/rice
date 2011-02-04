@@ -12,116 +12,88 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.service.KualiConfigurationService;
+import org.kuali.rice.core.util.ImmutableProperties;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.properties.PropertyHolder;
+import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResources;
+import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory;
 
-//@Transactional
-public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationServiceImpl implements KualiConfigurationService {
+
+public class KualiConfigurationServiceImpl implements KualiConfigurationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiConfigurationServiceImpl.class);
+    private PropertyHolder propertyHolder;
 
-    @Deprecated
-    public List<String> getParameterValues(Parameter parameter) {
-    	if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
-    	    return Collections.EMPTY_LIST;
-    	}
-    	return Arrays.asList(parameter.getParameterValue().split(";"));
+    /**
+     * Harcoding the configFileName, by request.
+     */
+    public KualiConfigurationServiceImpl() {
+        this.propertyHolder = new PropertyHolder();
+        this.propertyHolder.getHeldProperties().putAll(ConfigContext.getCurrentContextConfig().getProperties());
+
+        KualiPropertyMessageResourcesFactory propertyMessageFactory = new KualiPropertyMessageResourcesFactory();
+
+        // create default KualiPropertyMessageResources
+        KualiPropertyMessageResources messageResources = (KualiPropertyMessageResources)propertyMessageFactory.createResources("");
+
+        //Add Kuali Properties to property holder
+        this.propertyHolder.getHeldProperties().putAll(messageResources.getKualiProperties(null));
     }
 
-    //public boolean constraintIsAllow(Parameter parameter) {
-    //    return KNSConstants.APC_ALLOWED_OPERATOR.equals(parameter.getParameterConstraintCode());
-    //}
-
-    @Deprecated
-    public Parameter getParameter(String namespaceCode, String detailTypeCode, String parameterName) {
-    	if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(detailTypeCode) || StringUtils.isBlank(parameterName)) {
-    	    throw new IllegalArgumentException(
-    		    "The getParameter method of KualiConfigurationServiceImpl requires a non-blank namespaceCode, parameterDetailTypeCode, and parameterName");
-    	}
-    	Parameter param = getParameterWithoutExceptions(namespaceCode, detailTypeCode, parameterName);
-    	if (param == null) {
-    	    throw new IllegalArgumentException(
-    		    "The getParameter method of KualiConfigurationServiceImpl was unable to find parameter: "
-    			    + namespaceCode + " / " + detailTypeCode + " / " + parameterName);
-    	}
-    	return param;
+    public boolean isProductionEnvironment() {
+	return getPropertyString(KNSConstants.PROD_ENVIRONMENT_CODE_KEY).equalsIgnoreCase(
+		getPropertyString(KNSConstants.ENVIRONMENT_KEY));
     }
 
-    //public List<Parameter> getParameters(Map<String, String> criteria) {
-    //	ArrayList<Parameter> parameters = new ArrayList<Parameter>();
-    //	parameters.addAll(getBusinessObjectService().findMatching(Parameter.class, criteria));
-    //	return parameters;
-    //}
+    /**
+     * @see org.kuali.rice.core.service.KualiConfigurationService#getPropertyString(java.lang.String)
+     */
+    public String getPropertyString(String key) {
+        LOG.debug("getPropertyString() started");
 
-    //public boolean evaluateConstrainedValue(String namespace, String detailType, String parameterName,
-	//    String constrainedValue) {
-    //    return evaluateConstrainedValue(getParameter(namespace, detailType, parameterName), constrainedValue);
-    //}
+        if (key == null) {
+            throw new IllegalArgumentException("invalid (null) key");
+        }
 
-   // public boolean evaluateConstrainedValue(Parameter parameter, String constrainedValue) {
-   // 	checkParameterArgument(parameter, "evaluateConstrainedValue(Parameter parameter, String constrainedValue)");
-   // 	if (constraintIsAllow(parameter)) {
-   // 	    return getParameterValues(parameter).contains(constrainedValue);
-   // 	} else {
-   // 	    return !getParameterValues(parameter).contains(constrainedValue);
-   // 	}
-   // }
-
-    @Deprecated
-    public List<String> getParameterValues(String namespaceCode, String parameterDetailTypeCode, String parameterName) {
-        return getParameterValues(getParameter(namespaceCode, parameterDetailTypeCode, parameterName));
+        return this.propertyHolder.getProperty(key);
     }
 
-    @Deprecated
-    public boolean getIndicatorParameter(String namespaceCode, String parameterDetailTypeCode, String parameterName) {
-        return "Y".equals(getParameterValue(namespaceCode, parameterDetailTypeCode, parameterName));
+    /**
+     * @see org.kuali.rice.core.service.KualiConfigurationService#getPropertyAsBoolean(java.lang.String)
+     */
+    public boolean getPropertyAsBoolean(String key) {
+        LOG.debug("getPropertyAsBoolean() started");
+
+        if (key == null) {
+            throw new IllegalArgumentException("invalid (null) key");
+        }
+        String property = this.propertyHolder.getProperty(key);
+        if ( property != null ) {
+            property = property.trim();
+            if ((property.equalsIgnoreCase( "true" )
+                    || property.equalsIgnoreCase( "yes" )
+                    || property.equalsIgnoreCase( "on" )
+                    || property.equalsIgnoreCase( "1" )) ) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    @Deprecated
-    public String getParameterValue(String namespaceCode, String parameterDetailTypeCode, String parameterName) {
-    	List<String> parameterValues = getParameterValues(getParameter(namespaceCode, parameterDetailTypeCode, parameterName));
-    	return parameterValues.isEmpty() ? "" : parameterValues.iterator().next();
+    /**
+     * @see org.kuali.rice.core.service.KualiConfigurationService#getAllProperties()
+     */
+    public Properties getAllProperties() {
+        LOG.debug("getAllProperties() started");
+
+        return new ImmutableProperties(propertyHolder.getHeldProperties());
     }
 
-    //public boolean parameterExists(String namespaceCode, String parameterDetailTypeCode, String parameterName) {
-    //    return getParameterWithoutExceptions(namespaceCode, parameterDetailTypeCode, parameterName) != null;
-    //}
-
-    private void checkParameterArgument(Parameter parameter, String methodName) {
-    	if (parameter == null) {
-    	    throw new IllegalArgumentException("The " + methodName
-    		    + " method of KualiConfigurationServiceImpl requires a non-null parameter");
-    	}
-    }
-    
-    public Parameter getParameterWithoutExceptions(String namespaceCode, String detailTypeCode, String parameterName) {
-        HashMap<String, String> crit = new HashMap<String, String>(3);
-        crit.put("parameterNamespaceCode", namespaceCode);
-        crit.put("parameterDetailTypeCode", detailTypeCode);
-        crit.put("parameterName", parameterName);
-        Parameter param = (Parameter) getBusinessObjectService().findByPrimaryKey(Parameter.class, crit);
-        return param;
-    }
-    
-    // using this instead of private variable with spring initialization because of recurring issues with circular
-    // references
-    // resulting in this error: org.springframework.beans.factory.BeanCurrentlyInCreationException: Error creating bean
-    // with
-    // name 'businessObjectService': Bean with name 'businessObjectService' has been injected into other beans
-    // [kualiConfigurationService]
-    // in its raw version as part of a circular reference, but has eventually been wrapped (for example as part of
-    // auto-proxy creation).
-    // This means that said other beans do not use the final version of the bean. This is often the result of over-eager
-    // type matching
-    // - consider using 'getBeanNamesOfType' with the 'allowEagerInit' flag turned off, for example.
-    private BusinessObjectService getBusinessObjectService() {
-        return KNSServiceLocator.getBusinessObjectService();
-    }
 }

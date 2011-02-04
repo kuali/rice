@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.io.Serializable;
+import org.kuali.rice.core.mo.ModelObjectBasic;
 
 /*
  * Defines methods a business object should implement.
  */
-public interface BusinessObject extends Serializable{
+public interface BusinessObject extends ModelObjectBasic {
     
     /**
      * Refreshes any reference objects from the primitive values.

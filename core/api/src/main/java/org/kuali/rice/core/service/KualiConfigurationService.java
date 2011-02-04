@@ -51,45 +51,4 @@ public interface KualiConfigurationService {
          * Returns whether this instance is production based on the configuration options.
          */
     public boolean isProductionEnvironment();
-
-    /**
-     * This method retrieves a parameter based on the primary key
-     */
-    //public Parameter getParameter(String namespaceCode, String detailTypeCode, String parameterName);
-
-    /**
-     * This method retrieves a parameter based on the primary key.  Unlike {@link #getParameter(String, String, String)},
-     * this method does not throw an exception if the parameter cannot be found.  It instead returns null.
-     */
-    //public Parameter getParameterWithoutExceptions(String namespaceCode, String detailTypeCode, String parameterName);
-    
-    /**
-     * This method retrieves a set of parameters based on arbitraty criteria
-     */
-    //public List<Parameter> getParameters(Map<String, String> criteria);
-
-    /**
-     * This method retrieves a parameter expected to have a Yes / no value and converts to a boolean for convenience
-     */
-    @Deprecated
-    public boolean getIndicatorParameter(String namespaceCode, String detailTypeCode, String parameterName);
-
-    /**
-     * This method returns a list of the parameter values split on implementation specific criteria.
-     * For the default KualiConfigurationServiceImpl, the split is on a semi-colon.
-     */
-    @Deprecated
-    public List<String> getParameterValues(String namespaceCode, String detailTypeCode, String parameterName);
-
-    /**
-     * This method returns the value of the specified parameter
-     */
-    @Deprecated
-    public String getParameterValue(String namespaceCode, String detailTypeCode, String parameterName);
-
-    /**
-     * This method determines whether the parameter values list constains the specified constrainedValue
-     */
-    //public boolean evaluateConstrainedValue(String namespaceCode, String detailTypeCode, String parameterName,
-	//    String constrainedValue);
 }

@@ -21,10 +21,10 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.displaytag.model.Row;
 import org.displaytag.model.TableModel;
-import org.kuali.rice.core.util.WriterOutputStream;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -87,7 +87,7 @@ public class ExportViewHelper {
 	
 	public boolean attemptCustomExport(OutputStream outputStream, String exportFormat) throws IOException {
 		if (getBusinessObjectEntry() != null && getBusinessObjectEntry().getExporterClass() != null) {
-			Exporter exporter = null;
+			final Exporter exporter;
 			try {
 				exporter = getBusinessObjectEntry().getExporterClass().newInstance();
 			} catch (Exception e) {

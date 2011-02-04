@@ -25,10 +25,10 @@ import java.util.Map;
 import javax.jws.WebService;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
-import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -1153,7 +1153,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 			sb.append( "                         [null]\n" );
 		}
 		if (LOG.isTraceEnabled()) {
-			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() );
+			LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
 		} else {
 			LOG.debug(sb.toString());
 		}
@@ -1178,7 +1178,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 			sb.append( "                         [null]\n" );
 		}
 		if (LOG.isTraceEnabled()) {
-			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() );
+			LOG.trace( sb.append( ExceptionUtils.getStackTrace(new Throwable())) );
 		} else {
 			LOG.debug(sb.toString());
 		}

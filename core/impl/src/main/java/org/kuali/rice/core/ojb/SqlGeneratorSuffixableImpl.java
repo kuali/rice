@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.ojb;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ojb.broker.accesslayer.sql.SelectStatement;
 import org.apache.ojb.broker.accesslayer.sql.SqlGeneratorDefaultImpl;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
@@ -22,7 +23,6 @@ import org.apache.ojb.broker.platforms.Platform;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.util.logging.Logger;
 import org.apache.ojb.broker.util.logging.LoggerFactory;
-import org.kuali.rice.core.util.RiceDebugUtils;
 
 /**
  * SqlGeneratorDefaultImpl subclass that replaced the vanilla SqlSelectStatement implementation
@@ -49,8 +49,7 @@ public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
         if (logger.isDebugEnabled()) {
             boolean masochisticSqlLogging = true;
             if ( masochisticSqlLogging ) {
-            	StringBuffer sb = RiceDebugUtils.getTruncatedStackTrace( true );
-            	logger.debug("SQL: " + sql.getStatement() + "\n" + query.getCriteria() + "\n" + sb.toString() );
+            	logger.debug("SQL: " + sql.getStatement() + "\n" + query.getCriteria() + "\n" + ExceptionUtils.getStackTrace(new Throwable()) );
             } else {
                 logger.debug("SQL: " + sql.getStatement() );
             }

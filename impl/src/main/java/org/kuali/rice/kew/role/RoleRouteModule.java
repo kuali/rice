@@ -20,10 +20,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -67,7 +67,7 @@ public class RoleRouteModule implements RouteModule {
 			throws Exception {
 		
 		ActionRequestFactory arFactory = new ActionRequestFactory(context.getDocument(), context.getNodeInstance());
-		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+
 		QualifierResolver qualifierResolver = loadQualifierResolver(context);
 		List<AttributeSet> qualifiers = qualifierResolver.resolve(context);
 		String responsibilityTemplateName = loadResponsibilityTemplateName(context);
@@ -106,7 +106,7 @@ public class RoleRouteModule implements RouteModule {
 				}
 			}		
 		}
-		actionRequests = new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
+		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
 		disableResolveResponsibility(actionRequests);
 		return actionRequests;
 	}
@@ -130,7 +130,7 @@ public class RoleRouteModule implements RouteModule {
 			}
 		}
 		if (LOG.isTraceEnabled()) { 
-			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+			LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
 		} else {
 			LOG.debug(sb.toString());
 		}

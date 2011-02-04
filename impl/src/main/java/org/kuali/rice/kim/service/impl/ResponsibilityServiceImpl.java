@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
@@ -93,7 +93,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     	}
     	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
     	pk.put( KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, responsibilityId );
-    	return (KimResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
+    	return getBusinessObjectService().findByPrimaryKey( KimResponsibilityImpl.class, pk );
     }
 
     public KimResponsibilityTemplateInfo getResponsibilityTemplate(
@@ -116,7 +116,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     
     public KimResponsibilityTemplateImpl getResponsibilityTemplateImpl(
     		String responsibilityTemplateId) {
-    	return (KimResponsibilityTemplateImpl)getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityTemplateImpl.class, responsibilityTemplateId);
+    	return getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityTemplateImpl.class, responsibilityTemplateId);
     }
     
 	public KimResponsibilityTemplateImpl getResponsibilityTemplateImplsByName(
@@ -125,7 +125,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
     	pk.put( KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, responsibilityTemplateName );
 		pk.put( KNSPropertyConstants.ACTIVE, "Y");
-    	return (KimResponsibilityTemplateImpl)getBusinessObjectService().findByPrimaryKey( KimResponsibilityTemplateImpl.class, pk );
+    	return getBusinessObjectService().findByPrimaryKey( KimResponsibilityTemplateImpl.class, pk );
     }
     
     public RoleResponsibilityImpl getRoleResponsibilityImpl(String roleResponsibilityId) {
@@ -134,7 +134,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     	}
     	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
     	pk.put( KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId );
-    	return (RoleResponsibilityImpl)getBusinessObjectService().findByPrimaryKey( RoleResponsibilityImpl.class, pk );
+    	return getBusinessObjectService().findByPrimaryKey( RoleResponsibilityImpl.class, pk );
     }
     
     
@@ -229,7 +229,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
 			sb.append( "                         [null]\n" );
 		}
 		if (LOG.isTraceEnabled()) { 
-			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+			LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
 		} else {
 			LOG.debug(sb.toString());
 		}
@@ -396,12 +396,13 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     
     @SuppressWarnings("unchecked")
 	public List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( Map<String,String> searchCriteria, boolean unbounded ) {
-		Collection baseResults = null; 
+
 		Lookupable responsibilityLookupable = KNSServiceLocatorWeb.getLookupable(
                 KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(ResponsibilityImpl.class)
         );
 		responsibilityLookupable.setBusinessObjectClass(ResponsibilityImpl.class);
-		if ( unbounded ) {
+		final Collection baseResults;
+        if ( unbounded ) {
 			baseResults = responsibilityLookupable.getSearchResultsUnbounded( searchCriteria );
 		} else {
 			baseResults = responsibilityLookupable.getSearchResults(searchCriteria);

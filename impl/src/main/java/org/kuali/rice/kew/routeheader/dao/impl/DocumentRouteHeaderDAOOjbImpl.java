@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
@@ -37,7 +38,6 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
@@ -69,7 +69,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             } else {
                 LOG.debug( "Current Header: null" );
             }
-            LOG.debug( RiceDebugUtils.getTruncatedStackTrace(false).toString() );
+            LOG.debug( ExceptionUtils.getStackTrace(new Throwable()) );
         }
         try {
             getPersistenceBrokerTemplate().store(routeHeader);
@@ -224,7 +224,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             while (rs.next()) {
-                routeHeaderIds.add(new Long(rs.getLong(1)));
+                routeHeaderIds.add(Long.valueOf(rs.getLong(1)));
             }
         } catch (SQLException sqle) {
             LOG.error("SQLException: " + sqle.getMessage(), sqle);
@@ -392,7 +392,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             rs = stmt.executeQuery();
             
             while (rs.next()) {
-                routeHeaderIds.add(new Long(rs.getLong(1)));
+                routeHeaderIds.add(Long.valueOf(rs.getLong(1)));
             }
             rs.close();
         } catch (SQLException sqle) {

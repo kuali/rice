@@ -28,10 +28,10 @@ import java.util.Set;
 
 import javax.jws.WebParam;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
-import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -653,7 +653,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			sb.append( "               [null]\n" );
 		}
 		if (LOG.isTraceEnabled()) { 
-			LOG.trace( sb.append( RiceDebugUtils.getTruncatedStackTrace(true)).toString() ); 
+			LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
 		} else {
 			LOG.debug(sb.toString());
 		}

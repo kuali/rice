@@ -59,7 +59,7 @@ public class ValidatorFactory {
 		    defaultValidator = new DefaultValidatorImpl();
 		}
 		
-		defaultValidator.setValidatorFactory(this);
+//		defaultValidator.setValidatorFactory(this);
 		return defaultValidator;
 	}
 	

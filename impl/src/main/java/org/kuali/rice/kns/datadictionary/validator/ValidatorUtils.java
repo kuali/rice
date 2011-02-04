@@ -15,11 +15,14 @@
 
 package org.kuali.rice.kns.datadictionary.validator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
+import org.kuali.rice.kns.dto.Constrained;
 import org.kuali.rice.kns.dto.DataType;
 
 
@@ -202,20 +205,27 @@ public class ValidatorUtils {
 	 * @param state
 	 * @param objStructure
 	 * @return
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 */
-	public static AttributeDefinition getField(String key, BusinessObjectEntry objStructure) {
+	public static AttributeValueReader getDefinition(String key, AttributeValueReader attributeValueReader) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		String[] lookupPathTokens = getPathTokens(key);
+		
+		AttributeValueReader localAttributeValueReader = attributeValueReader;
 		for(int i = 0; i < lookupPathTokens.length; i++) {
-			for (AttributeDefinition f : objStructure.getAttributes()) {
-				if (f.getName().equals(lookupPathTokens[i])) {
+			for (Constrained f : localAttributeValueReader.getDefinitions()) {
+				String attributeName = f.getName();
+				if (attributeName.equals(lookupPathTokens[i])) {
 					if(i==lookupPathTokens.length-1){
-						return f;
+						localAttributeValueReader.setCurrentName(attributeName);
+						return localAttributeValueReader;
 					}
-					else{
-						objStructure = null; //JLR was : f.getDataObjectStructure();
-						break;
-					}
-					
+					String childEntryName = f.getChildEntryName();
+					DataDictionaryEntry entry = attributeValueReader.getEntry(childEntryName);
+					Object value = attributeValueReader.getValue(attributeName);
+					localAttributeValueReader = new DictionaryObjectAttributeValueReader(value, childEntryName, entry);
+					break;
 				}
 			}
 		 }

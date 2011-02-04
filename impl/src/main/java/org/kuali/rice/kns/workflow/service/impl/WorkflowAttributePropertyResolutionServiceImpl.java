@@ -48,6 +48,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.util.DataTypeUtil;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
@@ -260,13 +261,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @see org.kuali.kfs.sys.document.service.WorkflowAttributePropertyResolutionService#determineFieldDataType(java.lang.Class, java.lang.String)
      */
     public String determineFieldDataType(Class<? extends BusinessObject> businessObjectClass, String attributeName) {
-        final Class attributeClass = thieveAttributeClassFromBusinessObjectClass(businessObjectClass, attributeName);
-        if (isStringy(attributeClass)) return SearchableAttribute.DATA_TYPE_STRING; // our most common case should go first
-        if (isDecimaltastic(attributeClass)) return SearchableAttribute.DATA_TYPE_FLOAT;
-        if (isDateLike(attributeClass)) return SearchableAttribute.DATA_TYPE_DATE;
-        if (isIntsy(attributeClass)) return SearchableAttribute.DATA_TYPE_LONG;
-        if (isBooleanable(attributeClass)) return DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN;
-        return SearchableAttribute.DATA_TYPE_STRING; // default to String
+        return DataTypeUtil.determineFieldDataType(businessObjectClass, attributeName);
     }
 
     /**
@@ -279,84 +274,11 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         if (value == null) return null;
         final String fieldDataType = determineFieldDataType(businessObjectClass, attributeKey);
         if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_STRING)) return buildSearchableStringAttribute(attributeKey, value); // our most common case should go first
-        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_FLOAT) && isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
-        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_DATE) && isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
-        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_LONG) && isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
-        if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN) && isBooleanable(value.getClass())) return buildSearchableYesNoAttribute(attributeKey, value);
+        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_FLOAT) && DataTypeUtil.isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
+        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_DATE) && DataTypeUtil.isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
+        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_LONG) && DataTypeUtil.isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
+        if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN) && DataTypeUtil.isBooleanable(value.getClass())) return buildSearchableYesNoAttribute(attributeKey, value);
         return buildSearchableStringAttribute(attributeKey, value);
-    }
-    
-    /**
-     * Determines if the given Class is a String
-     * @param clazz the class to check for Stringiness
-     * @return true if the Class is a String, false otherwise
-     */
-    protected boolean isStringy(Class clazz) {
-        return java.lang.String.class.isAssignableFrom(clazz);
-    }
-
-    /**
-     * Determines if the given class is enough like a date to store values of it as a SearchableAttributeDateTimeValue
-     * @param class the class to determine the type of
-     * @return true if it is like a date, false otherwise
-     */
-    protected boolean isDateLike(Class clazz) {
-        return java.util.Date.class.isAssignableFrom(clazz);
-    }
-    
-    /**
-     * Determines if the given class is enough like a Float to store values of it as a SearchableAttributeFloatValue
-     * @param value the class to determine of the type of
-     * @return true if it is like a "float", false otherwise
-     */
-    protected boolean isDecimaltastic(Class clazz) {
-        return java.lang.Double.class.isAssignableFrom(clazz) || java.lang.Float.class.isAssignableFrom(clazz) || clazz.equals(Double.TYPE) || clazz.equals(Float.TYPE) || java.math.BigDecimal.class.isAssignableFrom(clazz) || org.kuali.rice.core.util.type.KualiDecimal.class.isAssignableFrom(clazz);
-    }
-    
-    /**
-     * Determines if the given class is enough like a "long" to store values of it as a SearchableAttributeLongValue
-     * @param value the class to determine the type of
-     * @return true if it is like a "long", false otherwise
-     */
-    protected boolean isIntsy(Class clazz) {
-        return java.lang.Integer.class.isAssignableFrom(clazz) || java.lang.Long.class.isAssignableFrom(clazz) || java.lang.Short.class.isAssignableFrom(clazz) || java.lang.Byte.class.isAssignableFrom(clazz) || java.math.BigInteger.class.isAssignableFrom(clazz) || clazz.equals(Integer.TYPE) || clazz.equals(Long.TYPE) || clazz.equals(Short.TYPE) || clazz.equals(Byte.TYPE);
-    }
-
-    /**
-     * Determines if the given class is enough like a boolean, to index it as a String "Y" or "N"
-     * @param value the class to determine the type of
-     * @return true if it is like a boolean, false otherwise
-     */
-    protected boolean isBooleanable(Class clazz) {
-        return java.lang.Boolean.class.isAssignableFrom(clazz) || clazz.equals(Boolean.TYPE);
-    }
-    
-    /**
-     * Given a BusinessObject class and an attribute name, determines the class of that attribute on the BusinessObject class
-     * @param boClass a class extending BusinessObject
-     * @param attributeKey the name of a field on that class
-     * @return the Class of the given attribute
-     */
-    private Class thieveAttributeClassFromBusinessObjectClass(Class<? extends BusinessObject> boClass, String attributeKey) {
-        Class attributeFieldClass = null;
-        try {
-            final BeanInfo beanInfo = Introspector.getBeanInfo(boClass);
-            int i = 0;
-            while (attributeFieldClass == null && i < beanInfo.getPropertyDescriptors().length) {
-                final PropertyDescriptor prop = beanInfo.getPropertyDescriptors()[i];
-                if (prop.getName().equals(attributeKey)) {
-                    attributeFieldClass = prop.getPropertyType();
-                }
-                i += 1;
-            }
-        }
-        catch (SecurityException se) {
-            throw new RuntimeException("Could not determine type of attribute "+attributeKey+" of BusinessObject class "+boClass.getName(), se);
-        }
-        catch (IntrospectionException ie) {
-            throw new RuntimeException("Could not determine type of attribute "+attributeKey+" of BusinessObject class "+boClass.getName(), ie);
-        }
-        return attributeFieldClass;
     }
     
     /**

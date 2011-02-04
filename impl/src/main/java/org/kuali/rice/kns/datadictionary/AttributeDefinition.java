@@ -16,7 +16,6 @@
 
 package org.kuali.rice.kns.datadictionary;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
@@ -28,6 +27,7 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.dto.CaseConstraint;
+import org.kuali.rice.kns.dto.Constrained;
 import org.kuali.rice.kns.dto.DataType;
 import org.kuali.rice.kns.dto.LookupConstraint;
 import org.kuali.rice.kns.dto.MustOccurConstraint;
@@ -35,7 +35,6 @@ import org.kuali.rice.kns.dto.RequiredConstraint;
 import org.kuali.rice.kns.dto.ValidCharsConstraint;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.web.format.Formatter;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * A single attribute definition in the DataDictionary, which contains
@@ -44,14 +43,14 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  * 
  */
-public class AttributeDefinition extends DataDictionaryDefinitionBase implements InitializingBean {
+public class AttributeDefinition extends DataDictionaryDefinitionBase implements Constrained {
 	private static final long serialVersionUID = -2490613377818442742L;
 
 	protected Boolean forceUppercase = Boolean.FALSE;
 
 	protected String name;
 	
-	protected DataType dataType = DataType.STRING;
+	protected DataType dataType;
 	
 	protected String label;
 	protected String shortLabel;
@@ -89,7 +88,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	protected String customValidatorClass;
 	protected ValidCharsConstraint validChars;	
 	protected Integer minOccurs;
-	protected String maxOccurs;
+	protected Integer maxOccurs;
     protected CaseConstraint caseConstraint;
     protected List<RequiredConstraint> requireConstraint;
 	protected List<MustOccurConstraint> occursConstraint;
@@ -98,6 +97,8 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	// search must be defined as
 	// well
 	protected String lookupContextPath;
+	
+	protected String childEntryName;
 	
 
 	public AttributeDefinition() {
@@ -116,6 +117,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		return this.forceUppercase;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -130,6 +132,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.name = name;
 	}
 
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -172,6 +175,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.shortLabel = shortLabel;
 	}
 
+	@Override
 	public Integer getMaxLength() {
 		return maxLength;
 	}
@@ -184,6 +188,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.maxLength = maxLength;
 	}
 
+	@Override
 	public String getExclusiveMin() {
 		return exclusiveMin;
 	}
@@ -204,6 +209,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * 
 	 * JSTL: This field is mapped into the field named "exclusiveMax".
 	 */
+	@Override
 	public String getInclusiveMax() {
 		return inclusiveMax;
 	}
@@ -269,6 +275,8 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 */
 	public void setValidationPattern(ValidationPattern validationPattern) {
 		this.validationPattern = validationPattern;
+		
+		// FIXME: JLR - need to recreate this functionality using the ValidCharsConstraint logic
 	}
 
 	/**
@@ -390,6 +398,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * 
 	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#completeValidation()
 	 */
+	@Override
 	public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
 		try {
 			if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
@@ -482,11 +491,18 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * 
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
+	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (StringUtils.isEmpty(name)) {
 			throw new RuntimeException("blank name for bean: " + id);
 		}
 
+		// FIXME: add logic here to replace validation pattern logic with valid chars
+//		ValidCharsConstraint validCharsConstraint = getValidChars();
+//
+//		if (validCharsConstraint == null) {
+//			validCharsConstraint = new ValidCharsConstraint();
+//		}
 	}
 
 	/**
@@ -587,6 +603,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	/**
 	 * @return the minOccurs
 	 */
+	@Override
 	public Integer getMinOccurs() {
 		return this.minOccurs;
 	}
@@ -601,14 +618,15 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	/**
 	 * @return the maxOccurs
 	 */
-	public String getMaxOccurs() {
+	@Override
+	public Integer getMaxOccurs() {
 		return this.maxOccurs;
 	}
 
 	/**
 	 * @param maxOccurs the maxOccurs to set
 	 */
-	public void setMaxOccurs(String maxOccurs) {
+	public void setMaxOccurs(Integer maxOccurs) {
 		this.maxOccurs = maxOccurs;
 	}
 
@@ -680,6 +698,20 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 */
 	public void setLookupContextPath(String lookupContextPath) {
 		this.lookupContextPath = lookupContextPath;
+	}
+
+	/**
+	 * @return the childEntryName
+	 */
+	public String getChildEntryName() {
+		return this.childEntryName;
+	}
+
+	/**
+	 * @param childEntryName the childEntryName to set
+	 */
+	public void setChildEntryName(String childEntryName) {
+		this.childEntryName = childEntryName;
 	}
 
 //	/**

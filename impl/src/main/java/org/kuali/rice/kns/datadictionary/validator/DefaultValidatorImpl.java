@@ -8,6 +8,7 @@
 
 package org.kuali.rice.kns.datadictionary.validator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,18 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.dto.CaseConstraint;
-import org.kuali.rice.kns.dto.Constraint;
+import org.kuali.rice.kns.dto.Constrained;
+import org.kuali.rice.kns.dto.ConstraintHolder;
 import org.kuali.rice.kns.dto.DataType;
 import org.kuali.rice.kns.dto.MustOccurConstraint;
 import org.kuali.rice.kns.dto.RequiredConstraint;
@@ -40,11 +36,11 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 
 
-public class DefaultValidatorImpl extends BaseAbstractValidator {
+public class DefaultValidatorImpl implements Validator {
     final static Logger LOG = Logger.getLogger(DefaultValidatorImpl.class);
 
 //    private MessageService messageService = null;
@@ -60,6 +56,8 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
     private DataDictionaryService dataDictionaryService;
     
     private PersistenceStructureService persistenceStructureService;
+    
+    private WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
     
 //
 //    private boolean serverSide = true;
@@ -119,186 +117,279 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
      *
      * @param data
      * @param objStructure
+     * @param entryName TODO
      * @return
      */
-    public List<ValidationResultInfo> validateObject(Object data, BusinessObjectEntry objStructure) {
-
-        Stack<String> elementStack = new Stack<String>();
-        return validateObject(data, objStructure, elementStack, true);
-    }
+//    public List<ValidationResultInfo> validateObject(Object data, BusinessObjectEntry objStructure, String entryName) {
+//
+//        Stack<String> elementStack = new Stack<String>();
+//        return validateObject(data, objStructure, entryName, elementStack, true);
+//    }
     
-    public class SectionDefinitionDataProvider implements ConstraintDataProvider {
-    	
-    	Map<String, Object> dataMap = null;
-    	
-		@Override
-		public String getObjectId() {
-			return (dataMap.containsKey("id") && null != dataMap.get("id")) ? dataMap.get("id").toString() : null;
-		}
-
-		@Override
-		public Object getValue(String fieldKey) {
-			return dataMap.get(fieldKey);
-		}
-
-		@Override
-		public Boolean hasField(String fieldKey) {
-			return Boolean.valueOf(dataMap.containsKey(fieldKey));
-		}
-
-		@Override
-		public void initialize(Object o) {
-			dataMap = new HashMap<String, Object>();
-			
-			MaintenanceDocumentWrapper wrapper = (MaintenanceDocumentWrapper)o;
-			BusinessObject businessObject = wrapper.getBusinessObject();
-			String docTypeName = wrapper.getDocTypeName();
-			MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
-			for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
-				List<? extends MaintainableItemDefinition> itemDefinitions = sectionDefinition.getMaintainableItems();
-				
-				for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
-					if (itemDefinition instanceof MaintainableFieldDefinition) {
-						Boolean isAttributeDefined = getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName());
-				        if (isAttributeDefined != null && isAttributeDefined.booleanValue()) {
-				            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
-				            if (value != null && StringUtils.isNotBlank(value.toString())) {
-					            Class<?> propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
-					            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-					                // check value format against dictionary
-				                    if (!TypeUtils.isTemporalClass(propertyType)) {
-				                        //validateAttributeFormat(businessObject.getClass().getName(), itemDefinition.getName(), value.toString(), errorPrefix + itemDefinition.getName());
-				                    
-				                    	dataMap.put(itemDefinition.getName(), value.toString());
-				                    }
-					            }
-				            }
-				        }
-					}
-				}
-			}
-		}
-
-		@Override
-		public String getPath() {
-			return "";
-		}
-    }
+//    public class MaintenanceDocumentWrapperDataProvider implements AttributeValueReader {
+//    	
+//    	Map<String, Object> dataMap = null;
+//    	
+////		@Override
+////		public String getObjectId() {
+////			return (dataMap.containsKey("id") && null != dataMap.get("id")) ? dataMap.get("id").toString() : null;
+////		}
+//
+//		@Override
+//		public Object getValue(String fieldKey) {
+//			return dataMap.get(fieldKey);
+//		}
+//
+////		@Override
+////		public Boolean hasField(String fieldKey) {
+////			return Boolean.valueOf(dataMap.containsKey(fieldKey));
+////		}
+//
+//		@Override
+//		public void initialize(Object o) {
+//			dataMap = new HashMap<String, Object>();
+//			
+//			MaintenanceDocumentWrapper wrapper = (MaintenanceDocumentWrapper)o;
+//			BusinessObject businessObject = wrapper.getBusinessObject();
+//			String docTypeName = wrapper.getDocTypeName();
+//			MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+//			for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
+//				List<? extends MaintainableItemDefinition> itemDefinitions = sectionDefinition.getMaintainableItems();
+//				
+//				for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
+//					if (itemDefinition instanceof MaintainableFieldDefinition) {
+//						Boolean isAttributeDefined = getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName());
+//				        if (isAttributeDefined != null && isAttributeDefined.booleanValue()) {
+//				            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
+//				            if (value != null && StringUtils.isNotBlank(value.toString())) {
+//					            Class<?> propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
+//					            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+//					                // check value format against dictionary
+//				                    if (!TypeUtils.isTemporalClass(propertyType)) {
+//				                        //validateAttributeFormat(businessObject.getClass().getName(), itemDefinition.getName(), value.toString(), errorPrefix + itemDefinition.getName());
+//				                    
+//				                    	dataMap.put(itemDefinition.getName(), value.toString());
+//				                    }
+//					            }
+//				            }
+//				        }
+//					}
+//				}
+//			}
+//		}
+//
+//		
+//		@Override
+//		public String getPath() {
+//			return "";
+//		}
+//    }
     
-    public class MaintenanceDocumentWrapper {
-    	private BusinessObject businessObject;
-    	private String docTypeName;
+//    public class BusinessObjectAttributeWrapper {
+//    	private Object object;
+//    	private BusinessObjectEntry objStructure;
+//    	private AttributeDefinition field;
+//    	private String value;
+//    	
+//    	public BusinessObjectAttributeWrapper(Object object, BusinessObjectEntry objStructure, AttributeDefinition field, String value) {
+//    		this.object = object;
+//    		this.objStructure = objStructure;
+//    		this.field = field;
+//    		this.value = value;
+//    	}
+//
+//		/**
+//		 * @return the object
+//		 */
+//		public Object getObject() {
+//			return this.object;
+//		}
+//
+//		/**
+//		 * @param object the object to set
+//		 */
+//		public void setObject(Object object) {
+//			this.object = object;
+//		}
+//
+//		/**
+//		 * @return the objStructure
+//		 */
+//		public BusinessObjectEntry getObjStructure() {
+//			return this.objStructure;
+//		}
+//
+//		/**
+//		 * @param objStructure the objStructure to set
+//		 */
+//		public void setObjStructure(BusinessObjectEntry objStructure) {
+//			this.objStructure = objStructure;
+//		}
+//
+//		/**
+//		 * @return the field
+//		 */
+//		public AttributeDefinition getField() {
+//			return this.field;
+//		}
+//
+//		/**
+//		 * @param field the field to set
+//		 */
+//		public void setField(AttributeDefinition field) {
+//			this.field = field;
+//		}
+//
+//		/**
+//		 * @return the value
+//		 */
+//		public String getValue() {
+//			return this.value;
+//		}
+//
+//		/**
+//		 * @param value the value to set
+//		 */
+//		public void setValue(String value) {
+//			this.value = value;
+//		}
+//    	
+//    	
+//    }
+//    
+//    public class MaintenanceDocumentWrapper {
+//    	private BusinessObject businessObject;
+//    	private String docTypeName;
+//    	
+//    	public MaintenanceDocumentWrapper(BusinessObject businessObject, String docTypeName) {
+//    		this.businessObject = businessObject;
+//    		this.docTypeName = docTypeName;
+//    	}
+//
+//		/**
+//		 * @return the businessObject
+//		 */
+//		public BusinessObject getBusinessObject() {
+//			return this.businessObject;
+//		}
+//
+//		/**
+//		 * @param businessObject the businessObject to set
+//		 */
+//		public void setBusinessObject(BusinessObject businessObject) {
+//			this.businessObject = businessObject;
+//		}
+//
+//		/**
+//		 * @return the docTypeName
+//		 */
+//		public String getDocTypeName() {
+//			return this.docTypeName;
+//		}
+//
+//		/**
+//		 * @param docTypeName the docTypeName to set
+//		 */
+//		public void setDocTypeName(String docTypeName) {
+//			this.docTypeName = docTypeName;
+//		}
+//    	
+//    }
+    
+    @Override
+	public List<ValidationResultInfo> validate(String entryName, AttributeValueReader valueReader, boolean checkIfRequired) {
+    	Stack<String> elementStack = new Stack<String>();
     	
-    	public MaintenanceDocumentWrapper(BusinessObject businessObject, String docTypeName) {
-    		this.businessObject = businessObject;
-    		this.docTypeName = docTypeName;
-    	}
-
-		/**
-		 * @return the businessObject
-		 */
-		public BusinessObject getBusinessObject() {
-			return this.businessObject;
-		}
-
-		/**
-		 * @param businessObject the businessObject to set
-		 */
-		public void setBusinessObject(BusinessObject businessObject) {
-			this.businessObject = businessObject;
-		}
-
-		/**
-		 * @return the docTypeName
-		 */
-		public String getDocTypeName() {
-			return this.docTypeName;
-		}
-
-		/**
-		 * @param docTypeName the docTypeName to set
-		 */
-		public void setDocTypeName(String docTypeName) {
-			this.docTypeName = docTypeName;
-		}
-    	
+    	return validateObject(entryName, valueReader, elementStack, true, checkIfRequired);
     }
     
     @Override
-    public List<ValidationResultInfo> validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
-        Stack<String> elementStack = new Stack<String>();
-        
-        BusinessObjectEntry objStructure = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObject.getClass().getName());
-        
-        ConstraintDataProvider dataProvider = new SectionDefinitionDataProvider();
-        dataProvider.initialize(new MaintenanceDocumentWrapper(businessObject, docTypeName));
-        
-        return validateObject(businessObject, objStructure, dataProvider, elementStack, true);
-    }
-    
-    
-    public List<ValidationResultInfo> validateAttributeField(BusinessObject businessObject, String fieldName) {
+	public List<ValidationResultInfo> validate(String entryName, String fieldName, AttributeValueReader valueReader, boolean checkIfRequired) {
     	Stack<String> elementStack = new Stack<String>();
     	
-    	BusinessObjectEntry objStructure = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObject.getClass().getName());
-    	AttributeDefinition field = getDataDictionaryService().getAttributeDefinition(businessObject.getClass().getName(), fieldName);
-    	
-    	ConstraintDataProvider dataProvider = new BeanConstraintDataProvider();
-    	dataProvider.initialize(businessObject);
-    	return validateField(field, objStructure, dataProvider, elementStack);
+    	return validateField(entryName, fieldName, valueReader, elementStack, checkIfRequired);
     }
     
-
-    private List<ValidationResultInfo> validateObject(Object data, BusinessObjectEntry objStructure, Stack<String> elementStack, boolean isRoot) {
-
-         ConstraintDataProvider dataProvider = new BeanConstraintDataProvider();
-         dataProvider.initialize(data);
-         
-         return validateObject(data, objStructure, dataProvider, elementStack, isRoot);
-    }
+//    @Override
+//    public List<ValidationResultInfo> validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
+//        Stack<String> elementStack = new Stack<String>();
+//        
+//        String entryName = businessObject.getClass().getName();
+//        BusinessObjectEntry objStructure = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(entryName);
+//        
+//        AttributeValueReader dataProvider = new MaintenanceDocumentWrapperDataProvider();
+//        dataProvider.initialize(new MaintenanceDocumentWrapper(businessObject, docTypeName));
+//        
+//        return validateObject(businessObject, objStructure, entryName, dataProvider, elementStack, true);
+//    }
+//    
+//    
+//    public List<ValidationResultInfo> validateAttributeField(String entryName, String fieldName, Object businessObject, String value, DataType dataType) {
+//    	Stack<String> elementStack = new Stack<String>();
+//    	
+//    	BusinessObjectEntry objStructure = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(entryName);
+//    	AttributeDefinition field = getDataDictionaryService().getConstrained(entryName, fieldName);
+//    	
+//    	AttributeValueReader dataProvider = new DictionaryObjectAttributeValueReader();
+//    	dataProvider.initialize(new BusinessObjectAttributeWrapper(businessObject, objStructure, field, value));
+//    	return validateField(field, objStructure, entryName, dataProvider, elementStack, value, dataType);
+//    }
     
-    private List<ValidationResultInfo> validateObject(Object data, BusinessObjectEntry objStructure, ConstraintDataProvider dataProvider, Stack<String> elementStack, boolean isRoot) {
+
+//    private List<ValidationResultInfo> validateObject(Object data, BusinessObjectEntry objStructure, String entryName, Stack<String> elementStack, boolean isRoot) {
+//
+//         AttributeValueReader dataProvider = new BeanConstraintDataProvider();
+//         dataProvider.initialize(data);
+//         
+//         return validateObject(data, objStructure, entryName, dataProvider, elementStack, isRoot);
+//    }
+
+    
+    private List<ValidationResultInfo> validateObject(String entryName, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean isRoot, boolean checkIfRequired) {
 
        List<ValidationResultInfo> results = new ArrayList<ValidationResultInfo>();
 
         // Push object structure to the top of the stack
-        StringBuilder objXPathElement = new StringBuilder(dataProvider.getPath());
+        StringBuilder objXPathElement = new StringBuilder(attributeValueReader.getPath());
 
         if(!isRoot && !objXPathElement.toString().isEmpty()){
         	elementStack.push(objXPathElement.toString());
         }
 
-        /*
-         * Do nothing if the object to be validated is not type/state or if the objectstructure with constraints is not
-         * provided
-         */
-        if (null == objStructure) {
+        List<Constrained> definitions = attributeValueReader.getDefinitions();
+     
+        // Do nothing if the attribute value reader doesn't contain a dictionary entry or has no child definitions
+        if (null == attributeValueReader.getEntry() || null == definitions) {
             return results;
         }
-
-        for (AttributeDefinition f : objStructure.getAttributes()) {
-        	if (f/*.getConstraint()*/ == null)
+        
+        
+        for (Constrained definition : definitions) {
+        	if (definition == null)
         		continue;
         	
-            List<ValidationResultInfo> l = validateField(f, objStructure, dataProvider, elementStack);
+        	String attributeName = definition.getName();
+        	
+            List<ValidationResultInfo> l = validateField(definition, entryName, attributeName, attributeValueReader, elementStack, checkIfRequired);
 
             if (l != null && l.size() > 0) {
-            	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objStructure.getBusinessObjectClass().getName(), f.getName());
-            	GlobalVariables.getMessageMap().putError(f.getName(), RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, "LENGTH" });
+            	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
+            	GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, "LENGTH" });
             }
             
             results.addAll(l);
 
             // Use Custom Validators
-            String customValidatorClass = f.getCustomValidatorClass(); //f.getConstraint() != null ? f.getConstraint().getCustomValidatorClass() : null;
-            if (customValidatorClass != null) {
-            	Validator customValidator = validatorFactory.getValidator(customValidatorClass);
-            	if(customValidator==null){
-            		throw new RuntimeException("Custom Validator "+customValidatorClass+" was not configured in this context");
-            	}
-            	l = customValidator.validateObject(f.getName(),data,elementStack);
-            	results.addAll(l);
-            }
+// FIXME: JLR - turning off custom validators
+//            String customValidatorClass = f.getCustomValidatorClass(); //f.getConstraint() != null ? f.getConstraint().getCustomValidatorClass() : null;
+//            if (customValidatorClass != null) {
+//            	Validator customValidator = validatorFactory.getValidator(customValidatorClass);
+//            	if(customValidator==null){
+//            		throw new RuntimeException("Custom Validator "+customValidatorClass+" was not configured in this context");
+//            	}
+//            	l = customValidator.validateObject(f.getName(),data,elementStack);
+//            	results.addAll(l);
+//            }
         }
         if (!isRoot && !objXPathElement.toString().isEmpty()){
         	elementStack.pop();
@@ -316,93 +407,100 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         return results;
     }
     
+    public List<ValidationResultInfo> validateField(String entryName, String attributeName, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+		Constrained definition = attributeValueReader.getDefinition(attributeName);
+        return validateField(definition, entryName, attributeName, attributeValueReader, elementStack, checkIfRequired);
+    }
 
-    public List<ValidationResultInfo> validateField(AttributeDefinition field, BusinessObjectEntry objStruct, ConstraintDataProvider dataProvider, Stack<String> elementStack) {
-        Object value = dataProvider.getValue(field.getName());
+    public List<ValidationResultInfo> validateField(Constrained definition, String entryName, String attributeName, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+    	Object value;
+		try {
+			value = attributeValueReader.getValue(attributeName);
+		} catch (IllegalArgumentException e) {
+			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
+		} catch (IllegalAccessException e) {
+			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
+		} catch (InvocationTargetException e) {
+			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
+		}
+
+    	return validateField(definition, entryName, attributeName, value, attributeValueReader, elementStack, checkIfRequired);
+    }
+    
+    public List<ValidationResultInfo> validateField(Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+
     	List<ValidationResultInfo> results = new ArrayList<ValidationResultInfo>();
 
+    	// Since the attribute definition is where we keep constraints -- if the reader can't provide one, then it's an exception
+    	if (definition == null)
+    		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + attributeName + "\" on entry \"" + entryName + "\" because no attribute definition can be found.");
+    	
     	// Handle null values in field
-    	if (value == null || "".equals(value.toString().trim())) {
-    		processConstraint(results, field, objStruct, value, dataProvider, elementStack);
+    	// FIXME: JLR - removing empty string check here - need to re-add somewhere else, most likely
+    	if (value == null) { // || "".equals(value.toString().trim())) {
+    		processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack);
     		return results;
     	}
 
-        /*
-         * For complex object structures only the following constraints apply 1. TypeStateCase 2. MinOccurs 3. MaxOccurs
-         */
-        if (DataType.COMPLEX.equals(field.getDataType())) {
-            BusinessObjectEntry nestedObjStruct = null;
+    	// Check to see if this attribute has been declared to have a specific 'data type' like they do in Kuali Student
+    	DataType dataType = definition.getDataType();
+    	
+    	// As per the KS-code, the only constraints that apply to complex objects structures are 1. TypeStateCase, 2. MinOccurs, and 3. MaxOccurs
+    	if (dataType != null && dataType.equals(DataType.COMPLEX)) {
+    		String childEntryName = definition.getChildEntryName();
 
-//            if (null != field.getDataObjectStructure()) {
-//                nestedObjStruct = field.getDataObjectStructure();
-//            }
+    		DataDictionaryEntry childEntry = childEntryName != null ? getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
 
-            elementStack.push(field.getName());
+    		if (childEntry == null)
+    			throw new AttributeValidationException("No valid child entry of the name " + childEntryName + " can be found in the data dictionary");
+    		
+    		elementStack.push(childEntryName);
+    		
+    		AttributeValueReader nestedAttributeValueReader = new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry);
+    		
+    		if (value instanceof Collection) {
 
-            if (value instanceof Collection) {
-
+    			// FIXME: JLR - doesn't seem to be used. 
                 String xPathForCollection = getElementXpath(elementStack) + "/*";
 
                 int i=0;
                 for (Object o : (Collection<?>) value) {
+                	// FIXME: JLR - in code below this is Integer.toBinaryString()  -- should they be the same? 
                 	elementStack.push(Integer.toString(i));
-                    processNestedObjectStructure(results, o, nestedObjStruct, field, elementStack);
+                	results.addAll(validateObject(childEntryName, nestedAttributeValueReader, elementStack, false, checkIfRequired));
                     elementStack.pop();
                     i++;
                 }
-//                if (field.getConstraint().getMinOccurs() != null && field.getConstraint().getMinOccurs() > ((Collection<?>) value).size()) {
-//                    ValidationResultInfo valRes = new ValidationResultInfo(xPathForCollection, value);
-//                    valRes.setError(MessageUtils.interpolate(getMessage("validation.minOccurs"), toMap(field.getConstraint())));
-//                    results.add(valRes);
-//                }
-                checkFieldRequired(field, objStruct, ((Collection<?>) value).size());
+                if (checkIfRequired)
+                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
 
-//                Integer maxOccurs = tryParse(field.getConstraint().getMaxOccurs());
-//                if (maxOccurs != null && maxOccurs < ((Collection<?>) value).size()) {
-//                    ValidationResultInfo valRes = new ValidationResultInfo(xPathForCollection, value);
-//                    valRes.setError(MessageUtils.interpolate(getMessage("validation.maxOccurs"), toMap(field.getConstraint())));
-//                    results.add(valRes);
-//                }
-                checkFieldTooMany(field, objStruct, ((Collection<?>) value).size());
+                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
             } else {
-                processNestedObjectStructure(results, value, nestedObjStruct, field, elementStack);
+            	results.addAll(validateObject(childEntryName, nestedAttributeValueReader, elementStack, false, checkIfRequired));
             }
-
-            elementStack.pop();
-
         } else { // If non complex data type
 
             if (value instanceof Collection) {
 
-                if(((Collection<?>)value).isEmpty()){
-                    processConstraint(results, field, objStruct, "", dataProvider, elementStack);
+                if (((Collection<?>)value).isEmpty()) {
+                    processConstraint(results, definition, entryName, attributeName, null, attributeValueReader, elementStack);
                 }
 
             	int i = 0;
                 for (Object o : (Collection<?>) value) {
                 	elementStack.push(Integer.toBinaryString(i));
-                    processConstraint(results, field, objStruct, o, dataProvider, elementStack);
+                    processConstraint(results, definition, entryName, attributeName, o, attributeValueReader, elementStack);
                     elementStack.pop();
                     i++;
                 }
 
-                String xPath = getElementXpath(elementStack) + "/" + field.getName() + "/*";
-//                if (field.getConstraint().getMinOccurs() != null && field.getConstraint().getMinOccurs() > ((Collection<?>) value).size()) {
-//                    ValidationResultInfo valRes = new ValidationResultInfo(xPath, value);
-//                    valRes.setError(MessageUtils.interpolate(getMessage("validation.minOccurs"), toMap(field.getConstraint())));
-//                    results.add(valRes);
-//                }
-                checkFieldRequired(field, objStruct, ((Collection<?>) value).size());
-
-//                Integer maxOccurs = tryParse(field.getConstraint().getMaxOccurs());
-//                if (maxOccurs != null && maxOccurs < ((Collection<?>) value).size()) {
-//                    ValidationResultInfo valRes = new ValidationResultInfo(xPath, value);
-//                    valRes.setError(MessageUtils.interpolate(getMessage("validation.maxOccurs"), toMap(field.getConstraint())));
-//                    results.add(valRes);
-//                }
-                checkFieldTooMany(field, objStruct, ((Collection<?>) value).size());
+                String xPath = getElementXpath(elementStack) + "/" + attributeName + "/*";
+                if (checkIfRequired)
+                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
+                
+                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
             } else {
-                processConstraint(results, field, objStruct, value, dataProvider, elementStack);
+                processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack);
             }
 
         }
@@ -421,70 +519,87 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         return result;
     }
 
-    protected void processNestedObjectStructure(List<ValidationResultInfo> results, Object value, BusinessObjectEntry nestedObjStruct, AttributeDefinition field, Stack<String> elementStack) {
+//    protected void processNestedObjectStructure(List<ValidationResultInfo> results, Object value, DataDictionaryEntry nestedObjStruct, Constrained field, String entryName, Stack<String> elementStack) {
+//
+//        results.addAll(validateObject(value, nestedObjStruct, entryName, elementStack, false));
+//
+//    }
 
-        results.addAll(validateObject(value, nestedObjStruct, elementStack, false));
+    protected void processConstraint(List<ValidationResultInfo> valResults, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) {
 
+    	try {
+    		Constrained child = null;
+    		// Process Case Constraint
+    		// Case Constraint are only evaluated on the field. Nested case constraints are currently ignored
+    		CaseConstraint caseConstraint = definition.getCaseConstraint();
+    		if (null != caseConstraint) {
+    			child = processCaseConstraint(valResults, caseConstraint, definition, entryName, attributeName, value, attributeValueReader, elementStack);
+    		}
+    		
+    		Constrained nestedDefinition = (null != child) ? child : definition;
+
+    		processBaseConstraints(valResults, nestedDefinition, entryName, attributeName, value, attributeValueReader, elementStack);
+
+    		// Stop other checks if value is null
+    		if (value == null) { // || "".equals(value.toString().trim())) {
+    			return;
+    		}
+
+    		String elementPath = getElementXpath(elementStack) + "/" + attributeName;
+
+
+    		// Process Valid Chars Constraint
+    		ValidCharsConstraint validCharsConstraint = nestedDefinition.getValidChars();
+    		if (null != validCharsConstraint) {
+    			ValidationResultInfo val = processValidCharConstraint(validCharsConstraint, nestedDefinition, entryName, attributeName, value, attributeValueReader, elementPath);
+    			if (null != val) {
+    				valResults.add(val);
+    			}
+    		}
+
+    		// Process Require Constraints (only if this field has value)
+    		List<RequiredConstraint> requiredConstraints = nestedDefinition.getRequireConstraint();
+    		if (null != requiredConstraints && requiredConstraints.size() > 0) {
+    			for (RequiredConstraint requiredConstraint : requiredConstraints) {
+    				ValidationResultInfo val;
+
+    				val = processRequireConstraint(requiredConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath);
+    				if (null != val) {
+    					valResults.add(val);
+    				}
+    			}
+    		}
+
+    		// Process Occurs Constraint
+    		List<MustOccurConstraint> mustOccurConstraints = nestedDefinition.getOccursConstraint();
+    		if (null != mustOccurConstraints && mustOccurConstraints.size() > 0) {
+    			for (MustOccurConstraint occursConstraint : mustOccurConstraints) {
+    				ValidationResultInfo val = processOccursConstraint(occursConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath);
+    				if (null != val) {
+    					valResults.add(val);
+    				}
+    			}
+    		}
+
+    	} catch (IllegalArgumentException e) {
+    		e.printStackTrace();
+    	} catch (IllegalAccessException e) {
+    		e.printStackTrace();
+    	} catch (InvocationTargetException e) {
+    		e.printStackTrace();
+    	}
+
+    	// Process lookup Constraint
+    	//        if (null != constraint.getLookupDefinition()) {
+    	//            processLookupConstraint(valResults, constraint.getLookupDefinition(), field, elementStack, dataProvider);
+    	//        }
     }
 
-    protected void processConstraint(List<ValidationResultInfo> valResults, AttributeDefinition field, BusinessObjectEntry objStructure, Object value, ConstraintDataProvider dataProvider, Stack<String> elementStack) {
-
-        // Process Case Constraint
-        // Case Constraint are only evaluated on the field. Nested case constraints are currently ignored
-        Constraint caseConstraint = processCaseConstraint(valResults, field, objStructure, value, dataProvider, elementStack);
-
-        //Constraint constraint = (null != caseConstraint) ? caseConstraint : field.getConstraint();
-
-        processBaseConstraints(valResults, field, objStructure, field.getDataType(), field.getName(), value, elementStack);
-
-        // Stop other checks if value is null
-        if (value == null || "".equals(value.toString().trim())) {
-            return;
-        }
-
-        String elementPath = getElementXpath(elementStack) + "/" + field.getName();
-
-        // Process Valid Chars
-        if (null != field.getValidChars()) {
-            ValidationResultInfo val = processValidCharConstraint(field, objStructure, elementPath, field.getValidChars(), dataProvider, value);
-            if (null != val) {
-                valResults.add(val);
-            }
-        }
-
-        // Process Require Constraints (only if this field has value)
-        if (value != null && !"".equals(value.toString().trim())) {
-            if (null != field.getRequireConstraint() && field.getRequireConstraint().size() > 0) {
-                for (RequiredConstraint rc : field.getRequireConstraint()) {
-                    ValidationResultInfo val = processRequireConstraint(elementPath, rc, field, objStructure, dataProvider);
-                    if (null != val) {
-                        valResults.add(val);
-                    }
-                }
-            }
-        }
-
-        // Process Occurs Constraint
-        if (null != field.getOccursConstraint() && field.getOccursConstraint().size() > 0) {
-            for (MustOccurConstraint oc : field.getOccursConstraint()) {
-                ValidationResultInfo val = processOccursConstraint(elementPath, oc, field, objStructure, dataProvider);
-                if (null != val) {
-                    valResults.add(val);
-                }
-            }
-        }
-
-        // Process lookup Constraint
-//        if (null != constraint.getLookupDefinition()) {
-//            processLookupConstraint(valResults, constraint.getLookupDefinition(), field, elementStack, dataProvider);
-//        }
-    }
-
-    protected ValidationResultInfo processRequireConstraint(String element, RequiredConstraint constraint, AttributeDefinition field, BusinessObjectEntry objStructure, ConstraintDataProvider dataProvider) {
+    protected ValidationResultInfo processRequireConstraint(RequiredConstraint constraint, Constrained definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 
         ValidationResultInfo val = null;
 
-        String fieldName = constraint.getFieldPath();// TODO parse fieldname from here
+        String fieldName = constraint.getFieldPath();
         Object fieldValue = dataProvider.getValue(fieldName);
 
         boolean result = true;
@@ -504,11 +619,11 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 //            val = new ValidationResultInfo(element, fieldValue);
 //            val.setError(MessageUtils.interpolate(getMessage("validation.requiresField"), rMap));
         	
-        	AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(objStructure.getBusinessObjectClass().getName(), fieldName);
+        	Constrained attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, fieldName);
         	if (attributeDefinition != null)
         		fieldName = attributeDefinition.getLabel();
         	
-        	setFieldError(field, objStructure, RiceKeyConstants.ERROR_REQUIRES_FIELD, fieldName);
+        	setFieldError(entryName, definition, RiceKeyConstants.ERROR_REQUIRES_FIELD, fieldName);
         }
 
         return val;
@@ -516,24 +631,30 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 
     /**
      * Process caseConstraint tag and sets any of the base constraint items if any of the when condition matches
-     *
+     * @param caseConstraint TODO
+     * @param definition TODO
+     * @param entryName TODO
+     * @param attributeName TODO
      * @param constraint
      * @param caseConstraint
-     * @param field
+     * @throws InvocationTargetException 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
      */
-    protected Constraint processCaseConstraint(List<ValidationResultInfo> valResults, AttributeDefinition field, BusinessObjectEntry objStructure, Object value, ConstraintDataProvider dataProvider, Stack<String> elementStack) {
+    protected Constrained processCaseConstraint(List<ValidationResultInfo> valResults, CaseConstraint caseConstraint, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 
-        CaseConstraint constraint = field./*getConstraint().*/getCaseConstraint();
+        CaseConstraint constraint = definition.getCaseConstraint();
 
         if (null == constraint) {
             return null;
         }
 
         String operator = (hasText(constraint.getOperator())) ? constraint.getOperator() : "EQUALS";
-        AttributeDefinition caseField = (hasText(constraint.getFieldPath())) ? ValidatorUtils.getField(constraint.getFieldPath(), objStructure) : null;
+        AttributeValueReader nestedReader = (hasText(constraint.getFieldPath())) ? ValidatorUtils.getDefinition(constraint.getFieldPath(), attributeValueReader) : null;
 
         // TODO: What happens when the field is not in the dataProvider?
-        Object fieldValue = (null != caseField) ? dataProvider.getValue(caseField.getName()) : value;
+        Constrained caseField = (null != nestedReader) ? nestedReader.getDefinition(nestedReader.getCurrentName()) : null;
+        Object fieldValue = (null != nestedReader) ? nestedReader.getValue(nestedReader.getCurrentName()) : value;
         DataType fieldDataType = (null != caseField ? caseField.getDataType():null);
 
         // If fieldValue is null then skip Case check
@@ -556,12 +677,12 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         return null;
     }
 
-    protected ValidationResultInfo processValidCharConstraint(AttributeDefinition field, BusinessObjectEntry objStructure, String element, ValidCharsConstraint vcConstraint, ConstraintDataProvider dataProvider, Object value) {
+    protected ValidationResultInfo processValidCharConstraint(ValidCharsConstraint validCharsConstraint, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, String element) {
 
         ValidationResultInfo val = null;
 
         StringBuilder fieldValue = new StringBuilder();
-        String validChars = vcConstraint.getValue();
+        String validChars = validCharsConstraint.getValue();
 
         fieldValue.append(ValidatorUtils.getString(value));
 
@@ -582,11 +703,11 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 //                }else{
 //                	val.setError(getMessage("validation.validCharsFailed"));
 //                }
-            	if (vcConstraint.getLabelKey()!=null) {
+            	if (validCharsConstraint.getLabelKey()!=null) {
             		// FIXME: This shouldn't surface label key itself to the user - it should look up the label key, but this needs to be implemented in Rice
-            		setFieldError(field, objStructure, RiceKeyConstants.ERROR_CUSTOM, vcConstraint.getLabelKey());
+            		setFieldError(entryName, definition, RiceKeyConstants.ERROR_CUSTOM, validCharsConstraint.getLabelKey());
             	} else {
-            		setFieldError(field, objStructure, RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
+            		setFieldError(entryName, definition, RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
             	}
             }
         }
@@ -596,17 +717,21 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 
     /**
      * Computes if all the filed required in the occurs clause are between the min and max
-     *
-     * @param valResults
      * @param constraint
-     * @param field
+     * @param definition
+     * @param entryName
+     * @param attributeName TODO
+     * @param dataProvider
+     * @param valResults
      * @param type
      * @param state
-     * @param objStructure
-     * @param dataProvider
+     *
      * @return
+     * @throws InvocationTargetException 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
      */
-    protected ValidationResultInfo processOccursConstraint(String element, MustOccurConstraint constraint, AttributeDefinition field, BusinessObjectEntry objStructure, ConstraintDataProvider dataProvider) {
+    protected ValidationResultInfo processOccursConstraint(MustOccurConstraint constraint, Constrained definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 
         boolean result = false;
         int trueCount = 0;
@@ -614,11 +739,11 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         ValidationResultInfo val = null;
 
         for (RequiredConstraint rc : constraint.getRequiredFields()) {
-            trueCount += (processRequireConstraint("", rc, field, objStructure, dataProvider) != null) ? 1 : 0;
+            trueCount += (processRequireConstraint(rc, definition, entryName, attributeName, dataProvider, "") != null) ? 1 : 0;
         }
 
         for (MustOccurConstraint oc : constraint.getOccurs()) {
-            trueCount += (processOccursConstraint("", oc, field, objStructure, dataProvider) != null) ? 1 : 0;
+            trueCount += (processOccursConstraint(oc, definition, entryName, attributeName, dataProvider, "") != null) ? 1 : 0;
         }
 
         result = (trueCount >= constraint.getMin() && trueCount <= constraint.getMax()) ? true : false;
@@ -627,7 +752,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
          // TODO: figure out what data should go here instead of null
 //            val = new ValidationResultInfo(element, null);
 //            val.setError(getMessage("validation.occurs"));
-        	setFieldError(field, objStructure, RiceKeyConstants.ERROR_OCCURS);
+        	setFieldError(definition, entryName, RiceKeyConstants.ERROR_OCCURS);
         }
 
         return val;
@@ -683,7 +808,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 //        }
 //    }
 
-    protected void processBaseConstraints(List<ValidationResultInfo> valResults, AttributeDefinition field, BusinessObjectEntry objStructure, DataType dataType, String name, Object value, Stack<String> elementStack) {
+    protected void processBaseConstraints(List<ValidationResultInfo> valResults, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) {
 
         if (value == null || "".equals(value.toString().trim())) {
 //            if ((constraint.getMinOccurs() != null && constraint.getMinOccurs() > 0)
@@ -693,30 +818,48 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 //                valResults.add(val);
 //            	setFieldRequiredError(field, objStructure);
 //            }
-        	checkFieldRequired(field, objStructure);
+        	checkFieldRequired(definition, entryName);
             return;
         }
 
-        String elementPath = getElementXpath(elementStack) + "/" + name;
+        String elementPath = getElementXpath(elementStack) + "/" + attributeName;
 
+        DataType dataType = definition.getDataType();
+        
+        // FIXME: JLR - this needs to be refactored extensively to take advantage of the fact that we probably already know the data type at this point
+        // and so don't have to do all of this heuristical stuff with strings
+        if (dataType == null) {
+        	Class<?> attributeType = attributeValueReader.getType(attributeName);
+            if (TypeUtils.isStringClass(attributeType)) 
+            	dataType = DataType.STRING;
+            else if (TypeUtils.isIntegralClass(attributeType))
+            	dataType = DataType.INTEGER;
+            else if (TypeUtils.isDecimalClass(attributeType)) 
+            	dataType = DataType.DOUBLE;
+            else if (TypeUtils.isTemporalClass(attributeType))
+            	dataType = DataType.DATE;
+            else
+            	dataType = DataType.STRING;
+        }
+        
         if (DataType.STRING.equals(dataType)) {
-            validateString(field, objStructure, value, elementPath, valResults);
+            validateString(definition, entryName, value, elementPath, valResults);
         } else if (DataType.INTEGER.equals(dataType)) {
-            validateInteger(field, objStructure, value, elementPath, valResults);
+            validateInteger(definition, entryName, value, elementPath, valResults);
         } else if (DataType.LONG.equals(dataType)) {
-            validateLong(field, objStructure, value, elementPath, valResults);
+            validateLong(definition, entryName, value, elementPath, valResults);
         } else if (DataType.DOUBLE.equals(dataType)) {
-            validateDouble(field, objStructure, value, elementPath, valResults);
+            validateDouble(definition, entryName, value, elementPath, valResults);
         } else if (DataType.FLOAT.equals(dataType)) {
-            validateFloat(field, objStructure, value, elementPath, valResults);
+            validateFloat(definition, entryName, value, elementPath, valResults);
         } else if (DataType.BOOLEAN.equals(dataType)) {
-            validateBoolean(field, objStructure, value, elementPath, valResults);
+            validateBoolean(definition, entryName, value, elementPath, valResults);
         } else if (DataType.DATE.equals(dataType)) {
-            validateDate(field, objStructure, value, elementPath, valResults, dateParser);
+            validateDate(definition, entryName, value, elementPath, valResults, dateParser);
         }
     }
 
-    protected void validateBoolean(AttributeDefinition field, BusinessObjectEntry objStructure, Object value, String element, List<ValidationResultInfo> results) {
+    protected void validateBoolean(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
         if (!(value instanceof Boolean)) {
             try {
                 Boolean.valueOf(value.toString());
@@ -724,12 +867,12 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 //                ValidationResultInfo val = new ValidationResultInfo(element, value);
 //                val.setError(getMessage("validation.mustBeBoolean"));
 //                results.add(val);
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_BOOLEAN);
+            	setFieldError(field, entryName, RiceKeyConstants.ERROR_BOOLEAN);
             }
         }
     }
 
-    protected void validateDouble(AttributeDefinition field, BusinessObjectEntry objStructure, Object value, String element, List<ValidationResultInfo> results) {
+    protected void validateDouble(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
         Double v = null;
 
         ValidationResultInfo val = new ValidationResultInfo(element, value);
@@ -741,7 +884,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
                 v = Double.valueOf(value.toString());
             } catch (Exception e) {
 //                val.setError(getMessage("validation.mustBeDouble"));
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_BIG_DECIMAL);
+            	setFieldError(field, entryName, RiceKeyConstants.ERROR_BIG_DECIMAL);
             }
         }
 
@@ -753,17 +896,17 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
                 // validate range
                 if (v > maxValue || v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
                 }
             } else if (maxValue != null) {
                 if (v > maxValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
                 }
             } else if (minValue != null) {
                 if (v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
                 }
             }
         }
@@ -773,7 +916,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         }
     }
 
-    protected void validateFloat(AttributeDefinition field, BusinessObjectEntry objStructure, Object value, String element, List<ValidationResultInfo> results) {
+    protected void validateFloat(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
         Float v = null;
 
         ValidationResultInfo val = new ValidationResultInfo(element, value);
@@ -784,7 +927,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
                 v = Float.valueOf(value.toString());
             } catch (Exception e) {
 //                val.setError(getMessage("validation.mustBeFloat"));
-                setFieldError(field, objStructure, RiceKeyConstants.ERROR_BIG_DECIMAL);
+                setFieldError(field, entryName, RiceKeyConstants.ERROR_BIG_DECIMAL);
             }
         }
 
@@ -796,17 +939,17 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
                 // validate range
                 if (v > maxValue || v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
                 }
             } else if (maxValue != null) {
                 if (v > maxValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
                 }
             } else if (minValue != null) {
                 if (v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
                 }
             }
         }
@@ -816,7 +959,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         }
     }
 
-    protected void validateLong(AttributeDefinition field, BusinessObjectEntry objStructure, Object value, String element, List<ValidationResultInfo> results) {
+    protected void validateLong(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
         Long v = null;
 
         ValidationResultInfo val = new ValidationResultInfo(element, value);
@@ -826,7 +969,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
             try {
                 v = Long.valueOf(value.toString());
             } catch (Exception e) {
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_LONG);
+            	setFieldError(field, entryName, RiceKeyConstants.ERROR_LONG);
             }
         }
 
@@ -838,17 +981,17 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
                 // validate range
                 if (v > maxValue || v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
                 }
             } else if (maxValue != null) {
                 if (v > maxValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
                 }
             } else if (minValue != null) {
                 if (v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
                 }
             }
         }
@@ -859,7 +1002,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 
     }
 
-    protected void validateInteger(AttributeDefinition field, BusinessObjectEntry objStructure, Object value, String element, List<ValidationResultInfo> results) {
+    protected void validateInteger(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
         Integer v = null;
 
         ValidationResultInfo val = new ValidationResultInfo(element, value);
@@ -870,7 +1013,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
             try {
                 v = Integer.valueOf(value.toString());
             } catch (Exception e) {
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_INTEGER);
+            	setFieldError(field, entryName, RiceKeyConstants.ERROR_INTEGER);
             }
         }
 
@@ -882,17 +1025,17 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
                 // validate range
                 if (v > maxValue || v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
                 }
             } else if (maxValue != null) {
                 if (v > maxValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
                 }
             } else if (minValue != null) {
                 if (v < minValue) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
                 }
             }
         }
@@ -902,7 +1045,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         }
     }
 
-    protected void validateDate(AttributeDefinition field, BusinessObjectEntry objStructure, Object value, String element, List<ValidationResultInfo> results, DateParser dateParser) {
+    protected void validateDate(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results, DateParser dateParser) {
         ValidationResultInfo val = new ValidationResultInfo(element, value);
 
         Date v = null;
@@ -913,7 +1056,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
             try {
                 v = dateParser.parseDate(value.toString());
             } catch (Exception e) {
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_DATE);
+            	setFieldError(field, entryName, RiceKeyConstants.ERROR_DATE);
             }
         }
 
@@ -925,17 +1068,17 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
                 // validate range
                 if (v.getTime() > maxValue.getTime() || v.getTime() < minValue.getTime()) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
                 }
             } else if (maxValue != null) {
                 if (v.getTime() > maxValue.getTime()) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
                 }
             } else if (minValue != null) {
                 if (v.getTime() < minValue.getTime()) {
 //                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(field, objStructure, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
                 }
             }
         }
@@ -945,7 +1088,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         }
     }
 
-    protected void validateString(AttributeDefinition field, BusinessObjectEntry objStructure, Object value, String element, List<ValidationResultInfo> results) {
+    protected void validateString(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
 
         String s = value == null ? "" : value.toString().trim();
 
@@ -955,17 +1098,17 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         if (maxLength != null && field.getMinLength() != null && field.getMinLength().intValue() > 0) {
             if (s.length() > maxLength.intValue() || s.length() < field.getMinLength().intValue()) {
 //                val.setError(MessageUtils.interpolate(getMessage("validation.lengthOutOfRange"), toMap(constraint)));
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_LENGTH_OUT_OF_RANGE, String.valueOf(field.getMinLength()), String.valueOf(field.getMaxLength()));
+            	setFieldError(entryName, field, RiceKeyConstants.ERROR_LENGTH_OUT_OF_RANGE, String.valueOf(field.getMinLength()), String.valueOf(field.getMaxLength()));
             }
         } else if (maxLength != null) {
             if (s.length() > field.getMaxLength().intValue()) {
 //                val.setError(MessageUtils.interpolate(getMessage("validation.maxLengthFailed"), toMap(constraint)));
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_MAX_LENGTH, String.valueOf(field.getMaxLength()));
+            	setFieldError(entryName, field, RiceKeyConstants.ERROR_MAX_LENGTH, String.valueOf(field.getMaxLength()));
             }
         } else if (field.getMinLength() != null && field.getMinLength().intValue() > 0) {
             if (s.length() < field.getMinLength().intValue()) {
 //                val.setError(MessageUtils.interpolate(getMessage("validation.minLengthFailed"), toMap(constraint)));
-            	setFieldError(field, objStructure, RiceKeyConstants.ERROR_MIN_LENGTH, String.valueOf(field.getMinLength()));
+            	setFieldError(entryName, field, RiceKeyConstants.ERROR_MIN_LENGTH, String.valueOf(field.getMinLength()));
             }
         }
 
@@ -1022,7 +1165,7 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         return false;
     }
 
-    protected Map<String, Object> toMap(Constraint c) {
+    protected Map<String, Object> toMap(ConstraintHolder c) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("minOccurs", c.getMinOccurs());
         result.put("maxOccurs", c.getMaxOccurs());
@@ -1035,36 +1178,36 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
         return result;
     }
     
-    private void checkFieldRequired(AttributeDefinition field, BusinessObjectEntry objStructure) {
-    	checkFieldRequired(field, objStructure, 0);
+    private void checkFieldRequired(Constrained field, String entryName) {
+    	checkFieldRequired(field, entryName, 0);
     }
     
-    private void checkFieldRequired(AttributeDefinition field, BusinessObjectEntry objStructure, int numberOfOccurrences) {
+    private void checkFieldRequired(Constrained field, String entryName, int numberOfOccurrences) {
         if (field.getMinOccurs() != null && field.getMinOccurs().intValue() > numberOfOccurrences) {
-        	setFieldError(field, objStructure, RiceKeyConstants.ERROR_MIN_OCCURS, String.valueOf(field.getMinOccurs()));
+        	setFieldError(entryName, field, RiceKeyConstants.ERROR_MIN_OCCURS, String.valueOf(field.getMinOccurs()));
         } else if (field.isRequired() != null && field.isRequired().booleanValue()) {
-        	setFieldRequiredError(field, objStructure);
+        	setFieldRequiredError(field, entryName);
         }
     }
     
-    private void checkFieldTooMany(AttributeDefinition field, BusinessObjectEntry objStructure, int numberOfOccurrences) {
-    	Integer maxOccurs = tryParse(field.getMaxOccurs());
+    private void checkFieldTooMany(Constrained field, String entryName, int numberOfOccurrences) {
+    	Integer maxOccurs = field.getMaxOccurs();
         if (maxOccurs != null && maxOccurs.intValue() < numberOfOccurrences) {
-            setFieldError(field, objStructure, RiceKeyConstants.ERROR_MAX_OCCURS, field.getMaxOccurs());
+            setFieldError(entryName, field, RiceKeyConstants.ERROR_MAX_OCCURS, String.valueOf(field.getMaxOccurs()));
         }
     }
     
-    private void setFieldRequiredError(AttributeDefinition field, BusinessObjectEntry objStructure) {
-    	setFieldError(field, objStructure, RiceKeyConstants.ERROR_REQUIRED);
+    private void setFieldRequiredError(Constrained field, String entryName) {
+    	setFieldError(field, entryName, RiceKeyConstants.ERROR_REQUIRED);
     }
     
-    private void setFieldError(AttributeDefinition field, BusinessObjectEntry objStructure, String key) {
-    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objStructure.getBusinessObjectClass().getName(), field.getName());
+    private void setFieldError(Constrained field, String entryName, String key) {
+    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, field.getName());
     	GlobalVariables.getMessageMap().putError(field.getName(), key, errorLabel);
     }
     
-    private void setFieldError(AttributeDefinition field, BusinessObjectEntry objStructure, String key, String ... args) {
-    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objStructure.getBusinessObjectClass().getName(), field.getName());
+    private void setFieldError(String entryName, Constrained field, String key, String ... args) {
+    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, field.getName());
     	// FIXME: There's got to be a cleaner way of doing this.
     	List<String> list = new LinkedList<String>();
     	list.add(errorLabel);
@@ -1083,14 +1226,14 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 //        this.searchDispatcher = searchDispatcher;
 //    }
 
-    @Override
-	public List<ValidationResultInfo> validateObject(String fieldName,
-			Object o,Stack<String> elementStack) {
-		
-		// TODO: look up AttributeDefinition and BusinessObjectEntry 
-		
-		return null;
-	}
+//    @Override
+//	public List<ValidationResultInfo> validateObject(String fieldName,
+//			Object o,Stack<String> elementStack) {
+//		
+//		// TODO: look up Constrained and BusinessObjectEntry 
+//		
+//		return null;
+//	}
 
 	/**
 	 * @return the dataDictionaryService
@@ -1119,5 +1262,25 @@ public class DefaultValidatorImpl extends BaseAbstractValidator {
 	public void setPersistenceStructureService(
 			PersistenceStructureService persistenceStructureService) {
 		this.persistenceStructureService = persistenceStructureService;
+	}
+
+
+	/**
+	 * @return the workflowAttributePropertyResolutionService
+	 */
+	public WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+    	if (workflowAttributePropertyResolutionService == null) {
+    		workflowAttributePropertyResolutionService = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
+    	}
+    	return workflowAttributePropertyResolutionService;
+	}
+
+
+	/**
+	 * @param workflowAttributePropertyResolutionService the workflowAttributePropertyResolutionService to set
+	 */
+	public void setWorkflowAttributePropertyResolutionService(
+			WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService) {
+		this.workflowAttributePropertyResolutionService = workflowAttributePropertyResolutionService;
 	}
 }

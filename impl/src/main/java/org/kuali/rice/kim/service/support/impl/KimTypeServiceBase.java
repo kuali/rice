@@ -466,6 +466,7 @@ public class KimTypeServiceBase implements KimTypeService {
                     return;
                 }
             }
+            // FIXME: This needs review by Scott 
             /*BigDecimal*/ String exclusiveMin = getAttributeExclusiveMin(definition);
             if (exclusiveMin != null) {
                 try {

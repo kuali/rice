@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class WhenConstraint {
 	protected List<Object> values;
 	protected String valuePath;
-	protected Constraint constraint;
+	protected Constrained constraint;
 
 	public List<Object> getValues() {
 		return values;
@@ -33,11 +33,11 @@ public class WhenConstraint {
 		this.valuePath = valuePath;
 	}
 
-	public Constraint getConstraint() {
+	public Constrained getConstraint() {
 		return constraint;
 	}
 
-	public void setConstraint(Constraint constraint) {
+	public void setConstraint(Constrained constraint) {
 		this.constraint = constraint;
 	}
 }

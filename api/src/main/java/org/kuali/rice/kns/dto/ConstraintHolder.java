@@ -8,9 +8,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Constraint extends BaseConstraint {
+public class ConstraintHolder implements Constrained {
 	public static final String UNBOUNDED = "unbounded";
 	public static final String SINGLE = "1";
+	
+	private String name;
+	private String label;
+	private String childEntryName;
+	private DataType dataType;
+	
 	// Constraints
 	@XmlElement
 	protected boolean serverSide;
@@ -25,13 +31,13 @@ public class Constraint extends BaseConstraint {
 	@XmlElement
 	protected Integer minLength;
 	@XmlElement
-	protected String maxLength;	
+	protected Integer maxLength;	
 	@XmlElement
 	protected ValidCharsConstraint validChars;	
 	@XmlElement
 	protected Integer minOccurs;
 	@XmlElement
-	protected String maxOccurs;
+	protected Integer maxOccurs;
 	
 	@XmlElement
     protected CaseConstraint caseConstraint;
@@ -92,11 +98,11 @@ public class Constraint extends BaseConstraint {
 		this.minLength = minLength;
 	}
 
-	public String getMaxLength() {
+	public Integer getMaxLength() {
 		return maxLength;
 	}
 
-	public void setMaxLength(String maxLength) {
+	public void setMaxLength(Integer maxLength) {
 		this.maxLength = maxLength;
 	}
 
@@ -116,11 +122,11 @@ public class Constraint extends BaseConstraint {
 		this.minOccurs = minOccurs;
 	}
 
-	public String getMaxOccurs() {
+	public Integer getMaxOccurs() {
 		return maxOccurs;
 	}
 
-	public void setMaxOccurs(String maxOccurs) {
+	public void setMaxOccurs(Integer maxOccurs) {
 		this.maxOccurs = maxOccurs;
 	}
 
@@ -177,5 +183,65 @@ public class Constraint extends BaseConstraint {
 
 	public void setCustomValidatorClass(String customValidatorClass) {
 		this.customValidatorClass = customValidatorClass;
+	}
+	
+	public Boolean isRequired() {
+		return Boolean.valueOf(getMinOccurs() != null && getMinOccurs().intValue() > 0);
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the label
+	 */
+	public String getLabel() {
+		return this.label;
+	}
+
+	/**
+	 * @param label the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @return the childEntryName
+	 */
+	public String getChildEntryName() {
+		return this.childEntryName;
+	}
+
+	/**
+	 * @param childEntryName the childEntryName to set
+	 */
+	public void setChildEntryName(String childEntryName) {
+		this.childEntryName = childEntryName;
+	}
+
+	/**
+	 * @return the dataType
+	 */
+	public DataType getDataType() {
+		return this.dataType;
+	}
+
+	/**
+	 * @param dataType the dataType to set
+	 */
+	public void setDataType(DataType dataType) {
+		this.dataType = dataType;
 	}
 }

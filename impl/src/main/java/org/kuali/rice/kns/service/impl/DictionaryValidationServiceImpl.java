@@ -37,12 +37,17 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.kuali.rice.kns.datadictionary.validator.DictionaryObjectAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validator.MaintenanceDocumentAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validator.SingleAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validator.Validator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
@@ -104,8 +109,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public void validateDocument(Document document) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
-        // validate primitive values
-        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", true);
+        DataDictionaryEntryBase documentEntry = (DataDictionaryEntryBase) getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(documentEntryName);
+     // FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
+        validator.validate(documentEntryName, new DictionaryObjectAttributeValueReader(document, documentEntryName, documentEntry), true);
+        
+//        // validate primitive values
+//        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", true);
     }
 
 
@@ -225,10 +234,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		}
     	}
     }
-
+    
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.kns.bo.BusinessObject)
      */
+    @Override
     public void validateBusinessObject(BusinessObject businessObject) {
         validateBusinessObject(businessObject, true);
     }
@@ -236,22 +246,30 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.kns.bo.BusinessObject,boolean)
      */
+    @Override
     public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
         if (ObjectUtils.isNull(businessObject)) {
             return;
         }
+        
+        String entryName = businessObject.getClass().getName();
+        
+        BusinessObjectEntry businessObjectEntry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(entryName);
+     // FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
+        validator.validate(entryName, new DictionaryObjectAttributeValueReader(businessObject, entryName, businessObjectEntry), validateRequired);
+        
 //        if (validator != null) {
 //        	BusinessObjectEntryDTO businessObjectEntry = getDataDictionaryService().getBusinessObjectEntry(businessObject.getClass().getName());
 //        	validator.validateObject(businessObject, businessObjectEntry);
 //        } else {
-	        try {
-	        	// validate the primitive attributes of the bo
-	        	validatePrimitivesFromDescriptors(businessObject.getClass().getName(), businessObject, PropertyUtils.getPropertyDescriptors(businessObject.getClass()), "", validateRequired);
-	        } catch(RuntimeException e) {
-	        	LOG.error(String.format("Exception while validating %s", businessObject.getClass().getName()), e);
-	        	throw e;
-	        }
-//        }
+//	        try {
+//	        	// validate the primitive attributes of the bo
+//	        	validatePrimitivesFromDescriptors(businessObject.getClass().getName(), businessObject, PropertyUtils.getPropertyDescriptors(businessObject.getClass()), "", validateRequired);
+//	        } catch(RuntimeException e) {
+//	        	LOG.error(String.format("Exception while validating %s", businessObject.getClass().getName()), e);
+//	        	throw e;
+//	        }
+////        }
         
     }
 
@@ -260,9 +278,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	 */
 	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
 		
-		// JLR : uses KS style validator instead
-		validator.validateBusinessObjectOnMaintenanceDocument(businessObject, docTypeName);
 		
+		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+		// FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
+		validator.validate(docTypeName, new MaintenanceDocumentAttributeValueReader(businessObject, docTypeName, entry, persistenceStructureService), true);
+		
+//		// JLR : uses KS style validator instead
+//		validator.validateBusinessObjectOnMaintenanceDocument(businessObject, docTypeName);
+//		
 		/*MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
 	    	validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
@@ -387,7 +410,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	if(attributeValues == null || attributeValues.isEmpty()) {
     		return;
     	}
-
+    	
     	for(String attributeValue : attributeValues){
 
     		// JLR : Replacing this logic with KS-style validation is trickier, since KS validation requires a DataProvider object that can
@@ -613,26 +636,57 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param errorPrefix
      */
     public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
-        // validate the primitive attributes if defined in the dictionary
-        if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
-            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
-            Class propertyType = propertyDescriptor.getPropertyType();
+    	
+    	// validate the primitive attributes if defined in the dictionary
+        if (null != propertyDescriptor) { // && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
+        	String attributeName = propertyDescriptor.getName();
+        	AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, attributeName);
+        	
+        	if (attributeDefinition == null) {
+        		// FIXME: JLR - this is what the code was doing effectively already, but seems weird not to throw an exception here if you try to validate 
+        		// something that doesn't have an attribute definition
+        		return;
+        	}
+        	
+        	SingleAttributeValueReader attributeValueReader = new SingleAttributeValueReader(object, attributeDefinition);
+        	
+        	// FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
+        	validator.validate(entryName, attributeName, attributeValueReader, validateRequired);
+        	
+//            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+//            Class propertyType = propertyDescriptor.getPropertyType();
 
-            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-
-                // check value format against dictionary
-                if (value != null && StringUtils.isNotBlank(value.toString())) {
-                    if (!TypeUtils.isTemporalClass(propertyType)) {
-                        validateAttributeFormat(entryName, propertyDescriptor.getName(), value.toString(), errorPrefix + propertyDescriptor.getName());
-                        
-//                        BusinessObjectEntryDTO businessObjectEntry = getDataDictionaryService().getBusinessObjectEntry(entryName);
-//                    	validator.validateObject(object, businessObjectEntry);
-                    }
-                }
-                else if (validateRequired) {
-                    validateAttributeRequired(entryName, propertyDescriptor.getName(), value, Boolean.FALSE, errorPrefix + propertyDescriptor.getName());
-                }
-            }
+//            DataType dataType = null;
+//            
+//            if (TypeUtils.isStringClass(propertyType)) 
+//            	dataType = DataType.STRING;
+//            else if (TypeUtils.isIntegralClass(propertyType))
+//            	dataType = DataType.INTEGER;
+//            else if (TypeUtils.isDecimalClass(propertyType)) 
+//            	dataType = DataType.DOUBLE;
+//            else if (TypeUtils.isTemporalClass(propertyType))
+//            	dataType = DataType.DATE;
+            
+            
+//            if (dataType != null) {
+//            	validator.validateAttributeField(entryName, propertyDescriptor.getName(), object);
+//            }
+            
+            
+//            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+//
+//                // check value format against dictionary
+//                if (value != null && StringUtils.isNotBlank(value.toString())) {
+//                    if (!TypeUtils.isTemporalClass(propertyType)) {
+//                       //validateAttributeFormat(entryName, propertyDescriptor.getName(), value.toString(), errorPrefix + propertyDescriptor.getName());
+//                    // validate(String entryName, String fieldName, AttributeValueReader valueReader, boolean checkIfRequired)	
+//                    	validator.validateAttributeField(entryName, propertyDescriptor.getName(), object, value.toString(), dataType);
+//                    }
+//                }
+//                else if (validateRequired) {
+//                    validateAttributeRequired(entryName, propertyDescriptor.getName(), value, Boolean.FALSE, errorPrefix + propertyDescriptor.getName());
+//                }
+//            }
         }
     }
 

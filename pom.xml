@@ -66,7 +66,7 @@
 		<concurrent.version>1.3.4</concurrent.version>
 		<connector-api.version>1.5</connector-api.version>
 		<cxf.version>2.2.9</cxf.version>
-		<db-ojb.version>1.0.4-patch5</db-ojb.version>
+		<db-ojb.version>1.0.4-patch6-SNAPSHOT</db-ojb.version>
 		<derby.version>10.2.2.0</derby.version>
 		<displaytag.version>1.1</displaytag.version>
 		<dwr.version>1.1.3</dwr.version>

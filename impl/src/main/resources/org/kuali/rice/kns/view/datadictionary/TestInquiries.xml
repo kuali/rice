@@ -43,7 +43,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </property>
                <property name="title" value="Account Information"/>
              </bean>
-             <bean parent="PanelCollectionGroup">
+             <!-- <bean parent="PanelCollectionGroup">
                <property name="title" value="Fiscal Officer Accounts"/>  
                <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
                <property name="name" value="fiscalOfficer.accounts"/>
@@ -60,7 +60,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                  <value>number</value>
                 </list>
                </property>
-              </bean>  
+              </bean> --> 
+             <bean parent="PanelCollectionTableGroup" p:layoutManager.numberOfColumns="5">
+               <property name="title" value="Fiscal Officer Accounts"/>  
+               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+               <property name="name" value="fiscalOfficer.accounts"/>
+               <property name="layoutManager.renderSequenceField" value="false"/>
+               <property name="renderAddLine" value="false"/>
+               <property name="renderLineActions" value="false"/>
+               <property name="items">
+                 <list>
+                   <bean parent="AttributeField" p:name="number"/>
+                   <bean parent="AttributeField" p:name="name"/>
+                   <bean parent="AttributeField" p:name="foId"/>
+                   <bean parent="AttributeField" p:name="subsidizedPercent"/>
+                   <bean parent="AttributeField" p:name="createDate"/>
+                  </list>
+               </property>      
+              </bean>                
            </list>
         </property>  
        </bean>      

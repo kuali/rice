@@ -57,6 +57,6 @@ public interface ComponentInitializer extends Serializable {
 	 * 
 	 * @return Set component classes
 	 */
-	public Set<Class> getSupportedComponents();
+	public Set<Class<? extends Component>> getSupportedComponents();
 
 }

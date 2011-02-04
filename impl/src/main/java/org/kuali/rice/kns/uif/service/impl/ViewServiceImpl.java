@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.UifConstants.ViewTypeIndexParameterNames;
 import org.kuali.rice.kns.uif.container.View;
@@ -101,6 +102,10 @@ public class ViewServiceImpl implements ViewService {
 
 		// invoke initialize phase on the views helper service
 		helperService.performInitialization(view);
+
+		// update status on view
+		LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
+		view.setViewStatus(ViewStatus.INITIALIZED);
 	}
 
 	/**
@@ -108,16 +113,24 @@ public class ViewServiceImpl implements ViewService {
 	 *      java.lang.Object)
 	 */
 	public void updateView(View view, Object model) {
+		// get the configured helper service for the view
+		ViewHelperService helperService = view.getViewHelperService();
+
 		// Apply Model Phase
 		LOG.debug("performing apply model phase for view: " + view.getId());
-		performApplyModel(view, model);
+		helperService.performApplyModel(view, model);
 
 		// Update State Phase
-		performUpdateState(view);
+		LOG.debug("performing update state phase for view: " + view.getId());
+		helperService.performUpdateState(view);
 
 		// do indexing
 		LOG.info("processing indexing for view: " + view.getId());
 		view.getViewIndex().index();
+
+		// update status on view
+		LOG.debug("Updating view status to UPDATED for view: " + view.getId());
+		view.setViewStatus(ViewStatus.UPDATED);
 	}
 
 	/**
@@ -129,43 +142,6 @@ public class ViewServiceImpl implements ViewService {
 		updateView(view, model);
 
 		return view;
-	}
-
-	/**
-	 * Performs initialization or updating of the <code>View</code> instance
-	 * based on the form (containing models) instance
-	 * 
-	 * <p>
-	 * Part of the view lifecycle that applies the model data to the view.
-	 * Should be called after the model has been populated before the view is
-	 * rendered. The main things that occur during this phase are:
-	 * <ul>
-	 * <li>Generation of dynamic fields (such as collection rows)</li>
-	 * <li>Execution of conditional logic (hidden, read-only, required settings
-	 * based on model values)</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param view
-	 *            - view instance the model should be applied to
-	 * @param model
-	 *            - Top level object containing the data (could be the form or a
-	 *            top level business object, dto)
-	 */
-	protected void performApplyModel(View view, Object model) {
-		// get the configured helper service for the view
-		ViewHelperService helperService = view.getViewHelperService();
-
-		// invoke helper service to perform conditional logic
-		helperService.performApplyModel(view, model);
-	}
-
-	/**
-	 * 
-	 * @param view
-	 */
-	protected void performUpdateState(View view) {
-
 	}
 
 	/**

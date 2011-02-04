@@ -26,8 +26,9 @@ import org.springframework.beans.BeanWrapperImpl;
  */
 public class ModelUtils {
 
-	public static Object getPropertyValue(Object model, String propertyPath) {
-		return wrapModel(model).getPropertyValue(propertyPath);
+	@SuppressWarnings("unchecked")
+	public static <T extends Object> T getPropertyValue(Object model, String propertyPath) {
+		return (T) wrapModel(model).getPropertyValue(propertyPath);
 	}
 
 	public static void setPropertyValue(Object model, String propertyPath, Object propertyValue) {

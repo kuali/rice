@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kns.uif.container;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,16 +27,12 @@ import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
 
 /**
- * Container that holds a list of <code>Field</code> instances
- * 
- * <p>
- * Supports instances of <code>Field</code> in the items List. With the use of
- * <code>GroupField</code>, group containers can be nested.
- * </p>
+ * Container that holds a list of <code>Field</code> or other <code>Group</code>
+ * instances
  * 
  * <p>
  * Groups can exist at different levels of the <code>View</code>, providing
- * conceptual groupings such as the page, section, group, and field group.
+ * conceptual groupings such as the page, section, and group.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -43,22 +41,14 @@ public class Group extends ContainerBase {
 
 	private String fieldBindByNamePrefix;
 	private String fieldBindModelPath;
+	
+	private List<? extends Component> items;
 
 	/**
 	 * Default Constructor
 	 */
 	public Group() {
-
-	}
-
-	/**
-	 * Copy Constructor
-	 * 
-	 * @param group
-	 *            - group instance to copy
-	 */
-	public Group(Group group) {
-
+		items = new ArrayList<Component>();
 	}
 
 	/**
@@ -99,7 +89,7 @@ public class Group extends ContainerBase {
 			// set on GroupField's group to recursively set AttributeFields
 			else if (component instanceof GroupField) {
 				GroupField groupField = (GroupField) component;
-				
+
 				if (groupField.getGroup() != null) {
 					if (StringUtils.isBlank(groupField.getGroup().getFieldBindByNamePrefix())) {
 						groupField.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
@@ -119,6 +109,7 @@ public class Group extends ContainerBase {
 	public Set<Class<? extends Component>> getSupportedComponents() {
 		Set<Class<? extends Component>> supportedComponents = new HashSet<Class<? extends Component>>();
 		supportedComponents.add(Field.class);
+		supportedComponents.add(Group.class);
 
 		return supportedComponents;
 	}
@@ -183,5 +174,16 @@ public class Group extends ContainerBase {
 	public void setFieldBindModelPath(String fieldBindModelPath) {
 		this.fieldBindModelPath = fieldBindModelPath;
 	}
+
+	@Override
+	public List<? extends Component> getItems() {
+		return this.items;
+	}
+
+	public void setItems(List<? extends Component> items) {
+		this.items = items;
+	}
+	
+	
 
 }

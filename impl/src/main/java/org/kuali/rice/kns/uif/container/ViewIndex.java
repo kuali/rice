@@ -25,6 +25,7 @@ import java.util.Set;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 
 /**
  * Holds field indexes of a <code>View</code> instance for retrieval
@@ -122,13 +123,15 @@ public class ViewIndex implements Serializable {
 	 * @param fields
 	 *            - List of fields instances to add
 	 */
-	public void addFields(List<Field> fields) {
+	public void addFields(List<? extends Field> fields) {
 		for (Field field : fields) {
 			if (field instanceof AttributeField) {
 				attributeFields.add((AttributeField) field);
 			}
 			else if (field instanceof GroupField) {
-				addFields((List<Field>) ((GroupField) field).getItems());
+				List<? extends Field> groupFields = ComponentUtils.getComponentsOfType(((GroupField) field).getItems(),
+						Field.class);
+				addFields(groupFields);
 			}
 		}
 	}

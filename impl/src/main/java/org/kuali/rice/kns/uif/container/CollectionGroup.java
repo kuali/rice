@@ -28,6 +28,7 @@ import org.kuali.rice.kns.uif.UifConstants.ActionParameterNames;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.LabelField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ModelUtils;
@@ -183,7 +184,7 @@ public class CollectionGroup extends Group implements DataBinding {
 		}
 
 		// get new collection line map from form
-		Map<String, Object> newCollectionLines = (Map<String, Object>) ModelUtils.getPropertyValue(model,
+		Map<String, Object> newCollectionLines = ModelUtils.getPropertyValue(model,
 				UifPropertyPaths.NEW_COLLECTION_LINES);
 		if (newCollectionLines == null) {
 			newCollectionLines = new HashMap<String, Object>();
@@ -451,6 +452,15 @@ public class CollectionGroup extends Group implements DataBinding {
 	 */
 	public void setSubCollections(List<CollectionGroup> subCollections) {
 		this.subCollections = subCollections;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.container.ContainerBase#getItems()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<? extends Field> getItems() {
+		return (List<? extends Field>) super.getItems();
 	}
 
 }

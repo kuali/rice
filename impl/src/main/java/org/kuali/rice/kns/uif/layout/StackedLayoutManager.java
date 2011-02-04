@@ -97,7 +97,7 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		}
 
 		// get the collection for this group from the model
-		List<Object> modelCollection = (List<Object>) ModelUtils.getPropertyValue(model,
+		List<Object> modelCollection = ModelUtils.getPropertyValue(model,
 				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
 		// for each collection row create a new Group
@@ -180,7 +180,7 @@ public class StackedLayoutManager extends BoxLayoutManager {
 
 		lineGroup.getHeader().setHeaderText(headerText);
 
-		List<Field> lineFields = ComponentUtils.copyFieldList((List<Field>) collectionGroup.getItems(), bindingPath);
+		List<? extends Field> lineFields = ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath);
 		if (bindToForm) {
 			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
 		}

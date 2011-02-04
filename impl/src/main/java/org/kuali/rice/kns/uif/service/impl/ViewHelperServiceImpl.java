@@ -195,6 +195,24 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		performComponentApplyModel(view, view, model);
 	}
 
+	/**
+	 * Applies the model data to a component of the View instance
+	 * 
+	 * <p>
+	 * The component is invoked to to apply the model data. Here the component
+	 * can generate any additional fields needed or alter the configured fields.
+	 * After the component is invoked a hook for custom helper service
+	 * processing is invoked. Finally the method is recursively called for all
+	 * the component children
+	 * </p>
+	 * 
+	 * @param view
+	 *            - view instance the component belongs to
+	 * @param component
+	 *            - the component instance the model should be applied to
+	 * @param model
+	 *            - top level object containing the data
+	 */
 	protected void performComponentApplyModel(View view, Component component, Object model) {
 		if (component == null) {
 			return;
@@ -234,7 +252,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// get the collection instance for adding the new line
-		Collection collection = (Collection) ModelUtils.getPropertyValue(model, collectionPath);
+		Collection<Object> collection = ModelUtils.getPropertyValue(model, collectionPath);
 		if (collection == null) {
 			logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
 		}
@@ -296,7 +314,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// get the collection instance for adding the new line
-		Collection collection = (Collection) ModelUtils.getPropertyValue(model, collectionPath);
+		Collection<Object> collection = ModelUtils.getPropertyValue(model, collectionPath);
 		if (collection == null) {
 			logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
 		}
@@ -304,12 +322,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// TODO: look into other ways of identifying a line so we can deal with
 		// unordered collections
 		if (collection instanceof List) {
-			Object deleteLine = ((List) collection).get(lineIndex);
+			Object deleteLine = ((List<Object>) collection).get(lineIndex);
 
 			// validate the delete action is allowed for this line
 			boolean isValid = performDeleteLineValidation(view, collectionGroup, deleteLine);
 			if (isValid) {
-				((List) collection).remove(lineIndex);
+				((List<Object>) collection).remove(lineIndex);
 			}
 		}
 		else {

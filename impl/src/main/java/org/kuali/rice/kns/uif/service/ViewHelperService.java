@@ -68,7 +68,18 @@ public interface ViewHelperService {
 
 	/**
 	 * Executes the ApplyModel phase. During this phase each component of the
-	 * tree if invoked to setup any state based on the given model data.
+	 * tree if invoked to setup any state based on the given model data
+	 * 
+	 * <p>
+	 * Part of the view lifecycle that applies the model data to the view.
+	 * Should be called after the model has been populated before the view is
+	 * rendered. The main things that occur during this phase are:
+	 * <ul>
+	 * <li>Generation of dynamic fields (such as collection rows)</li>
+	 * <li>Execution of conditional logic (hidden, read-only, required settings
+	 * based on model values)</li>
+	 * </ul>
+	 * </p>
 	 * 
 	 * @param view
 	 *            - View instance that the model should be applied to
@@ -79,8 +90,12 @@ public interface ViewHelperService {
 	public void performApplyModel(View view, Object model);
 
 	/**
+	 * The last phase before the view is rendered. Here is final state of the
+	 * view and all its components, such as read-only, hidden, and required can
+	 * be set based on the configuration and model data
 	 * 
 	 * @param view
+	 *            - view instance that should be updated
 	 */
 	public void performUpdateState(View view);
 

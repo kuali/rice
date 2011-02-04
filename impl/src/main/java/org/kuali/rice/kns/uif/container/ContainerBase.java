@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.uif.container;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -51,16 +50,12 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private String summary;
 	private MessageField summaryMessageField;
 
-	private List<? extends Component> items;
-
 	/**
 	 * Default Constructor
 	 */
 	public ContainerBase() {
 		renderHeader = true;
 		renderFooter = true;
-
-		items = new ArrayList<Component>();
 	}
 
 	/**
@@ -120,7 +115,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		components.add(help);
 		components.add(summaryMessageField);
 
-		for (Component component : items) {
+		for (Component component : getItems()) {
 			components.add(component);
 		}
 		
@@ -163,13 +158,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		this.help = help;
 	}
 
-	public List<? extends Component> getItems() {
-		return this.items;
-	}
-
-	public void setItems(List<? extends Component> items) {
-		this.items = items;
-	}
+	public abstract List<? extends Component> getItems();
 
 	public LayoutManager getLayoutManager() {
 		return this.layoutManager;

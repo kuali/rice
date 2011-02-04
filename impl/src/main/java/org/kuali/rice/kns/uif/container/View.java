@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.uif.container;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,12 +26,14 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
  * Root of the component tree which encompasses a set of related
- * <code>Page</code> instances tied together with a common page layout and
+ * <code>GroupContainer</code> instances tied together with a common page layout and
  * navigation.
  * <p>
  * The <code>View</code> component ties together all the components and
@@ -69,7 +72,10 @@ public class View extends ContainerBase {
 	private Set<String> allowedParameters;
 	private Map<String, String> context;
 
+	private String viewStatus;
 	private ViewIndex viewIndex;
+
+	private List<? extends Group> items;
 
 	// TODO: scripting variables, should be in context
 	private boolean dialogMode;
@@ -77,9 +83,11 @@ public class View extends ContainerBase {
 	public View() {
 		dialogMode = false;
 		viewTypeName = ViewType.DEFAULT;
+		viewStatus = UifConstants.ViewStatus.CREATED;
 
 		viewIndex = new ViewIndex();
 
+		items = new ArrayList<Group>();
 		modelClasses = new HashMap<String, Class<?>>();
 		allowedParameters = new HashSet<String>();
 		context = new HashMap<String, String>();
@@ -104,7 +112,7 @@ public class View extends ContainerBase {
 			this.currentPageId = this.entryPageId;
 		}
 		else {
-			Group firstPageGroup = (Group) getItems().get(0);
+			Group firstPageGroup = getItems().get(0);
 			this.currentPageId = firstPageGroup.getId();
 		}
 	}
@@ -147,8 +155,8 @@ public class View extends ContainerBase {
 	 * @return Page instance
 	 */
 	public Group getCurrentPage() {
-		for (Iterator iterator = this.getItems().iterator(); iterator.hasNext();) {
-			Group page = (Group) iterator.next();
+		for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext();) {
+			Group page = iterator.next();
 			if (page.getId().equals(getCurrentPageId())) {
 				return page;
 			}
@@ -420,6 +428,69 @@ public class View extends ContainerBase {
 	 */
 	public void setViewIndex(ViewIndex viewIndex) {
 		this.viewIndex = viewIndex;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.container.ContainerBase#getItems()
+	 */
+	@Override
+	public List<? extends Group> getItems() {
+		return this.items;
+	}
+
+	/**
+	 * Setter for the view's <code>Group</code> instances
+	 * 
+	 * @param items
+	 */
+	public void setItems(List<? extends Group> items) {
+		this.items = items;
+	}
+
+	/**
+	 * Indicates what lifecycle phase the View instance is in
+	 * 
+	 * <p>
+	 * The view lifecycle begins with the CREATED status. In this status a new
+	 * instance of the view has been retrieved from the dictionary, but no
+	 * further processing has been done. After the initialize phase has been run
+	 * the status changes to INITIALIZED. Finally after the model has been
+	 * applied and the view is ready for render the status changes to UPDATED
+	 * </p>
+	 * 
+	 * @return String view status
+	 * @see org.kuali.rice.kns.uif.UifConstants.ViewStatus
+	 */
+	public String getViewStatus() {
+		return this.viewStatus;
+	}
+
+	/**
+	 * Setter for the view status
+	 * 
+	 * @param viewStatus
+	 */
+	public void setViewStatus(String viewStatus) {
+		this.viewStatus = viewStatus;
+	}
+
+	/**
+	 * Indicates whether the view has been initialized
+	 * 
+	 * @return boolean true if the view has been initialized, false if not
+	 */
+	public boolean isInitialized() {
+		return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED)
+				|| StringUtils.equals(viewStatus, ViewStatus.UPDATED);
+	}
+
+	/**
+	 * Indicates whether the view has been updated from the model
+	 * 
+	 * @return boolean true if the view has been updated, false if not
+	 */
+	public boolean isUpdated() {
+		return StringUtils.equals(viewStatus, ViewStatus.UPDATED);
 	}
 
 }

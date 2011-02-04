@@ -33,6 +33,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
  */
 public class ComponentUtils {
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Component> T copy(T component, String idSuffix) {
 		T copy = (T) ObjectUtils.deepCopy(component);
 		updateIds(copy, idSuffix);
@@ -40,10 +41,12 @@ public class ComponentUtils {
 		return copy;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Component> T copy(T component) {
 		return (T) ObjectUtils.deepCopy(component);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Component> T copyField(T component, String addBindingPrefix, String idSuffix) {
 		T copy = (T) ObjectUtils.deepCopy(component);
 		updateIds(copy, idSuffix);
@@ -58,7 +61,7 @@ public class ComponentUtils {
 	public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix) {
 		List<T> copiedFieldList = copyFieldList(fields);
 
-		prefixBindingPath((List<Field>) copiedFieldList, addBindingPrefix);
+		prefixBindingPath(copiedFieldList, addBindingPrefix);
 
 		return copiedFieldList;
 	}
@@ -74,13 +77,28 @@ public class ComponentUtils {
 		return copiedFieldList;
 	}
 
-	public static void prefixBindingPath(List<Field> fields, String addBindingPrefix) {
+	@SuppressWarnings("unchecked")
+	public static <T extends Component> List<T> getComponentsOfType(List<? extends Component> items,
+			Class<T> componentType) {
+		List<T> typeComponents = new ArrayList<T>();
+
+		for (Component component : items) {
+			if (componentType.isAssignableFrom(component.getClass())) {
+				typeComponents.add((T) component);
+			}
+		}
+
+		return typeComponents;
+	}
+
+	public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
 		for (Field field : fields) {
 			if (field instanceof DataBinding) {
 				prefixBindingPath((DataBinding) field, addBindingPrefix);
 			}
 			else if (field instanceof GroupField) {
-				prefixBindingPath((List<Field>) ((GroupField) field).getItems(), addBindingPrefix);
+				List<Field> groupFields = getComponentsOfType(((GroupField) field).getItems(), Field.class);
+				prefixBindingPath(groupFields, addBindingPrefix);
 			}
 		}
 	}

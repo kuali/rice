@@ -142,7 +142,7 @@ public class TableLayoutManager extends GridLayoutManager {
 	protected void buildTableHeaderRows(CollectionGroup collectionGroup) {
 		// row count needed to determine the row span for the sequence and
 		// action fields, since they should span all rows for the line
-		int rowCount = calculateNumberOfRows((List<Field>) collectionGroup.getItems());
+		int rowCount = calculateNumberOfRows(collectionGroup.getItems());
 
 		// first column is sequence label
 		if (renderSequenceField) {
@@ -232,7 +232,7 @@ public class TableLayoutManager extends GridLayoutManager {
 		}
 
 		// get the collection for this group from the model
-		List<Object> modelCollection = (List<Object>) ModelUtils.getPropertyValue(model,
+		List<Object> modelCollection = ModelUtils.getPropertyValue(model,
 				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
 		// for each collection row create a set of fields
@@ -315,7 +315,7 @@ public class TableLayoutManager extends GridLayoutManager {
 		if (renderSequenceField) {
 			Field sequenceField = ComponentUtils.copy(lineSequenceField);
 
-			int rowCount = calculateNumberOfRows((List<Field>) collectionGroup.getItems());
+			int rowCount = calculateNumberOfRows(collectionGroup.getItems());
 			sequenceField.setRowSpan(rowCount);
 
 			if (sequenceField instanceof AttributeField) {
@@ -327,8 +327,8 @@ public class TableLayoutManager extends GridLayoutManager {
 		}
 
 		// copy fields adding the collection line to their binding prefix
-		List<Field> lineFields = ComponentUtils
-				.copyFieldList((List<Field>) collectionGroup.getItems(), lineBindingPath);
+		List<? extends Field> lineFields = ComponentUtils
+				.copyFieldList(collectionGroup.getItems(), lineBindingPath);
 		ComponentUtils.updateIds(lineFields, idSuffix);
 
 		if (bindLineToForm) {
@@ -363,7 +363,7 @@ public class TableLayoutManager extends GridLayoutManager {
 	 *            - list of items that make up one collection line
 	 * @return int number of rows
 	 */
-	protected int calculateNumberOfRows(List<Field> items) {
+	protected int calculateNumberOfRows(List<? extends Field> items) {
 		int rowCount = 0;
 
 		int cellCount = 0;

@@ -663,7 +663,7 @@
 				<version>${commons-lang.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>ojb</groupId>
+				<groupId>org.kuali.db.ojb</groupId>
 				<artifactId>db-ojb</artifactId>
 				<version>${db-ojb.version}</version>
 				<exclusions>

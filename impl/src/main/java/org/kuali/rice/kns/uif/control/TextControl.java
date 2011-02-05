@@ -24,6 +24,8 @@ import org.kuali.rice.kns.uif.widget.DatePicker;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TextControl extends ControlBase {
+	private static final long serialVersionUID = -8267606288443759880L;
+
 	private int size;
 
 	private DatePicker datePicker;

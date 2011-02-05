@@ -51,6 +51,8 @@ import org.kuali.rice.kns.uif.widget.TableTools;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TableLayoutManager extends GridLayoutManager {
+	private static final long serialVersionUID = 3622267585541524208L;
+	
 	private boolean useShortLabels;
 	private boolean repeatHeader;
 	private LabelField headerFieldPrototype;

@@ -232,11 +232,40 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performUpdateState(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performUpdateState(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
 	 */
 	@Override
-	public void performUpdateState(View view) {
+	public void performUpdateState(View view, Object model) {
+		performComponentUpdateState(view, view, model);
+	}
 
+	/**
+	 * Update state of the given component and does final preparation for
+	 * rendering
+	 * 
+	 * @param view
+	 *            - view instance the component belongs to
+	 * @param component
+	 *            - the component instance that should be updated
+	 * @param model
+	 *            - top level object containing the data
+	 */
+	protected void performComponentUpdateState(View view, Component component, Object model) {
+		if (component == null) {
+			return;
+		}
+
+		// invoke component to update its state
+		component.performUpdateState(view, model);
+
+		// invoke service override hook
+		performCustomUpdateState(view, component, model);
+
+		// get components children and recursively update state
+		for (Component nestedComponent : component.getNestedComponents()) {
+			performComponentUpdateState(view, nestedComponent, model);
+		}
 	}
 
 	/**
@@ -383,6 +412,20 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 *            top level business object, dto)
 	 */
 	protected void performCustomApplyModel(View view, Component component, Object model) {
+
+	}
+
+	/**
+	 * Hook for service overrides to perform custom updating of state
+	 * 
+	 * @param view
+	 *            - view instance containing the component
+	 * @param component
+	 *            - component instance to update
+	 * @param model
+	 *            - Top level object containing the data
+	 */
+	protected void performCustomUpdateState(View view, Component component, Object model) {
 
 	}
 

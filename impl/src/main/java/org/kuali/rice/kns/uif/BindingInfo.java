@@ -33,6 +33,8 @@ import org.kuali.rice.kns.uif.container.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BindingInfo implements Serializable {
+	private static final long serialVersionUID = -7389398061672136091L;
+
 	private boolean bindToForm;
 
 	private String bindingName;

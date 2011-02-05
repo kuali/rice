@@ -39,6 +39,8 @@ import org.kuali.rice.kns.web.format.Formatter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeField extends FieldBase implements DataBinding {
+	private static final long serialVersionUID = -3703656713706343840L;
+	
 	// value props
 	private Object value;
 	private String formattedValue;

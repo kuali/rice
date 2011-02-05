@@ -22,6 +22,7 @@ package org.kuali.rice.kns.uif.control;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CheckboxControl extends ControlBase {
+	private static final long serialVersionUID = -4314410027656532020L;
 
 	public CheckboxControl() {
 

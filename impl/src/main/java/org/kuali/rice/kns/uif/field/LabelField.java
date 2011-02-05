@@ -20,12 +20,19 @@ import java.util.List;
 import org.kuali.rice.kns.uif.Component;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Contains a label for another <code>Field</code> instance
+ * 
+ * <p>
+ * The <code>LabelField</code> exists so that the label can be placed separate
+ * from the component in a layout manager such as the
+ * <code>GridLayoutManager</code>
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LabelField extends FieldBase {
+	private static final long serialVersionUID = -6491546893195180114L;
+
 	private String labelText;
 	private String labelForComponentId;
 
@@ -36,7 +43,7 @@ public class LabelField extends FieldBase {
 	public LabelField() {
 		renderColon = true;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
 	 */

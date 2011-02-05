@@ -38,7 +38,8 @@ import org.kuali.rice.kns.uif.field.GroupField;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Group extends ContainerBase {
-
+	private static final long serialVersionUID = 7953641325356535509L;
+	
 	private String fieldBindByNamePrefix;
 	private String fieldBindModelPath;
 	

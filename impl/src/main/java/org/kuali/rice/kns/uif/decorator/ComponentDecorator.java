@@ -25,11 +25,12 @@ import org.kuali.rice.kns.uif.Component;
 public interface ComponentDecorator extends Component {
 
 	/**
-	 * Sets the <code>Component</code> instance that the decorator will wrap
+	 * Indicates the type of <code>Component</code> that is supported by the
+	 * decorator. If empty or the Component class itself is returned it is
+	 * assumed the decorator supports all components
 	 * 
-	 * @param componet
-	 *            Component instance
+	 * @return Class<? extends Component> of the support component type
 	 */
-	public void setDecoratedComponent(Component component);
+	public Class<? extends Component> getSupportedComponent();
 
 }

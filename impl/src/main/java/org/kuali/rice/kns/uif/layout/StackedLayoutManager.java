@@ -53,6 +53,8 @@ import org.kuali.rice.kns.uif.util.ModelUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StackedLayoutManager extends BoxLayoutManager {
+	private static final long serialVersionUID = 4602368505430238846L;
+	
 	private String summaryTitle;
 	private List<String> summaryFields;
 

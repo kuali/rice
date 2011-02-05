@@ -34,6 +34,8 @@ import org.kuali.rice.kns.uif.container.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class LayoutManagerBase implements LayoutManager {
+	private static final long serialVersionUID = -2657663560459456814L;
+	
 	private String id;
 	private String template;
 	private String style;

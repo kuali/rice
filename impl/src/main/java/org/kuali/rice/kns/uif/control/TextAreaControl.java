@@ -22,6 +22,8 @@ package org.kuali.rice.kns.uif.control;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TextAreaControl extends ControlBase {
+	private static final long serialVersionUID = -4664558047325456844L;
+	
 	private int rows;
 	private int cols;
 

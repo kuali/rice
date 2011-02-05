@@ -22,6 +22,7 @@ package org.kuali.rice.kns.uif.widget;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DatePicker extends WidgetBase {
+	private static final long serialVersionUID = -659830874214415990L;
 
 	public DatePicker() {
 

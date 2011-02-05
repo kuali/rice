@@ -40,7 +40,6 @@ import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.util.ComponentDecoratorBeanPostProcessor;
 import org.kuali.rice.kns.uif.util.ComponentIdBeanPostProcessor;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -156,9 +155,6 @@ public class DataDictionary  {
 		try {
 			BeanPostProcessor idPostProcessor = ComponentIdBeanPostProcessor.class.newInstance();
 			ddBeans.addBeanPostProcessor(idPostProcessor);
-			
-			BeanPostProcessor postProcessor = ComponentDecoratorBeanPostProcessor.class.newInstance();
-			ddBeans.addBeanPostProcessor(postProcessor);
 			
 			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
 		}

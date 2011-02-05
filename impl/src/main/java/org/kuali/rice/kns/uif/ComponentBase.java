@@ -16,12 +16,11 @@
 package org.kuali.rice.kns.uif;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
+import org.kuali.rice.kns.uif.decorator.DecoratorChain;
 import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
 
 /**
@@ -32,6 +31,8 @@ import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
  * @see org.kuali.rice.kns.uif.Component
  */
 public abstract class ComponentBase implements Component {
+	private static final long serialVersionUID = -4449335748129894350L;
+
 	private String id;
 	private String name;
 	private String template;
@@ -51,12 +52,13 @@ public abstract class ComponentBase implements Component {
 	private String style;
 	private String styleClass;
 
+	private ComponentDecorator decorator;
+	private DecoratorChain decoratorChain;
+
 	private List<ComponentInitializer> componentInitializers;
-	private Map<String, ComponentDecorator> decorators;
 
 	public ComponentBase() {
 		componentInitializers = new ArrayList<ComponentInitializer>();
-		decorators = new HashMap<String, ComponentDecorator>();
 
 		colSpan = 1;
 		rowSpan = 1;
@@ -73,7 +75,6 @@ public abstract class ComponentBase implements Component {
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
-	@Override
 	public void performInitialization(View view) {
 
 	}
@@ -84,9 +85,18 @@ public abstract class ComponentBase implements Component {
 	 * @see org.kuali.rice.kns.uif.Component#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
-	@Override
 	public void performApplyModel(View view, Object model) {
 
+	}
+
+	/**
+	 * Setup the decorator chain (if component has decorators) for rendering
+	 * 
+	 * @see org.kuali.rice.kns.uif.Component#performUpdateState(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
+	 */
+	public void performUpdateState(View view, Object model) {
+		decoratorChain = new DecoratorChain(this);
 	}
 
 	/**
@@ -94,7 +104,11 @@ public abstract class ComponentBase implements Component {
 	 */
 	@Override
 	public List<Component> getNestedComponents() {
-		return new ArrayList<Component>();
+		List<Component> components = new ArrayList<Component>();
+
+		components.add(decorator);
+
+		return components;
 	}
 
 	public String getId() {
@@ -225,12 +239,20 @@ public abstract class ComponentBase implements Component {
 		this.componentInitializers = componentInitializers;
 	}
 
-	public Map<String, ComponentDecorator> getDecorators() {
-		return this.decorators;
+	public ComponentDecorator getDecorator() {
+		return this.decorator;
 	}
 
-	public void setDecorators(Map<String, ComponentDecorator> decorators) {
-		this.decorators = decorators;
+	public void setDecorator(ComponentDecorator decorator) {
+		this.decorator = decorator;
+	}
+
+	public DecoratorChain getDecoratorChain() {
+		return this.decoratorChain;
+	}
+
+	public void setDecoratorChain(DecoratorChain decoratorChain) {
+		this.decoratorChain = decoratorChain;
 	}
 
 }

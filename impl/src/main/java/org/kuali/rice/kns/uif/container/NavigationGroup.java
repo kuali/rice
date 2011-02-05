@@ -33,6 +33,8 @@ import org.kuali.rice.kns.uif.field.ActionField;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NavigationGroup extends Group {
+	private static final long serialVersionUID = -7263923392768546340L;
+	
 	private String navigationType;
 
 	public NavigationGroup() {

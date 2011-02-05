@@ -55,6 +55,8 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class View extends ContainerBase {
+	private static final long serialVersionUID = -1220009725554576953L;
+	
 	private String entryPageId;
 	private String currentPageId;
 
@@ -454,7 +456,7 @@ public class View extends ContainerBase {
 	 * The view lifecycle begins with the CREATED status. In this status a new
 	 * instance of the view has been retrieved from the dictionary, but no
 	 * further processing has been done. After the initialize phase has been run
-	 * the status changes to INITIALIZED. Finally after the model has been
+	 * the status changes to INITIALIZED. After the model has been
 	 * applied and the view is ready for render the status changes to UPDATED
 	 * </p>
 	 * 

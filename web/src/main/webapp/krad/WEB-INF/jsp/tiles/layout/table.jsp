@@ -39,10 +39,4 @@
 <br/><br/>
  
 <%-- invoke table tools widget --%>
-<c:if test="${(!empty manager.tableTools) && manager.tableTools.render}">              
-   <tiles:insertTemplate template="${manager.tableTools.template}">
-      <tiles:putAttribute name="${manager.tableTools.componentTypeName}" value="${manager.tableTools}"/>
-      <tiles:putAttribute name="componentId" value="${manager.id}"/>
-   </tiles:insertTemplate>  
-</c:if> 
- 
+<krad:template component="${manager.tableTools}" componentId="${manager.id}"/>    

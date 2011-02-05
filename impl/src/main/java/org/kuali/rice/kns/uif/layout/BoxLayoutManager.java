@@ -27,6 +27,8 @@ import org.kuali.rice.kns.uif.container.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BoxLayoutManager extends LayoutManagerBase {
+	private static final long serialVersionUID = 4467342272983290044L;
+	
 	private String orientation;
 	private String padding;
 

@@ -22,5 +22,6 @@ package org.kuali.rice.kns.uif.widget;
  *
  */
 public class QuickFinder extends WidgetBase {
+	private static final long serialVersionUID = 3302390972815386785L;
 
 }

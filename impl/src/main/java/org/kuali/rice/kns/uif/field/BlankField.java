@@ -16,11 +16,21 @@
 package org.kuali.rice.kns.uif.field;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * Field that produces only a space
+ * 
+ * <p>
+ * Can be used to aid in the layout of other fields, for instance in a grid. For
+ * example in a totals row generally the rows that are not totaled are blank in
+ * the total row.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class BlankField {
+public class BlankField extends FieldBase {
+	private static final long serialVersionUID = -4740343801872334348L;
+
+	public BlankField() {
+
+	}
 
 }

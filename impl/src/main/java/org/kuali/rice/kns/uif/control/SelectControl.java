@@ -22,6 +22,8 @@ package org.kuali.rice.kns.uif.control;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SelectControl extends MultiValueControlBase {
+	private static final long serialVersionUID = 6443247954759096815L;
+	
 	private int size;
 	private boolean multiple;
 

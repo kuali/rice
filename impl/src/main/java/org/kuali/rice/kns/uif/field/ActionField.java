@@ -28,6 +28,8 @@ import org.kuali.rice.kns.uif.container.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionField extends FieldBase {
+	private static final long serialVersionUID = 1025672792657238829L;
+	
 	private String methodToCall;
 	private String navigateToPageId;
 

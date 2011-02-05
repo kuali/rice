@@ -25,6 +25,8 @@ import org.kuali.rice.kns.uif.ComponentBase;
  * @see org.kuali.rice.kns.uif.control.Control
  */
 public abstract class ControlBase extends ComponentBase implements Control {
+	private static final long serialVersionUID = -7898244978136312663L;
+	
 	private int tabIndex;
 
 	public ControlBase() {

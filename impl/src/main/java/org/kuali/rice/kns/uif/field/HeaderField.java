@@ -22,6 +22,8 @@ package org.kuali.rice.kns.uif.field;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HeaderField extends GroupField {
+	private static final long serialVersionUID = -6950408292923393244L;
+	
 	private String headerText;
 	private String headerLevel;
 

@@ -29,10 +29,5 @@
             tabindex="${control.tabIndex}"/>
 
 <%-- render date picker widget --%> 
-<c:if test="${(!empty control.datePicker) && control.datePicker.render}">              
-   <tiles:insertTemplate template="${control.datePicker.template}">
-      <tiles:putAttribute name="${control.datePicker.componentTypeName}" value="${control.datePicker}"/>
-      <tiles:putAttribute name="componentId" value="${control.id}"/>
-   </tiles:insertTemplate>  
-</c:if> 
+<krad:template component="${control.datePicker}" componentId="${control.id}"/>           
  

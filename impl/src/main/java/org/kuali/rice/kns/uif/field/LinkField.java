@@ -19,12 +19,13 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Field that contains a link element
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LinkField extends FieldBase {
+	private static final long serialVersionUID = -1908504471910271148L;
+
 	private String linkLabel;
 	private String target;
 	private String hrefText;

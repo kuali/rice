@@ -23,6 +23,8 @@ import org.kuali.rice.core.util.JSTLConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifConstants extends JSTLConstants {
+	private static final long serialVersionUID = 3935664282036793486L;
+
 	public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
 
 	public static final String DEFAULT_MODEL_NAME = "KualiForm";

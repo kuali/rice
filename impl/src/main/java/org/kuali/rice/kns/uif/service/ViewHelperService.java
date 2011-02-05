@@ -92,12 +92,15 @@ public interface ViewHelperService {
 	/**
 	 * The last phase before the view is rendered. Here is final state of the
 	 * view and all its components, such as read-only, hidden, and required can
-	 * be set based on the configuration and model data
+	 * be set based on the configuration and model data. Also any last
+	 * preparations before rendering should be handled in this phase
 	 * 
 	 * @param view
 	 *            - view instance that should be updated
+	 * @param model
+	 *            - top level object containing the data
 	 */
-	public void performUpdateState(View view);
+	public void performUpdateState(View view, Object model);
 
 	/**
 	 * Invoked when the add line action is chosen for a collection. The

@@ -34,10 +34,7 @@
   	<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
   </c:if>
   <c:if test="${!field.readOnly}">
-    <tiles:insertTemplate template="${field.control.template}">
-        <tiles:putAttribute name="control" value="${field.control}"/>
-        <tiles:putAttribute name="field" value="${field}"/>
-    </tiles:insertTemplate>
+    <krad:template component="${field.control}" field="${field}"/>
   </c:if>
   
   <%-- render field label right --%>

@@ -26,6 +26,7 @@ package org.kuali.rice.kns.uif.widget;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TableTools extends WidgetBase {
+	private static final long serialVersionUID = 4671589690877390070L;
 
 	public TableTools() {
 

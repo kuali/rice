@@ -22,5 +22,6 @@ package org.kuali.rice.kns.uif.field;
  *
  */
 public class ImageField extends FieldBase {
+	private static final long serialVersionUID = -7994212503770623408L;
 
 }

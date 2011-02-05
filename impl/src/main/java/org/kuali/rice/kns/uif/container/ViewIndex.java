@@ -33,6 +33,8 @@ import org.kuali.rice.kns.uif.util.ComponentUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewIndex implements Serializable {
+	private static final long serialVersionUID = 4700818801272201371L;
+	
 	private Set<AttributeField> attributeFields;
 	private Map<String, AttributeField> attributeFieldIndex;
 

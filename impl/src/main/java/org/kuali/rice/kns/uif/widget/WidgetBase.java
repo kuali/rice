@@ -26,6 +26,8 @@ import org.kuali.rice.kns.uif.ComponentBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WidgetBase extends ComponentBase implements Widget {
+	private static final long serialVersionUID = -917582902829056830L;
+	
 	private Map<String, String> widgetOptions;
 
 	public WidgetBase() {

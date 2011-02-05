@@ -19,6 +19,8 @@ package org.kuali.rice.kns.uif.container;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FormView extends View {
+	private static final long serialVersionUID = -3291164284675273147L;
+
 	private String stateHandler;
 
 	// TODO: is this necessary or can we determine it based on request?

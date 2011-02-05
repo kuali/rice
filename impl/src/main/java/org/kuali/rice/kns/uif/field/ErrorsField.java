@@ -16,12 +16,13 @@
 package org.kuali.rice.kns.uif.field;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in.
+ * Field that displays error messages or counts
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public class ErrorsField extends FieldBase {
+	private static final long serialVersionUID = 780940788435330077L;
+
 	private String keyMatch;
 	private String errorStyleClass;
 	private String warningStyleClass;

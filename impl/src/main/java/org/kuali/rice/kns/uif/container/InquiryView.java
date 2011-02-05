@@ -26,6 +26,7 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InquiryView extends FormView {
+	private static final long serialVersionUID = 716926008488403616L;
 
 	private Class<?> modelClass;
 

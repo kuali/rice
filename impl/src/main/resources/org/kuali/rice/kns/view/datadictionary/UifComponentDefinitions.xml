@@ -42,10 +42,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>   
   
   <bean id="PanelSection" abstract="true" parent="Section">
-      <property name="decorators">
-        <map>
-          <entry key="panel"><bean parent="PanelGroupDecorator"/></entry>
-        </map>  
+      <property name="decorator">
+        <bean parent="PanelDecorator"/>
       </property>
       <property name="renderHeader" value="false"/>
   </bean> 
@@ -123,28 +121,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>   
   
   <bean id="PanelCollectionGroup" abstract="true" parent="CollectionGroup">
-      <property name="decorators">
-        <map>
-          <entry key="panel"><ref bean="PanelGroupDecorator"/></entry>
-        </map>  
-      </property>  
+      <property name="decorator">
+        <bean parent="PanelDecorator"/>
+      </property>
       <property name="renderHeader" value="false"/>
   </bean>
   
   <bean id="PanelCollectionTableGroup" abstract="true" parent="CollectionTableGroup">
-      <property name="decorators">
-        <map>
-          <entry key="panel"><ref bean="PanelGroupDecorator"/></entry>
-        </map>  
+      <property name="decorator">
+        <bean parent="PanelDecorator"/>
       </property>  
       <property name="renderHeader" value="false"/>
   </bean>  
   
   <!-- Decorators -->
   
-  <bean id="PanelGroupDecorator" class="org.kuali.rice.kns.uif.decorator.PanelGroupDecorator" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/panelGroup.jsp"/>
-      <property name="header">
+  <bean id="PanelDecorator" class="org.kuali.rice.kns.uif.decorator.PanelDecorator" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/decorator/panel.jsp"/>
+      <property name="panelHeader">
         <bean parent="PanelHeader"/>
       </property>
       <property name="styleClass" value="tab-container"/>

@@ -22,6 +22,7 @@ package org.kuali.rice.kns.uif.widget;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Help extends WidgetBase {
+	private static final long serialVersionUID = -1514436681476297241L;
 
 	public Help() {
 

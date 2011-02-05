@@ -22,6 +22,8 @@ package org.kuali.rice.kns.uif.control;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FileControl extends ControlBase {
+	private static final long serialVersionUID = -5919326390841646189L;
+	
 	private int size;
 
 	public FileControl() {

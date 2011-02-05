@@ -23,6 +23,7 @@ package org.kuali.rice.kns.uif.control;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HiddenControl extends ControlBase {
+	private static final long serialVersionUID = -8428898303430923425L;
 
 	public HiddenControl() {
 

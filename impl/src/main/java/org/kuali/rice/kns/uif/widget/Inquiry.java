@@ -22,5 +22,6 @@ package org.kuali.rice.kns.uif.widget;
  *
  */
 public class Inquiry extends WidgetBase {
+	private static final long serialVersionUID = -2154388007867302901L;
 
 }

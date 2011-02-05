@@ -22,5 +22,6 @@ package org.kuali.rice.kns.uif.widget;
  *
  */
 public class BreadCrumbs extends WidgetBase {
+	private static final long serialVersionUID = -2864287914665842251L;
 
 }

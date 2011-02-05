@@ -25,6 +25,8 @@ import org.kuali.rice.core.util.KeyLabelPair;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class MultiValueControlBase extends ControlBase {
+	private static final long serialVersionUID = -8691367056245775455L;
+	
 	private List<KeyLabelPair> options;
 
 	public MultiValueControlBase() {

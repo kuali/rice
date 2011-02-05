@@ -39,6 +39,8 @@ import org.kuali.rice.kns.uif.container.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FieldBase extends ComponentBase implements Field {
+	private static final long serialVersionUID = -5888414844802862760L;
+	
 	private String shortLabel;
 	private boolean showLabel;
 

@@ -17,10 +17,10 @@ package org.kuali.rice.kns.uif;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
+import org.kuali.rice.kns.uif.decorator.DecoratorChain;
 import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 
@@ -128,10 +128,24 @@ public interface Component extends Serializable {
 	public void performApplyModel(View view, Object model);
 
 	/**
+	 * The last phase before the view is rendered. Here is final state of the
+	 * the component, such as read-only, hidden, and required can be set based
+	 * on the configuration and model data. Also any last preparations before
+	 * rendering should be handled here
+	 * 
+	 * @param view
+	 *            - view instance to which the component belongs
+	 * @param model
+	 *            - top level object containing the data
+	 */
+	public void performUpdateState(View view, Object model);
+
+	/**
 	 * List of components that are contained within the component
 	 * <p>
 	 * Used by <code>ViewHelperService</code> for the various lifecycle
 	 * callbacks
+	 * </p>
 	 * 
 	 * @return List<Component> child components
 	 */
@@ -335,20 +349,28 @@ public interface Component extends Serializable {
 	public void setRowSpan(int rowSpan);
 
 	/**
-	 * Map of decorator instances for the component
+	 * <code>ComponentDecorator</code> instance for the component
+	 * 
 	 * <p>
-	 * Used to initialize a component with a list of decorators. Each decorator
-	 * is applied in the order they are found within the <code>List</code>. Each
-	 * decorator must implement the <code>ComponentDecorator</code> interface.
-	 * </p>
-	 * <p>
-	 * Key of Map provides an identifier for the decorator for setting
-	 * properties
+	 * Decorators can be used to wrap the given component with content
+	 * (providing content before and after the component output). Multiple
+	 * decorators can be applied by continually setting the decorator property
+	 * (decorator for decorator). A <code>DecoratorChain</code> will be built up
+	 * to render the decorators in the correct order
 	 * </p>
 	 * 
-	 * @return Map<String, ComponentDecorator> component decorators
+	 * @return ComponentDecorator instance
 	 * @see org.kuali.rice.kns.uif.decorator.ComponentDecorator
 	 */
-	public Map<String, ComponentDecorator> getDecorators();
+	public ComponentDecorator getDecorator();
+
+	/**
+	 * Returns the <code>DecoratorChain</code> instance that will return the
+	 * <code>ComponentDecorator</code> instances for the component in the
+	 * correct order for rendering
+	 * 
+	 * @return DecoratorChain instance
+	 */
+	public DecoratorChain getDecoratorChain();
 
 }

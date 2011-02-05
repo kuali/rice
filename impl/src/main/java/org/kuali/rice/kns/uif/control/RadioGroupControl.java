@@ -22,6 +22,7 @@ package org.kuali.rice.kns.uif.control;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RadioGroupControl extends MultiValueControlBase {
+	private static final long serialVersionUID = 8800478332086081970L;
 
 	public RadioGroupControl() {
 

@@ -31,6 +31,8 @@ import org.kuali.rice.kns.uif.container.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GroupField extends FieldBase {
+	private static final long serialVersionUID = -505654043702442196L;
+	
 	private Group group;
 
 	public GroupField() {

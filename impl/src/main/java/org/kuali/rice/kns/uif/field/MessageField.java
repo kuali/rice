@@ -18,12 +18,18 @@ package org.kuali.rice.kns.uif.field;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Encapsulates a text message to be displayed
+ * 
+ * <p>
+ * The <code>MessageField</code> is used to display static text in the user
+ * interface. The message type can be used to group similar messages for styling
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageField extends FieldBase {
+	private static final long serialVersionUID = 4090058533452450395L;
+
 	private String messageText;
 	private String messageType;
 

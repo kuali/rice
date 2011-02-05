@@ -1,9 +1,3 @@
-Architecture to cover
-
-o   View Helper (initialize, conditional, binding, validate), ViewHelperService, ViewInitializers
-o   Script, jQuery Plugins
-o   Controller Base
-
 {toc}
  
 h2. Goals
@@ -28,7 +22,10 @@ KRAD will power up its interactivity offerings by using the JQuery library, curr
 - *Lightboxes*  Anyone who has opened an inquiry page in a Kuali application knows that it creates a new tab or even a new window to display, stealing focus away from the originating page.  Users can easily end up with a slew of inquiry tabs to navigate among.  With a Lightbox, an inquiry would display on top of the original page, something like a dialogue box, allowing quick return to the original page and reducing the danger of tab clutter.  Lightboxes can also be used with quick finder lookups on maintenance or transactional documents - anywhere where it would be useful to keep the user on a single page.
 - *Messages*  There are many ways in which rich functionality can be incorporated to inform the user of their progress in an application.  KRAD will support many different kinds of notification schemes to keep the user on top of application progress.  On forms, there will be much more flexibility than in the KNS to display simple constraint messages on fields and fields can also be preset with sample data - known as a watermark - which is removed when focus is given to the field but hints the user into entering the appropriate data.  Notifications will appear when background processes have completed.  There will be rollover help on fields and time notifications (such as progress bars) when a given process is completing which help the user understand that the application needs to finish a process.  This wide range of interactive messages will make it easier for users to have a fuller picture of all the application is doing.
 - *Progressive Disclosure* No one likes forms which present too many choices, especially choices that don't apply to the user's current circumstance.  If a user has to enter a state tax rate on a form, the tax rate field shouldn't show up until the user has chosen a state and the application has determined that the state needs to have a tax rate filled in.  The KNS adopted a principle of "progressive disclosure" - that a form should only show the parts that a user needs currently, and that those parts should appear or disappear based on earlier decisions by the user.  However, this was difficult to implement in the KNS and the fact that a return/request cycle was necessary before the form changed made the experience trying for users as well.  KRAD will support a much more interactive progressive disclosure experience, making "mini-trips" to the server through AJAX, pulling back needed pieces of the form only when key fields have been entered.
+- *Client Side Validation* The KNS provided a lot of validations which could be configured in the data dictionary: making sure required fields were filled in, checking that entered text followed a specific format pattern, verifying that the length of the field did not surpass some set limit.  In the KNS, though, all of these checks took place during request processing: the user had to submit the form before any validation could happen - and in the cases of some documents, that took quite a while.  KRAD will have the ability to push some of these validations to the client side to be checked via JavaScript, meaning that the user gets feedback on errors much quicker and in a less frustrating fashion.
+- *Table Tools* A lot of data in KNS documents gets presented in tables: all the diverse kinds of lookup results, maintenance document collections, KFS accounting lines, KC (*JAMES: FIND EXAMPLE IN KC*).  KRAD will make all of those tables more powerful.  It allows client side sorting of several kinds of tables - meaning that users can find the data they want without having to get all the data back from the server.  It allows filtering of tables too.  If the table is editable, it even adds the line in the client side, only pushing it to the server when the user is ready for a full server push.  Tables in KRAD applications will help application users have their complex data just how and when they need it.
 - *Themes* Practically the first customization implementing institutions work on in deployed Kuali applications is skinning the site with their own schools' colors.  Rightly so that institutions should be able to customize their colors as tradition dictates.  By heavy leveraging of CSS, a requirement simply of making much rich user interface technology work, it will become much easier to redesign a look and feel of a site to match the expectations of your users...or the desire to show off some school pride.
+- *AJAX Enabled Fields* In KNS applications, there are many controls where the user tabs out of the control and information about that value pops up - for instance, a Person lookup where tabbing out of a field where a principalId has been added fills in the full name of the Person so the user gets instant verification that they entered the right authorization name.  IN KRAD, there will be even more support for this kind of information so that the read only information pulled back from the server can be more complete and assist the user that much more in the process of creating documents.
 
 This is just a subset of the way that richer user interface functionality will be integrated into KRAD.  There are many possibilities but one overriding goal: to make it easier for users to interact with applications built on the Kuali platform.
 
@@ -72,19 +69,43 @@ With KRAD, increasing the flexibility of the view so that more of it could be co
 
 KRAD introduces a concept of a "View" and a hierarchy of pieces which can be added to a view.  A View can represent a whole page.  Inside that page, a number of different groups are arranged - some as tabs, perhaps, others as field sets within other groups or even collections of field sets.  Some of these groups finally are made up of fields, controls, and widgets (controls providing an extra level of interactive functionality by incorporating rich user interface techniques).  All of these - views, groups, fields, controls, and widgets - all are Components of a KRAD render, and therefore all implement the org.kuali.rice.kns.uif.Component interface.
 
+{color:red}
+(!) One minor thing, a View can actually encompass multiple pages. Most of the time for the typically KNS view
+this would just be one page, but if for instance we changed from the stacked sections (panels) to a left menu
+that navigated through the sections each one would be a different page. Not really functionally different, just technically with the stacked sections everything is rendered in one request (not accounting for progressive disclosure), while with the menu a request is made for each section, similar to the KC horizontal tabs. Not sure
+if this makes sense :) 
+{color}
+
 Each piece of this visual hierarchy should be in turn.
 
 h3. Containers
 
 In KRAD, a Container is simply a Component with a main job of containing other components to render.  Containers may even contain other Containers to render.  Naturally, the task of Containers is fundamental to rendering pages in the application.
 
+{color:red}
+(!) Maybe talk about the 3 main areas of the container, the header, footer, and body. Then also the various layout
+managers for organizing the body content.
+{color}
+
 h4. Views
 
 As discussed, Components arrange other Components inside a tree.  A Container may hold other Containers, each of which holds other elements like Controls or Fields.
 
+{color:red}
+(!) Just to be technically correct, the Container can only contain other containers of Fields, The Fields can
+contain other fields or widgets, and the special AttributeField has Controls. The term controls is possibly not
+the best, since it could be confused with more general types of things that provide interaction, such as widgets.
+Really just talking about data input controls (standard form controls).
+{color}
+
 And every tree needs a root.  org.kuali.rice.kns.uif.container.View represents a root Container for all visual Components to be rendered for a document or a screen.  It holds the header and footer as well as any navigation that needs to be available for the document.  On multiple page documents, like the Proposal document in Kuali Coeus, each page is a children of a single view.
 
 The View also manages data processing for the data that is bound to its components.  The View is configured to know what data needs to be persisted in the session rather than merely the request scope and how form posting should be processed.  It also holds information on how to conduct validation of models.
+
+{color:red}
+(!) Its in question whether we are going to support a purely request mode, which might just support the session
+(or our custom session implementation that uses the database)
+{color}
 
 Common pieces of functionality have rendering encapsulated into a standard View, so they can be reused.  Developers of KNS applications will find it intuitive that there's an InquiryView, a LookupView, as well as a MaintenanceDocumentView and a TransactionalDocumentView.  Applications can also extend views for common views of their own: for example, Kuali Financial Systems will likely extend TransactionalView to create the AccountingDocumentView.
 
@@ -98,19 +119,65 @@ The Group is the workhorse of Containers.  It basically acts as the branches of 
 
 Because they're so common, a number of bean definitions for very common Group types have been set up: Page, Panel, and MenuNavigation to name just a few. *JERRY: SHOULD I NAME ALL OF THESE?*  When designing a page, any set of components that share a layout likely belong in a single Group together.
 
+{color:red}
+(!) No I think that is ok. One of the things I am struggling with is all these abstract bean definitions. I worry
+that it would become overwhelming. I would like to come up with a naming convention for them as well. Really there
+are few difference between the abstract beans, they are there to help build your page conceptually (so you don't just have a bunch of nested groups) and of course to reduce configuration. Ultimately I would like to have documentation on each abstract bean when they are closer to be finished. Technically those are the components, and
+the classes are the component types. Since our goal is for the screens to be developed using xml, these names are
+what developers will be working with.
+{color}
+
 Despite their ubiquity, there isn't any significant configuration beyond what ContainerBase provides, making the configuration of multiple groups very straightforward.
 
 There are also specialized kinds of Groups, for use in rendering collections or rendering page navigation.  Those should be explored as well.
+
+{color:red}
+(!) Maybe we should embrace the concept of types. For instance I think it could get confusing as to what is difference is between Section (which is bean abstraction) and CollectionGroup. The first is really just a configuration of the basic Group type, while CollectionGroup actually add properties to the Group, in a sense
+a special Group type. Again, not sure if this is making sense.
+{color}
 
 h5. Collection Groups
 
 A very common practice among rendering frameworks is that all members of a java.util.Collection are rendered using the same set of Components, often within a table.  KRAD naturally associates each member row of the table with a Group - but to accomplish this, a special kind of Group - org.kuali.rice.kns.uif.container.CollectionGroup - was created.  It has a number of extra properties to bind a Collection to the group, most importantly a modelName - the name of the model for each row of the group *JERRY: TRUE THAT?* and a binding path, which is the path to the java.util.Collection from the form *JERRY: TRUE THAT?*
 
+{color:red}
+(!) The binding stuff is confusing, I admit. Primarily because we are trying to support multiple models on the
+form, but still keep configuration down for when only one model is involved (like in the frameworks). Let me explain a little more:
+
+So we have the form as the top level (we have attempted to support other top level objects, like dtos or just
+a business object, but not sure how feasible that will be). From that we can have a top level bo (like document,
+or bo for inquiry). For this you can define a default 'modelName' in the View. The special view types like Inquiry
+View already define this property, so it does not need to be redefined. Then on the AttributeField you can set the
+binding as bindToForm or bindToModel. The default for AttributeField is bindToModel (there is another bean FormField which has default bindToForm). Then the 'name' given on the attribute field is assumed to be on the default model path, unless the modelPath has been specified. This is only needed when you have multiple top level
+bos and your attribute field is not on the default. So on the form we have bo1, and bo2, and our field is on bo2
+instead of bo1, we would need to set the modelPath to bo1. For convenience you can also set this on the Group so all the fields in the group will inherit that modelPath. Like AttributeFields, the name gives the property path on
+the model. So the collection name would point to the collection property on the default model (unless modelPath was given). Ok, to add to the complexity there is a bindByNamePrefix. So if all your fields where nested in another bo, like bo.bo2.field, bo.bo2.field2, ... You could set the bindByNamePrefix to b02 and that will be prepended to name to form the property path. Again you can set this on the Group for all the fields in the group.
+So the complete binding path is formed like this:
+
+If model field and modelPath not given: defaultModelPath + bindByNamePrefix + name
+If form field: bindByNamePrefix + name
+
+For collection fields: defaultModelPath (or modelPath if given) + collection bindByNamePrefix + collection name + attribute bindBynamePrefix + attribute name
+
+I struggled with this. I almost thought to eliminate complexity that for each attribute field you would specify the full path. That would allow support for form fields or any bo field. But of course that would be a lot of duplication. Most of the time, at least how we have structured things in the past you would not need to worry
+about the bindingInfo at all, just in these cases that fall outside. I would really like to know your opinion!
+{color}
+
 CollectionGroups can also show a set of actions on each row.  An example would be the edit and copy tags that show up in each row of a Lookup.  The CollectionGroup can also render a sequence associated with the Collection, so that each row is numbered "1", "2", etc. which makes it easier for users to differentiate among many rows.  There's also an option to turn header labels on and off for each row.  Finally, a CollectionGroup can have a number of sub-CollectionGroups associated with it, making rendering very flexible indeed.
+
+{color:red}
+(!) Not sure how much detail we want to get into here. But there are these 'prototypes' that setup how the table cells or groups (for stacked) will look. They can control things like header style, action field layout and so on.
+{color}
 
 h5. Navigation Groups
 
 A NavigationGroup is, like a CollectionGroup, a special kind of Group which renders elements used in navigation.  *JAMES!  CONTINUE AS CODE FILLS OUT!*
+
+{color:red}
+(!) The navigation group basically just needs the navigation type that sets what kind of navigation should be rendered. There are constants in UifConstants
+for the available types. Other than the renders that are associated with it generate the items as an unordered list of links. I might change this to be
+a widget instead of just a type string to be consistent with other places and allow different configurations to be set based on the widget plugin.
+{color}
 
 h4. Layout Managers
 
@@ -120,9 +187,183 @@ The designers of KRAD decided to apply a venerable idea present in the first ver
 
 For instance, there is the GridLayoutManager.  The GridLayoutManager places sub-Components into a set of side-by-side columns.  For instance, in when a KNS maintenance document copies a business object, it shows four columns side by side: two columns for the original business object's labels and controls and two columns for the copied object's labels and controls.  In KRAD, GridLayoutManager will provide the support for that kind of layout.
 
-KRAD also provides the BoxLayoutManager, which works just like the BoxLayoutManager in the Java AWT.  A BoxLayoutManager is given an aspect - either HORIZONTAL or VERTICAL - and it renders all sub-Components either side by side in the case of HORIZONTAL or on top of each other in the case of VERTICAL.  A simple enough behavior, but nesting Groups with different BoxLayoutManager aspects provides a simple yet flexible way to arrange sub-Components.  The BoxLayoutManager also provides the ability to set the padding in between sub-Components.
+{color:red}
+(!) Maybe mention some of the options like row, col span and width.
+{color}
 
-*TableLayoutManager; others?  Revisit as coding continues...*
+There's also the BoxLayoutManager, which works just like the BoxLayoutManager in the Java AWT.  A BoxLayoutManager is given an aspect - either HORIZONTAL or VERTICAL - and it renders all sub-Components either side by side in the case of HORIZONTAL or on top of each other in the case of VERTICAL.  A simple enough behavior, but nesting Groups with different BoxLayoutManager aspects provides a simple yet flexible way to arrange sub-Components.  The BoxLayoutManager also provides the ability to set the padding in between sub-Components.
+
+When laying out the rendering of collections, TableLayoutManager provides a lot of power for rendering that data in a tabular fashion. The TableLayoutManager holds a List of Fields and a List of LabelFields.  For each row in a collection, TableLayoutManager will generate a rendered row of the specified Fields.  By default, the LabelFields will be rendered once at the very top; there is a property to repeatHeater, which would cause the Header to show up above every line of Fields. LabelFields default to using regular labels for fields, but by setting the property useShortLabels to true, shorter labels will be used which may conserve valuable screen real estate.
+
+By default, TableLayoutManager provides a sequence field for each row of Fields, at the very left of each line.  This typically shows a number, but through the sequenceFieldPrototype property, a different rendering for the sequence can be shown.  The sequence fields can be turned off by setting the renderSequenceField property to false.  There's also the ability to specify an actionFieldPrototype, which will show up in the rightmost cell of a line of Fields, which contains actions that can be performed on that specific row of the collection.
+
+When rendering a Collection, maybe a TableLayoutManager is too much of a straight jacket for each row.  Perhaps, for each row in a Collection, a whole different Group needs to be specified which can be customized to show the rows in a very different way than the line of Fields TableLayoutManager provides.  A good example comes from the Maintenance Document framework, where collection rows aren't tabular but rather boxed.  In cases like this, there's the StackedLayoutManager which takes a List of Groups and renders each row of a collection within that List of Groups.
+
+The StackedLayoutManager provides a way to add a summaryTitle and summaryFields for each collection row: special information that will be featured prominently in rendering so each row line can be quickly recognized for what data it holds.  There's also a lineGroupPrototype property which can be used to override the Groups that each line will render as. *JAMES: double check rendering*
+
+h3. Fields
+
+Containers are great, but surely wrapping Containers within Containers does not a full-featured application make.  Developers need ways to interact with the users, to put up text and images, to create interactive and informative web pages in their applications.  To accomplish this, there are three families of Components - Fields, Controls, and Widgets - that provide all of the elements that are contained in the Containers.
+
+However, only one of these families of Components can actually be placed in a Group - the Field.  For a Control or a Widget to exist in any Group, they need to be wrapped within a Field somehow.  This makes Fields fundamental - indeed, a large amount of functionality can be created through specifying Views, Groups, and Fields alone and letting Fields figure out what text and which controls are needed on a page.
+
+This also makes Fields terribly diverse.  Think of all the different kinds of not Group visual elements on a page: images, buttons, messages, even blank space.  Each of these elements are encapsulated at different kinds of Fields.
+
+All Fields implement the org.kuali.rice.kns.uif.field.Field interface, an interface that allows pretty much any child to have an associated label.  (Of course, there's a LabelField which itself represents a Label).  Beyond that, Fields can be very different from one another - but again, all are powerful and important for the KRAD developer to be familiar with.
+
+Here's a tour of the Fields that KRAD offers.
+
+h4. ActionField
+
+An ActionField represents an element that gives the user the ability to perform an action.  Many actions kick off a web request/response cycle.  For instance, the submit button of a Form would be represented as an ActionField.  A link in a menu would be represented as an ActionField.  Even rich scripts could be represented as an ActionField as well - some of which do Ajax calls to the server to pull more data into a page, and some of which just perform some client side JavaScript call.  No matter what, an ActionField represents the user telling the application to get something done.
+
+An ActionField must have either a methodToCall or navigateToPageId set.  Setting the methodToCall will end up calling a method on a controller, and the great majority of ActionFields will populate this property.  navigateToPageId would be used for ActionFields which move the user around in a multi-page document, like the Kuali Coeus Proposal.
+
+The actionParameters property is a map of parameters which will be passed along as part of the HTTP request.  The actionLabel property represents the text which will be displayed on the button or link.  Finally, ActionField has a boolean property, clientSideCall, which will be set to true if the ActionField represents an action which is handled by Javascript.
+
+{color:red}
+(!) I recently did a little more work with this. Check out dynoParameters.tag. So the thought with this is instead of doing the things we did with embedding parameters on the name and then extracting them, these parameters would be set in the map and when the item is clicked added to the dom as
+hiddens (hope this works with a screen reader :)). These parameters can be statically set in the configuration, or might be set in code. There will be a way to use el to set the values as well. Also, need to think about JS calls and parameters. Not sure if we can use the same map or need something different.
+{color}
+
+h4. AttributeField
+
+An AttributeField represents an Attribute on a page.  This means that the Field will display a Control - for user input into the Attribute - as well as error messages associated with the Field, instructions, watermarks: basically everything the Attribute needs to display correctly on the page. This is easily the most functional of all Fields, so let's look at what all it does in detail.
+
+An AttributeField correlates directly to an AttributeDefinition set on either a BusinessObject or a Document.  Every AttributeDefinition represents a single property on its related object.  The AttributeDefinition then defines a great deal of information about that property: what kind of Control it should be associated with, the maximum length of the input, labels, validation patterns, and how to format the property - so that if the property represents non-String data, it can be converted into the data type of the property.
+
+The vast majority of properties which populate the pages of a KRAD application will be represented by DataDictionary AttributeDefinitions.  KRAD's support of translating AttributeDefinitions to all of the equivalent rendered HTML on a page through the AttributeField is very powerful.
+
+{color:red}
+(!) Might mention the AttributeDefinition provides defaults, but can be overridden by the AttributeField
+{color}
+
+There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute - either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
+
+{color:red}
+(!) I think formattedValue will be going away. We spent a lot of time going back and forth between populating the values in the View (fields) or just working directly with the model. I think we are going to be just working with the model. So the AttributeField just has a pointer (the path) to the property in the model. In the JSP, we write that value out as the path attribute for the Spring tags, it then gets the value from the model. The stuff 
+Scott and David are working on is to pull the declared formatter class from the view to apply it when spring asks for the value.
+{color}
+
+Of course, the DataDictionary AttributeDefinition defines a lot of text about the attribute: the label and summary texts as well as a possible default value.  The AttributeField holds all of these as well.  The AttributeField also holds the most important validation defined in AttributeDefinition - that of maxLength.  (It's the most important because if values exceed maxLength, they will likely cause exceptions when inserted into the database.)
+
+AttributeField also holds errors associated with the attribute.  If the Control associated with this attribute put in data that failed validation, or if a special warning message needs to be associated with the attribute, AttributeField encapsulates that as well, by holding these errors in an ErrorsField.  There's also an errorPlacement property which tells KRAD what aspect of the rendered field to render errors to.  *JERRY: POSSIBLE VALUES? "LEFT", "RIGHT", "ABOVE", etc?*
+
+{color:red}
+(!) Not quite sure at this point. I have thought about the hard settings of Left, Right, Top and all that for errors, labels, and so on. But that will get
+really hard to manage and implement, especially if we allow all the different pieces of the attribute field to have those settings. The other option is
+to implement a layout manager for the part of the attribute field. One possibility there is to implement a sort of CSS layout. The advanced layout of CSS3
+might work well. The datatable jQuery plugin we are using actually uses it to configure where the various things will go. I am just now sure what the support is for that. I have a lot of work left with the attribute field piece :)
+{color}
+
+The AttributeField also holds the Formatter responsible for taking Strings in the HTTP request and translating them into different data types.  If the attribute's control is a MultiValueControl with an OptionsFinder, the AttributeField also holds that.
+
+Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page.  Developers don't need to worry about those details.
+
+That's a lot of information for AttributeField to hold.  What does AttributeField render?  First, it renders a Label for the attribute, often by creating a LabelField which then can be rendered beside or above the Control as the parent View demands.  It also renders summary information for the AttributeField.  Obviously, the AttributeField will render a Control for the attribute - assuming the attribute hasn't been rendered hidden or read only by some other participant in the rendering process, such as a KIM permission.  When rendering a Control, the AttributeField will render a classic Kuali quick finder magnifying glass icon for attributes which need separate lookups, and AttributeField will render any specified constraint text for attributes which demand a specific input format.  AttributeField will also render help for the attribute if applicable.
+
+Certainly, all of this makes AttributeField the most powerful of Fields, but, importantly, it has a single concern: the proper rendering if an attribute to a View.  KRAD gets a lot of power by putting metadata about attributes on documents and business objects into the Data Dictionary.  AttributeField concentrates that power by offering a focused point which coordinates the full rendering of the attribute.
+
+Of course, there's other fields yet to understand.  The tour should continue.
+
+h4. BlankField
+
+A BlankField represents empty visual space on a page, typically to act as a place holder in the layout  For instance, think of a collection of accounting lines in a KFS document.  The very bottom line is a total line, where the totals line up under the amounts on the lines, very near the right.  Blank space is needed to push the totals over to line up correctly, and that is what BlankField provides.
+
+h4. ErrorsField
+
+This Field represents error messages, warning messages, and info messages which should be rendered in a Container.  Each set of messages - error, warning, and info - can have a unique title set as well as a unique CSS class (such that errors can show up bolded, say, and warnings can be displayed in italics).  A keyMatch String can also be passed in to the definition, which will be matched against the properties of Controls displayed within the parent Container.  That way, only messages relevant to children fields will be rendered in the ErrorsField.
+
+{color:red}
+(!) Once nice thing is I don't think developers will have to set the keyMatch for groups and such, unless they want some special key. The container can know what all the paths are for its fields and use those as its keyPath. Hopefully that will help prevent many of the problems we have with errors without
+a home :)
+{color}
+
+h4. GroupField
+
+A GroupField encapsulates a Group for display without headers and footers.  *JERRY: USE CASE?*  It has one property, group, which should be injected with the Group to display.
+
+{color:red}
+(!) The GroupField just encapsulates another Group (could have header and footer). It is so we can put a label on group so it can be rendered within a
+field cell. Primarily used within the grid layout. A bean abstraction of this, the 'FieldGroup' turns off the header and footers for the Group. So this would allow you to have a set of fields (like checkboxes) within a cell (as in the grid layout). The demo page has several examples of this I can show to you. 
+{color} 
+
+h4. HeaderField
+
+A HeaderField will display Header text on a page.  Headers often create a sense of visual hierarchy to a page and therefore are very important structural markers.  HeaderFields have passed in a headerLevel: a number between 1 and 6 representing the importance of the Header on the page (1 being the most important, 6 being the least) and headerText, which is the text the header will display.
+
+{color:red}
+(!) For sure! First though I want to mention that for things like Groups the headerText gets set from the title, so usually you don't need to set the headerText directly, only when you are using a HeaderField somewhere else. So the goal is to have this convention for resources. If you put the text into the dictionary it would be used as the default, or you can leave it blank. Then there will be a step that looks for messages from the configuration service and if found populates those onto the component. Not sure exactly what the convention will be, but maybe something like this:
+
+Say we have group with name 'TravelAccount-Officers', then for the title we would look for a key: TravelAccount-Officers.title from the KualiConfigurationService (which will be enhanced to read from a message table as well, so the message could be in the table or resources). For an AttributeField 'name', we would look for TravelAccount-Officers.name.label, TravelAccount-Officers.name.summary, TravelAccount-Officers.name.watermark. 
+And so on for all the text fields. We will be implementing this in the regular dictionary as well. One tricky thing here is namespacing, we might have
+to require the view name as part of the key. We would also look into allow a specific key to be given, maybe we don't need that for each property but
+could give it for the group or field, then we use the convention to find the various messages. Thoughts?
+{color}
+
+h4. ImageField
+
+The ImageField renders an image.
+
+h4. LabelField
+
+A LabelField represents a Label.  Labels are most often associated with controls.  A text control with no explanatory text to say what kind of data is expected to be filled in isn't very useful; LabelFields give users the general gist of the Control.
+
+In a great majority of cases, AttributeField will automatically create a LabelField when it displays.  There are rare times when Controls are created outside of attribute definitions, however, and in those cases, a LabelField will have be configured manually.  There may also be cases when an application needs to override the default label by specifying different message text; LabelFields allow that as well.
+
+A LabelField has a property for labelText.  There's also a property for labelForComponentId - the id of the Component which the Label relates to; setting this helps with accessibility issues for sight-disabled users.  There is a boolean property on whether to render a colon or not, renderColon, and finally an encapsulated MessageField, requiredMessageField, which should be populated if the Label represents a required Control.
+
+h4. LinkField
+
+A LinkField represents a Link on a page and is rendered with an HTML <a> tag.  It needs to have its hrefText set to the target of the link and linkLabel set to the text which will be rendered as the link.  There is also an optional target attribute which can be used to set where the linked content should open up; for instance, setting target to "_blank" will open the link into a new browser tab or window.
+
+h4. MessageField
+
+A messageField displays text on the rendered page within a span.  Its messageText property holds the text which it will display.  It also has a messageType property which helps uniquely identify all messages of this type on the screen.
+
+Those are KRAD's fields.  But how do Controls, Fields, and Widgets get the data they should display during render or populate the underlying page model when a request occurs?  That happens through Spring's Data Bindings mechanism.
+
+h3. Data Bindings{anchor:data_bindings}
+
+One of the major changes that KRAD will bring will be a move away from Apache Struts 1.2+ to Spring 3.0's Web MVC.  This means many things: changes to Controllers, some updates to Forms - though the KRAD team is working on scripts to make these changes as painless as possible.
+
+A major concept invoked by WebMVC is that of data binding.  Data binding simply means that parameter names from a request will be mapped into the form.  Spring handles much of this automatically, by simply using the Form as the root of a property tree and then mapping nested, indexed, or even indexed and nested properties into the form.
+
+Spring does need help on mapping parameters into classes it doesn't handle automatically - KualiDecimal, for instance.  In these cases, Java provides PropertyEditors which can convert Strings into complex objects.  There are a number of mechanisms that help Spring associate a PropertyEditor implementation with a complex object like KualiDecimal. *JERRY: WHAT IS THE RECOMMENDED PROPERTY EDITOR REGISTRATION MECHANISM?* *James: PropertyEditors for common types like KualiDecimal will have global editors registered.  Editors can be registered at the field level in the BO DD or the View DD.  The global registry can be changed by replacing UifConfigurableWebBindingInitializer in the krad servlet context.  A converter class, KualiFormatterPropertyEditor, is provided adapt KNS formatters into PropertyEditors (though this is not recommended).*
+
+{color:red}
+(!) I would not worry to much about this at this point, I don't think developers will need to know about them. We will continue to deal with Formatters.
+The PropertyEditors were used pre Spring 3, now Spring has the concept of Formatters as well. A lot of what is in this package right now is figuring out
+how Spring works, now sure what the final process will look like. But hopefully developers will not need to know anything in addition to the formatters.
+{color}
+
+Creating a PropertyEditor is a straightforward process.  Java provides the java.beans.PropertyEditorSupport object which can be extended.  That class has two crucial methods to override: String getAsText(), which converts the contents of the object into text; and void setAsText(String text) which takes a String and converts it into the complex object.
+
+The Spring documentation covers how it uses data bindings in much more detail [on the SpringSource website|http://static.springsource.org/spring/docs/2.0.x/reference/validation.html]  Spring has a heavy reliance on this mechanism throughout its source code beyond populating form data; thankfully, Spring's developers exposed their standard way to populating business objects as an easy way KRAD can populate a form from an HTTP request's posted variables.
+
+As KRAD renders a page with form data, it will properly generate the data binding path that will properly populate the form when the page is submitted.  It will create indexed property names for values within collections and it will create nested names for all the attributes on a page...meaning that for the most part, developers will never concern themselves with data binding - KRAD will just make it happen in the background.
+
+What if the developer of a new Component wants to participate in the data binding process?  In that case, the new Component should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has one method, getBindingInfo(), which returns a populated instance of org.kuali.rice.kns.uif.BindingInfo.  BindingInfo encapsulates a number of properties:
+* bindingName - this is the name of the property to bind to, either within the form or the model.
+* modelName - if this property is supposed to bind to a model, what's the path of the model to the form?
+* bindByNamePrefix - this is a prefix generated by KRAD, typically when rendering a Collection.  Basically, it generates the proper name and index (for example, "collectionItem[0]") and holds that for the sake of the current binding.
+* bindToModel - when true, this means that the given property should be bound to some root model.  The classic root model of a KRAD application is, of course, a document - so properties related to documents should have bindToModel set to true.
+* bindToForm - when true, this makes sure that the given property is bound to the Struts MVC form itself.
+
+*JERRY: WHAT HAPPENS IF BINDTOMODEL AND BINDTOFORM ARE BOTH FALSE*
+
+{color:red}
+(!) They cannot both be false, in the setters for each I flip the other (well I guess they could be set to false using direct field population). Also as you have probably seen I gave explained a bit about the binding info above. 
+{color}
+
+Easily, the most important Component implementing this interface is the AttributeField.  AttributeFields display and read data on business objects and documents, so naturally they participate in the data binding process.
+*JERRY, WHY DON'T THE CONTROLS IMPLEMENT DATA BINDING?*
+
+{color:red}
+(!) I think they probably good. One thing to note is CollectionGroup also implements DataBinding, because it relates to a collection property on the model.
+However, we don't ever modify the collection directly so it doesn't have a control (each of its line fields do). So to be keeping AttributeField implementing the interface seems more consistent. Do you agree?
+{color}
+
 h3. Controls
 
 Anyone who has developed a KNS application knows that property attributes in the data dictionary for a business object or document can be associated with a control - a way to get input for the attribute.  Normal web controls include text fields, text areas, drop down select boxes, and more.  Much like the KNS, KRAD associates each of these input types with an object implementing the org.kuali.rice.kns.uif.control.Control interface.
@@ -139,6 +380,10 @@ h4. TextAreaControl
 
 This Control represents a text area on the page, a control which accepts large amounts of text.  It maps to the HTML <textarea> tag.  *JAMES: SUPPORT FOR KC OPEN WINDOW TEXT AREA?*
 
+{color:red}
+(!) That will be a widget that when you click on it opens up the expanded text area
+{color}
+
 h4. FileControl
 
 A Control which uploads files.  It maps to the HTML <input type="file" /> tag.
@@ -151,9 +396,20 @@ h4. Checkbox Control
 
 The org.kuali.rice.kns.uif.control.CheckboxControl is KRAD's favored way of getting input for boolean values.  It maps to an <input type="checkbox" /> HTML tag but it also adds a hidden variable to tell the input that the checkbox was rendered.  If the hidden field is present in the request parameters but not the checkbox itself, then KRAD knows to set the value on the business object as false.  On lookup fields, CheckboxControls convert into groups of radio buttons with values "Yes", "No", and "All".
 
+{color:red}
+(!)
+Just a note on this, spring takes care of tracking the checkbox present flag for us so we don't need to do it anymore. Yeh!
+{color}
+
 h4. MultiValue Controls
 
 Certain controls let the user choose among multiple values.  All of these controls extend org.kuali.rice.kns.uif.control.MultiValueControlBase.  To make these controls work, KRAD needs to know what the set of choice values are and MultiValueControlBase supports those through the property options which takes a java.util.List of venerable org.kuali.rice.core.util.KeyLabelPair objects.  Each KeyLabelPair maps a code value to a the display label which is what the user sees for the control (these two values could be the same but often times, the label is a more user-friendly representation of the key code).  *JAMES: HOW TO SET UP OPTIONS FINDERS IN KRAD?*
+
+{color:red}
+(!)
+This is an area of improvement we would like to make. Right now it is just taking a value finder class as was done in the KNS. However, would like to make this an actual injected bean, then we can setup different values finders that take configuration. One base values finder is similar to what they did in KC. You can configure it with a class, and property key/value names that should make up the options. It will then do the query and build up the list. I am sure there will be others. Also there will be a new method to the KeyValuesFinder interface that takes in the model getOptions(Object model) (or something
+like that) that can be implemented to build options based on the context and will be invoked in the apply model phase.
+{color}
 
 h5. SelectControl
 
@@ -170,6 +426,10 @@ RadioGroupControl has but one special property - options, which, just like Selec
 h3. Widgets
 
 A Widget is a grouping of several related rendering items which provide a single functionality.  Take, for instance, the quickfinder: the useful magnifying glass icon that takes a user to an appropriate lookup for a field.  Here, we have an image and a created link: together, that functionality forms a widget.  Widgets are something like Controls in that each has a single function, but Widgets don't map directly to to a single HTML input.  Several widgets, though, are used in conjunction with Controls to make those controls more powerful.
+
+{color:red}
+(!) Good explanation! Can maybe add widgets can also include client side behavior or be rendered with jQuery plugins
+{color}
 
 h4. BreadCrumbs
 
@@ -197,109 +457,6 @@ h4. QuickFinder
 
 The traditional Kuali magnifying glass icon has been around since the very first version of the Kuali Financial System: it's as venerable as Kuali functionality gets.  Rendered next to a field, it opens a lookup so that users can choose an appropriate value for the field.
 
-h3. Fields
-
-Controls are simple because, for the most part, they map directly to HTML input types.  Widgets make a lot of sense as well, since each Widget represents a single set of functionality.  Fields, though, are not at all as simple to classify.  Some - such as BlankField - are simple and completely inert HTML elements.  Some, such as AttributeField or GroupField are wildly complex, rendering a combination of Containers, Controls, and other Components.  Fields are basically the grab bag of other visual elements in KRAD.
-
-What all Fields have in common is that they implement the org.kuali.rice.kns.uif.field.Field interface, an interface that allows pretty much any child to have an associated label.  (Of course, there's a LabelField which itself represents a Label).
-
-Here's a tour of the Fields that KRAD offers.
-
-h4. ActionField
-
-An ActionField represents an element that gives the user the ability to perform an action.  Many actions kick off a web request/response cycle.  For instance, the submit button of a Form would be represented as an ActionField.  A link in a menu would be represented as an ActionField.  Even rich scripts could be represented as an ActionField as well - some of which do Ajax calls to the server to pull more data into a page, and some of which just perform some client side JavaScript call.  No matter what, an ActionField represents the user telling the application to get something done.
-
-An ActionField must have either a methodToCall or navigateToPageId set.  Setting the methodToCall will end up calling a method on a controller, and the great majority of ActionFields will populate this property.  navigateToPageId would be used for ActionFields which move the user around in a multi-page document, like the Kuali Coeus Proposal.
-
-The actionParameters property is a map of parameters which will be passed along as part of the HTTP request.  The actionLabel property represents the text which will be displayed on the button or link.  Finally, ActionField has a boolean property, clientSideCall, which will be set to true if the ActionField represents an action which is handled by Javascript.
-
-h4. AttributeField
-
-An AttributeField represents an Attribute on a page.  This means that the Field will display a Control - for user input into the Attribute - as well as error messages associated with the Field, instructions, watermarks: basically everything the Attribute needs to display correctly on the page. This is easily the most functional of all Fields, so let's look at what all it does in detail.
-
-An AttributeField correlates directly to an AttributeDefinition set on either a BusinessObject or a Document.  Every AttributeDefinition represents a single property on its related object.  The AttributeDefinition then defines a great deal of information about that property: what kind of Control it should be associated with, the maximum length of the input, labels, validation patterns, and how to format the property - so that if the property represents non-String data, it can be converted into the data type of the property.
-
-The vast majority of properties which populate the pages of a KRAD application will be represented by DataDictionary AttributeDefinitions.  KRAD's support of translating AttributeDefinitions to all of the equivalent rendered HTML on a page through the AttributeField is very powerful.
-
-There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute - either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
-
-Of course, the DataDictionary AttributeDefinition defines a lot of text about the attribute: the label and summary texts as well as a possible default value.  The AttributeField holds all of these as well.  The AttributeField also holds the most important validation defined in AttributeDefinition - that of maxLength.  (It's the most important because if values exceed maxLength, they will likely cause exceptions when inserted into the database.)
-
-AttributeField also holds errors associated with the attribute.  If the Control associated with this attribute put in data that failed validation, or if a special warning message needs to be associated with the attribute, AttributeField encapsulates that as well, by holding these errors in an ErrorsField.  There's also an errorPlacement property which tells KRAD what aspect of the rendered field to render errors to.  *JERRY: POSSIBLE VALUES? "LEFT", "RIGHT", "ABOVE", etc?*
-
-The AttributeField also holds the Formatter responsible for taking Strings in the HTTP request and translating them into different data types.  If the attribute's control is a MultiValueControl with an OptionsFinder, the AttributeField also holds that.
-
-Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page.  Developers don't need to worry about those details.
-
-That's a lot of information for AttributeField to hold.  What does AttributeField render?  First, it renders a Label for the attribute, often by creating a LabelField which then can be rendered beside or above the Control as the parent View demands.  It also renders summary information for the AttributeField.  Obviously, the AttributeField will render a Control for the attribute - assuming the attribute hasn't been rendered hidden or read only by some other participant in the rendering process, such as a KIM permission.  When rendering a Control, the AttributeField will render a classic Kuali quick finder magnifying glass icon for attributes which need separate lookups, and AttributeField will render any specified constraint text for attributes which demand a specific input format.  AttributeField will also render help for the attribute if applicable.
-
-Certainly, all of this makes AttributeField the most powerful of Fields, but, importantly, it has a single concern: the proper rendering if an attribute to a View.  KRAD gets a lot of power by putting metadata about attributes on documents and business objects into the Data Dictionary.  AttributeField concentrates that power by offering a focused point which coordinates the full rendering of the attribute.
-
-Of course, there's other fields yet to understand.  The tour should continue.
-
-h4. BlankField
-
-A BlankField represents empty visual space on a page.  *JERRY: TRUE THAT?*
-
-h4. ErrorsField
-
-This Field represents error messages, warning messages, and info messages which should be rendered in a Container.  Each set of messages - error, warning, and info - can have a unique title set as well as a unique CSS class (such that errors can show up bolded, say, and warnings can be displayed in italics).  A keyMatch String can also be passed in to the definition, which will be matched against the properties of Controls displayed within the parent Container.  That way, only messages relevant to children fields will be rendered in the ErrorsField.
-
-h4. GroupField
-
-A GroupField encapsulates a Group for display without headers and footers.  *JERRY: USE CASE?*  It has one property, group, which should be injected with the Group to display.
-
-h4. HeaderField
-
-A HeaderField will display Header text on a page.  Headers often create a sense of visual hierarchy to a page and therefore are very important structural markers.  HeaderFields have passed in a headerLevel: a number between 1 and 6 representing the importance of the Header on the page (1 being the most important, 6 being the least) and headerText, which is the text the header will display.  *JERRY: (james's suggestion hour : - > ) IT WOULD BE EVER SO NICE IF YOU COULD PASS IN A MESSAGE KEY INSTEAD OF JUST TEXT.  THIS IS TRUE OF ANYTHING WHICH TAKES IN TEXT.  IT WILL HELP WITH INTERNATIONALIZATION OF TEXT*
-
-h4. ImageField
-
-The ImageField renders an image.
-
-h4. LabelField
-
-A LabelField represents a Label.  Labels are most often associated with controls.  A text control with no explanatory text to say what kind of data is expected to be filled in isn't very useful; LabelFields give users the general gist of the Control.
-
-In a great majority of cases, AttributeField will create a LabelField when it displays.  There are rare times when Controls are created outside of attribute definitions, however, and in those cases, a LabelField will have be configured manually.
-
-A LabelField has a property for labelText.  There's also a property for labelForComponentId - the id of the Component which the Label relates to; setting this helps with accessibility issues for sight-disabled users.  There is a boolean property on whether to render a colon or not, renderColon, and finally an encapsulated MessageField, requiredMessageField, which should be populated if the Label represents a required Control.
-
-h4. LinkField
-
-A LinkField represents a Link on a page and is rendered with an HTML <a> tag.  It needs to have its hrefText set to the target of the link and linkLabel set to the text which will be rendered as the link.  There is also an optional target attribute which can be used to set where the linked content should open up; for instance, setting target to "_blank" will open the link into a new browser tab or window.
-
-h4. MessageField
-
-A messageField displays text on the rendered page within a span.  Its messageText property holds the text which it will display.  It also has a messageType property which helps uniquely identify all messages of this type on the screen.
-
-Those are KRAD's fields.  But how do Controls, Fields, and Widgets get the data they should display during render or populate the underlying page model when a request occurs?  That happens through Spring's Data Bindings mechanism.
-
-h3. Data Bindings{anchor:data_bindings}
-
-One of the major changes that KRAD will bring will be a move away from Apache Struts 1.2+ to Spring 3.0's Web MVC.  This means many things: changes to Controllers, some updates to Forms - though the KRAD team is working on scripts to make these changes as painless as possible.
-
-A major concept invoked by WebMVC is that of data binding.  Data binding simply means that parameter names from a request will be mapped into the form.  Spring handles much of this automatically, by simply using the Form as the root of a property tree and then mapping nested, indexed, or even indexed and nested properties into the form.
-
-Spring does need help on mapping parameters into classes it doesn't handle automatically - KualiDecimal, for instance.  In these cases, Java provides PropertyEditors which can convert Strings into complex objects.  There are a number of mechanisms that help Spring associate a PropertyEditor implementation with a complex object like KualiDecimal. *JERRY: WHAT IS THE RECOMMENDED PROPERTY EDITOR REGISTRATION MECHANISM?*
-
-Creating a PropertyEditor is a straightforward process.  Java provides the java.beans.PropertyEditorSupport object which can be extended.  That class has two crucial methods to override: String getAsText(), which converts the contents of the object into text; and void setAsText(String text) which takes a String and converts it into the complex object.
-
-The Spring documentation covers how it uses data bindings in much more detail [on the SpringSource website#http://static.springsource.org/spring/docs/2.0.x/reference/validation.html]  Spring has a heavy reliance on this mechanism throughout its source code beyond populating form data; thankfully, Spring's developers exposed their standard way to populating business objects as an easy way KRAD can populate a form from an HTTP request's posted variables.
-
-As KRAD renders a page with form data, it will properly generate the data binding path that will properly populate the form when the page is submitted.  It will create indexed property names for values within collections and it will create nested names for all the attributes on a page...meaning that for the most part, developers will never concern themselves with data binding - KRAD will just make it happen in the background.
-
-What if the developer of a new Component wants to participate in the data binding process?  In that case, the new Component should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has one method, getBindingInfo(), which returns a populated instance of org.kuali.rice.kns.uif.BindingInfo.  BindingInfo encapsulates a number of properties:
-* bindingName - this is the name of the property to bind to, either within the form or the model.
-* modelName - if this property is supposed to bind to a model, what's the path of the model to the form?
-* bindByNamePrefix - this is a prefix generated by KRAD, typically when rendering a Collection.  Basically, it generates the proper name and index (for example, "collectionItem[0]") and holds that for the sake of the current binding.
-* bindToModel - when true, this means that the given property should be bound to some root model.  The classic root model of a KRAD application is, of course, a document - so properties related to documents should have bindToModel set to true.
-* bindToForm - when true, this makes sure that the given property is bound to the Struts MVC form itself.
-
-*JERRY: WHAT HAPPENS IF BINDTOMODEL AND BINDTOFORM ARE BOTH FALSE*
-
-Easily, the most important Component implementing this interface is the AttributeField.  AttributeFields display and read data on business objects and documents, so naturally they participate in the data binding process.
-*JERRY, WHY DON'T THE CONTROLS IMPLEMENT DATA BINDING?*
 
 h3. Component Architecture
 
@@ -324,6 +481,14 @@ Now that we've explored each component type in detail, let's see what they share
 |rowSpan|int|The number of table rows in the parent Container that this Component will span.|
 |decorators|java.util.Map<java.lang.String,org.kuali.rice.kns.uif.decorator.ComponentDecorator>|A Map which associates names of child Components with implementations of ComponentDecorators *JERRY: TRUE THAT?*, as discussed in the section on [Component Decorators#component_decorators]|
 
+{color:red}
+(!) I am going to refactor the decorator infrastructure and the map will be going bye-bye :) Also will be doing the cleanup we talked about with name
+and id. So id will only be set by code, and developers will deal with the name. Regarding the align, we could go either way. right now I am just using
+the align property. I found though you cannot mix. If the align was set in any style class, you cannot override it with the align property. I was using
+just the align property to make the bean config shorter (p:align="left" instead of p:style="text-align: left"), not sure if that is a big deal. I could
+also just take the align setting and build the style.
+{color}
+
 h4. Tiles as Templates{anchor:tiles_as_templates}
 
 In the Spring configuration for every Component, a template is injected.  This is a path to a JSP page which is actually responsible for rendering the Component.  Each KRAD JSP page utilizes Apache Tiles to do the rendering.  This means that variables are passed around from tile to tile in a standard fashion, using the tiles:putAttribute tag for writing and the tiles:useAttribute tag for reading.  Because variable passing is standardized, Tiles can nest JSP pages within each other in a much more flexible manner than standard JSP tags.
@@ -332,14 +497,28 @@ This is incredibly important because the injection of a Tile template path into 
 
 Furthermore, since each Component bean handles its own rendering Tile template, gone are the generic KNS tags - like kul:rowDisplay and kul:htmlControlAttribute - which depended on complex logic within the tag itself to decide rendering and which were nearly impossible to customize.  It's a huge step forward for application developers to be able to customize the user interface of their application.
 
+{color:red}
+(!) Maybe add a little bit about the standard contract component type templates have. And also how a developer could render a group completely on their
+own by its template?
+{color}
+
 h4. Component Initializers{anchor: component_initializers}
 
 It's often useful for Components, upon initialization, to have some access to the rest of the Component tree.  For instance, when a Group is initialized, it may want to cull out any Label Fields within it so that it can decide how to render them: above Controls or beside Controls.  This culling is done via a ComponentInitializer.  Therefore, any Component can have associated with it a List of org.kuali.rice.kns.uif.initializer.ComponentIntializer implementations.
 
 Each ComponentIntializer has two methods which must be given implementations.  getSupportedComponents returns the Class of the Components which support the initializer.  performInitialization is passed in the parent view and the Component that this initializer is working on, and that is where the manipulation of the Component tree is carried out.
 
+{color:red}
+(!) Just a note hear I actually pulled the label field initializer and put it in the grid layout manager. The reason being I need it to run in places after
+the initialize phase. However I think I can still make use the ComponentInitializer interface for things coming so it is still around.
+{color}
+
 h4. Component Decorators{anchor: component_decorators}
 
 Components are powerful, it's true, but putting too much power into a single Component often violates the principle of separation of concerns.  Classes which implement org.kuali.rice.kns.uif.decorator.ComponentDecorator provide a little extra functionality to another Component, without making the code for that wrapped Component more complex.
 
 For instance, many Groups represent tabs which can be opened or closed.  A Group was written simply to be a simple Container of Components - making all of them understand collapsing behavior seems a bit overkill, especially considering how general Groups are.  Therefore, a ComponentDecorator - org.kuali.rice.kns.uif.decorator.PanelGroupDecorator - was created to add collapsing behavior to Groups.  Parent Containers which want to apply collapsing behavior to child Groups will add the name of the Group and the ComponentDecorator to a map called "componentDecorators" and the collapsing behavior will be added during rendering.
+
+{color:red}
+(!) A refactoring of this is coming!
+{color}

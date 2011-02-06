@@ -640,6 +640,11 @@
 						<groupId>org.springframework</groupId>
 						<artifactId>spring</artifactId>
 					</exclusion>
+                                        <exclusion>
+                                                <!-- we moved our patch to groupId org.kuali.db.ojb -->
+                                                <groupId>ojb</groupId>
+                                                <artifactId>db-ojb</artifactId>
+                                        </exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>

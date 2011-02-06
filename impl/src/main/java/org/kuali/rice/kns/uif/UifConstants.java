@@ -95,6 +95,6 @@ public class UifConstants extends JSTLConstants {
 	public static class ViewStatus {
 		public static final String CREATED = "C";
 		public static final String INITIALIZED = "I";
-		public static final String UPDATED = "U";
+		public static final String FINAL = "F";
 	}
 }

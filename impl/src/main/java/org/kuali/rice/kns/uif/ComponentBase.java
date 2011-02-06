@@ -67,11 +67,10 @@ public abstract class ComponentBase implements Component {
 	}
 
 	/**
-	 * <p>
 	 * The following initialization is performed:
+	 * 
 	 * <ul>
 	 * </ul>
-	 * </p>
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
@@ -80,22 +79,38 @@ public abstract class ComponentBase implements Component {
 	}
 
 	/**
-	 * Default implementation does nothing
+	 * The following updates are done here:
 	 * 
-	 * @see org.kuali.rice.kns.uif.Component#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * <ul>
+	 * <li>If component is readonly (unconditionally), update state of child
+	 * components</li>
+	 * </ul>
+	 * 
+	 * @see org.kuali.rice.kns.uif.Component#performUpdate(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
-	public void performApplyModel(View view, Object model) {
-
+	public void performUpdate(View view, Object model) {
+		if (isReadOnly()) {
+			for (Component component : getNestedComponents()) {
+				if (component != null) {
+					component.setReadOnly(true);
+				}
+			}
+		}
 	}
 
 	/**
-	 * Setup the decorator chain (if component has decorators) for rendering
+	 * The following setup is done here:
 	 * 
-	 * @see org.kuali.rice.kns.uif.Component#performUpdateState(org.kuali.rice.kns.uif.container.View,
+	 * <ul>
+	 * <li>Setup the decorator chain (if component has decorators) for rendering
+	 * </li>
+	 * </ul>
+	 * 
+	 * @see org.kuali.rice.kns.uif.Component#performFinalize(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
-	public void performUpdateState(View view, Object model) {
+	public void performFinalize(View view, Object model) {
 		decoratorChain = new DecoratorChain(this);
 	}
 

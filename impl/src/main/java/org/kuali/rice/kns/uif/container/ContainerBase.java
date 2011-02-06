@@ -61,14 +61,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * <p>
 	 * The following initialization is performed:
+	 * 
 	 * <ul>
 	 * <li>Sets the headerText of the header Group if it is blank</li>
 	 * <li>Set the messageText of the summary MessageField if it is blank</li>
 	 * <li>Initialize LayoutManager</li>
 	 * </ul>
-	 * </p>
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
@@ -92,15 +91,28 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performUpdate(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void performApplyModel(View view, Object model) {
-		super.performApplyModel(view, model);
+	public void performUpdate(View view, Object model) {
+		super.performUpdate(view, model);
 
 		if (layoutManager != null) {
-			layoutManager.performApplyModel(view, model, this);
+			layoutManager.performUpdate(view, model, this);
+		}
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
+	 */
+	@Override
+	public void performFinalize(View view, Object model) {
+		super.performFinalize(view, model);
+
+		if (layoutManager != null) {
+			layoutManager.performFinalize(view, model, this);
 		}
 	}
 
@@ -120,7 +132,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		for (Component component : getItems()) {
 			components.add(component);
 		}
-		
+
 		if (layoutManager != null) {
 			components.addAll(layoutManager.getNestedComponents());
 		}

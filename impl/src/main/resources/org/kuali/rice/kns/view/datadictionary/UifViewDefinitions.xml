@@ -39,6 +39,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
      <property name="defaultModelPath" value="bo"/>
      <property name="controllerRequestMapping" value="inquiry"/>
+     <property name="readOnly" value="true"/>
      <property name="footer">
         <ref bean="inquiryFooter"/>
      </property>     

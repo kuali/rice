@@ -125,20 +125,19 @@ public interface Component extends Serializable {
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performApplyModel(View view, Object model);
+	public void performUpdate(View view, Object model);
 
 	/**
-	 * The last phase before the view is rendered. Here is final state of the
-	 * the component, such as read-only, hidden, and required can be set based
-	 * on the configuration and model data. Also any last preparations before
-	 * rendering should be handled here
+	 * The last phase before the view is rendered. Here final preparations can
+	 * be made based on the updated view state
+	 * 
 	 * 
 	 * @param view
-	 *            - view instance to which the component belongs
+	 *            - view instance that should be finalized for rendering
 	 * @param model
 	 *            - top level object containing the data
 	 */
-	public void performUpdateState(View view, Object model);
+	public void performFinalize(View view, Object model);
 
 	/**
 	 * List of components that are contained within the component
@@ -208,6 +207,13 @@ public interface Component extends Serializable {
 	public boolean isHidden();
 
 	/**
+	 * Setter for the hidden indicator
+	 * 
+	 * @param hidden
+	 */
+	public void setHidden(boolean hidden);
+
+	/**
 	 * Indicates whether the component can be edited
 	 * <p>
 	 * When readOnly the controls and widgets of <code>Field</code> components
@@ -224,6 +230,13 @@ public interface Component extends Serializable {
 	public boolean isReadOnly();
 
 	/**
+	 * Setter for the read only indicator
+	 * 
+	 * @param readOnly
+	 */
+	public void setReadOnly(boolean readOnly);
+
+	/**
 	 * Indicates whether the component is required
 	 * <p>
 	 * At the general component level required means there is some action the
@@ -237,6 +250,13 @@ public interface Component extends Serializable {
 	 *         required
 	 */
 	public Boolean getRequired();
+
+	/**
+	 * Setter for the required indicator
+	 * 
+	 * @param required
+	 */
+	public void setRequired(Boolean required);
 
 	/**
 	 * CSS style string to be applied to the component

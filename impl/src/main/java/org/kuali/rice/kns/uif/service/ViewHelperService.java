@@ -87,20 +87,19 @@ public interface ViewHelperService {
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performApplyModel(View view, Object model);
+	public void performUpdate(View view, Object model);
 
 	/**
-	 * The last phase before the view is rendered. Here is final state of the
-	 * view and all its components, such as read-only, hidden, and required can
-	 * be set based on the configuration and model data. Also any last
-	 * preparations before rendering should be handled in this phase
+	 * The last phase before the view is rendered. Here final preparations can
+	 * be made based on the updated view state
+	 * 
 	 * 
 	 * @param view
-	 *            - view instance that should be updated
+	 *            - view instance that should be finalized for rendering
 	 * @param model
 	 *            - top level object containing the data
 	 */
-	public void performUpdateState(View view, Object model);
+	public void performFinalize(View view, Object model);
 
 	/**
 	 * Invoked when the add line action is chosen for a collection. The

@@ -66,8 +66,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
                <property name="name" value="fiscalOfficer.accounts"/>
                <property name="layoutManager.renderSequenceField" value="false"/>
-               <property name="renderAddLine" value="false"/>
-               <property name="renderLineActions" value="false"/>
                <property name="items">
                  <list>
                    <bean parent="AttributeField" p:name="number"/>

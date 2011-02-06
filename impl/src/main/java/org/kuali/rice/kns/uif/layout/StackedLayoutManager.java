@@ -54,7 +54,7 @@ import org.kuali.rice.kns.uif.util.ModelUtils;
  */
 public class StackedLayoutManager extends BoxLayoutManager {
 	private static final long serialVersionUID = 4602368505430238846L;
-	
+
 	private String summaryTitle;
 	private List<String> summaryFields;
 
@@ -76,12 +76,12 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	 * line if enabled). The groups are added to the stackedGroups
 	 * <code>List</code> and picked up by the template.
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performUpdate(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performApplyModel(View view, Object model, Container container) {
-		super.performApplyModel(view, model, container);
+	public void performUpdate(View view, Object model, Container container) {
+		super.performUpdate(view, model, container);
 
 		if (!(container instanceof CollectionGroup)) {
 			throw new IllegalArgumentException(
@@ -94,13 +94,13 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		stackedGroups = new ArrayList<Group>();
 
 		// create add line
-		if (collectionGroup.isRenderAddLine()) {
+		if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
 			buildAddLine(view, collectionGroup, model);
 		}
 
 		// get the collection for this group from the model
-		List<Object> modelCollection = ModelUtils.getPropertyValue(model,
-				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
+		List<Object> modelCollection = ModelUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
+				.getBindingInfo().getBindingPath());
 
 		// for each collection row create a new Group
 		if (modelCollection != null) {
@@ -191,7 +191,9 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		lineGroup.setItems(lineFields);
 
 		// set line actions on group footer
-		lineGroup.getFooter().setItems(actions);
+		if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
+			lineGroup.getFooter().setItems(actions);
+		}
 
 		// refresh the group's layout manager
 		lineGroup.getLayoutManager().refresh(view, lineGroup);

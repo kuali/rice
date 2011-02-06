@@ -47,9 +47,6 @@ import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -545,12 +542,5 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
                         " ", inquiryClass, fieldList));
     	return a;
     }
-
-	@Override
-	protected void performCustomInitialization(View view, Component component) {
-		if (component instanceof AttributeField) {
-			((AttributeField) component).setReadOnly(true);
-		}
-	}
 
 }

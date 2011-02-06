@@ -52,7 +52,7 @@ import org.kuali.rice.kns.uif.widget.TableTools;
  */
 public class TableLayoutManager extends GridLayoutManager {
 	private static final long serialVersionUID = 3622267585541524208L;
-	
+
 	private boolean useShortLabels;
 	private boolean repeatHeader;
 	private LabelField headerFieldPrototype;
@@ -85,19 +85,7 @@ public class TableLayoutManager extends GridLayoutManager {
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
 
-		CollectionGroup collectionGroup = (CollectionGroup) container;
-
 		numberOfDataColumns = getNumberOfColumns();
-
-		// adjust the number of columns if the sequence or action fields were
-		// generated
-		if (renderSequenceField) {
-			setNumberOfColumns(getNumberOfColumns() + 1);
-		}
-
-		if (collectionGroup.isRenderLineActions()) {
-			setNumberOfColumns(getNumberOfColumns() + 1);
-		}
 	}
 
 	/**
@@ -106,12 +94,12 @@ public class TableLayoutManager extends GridLayoutManager {
 	 * columns property. The sequence and action fields (if render enabled) will
 	 * be placed at each end of the line (which could span multiple rows)
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performUpdate(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performApplyModel(View view, Object model, Container container) {
-		super.performApplyModel(view, model, container);
+	public void performUpdate(View view, Object model, Container container) {
+		super.performUpdate(view, model, container);
 
 		CollectionGroup collectionGroup = (CollectionGroup) container;
 
@@ -120,6 +108,28 @@ public class TableLayoutManager extends GridLayoutManager {
 
 		buildTableHeaderRows(collectionGroup);
 		buildTableDataRows(view, collectionGroup, model);
+	}
+
+	/**
+	 * Sets up the final column count for rendering based on whether the
+	 * sequence and action fields have been generated
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
+	 */
+	@Override
+	public void performFinalize(View view, Object model, Container container) {
+		super.performFinalize(view, model, container);
+
+		CollectionGroup collectionGroup = (CollectionGroup) container;
+
+		if (renderSequenceField) {
+			setNumberOfColumns(getNumberOfColumns() + 1);
+		}
+
+		if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
+			setNumberOfColumns(getNumberOfColumns() + 1);
+		}
 	}
 
 	/**
@@ -164,7 +174,8 @@ public class TableLayoutManager extends GridLayoutManager {
 			addHeaderField(field, cellPosition);
 
 			// add action header as last column in row
-			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()) {
+			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()
+					&& !collectionGroup.isReadOnly()) {
 				actionFieldPrototype.setLabelFieldRendered(true);
 				actionFieldPrototype.setRowSpan(rowCount);
 				addHeaderField(actionFieldPrototype, cellPosition);
@@ -229,13 +240,13 @@ public class TableLayoutManager extends GridLayoutManager {
 	 */
 	protected void buildTableDataRows(View view, CollectionGroup collectionGroup, Object model) {
 		// create add line
-		if (collectionGroup.isRenderAddLine()) {
+		if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
 			buildAddLine(view, collectionGroup, model);
 		}
 
 		// get the collection for this group from the model
-		List<Object> modelCollection = ModelUtils.getPropertyValue(model,
-				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
+		List<Object> modelCollection = ModelUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
+				.getBindingInfo().getBindingPath());
 
 		// for each collection row create a set of fields
 		if (modelCollection != null) {
@@ -329,8 +340,7 @@ public class TableLayoutManager extends GridLayoutManager {
 		}
 
 		// copy fields adding the collection line to their binding prefix
-		List<? extends Field> lineFields = ComponentUtils
-				.copyFieldList(collectionGroup.getItems(), lineBindingPath);
+		List<? extends Field> lineFields = ComponentUtils.copyFieldList(collectionGroup.getItems(), lineBindingPath);
 		ComponentUtils.updateIds(lineFields, idSuffix);
 
 		if (bindLineToForm) {
@@ -346,11 +356,12 @@ public class TableLayoutManager extends GridLayoutManager {
 			cellPosition += lineField.getColSpan();
 
 			// action field should be in last column
-			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()) {
+			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()
+					&& !collectionGroup.isReadOnly()) {
 				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
 				lineActionsField.setItems(actions);
 				ComponentUtils.updateIds(lineActionsField, idSuffix);
-				
+
 				dataFields.add(lineActionsField);
 			}
 		}

@@ -187,12 +187,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performUpdate(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void performApplyModel(View view, Object model) {
-		performComponentApplyModel(view, view, model);
+	public void performUpdate(View view, Object model) {
+		performComponentUpdate(view, view, model);
 	}
 
 	/**
@@ -213,13 +213,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 * @param model
 	 *            - top level object containing the data
 	 */
-	protected void performComponentApplyModel(View view, Component component, Object model) {
+	protected void performComponentUpdate(View view, Component component, Object model) {
 		if (component == null) {
 			return;
 		}
 
 		// invoke component to perform its conditional logic
-		component.performApplyModel(view, model);
+		component.performUpdate(view, model);
 
 		// invoke service override hook
 		performCustomApplyModel(view, component, model);
@@ -227,17 +227,17 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// get components children and recursively call perform conditional
 		// logic
 		for (Component nestedComponent : component.getNestedComponents()) {
-			performComponentApplyModel(view, nestedComponent, model);
+			performComponentUpdate(view, nestedComponent, model);
 		}
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performUpdateState(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performFinalize(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void performUpdateState(View view, Object model) {
-		performComponentUpdateState(view, view, model);
+	public void performFinalize(View view, Object model) {
+		performComponentFinalize(view, view, model);
 	}
 
 	/**
@@ -251,20 +251,20 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 * @param model
 	 *            - top level object containing the data
 	 */
-	protected void performComponentUpdateState(View view, Component component, Object model) {
+	protected void performComponentFinalize(View view, Component component, Object model) {
 		if (component == null) {
 			return;
 		}
 
 		// invoke component to update its state
-		component.performUpdateState(view, model);
+		component.performFinalize(view, model);
 
 		// invoke service override hook
 		performCustomUpdateState(view, component, model);
 
 		// get components children and recursively update state
 		for (Component nestedComponent : component.getNestedComponents()) {
-			performComponentUpdateState(view, nestedComponent, model);
+			performComponentFinalize(view, nestedComponent, model);
 		}
 	}
 

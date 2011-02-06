@@ -35,7 +35,7 @@ import org.kuali.rice.kns.uif.container.View;
  */
 public abstract class LayoutManagerBase implements LayoutManager {
 	private static final long serialVersionUID = -2657663560459456814L;
-	
+
 	private String id;
 	private String template;
 	private String style;
@@ -48,12 +48,9 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	}
 
 	/**
-	 * Default Impl
-	 * 
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performInitialization(org.kuali.rice.kns.uif.container.View,
 	 *      org.kuali.rice.kns.uif.container.Container)
 	 */
-	@Override
 	public void performInitialization(View view, Container container) {
 		// set id of layout manager from container
 		if (StringUtils.isBlank(id)) {
@@ -62,23 +59,25 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	}
 
 	/**
-	 * Default Impl
-	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performUpdate(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
-	@Override
-	public void performApplyModel(View view, Object model, Container container) {
+	public void performUpdate(View view, Object model, Container container) {
 
 	}
 
 	/**
-	 * Default Impl
-	 * 
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
+	 */
+	public void performFinalize(View view, Object model, Container container) {
+
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#refresh(org.kuali.rice.kns.uif.container.View,
 	 *      org.kuali.rice.kns.uif.container.Container)
 	 */
-	@Override
 	public void refresh(View view, Container container) {
 
 	}

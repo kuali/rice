@@ -33,8 +33,8 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
  * Root of the component tree which encompasses a set of related
- * <code>GroupContainer</code> instances tied together with a common page layout and
- * navigation.
+ * <code>GroupContainer</code> instances tied together with a common page layout
+ * and navigation.
  * <p>
  * The <code>View</code> component ties together all the components and
  * configuration of the User Interface for a piece of functionality. In Rice
@@ -56,7 +56,7 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
  */
 public class View extends ContainerBase {
 	private static final long serialVersionUID = -1220009725554576953L;
-	
+
 	private String entryPageId;
 	private String currentPageId;
 
@@ -456,8 +456,8 @@ public class View extends ContainerBase {
 	 * The view lifecycle begins with the CREATED status. In this status a new
 	 * instance of the view has been retrieved from the dictionary, but no
 	 * further processing has been done. After the initialize phase has been run
-	 * the status changes to INITIALIZED. After the model has been
-	 * applied and the view is ready for render the status changes to UPDATED
+	 * the status changes to INITIALIZED. After the model has been applied and
+	 * the view is ready for render the status changes to FINAL
 	 * </p>
 	 * 
 	 * @return String view status
@@ -483,16 +483,17 @@ public class View extends ContainerBase {
 	 */
 	public boolean isInitialized() {
 		return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED)
-				|| StringUtils.equals(viewStatus, ViewStatus.UPDATED);
+				|| StringUtils.equals(viewStatus, ViewStatus.FINAL);
 	}
 
 	/**
-	 * Indicates whether the view has been updated from the model
+	 * Indicates whether the view has been updated from the model and final
+	 * updates made
 	 * 
 	 * @return boolean true if the view has been updated, false if not
 	 */
-	public boolean isUpdated() {
-		return StringUtils.equals(viewStatus, ViewStatus.UPDATED);
+	public boolean isFinal() {
+		return StringUtils.equals(viewStatus, ViewStatus.FINAL);
 	}
 
 }

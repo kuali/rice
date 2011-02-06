@@ -54,13 +54,27 @@ public interface LayoutManager extends Serializable {
 	 * 
 	 * @param view
 	 *            - view instance to which the layout manager belongs
-	 * @param container
-	 *            - Container the layout manager applies to
 	 * @param model
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
+	 * @param container
+	 *            - Container the layout manager applies to
 	 */
-	public void performApplyModel(View view, Object model, Container container);
+	public void performUpdate(View view, Object model, Container container);
+
+	/**
+	 * The last phase before the view is rendered. Here final preparations can
+	 * be made based on the updated view state
+	 * 
+	 * 
+	 * @param view
+	 *            - view instance that should be finalized for rendering
+	 * @param model
+	 *            - top level object containing the data
+	 * @param container
+	 *            - Container the layout manager applies to
+	 */
+	public void performFinalize(View view, Object model, Container container);
 
 	/**
 	 * Called to refresh any manager state when state has changed in the

@@ -22,7 +22,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.service.ViewTypeService;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
@@ -31,9 +33,8 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
  * <p>
  * Builds up a Map index where the key is the view id, and the value is the bean
  * name. This is used to retrieve a <code>View</code> instance by its unique id.
- * Furthermore, any configured <code>ViewTypeIndexer</code> implementations will
- * be invoked to do further indexing to support alternative ways of retrieving a
- * <code>View</code>
+ * Furthermore, view of certain types (that have a <code>ViewTypeService</code>
+ * are indexed by their type to support retrieval of views based on parameters.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -46,7 +47,8 @@ public class ViewDictionaryIndex implements Runnable {
 	// view entries keyed by view id with value the spring bean name
 	private Map<String, String> viewEntriesById;
 
-	private Map<String, ViewTypeIndexer> viewIndexers;
+	// view entries indexed by type
+	private Map<String, ViewTypeDictionaryIndex> viewEntriesByType;
 
 	public ViewDictionaryIndex(DefaultListableBeanFactory ddBeans) {
 		this.ddBeans = ddBeans;
@@ -90,13 +92,11 @@ public class ViewDictionaryIndex implements Runnable {
 	 *         found
 	 */
 	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
-		ViewTypeIndexer typeIndexer = getViewTypeIndexer(viewTypeName);
+		String index = buildTypeIndex(indexKey);
 
-		if (typeIndexer != null) {
-			return typeIndexer.retrieveViewByKey(indexKey);
-		}
+		ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewTypeName);
 
-		return null;
+		return typeIndex.get(index);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class ViewDictionaryIndex implements Runnable {
 	 */
 	protected void buildViewIndicies() {
 		viewEntriesById = new HashMap<String, String>();
-		viewIndexers = new HashMap<String, ViewTypeIndexer>();
+		viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
 
 		Map<String, View> viewBeans = ddBeans.getBeansOfType(View.class);
 		for (String beanName : viewBeans.keySet()) {
@@ -118,30 +118,83 @@ public class ViewDictionaryIndex implements Runnable {
 
 			viewEntriesById.put(view.getId(), beanName);
 
-			// invoke view type indexer
-			ViewTypeIndexer typeIndexer = getViewTypeIndexer(view.getViewTypeName());
-			if (typeIndexer != null) {
-				typeIndexer.indexView(view);
-			}
+			indexViewForType(view);
 		}
 	}
 
-	protected ViewTypeIndexer getViewTypeIndexer(String viewTypeName) {
-		if (viewIndexers.containsKey(viewTypeName)) {
-			return viewIndexers.get(viewTypeName);
+	/**
+	 * Performs additional indexing based on the view type associated with the
+	 * view instance. The <code>ViewTypeService</code> associated with the view
+	 * type name on the instance is invoked to retrieve the parameter key/value
+	 * pairs from the view instance, which are then used to build up an index
+	 * which will key the entry
+	 * 
+	 * @param view
+	 *            - view instance to index
+	 */
+	protected void indexViewForType(View view) {
+		String viewType = view.getViewTypeName();
+
+		ViewTypeService typeService = KNSServiceLocator.getViewService().getViewTypeService(viewType);
+		if (typeService == null) {
+			// don't do any further indexing
+			return;
 		}
 
-		Map<String, ViewTypeIndexer> indexerBeans = ddBeans.getBeansOfType(ViewTypeIndexer.class);
-		for (String beanName : indexerBeans.keySet()) {
-			ViewTypeIndexer typeIndexer = indexerBeans.get(beanName);
-			if (typeIndexer.getViewTypeName().equals(viewTypeName)) {
-				viewIndexers.put(viewTypeName, typeIndexer);
+		// invoke type service to retrieve it parameter name/value pairs from
+		// the view
+		Map<String, String> typeParameters = typeService.getParametersFromView(view);
 
-				return typeIndexer;
+		// build the index string from the parameters
+		String index = buildTypeIndex(typeParameters);
+
+		// get the index for the type and add the view entry
+		ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewType);
+
+		typeIndex.put(index, view);
+	}
+
+	/**
+	 * Retrieves the <code>ViewTypeDictionaryIndex</code> instance for the given
+	 * view type name. If one does not exist yet for the given name, a new
+	 * instance is created
+	 * 
+	 * @param viewType
+	 *            - name of the view type to retrieve index for
+	 * @return ViewTypeDictionaryIndex instance
+	 */
+	protected ViewTypeDictionaryIndex getTypeIndex(String viewType) {
+		ViewTypeDictionaryIndex typeIndex = null;
+
+		if (viewEntriesByType.containsKey(viewType)) {
+			typeIndex = viewEntriesByType.get(viewType);
+		}
+		else {
+			typeIndex = new ViewTypeDictionaryIndex();
+			viewEntriesByType.put(viewType, typeIndex);
+		}
+
+		return typeIndex;
+	}
+
+	/**
+	 * Builds up an index string from the given Map of parameters
+	 * 
+	 * @param typeParameters
+	 *            - Map of parameters to use for index
+	 * @return String index
+	 */
+	protected String buildTypeIndex(Map<String, String> typeParameters) {
+		String index = "";
+
+		for (String parameterName : typeParameters.keySet()) {
+			if (StringUtils.isNotBlank(index)) {
+				index += "|||";
 			}
+			index += parameterName + "^^" + typeParameters.get(parameterName);
 		}
 
-		return null;
+		return index;
 	}
 
 }

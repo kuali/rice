@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * Base form class for views within the KRAD User Interface Framework
@@ -38,6 +39,7 @@ import org.kuali.rice.kns.uif.service.ViewService;
 public class UifFormBase {
 	protected String viewId;
 	protected String viewName;
+	protected String viewTypeName;
 	protected String methodToCall;
 
 	protected String selectedCollectionPath;
@@ -54,21 +56,32 @@ public class UifFormBase {
 
 	/**
 	 * Calls <code>View</code> service to build a new View instance based on the
-	 * given view id. The view instance is then set on the form for further
-	 * processing
+	 * given view id or the type. The view instance is then set on the form for
+	 * further processing
 	 * 
 	 * @param request
 	 *            - request object containing the query parameters
 	 */
+	@SuppressWarnings("unchecked")
 	public void populate(HttpServletRequest request) {
 		// TODO: remove once view is being retrieved by the binder
-		if (StringUtils.isBlank(viewId)) {
-			throw new RuntimeException("Unable to get View instance due to blank view id");
+		Map<String, String> parameters = WebUtils.translateRequestParameterMap(request.getParameterMap());
+		
+		if (StringUtils.isNotBlank(viewId)) {
+			view = getViewService().getView(viewId, parameters);
+			if (view == null) {
+				throw new RuntimeException("View not found for id:" + viewId);
+			}
 		}
-
-		view = getViewService().getView(viewId, request.getParameterMap());
-		if (view == null) {
-			throw new RuntimeException("View not found for id:" + viewId);
+		else if (StringUtils.isNotBlank(viewTypeName)) {
+			view = getViewService().getViewByType(viewTypeName, parameters);
+			if (view == null) {
+				throw new RuntimeException("Unable to find View for view type name: " + viewTypeName);
+			}
+			viewId = view.getId();
+		}
+		else {
+			throw new RuntimeException("Cannot create View instance for request");
 		}
 	}
 
@@ -111,6 +124,26 @@ public class UifFormBase {
 	 */
 	public void setViewName(String viewName) {
 		this.viewName = viewName;
+	}
+
+	/**
+	 * Name for the type of view being requested. This can be used to find
+	 * <code>View</code> instances by request parameters (not necessary the
+	 * unique id)
+	 * 
+	 * @return String view type name
+	 */
+	public String getViewTypeName() {
+		return this.viewTypeName;
+	}
+
+	/**
+	 * Setter for the view type name
+	 * 
+	 * @param viewTypeName
+	 */
+	public void setViewTypeName(String viewTypeName) {
+		this.viewTypeName = viewTypeName;
 	}
 
 	/**

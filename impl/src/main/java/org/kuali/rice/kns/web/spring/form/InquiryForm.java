@@ -23,7 +23,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -37,6 +36,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -47,7 +47,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 public class InquiryForm extends UifFormBase {
 	private static final Logger LOG = Logger.getLogger(InquiryForm.class);
 
-	private String businessObjectClassName;
+	private String modelClassName;
 	private boolean canExport;
 
 	/**
@@ -61,29 +61,23 @@ public class InquiryForm extends UifFormBase {
 
 	private BusinessObject bo;
 	private Inquirable inquirable;
+	
+	public InquiryForm() {
+		setViewTypeName(ViewType.INQUIRY);
+	}
 
 	public void populate(HttpServletRequest request) {
 		// if the action is download attachment then skip the following populate
 		// logic
 		if (!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(getMethodToCall())) {
-			// retrieve view id for inquiry if not already set
-			if (StringUtils.isBlank(viewId)) {
-				viewId = getViewService().getInquiryViewId(viewName, businessObjectClassName);
-				if (StringUtils.isBlank(viewId)) {
-					throw new RuntimeException("Unable to determine inquiry view for object class: "
-							+ businessObjectClassName);
-				}
-			}
-			
-			// populate view instance from the id
 			super.populate(request);
 
 			inquirable = (Inquirable) getView().getViewHelperService();
 			try {
-				inquirable.setBusinessObjectClass(Class.forName(businessObjectClassName));
+				inquirable.setBusinessObjectClass(Class.forName(modelClassName));
 			}
 			catch (ClassNotFoundException e) {
-				throw new RuntimeException("Unable to get new instance for object class: " + businessObjectClassName, e);
+				throw new RuntimeException("Unable to get new instance for object class: " + modelClassName, e);
 			}
 
 			// the following variable is true if the method to call is not
@@ -105,10 +99,10 @@ public class InquiryForm extends UifFormBase {
 			this.inquiryPrimaryKeys = new HashMap<String, String>();
 			this.inquiryDecryptedPrimaryKeys = new HashMap<String, String>();
 
-			populatePKFieldValues(request, getBusinessObjectClassName(), passedFromPreviousInquiry);
+			populatePKFieldValues(request, getModelClassName(), passedFromPreviousInquiry);
 
 			// populateInactiveRecordsInIntoInquirable(inquirable, request);
-			populateExportCapabilities(getBusinessObjectClassName());
+			populateExportCapabilities(getModelClassName());
 		}
 	}
 
@@ -159,7 +153,7 @@ public class InquiryForm extends UifFormBase {
 							// require a DD entry for the attribute. it is only
 							// checking keys
 							// so most likely there should be an entry.
-							LOG.warn("BO class " + businessObjectClassName + " property " + boKey
+							LOG.warn("BO class " + modelClassName + " property " + boKey
 									+ " should probably have a DD definition.", ex);
 						}
 
@@ -174,7 +168,7 @@ public class InquiryForm extends UifFormBase {
 								inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameter));
 							}
 							catch (GeneralSecurityException e) {
-								LOG.error("BO class " + businessObjectClassName + " property " + boKey
+								LOG.error("BO class " + modelClassName + " property " + boKey
 										+ " should have been encrypted, but there was a problem decrypting it.");
 								throw e;
 							}
@@ -248,12 +242,12 @@ public class InquiryForm extends UifFormBase {
 		return altKeys != null ? altKeys : new ArrayList<List<String>>();
 	}
 
-	public String getBusinessObjectClassName() {
-		return this.businessObjectClassName;
+	public String getModelClassName() {
+		return this.modelClassName;
 	}
 
-	public void setBusinessObjectClassName(String businessObjectClassName) {
-		this.businessObjectClassName = businessObjectClassName;
+	public void setModelClassName(String modelClassName) {
+		this.modelClassName = modelClassName;
 	}
 
 	public BusinessObject getBo() {

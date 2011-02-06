@@ -357,6 +357,4 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="BindingInfo" class="org.kuali.rice.kns.uif.BindingInfo" scope="prototype"/>
   
-  <bean id="inquiryViewTypeIndexer" class="org.kuali.rice.kns.datadictionary.view.InquiryViewTypeIndexer" scope="prototype"/> 
-   
 </beans>

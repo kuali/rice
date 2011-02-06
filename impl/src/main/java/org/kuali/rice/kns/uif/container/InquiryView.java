@@ -28,7 +28,7 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
 public class InquiryView extends FormView {
 	private static final long serialVersionUID = 716926008488403616L;
 
-	private Class<?> modelClass;
+	private Class<?> modelClassName;
 
 	private Class<? extends InquiryPresentationController> presentationControllerClass;
 	private Class<? extends InquiryAuthorizer> authorizerClass;
@@ -53,15 +53,15 @@ public class InquiryView extends FormView {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		getModelClasses().put(getDefaultModelPath(), modelClass);
+		getModelClasses().put(getDefaultModelPath(), modelClassName);
 	}
 
-	public Class<?> getModelClass() {
-		return this.modelClass;
+	public Class<?> getModelClassName() {
+		return this.modelClassName;
 	}
 
-	public void setModelClass(Class<?> modelClass) {
-		this.modelClass = modelClass;
+	public void setModelClassName(Class<?> modelClassName) {
+		this.modelClassName = modelClassName;
 	}
 
 	public Class<? extends InquiryPresentationController> getPresentationControllerClass() {

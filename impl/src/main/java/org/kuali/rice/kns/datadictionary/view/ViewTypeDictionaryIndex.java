@@ -1,0 +1,61 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kns.datadictionary.view;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.kuali.rice.kns.datadictionary.DataDictionaryException;
+import org.kuali.rice.kns.uif.container.View;
+
+/**
+ * Holds view index information for a view type, where the index keys are built
+ * from the supported view type parameters
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class ViewTypeDictionaryIndex {
+	private Map<String, View> viewIndex;
+
+	public ViewTypeDictionaryIndex() {
+		viewIndex = new HashMap<String, View>();
+	}
+
+	public Map<String, View> getViewIndex() {
+		return this.viewIndex;
+	}
+
+	public void setViewIndex(Map<String, View> viewIndex) {
+		this.viewIndex = viewIndex;
+	}
+
+	public void put(String index, View view) {
+		if (viewIndex.containsKey(index)) {
+			throw new DataDictionaryException("Two Views must not share the same type index: " + index);
+		}
+
+		viewIndex.put(index, view);
+	}
+
+	public View get(String index) {
+		if (viewIndex.containsKey(index)) {
+			return viewIndex.get(index);
+		}
+
+		return null;
+	}
+
+}

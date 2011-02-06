@@ -123,13 +123,16 @@ public class TableLayoutManager extends GridLayoutManager {
 
 		CollectionGroup collectionGroup = (CollectionGroup) container;
 
+		int totalColumns = numberOfDataColumns;
 		if (renderSequenceField) {
-			setNumberOfColumns(getNumberOfColumns() + 1);
+			totalColumns++;
 		}
 
 		if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
-			setNumberOfColumns(getNumberOfColumns() + 1);
+			totalColumns++;
 		}
+
+		setNumberOfColumns(totalColumns);
 	}
 
 	/**

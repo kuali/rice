@@ -21,7 +21,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="TravelAccount-InquiryView" parent="InquiryView">
      <property name="title" value="Travel Account Inquiry"/>
-     <property name="modelClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+     <property name="modelClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="items">
       <list>
         <bean parent="Page">

@@ -106,18 +106,36 @@ public interface ViewService {
 	public View reconstructView(String viewId, Map<String, String> parameters, Object model);
 
 	/**
-	 * Retrieves the unique id for the <code>View</code> instance that is of
-	 * Inquiry view type and is configured for the given model class. If more
-	 * than one views exists, the name can be given to pick which one should be
-	 * returned or if empty the view with name 'default' is returned.
+	 * Retrieves the unique id for the <code>View</code> instance that is of the
+	 * given view type and matches the given parameters (that are applicable for
+	 * that type). If more than one views exists for the type and parameters,
+	 * the view type may choose a default or throw an exception
 	 * 
-	 * @param name
-	 *            - name given for the view in its definition that should be
-	 *            returned, can be blank or null
-	 * @param modelClassName
-	 *            - model class the view works with
-	 * @return String view id or Null if a view was not found
+	 * @param viewType
+	 *            - name that identifies the view type
+	 * @param parameters
+	 *            - Map of parameter key/value pairs that are used to select the
+	 *            view, the parameters allowed depend on the view type
+	 * @return String view id or Null if a matching view was not found
 	 */
-	public String getInquiryViewId(String name, String modelClassName);
+	public String getViewIdByType(String viewType, Map<String, String> parameters);
+
+	/**
+	 * Retrieves the <code>View</code> instance that is of the given view type
+	 * and matches the given parameters (that are applicable for that type). If
+	 * more than one views exists for the type and parameters, the view type may
+	 * choose a default or throw an exception
+	 * 
+	 * @param viewType
+	 *            - name that identifies the view type
+	 * @param parameters
+	 *            - Map of parameter key/value pairs that are used to select the
+	 *            view, the parameters allowed depend on the view type
+	 * @return View instance or Null if a matching view was not found
+	 */
+	public View getViewByType(String viewType, Map<String, String> parameters);
+	
+	// TODO: remove once can get beans by type
+	public ViewTypeService getViewTypeService(String viewType);
 
 }

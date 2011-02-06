@@ -15,11 +15,16 @@
  */
 package org.kuali.rice.kns.web.spring;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.UifConstants.ViewTypeParameterNames;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.InquiryForm;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -43,15 +48,11 @@ public class UifAnnotationMethodHandleAdapter extends AnnotationMethodHandlerAda
             if (target instanceof UifFormBase) {
                 String viewId = request.getParameter(UifConstants.RequestParameterName.VIEW_ID);
                 
-                if(viewId == null) {
-                    
-                    if(target instanceof InquiryForm) {
-                        String viewName = request.getParameter(UifConstants.RequestParameterName.VIEW_NAME);
-                        String businessObjectClassName= request.getParameter(UifConstants.RequestParameterName.BUSINESS_OBJECT_CLASS);
-                        
-                        viewId = getViewService().getInquiryViewId(viewName, businessObjectClassName);
-                    }
-                }
+				if (viewId == null) {
+					String viewTypeName = request.getParameter(UifConstants.RequestParameterName.VIEW_TYPE_NAME);
+					viewId = getViewService().getViewIdByType(viewTypeName,
+							WebUtils.translateRequestParameterMap(request.getParameterMap()));
+				}
                 
                 // TODO what to do here if viewId is not set, are all urls going to have
                 // view id added or will we need other logic

@@ -16,18 +16,17 @@
 package org.kuali.rice.kns.uif.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
-import org.kuali.rice.kns.uif.UifConstants.ViewType;
-import org.kuali.rice.kns.uif.UifConstants.ViewTypeIndexParameterNames;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.uif.service.ViewTypeService;
 
 /**
  * Implementation of <code>ViewService</code>
@@ -43,7 +42,10 @@ import org.kuali.rice.kns.uif.service.ViewService;
 public class ViewServiceImpl implements ViewService {
 	private static final Logger LOG = Logger.getLogger(ViewServiceImpl.class);
 
-	protected DataDictionaryService dataDictionaryService;
+	private DataDictionaryService dataDictionaryService;
+
+	// TODO: remove once we can get beans by type from spring
+	private List<ViewTypeService> viewTypeServices;
 
 	/**
 	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewById(java.lang.String)
@@ -145,26 +147,87 @@ public class ViewServiceImpl implements ViewService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewService#getInquiryViewId(java.lang.String,
-	 *      java.lang.String)
+	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewIdByType(java.lang.String,
+	 *      java.util.Map)
 	 */
-	public String getInquiryViewId(String name, String modelClassName) {
-		String viewName = name;
-		if (StringUtils.isBlank(name)) {
-			viewName = UifConstants.DEFAULT_VIEW_NAME;
-		}
-
-		Map<String, String> indexKey = new HashMap<String, String>();
-		indexKey.put(ViewTypeIndexParameterNames.NAME, viewName);
-		indexKey.put(ViewTypeIndexParameterNames.MODEL_CLASS, modelClassName);
-
-		View view = dataDictionaryService.getViewByTypeIndex(ViewType.INQUIRY, indexKey);
+	public String getViewIdByType(String viewType, Map<String, String> parameters) {
+		View view = getViewForType(viewType, parameters);
 
 		if (view != null) {
 			return view.getId();
 		}
 
 		return null;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewByType(java.lang.String,
+	 *      java.util.Map)
+	 */
+	public View getViewByType(String viewType, Map<String, String> parameters) {
+		View view = getViewForType(viewType, parameters);
+
+		// perform initialize phase
+		if (view != null) {
+			LOG.debug("performing initialize phase for view: " + view.getId());
+			performInitialization(view, parameters);
+		}
+
+		return view;
+	}
+
+	/**
+	 * Retrieves the <code>ViewTypeService</code> for the given view type, then
+	 * builds up the index based on the supported view type parameters and
+	 * queries the dictionary service to retrieve the view based on its type and
+	 * index
+	 * 
+	 * @param viewTypeName
+	 *            - name of the view type
+	 * @param parameters
+	 *            - Map of parameters that were given on request
+	 * @return View instance or Null if a matching view was not found
+	 */
+	protected View getViewForType(String viewTypeName, Map<String, String> parameters) {
+		ViewTypeService typeService = getViewTypeService(viewTypeName);
+		if (typeService == null) {
+			throw new RuntimeException("Unable to find view type service for view type name: " + viewTypeName);
+		}
+
+		Map<String, String> typeParameters = typeService.getParametersFromRequest(parameters);
+
+		Map<String, String> indexKey = new HashMap<String, String>();
+		for (Map.Entry<String, String> parameter : typeParameters.entrySet()) {
+			indexKey.put(parameter.getKey(), parameter.getValue());
+		}
+
+		View view = dataDictionaryService.getViewByTypeIndex(viewTypeName, indexKey);
+
+		return view;
+	}
+
+	public ViewTypeService getViewTypeService(String viewType) {
+		if (viewTypeServices != null) {
+			for (ViewTypeService typeService : viewTypeServices) {
+				if (StringUtils.equals(viewType, typeService.getViewTypeName())) {
+					return typeService;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public List<ViewTypeService> getViewTypeServices() {
+		return this.viewTypeServices;
+	}
+
+	public void setViewTypeServices(List<ViewTypeService> viewTypeServices) {
+		this.viewTypeServices = viewTypeServices;
+	}
+
+	protected DataDictionaryService getDataDictionaryService() {
+		return this.dataDictionaryService;
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

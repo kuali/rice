@@ -34,7 +34,7 @@ public class UifConstants extends JSTLConstants {
 	public static class RequestParameterName {
 		public static final String VIEW_ID = "viewId";
 		public static final String VIEW_NAME = "viewName";
-		public static final String BUSINESS_OBJECT_CLASS = "businessObjectClassName";
+		public static final String VIEW_TYPE_NAME = "viewTypeName";
 	}
 
 	public static class PersistenceMode {
@@ -74,9 +74,9 @@ public class UifConstants extends JSTLConstants {
 		public static final String TRANSACTIONAL = "TRANSACTIONAL";
 	}
 
-	public static class ViewTypeIndexParameterNames {
-		public static final String NAME = "NAME";
-		public static final String MODEL_CLASS = "MODEL_CLASS";
+	public static class ViewTypeParameterNames {
+		public static final String NAME = "name";
+		public static final String MODEL_CLASS_NAME = "modelClassName";
 	}
 
 	public static class ActionParameterNames {

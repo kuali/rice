@@ -67,47 +67,35 @@ Of course, the views for maintenance documents did not have too many complexitie
 
 With KRAD, increasing the flexibility of the view so that more of it could be configured became a top feature requirement.
 
-KRAD introduces a concept of a "View" and a hierarchy of pieces which can be added to a view.  A View can represent a whole page.  Inside that page, a number of different groups are arranged - some as tabs, perhaps, others as field sets within other groups or even collections of field sets.  Some of these groups finally are made up of fields, controls, and widgets (controls providing an extra level of interactive functionality by incorporating rich user interface techniques).  All of these - views, groups, fields, controls, and widgets - all are Components of a KRAD render, and therefore all implement the org.kuali.rice.kns.uif.Component interface.
+KRAD introduces a concept of a "View" and a hierarchy of pieces which can be added to a view.  A View can represent a whole page or even, in some cases, multiple document pages.  Inside the View, a number of different groups are arranged - some as tabs, perhaps, others as field sets within other groups or even collections of field sets.  Some of these groups finally are made up of fields, controls, and widgets (controls providing an extra level of interactive functionality by incorporating rich user interface techniques).  All of these - views, groups, fields, controls, and widgets - all are Components of a KRAD render, and therefore all implement the org.kuali.rice.kns.uif.Component interface.
 
-{color:red}
-(!) One minor thing, a View can actually encompass multiple pages. Most of the time for the typically KNS view
-this would just be one page, but if for instance we changed from the stacked sections (panels) to a left menu
-that navigated through the sections each one would be a different page. Not really functionally different, just technically with the stacked sections everything is rendered in one request (not accounting for progressive disclosure), while with the menu a request is made for each section, similar to the KC horizontal tabs. Not sure
-if this makes sense :) 
-{color}
+Every Component has both a name and an id.  The id is the automatically generated unique identifier for a given Component.  It is assigned by KRAD, but KRAD does follow some naming conventions so that developers can make use of a Component by id.  This is important: the Component id will be what KRAD uses as its wrapping HTML tag's id, and therefore, access to the id means that the Component can be accessed by jQuery's $() method and thus modified programmatically through JavaScript.
 
-Each piece of this visual hierarchy should be in turn.
+How does this automatically generated id get generated in such a way that developers can access it?  It makes use of the name.  The name is the developer's sure fire way to access a Component - both within configuration and, because the id generation process takes the Component name into account, within scripts.  Now, a developer need not name every Component on a page - only those which need to be accessed either by configuration or by script.  Of course, since names are required in configuration, that means that certain elements - most notably Views - must always have a name set by the developer to be used anywhere in the application.
+
+Names do not need to be unique within the whole application - only unique to the model.  This means that two different business objects can create a view called "inquiryView" and KRAD will know the difference.
 
 h3. Containers
 
-In KRAD, a Container is simply a Component with a main job of containing other components to render.  Containers may even contain other Containers to render.  Naturally, the task of Containers is fundamental to rendering pages in the application.
+In KRAD, a Container is simply a Component with a main job of containing other components to render.  Several Containers have the ability to Contain other Containers - Views can Contain Groups, for instance, and Groups, in turn, can contain any other kind of component - including other Groups.
 
-{color:red}
-(!) Maybe talk about the 3 main areas of the container, the header, footer, and body. Then also the various layout
-managers for organizing the body content.
-{color}
+By default, Containers have three areas: a header, encapsulated in a HeaderField; a footer, which is just a Group, and then any other encapsulated items which make up the body.  The renderHeader and renderFooter properties of the Container can be set to false to turn off heater and footer rendering.  Body rendering cannot be turned off because the point of the Container is to render some kind of contained body elements.  Body elements are also laid out on a page by a LayoutManager, which are [discussed in more detail#layout_managers].
+
+There are two main Containers: the View and the Group, each of which have various children that add functionality.
 
 h4. Views
 
-As discussed, Components arrange other Components inside a tree.  A Container may hold other Containers, each of which holds other elements like Controls or Fields.
+As discussed, Components arrange other Components inside a tree.  A Container may hold other Containers, just as the branches of a tree can grow out of other branches.  These Container branches also can hold Fields, and Fields, in turn, can hold Controls, Widgets, or other Fields - the leaves of the visual component hierarchy tree.
 
-{color:red}
-(!) Just to be technically correct, the Container can only contain other containers of Fields, The Fields can
-contain other fields or widgets, and the special AttributeField has Controls. The term controls is possibly not
-the best, since it could be confused with more general types of things that provide interaction, such as widgets.
-Really just talking about data input controls (standard form controls).
-{color}
+And every tree needs a trunk rooted to the ground.  org.kuali.rice.kns.uif.container.View represents a root Container for all visual Components to be rendered for a document or a screen.  It holds the header and footer as well as any navigation that needs to be available for the document.  On multiple page documents, like the Proposal document in Kuali Coeus, each page is a child Group of a single View.
 
-And every tree needs a root.  org.kuali.rice.kns.uif.container.View represents a root Container for all visual Components to be rendered for a document or a screen.  It holds the header and footer as well as any navigation that needs to be available for the document.  On multiple page documents, like the Proposal document in Kuali Coeus, each page is a children of a single view.
+A given model may hold several different Views.  Many business objects in an application will have at least one View to represent the lookup and one View to represent the inquiry - though some business objects will have multiple lookups and multiple inquiries to be used in different contexts.
 
-The View also manages data processing for the data that is bound to its components.  The View is configured to know what data needs to be persisted in the session rather than merely the request scope and how form posting should be processed.  It also holds information on how to conduct validation of models.
-
-{color:red}
-(!) Its in question whether we are going to support a purely request mode, which might just support the session
-(or our custom session implementation that uses the database)
-{color}
+Each trunk View is rooted down by having name that can be referenced in configuration.  A business object may name Views "inquiryView" and "lookupView" but of course any named can be used.  Best practices dictate that the name of a View should communicate what task within the application that the View is performing.
 
 Common pieces of functionality have rendering encapsulated into a standard View, so they can be reused.  Developers of KNS applications will find it intuitive that there's an InquiryView, a LookupView, as well as a MaintenanceDocumentView and a TransactionalDocumentView.  Applications can also extend views for common views of their own: for example, Kuali Financial Systems will likely extend TransactionalView to create the AccountingDocumentView.
+
+The View also manages data processing for the data that is bound to its components.  The View is configured to know what data needs to be persisted in the session rather than merely the request scope and how form posting should be processed.  It also holds information on how to conduct validation of models.
 
 h5. The View Lifecycle
 
@@ -117,15 +105,7 @@ h4. Groups
 
 The Group is the workhorse of Containers.  It basically acts as the branches of the Component hierarchy tree: it can hold any other kind of Component, including other Groups.  Groups are highly flexible: they can represent an entire page of components, a single tab within that page, or even a set of components within the tab.  Every visual element that KRAD renders is going to be a nesting of groups within groups within groups.
 
-Because they're so common, a number of bean definitions for very common Group types have been set up: Page, Panel, and MenuNavigation to name just a few. *JERRY: SHOULD I NAME ALL OF THESE?*  When designing a page, any set of components that share a layout likely belong in a single Group together.
-
-{color:red}
-(!) No I think that is ok. One of the things I am struggling with is all these abstract bean definitions. I worry
-that it would become overwhelming. I would like to come up with a naming convention for them as well. Really there
-are few difference between the abstract beans, they are there to help build your page conceptually (so you don't just have a bunch of nested groups) and of course to reduce configuration. Ultimately I would like to have documentation on each abstract bean when they are closer to be finished. Technically those are the components, and
-the classes are the component types. Since our goal is for the screens to be developed using xml, these names are
-what developers will be working with.
-{color}
+Because they're so common, a number of bean definitions for very common Group types have been set up: Page, Panel, and MenuNavigation to name just a few. When designing a page, any set of components that share a layout likely belong in a single Group together.
 
 Despite their ubiquity, there isn't any significant configuration beyond what ContainerBase provides, making the configuration of multiple groups very straightforward.
 
@@ -171,15 +151,9 @@ CollectionGroups can also show a set of actions on each row.  An example would b
 
 h5. Navigation Groups
 
-A NavigationGroup is, like a CollectionGroup, a special kind of Group which renders elements used in navigation.  *JAMES!  CONTINUE AS CODE FILLS OUT!*
+A NavigationGroup is, like a CollectionGroup, a special kind of Group which renders elements used in navigation such as the different pages which make up a multiple page document like the KC Proposal document.  NavigationGroup has one special property: navigationType which needs to be set to one of the values given in org.kuali.rice.kns.uif.UifConstants.NavigationType: either VERTICAL_MENU, which places the navigation at the very left part of the rendered page with links stacked atop each other, or the traditional HORIZONTAL_TABS which renders the links side by side and displays the menu at the very top of the page.
 
-{color:red}
-(!) The navigation group basically just needs the navigation type that sets what kind of navigation should be rendered. There are constants in UifConstants
-for the available types. Other than the renders that are associated with it generate the items as an unordered list of links. I might change this to be
-a widget instead of just a type string to be consistent with other places and allow different configurations to be set based on the widget plugin.
-{color}
-
-h4. Layout Managers
+h4. Layout Managers{anchor:layout_managers}
 
 Controls, Fields, and Widgets - and even other Groups - can be thrown into a Container.  The question then becomes how KRAD will lay out those controls.
 
@@ -350,8 +324,6 @@ What if the developer of a new Component wants to participate in the data bindin
 * bindToModel - when true, this means that the given property should be bound to some root model.  The classic root model of a KRAD application is, of course, a document - so properties related to documents should have bindToModel set to true.
 * bindToForm - when true, this makes sure that the given property is bound to the Struts MVC form itself.
 
-*JERRY: WHAT HAPPENS IF BINDTOMODEL AND BINDTOFORM ARE BOTH FALSE*
-
 {color:red}
 (!) They cannot both be false, in the setters for each I flip the other (well I guess they could be set to false using direct field population). Also as you have probably seen I gave explained a bit about the binding info above. 
 {color}
@@ -372,17 +344,11 @@ h4. TextControl
 
 An org.kuali.rice.kns.uif.control.TextControl represents a simple HTML text field, mapping to an <input type="text" /> tag.  Simple, indeed, but widely used as well - easily the most frequently used of all Controls.  *JAMES, CONTINUE*
 
-||Property Name||Type||Description||
-|size|int|The size of the displayed TextControl|
-|datePicker|org.kuali.rice.kns.uif.widget.DatePicker|A DatePicker associated with this text control, assisting the user to choose a date and then formatting it correctly if the text represents a date.|
+TextControls have two major properties.  First, the size property limits the text that can be entered in the TextControl to a certain size.  There is also a boolean datePicker property which decides if a DatePicker Widget should be associated with this TextControl - ie, that the TextControl is to act as the input for a date.
 
 h4. TextAreaControl
 
-This Control represents a text area on the page, a control which accepts large amounts of text.  It maps to the HTML <textarea> tag.  *JAMES: SUPPORT FOR KC OPEN WINDOW TEXT AREA?*
-
-{color:red}
-(!) That will be a widget that when you click on it opens up the expanded text area
-{color}
+This Control represents a text area on the page, a control which accepts large amounts of text.  It maps to the HTML <textarea> tag.  TextAreas can be associated with a BigTextArea Widget *JAMES - real name when added* which pops up a window allowing the user to enter text in a large space without losing space in the page's real estate.  This functionality is used extensively in Kuali Coeus.
 
 h4. FileControl
 
@@ -396,10 +362,7 @@ h4. Checkbox Control
 
 The org.kuali.rice.kns.uif.control.CheckboxControl is KRAD's favored way of getting input for boolean values.  It maps to an <input type="checkbox" /> HTML tag but it also adds a hidden variable to tell the input that the checkbox was rendered.  If the hidden field is present in the request parameters but not the checkbox itself, then KRAD knows to set the value on the business object as false.  On lookup fields, CheckboxControls convert into groups of radio buttons with values "Yes", "No", and "All".
 
-{color:red}
-(!)
-Just a note on this, spring takes care of tracking the checkbox present flag for us so we don't need to do it anymore. Yeh!
-{color}
+Developers who worked with checkboxes in the KNS may remember that KNS rendered checkboxes as two controls - the <input type="checkbox" /> and an associated <input type="hidden" /> to say that the checkbox was present.  This was done because if a checkbox isn't checked, it actually passes nothing into the HTTP POST's variables and since the KNS pulled values from the parameters passed in, it would miss unchecked checkboxes and therefore fail to set certain values to "false."  The hidden variable forced the KNS to look for the associated checkbox and set the value no matter if the checkbox parameter was present in the POST or not.  With KRAD moving to a base of Spring MVC, however, this will no longer be necessary as Spring's rendering of the checkbox handles the checkbox parameter check.
 
 h4. MultiValue Controls
 
@@ -427,9 +390,7 @@ h3. Widgets
 
 A Widget is a grouping of several related rendering items which provide a single functionality.  Take, for instance, the quickfinder: the useful magnifying glass icon that takes a user to an appropriate lookup for a field.  Here, we have an image and a created link: together, that functionality forms a widget.  Widgets are something like Controls in that each has a single function, but Widgets don't map directly to to a single HTML input.  Several widgets, though, are used in conjunction with Controls to make those controls more powerful.
 
-{color:red}
-(!) Good explanation! Can maybe add widgets can also include client side behavior or be rendered with jQuery plugins
-{color}
+As Widgets are functionality that do not map directly to HTML tags, client side behavior can be encapsulated as a Widget.  For instance, the DatePicker widget is an icon that pulls up a JavaScript based calendar to populate a TextControl which maps to a Date in the model.  Because it's a single piece of functionality wrapping a script, a Widget is in charge of rendering it.  jQuery plugins to be rendered are also associated with special Widgets.
 
 h4. BreadCrumbs
 
@@ -463,13 +424,13 @@ h3. Component Architecture
 Now that we've explored each component type in detail, let's see what they share and what all KRAD visual elements have in common. The table explains all of the properties inherited by all children of org.kuali.rice.kns.uif.Component.
 
 ||Property|Type|Explanation||
-|id|java.lang.String|The Component's unique name within the rendered HTML.|
+|id|java.lang.String|The Component's unique name within the application space.  This property is autogenerated by KRAD and should never be reset by the developer|
 |componentTypeName|java.lang.String|The type name of the Component: "Text" for the Text Control, for instance, or "Quickfinder" for the Quickfinder widget|
 |template|java.lang.String|As discussed in [Tiles as Templates#tiles_as_templates], the path to the JSP representing the tile for this component|
 |componentInitializers|List<org.kuali.rice.kns.uif.initializer.ComponentIntializer>|A list of all ComponentInitializers that should be run on the component upon initialization.  Covered in more detail in [Component Intializers#component_initializers]|
-|name|java.lang.String|*JERRY: HOW DOES THIS DIFFER FROM ID?  This is the bean name and the other is the HTML id?*|
-|render|boolean|Determines if this component should be rendered.|
-|hidden|boolean|*???*|
+|name|java.lang.String|The developer set identifier for this Component, which can be used to refer to this Component either in data dictionary configuration or in scripts.|
+|render|boolean|Determines if this Component should be rendered.|
+|hidden|boolean|Determines if the Component should be rendered in a way not visible to the user, for instance via an <input type="hidden"/> tag.|
 |readOnly|boolean|Determines if the Component should be rendered as readOnly (in the case of Controls, this means just data is shown-there is no ability to input a different value)|
 |required|java.lang.Booolean|Determines whether the Component is required to be filled in.  Again, typically used in conjunction with Controls.|
 |style|java.lang.String|The style attributes of the Component.  The value of this will be rendered in a "style" attribute on the Component.|
@@ -479,11 +440,11 @@ Now that we've explored each component type in detail, let's see what they share
 |valign|java.lang.String|The vertical alignment of the Component within its Container. The allowed values are "baseline" (which aligns the baseline of the characters of this Component to align with the baseline of the parent - this is the default); "sub" (making the text align as subscript); "super" (making the text align as superscript); "top" (which aligns the text of the Component with the top of the tallest element - text or non-text - on the rest of the line); "text-top" (which aligns the text of the Component with the top of the tallest text element on the rest of the line); "middle"; "bottom"; or "text-bottom" (which, like "text-top" aligns with the bottom of only text elements on the rest of the line).|
 |colSpan|int|The number of table columns in the parent Container that this Component will span.|
 |rowSpan|int|The number of table rows in the parent Container that this Component will span.|
-|decorators|java.util.Map<java.lang.String,org.kuali.rice.kns.uif.decorator.ComponentDecorator>|A Map which associates names of child Components with implementations of ComponentDecorators *JERRY: TRUE THAT?*, as discussed in the section on [Component Decorators#component_decorators]|
+|componentDecorator|org.kuali.rice.kns.uif.decorator.ComponentDecorator|The decorator for the component, as discussed in the section on [Component Decorators#component_decorators]|
+|decoratorChain|org.kuali.rice.kns.uif.decorator.DecoratorChain|Set by KRAD, this property contains an encapsulation of the decorated Component - ie, this - and the chain of decorators which are supposed to affect the rendering of that Component.|
 
 {color:red}
-(!) I am going to refactor the decorator infrastructure and the map will be going bye-bye :) Also will be doing the cleanup we talked about with name
-and id. So id will only be set by code, and developers will deal with the name. Regarding the align, we could go either way. right now I am just using
+(!) Regarding the align, we could go either way. right now I am just using
 the align property. I found though you cannot mix. If the align was set in any style class, you cannot override it with the align property. I was using
 just the align property to make the bean config shorter (p:align="left" instead of p:style="text-align: left"), not sure if that is a big deal. I could
 also just take the align setting and build the style.
@@ -520,5 +481,21 @@ Components are powerful, it's true, but putting too much power into a single Com
 For instance, many Groups represent tabs which can be opened or closed.  A Group was written simply to be a simple Container of Components - making all of them understand collapsing behavior seems a bit overkill, especially considering how general Groups are.  Therefore, a ComponentDecorator - org.kuali.rice.kns.uif.decorator.PanelGroupDecorator - was created to add collapsing behavior to Groups.  Parent Containers which want to apply collapsing behavior to child Groups will add the name of the Group and the ComponentDecorator to a map called "componentDecorators" and the collapsing behavior will be added during rendering.
 
 {color:red}
-(!) A refactoring of this is coming!
+(!)   Also I refactored the decorator infrastructure. No longer is there a map configured on the component, but the component has
+
+a simple decorator property. For multiple decorators, you can specify the decorator property on the decorator, and so on for
+
+as many decorators as you want. The DecoratorChain is created by the framework as a helper to the template tag to render
+
+the decorators in the correct order. The only thing I would like to cleanup at some point is the configuration. Right now to set the
+
+decorator property you have to do p:decorator.defaultOpen=”true”. That is not too bad, but if you have multiple decorators you would
+
+have to nest until you get to the correct decorator level, p:decorator.decorator.color=”#888”. It is a problem in general because everything
+
+is more object oriented that the properties are more nested (like layout manager). I am hoping to put in a bean post processor which will
+
+flatten out the properties. So for any of the decorator properties you could just set them like they are a property on the main object, and
+
+likewise for the layout manager.
 {color}

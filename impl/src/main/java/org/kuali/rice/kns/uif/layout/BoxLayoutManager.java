@@ -16,6 +16,8 @@
 package org.kuali.rice.kns.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.CssConstants;
+import org.kuali.rice.kns.uif.CssConstants.Margins;
 import org.kuali.rice.kns.uif.UifConstants.Orientation;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
@@ -28,7 +30,7 @@ import org.kuali.rice.kns.uif.container.View;
  */
 public class BoxLayoutManager extends LayoutManagerBase {
 	private static final long serialVersionUID = 4467342272983290044L;
-	
+
 	private String orientation;
 	private String padding;
 
@@ -57,11 +59,12 @@ public class BoxLayoutManager extends LayoutManagerBase {
 			if (StringUtils.equals(orientation, Orientation.VERTICAL)) {
 				// set span to block which will cause a line break and margin
 				// bottom for padding
-				itemSpanStyle = "display: block;margin-bottom: " + padding + ";";
+				itemSpanStyle = CssConstants.Displays.BLOCK;
+				itemSpanStyle += CssConstants.getCssStyle(Margins.MARGIN_BOTTOM, padding);
 			}
 			else {
 				// set margin right for padding
-				itemSpanStyle = "margin-right: " + padding + ";";
+				itemSpanStyle = CssConstants.getCssStyle(Margins.MARGIN_RIGHT, padding);
 			}
 		}
 	}

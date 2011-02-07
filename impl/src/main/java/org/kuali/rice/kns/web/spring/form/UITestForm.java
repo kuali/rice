@@ -75,8 +75,8 @@ public class UITestForm extends UifFormBase {
 	}
 
 	@Override
-	public void populate(HttpServletRequest request) {
-		super.populate(request);
+	public void postBind(HttpServletRequest request) {
+		super.postBind(request);
 
 		// TODO: remove once the view is being pulled from session or
 		// reconstructed by the binding

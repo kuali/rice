@@ -123,7 +123,6 @@
 	<classpathentry kind="var" path="M2_REPO/commons-validator/commons-validator/1.3.1/commons-validator-1.3.1.jar" sourcepath="M2_REPO/commons-validator/commons-validator/1.3.1/commons-validator-1.3.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/displaytag/displaytag/1.2/displaytag-1.2.jar" sourcepath="M2_REPO/displaytag/displaytag/1.2/displaytag-1.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javassist/javassist/3.10.0.GA/javassist-3.10.0.GA.jar" sourcepath="M2_REPO/javassist/javassist/3.10.0.GA/javassist-3.10.0.GA-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4.1/mail-1.4.1.jar" sourcepath="M2_REPO/javax/mail/mail/1.4.1/mail-1.4.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/resource/connector-api/1.5/connector-api-1.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.2/jstl-1.2.jar" sourcepath="M2_REPO/javax/servlet/jstl/1.2/jstl-1.2-sources.jar"/>
@@ -257,7 +256,7 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/m2repo/org/apache/struts/struts-el/1.3.10/struts-el-1.3.10-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts-extras/1.3.10/struts-extras-1.3.10.jar" sourcepath="M2_REPO/org/apache/struts/struts-extras/1.3.10/struts-extras-1.3.10-sources.jar">
+	<classpathentry kind="var" path="M2_REPO/org/apache/struts/struts-extras/1.3.10/struts-extras-1.3.10.jar" sourcepath="/M2_REPO/org/apache/struts/struts-extras/1.3.10/struts-extras-1.3.10-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/C:/m2repo/org/apache/struts/struts-extras/1.3.10/struts-extras-1.3.10-javadoc.jar!/"/>
 		</attributes>

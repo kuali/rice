@@ -20,7 +20,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
@@ -55,34 +54,14 @@ public class UifFormBase {
 	}
 
 	/**
-	 * Calls <code>View</code> service to build a new View instance based on the
-	 * given view id or the type. The view instance is then set on the form for
-	 * further processing
+	 * This method is called after Spring binds the request to the form and
+	 * before the controller method is invoked.
 	 * 
 	 * @param request
 	 *            - request object containing the query parameters
 	 */
-	@SuppressWarnings("unchecked")
-	public void populate(HttpServletRequest request) {
-		// TODO: remove once view is being retrieved by the binder
-		Map<String, String> parameters = WebUtils.translateRequestParameterMap(request.getParameterMap());
-		
-		if (StringUtils.isNotBlank(viewId)) {
-			view = getViewService().getView(viewId, parameters);
-			if (view == null) {
-				throw new RuntimeException("View not found for id:" + viewId);
-			}
-		}
-		else if (StringUtils.isNotBlank(viewTypeName)) {
-			view = getViewService().getViewByType(viewTypeName, parameters);
-			if (view == null) {
-				throw new RuntimeException("Unable to find View for view type name: " + viewTypeName);
-			}
-			viewId = view.getId();
-		}
-		else {
-			throw new RuntimeException("Cannot create View instance for request");
-		}
+	public void postBind(HttpServletRequest request) {
+	    // do nothing
 	}
 
 	/**

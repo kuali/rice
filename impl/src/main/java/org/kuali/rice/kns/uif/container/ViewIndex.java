@@ -81,11 +81,7 @@ public class ViewIndex implements Serializable {
 	 * @return AttributeField instance for the path or Null if not found
 	 */
 	public AttributeField getAttributeFieldByPath(String attributePath) {
-		if (attributeFieldIndex.containsKey(attributePath)) {
-			return attributeFieldIndex.get(attributePath);
-		}
-
-		return null;
+		return attributeFieldIndex.get(attributePath);
 	}
 
 	/**
@@ -216,11 +212,7 @@ public class ViewIndex implements Serializable {
 	 *         found
 	 */
 	public CollectionGroup getCollectionGroupByPath(String collectionPath) {
-		if (collectionsIndex.containsKey(collectionPath)) {
-			return collectionsIndex.get(collectionPath);
-		}
-
-		return null;
+		return collectionsIndex.get(collectionPath);
 	}
 
 }

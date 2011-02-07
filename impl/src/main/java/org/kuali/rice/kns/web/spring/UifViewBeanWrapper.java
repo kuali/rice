@@ -15,22 +15,16 @@
  */
 package org.kuali.rice.kns.web.spring;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.spring.form.InquiryForm;
-import org.kuali.rice.kns.web.spring.form.UITestForm;
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
-
-import edu.sampleu.travel.bo.TravelAccount;
 
 /**
  * This class is a top level BeanWrapper for a UIF View (form).  It will call the
@@ -43,10 +37,9 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     
     private String viewId;
     
-    // conatains mapping of property prefix to BO Class for
-    // all BO's in the view (on the form), might not need the
-    // class when actual calls are made to the view service
-    private Map<String, Class<?>> boPrefixes;
+    // this is a handle to the target object so we don't
+    // have to cast so often
+    private UifFormBase form;
     
     // this stores all properties this wrapper has already checked
     // with the view so the service isn't called again
@@ -56,46 +49,35 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     public UifViewBeanWrapper(Object object, String viewId) {
         super(object);
         
-        processedProperties = new HashSet<String>();
-        boPrefixes = new HashMap<String, Class<?>>();
+        form = (UifFormBase)object;
         
-        // this is for testing, view id should come in as parameter
-        if(object instanceof InquiryForm) {
-            Object bo = ((InquiryForm)object).getBo();
-            // default to TravelAccount since that is what we are testing with
-            if(bo == null) {
-                boPrefixes.put("bo.", TravelAccount.class);
-            }
-            else {
-                boPrefixes.put("bo.", bo.getClass());
-            }
-        }
-        else if(object instanceof UITestForm) {
-            boPrefixes.put("travelAccount1.", TravelAccount.class);
-        }
-        // end testing
+        processedProperties = new HashSet<String>();
         
         this.viewId = viewId;
     }
     
     
-    private void callViewService(String propertyName) {
+    protected void callViewService(String propertyName) {
         Class<? extends Formatter> formatterClass = null;
+        
+        // viewId should be determined in UifAnnotationMethodHandlerAdapter so
+        // nothing we can do without one here
+        if(form.getView() == null) {
+            return;
+        }
         
         // check if we already processed this property for this BeanWrapper instance
         if(processedProperties.contains(propertyName)) {
             return;
         }
         
-        for(String s : boPrefixes.keySet()) {
-            if(propertyName.startsWith(s)) {
-                // TODO
-                // check authorization service if encryption is needed here
-                // set formatter to EncryptedFormatter and skip dictionary lookup
-                
-                formatterClass = KNSServiceLocator.getDataDictionaryService()
-                        .getAttributeFormatter(boPrefixes.get(s), StringUtils.substringAfter(propertyName, s));
-                break;
+        AttributeField af = form.getView().getViewIndex().getAttributeFieldByPath(propertyName);
+        if(af != null) {
+            // TODO check authorization and use EncryptedFormatter if necessary
+            
+            Formatter formatter = af.getFormatter();
+            if(formatter != null) {
+                formatterClass = formatter.getClass();
             }
         }
         
@@ -109,15 +91,11 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         
     }
 
-
-
     @Override
     public Object getPropertyValue(String propertyName) throws BeansException {
         callViewService(propertyName);
         return super.getPropertyValue(propertyName);
     }
-
-
 
     @Override
     public void setPropertyValue(PropertyValue pv) throws BeansException {
@@ -125,15 +103,11 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         super.setPropertyValue(pv);
     }
 
-
-
     @Override
     public void setPropertyValue(String propertyName, Object value) throws BeansException {
         callViewService(propertyName);
         super.setPropertyValue(propertyName, value);
     }
-
-
 
     @Override
     public void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown, boolean ignoreInvalid) throws BeansException {
@@ -142,6 +116,20 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             callViewService(pv.getName());
         }
         super.setPropertyValues(pvs, ignoreUnknown, ignoreInvalid);
+    }
+
+    @Override
+    public void setWrappedInstance(Object object, String nestedPath, Object rootObject) {
+        //TODO clear cache?
+        form = (UifFormBase)object;
+        super.setWrappedInstance(object, nestedPath, rootObject);
+    }
+
+    @Override
+    public void setWrappedInstance(Object object) {
+        //TODO clear cache?
+        form = (UifFormBase)object;
+        super.setWrappedInstance(object);
     }
 
 }

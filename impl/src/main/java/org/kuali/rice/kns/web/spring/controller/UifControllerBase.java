@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.web.spring.controller;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -65,6 +67,38 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public abstract class UifControllerBase<T extends UifFormBase> {
 
+    /**
+     * This method will create the model(form) object on the initial request before
+     * it is passed to the Binder/BeanWrapper.
+     * 
+     * @param request
+     * @return
+     */
+    @ModelAttribute()
+    public T initForm(HttpServletRequest request) {
+        T form;
+        
+        try {
+            // walk up the class hierarchy until a superclass with a generic
+            // declaration is found - this would happen if the controller is
+            // extended and the form type is not changed
+            Class<?> clazz = this.getClass();
+            Type type = clazz.getGenericSuperclass();
+            while(! (type instanceof ParameterizedType) ) {
+                clazz = clazz.getSuperclass();
+                type = clazz.getGenericSuperclass();
+            }
+            
+            clazz = (Class<?>)((ParameterizedType)type).getActualTypeArguments()[0];
+            form = (T) clazz.newInstance();
+        }
+        catch(Exception ex) {
+            throw new RuntimeException("Controllers extending UifControllerBase must declare a form type", ex);
+        }
+
+        return form;
+    }
+    
 	private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
 	{
 		methodToCallsToNotCheckAuthorization.add("performLookup");
@@ -145,9 +179,6 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 	public ModelAndView addLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		// TODO: remove once this is being called from binder
-		uifForm.populate(request);
-
 		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
 		if (StringUtils.isBlank(selectedCollectionPath)) {
 			throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
@@ -179,9 +210,6 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteLine")
 	public ModelAndView deleteLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-
-		// TODO: remove once this is being called from binder
-		uifForm.populate(request);
 
 		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
 		if (StringUtils.isBlank(selectedCollectionPath)) {

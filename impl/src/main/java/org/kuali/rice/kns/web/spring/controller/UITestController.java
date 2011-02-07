@@ -39,10 +39,11 @@ import edu.sampleu.travel.bo.TravelAccount;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
+@RequestMapping(value = "/uitest")
 public class UITestController extends UifControllerBase<UITestForm> {
 	private static final String testViewId = "testView1";
 
-	@RequestMapping(value = "/uitest", params = "methodToCall=start")
+	@RequestMapping(params = "methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
@@ -87,14 +88,14 @@ public class UITestController extends UifControllerBase<UITestForm> {
 		return getUIFModelAndView(uiTestForm, testViewId, "page1");
 	}
 
-	@RequestMapping(value = "/uitest", method = RequestMethod.POST, params = "methodToCall=navigateToPage1")
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigateToPage1")
 	public ModelAndView navigateToPage1(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		return getUIFModelAndView(uiTestForm, testViewId, "page1");
 	}
 
-	@RequestMapping(value = "/uitest", method = RequestMethod.POST, params = "methodToCall=navigateToPage2")
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigateToPage2")
 	public ModelAndView navigateToPage2(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 

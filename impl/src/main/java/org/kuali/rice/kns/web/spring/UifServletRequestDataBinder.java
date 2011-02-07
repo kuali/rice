@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kns.web.spring;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
 import org.springframework.validation.AbstractPropertyBindingResult;
@@ -78,5 +84,20 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     	LOG.error("Direct Field access is not allowed in UifServletRequestDataBinder.");
 		throw new RuntimeException("Direct Field access is not allowed in Kuali");
 	}
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void bind(ServletRequest request) {
+        super.bind(request);
+        UifFormBase form = (UifFormBase) this.getTarget();
+        
+        // create initial view, should only happen if this is the first request
+        if(form.getView() == null) {
+            ViewService viewService = KNSServiceLocator.getViewService();
+            form.setView(viewService.getView(viewId, request.getParameterMap()));
+        }
+        
+        form.postBind((HttpServletRequest)request);
+    }
 
 }

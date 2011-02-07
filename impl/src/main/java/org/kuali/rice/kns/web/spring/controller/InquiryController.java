@@ -37,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(value = "/inquiry")
-public class InquiryController extends UifControllerBase {
+public class InquiryController extends UifControllerBase<InquiryForm> {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryController.class);
 
 	@RequestMapping(params = "methodToCall=start")
@@ -53,8 +53,6 @@ public class InquiryController extends UifControllerBase {
 	@RequestMapping(params = "methodToCall=continueWithInquiry")
 	public ModelAndView continueWithInquiry(@ModelAttribute("KualiForm") InquiryForm inquiryForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-
-		inquiryForm.populate(request);
 
 		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
 		checkBO(bo);

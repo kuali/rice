@@ -66,11 +66,12 @@ public class InquiryForm extends UifFormBase {
 		setViewTypeName(ViewType.INQUIRY);
 	}
 
-	public void populate(HttpServletRequest request) {
+	@Override
+    public void postBind(HttpServletRequest request) {
 		// if the action is download attachment then skip the following populate
 		// logic
 		if (!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(getMethodToCall())) {
-			super.populate(request);
+			super.postBind(request);
 
 			inquirable = (Inquirable) getView().getViewHelperService();
 			try {

@@ -208,10 +208,6 @@ An AttributeField correlates directly to an AttributeDefinition set on either a 
 
 The vast majority of properties which populate the pages of a KRAD application will be represented by DataDictionary AttributeDefinitions.  KRAD's support of translating AttributeDefinitions to all of the equivalent rendered HTML on a page through the AttributeField is very powerful.
 
-{color:red}
-(!) Might mention the AttributeDefinition provides defaults, but can be overridden by the AttributeField
-{color}
-
 There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute - either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
 
 {color:red}
@@ -221,7 +217,7 @@ Scott and David are working on is to pull the declared formatter class from the 
 
 Of course, the DataDictionary AttributeDefinition defines a lot of text about the attribute: the label and summary texts as well as a possible default value.  The AttributeField holds all of these as well.  The AttributeField also holds the most important validation defined in AttributeDefinition - that of maxLength.  (It's the most important because if values exceed maxLength, they will likely cause exceptions when inserted into the database.)
 
-AttributeField also holds errors associated with the attribute.  If the Control associated with this attribute put in data that failed validation, or if a special warning message needs to be associated with the attribute, AttributeField encapsulates that as well, by holding these errors in an ErrorsField.  There's also an errorPlacement property which tells KRAD what aspect of the rendered field to render errors to.  *JERRY: POSSIBLE VALUES? "LEFT", "RIGHT", "ABOVE", etc?*
+AttributeField also holds errors associated with the attribute.  If the Control associated with this attribute put in data that failed validation, or if a special warning message needs to be associated with the attribute, AttributeField encapsulates that as well, by holding these errors in an ErrorsField.  There's also an errorPlacement property which tells KRAD what aspect of the rendered field to render errors to.
 
 {color:red}
 (!) Not quite sure at this point. I have thought about the hard settings of Left, Right, Top and all that for errors, labels, and so on. But that will get
@@ -234,11 +230,11 @@ The AttributeField also holds the Formatter responsible for taking Strings in th
 
 Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page.  Developers don't need to worry about those details.
 
+The AttributeField, of course, populates all of these values precisely from the data dictionary.  However, any AttributeField can override any of the data dictionary's values by having the equivalent properties set in configuration.  This makes AttributeFields all the more flexible.
+
 That's a lot of information for AttributeField to hold.  What does AttributeField render?  First, it renders a Label for the attribute, often by creating a LabelField which then can be rendered beside or above the Control as the parent View demands.  It also renders summary information for the AttributeField.  Obviously, the AttributeField will render a Control for the attribute - assuming the attribute hasn't been rendered hidden or read only by some other participant in the rendering process, such as a KIM permission.  When rendering a Control, the AttributeField will render a classic Kuali quick finder magnifying glass icon for attributes which need separate lookups, and AttributeField will render any specified constraint text for attributes which demand a specific input format.  AttributeField will also render help for the attribute if applicable.
 
 Certainly, all of this makes AttributeField the most powerful of Fields, but, importantly, it has a single concern: the proper rendering if an attribute to a View.  KRAD gets a lot of power by putting metadata about attributes on documents and business objects into the Data Dictionary.  AttributeField concentrates that power by offering a focused point which coordinates the full rendering of the attribute.
-
-Of course, there's other fields yet to understand.  The tour should continue.
 
 h4. BlankField
 
@@ -246,21 +242,13 @@ A BlankField represents empty visual space on a page, typically to act as a plac
 
 h4. ErrorsField
 
-This Field represents error messages, warning messages, and info messages which should be rendered in a Container.  Each set of messages - error, warning, and info - can have a unique title set as well as a unique CSS class (such that errors can show up bolded, say, and warnings can be displayed in italics).  A keyMatch String can also be passed in to the definition, which will be matched against the properties of Controls displayed within the parent Container.  That way, only messages relevant to children fields will be rendered in the ErrorsField.
+This Field represents error messages, warning messages, and info messages which should be rendered in a Container.  Each set of messages - error, warning, and info - can have a unique title set as well as a unique CSS class (such that errors can show up bolded, say, and warnings can be displayed in italics).  
 
-{color:red}
-(!) Once nice thing is I don't think developers will have to set the keyMatch for groups and such, unless they want some special key. The container can know what all the paths are for its fields and use those as its keyPath. Hopefully that will help prevent many of the problems we have with errors without
-a home :)
-{color}
+The ErrorsField does have a property keyMatch, which, as developers of KNS applications will recognize, is the prefixes of the errors which should be displayed within the current field.  Only messages relevant to children will be rendered by the ErrorsField.  However, there is a difference here from the KNS: in KRAD, a Container knows the paths of all Fields and ultimately all Controls it has rendered.  Therefore, Containers with ErrorsFields will typically set the keyMatch itself with the default values.  The only reason a developer would need to set this property would be in the case of some special overriding.
 
 h4. GroupField
 
-A GroupField encapsulates a Group for display without headers and footers.  *JERRY: USE CASE?*  It has one property, group, which should be injected with the Group to display.
-
-{color:red}
-(!) The GroupField just encapsulates another Group (could have header and footer). It is so we can put a label on group so it can be rendered within a
-field cell. Primarily used within the grid layout. A bean abstraction of this, the 'FieldGroup' turns off the header and footers for the Group. So this would allow you to have a set of fields (like checkboxes) within a cell (as in the grid layout). The demo page has several examples of this I can show to you. 
-{color} 
+A GroupField encapsulates a Group for display without headers and footers.  It has one property, group, which should be injected with the Group to display.  If a Group needs to be displayed without headers and footers inside another Container, then likely, a developer will use a GroupFiled to wrap the Group and then place it inside the containing Group.
 
 h4. HeaderField
 
@@ -342,7 +330,7 @@ Anyone who has developed a KNS application knows that property attributes in the
 
 h4. TextControl
 
-An org.kuali.rice.kns.uif.control.TextControl represents a simple HTML text field, mapping to an <input type="text" /> tag.  Simple, indeed, but widely used as well - easily the most frequently used of all Controls.  *JAMES, CONTINUE*
+An org.kuali.rice.kns.uif.control.TextControl represents a simple HTML text field, mapping to an <input type="text" /> tag.  Simple, indeed, but widely used as well - easily the most frequently used of all Controls.
 
 TextControls have two major properties.  First, the size property limits the text that can be entered in the TextControl to a certain size.  There is also a boolean datePicker property which decides if a DatePicker Widget should be associated with this TextControl - ie, that the TextControl is to act as the input for a date.
 
@@ -436,19 +424,12 @@ Now that we've explored each component type in detail, let's see what they share
 |style|java.lang.String|The style attributes of the Component.  The value of this will be rendered in a "style" attribute on the Component.|
 |styleClass|java.lang.String|The name of the CSS class which this component will render in.|
 |width|java.lang.String|The width of the Component, in any measurement that HTML supports|
-|align|java.lang.String|The horizontal alignment of the Component within its Container. *JERRY: DOES THIS USE CSS OR HTML ALIGN? I DOCUMENTED CSS VALUES* The allowed values are "left" (which is the default for Western character sets); "right"; "center"; and "justified" which attempts left and right alignment on lines.|
+|align|java.lang.String|The horizontal alignment of the Component within its Container. The allowed values are "left" (which is the default for Western character sets); "right"; "center"; and "justify" which attempts left and right alignment on lines.|
 |valign|java.lang.String|The vertical alignment of the Component within its Container. The allowed values are "baseline" (which aligns the baseline of the characters of this Component to align with the baseline of the parent - this is the default); "sub" (making the text align as subscript); "super" (making the text align as superscript); "top" (which aligns the text of the Component with the top of the tallest element - text or non-text - on the rest of the line); "text-top" (which aligns the text of the Component with the top of the tallest text element on the rest of the line); "middle"; "bottom"; or "text-bottom" (which, like "text-top" aligns with the bottom of only text elements on the rest of the line).|
 |colSpan|int|The number of table columns in the parent Container that this Component will span.|
 |rowSpan|int|The number of table rows in the parent Container that this Component will span.|
 |componentDecorator|org.kuali.rice.kns.uif.decorator.ComponentDecorator|The decorator for the component, as discussed in the section on [Component Decorators#component_decorators]|
 |decoratorChain|org.kuali.rice.kns.uif.decorator.DecoratorChain|Set by KRAD, this property contains an encapsulation of the decorated Component - ie, this - and the chain of decorators which are supposed to affect the rendering of that Component.|
-
-{color:red}
-(!) Regarding the align, we could go either way. right now I am just using
-the align property. I found though you cannot mix. If the align was set in any style class, you cannot override it with the align property. I was using
-just the align property to make the bean config shorter (p:align="left" instead of p:style="text-align: left"), not sure if that is a big deal. I could
-also just take the align setting and build the style.
-{color}
 
 h4. Tiles as Templates{anchor:tiles_as_templates}
 

@@ -1,4 +1,4 @@
-#Thu Feb 03 14:41:47 EST 2011
+#Sun Feb 06 22:08:43 EST 2011
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
 org.eclipse.jdt.core.compiler.compliance=1.6
@@ -16,7 +16,7 @@ org.eclipse.jdt.core.compiler.problem.fatalOptionalError=disabled
 org.eclipse.jdt.core.compiler.problem.fieldHiding=warning
 org.eclipse.jdt.core.compiler.problem.finalParameterBound=warning
 org.eclipse.jdt.core.compiler.problem.finallyBlockNotCompletingNormally=warning
-org.eclipse.jdt.core.compiler.problem.forbiddenReference=error
+org.eclipse.jdt.core.compiler.problem.forbiddenReference=warning
 org.eclipse.jdt.core.compiler.problem.hiddenCatchBlock=warning
 org.eclipse.jdt.core.compiler.problem.incompatibleNonInheritedInterfaceMethod=warning
 org.eclipse.jdt.core.compiler.problem.incompleteEnumSwitch=warning

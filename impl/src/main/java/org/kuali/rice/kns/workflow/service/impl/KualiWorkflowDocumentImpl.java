@@ -27,7 +27,6 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -44,13 +43,13 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Serializable {
 
     private WorkflowDocument workflowDocument;
-
-    public KualiWorkflowDocumentImpl(UserIdDTO userId, String documentType) throws WorkflowException {
-        workflowDocument = new WorkflowDocument(userId, documentType);
+    
+    public KualiWorkflowDocumentImpl(String principalId, String documentType) throws WorkflowException {
+    	workflowDocument = new WorkflowDocument(principalId, documentType);
     }
-
-    public KualiWorkflowDocumentImpl(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
-        workflowDocument = new WorkflowDocument(userId, routeHeaderId);
+    
+    public KualiWorkflowDocumentImpl(String principalId, Long routeHeaderId) throws WorkflowException {
+        workflowDocument = new WorkflowDocument(principalId, routeHeaderId);
     }
 
     // ########################
@@ -344,7 +343,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * @param annotation the message to log for the action
      * @param nodeName the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(String, RouteHeaderDTO, ReturnPointDTO, String)
      */
     public void returnToPreviousNode(String annotation, String nodeName) throws WorkflowException {
         workflowDocument.returnToPreviousNode(annotation, nodeName);
@@ -356,7 +355,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * @param annotation the message to log for the action
      * @param ReturnPointDTO the node to return to
      * @throws WorkflowException in case an error occurs returning to previous node
-     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(UserIdDTO, RouteHeaderDTO, ReturnPointDTO, String)
+     * @see WorkflowDocumentActions#returnDocumentToPreviousNode(String, RouteHeaderDTO, ReturnPointDTO, String)
      */
     public void returnToPreviousNode(String annotation, ReturnPointDTO returnPoint) throws WorkflowException {
         workflowDocument.returnToPreviousNode(annotation, returnPoint);

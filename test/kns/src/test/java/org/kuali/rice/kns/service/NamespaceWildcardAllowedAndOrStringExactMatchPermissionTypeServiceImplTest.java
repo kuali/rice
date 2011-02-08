@@ -34,7 +34,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl permissionService;
     
     @Before
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         permissionService = 
             new NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl();
         

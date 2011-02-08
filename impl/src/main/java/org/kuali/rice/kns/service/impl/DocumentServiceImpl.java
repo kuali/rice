@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
@@ -59,7 +60,6 @@ import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -436,7 +436,12 @@ public class DocumentServiceImpl implements DocumentService {
 	public Document getNewDocument(String documentTypeName) throws WorkflowException {
 
         // argument validation
-        Timer t0 = new Timer("DocumentServiceImpl.getNewDocument");
+        String watchName = "DocumentServiceImpl.getNewDocument";
+        StopWatch watch = new StopWatch();
+        watch.start();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": started");
+        }
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
@@ -512,7 +517,10 @@ public class DocumentServiceImpl implements DocumentService {
         document.setDocumentHeader(documentHeader);
         document.setDocumentNumber(documentHeader.getDocumentNumber());
 
-        t0.log();
+        watch.stop();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": " + watch.toString());	
+        }
         return document;
     }
 

@@ -20,11 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -38,7 +37,6 @@ import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
@@ -79,8 +77,12 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      *      org.kuali.rice.kew.user.WorkflowUser)
      */
     public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, Person person) throws WorkflowException {
-        Timer t0 = new Timer("createWorkflowDocument");
-
+        String watchName = "createWorkflowDocument";
+        StopWatch watch = new StopWatch();
+        watch.start();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": started");
+        }
         if (StringUtils.isBlank(documentTypeId)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeId");
         }
@@ -96,7 +98,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("creating workflowDoc(" + documentTypeId + "," + person.getPrincipalName() + ")");
         }
 
-        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(getUserIdVO(person), documentTypeId);
+        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(person.getPrincipalId(), documentTypeId);
 
         // workflow doesn't complain about invalid docTypes until the first call to getRouteHeaderId, but the rest of our code
         // assumes that you get the exception immediately upon trying to create a document of that invalid type
@@ -113,7 +115,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             throw e;
         }
 
-        t0.log();
+        watch.stop();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": " + watch.toString());	
+        }
 
         return document;
     }
@@ -137,7 +142,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("retrieving document(" + documentHeaderId + "," + user.getPrincipalName() + ")");
         }
 
-        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(getUserIdVO(user), documentHeaderId);
+        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(user.getPrincipalId(), documentHeaderId);
         if (document.getRouteHeader() == null) {
             throw new UnknownDocumentIdException("unable to locate document with documentHeaderId '" + documentHeaderId + "'");
         }
@@ -397,10 +402,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             }
         }
         return realAdHocRecipients;
-    }
-
-    private UserIdDTO getUserIdVO(Person user) {
-        return new NetworkIdDTO(user.getPrincipalName());
     }
 
 

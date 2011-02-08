@@ -20,26 +20,25 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.DocumentHeader;
+import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.document.Copyable;
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.InactiveDocumentTypeAuthorizationException;
-import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 @Entity
 @Table(name="KREW_RIA_DOC_T")
 public class RIADocument extends TransactionalDocumentBase implements SessionDocument, Copyable {
-	private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(RIADocument.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RIADocument.class);
 
 	private static final long serialVersionUID = 7570724075156957665L;
 	
@@ -75,7 +74,12 @@ public class RIADocument extends TransactionalDocumentBase implements SessionDoc
 	 */
 	public static RIADocument getNewDocument(String documentTypeName, String riaDocumentTypeName) throws WorkflowException {
 		 // argument validation
-        Timer t0 = new Timer("DocumentServiceImpl.getNewDocument");
+		String watchName = "RIADocument.getNewDocument";
+        StopWatch watch = new StopWatch();
+        watch.start();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": started");
+        }
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
@@ -102,7 +106,7 @@ public class RIADocument extends TransactionalDocumentBase implements SessionDoc
         DocumentAuthorizer documentAuthorizer = KNSServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName);
 
         // make sure this person is authorized to initiate
-        log.debug("calling canInitiate from getNewDocument()");
+        LOG.debug("calling canInitiate from getNewDocument()");
         documentAuthorizer.canInitiate(riaDocumentTypeName, currentUser);
 
         // create workflow document for riaDocumentTypeName
@@ -133,7 +137,10 @@ public class RIADocument extends TransactionalDocumentBase implements SessionDoc
         document.setDocumentHeader(documentHeader);
         document.setDocumentNumber(documentHeader.getDocumentNumber());
         document.setRiaDocTypeName(riaDocumentTypeName);
-        t0.log();
+        watch.stop();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": " + watch.toString());	
+        }
         return document;
 	}
 	

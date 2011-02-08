@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.kuali.rice.core.web.format.FormatException;
@@ -40,7 +41,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 
@@ -119,7 +119,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
      */
     @Override
 	public void populate(HttpServletRequest request) {
-        Timer t0 = new Timer("PojoFormBase.populate");
+        String watchName = "PojoFormBase.populate";
+        StopWatch watch = new StopWatch();
+        watch.start();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": started");
+        }
         unconvertedValues.clear();
         unknownKeys = new ArrayList();
         addRequiredNonEditableProperties();
@@ -154,7 +159,10 @@ public class PojoFormBase extends ActionForm implements PojoForm {
             }
         }
         this.registerIsNewForm(false);
-        t0.log();
+        watch.stop();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(watchName + ": " + watch.toString());	
+        }
     }
 
 

@@ -1026,7 +1026,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#blanketApprovalToNodes(UserIdDTO, RouteHeaderDTO, String, String[])
      */
     public void blanketApprove(String annotation, String nodeName) throws WorkflowException {
-        blanketApprove(annotation, (nodeName == null ? null : new String[] { nodeName }));
+        blanketApprove(annotation, (nodeName == null ? new String[] {} : new String[] { nodeName }));
     }
 
     /**

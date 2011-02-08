@@ -67,7 +67,7 @@ public class ObjectUtilsTest extends KNSTestCase {
 		assertTrue("Incorrect formatter returned for percent type", formatter instanceof PercentageFormatter);
 		
 		formatter = ObjectUtils.getFormatterWithDataDictionary(useRate, "number");
-		assertTrue("Incorrect formatter returned for string type", formatter.getClass().getName().equals("org.kuali.rice.kns.web.format.Formatter"));
+		assertTrue("Incorrect formatter returned for string type", formatter.getClass().getName().equals("org.kuali.rice.core.web.format.Formatter"));
 	}
 
 	private void changeAttributeDefinitionFormatter(Class boClass, String attributeName, Class formatterClass) {

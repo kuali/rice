@@ -27,7 +27,8 @@ public class ServerDateParser implements DateParser {
     		new SimpleDateFormat("dd-MMM-yyyy")
     };
     
-    public Date parseDate(String input) {
+    @Override
+	public Date parseDate(String input) throws IllegalArgumentException {
         Date result = null;
         
         for (SimpleDateFormat format : formats) {
@@ -43,7 +44,7 @@ public class ServerDateParser implements DateParser {
         }
         
         if (result == null) {
-            throw new DateParseException("Invalid date value: " + input);
+            throw new IllegalArgumentException("Invalid date value: " + input);
         }
         
         return result;
@@ -58,6 +59,6 @@ public class ServerDateParser implements DateParser {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss,SSS");
         result = format.format(date);
 
-        return result;        
+        return result;
     }
 }

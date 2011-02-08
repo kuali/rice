@@ -46,24 +46,15 @@ public class ValidationResultInfo implements Serializable{
         	return e1.ordinal() > e2.ordinal() ? e1 : e2;
         }
     }	
-	
-	public ValidationResultInfo() {
-		super();
-		this.level = ErrorLevel.OK;
-	}
 
  private transient Object invalidData = null;
 
-	public ValidationResultInfo(String element) {
-		super();
-		this.level = ErrorLevel.OK;
-		this.element = element;
-	}
-
-	public ValidationResultInfo(String element, Object invalidData) {
-		this(element);
-  this.invalidData = invalidData;
-	}
+//	public ValidationResultInfo(String element) {
+//		super();
+//		this.level = ErrorLevel.OK;
+//		this.element = element;
+//	}
+//
 	
 	
 	@XmlElement
@@ -74,6 +65,29 @@ public class ValidationResultInfo implements Serializable{
 
 	@XmlElement
 	protected String message;
+	
+	private String entryName;
+	private String attributeName;
+	private String errorKey;
+	private String[] errorParameters;
+	
+	
+	public ValidationResultInfo() {
+		super();
+		this.level = ErrorLevel.OK;
+	}
+	
+	public ValidationResultInfo(String entryName, String attributeName) {
+		this();
+		this.entryName = entryName;
+		this.attributeName = attributeName;
+	}
+	
+	public ValidationResultInfo(String entryName, String attributeName, String errorKey, String... errorParameters) {
+		this(entryName, attributeName);
+		this.errorKey = errorKey;
+		this.errorParameters = errorParameters;
+	}
 	
 	/**
 	 * @return the level
@@ -137,9 +151,15 @@ public class ValidationResultInfo implements Serializable{
      * @param message
      *            the message to add
      */
-    public void setError(String message) {
+//    public void setError(String message) {
+//    	this.level = ErrorLevel.ERROR;
+//    	this.message = message;
+//    }
+    
+    public void setError(String errorKey, String... errorParameters) {
     	this.level = ErrorLevel.ERROR;
-    	this.message = message;
+    	this.errorKey = errorKey;
+    	this.errorParameters = errorParameters;
     }
 
     /**
@@ -172,5 +192,61 @@ public class ValidationResultInfo implements Serializable{
     public String toString(){
     	return "[" + level + "] Path: [" + element + "] - " + message + " data=[" + invalidData + "]";
     }
+
+	/**
+	 * @return the entryName
+	 */
+	public String getEntryName() {
+		return this.entryName;
+	}
+
+	/**
+	 * @param entryName the entryName to set
+	 */
+	public void setEntryName(String entryName) {
+		this.entryName = entryName;
+	}
+
+	/**
+	 * @return the attributeName
+	 */
+	public String getAttributeName() {
+		return this.attributeName;
+	}
+
+	/**
+	 * @param attributeName the attributeName to set
+	 */
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
+	}
+
+	/**
+	 * @return the errorKey
+	 */
+	public String getErrorKey() {
+		return this.errorKey;
+	}
+
+	/**
+	 * @param errorKey the errorKey to set
+	 */
+	public void setErrorKey(String errorKey) {
+		this.errorKey = errorKey;
+	}
+
+	/**
+	 * @return the errorParameters
+	 */
+	public String[] getErrorParameters() {
+		return this.errorParameters;
+	}
+
+	/**
+	 * @param errorParameters the errorParameters to set
+	 */
+	public void setErrorParameters(String[] errorParameters) {
+		this.errorParameters = errorParameters;
+	}
 	
 }

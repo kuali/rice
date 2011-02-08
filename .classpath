@@ -33,6 +33,7 @@
 	<classpathentry kind="src" output="web/target/classes" path="web/src/main/resources"/>
 	<classpathentry kind="src" output="web/target/test-classes" path="web/src/test/java"/>
 	<classpathentry kind="src" output="web/target/test-classes" path="web/src/test/resources"/>
+	<classpathentry kind="src" path="krad/src/test/java"/>
 	<classpathentry kind="var" path="M2_REPO/ant/ant/1.6.5/ant-1.6.5.jar" sourcepath="M2_REPO/ant/ant/1.6.5/ant-1.6.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.7/antlr-2.7.7.jar"/>
 	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" sourcepath="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar"/>

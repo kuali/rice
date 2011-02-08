@@ -12,7 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,7 +20,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.dto.CaseConstraint;
@@ -55,10 +53,10 @@ public class DefaultValidatorImpl implements Validator {
     
     private DataDictionaryService dataDictionaryService;
     
-    private PersistenceStructureService persistenceStructureService;
+//    private PersistenceStructureService persistenceStructureService;
     
-    private WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
-    
+//    private WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
+//    
 //
 //    private boolean serverSide = true;
 
@@ -304,10 +302,16 @@ public class DefaultValidatorImpl implements Validator {
     }
     
     @Override
-	public List<ValidationResultInfo> validate(String entryName, String fieldName, AttributeValueReader valueReader, boolean checkIfRequired) {
+	public void validate(String entryName, String attributeName, AttributeValueReader valueReader, boolean checkIfRequired) {
     	Stack<String> elementStack = new Stack<String>();
     	
-    	return validateField(entryName, fieldName, valueReader, elementStack, checkIfRequired);
+    	List<ValidationResultInfo> results = validateField(entryName, attributeName, valueReader, elementStack, checkIfRequired);
+    	
+    	if (results != null) {
+    		for (ValidationResultInfo result : results) {
+    			setFieldError(entryName, attributeName, result.getErrorKey(), result.getErrorParameters());
+    		}
+    	}
     }
     
 //    @Override
@@ -372,11 +376,17 @@ public class DefaultValidatorImpl implements Validator {
         	
             List<ValidationResultInfo> l = validateField(definition, entryName, attributeName, attributeValueReader, elementStack, checkIfRequired);
 
-            if (l != null && l.size() > 0) {
-            	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
-            	GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, "LENGTH" });
-            }
+        	if (l != null) {
+        		for (ValidationResultInfo result : l) {
+        			setFieldError(entryName, attributeName, result.getErrorKey(), result.getErrorParameters());
+        		}
+        	}
             
+//            if (l != null && l.size() > 0) {
+//            	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
+//            	GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, "LENGTH" });
+//            }
+//            
             results.addAll(l);
 
             // Use Custom Validators
@@ -438,7 +448,7 @@ public class DefaultValidatorImpl implements Validator {
     	// Handle null values in field
     	// FIXME: JLR - removing empty string check here - need to re-add somewhere else, most likely
     	if (value == null) { // || "".equals(value.toString().trim())) {
-    		processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack);
+    		processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack, checkIfRequired);
     		return results;
     	}
 
@@ -471,10 +481,14 @@ public class DefaultValidatorImpl implements Validator {
                     elementStack.pop();
                     i++;
                 }
-                if (checkIfRequired)
-                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
-
-                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
+                
+                Collection<?> collection = (Collection<?>)value;
+                ValidatorUtils.addResult(results, ValidatorUtils.validateQuantity(collection, definition, childEntryName, attributeName));
+                
+//                if (checkIfRequired)
+//                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
+//
+//                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
             } else {
             	results.addAll(validateObject(childEntryName, nestedAttributeValueReader, elementStack, false, checkIfRequired));
             }
@@ -483,41 +497,45 @@ public class DefaultValidatorImpl implements Validator {
             if (value instanceof Collection) {
 
                 if (((Collection<?>)value).isEmpty()) {
-                    processConstraint(results, definition, entryName, attributeName, null, attributeValueReader, elementStack);
+                    processConstraint(results, definition, entryName, attributeName, null, attributeValueReader, elementStack, checkIfRequired);
                 }
 
             	int i = 0;
                 for (Object o : (Collection<?>) value) {
                 	elementStack.push(Integer.toBinaryString(i));
-                    processConstraint(results, definition, entryName, attributeName, o, attributeValueReader, elementStack);
+                    processConstraint(results, definition, entryName, attributeName, o, attributeValueReader, elementStack, checkIfRequired);
                     elementStack.pop();
                     i++;
                 }
 
                 String xPath = getElementXpath(elementStack) + "/" + attributeName + "/*";
-                if (checkIfRequired)
-                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
                 
-                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
+                Collection<?> collection = (Collection<?>)value;
+                ValidatorUtils.addResult(results, ValidatorUtils.validateQuantity(collection, definition, entryName, attributeName));
+
+//                if (checkIfRequired)
+//                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
+//                
+//                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
             } else {
-                processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack);
+                processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack, checkIfRequired);
             }
 
         }
         return results;
     }
 
-    protected Integer tryParse(String s) {
-        Integer result = null;
-        if (s != null) {
-            try {
-                result = Integer.valueOf(s);
-            } catch (NumberFormatException e) {
-                // do nothing
-            }
-        }
-        return result;
-    }
+//    protected Integer tryParse(String s) {
+//        Integer result = null;
+//        if (s != null) {
+//            try {
+//                result = Integer.valueOf(s);
+//            } catch (NumberFormatException e) {
+//                // do nothing
+//            }
+//        }
+//        return result;
+//    }
 
 //    protected void processNestedObjectStructure(List<ValidationResultInfo> results, Object value, DataDictionaryEntry nestedObjStruct, Constrained field, String entryName, Stack<String> elementStack) {
 //
@@ -525,7 +543,7 @@ public class DefaultValidatorImpl implements Validator {
 //
 //    }
 
-    protected void processConstraint(List<ValidationResultInfo> valResults, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) {
+    protected void processConstraint(List<ValidationResultInfo> valResults, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) {
 
     	try {
     		Constrained child = null;
@@ -538,7 +556,7 @@ public class DefaultValidatorImpl implements Validator {
     		
     		Constrained nestedDefinition = (null != child) ? child : definition;
 
-    		processBaseConstraints(valResults, nestedDefinition, entryName, attributeName, value, attributeValueReader, elementStack);
+    		processBaseConstraints(valResults, nestedDefinition, entryName, attributeName, value, attributeValueReader, elementStack, checkIfRequired);
 
     		// Stop other checks if value is null
     		if (value == null) { // || "".equals(value.toString().trim())) {
@@ -551,22 +569,14 @@ public class DefaultValidatorImpl implements Validator {
     		// Process Valid Chars Constraint
     		ValidCharsConstraint validCharsConstraint = nestedDefinition.getValidChars();
     		if (null != validCharsConstraint) {
-    			ValidationResultInfo val = processValidCharConstraint(validCharsConstraint, nestedDefinition, entryName, attributeName, value, attributeValueReader, elementPath);
-    			if (null != val) {
-    				valResults.add(val);
-    			}
+    			ValidatorUtils.addResult(valResults, processValidCharConstraint(validCharsConstraint, nestedDefinition, entryName, attributeName, value, attributeValueReader, elementPath));
     		}
 
     		// Process Require Constraints (only if this field has value)
     		List<RequiredConstraint> requiredConstraints = nestedDefinition.getRequireConstraint();
     		if (null != requiredConstraints && requiredConstraints.size() > 0) {
     			for (RequiredConstraint requiredConstraint : requiredConstraints) {
-    				ValidationResultInfo val;
-
-    				val = processRequireConstraint(requiredConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath);
-    				if (null != val) {
-    					valResults.add(val);
-    				}
+    				ValidatorUtils.addResult(valResults, processRequireConstraint(requiredConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath));
     			}
     		}
 
@@ -574,20 +584,17 @@ public class DefaultValidatorImpl implements Validator {
     		List<MustOccurConstraint> mustOccurConstraints = nestedDefinition.getOccursConstraint();
     		if (null != mustOccurConstraints && mustOccurConstraints.size() > 0) {
     			for (MustOccurConstraint occursConstraint : mustOccurConstraints) {
-    				ValidationResultInfo val = processOccursConstraint(occursConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath);
-    				if (null != val) {
-    					valResults.add(val);
-    				}
+    				ValidatorUtils.addResult(valResults, processOccursConstraint(occursConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath));
     			}
     		}
 
-    	} catch (IllegalArgumentException e) {
-    		e.printStackTrace();
-    	} catch (IllegalAccessException e) {
-    		e.printStackTrace();
-    	} catch (InvocationTargetException e) {
-    		e.printStackTrace();
-    	}
+		} catch (IllegalArgumentException e) {
+			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
+		} catch (IllegalAccessException e) {
+			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
+		} catch (InvocationTargetException e) {
+			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
+		}
 
     	// Process lookup Constraint
     	//        if (null != constraint.getLookupDefinition()) {
@@ -605,7 +612,7 @@ public class DefaultValidatorImpl implements Validator {
         boolean result = true;
 
         if (fieldValue instanceof java.lang.String) {
-            result = hasText((String) fieldValue);
+            result = ValidatorUtils.hasText((String) fieldValue);
         } else if (fieldValue instanceof Collection) {
             result = (((Collection<?>) fieldValue).size() > 0);
         } else {
@@ -619,11 +626,13 @@ public class DefaultValidatorImpl implements Validator {
 //            val = new ValidationResultInfo(element, fieldValue);
 //            val.setError(MessageUtils.interpolate(getMessage("validation.requiresField"), rMap));
         	
+        	val = new ValidationResultInfo(entryName, attributeName);
+        	
         	Constrained attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, fieldName);
         	if (attributeDefinition != null)
         		fieldName = attributeDefinition.getLabel();
         	
-        	setFieldError(entryName, definition, RiceKeyConstants.ERROR_REQUIRES_FIELD, fieldName);
+        	val.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, fieldName);
         }
 
         return val;
@@ -649,8 +658,8 @@ public class DefaultValidatorImpl implements Validator {
             return null;
         }
 
-        String operator = (hasText(constraint.getOperator())) ? constraint.getOperator() : "EQUALS";
-        AttributeValueReader nestedReader = (hasText(constraint.getFieldPath())) ? ValidatorUtils.getDefinition(constraint.getFieldPath(), attributeValueReader) : null;
+        String operator = (ValidatorUtils.hasText(constraint.getOperator())) ? constraint.getOperator() : "EQUALS";
+        AttributeValueReader nestedReader = (ValidatorUtils.hasText(constraint.getFieldPath())) ? ValidatorUtils.getDefinition(constraint.getFieldPath(), attributeValueReader) : null;
 
         // TODO: What happens when the field is not in the dataProvider?
         Constrained caseField = (null != nestedReader) ? nestedReader.getDefinition(nestedReader.getCurrentName()) : null;
@@ -703,11 +712,12 @@ public class DefaultValidatorImpl implements Validator {
 //                }else{
 //                	val.setError(getMessage("validation.validCharsFailed"));
 //                }
+            	val = new ValidationResultInfo(entryName, attributeName);
             	if (validCharsConstraint.getLabelKey()!=null) {
             		// FIXME: This shouldn't surface label key itself to the user - it should look up the label key, but this needs to be implemented in Rice
-            		setFieldError(entryName, definition, RiceKeyConstants.ERROR_CUSTOM, validCharsConstraint.getLabelKey());
+            		val.setError(RiceKeyConstants.ERROR_CUSTOM, validCharsConstraint.getLabelKey());
             	} else {
-            		setFieldError(entryName, definition, RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
+            		val.setError(RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
             	}
             }
         }
@@ -752,7 +762,8 @@ public class DefaultValidatorImpl implements Validator {
          // TODO: figure out what data should go here instead of null
 //            val = new ValidationResultInfo(element, null);
 //            val.setError(getMessage("validation.occurs"));
-        	setFieldError(definition, entryName, RiceKeyConstants.ERROR_OCCURS);
+        	val = new ValidationResultInfo(entryName, attributeName);
+        	val.setError(RiceKeyConstants.ERROR_OCCURS);
         }
 
         return val;
@@ -808,329 +819,347 @@ public class DefaultValidatorImpl implements Validator {
 //        }
 //    }
 
-    protected void processBaseConstraints(List<ValidationResultInfo> valResults, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) {
+    
+    
+    protected void processBaseConstraints(List<ValidationResultInfo> valResults, Constrained definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) {
 
-        if (value == null || "".equals(value.toString().trim())) {
-//            if ((constraint.getMinOccurs() != null && constraint.getMinOccurs() > 0)
-//            		|| (field.isRequired() != null && field.isRequired().booleanValue())) {
-//                ValidationResultInfo val = new ValidationResultInfo(getElementXpath(elementStack) + "/" + name, value);
-//                val.setError(getMessage("validation.required"));
-//                valResults.add(val);
-//            	setFieldRequiredError(field, objStructure);
-//            }
-        	checkFieldRequired(definition, entryName);
-            return;
-        }
+    	ValidationResultInfo requiredResult = ValidatorUtils.validateRequired(value, definition, entryName, attributeName);
+    	
+    	if (requiredResult.isError()) {
+    		ValidatorUtils.addResult(valResults, requiredResult);
+    		return;
+    	}
+    	
+    	DataType dataType = definition.getDataType();
 
-        String elementPath = getElementXpath(elementStack) + "/" + attributeName;
+    	if (dataType != null) {
+    		ValidatorUtils.addResult(valResults, ValidatorUtils.validateDataType(value, dataType, entryName, attributeName));
+    	}
+    	
+//        if (value == null) { // || "".equals(value.toString().trim())) {
+////            if ((constraint.getMinOccurs() != null && constraint.getMinOccurs() > 0)
+////            		|| (field.isRequired() != null && field.isRequired().booleanValue())) {
+////                ValidationResultInfo val = new ValidationResultInfo(getElementXpath(elementStack) + "/" + name, value);
+////                val.setError(getMessage("validation.required"));
+////                valResults.add(val);
+////            	setFieldRequiredError(field, objStructure);
+////            }
+//        	if (checkIfRequired) {
+//        		// checkFieldRequired(definition, entryName)
+//        		addResult(valResults, validationResult);
+//        	}
+//        	return valResults;
+//        }
 
-        DataType dataType = definition.getDataType();
+//        String elementPath = getElementXpath(elementStack) + "/" + attributeName;
+
         
         // FIXME: JLR - this needs to be refactored extensively to take advantage of the fact that we probably already know the data type at this point
         // and so don't have to do all of this heuristical stuff with strings
-        if (dataType == null) {
-        	Class<?> attributeType = attributeValueReader.getType(attributeName);
-            if (TypeUtils.isStringClass(attributeType)) 
-            	dataType = DataType.STRING;
-            else if (TypeUtils.isIntegralClass(attributeType))
-            	dataType = DataType.INTEGER;
-            else if (TypeUtils.isDecimalClass(attributeType)) 
-            	dataType = DataType.DOUBLE;
-            else if (TypeUtils.isTemporalClass(attributeType))
-            	dataType = DataType.DATE;
-            else
-            	dataType = DataType.STRING;
-        }
-        
-        if (DataType.STRING.equals(dataType)) {
-            validateString(definition, entryName, value, elementPath, valResults);
-        } else if (DataType.INTEGER.equals(dataType)) {
-            validateInteger(definition, entryName, value, elementPath, valResults);
-        } else if (DataType.LONG.equals(dataType)) {
-            validateLong(definition, entryName, value, elementPath, valResults);
-        } else if (DataType.DOUBLE.equals(dataType)) {
-            validateDouble(definition, entryName, value, elementPath, valResults);
-        } else if (DataType.FLOAT.equals(dataType)) {
-            validateFloat(definition, entryName, value, elementPath, valResults);
-        } else if (DataType.BOOLEAN.equals(dataType)) {
-            validateBoolean(definition, entryName, value, elementPath, valResults);
-        } else if (DataType.DATE.equals(dataType)) {
-            validateDate(definition, entryName, value, elementPath, valResults, dateParser);
-        }
+//        if (dataType == null) {
+//        	Class<?> attributeType = attributeValueReader.getType(attributeName);
+//            if (TypeUtils.isStringClass(attributeType)) 
+//            	dataType = DataType.STRING;
+//            else if (TypeUtils.isIntegralClass(attributeType))
+//            	dataType = DataType.INTEGER;
+//            else if (TypeUtils.isDecimalClass(attributeType)) 
+//            	dataType = DataType.DOUBLE;
+//            else if (TypeUtils.isTemporalClass(attributeType))
+//            	dataType = DataType.DATE;
+//            else
+//            	dataType = DataType.STRING;
+//        }
+//        
+//        if (DataType.STRING.equals(dataType)) {
+//            validateString(definition, entryName, value, elementPath, valResults);
+//        } else if (DataType.INTEGER.equals(dataType)) {
+//            validateInteger(definition, entryName, value, elementPath, valResults);
+//        } else if (DataType.LONG.equals(dataType)) {
+//            validateLong(definition, entryName, value, elementPath, valResults);
+//        } else if (DataType.DOUBLE.equals(dataType)) {
+//            validateDouble(definition, entryName, attributeName, value, elementPath, valResults);
+//        } else if (DataType.FLOAT.equals(dataType)) {
+//            validateFloat(definition, entryName, value, elementPath, valResults);
+//        } else if (DataType.BOOLEAN.equals(dataType)) {
+//            validateBoolean(definition, entryName, value, elementPath, valResults);
+//        } else if (DataType.DATE.equals(dataType)) {
+//            validateDate(definition, entryName, value, elementPath, valResults, dateParser);
+//        }
     }
 
-    protected void validateBoolean(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
-        if (!(value instanceof Boolean)) {
-            try {
-                Boolean.valueOf(value.toString());
-            } catch (Exception e) {
-//                ValidationResultInfo val = new ValidationResultInfo(element, value);
-//                val.setError(getMessage("validation.mustBeBoolean"));
-//                results.add(val);
-            	setFieldError(field, entryName, RiceKeyConstants.ERROR_BOOLEAN);
-            }
-        }
-    }
+//    protected void validateBoolean(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
+//        if (!(value instanceof Boolean)) {
+//            try {
+//                Boolean.valueOf(value.toString());
+//            } catch (Exception e) {
+////                ValidationResultInfo val = new ValidationResultInfo(element, value);
+////                val.setError(getMessage("validation.mustBeBoolean"));
+////                results.add(val);
+//            	ValidationResultInfo val = new ValidationResultInfo(entryName, attributeName);
+//            	val.setError(field, entryName, RiceKeyConstants.ERROR_BOOLEAN);
+//            }
+//        }
+//    }
 
-    protected void validateDouble(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
-        Double v = null;
+//    protected void validateDouble(Constrained field, String entryName, String attributeName, Object value, String element, List<ValidationResultInfo> results) {
+//        Double v = null;
+//
+//        ValidationResultInfo val = new ValidationResultInfo(element, value);
+//
+//        if (value instanceof Number) {
+//            v = ((Number) value).doubleValue();
+//        } else {
+//            try {
+//                v = Double.valueOf(value.toString());
+//            } catch (Exception e) {
+//                val.setError(RiceKeyConstants.ERROR_BIG_DECIMAL);
+////            	setFieldError(field, entryName, RiceKeyConstants.ERROR_BIG_DECIMAL);
+//            }
+//        }
+//
+//        if (val.isOk()) {
+//            Double maxValue = ValidatorUtils.getDouble(field.getInclusiveMax());
+//            Double minValue = ValidatorUtils.getDouble(field.getExclusiveMin());
+//
+//            if (maxValue != null && minValue != null) {
+//                // validate range
+//                if (v > maxValue || v < minValue) {
+//                    val.setError(RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+////                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+//                }
+//            } else if (maxValue != null) {
+//                if (v > maxValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+//                }
+//            } else if (minValue != null) {
+//                if (v < minValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+//                }
+//            }
+//        }
+//
+//        if (!val.isOk()) {
+//            results.add(val);
+//        }
+//    }
+//
+//    protected void validateFloat(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
+//        Float v = null;
+//
+//        ValidationResultInfo val = new ValidationResultInfo(element, value);
+//        if (value instanceof Number) {
+//            v = ((Number) value).floatValue();
+//        } else {
+//            try {
+//                v = Float.valueOf(value.toString());
+//            } catch (Exception e) {
+////                val.setError(getMessage("validation.mustBeFloat"));
+//                setFieldError(field, entryName, RiceKeyConstants.ERROR_BIG_DECIMAL);
+//            }
+//        }
+//
+//        if (val.isOk()) {
+//            Float maxValue = ValidatorUtils.getFloat(field.getInclusiveMax());
+//            Float minValue = ValidatorUtils.getFloat(field.getExclusiveMin());
+//
+//            if (maxValue != null && minValue != null) {
+//                // validate range
+//                if (v > maxValue || v < minValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+//                }
+//            } else if (maxValue != null) {
+//                if (v > maxValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+//                }
+//            } else if (minValue != null) {
+//                if (v < minValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+//                }
+//            }
+//        }
+//
+//        if (!val.isOk()) {
+//            results.add(val);
+//        }
+//    }
+//
+//    protected void validateLong(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
+//        Long v = null;
+//
+//        ValidationResultInfo val = new ValidationResultInfo(element, value);
+//        if (value instanceof Number) {
+//            v = ((Number) value).longValue();
+//        } else {
+//            try {
+//                v = Long.valueOf(value.toString());
+//            } catch (Exception e) {
+//            	setFieldError(field, entryName, RiceKeyConstants.ERROR_LONG);
+//            }
+//        }
+//
+//        if (val.isOk()) {
+//            Long maxValue = ValidatorUtils.getLong(field.getInclusiveMax());
+//            Long minValue = ValidatorUtils.getLong(field.getExclusiveMin());
+//
+//            if (maxValue != null && minValue != null) {
+//                // validate range
+//                if (v > maxValue || v < minValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+//                }
+//            } else if (maxValue != null) {
+//                if (v > maxValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+//                }
+//            } else if (minValue != null) {
+//                if (v < minValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+//                }
+//            }
+//        }
+//
+//        if (!val.isOk()) {
+//            results.add(val);
+//        }
+//
+//    }
+//
+//    protected void validateInteger(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
+//        Integer v = null;
+//
+//        ValidationResultInfo val = new ValidationResultInfo(element, value);
+//
+//        if (value instanceof Number) {
+//            v = ((Number) value).intValue();
+//        } else {
+//            try {
+//                v = Integer.valueOf(value.toString());
+//            } catch (Exception e) {
+//            	setFieldError(field, entryName, RiceKeyConstants.ERROR_INTEGER);
+//            }
+//        }
+//
+//        if (val.isOk()) {
+//            Integer maxValue = ValidatorUtils.getInteger(field.getInclusiveMax());
+//            Integer minValue = ValidatorUtils.getInteger(field.getExclusiveMin());
+//
+//            if (maxValue != null && minValue != null) {
+//                // validate range
+//                if (v > maxValue || v < minValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+//                }
+//            } else if (maxValue != null) {
+//                if (v > maxValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+//                }
+//            } else if (minValue != null) {
+//                if (v < minValue) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+//                }
+//            }
+//        }
+//
+//        if (!val.isOk()) {
+//            results.add(val);
+//        }
+//    }
+//
+//    protected void validateDate(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results, DateParser dateParser) {
+//        ValidationResultInfo val = new ValidationResultInfo(element, value);
+//
+//        Date v = null;
+//
+//        if (value instanceof Date) {
+//            v = (Date) value;
+//        } else {
+//            try {
+//                v = dateParser.parseDate(value.toString());
+//            } catch (Exception e) {
+//            	setFieldError(field, entryName, RiceKeyConstants.ERROR_DATE);
+//            }
+//        }
+//
+//        if (val.isOk()) {
+//            Date maxValue = ValidatorUtils.getDate(field.getInclusiveMax(), dateParser);
+//            Date minValue = ValidatorUtils.getDate(field.getExclusiveMin(), dateParser);
+//
+//            if (maxValue != null && minValue != null) {
+//                // validate range
+//                if (v.getTime() > maxValue.getTime() || v.getTime() < minValue.getTime()) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
+//                }
+//            } else if (maxValue != null) {
+//                if (v.getTime() > maxValue.getTime()) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
+//                }
+//            } else if (minValue != null) {
+//                if (v.getTime() < minValue.getTime()) {
+////                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
+//                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
+//                }
+//            }
+//        }
+//
+//        if (!val.isOk()) {
+//            results.add(val);
+//        }
+//    }
 
-        ValidationResultInfo val = new ValidationResultInfo(element, value);
+//    protected void validateString(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
+//
+//        String s = value == null ? "" : value.toString().trim();
+//
+//        ValidationResultInfo val = new ValidationResultInfo(element, value);
+//
+//        Integer maxLength = field.getMaxLength(); //tryParse(field.getMaxLength());
+//        if (maxLength != null && field.getMinLength() != null && field.getMinLength().intValue() > 0) {
+//            if (s.length() > maxLength.intValue() || s.length() < field.getMinLength().intValue()) {
+////                val.setError(MessageUtils.interpolate(getMessage("validation.lengthOutOfRange"), toMap(constraint)));
+//            	setFieldError(entryName, field, RiceKeyConstants.ERROR_LENGTH_OUT_OF_RANGE, String.valueOf(field.getMinLength()), String.valueOf(field.getMaxLength()));
+//            }
+//        } else if (maxLength != null) {
+//            if (s.length() > field.getMaxLength().intValue()) {
+////                val.setError(MessageUtils.interpolate(getMessage("validation.maxLengthFailed"), toMap(constraint)));
+//            	setFieldError(entryName, field, RiceKeyConstants.ERROR_MAX_LENGTH, String.valueOf(field.getMaxLength()));
+//            }
+//        } else if (field.getMinLength() != null && field.getMinLength().intValue() > 0) {
+//            if (s.length() < field.getMinLength().intValue()) {
+////                val.setError(MessageUtils.interpolate(getMessage("validation.minLengthFailed"), toMap(constraint)));
+//            	setFieldError(entryName, field, RiceKeyConstants.ERROR_MIN_LENGTH, String.valueOf(field.getMinLength()));
+//            }
+//        }
+//
+//        if (!val.isOk()) {
+//            results.add(val);
+//        }
+//    }
 
-        if (value instanceof Number) {
-            v = ((Number) value).doubleValue();
-        } else {
-            try {
-                v = Double.valueOf(value.toString());
-            } catch (Exception e) {
-//                val.setError(getMessage("validation.mustBeDouble"));
-            	setFieldError(field, entryName, RiceKeyConstants.ERROR_BIG_DECIMAL);
-            }
-        }
-
-        if (val.isOk()) {
-            Double maxValue = ValidatorUtils.getDouble(field.getInclusiveMax());
-            Double minValue = ValidatorUtils.getDouble(field.getExclusiveMin());
-
-            if (maxValue != null && minValue != null) {
-                // validate range
-                if (v > maxValue || v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
-                }
-            } else if (maxValue != null) {
-                if (v > maxValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
-                }
-            } else if (minValue != null) {
-                if (v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
-                }
-            }
-        }
-
-        if (!val.isOk()) {
-            results.add(val);
-        }
-    }
-
-    protected void validateFloat(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
-        Float v = null;
-
-        ValidationResultInfo val = new ValidationResultInfo(element, value);
-        if (value instanceof Number) {
-            v = ((Number) value).floatValue();
-        } else {
-            try {
-                v = Float.valueOf(value.toString());
-            } catch (Exception e) {
-//                val.setError(getMessage("validation.mustBeFloat"));
-                setFieldError(field, entryName, RiceKeyConstants.ERROR_BIG_DECIMAL);
-            }
-        }
-
-        if (val.isOk()) {
-            Float maxValue = ValidatorUtils.getFloat(field.getInclusiveMax());
-            Float minValue = ValidatorUtils.getFloat(field.getExclusiveMin());
-
-            if (maxValue != null && minValue != null) {
-                // validate range
-                if (v > maxValue || v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
-                }
-            } else if (maxValue != null) {
-                if (v > maxValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
-                }
-            } else if (minValue != null) {
-                if (v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
-                }
-            }
-        }
-
-        if (!val.isOk()) {
-            results.add(val);
-        }
-    }
-
-    protected void validateLong(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
-        Long v = null;
-
-        ValidationResultInfo val = new ValidationResultInfo(element, value);
-        if (value instanceof Number) {
-            v = ((Number) value).longValue();
-        } else {
-            try {
-                v = Long.valueOf(value.toString());
-            } catch (Exception e) {
-            	setFieldError(field, entryName, RiceKeyConstants.ERROR_LONG);
-            }
-        }
-
-        if (val.isOk()) {
-            Long maxValue = ValidatorUtils.getLong(field.getInclusiveMax());
-            Long minValue = ValidatorUtils.getLong(field.getExclusiveMin());
-
-            if (maxValue != null && minValue != null) {
-                // validate range
-                if (v > maxValue || v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
-                }
-            } else if (maxValue != null) {
-                if (v > maxValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
-                }
-            } else if (minValue != null) {
-                if (v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
-                }
-            }
-        }
-
-        if (!val.isOk()) {
-            results.add(val);
-        }
-
-    }
-
-    protected void validateInteger(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
-        Integer v = null;
-
-        ValidationResultInfo val = new ValidationResultInfo(element, value);
-
-        if (value instanceof Number) {
-            v = ((Number) value).intValue();
-        } else {
-            try {
-                v = Integer.valueOf(value.toString());
-            } catch (Exception e) {
-            	setFieldError(field, entryName, RiceKeyConstants.ERROR_INTEGER);
-            }
-        }
-
-        if (val.isOk()) {
-            Integer maxValue = ValidatorUtils.getInteger(field.getInclusiveMax());
-            Integer minValue = ValidatorUtils.getInteger(field.getExclusiveMin());
-
-            if (maxValue != null && minValue != null) {
-                // validate range
-                if (v > maxValue || v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
-                }
-            } else if (maxValue != null) {
-                if (v > maxValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
-                }
-            } else if (minValue != null) {
-                if (v < minValue) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
-                }
-            }
-        }
-
-        if (!val.isOk()) {
-            results.add(val);
-        }
-    }
-
-    protected void validateDate(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results, DateParser dateParser) {
-        ValidationResultInfo val = new ValidationResultInfo(element, value);
-
-        Date v = null;
-
-        if (value instanceof Date) {
-            v = (Date) value;
-        } else {
-            try {
-                v = dateParser.parseDate(value.toString());
-            } catch (Exception e) {
-            	setFieldError(field, entryName, RiceKeyConstants.ERROR_DATE);
-            }
-        }
-
-        if (val.isOk()) {
-            Date maxValue = ValidatorUtils.getDate(field.getInclusiveMax(), dateParser);
-            Date minValue = ValidatorUtils.getDate(field.getExclusiveMin(), dateParser);
-
-            if (maxValue != null && minValue != null) {
-                // validate range
-                if (v.getTime() > maxValue.getTime() || v.getTime() < minValue.getTime()) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.outOfRange"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_OUT_OF_RANGE, field.getExclusiveMin(), field.getInclusiveMax());
-                }
-            } else if (maxValue != null) {
-                if (v.getTime() > maxValue.getTime()) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.maxValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_INCLUSIVE_MAX, field.getInclusiveMax());
-                }
-            } else if (minValue != null) {
-                if (v.getTime() < minValue.getTime()) {
-//                    val.setError(MessageUtils.interpolate(getMessage("validation.minValueFailed"), toMap(constraint)));
-                	setFieldError(entryName, field, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, field.getExclusiveMin());
-                }
-            }
-        }
-
-        if (!val.isOk()) {
-            results.add(val);
-        }
-    }
-
-    protected void validateString(Constrained field, String entryName, Object value, String element, List<ValidationResultInfo> results) {
-
-        String s = value == null ? "" : value.toString().trim();
-
-        ValidationResultInfo val = new ValidationResultInfo(element, value);
-
-        Integer maxLength = field.getMaxLength(); //tryParse(field.getMaxLength());
-        if (maxLength != null && field.getMinLength() != null && field.getMinLength().intValue() > 0) {
-            if (s.length() > maxLength.intValue() || s.length() < field.getMinLength().intValue()) {
-//                val.setError(MessageUtils.interpolate(getMessage("validation.lengthOutOfRange"), toMap(constraint)));
-            	setFieldError(entryName, field, RiceKeyConstants.ERROR_LENGTH_OUT_OF_RANGE, String.valueOf(field.getMinLength()), String.valueOf(field.getMaxLength()));
-            }
-        } else if (maxLength != null) {
-            if (s.length() > field.getMaxLength().intValue()) {
-//                val.setError(MessageUtils.interpolate(getMessage("validation.maxLengthFailed"), toMap(constraint)));
-            	setFieldError(entryName, field, RiceKeyConstants.ERROR_MAX_LENGTH, String.valueOf(field.getMaxLength()));
-            }
-        } else if (field.getMinLength() != null && field.getMinLength().intValue() > 0) {
-            if (s.length() < field.getMinLength().intValue()) {
-//                val.setError(MessageUtils.interpolate(getMessage("validation.minLengthFailed"), toMap(constraint)));
-            	setFieldError(entryName, field, RiceKeyConstants.ERROR_MIN_LENGTH, String.valueOf(field.getMinLength()));
-            }
-        }
-
-        if (!val.isOk()) {
-            results.add(val);
-        }
-    }
-
-    protected String getMessage(String messageId) {
-    	
-    	
-        // FIXME: JLR - rework this for KNS
-    	/*if (null == messageService) {
-            return messageId;
-        }
-
-        Message msg = messageService.getMessage(messageLocaleKey, messageGroupKey, messageId);
-
-        return msg.getValue();*/
-    	
-    	return messageId;
-    }
+//    protected String getMessage(String messageId) {
+//    	
+//    	
+//        // FIXME: JLR - rework this for KNS
+//    	/*if (null == messageService) {
+//            return messageId;
+//        }
+//
+//        Message msg = messageService.getMessage(messageLocaleKey, messageGroupKey, messageId);
+//
+//        return msg.getValue();*/
+//    	
+//    	return messageId;
+//    }
 
     protected String getElementXpath(Stack<String> elementStack) {
         StringBuilder xPath = new StringBuilder();
@@ -1148,22 +1177,22 @@ public class DefaultValidatorImpl implements Validator {
     /*
      * Homemade has text so we dont need outside libs.
      */
-    protected boolean hasText(String string) {
-
-        if (string == null || string.length() < 1) {
-            return false;
-        }
-        int stringLength = string.length();
-
-        for (int i = 0; i < stringLength; i++) {
-            char currentChar = string.charAt(i);
-            if (' ' != currentChar || '\t' != currentChar || '\n' != currentChar) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    protected boolean hasText(String string) {
+//
+//        if (string == null || string.length() < 1) {
+//            return false;
+//        }
+//        int stringLength = string.length();
+//
+//        for (int i = 0; i < stringLength; i++) {
+//            char currentChar = string.charAt(i);
+//            if (' ' != currentChar || '\t' != currentChar || '\n' != currentChar) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     protected Map<String, Object> toMap(ConstraintHolder c) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -1178,43 +1207,44 @@ public class DefaultValidatorImpl implements Validator {
         return result;
     }
     
-    private void checkFieldRequired(Constrained field, String entryName) {
-    	checkFieldRequired(field, entryName, 0);
-    }
     
-    private void checkFieldRequired(Constrained field, String entryName, int numberOfOccurrences) {
-        if (field.getMinOccurs() != null && field.getMinOccurs().intValue() > numberOfOccurrences) {
-        	setFieldError(entryName, field, RiceKeyConstants.ERROR_MIN_OCCURS, String.valueOf(field.getMinOccurs()));
-        } else if (field.isRequired() != null && field.isRequired().booleanValue()) {
-        	setFieldRequiredError(field, entryName);
-        }
-    }
+//    private void checkFieldRequired(Constrained field, String entryName) {
+//    	checkFieldRequired(field, entryName, 0);
+//    }
+//    
+//    private void checkFieldRequired(Constrained field, String entryName, int numberOfOccurrences) {
+//        if (field.getMinOccurs() != null && field.getMinOccurs().intValue() > numberOfOccurrences) {
+//        	setFieldError(entryName, field, RiceKeyConstants.ERROR_MIN_OCCURS, String.valueOf(field.getMinOccurs()));
+//        } else if (field.isRequired() != null && field.isRequired().booleanValue()) {
+//        	setFieldRequiredError(field, entryName);
+//        }
+//    }
+//    
+//    private void checkFieldTooMany(Constrained field, String entryName, int numberOfOccurrences) {
+//    	Integer maxOccurs = field.getMaxOccurs();
+//        if (maxOccurs != null && maxOccurs.intValue() < numberOfOccurrences) {
+//            setFieldError(entryName, field, RiceKeyConstants.ERROR_MAX_OCCURS, String.valueOf(field.getMaxOccurs()));
+//        }
+//    }
     
-    private void checkFieldTooMany(Constrained field, String entryName, int numberOfOccurrences) {
-    	Integer maxOccurs = field.getMaxOccurs();
-        if (maxOccurs != null && maxOccurs.intValue() < numberOfOccurrences) {
-            setFieldError(entryName, field, RiceKeyConstants.ERROR_MAX_OCCURS, String.valueOf(field.getMaxOccurs()));
-        }
-    }
+//    private void setFieldRequiredError(Constrained field, String entryName) {
+//    	setFieldError(field, entryName, RiceKeyConstants.ERROR_REQUIRED);
+//    }
+//    
+//    private void setFieldError(Constrained field, String entryName, String key) {
+//    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, field.getName());
+//    	GlobalVariables.getMessageMap().putError(field.getName(), key, errorLabel);
+//    }
     
-    private void setFieldRequiredError(Constrained field, String entryName) {
-    	setFieldError(field, entryName, RiceKeyConstants.ERROR_REQUIRED);
-    }
-    
-    private void setFieldError(Constrained field, String entryName, String key) {
-    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, field.getName());
-    	GlobalVariables.getMessageMap().putError(field.getName(), key, errorLabel);
-    }
-    
-    private void setFieldError(String entryName, Constrained field, String key, String ... args) {
-    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, field.getName());
+    private void setFieldError(String entryName, String attributeName, String key, String ... args) {
+    	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
     	// FIXME: There's got to be a cleaner way of doing this.
     	List<String> list = new LinkedList<String>();
     	list.add(errorLabel);
     	list.addAll(Arrays.asList(args));
     	String[] array = new String[list.size()];
     	array = list.toArray(array);
-    	GlobalVariables.getMessageMap().putError(field.getName(), key, array);
+    	GlobalVariables.getMessageMap().putError(attributeName, key, array);
     }
     
 
@@ -1252,35 +1282,35 @@ public class DefaultValidatorImpl implements Validator {
 	/**
 	 * @return the persistenceStructureService
 	 */
-	public PersistenceStructureService getPersistenceStructureService() {
-		return this.persistenceStructureService;
-	}
-
-	/**
-	 * @param persistenceStructureService the persistenceStructureService to set
-	 */
-	public void setPersistenceStructureService(
-			PersistenceStructureService persistenceStructureService) {
-		this.persistenceStructureService = persistenceStructureService;
-	}
-
-
-	/**
-	 * @return the workflowAttributePropertyResolutionService
-	 */
-	public WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
-    	if (workflowAttributePropertyResolutionService == null) {
-    		workflowAttributePropertyResolutionService = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
-    	}
-    	return workflowAttributePropertyResolutionService;
-	}
+//	public PersistenceStructureService getPersistenceStructureService() {
+//		return this.persistenceStructureService;
+//	}
+//
+//	/**
+//	 * @param persistenceStructureService the persistenceStructureService to set
+//	 */
+//	public void setPersistenceStructureService(
+//			PersistenceStructureService persistenceStructureService) {
+//		this.persistenceStructureService = persistenceStructureService;
+//	}
 
 
-	/**
-	 * @param workflowAttributePropertyResolutionService the workflowAttributePropertyResolutionService to set
-	 */
-	public void setWorkflowAttributePropertyResolutionService(
-			WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService) {
-		this.workflowAttributePropertyResolutionService = workflowAttributePropertyResolutionService;
-	}
+//	/**
+//	 * @return the workflowAttributePropertyResolutionService
+//	 */
+//	public WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
+//    	if (workflowAttributePropertyResolutionService == null) {
+//    		workflowAttributePropertyResolutionService = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
+//    	}
+//    	return workflowAttributePropertyResolutionService;
+//	}
+//
+//
+//	/**
+//	 * @param workflowAttributePropertyResolutionService the workflowAttributePropertyResolutionService to set
+//	 */
+//	public void setWorkflowAttributePropertyResolutionService(
+//			WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService) {
+//		this.workflowAttributePropertyResolutionService = workflowAttributePropertyResolutionService;
+//	}
 }

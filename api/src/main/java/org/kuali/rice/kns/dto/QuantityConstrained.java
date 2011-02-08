@@ -19,7 +19,7 @@ package org.kuali.rice.kns.dto;
  * 
  * @author James Renfro, University of Washington 
  */
-public interface FrequencyConstrained {
+public interface QuantityConstrained {
 
 	public Integer getMaxOccurs();
 	

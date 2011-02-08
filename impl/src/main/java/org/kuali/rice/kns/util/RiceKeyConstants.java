@@ -44,6 +44,7 @@ public class RiceKeyConstants {
     public static final String ERROR_LENGTH_OUT_OF_RANGE = "error.lengthOutOfRange";
     public static final String ERROR_MIN_OCCURS = "error.minOccurs";
     public static final String ERROR_MAX_OCCURS = "error.maxOccurs";
+    public static final String ERROR_QUANTITY_RANGE = "error.quantityRange";
     public static final String ERROR_OCCURS = "error.occurs";
     public static final String ERROR_REQUIRES_FIELD = "error.requiresField";
     public static final String ERROR_INVALID_FORMAT = "error.invalidFormat";

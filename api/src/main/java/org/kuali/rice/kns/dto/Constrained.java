@@ -23,7 +23,7 @@ import java.util.List;
  * 
  * @author James Renfro, University of Washington 
  */
-public interface Constrained extends ExistenceConstrained, FrequencyConstrained, HierarchicallyConstrained, LengthConstrained, SizeConstrained {
+public interface Constrained extends ExistenceConstrained, QuantityConstrained, HierarchicallyConstrained, LengthConstrained, SizeConstrained {
 
 	public CaseConstraint getCaseConstraint();
 	

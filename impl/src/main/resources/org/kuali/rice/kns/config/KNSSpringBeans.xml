@@ -588,9 +588,7 @@
 				<property name="dataDictionaryService">
 					<ref bean="dataDictionaryService" />
 				</property>
-				<property name="persistenceStructureService">
-					<ref bean="persistenceStructureService"/>
-				</property>
+
 			</bean>
 		</property>
 	</bean>

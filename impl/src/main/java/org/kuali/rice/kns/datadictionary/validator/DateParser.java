@@ -18,7 +18,8 @@ package org.kuali.rice.kns.datadictionary.validator;
 import java.util.Date;
 
 public interface DateParser {
-    public Date parseDate(String input);
+	
+    public Date parseDate(String input) throws IllegalArgumentException;
     
     public String toString(Date date);
     

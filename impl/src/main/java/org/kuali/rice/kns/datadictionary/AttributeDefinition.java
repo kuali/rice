@@ -27,12 +27,13 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.dto.CaseConstraint;
-import org.kuali.rice.kns.dto.Constrained;
 import org.kuali.rice.kns.dto.DataType;
+import org.kuali.rice.kns.dto.Formatable;
 import org.kuali.rice.kns.dto.LookupConstraint;
 import org.kuali.rice.kns.dto.MustOccurConstraint;
 import org.kuali.rice.kns.dto.RequiredConstraint;
 import org.kuali.rice.kns.dto.ValidCharsConstraint;
+import org.kuali.rice.kns.dto.Validatable;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -43,7 +44,7 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  * 
  */
-public class AttributeDefinition extends DataDictionaryDefinitionBase implements Constrained {
+public class AttributeDefinition extends DataDictionaryDefinitionBase implements Validatable, Formatable {
 	private static final long serialVersionUID = -2490613377818442742L;
 
 	protected Boolean forceUppercase = Boolean.FALSE;
@@ -288,6 +289,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.required = required;
 	}
 
+	@Override
 	public Boolean isRequired() {
 		return this.required;
 	}
@@ -374,6 +376,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		return (formatterClass != null);
 	}
 
+	@Override
 	public String getFormatterClass() {
 		return formatterClass;
 	}
@@ -497,12 +500,13 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 			throw new RuntimeException("blank name for bean: " + id);
 		}
 
-		// FIXME: add logic here to replace validation pattern logic with valid chars
-//		ValidCharsConstraint validCharsConstraint = getValidChars();
-//
-//		if (validCharsConstraint == null) {
-//			validCharsConstraint = new ValidCharsConstraint();
-//		}
+		if (validationPattern != null) {
+			if (validChars == null) {
+				validChars = new ValidCharsConstraint();
+			}
+			
+			validChars.setValue(new StringBuilder().append("regex:").append(validationPattern.getRegexPattern()).toString());
+		}
 	}
 
 	/**
@@ -557,6 +561,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	/**
 	 * @return the dataType
 	 */
+	@Override
 	public DataType getDataType() {
 		return this.dataType;
 	}

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MustOccurConstraint {
+public class MustOccurConstraint implements Constraint {
     @XmlElement
     private List<RequiredConstraint> requiredFields;
 	@XmlElement

@@ -16,12 +16,11 @@
 package org.kuali.rice.kns.datadictionary.validator;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.dto.Constrained;
+import org.kuali.rice.kns.dto.Validatable;
 
 
 /**
@@ -45,13 +44,13 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	}
 	
 	@Override
-	public Constrained getDefinition(String attributeName) {
+	public Validatable getDefinition(String attributeName) {
 		// Only return the definition if you have it, and if it's the definition for the passed attribute name
 		return definition != null && definition.getName() != null && definition.getName().equals(attributeName) ? definition : null;
 	}
 	
 	@Override
-	public List<Constrained> getDefinitions() {
+	public List<Validatable> getDefinitions() {
 		return null;
 	}
 	
@@ -69,7 +68,7 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 
 	@Override
 	public Class<?> getType(String attributeName) {
-		Constrained attributeDefinition = getDefinition(attributeName);
+		Validatable attributeDefinition = getDefinition(attributeName);
 		
 		if (attributeDefinition != null && attributeDefinition.getDataType() != null)
 			return attributeDefinition.getDataType().getType();
@@ -82,17 +81,12 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	public <X> X getValue(String attributeName)
 			throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
-		Constrained attributeDefinition = getDefinition(attributeName);
+		Validatable attributeDefinition = getDefinition(attributeName);
 		
 		if (attributeDefinition != null)
 			return (X) value;
 		
 		return null;
-	}
-
-	@Override
-	public boolean hasField(String attributeName) {
-		return getDefinition(attributeName) != null;
 	}
 
 }

@@ -21,13 +21,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.dto.Constrained;
+import org.kuali.rice.kns.dto.Validatable;
 import org.kuali.rice.kns.dto.DataType;
 import org.kuali.rice.kns.dto.ExistenceConstrained;
 import org.kuali.rice.kns.dto.LengthConstrained;
 import org.kuali.rice.kns.dto.QuantityConstrained;
 import org.kuali.rice.kns.dto.SizeConstrained;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
@@ -229,7 +232,7 @@ public class ValidatorUtils {
 		
 		AttributeValueReader localAttributeValueReader = attributeValueReader;
 		for(int i = 0; i < lookupPathTokens.length; i++) {
-			for (Constrained f : localAttributeValueReader.getDefinitions()) {
+			for (Validatable f : localAttributeValueReader.getDefinitions()) {
 				String attributeName = f.getName();
 				if (attributeName.equals(lookupPathTokens[i])) {
 					if(i==lookupPathTokens.length-1){
@@ -265,7 +268,11 @@ public class ValidatorUtils {
 
         return false;
     }
-	
+    
+    public static boolean isNullOrEmpty(Object value) {
+    	return ObjectUtils.isNull(value) || (value instanceof String && StringUtils.isBlank(((String) value).trim()));
+    }
+    
 	
 	private static enum Result { VALID, INVALID, UNDEFINED };
 	
@@ -370,6 +377,33 @@ public class ValidatorUtils {
 		return result;
 	}
 	
+	public static ValidationResultInfo validateDateOrder(String firstDateTime, String secondDateTime, String entryName, String attributeName) {
+		// this means that we only have 2 values and it's a date range.
+		java.sql.Timestamp lVal = null;
+		java.sql.Timestamp uVal = null;
+		try {
+			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(firstDateTime);
+			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(secondDateTime);
+		} catch (Exception ex){
+			// this shouldn't happen because the tests passed above.
+			String errorMessageKey = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
+			String[] errorMessageParameters = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
+			ValidationResultInfo result = new ValidationResultInfo(entryName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + attributeName);
+			result.setError(errorMessageKey, errorMessageParameters);
+			return result;
+		}
+
+		if(lVal != null && lVal.compareTo(uVal) > 0){ // check the bounds
+			String errorMessageKey = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
+			String[] errorMessageParameters = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
+			ValidationResultInfo result = new ValidationResultInfo(entryName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + attributeName);
+			result.setError(errorMessageKey + ".range", errorMessageParameters);
+			return result;
+		}
+		
+		return null;
+	}
+	
 	public static ValidationResultInfo validateQuantity(Collection<?> collection, QuantityConstrained attribute, String entryName, String attributeName) throws IllegalArgumentException {
 		
 		Integer sizeOfCollection = Integer.valueOf(collection.size());
@@ -472,11 +506,13 @@ public class ValidatorUtils {
 	}
 	
 	public static ValidationResultInfo validateRequired(Object value, ExistenceConstrained attribute, String entryName, String attributeName) {
-		ValidationResultInfo result = new ValidationResultInfo(entryName, attributeName);
+		ValidationResultInfo result = null;
 
 		if (attribute.isRequired() != null && attribute.isRequired().booleanValue()) {
-			if (ObjectUtils.isNull(value))
+			if (isNullOrEmpty(value)) {
+				result = new ValidationResultInfo(entryName, attributeName);
 				result.setError(RiceKeyConstants.ERROR_REQUIRED);
+			}
 		}
 		
 		return result;

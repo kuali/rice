@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RequiredConstraint {
+public class RequiredConstraint implements Constraint {
 	@XmlElement
     protected String fieldPath;
 

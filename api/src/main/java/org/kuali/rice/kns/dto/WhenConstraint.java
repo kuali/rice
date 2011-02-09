@@ -7,10 +7,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class WhenConstraint {
+public class WhenConstraint implements Constraint {
 	protected List<Object> values;
 	protected String valuePath;
-	protected Constrained constraint;
+	protected Validatable constraint;
 
 	public List<Object> getValues() {
 		return values;
@@ -33,11 +33,11 @@ public class WhenConstraint {
 		this.valuePath = valuePath;
 	}
 
-	public Constrained getConstraint() {
+	public Validatable getConstraint() {
 		return constraint;
 	}
 
-	public void setConstraint(Constrained constraint) {
+	public void setConstraint(Validatable constraint) {
 		this.constraint = constraint;
 	}
 }

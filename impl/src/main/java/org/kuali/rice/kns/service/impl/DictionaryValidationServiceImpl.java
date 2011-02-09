@@ -122,28 +122,42 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocumentAttribute(org.kuali.rice.kns.document.Document,
      *      java.lang.String,java.lang.String)
      */
-    public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
+    @Override
+	public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
-        try {
-            PropertyDescriptor attributeDescriptor = PropertyUtils.getPropertyDescriptor(document, attributeName);
-            validatePrimitiveFromDescriptor(documentEntryName, document, attributeDescriptor, errorPrefix, true);
-        }
-        catch (NoSuchMethodException e) {
-            throw new InfrastructureException("unable to find propertyDescriptor for property '" + attributeName + "'", e);
-        }
-        catch (IllegalAccessException e) {
-            throw new InfrastructureException("unable to access propertyDescriptor for property '" + attributeName + "'", e);
-        }
-        catch (InvocationTargetException e) {
-            throw new InfrastructureException("unable to invoke methods for property '" + attributeName + "'", e);
-        }
+        AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(documentEntryName, attributeName);
+    	
+    	if (attributeDefinition == null) {
+    		// FIXME: JLR - this is what the code was doing effectively already, but seems weird not to throw an exception here if you try to validate 
+    		// something that doesn't have an attribute definition
+    		return;
+    	}
+        
+        SingleAttributeValueReader attributeValueReader = new SingleAttributeValueReader(document, attributeDefinition);
+    	
+    	// FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
+    	validator.validate(documentEntryName, attributeName, attributeValueReader, true);
+        
+//        try {
+//            PropertyDescriptor attributeDescriptor = PropertyUtils.getPropertyDescriptor(document, attributeName);
+//            validatePrimitiveFromDescriptor(documentEntryName, document, attributeDescriptor, errorPrefix, true);
+//        }
+//        catch (NoSuchMethodException e) {
+//            throw new InfrastructureException("unable to find propertyDescriptor for property '" + attributeName + "'", e);
+//        }
+//        catch (IllegalAccessException e) {
+//            throw new InfrastructureException("unable to access propertyDescriptor for property '" + attributeName + "'", e);
+//        }
+//        catch (InvocationTargetException e) {
+//            throw new InfrastructureException("unable to invoke methods for property '" + attributeName + "'", e);
+//        }
     }
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocumentRecursively
      */
-    public void validateDocumentRecursively(Document document, int depth) {
+    @Deprecated public void validateDocumentRecursively(Document document, int depth) {
         // validate primitives of document
         validateDocument(document);
 
@@ -158,7 +172,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
         // validate primitive values of the document
-        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
+//        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
+        DataDictionaryEntryBase documentEntry = (DataDictionaryEntryBase) getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(documentEntryName);
+     // FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
+        validator.validate(documentEntryName, new DictionaryObjectAttributeValueReader(document, documentEntryName, documentEntry), true);
         
         if (maxDepth > 0) {
             validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired, chompLastLetterSFromCollectionName,  newIdentitySet());
@@ -275,8 +292,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObjectOnMaintenanceDocument(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+	 * 
+	 * @deprecated since 1.1
 	 */
-	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
+	@Deprecated public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
 		
 		
 		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
@@ -292,40 +311,40 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 		}*/
 	}
 	
-	protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject, List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
-		
-		for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
-			if (itemDefinition instanceof MaintainableFieldDefinition) {
-		        if (getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName())) {
-		            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
-		            if (value != null && StringUtils.isNotBlank(value.toString())) {
-			            Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
-			            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-			                // check value format against dictionary
-		                    if (!TypeUtils.isTemporalClass(propertyType)) {
-		                        validateAttributeFormat(businessObject.getClass().getName(), itemDefinition.getName(), value.toString(), errorPrefix + itemDefinition.getName());
-		                    }
-			            }
-		            }
-		        }
-			}
-			/*
-			TODO: reenable when we come up with a strategy to handle fields that are not editable
-			else if (itemDefinition instanceof MaintainableCollectionDefinition) {
-				MaintainableCollectionDefinition collectionDefinition = (MaintainableCollectionDefinition) itemDefinition;
-				Collection<BusinessObject> c = (Collection<BusinessObject>) ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
-				if (c != null) {
-					int i = 0;
-					for (BusinessObject o : c) {
-						String newErrorPrefix = errorPrefix + itemDefinition.getName() + "[" + i + "].";
-						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableCollections(), newErrorPrefix);
-						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableFields(), newErrorPrefix);
-						i++;
-					}
-				}
-			}*/
-		}
-	}
+//	protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject, List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
+//		
+//		for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
+//			if (itemDefinition instanceof MaintainableFieldDefinition) {
+//		        if (getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName())) {
+//		            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
+//		            if (value != null && StringUtils.isNotBlank(value.toString())) {
+//			            Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
+//			            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+//			                // check value format against dictionary
+//		                    if (!TypeUtils.isTemporalClass(propertyType)) {
+//		                        validateAttributeFormat(businessObject.getClass().getName(), itemDefinition.getName(), value.toString(), errorPrefix + itemDefinition.getName());
+//		                    }
+//			            }
+//		            }
+//		        }
+//			}
+//			/*
+//			TODO: reenable when we come up with a strategy to handle fields that are not editable
+//			else if (itemDefinition instanceof MaintainableCollectionDefinition) {
+//				MaintainableCollectionDefinition collectionDefinition = (MaintainableCollectionDefinition) itemDefinition;
+//				Collection<BusinessObject> c = (Collection<BusinessObject>) ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
+//				if (c != null) {
+//					int i = 0;
+//					for (BusinessObject o : c) {
+//						String newErrorPrefix = errorPrefix + itemDefinition.getName() + "[" + i + "].";
+//						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableCollections(), newErrorPrefix);
+//						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableFields(), newErrorPrefix);
+//						i++;
+//					}
+//				}
+//			}*/
+//		}
+//	}
 
 
 	/**
@@ -369,8 +388,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat
      * objectClassName is the docTypeName
+     * 
+     * @deprecated since 1.1
      */
-    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
+    @Deprecated public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
         // Retrieve the field's data type, or set to the string data type if an exception occurs when retrieving the class or the DD entry.
         String attributeDataType = null;
         try {
@@ -391,8 +412,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * 
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      * objectClassName is the docTypeName
+     * 
+     * @deprecated since 1.1
      */
-    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
+    @Deprecated public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
     	boolean checkDateBounds = false; // this is used so we can check date bounds
     	Class<?> formatterClass = null;
 
@@ -413,7 +436,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	
     	for(String attributeValue : attributeValues){
 
-    		// JLR : Replacing this logic with KS-style validation is trickier, since KS validation requires a DataProvider object that can
+    		// FIXME: JLR : Replacing this logic with KS-style validation is trickier, since KS validation requires a DataProvider object that can
     		// look back and find other attribute values aside from the one we're working on.
     		// Also - the date stuff below is implemented very differently.
     		//validator.validateAttributeField(businessObject, fieldName);
@@ -553,7 +576,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeRequired
      */
-    public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey) {
+    // FIXME: JLR - this is now redundant and should be using the same code as the required processing elsewhere, but the control definition stuff doesn't really fit
+    // it doesn't seem to be used anywhere
+    @Deprecated public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey) {
         // check if field is a required field for the business object
         if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
             Boolean required = getDataDictionaryService().isAttributeRequired(objectClassName, attributeName);
@@ -621,11 +646,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param propertyDescriptors
      * @param errorPrefix
      */
-    private void validatePrimitivesFromDescriptors(String entryName, Object object, PropertyDescriptor[] propertyDescriptors, String errorPrefix, boolean validateRequired) {
-        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-            validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, errorPrefix, validateRequired);
-        }
-    }
+//    private void validatePrimitivesFromDescriptors(String entryName, Object object, PropertyDescriptor[] propertyDescriptors, String errorPrefix, boolean validateRequired) {
+//        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+//            validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, errorPrefix, validateRequired);
+//        }
+//    }
 
     /**
      * calls validate format and required check for the given propertyDescriptor
@@ -634,8 +659,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param object
      * @param propertyDescriptor
      * @param errorPrefix
+     * 
+     * @deprecated since 1.1
      */
-    public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
+    @Deprecated public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
     	
     	// validate the primitive attributes if defined in the dictionary
         if (null != propertyDescriptor) { // && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
@@ -1004,8 +1031,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateApcRule(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ApcRuleDefinition)
+     *      
+     * @deprecated since 1.1
      */
-    public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule) {
+    @Deprecated public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule) {
         boolean success = true;
         Object attrValue;
         try {
@@ -1032,8 +1061,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateApcRules(org.kuali.rice.kns.bo.BusinessObject)
+     * 
+     * @deprecated since 1.1
      */
-    public boolean validateApcRules(BusinessObject bo) {
+    @Deprecated public boolean validateApcRules(BusinessObject bo) {
         boolean success = true;
 
         // get a collection of all the apcRuleDefinitions setup for this object

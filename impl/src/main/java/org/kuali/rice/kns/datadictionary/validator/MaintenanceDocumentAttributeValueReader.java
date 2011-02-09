@@ -31,7 +31,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
-import org.kuali.rice.kns.dto.Constrained;
+import org.kuali.rice.kns.dto.Validatable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -44,14 +44,14 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 
 	private final static Logger LOG = Logger.getLogger(MaintenanceDocumentAttributeValueReader.class);
 	
-	private List<Constrained> attributeDefinitions;
-	private Map<String, Constrained> attributeDefinitionMap;
+	private List<Validatable> attributeDefinitions;
+	private Map<String, Validatable> attributeDefinitionMap;
 	
 	public MaintenanceDocumentAttributeValueReader(Object object, String entryName, MaintenanceDocumentEntry entry, PersistenceStructureService persistenceStructureService) {
 		super(object, entryName, entry);
 		
-		this.attributeDefinitions = new LinkedList<Constrained>();
-		this.attributeDefinitionMap = new HashMap<String, Constrained>();
+		this.attributeDefinitions = new LinkedList<Validatable>();
+		this.attributeDefinitionMap = new HashMap<String, Validatable>();
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
 			List<? extends MaintainableItemDefinition> itemDefinitions = sectionDefinition.getMaintainableItems();
 			
@@ -100,7 +100,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getDefinition(java.lang.String)
 	 */
 	@Override
-	public Constrained getDefinition(String attributeName) {
+	public Validatable getDefinition(String attributeName) {
 		return attributeDefinitionMap != null ? attributeDefinitionMap.get(attributeName) : null;
 	}
 
@@ -108,7 +108,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getDefinitions()
 	 */
 	@Override
-	public List<Constrained> getDefinitions() {
+	public List<Validatable> getDefinitions() {
 		return attributeDefinitions;
 	}
 

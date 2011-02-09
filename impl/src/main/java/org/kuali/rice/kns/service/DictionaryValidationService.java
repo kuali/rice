@@ -140,8 +140,10 @@ public interface DictionaryValidationService {
      * @param attributeName - name of attribute in the bo class
      * @param attributeValue - current value to validate
      * @param errorKey - key to place the errors under
+     * 
+     * @deprecated since 1.1
      */
-    public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String errorKey);
+    @Deprecated public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String errorKey);
 
     /**
      * Validates an attribute of a given class for proper min, max length, syntax, and required. The attribute will be validated
@@ -152,8 +154,10 @@ public interface DictionaryValidationService {
      * @param attributeValue - current value to validate 
      * @param attributeDataType - data type that this attribute should be treated as for validation purposes
      * @param errorKey - key to place the errors under
+     * 
+     * @deprecated since 1.1
      */
-    public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String attributeDataType, String errorKey);
+    @Deprecated public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String attributeDataType, String errorKey);
 
     /**
      * Validates an attribute of a given class for required check.
@@ -162,8 +166,10 @@ public interface DictionaryValidationService {
      * @param attributeName - name of attribute in the bo class
      * @param attributeValue - current value to validate
      * @param errorKey - key to place to errors under
+     * 
+     * @deprecated since 1.1
      */
-    public void validateAttributeRequired(String entryName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey);
+    @Deprecated public void validateAttributeRequired(String entryName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey);
 
     /**
      * 
@@ -374,8 +380,10 @@ public interface DictionaryValidationService {
      * @param bo
      * @param apcRule
      * @return true if rule passes
+     * 
+     * @deprecated since 1.1
      */
-    public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule);
+	@Deprecated public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule);
 
     /**
      * This method applies all rules against the given BusinessObject as defined in the MaintenanceDocument.xml file.
@@ -387,8 +395,14 @@ public interface DictionaryValidationService {
      * 
      * @param bo
      * @return true if rule passes
+     * 
+     * @deprecated since 1.1
      */
-    public boolean validateApcRules(BusinessObject bo);
+	@Deprecated public boolean validateApcRules(BusinessObject bo);
     
-    public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired);
+	/**
+	 * 
+	 * @deprecated since 1.1
+	 */
+    @Deprecated public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired);
 }

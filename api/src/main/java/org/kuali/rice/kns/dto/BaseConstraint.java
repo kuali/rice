@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseConstraint {
+public class BaseConstraint implements Constraint {
     @XmlElement
     protected String labelKey; // Label key will map to a message... for a field
 								// there can be multiple contexts for the

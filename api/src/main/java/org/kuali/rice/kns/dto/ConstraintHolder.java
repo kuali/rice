@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConstraintHolder implements Constrained {
+public class ConstraintHolder implements Validatable {
 	public static final String UNBOUNDED = "unbounded";
 	public static final String SINGLE = "1";
 	

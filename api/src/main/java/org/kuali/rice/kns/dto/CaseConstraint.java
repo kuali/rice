@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CaseConstraint {
+public class CaseConstraint implements Constraint {
 	@XmlElement
     protected List<WhenConstraint> whenConstraint;
 	@XmlElement

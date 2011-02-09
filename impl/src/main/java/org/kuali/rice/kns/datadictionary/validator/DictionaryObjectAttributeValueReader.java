@@ -30,7 +30,7 @@ import java.util.Map;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
-import org.kuali.rice.kns.dto.Constrained;
+import org.kuali.rice.kns.dto.Validatable;
 
 /**
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
@@ -62,15 +62,15 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 	
 	@Override
-	public Constrained getDefinition(String attributeName) {
+	public Validatable getDefinition(String attributeName) {
 		return entry != null ? entry.getAttributeDefinition(attributeName) : null;
 	}
 	
 	@Override
-	public List<Constrained> getDefinitions() {
+	public List<Validatable> getDefinitions() {
 		if (entry instanceof DataDictionaryEntryBase) {
 			DataDictionaryEntryBase entryBase = (DataDictionaryEntryBase)entry;
-			List<Constrained> definitions = new ArrayList<Constrained>();
+			List<Validatable> definitions = new ArrayList<Validatable>();
 			List<AttributeDefinition> attributeDefinitions = entryBase.getAttributes();
 			definitions.addAll(attributeDefinitions);
 			return definitions;
@@ -130,11 +130,6 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		//            }
 		
 		return attributeValue;
-	}
-	
-	@Override
-	public boolean hasField(String attributeName) {
-		return getType(attributeName) != null;
 	}
 
 	private Map<String, PropertyDescriptor> getBeanInfo(Class<?> clazz) {

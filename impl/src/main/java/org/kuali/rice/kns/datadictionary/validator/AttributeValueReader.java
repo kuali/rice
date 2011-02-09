@@ -19,15 +19,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.dto.Constrained;
+import org.kuali.rice.kns.dto.Validatable;
 
 public interface AttributeValueReader {
 
 	public String getCurrentName();
 	
-	public Constrained getDefinition(String attributeName);
+	public Validatable getDefinition(String attributeName);
 	
-	public List<Constrained> getDefinitions();
+	public List<Validatable> getDefinitions();
 	
 	public DataDictionaryEntry getEntry();
 	
@@ -40,8 +40,6 @@ public interface AttributeValueReader {
 	public <X> X getValue(String attributeName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException;
 	
 	public List<String> getCleanSearchableValues(String attributeName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException;
-	
-	public boolean hasField(String attributeName);
 	
 	public void setCurrentName(String attributeName);
 	

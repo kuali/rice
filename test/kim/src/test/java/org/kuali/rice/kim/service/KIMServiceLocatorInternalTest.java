@@ -87,7 +87,7 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		// test by passing a QName for a valid service, but not one which is a KimTypeService, null should be returned
 		
 		// fetch the group service instead
-		KimTypeService typeService2 = KIMServiceLocatorWeb.getKimTypeService(new QName(KIMServiceLocatorInternal.KIM_GROUP_SERVICE));
+		KimTypeService typeService2 = KIMServiceLocatorWeb.getKimTypeService(new QName(KIMServiceLocator.KIM_GROUP_SERVICE));
 		assertNull("A null KimTypeService should have been returned.", typeService2);
 
 		// test by passing the QName for the Permission TypeService

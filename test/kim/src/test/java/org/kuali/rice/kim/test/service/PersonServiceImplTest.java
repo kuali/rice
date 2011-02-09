@@ -64,7 +64,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	@Test
 	public void testGetPersonByExternalIdentifier() {
 		//insert external identifier
-		KimPrincipal principal = KIMServiceLocatorInternal.getIdentityService().getPrincipal("p1");
+		KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal("p1");
 		
 		SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
 		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", KimEntityExternalIdentifierImpl.class);

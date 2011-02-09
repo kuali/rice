@@ -51,7 +51,16 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.AuthenticationService;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.GroupUpdateService;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.IdentityUpdateService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -1019,28 +1028,28 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocatorInternal.getIdentityService();
+			identityService = KIMServiceLocator.getIdentityService();
 		}
 		return identityService;
 	}
 
 	public GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocatorInternal.getGroupService();
+			groupService = KIMServiceLocator.getGroupService();
 		}
 		return groupService;
 	}
 
 	public PermissionService getPermissionService() {
 		if ( permissionService == null ) {
-			permissionService = KIMServiceLocatorInternal.getPermissionService();
+			permissionService = KIMServiceLocator.getPermissionService();
 		}
 		return permissionService;
 	}
 
 	public ResponsibilityService getResponsibilityService() {
 		if ( responsibilityService == null ) {
-			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
+			responsibilityService = KIMServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
 	}

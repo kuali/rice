@@ -52,7 +52,6 @@ import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
@@ -331,7 +330,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         		memberNamespace = "";
         	}
         }else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){
-        	Group gi = KIMServiceLocatorInternal.getGroupService().getGroupInfo(newMember.getMemberId());
+        	Group gi = KIMServiceLocator.getGroupService().getGroupInfo(newMember.getMemberId());
         	if(gi != null){
         		memberExists = true;
         		memberName = gi.getGroupName();

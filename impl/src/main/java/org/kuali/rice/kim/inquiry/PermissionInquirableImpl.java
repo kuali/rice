@@ -29,7 +29,6 @@ import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -137,7 +136,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 
 	public PermissionService getPermissionService() {
 		if (permissionService == null ) {
-			permissionService = KIMServiceLocatorInternal.getPermissionService();
+			permissionService = KIMServiceLocator.getPermissionService();
 		}
 		return permissionService;
 	}

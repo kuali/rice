@@ -54,7 +54,6 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -382,7 +381,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      */
     protected boolean deactivateOnEmptyGroup(ActionRequestValue actionRequestToActivate, ActivationContext activationContext) {
     	if (actionRequestToActivate.isGroupRequest()) {
-    		 if (KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(actionRequestToActivate.getGroup().getGroupId()).isEmpty()) {
+    		 if (KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequestToActivate.getGroup().getGroupId()).isEmpty()) {
     			 deactivateRequest(null, actionRequestToActivate, null, activationContext);
     			 return true;
          	}

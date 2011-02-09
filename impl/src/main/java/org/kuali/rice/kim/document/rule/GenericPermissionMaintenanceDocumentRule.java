@@ -24,6 +24,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
@@ -53,7 +54,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 			validateDetailValuesFormat(perm.getDetailValues());
 			// detailValues
 			// get the type from the template for validation
-			KimPermissionTemplateInfo template = KIMServiceLocatorInternal.getPermissionService().getPermissionTemplate( perm.getTemplateId() );
+			KimPermissionTemplateInfo template = KIMServiceLocator.getPermissionService().getPermissionTemplate( perm.getTemplateId() );
 			if ( template == null ) {
 				GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 				GlobalVariables.getMessageMap().putError( DETAIL_VALUES_PROPERTY, ERROR_MISSING_TEMPLATE, perm.getTemplateId() );

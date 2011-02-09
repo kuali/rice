@@ -47,9 +47,15 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -417,7 +423,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public PermissionService getPermissionService() {
 		if ( permissionService == null ) {
-			permissionService = KIMServiceLocatorInternal.getPermissionService();
+			permissionService = KIMServiceLocator.getPermissionService();
 		}
 		return permissionService;
 	}
@@ -427,7 +433,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public RoleManagementService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocatorInternal.getRoleManagementService();
+			roleService = KIMServiceLocator.getRoleManagementService();
 		}
 		return roleService;
 	}
@@ -437,7 +443,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public ResponsibilityService getResponsibilityService() {
 		if ( responsibilityService == null ) {
-			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
+			responsibilityService = KIMServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
 	}

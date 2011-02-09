@@ -73,14 +73,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 	
     protected IdentityService getIdentityService() {
     	if ( identityService == null ) {
-    		identityService = KIMServiceLocatorInternal.getIdentityService();
+    		identityService = KIMServiceLocator.getIdentityService();
     	}
 		return identityService;
 	}
 
     protected ResponsibilityService getResponsibilityService() {
     	if ( responsibilityService == null ) {
-    		responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
+    		responsibilityService = KIMServiceLocator.getResponsibilityService();
     	}
 		return responsibilityService;
 	}

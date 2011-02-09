@@ -39,7 +39,6 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -210,10 +209,7 @@ public class DocumentTypeSecurity implements Serializable {
         			}
         		}
         		
-        		 KIMServiceLocatorInternal.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails());
-                
-              
-              if ( KIMServiceLocatorInternal.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails())) {
+              if ( KIMServiceLocator.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails())) {
             	  permissions.add(securityPermission); 
               } else {
             	  LOG.warn("Could not find permission with name '" + securityPermission.getPermissionName() + "' and namespace '" + securityPermission.getPermissionNamespaceCode() + "' which was defined on Document Type security");

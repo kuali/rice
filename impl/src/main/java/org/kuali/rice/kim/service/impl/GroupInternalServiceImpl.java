@@ -29,7 +29,7 @@ import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -48,7 +48,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
 
 
     public GroupService getGroupService(){
-    	return KIMServiceLocatorInternal.getGroupService();
+    	return KIMServiceLocator.getGroupService();
     }
 
     public GroupImpl saveWorkgroup(GroupImpl group) {

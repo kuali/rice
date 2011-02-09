@@ -135,7 +135,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 
 	public ResponsibilityService getResponsibilityService() {
 		if (responsibilityService == null ) {
-			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
+			responsibilityService = KIMServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
 	}

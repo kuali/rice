@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -63,27 +62,27 @@ public class IdentityManagementNotificationServiceImpl implements
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#roleUpdated()
      */
     public void roleUpdated() {
-        KIMServiceLocatorInternal.getRoleManagementService().flushRoleCaches();
+        KIMServiceLocator.getRoleManagementService().flushRoleCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#roleMemberUpdated()
      */
     public void roleMemberUpdated() {
-    	KIMServiceLocatorInternal.getRoleManagementService().flushRoleMemberCaches();
+    	KIMServiceLocator.getRoleManagementService().flushRoleMemberCaches();
     }
     
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#delegationUpdated()
      */
     public void delegationUpdated() {
-    	KIMServiceLocatorInternal.getRoleManagementService().flushDelegationCaches();
+    	KIMServiceLocator.getRoleManagementService().flushDelegationCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#delegationMemberUpdated()
      */
     public void delegationMemberUpdated() {
-    	KIMServiceLocatorInternal.getRoleManagementService().flushDelegationMemberCaches();
+    	KIMServiceLocator.getRoleManagementService().flushDelegationMemberCaches();
     }
 }

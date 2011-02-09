@@ -101,7 +101,18 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementNotificationService;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -115,7 +126,10 @@ import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -230,7 +244,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		if ( inactivatingPrincipal ) {
 			//when a person is inactivated, inactivate their group, role, and delegation memberships
-			KIMServiceLocatorInternal.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
+			KIMServiceLocator.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
 		}
 	}
 
@@ -1439,14 +1453,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocatorInternal.getIdentityService();
+			identityService = KIMServiceLocator.getIdentityService();
 		}
 		return identityService;
 	}
 
 	protected GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocatorInternal.getGroupService();
+			groupService = KIMServiceLocator.getGroupService();
 		}
 		return groupService;
 	}
@@ -1467,7 +1481,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected RoleManagementService getRoleManagementService() {
 	   	if(roleManagementService == null){
-	   		roleManagementService = KIMServiceLocatorInternal.getRoleManagementService();
+	   		roleManagementService = KIMServiceLocator.getRoleManagementService();
     	}
 		return roleManagementService;
 	}
@@ -1478,7 +1492,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected ResponsibilityService getResponsibilityService() {
 	   	if ( responsibilityService == null ) {
-    		responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
+    		responsibilityService = KIMServiceLocator.getResponsibilityService();
     	}
 		return responsibilityService;
 	}
@@ -1975,7 +1989,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(!kimRole.isActive()){
 			// when a role is inactivated, inactivate the memberships of principals, groups, and roles in
 			// that role, delegations, and delegation members, and that roles memberships in other roles
-			KIMServiceLocatorInternal.getRoleManagementService().roleInactivated(identityManagementRoleDocument.getRoleId());
+			KIMServiceLocator.getRoleManagementService().roleInactivated(identityManagementRoleDocument.getRoleId());
 		}
 	}
 

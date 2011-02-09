@@ -40,7 +40,7 @@ import org.kuali.rice.kew.util.ClassDumper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -124,7 +124,7 @@ public class RoleNode extends RequestsNode {
 		while ( docType != null ) {
 			searchCriteria.put("detailCriteria", getDetailCriteriaString( docType.getName(), node.getRouteNodeName() ) );
 			try {
-				List<? extends KimResponsibilityInfo> responsibilities = KIMServiceLocatorInternal.getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
+				List<? extends KimResponsibilityInfo> responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
 				// once we find a responsibility, stop, since this overrides any parent 
 				// responsibilities for this node
 				if ( !responsibilities.isEmpty() ) {

@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -40,7 +48,6 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -57,9 +64,6 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-
-import java.sql.Date;
-import java.util.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -315,7 +319,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if(!org.apache.commons.lang.StringUtils.isEmpty(networkIdParam)){
         workflowId = networkIdParam;
-        workflowId = KIMServiceLocatorInternal.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
+        workflowId = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
         }
 
         Iterator<RuleDelegation> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();

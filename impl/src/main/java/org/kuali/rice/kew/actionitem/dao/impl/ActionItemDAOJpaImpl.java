@@ -38,7 +38,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * OJB implementation of {@link ActionItemDAO}.
@@ -232,7 +231,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+        return KIMServiceLocator.getIdentityManagementService();
     }
 
     public EntityManager getEntityManager() {

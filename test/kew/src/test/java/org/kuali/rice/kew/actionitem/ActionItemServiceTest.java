@@ -156,14 +156,14 @@ public class ActionItemServiceTest extends KEWTestCase {
         KimPrincipal ewestfal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 
         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
-        assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+        assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
         KIMServiceLocator.getIdentityManagementService().removePrincipalFromGroup(ewestfal.getPrincipalId(), workgroup1.getGroupId());
 
-        assertEquals("Workgroup should have 5 members.", 5, KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+        assertEquals("Workgroup should have 5 members.", 5, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
         assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
 
          KIMServiceLocator.getIdentityManagementService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getGroupId());
-         assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+         assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
 
 
@@ -180,7 +180,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
          KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(workgroup1Impl);
 
-         assertEquals("Workgroup should have 7 members.", 7, KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+         assertEquals("Workgroup should have 7 members.", 7, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(dewey.getPrincipalId()).size());
 
          // test nested
@@ -194,17 +194,17 @@ public class ActionItemServiceTest extends KEWTestCase {
          document.routeDocument("");
 
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
-         assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+         assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
 
          //get the subgroup so we can remove the member.
          GroupInfo workgroupSub = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested2");
          KIMServiceLocator.getIdentityManagementService().removePrincipalFromGroup(user1.getPrincipalId(), workgroupSub.getGroupId());
 
-         assertEquals("Workgroup should have 5 members.", 5, KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+         assertEquals("Workgroup should have 5 members.", 5, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
          assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
 
           KIMServiceLocator.getIdentityManagementService().addPrincipalToGroup(user1.getPrincipalId(), workgroupSub.getGroupId());
-          assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
+          assertEquals("Workgroup should have 6 members.", 6, KIMServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getGroupId()).size());
           assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
 
     }

@@ -32,7 +32,9 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -114,7 +116,8 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
     */
    public void removeAllGroupMembers(String groupId) {
-       List<String> memberPrincipalsBefore = KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(groupId);
+	   GroupService groupService = KIMServiceLocator.getGroupService();
+       List<String> memberPrincipalsBefore = groupService.getMemberPrincipalIds(groupId);
 
        Collection<GroupMemberImpl> toDeactivate = getActiveGroupMembers(groupId, null, null);
        java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
@@ -126,7 +129,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
        // Save
        getBusinessObjectService().save(new ArrayList<GroupMemberImpl>(toDeactivate));
-       List<String> memberPrincipalsAfter = KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(groupId);
+       List<String> memberPrincipalsAfter = groupService.getMemberPrincipalIds(groupId);
 
        if (!CollectionUtils.isEmpty(memberPrincipalsAfter)) {
     	   // should never happen!

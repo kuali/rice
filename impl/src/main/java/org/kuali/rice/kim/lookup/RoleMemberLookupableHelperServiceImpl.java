@@ -27,7 +27,6 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -174,7 +173,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
         	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
-        	groups = (List<GroupInfo>) KIMServiceLocatorInternal.getGroupService().lookupGroups(searchCriteria);
+        	groups = (List<GroupInfo>) KIMServiceLocator.getGroupService().lookupGroups(searchCriteria);
         	if(groups==null || groups.size()==0)
         		return null;
         }

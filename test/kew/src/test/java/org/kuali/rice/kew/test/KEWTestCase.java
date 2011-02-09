@@ -26,7 +26,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
@@ -234,7 +233,7 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 		public void stop() throws Exception {
 			KEWServiceLocator.getCacheAdministrator().flushAll();
 			KIMServiceLocator.getIdentityManagementService().flushAllCaches();
-			KIMServiceLocatorInternal.getRoleManagementService().flushRoleCaches();
+			KIMServiceLocator.getRoleManagementService().flushRoleCaches();
 			super.stop();
 		}
 

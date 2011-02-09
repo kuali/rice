@@ -15,13 +15,19 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-
-import javax.persistence.*;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -76,7 +82,7 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	 */
 	public KimPermissionInfo getKimPermission() {
 		if ( kimPermission == null || !StringUtils.equals( kimPermission.getPermissionId(), permissionId ) ) {
-			kimPermission = KIMServiceLocatorInternal.getPermissionService().getPermission(permissionId);
+			kimPermission = KIMServiceLocator.getPermissionService().getPermission(permissionId);
 		}
 		return kimPermission;
 	}

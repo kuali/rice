@@ -248,7 +248,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 
 	public static GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocatorInternal.getGroupService();
+			groupService = KIMServiceLocator.getGroupService();
 		}
 		return groupService;
 	}

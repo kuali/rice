@@ -15,18 +15,22 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Test the PermissionService
@@ -38,9 +42,10 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	private PermissionService permissionService;
 
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		setPermissionService(KIMServiceLocatorInternal.getPermissionService());
+		setPermissionService(KIMServiceLocator.getPermissionService());
 	}
 
 	@Test

@@ -569,7 +569,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocatorInternal.getIdentityService();
+			identityService = KIMServiceLocator.getIdentityService();
 		}
 		return identityService;
 	}

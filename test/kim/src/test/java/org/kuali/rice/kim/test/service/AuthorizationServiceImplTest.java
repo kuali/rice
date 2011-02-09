@@ -15,6 +15,16 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -25,18 +35,10 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -82,7 +84,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		permissionService = KIMServiceLocatorInternal.getPermissionService();
+		permissionService = KIMServiceLocator.getPermissionService();
 		roleService = KIMServiceLocator.getRoleService();
 		
 		if (true) return;

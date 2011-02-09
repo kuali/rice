@@ -45,6 +45,7 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
@@ -211,7 +212,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 				searchCriteria.put("detailCriteria",
 						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						);
-				permissions = KIMServiceLocatorInternal.getPermissionService().lookupPermissions( searchCriteria, false );
+				permissions = KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
 //				sqlLogger.setLevel( Level.INFO );
 			}
 			return permissions;
@@ -331,7 +332,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						+ ","
 						+ KimConstants.AttributeConstants.ROUTE_NODE_NAME+"="+getRouteNodeName() );
-				responsibilities = KIMServiceLocatorInternal.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
+				responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
 			}
 			return responsibilities;
 		}

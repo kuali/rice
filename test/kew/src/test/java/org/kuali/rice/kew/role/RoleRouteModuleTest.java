@@ -35,7 +35,6 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -750,7 +749,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 				
 					// first let's clear all of the members out of our role
 				
-					KimRoleInfo role = KIMServiceLocatorInternal.getRoleManagementService().getRoleByName(NAMESPACE, ROLE_NAME);
+					KimRoleInfo role = KIMServiceLocator.getRoleManagementService().getRoleByName(NAMESPACE, ROLE_NAME);
 					Map<String, String> criteria = new HashMap<String, String>();
 					criteria.put("roleId", role.getRoleId());
 					List<RoleMemberImpl> roleMembers = (List<RoleMemberImpl>) KNSServiceLocator.getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);

@@ -38,7 +38,6 @@ import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
@@ -148,7 +147,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 
 
     protected void loadGroupIntoDocument( String groupId, IdentityManagementGroupDocumentForm groupDocumentForm){
-        GroupInfo group = KIMServiceLocatorInternal.getGroupService().getGroupInfo(groupId);
+        GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
         getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
     }    
         

@@ -35,23 +35,12 @@ public final class KIMServiceLocatorInternal {
 
 	public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
 
-    public static final String KIM_ROLE_MANAGEMENT_SERVICE = "kimRoleManagementService";
-
-    public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
     public static final String KIM_IDENTITY_UPDATE_SERVICE = "kimIdentityUpdateService";
 	public static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
-
-	public static final String KIM_GROUP_SERVICE = "kimGroupService";
 	public static final String KIM_GROUP_UPDATE_SERVICE = "kimGroupUpdateService";
-
     public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
-
-	public static final String KIM_PERMISSION_SERVICE = "kimPermissionService";
 	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
-
-	public static final String KIM_RESPONSIBILITY_SERVICE = "kimResponsibilityService";
 	public static final String KIM_RESPONSIBILITY_UPDATE_SERVICE = "kimResponsibilityUpdateService";
-
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
     public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
@@ -70,10 +59,6 @@ public final class KIMServiceLocatorInternal {
 						new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName) );
 	}
 
-    public static IdentityService getIdentityService() {
-    	return (IdentityService)getService(KIM_IDENTITY_SERVICE);
-    }
-
     public static IdentityUpdateService getIdentityUpdateService() {
     	return (IdentityUpdateService)getService(KIM_IDENTITY_UPDATE_SERVICE);
     }
@@ -82,9 +67,7 @@ public final class KIMServiceLocatorInternal {
     	return (IdentityArchiveService)getService(KIM_IDENTITY_ARCHIVE_SERVICE);
     }
 
-    public static GroupService getGroupService() {
-    	return (GroupService)getService(KIM_GROUP_SERVICE);
-    }
+    
 
     public static GroupUpdateService getGroupUpdateService() {
     	return (GroupUpdateService)getService(KIM_GROUP_UPDATE_SERVICE);
@@ -94,23 +77,9 @@ public final class KIMServiceLocatorInternal {
     	return (RoleUpdateService)getService(KIM_ROLE_UPDATE_SERVICE);
     }
 
-    public static RoleManagementService getRoleManagementService() {
-    	if ( LOG.isDebugEnabled() ) {
-			LOG.debug("Fetching service " + KIM_ROLE_MANAGEMENT_SERVICE);
-		}
-    	return (RoleManagementService) GlobalResourceLoader.getResourceLoader().getService(new QName(KIM_ROLE_MANAGEMENT_SERVICE));
-    }
-
-    public static PermissionService getPermissionService() {
-    	return (PermissionService)getService(KIM_PERMISSION_SERVICE);
-    }
-
+    
     public static PermissionUpdateService getPermissionUpdateService() {
     	return (PermissionUpdateService)getService(KIM_PERMISSION_UPDATE_SERVICE);
-    }
-
-    public static ResponsibilityService getResponsibilityService() {
-    	return (ResponsibilityService)getService(KIM_RESPONSIBILITY_SERVICE);
     }
 
     public static ResponsibilityUpdateService getResponsibilityUpdateService() {

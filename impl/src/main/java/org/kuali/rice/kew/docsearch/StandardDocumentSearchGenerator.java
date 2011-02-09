@@ -17,6 +17,24 @@
 package org.kuali.rice.kew.docsearch;
 
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
@@ -44,18 +62,12 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.*;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 
 /**
@@ -967,7 +979,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         List<String> initiatorPrincipalIds = new ArrayList<String>();
         initiatorPrincipalIds.addAll(initiatorPrincipalIdSet);
         if(initiatorPrincipalIds != null && !initiatorPrincipalIds.isEmpty()){ // don't call the service if the search returned nothing.
-	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocatorInternal.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
+	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
 	        for (DocSearchDTO docSearchRow : docList) {
 	        	KimEntityNamePrincipalNameInfo name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
 	        	if (name != null) {
@@ -1471,7 +1483,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             if(principalList != null && !principalList.isEmpty()){
                 for(String principalId: principalList){
-                        viewerGroupIds.addAll(KIMServiceLocatorInternal.getGroupService().getGroupIdsForPrincipal(principalId));
+                        viewerGroupIds.addAll(KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId));
                 }
             }
 

@@ -92,7 +92,6 @@ import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -553,7 +552,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 			results = Collections.singletonList(actionRequest.getPrincipalId());
 		} else if (actionRequest.getGroupId() != null) {
 			List<String> principalIdsForGroup = 
-				KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId());
+				KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId());
 			if (principalIdsForGroup != null) {
 				results = principalIdsForGroup;
 			}

@@ -43,7 +43,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * Default implementation of the {@link ActionListService}.
@@ -187,7 +186,7 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public GroupService getGroupService(){
-    	return KIMServiceLocatorInternal.getGroupService();
+    	return KIMServiceLocator.getGroupService();
     }
 
     public void setActionItemDAO(ActionItemDAO actionItemDAO) {

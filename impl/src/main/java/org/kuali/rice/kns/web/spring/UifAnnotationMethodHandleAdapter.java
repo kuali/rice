@@ -50,8 +50,15 @@ public class UifAnnotationMethodHandleAdapter extends AnnotationMethodHandlerAda
                 
 				if (viewId == null) {
 					String viewTypeName = request.getParameter(UifConstants.RequestParameterName.VIEW_TYPE_NAME);
+					
+					if(viewTypeName == null) {
+					    viewTypeName = ((UifFormBase)target).getViewTypeName();
+					}
+					
 					viewId = getViewService().getViewIdByType(viewTypeName,
 							WebUtils.translateRequestParameterMap(request.getParameterMap()));
+					
+					((UifFormBase)target).setViewId(viewId);
 				}
                 
                 // TODO what to do here if viewId is not set, are all urls going to have

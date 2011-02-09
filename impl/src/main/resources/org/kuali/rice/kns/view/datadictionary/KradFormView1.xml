@@ -89,6 +89,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <list>
           <bean parent="AttributeField" p:name="number"/>
           <bean parent="AttributeField" p:name="name"/>
+          <bean parent="AttributeField" p:name="fiscalOfficer.userName"/>
         </list>
       </property> 
       <property name="summary" value="A section of travel account attributes."/> 

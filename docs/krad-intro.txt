@@ -101,13 +101,38 @@ h5. The View Lifecycle
 
 When a View is rendered, the process from HTTP request to completely furnished HTTP response goes through a standard set of stages.  Together, these stages make up the View Lifecycle and having an understanding of these stages gives the developer the knowledge of where to "hook in" to the lifecycle in order to tweak the rendering of the View in powerful ways.
 
-The rendering of a View is initiated by either an HTTP GET or POST request.  In the case of a GET, the View and the model it is associated with are considered "brand new" - they'll regenerate from scratch.  In the case of a POST, the model is assumed to exist in the session, wrapped in the form; if it does not, then the database is queried to retrieve the latest version of the form.  These three entry points: GET (start with fresh form and View), POST (pull form and View from session), and POST (retrieve form from the database and reconstruct the View) are the three trails of the View Lifecycle. !KRADViewLifecycleGET.jpg|border=1!
+The rendering of a View is initiated by either an HTTP GET or POST request.  In the case of a GET, the View and the model it is associated with are considered "brand new" - they'll regenerate from scratch.  In the case of a POST, the model is assumed to exist in the session, wrapped in the form; if it does not, then the database is queried to retrieve the latest version of the form.  These three entry points: GET (start with fresh form and View), POST (pull form and View from session), and POST (retrieve form from the database and reconstruct the View) are the three trails of the View Lifecycle. 
+
+!KRADViewLifecycleGET.jpg|border=1!
 GET: starting from scratch
 
-Above, we see a diagram of the lifecycle stages for the GET version of the View lifecycle.
+Above, we see a diagram of the lifecycle stages for the GET version of the View lifecycle.  A GET call causes the Spring MVC Binder to make a call to org.kuali.rice.kns.uif.service.ViewService's.getView(String viewId, Map<String, String> parameters).  This, in turn, calls the View's associated ViewHelperService implementation to call ViewHelperService.performInitialization to initialize the View Component and all contained child Components.
 
+Many custom Views will have custom ViewHelperService implementations.  For instance, InquiryView uses org.kuali.rice.kns.inquiry.KualiInquirableImpl (or a child) as its ViewHelperService implementation.  LookableHelperServices will likely also act as ViewHelperServices.
 
-*HERE JAMES*
+Spring MVC then takes over again, populating the form, which populates all allowed fields possible from the HTTP request parameters or the retrieval of the model from the database, formats and masks or unmasks values, and sets default values.  After that, Spring MVC invokes the form's postBind, passes through any configured HandlerInterceptors, and finally reaches the controller's method to perform business logic.  All of that complete, the ViewService.updateView is called to make sure that the View can respond to any changes to the form which took place during the call to the controller before the View is rendered.  
+
+ViewService.updateView is responsible for moving the View through the next two stages of the lifecycle: the Apply Model phase, which is carried out by a call to the View's ViewHelperService implementation of performUpdate().  This phase is specifically meant to make changes to the View based on any changes which occurred to the model during the controller phase.  
+
+Then ViewService.updateView calls the ViewHelperService's performFinalize() which does the Finalization phase.
+
+The differentiation between the Apply Model phase and the Finalization phase is a bit tricky, but it comes down to responsibility.  The Apply Model phase is all about changing View state based on anything known about the model.  The Finalization phase is about doing the last bit of tidying up based on the changes that Apply Model just made.
+
+Still confused?  Here's an example of the responsibility split.  Components have performInitialization(), performUpdate(), and performFinalization() as methods that they can react to as well - every custom Component can react to the stages of the View lifecycle - and Containers take that opportunity to update their layout managers.  TableLayoutManager reacts to both the Apply Model and the Finalization phase differently.  In the Apply Model, it build a header row as well as data rows for every line of the collection that it holds.  Now that it has that collection - ie, now that the model has been set - it can build the actual table.  Then, in the Finalization phase, it does bookkeeping: it figures out the number of columns it's holding.  Obviously, the table needed to be built for that to be completed, and now that work is separated into a different View lifecycle phase to keep each method clean.
+
+That done, Spring runs the form and the View it holds through another set of configured HandlerInterceptors and then the View is rendered into HTML.  The HTTP response is sent back to the user and the lifecycle is complete.
+
+!KRAD View LIfecycle Post Session.jpg|border=1!
+POST: form and View in session
+
+If a POST request is made and the formKey parameter finds the associated form in the session, then we have the simplest version of the lifecycle.  There is no View to initialize, so the Initialization phase is simply skipped.  Instead, right before rendering, ViewService.updateView is called, and that moves the View through the Apply Model and Finalization stages before rendering to HTML.
+
+!KRAD View Lifecycle Post No Session.jpg|border=1!
+POST: form is not in session, must be reconstructed
+
+If the POST request is made and the formKey parameter does not an associated form from the session, then things get complex.  The form is pulled from the long term session persistent storage in the database, and ViewService.reconstructView is called to create a new View and populate it to what it was before the session died.  ViewService.reconstructView moves the View through all three stages of the lifecycle, one after another: Initialization, Apply Model, and finally Finalization.  But then, as the graph shows, the View continues its normal course.  So after the controller is processed, ViewService.updateService is called as always, and the View moves through the Apply Model and Finalization phases for the second time during the rendering, as the model may well have changed during controller processing.
+
+By understanding the View lifecycle, and how those phases filter down through every Component nested within the View, a fuller understanding of how KRAD interacts with the HTTP request/response cycle is achieved - as well as providing powerful ways to customize that process and knowing just which hooks to place customizations into.
 
 h4. Groups
 
@@ -438,20 +463,4 @@ Components are powerful, it's true, but putting too much power into a single Com
 
 For instance, many Groups represent tabs which can be opened or closed.  A Group was written simply to be a simple Container of Components - making all of them understand collapsing behavior seems a bit overkill, especially considering how general Groups are.  Therefore, a ComponentDecorator - org.kuali.rice.kns.uif.decorator.PanelGroupDecorator - was created to add collapsing behavior to Groups.  Parent Containers which want to apply collapsing behavior to child Groups will add the name of the Group and the ComponentDecorator to a map called "componentDecorators" and the collapsing behavior will be added during rendering.
 
-(!) {color:red}Also I refactored the decorator infrastructure. No longer is there a map configured on the component, but the component has{color}
-
-{color:red}a simple decorator property. For multiple decorators, you can specify the decorator property on the decorator, and so on for{color}
-
-{color:red}as many decorators as you want. The DecoratorChain is created by the framework as a helper to the template tag to render{color}
-
-{color:red}the decorators in the correct order. The only thing I would like to cleanup at some point is the configuration. Right now to set the{color}
-
-{color:red}decorator property you have to do p:decorator.defaultOpen=”true”. That is not too bad, but if you have multiple decorators you would{color}
-
-{color:red}have to nest until you get to the correct decorator level, p:decorator.decorator.color=”#888”. It is a problem in general because everything{color}
-
-{color:red}is more object oriented that the properties are more nested (like layout manager). I am hoping to put in a bean post processor which will{color}
-
-{color:red}flatten out the properties. So for any of the decorator properties you could just set them like they are a property on the main object, and{color}
-
-{color:red}likewise for the layout manager.{color}
+Each Component can have a single ComponentDecorator set on it as a property.  However, each ComponentDecorator allows a single ComponentDecorator to be added as a property, and therefore, a long chain of ComponentDecorators can be created.  KRAD will support clever ways to flatten out that chain when configuring, so that each ComponentDecorator will have its own properties set separately, without having to refer to the chain.

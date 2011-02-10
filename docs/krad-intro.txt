@@ -116,7 +116,7 @@ ViewService.updateView is responsible for moving the View through the next two s
 
 Then ViewService.updateView calls the ViewHelperService's performFinalize() which does the Finalization phase.
 
-The differentiation between the Apply Model phase and the Finalization phase is a bit tricky, but it comes down to responsibility.  The Apply Model phase is all about changing View state based on anything known about the model.  The Finalization phase is about doing the last bit of tidying up based on the changes that Apply Model just made.
+The differentiation between the Apply Model phase and the Finalization phase is a bit tricky, but it comes down to responsibility.  The Apply Model phase is all about changing View state based on anything known about the model.  State may change drastically during this phase - often times, the Component tree is changed with new Fields being created.  The Finalization phase is about doing the last bit of tidying up based on the changes that Apply Model just made; the shape of the Component tree is not changed, though each Component in the tree may be modified in response to the changes that occurred during the Apply Model phase.
 
 Still confused?  Here's an example of the responsibility split.  Components have performInitialization(), performUpdate(), and performFinalization() as methods that they can react to as well - every custom Component can react to the stages of the View lifecycle - and Containers take that opportunity to update their layout managers.  TableLayoutManager reacts to both the Apply Model and the Finalization phase differently.  In the Apply Model, it build a header row as well as data rows for every line of the collection that it holds.  Now that it has that collection - ie, now that the model has been set - it can build the actual table.  Then, in the Finalization phase, it does bookkeeping: it figures out the number of columns it's holding.  Obviously, the table needed to be built for that to be completed, and now that work is separated into a different View lifecycle phase to keep each method clean.
 
@@ -138,18 +138,17 @@ h4. Groups
 
 The Group is the workhorse of Containers.  It basically acts as the branches of the Component hierarchy tree: it can hold any other kind of Component, including other Groups.  Groups are highly flexible: they can represent an entire page of components, a single tab within that page, or even a set of components within the tab.  Every visual element that KRAD renders is going to be a nesting of groups within groups within groups.
 
-Because they're so common, a number of bean definitions for very common Group types have been set up: Page, Panel, and MenuNavigation to name just a few. When designing a page, any set of components that share a layout likely belong in a single Group together.
+Because they're so common, a number of bean definitions for very common Group configurations have been set up: Page, Panel, and MenuNavigation to name just a few. When designing a page, any set of components that share a layout likely belong in a single Group together.
 
-Despite their ubiquity, there isn't any significant configuration beyond what ContainerBase provides, making the configuration of multiple groups very straightforward.
+These Group configurations are slightly different from the special groups like CollectionGroup and NavigationGroup.  These Groups extend org.kuali.rice.kns.uif.container.Group to change the plain vanilla Group's behavior.  These will be considered in more detail below.  Configuration of these Group types will differ slightly from regular groups.
 
-There are also specialized kinds of Groups, for use in rendering collections or rendering page navigation.  Those should be explored as well.
+For normal Groups, though, despite their ubiquity, there isn't any significant configuration beyond what ContainerBase provides, making the configuration of multiple groups very straightforward.  And again, common configurations will have abstract parent beans already set up - such as Page and Panel.
 
-(!) {color:red}Maybe we should embrace the concept of types. For instance I think it could get confusing as to what is difference is between Section (which is bean abstraction) and CollectionGroup. The first is really just a configuration of the basic Group type, while CollectionGroup actually add properties to the Group, in a sense{color}
-{color:red}a special Group type. Again, not sure if this is making sense.{color}
+As promised, there are also specialized kinds of Group types, which change the behavior of groups for use in rendering collections or rendering page navigation.  Let's explore each of these Group types in more detail.
 
-h5. Collection Groups
+h5. CollectionGroup
 
-A very common practice among rendering frameworks is that all members of a java.util.Collection are rendered using the same set of Components, often within a table.  KRAD naturally associates each member row of the table with a Group - but to accomplish this, a special kind of Group - org.kuali.rice.kns.uif.container.CollectionGroup - was created.  It has a number of extra properties to bind a Collection to the group, most importantly a modelName - the name of the model for each row of the group *JERRY: TRUE THAT?* and a binding path, which is the path to the java.util.Collection from the form *JERRY: TRUE THAT?*
+A very common practice among rendering frameworks is that all members of a java.util.Collection are rendered using the same set of Components, often within a table.  KRAD naturally associates each member row of the table with a Group - but to accomplish this, a special kind of Group - org.kuali.rice.kns.uif.container.CollectionGroup - was created.  The developer needs to set the collectionName.  There are a number of other properties on CollectionGroup which KRAD populates as it builds the View; the developer need not concern herself with explaining to the CollectionGroup the full path to the collection.
 
 (!) {color:red}The binding stuff is confusing, I admit. Primarily because we are trying to support multiple models on the{color}
 {color:red}form, but still keep configuration down for when only one model is involved (like in the frameworks). Let me explain a little more:{color}
@@ -228,19 +227,15 @@ An AttributeField correlates directly to an AttributeDefinition set on either a 
 
 The vast majority of properties which populate the pages of a KRAD application will be represented by DataDictionary AttributeDefinitions.  KRAD's support of translating AttributeDefinitions to all of the equivalent rendered HTML on a page through the AttributeField is very powerful.
 
-There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute - either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
+There are several encapsulated properties at the heart of the AttributeField.  Let's start with the most basic: propertyName.  This is the name of the property of the form which the AttributeField represents.  AttributeField uses propertyName merely as a pointer to the binding in the form where it can find the value it represents.  That's all it really needs to know about the value in question; KRAD tracks the full data binding field leading to the AttributeField (setting it in the bindingInfo, covered below), and that is communicated to Spring MVC during population or rendering.  This way, the model holds the data and all AttributeField has to know is where to find the data - it need to do any other work to hold the data beyond that.
 
-(!) {color:red}I think formattedValue will be going away. We spent a lot of time going back and forth between populating the values in the View (fields) or just working directly with the model. I think we are going to be just working with the model. So the AttributeField just has a pointer (the path) to the property in the model. In the JSP, we write that value out as the path attribute for the Spring tags, it then gets the value from the model. The stuff{color}
-{color:red}Scott and David are working on is to pull the declared formatter class from the view to apply it when spring asks for the value.{color}
+This leads to an unexpected benefit.  In the KNS, formatted version of the values had to be held in the objects which rendered the value and then the form had to format the value back during population - all of this was controlled by the formatter in the data dictionary.  Spring MVC lets developers configure the formatting within the MVC configuration itself, meaning that values will be converted to their proper formats during data binding and during rendering: a big simplification for the developer.  
+
+Next comes the control which, of course, is the associated Control Component, allowing the user to input data into the value.
 
 Of course, the DataDictionary AttributeDefinition defines a lot of text about the attribute: the label and summary texts as well as a possible default value.  The AttributeField holds all of these as well.  The AttributeField also holds the most important validation defined in AttributeDefinition - that of maxLength.  (It's the most important because if values exceed maxLength, they will likely cause exceptions when inserted into the database.)
 
 AttributeField also holds errors associated with the attribute.  If the Control associated with this attribute put in data that failed validation, or if a special warning message needs to be associated with the attribute, AttributeField encapsulates that as well, by holding these errors in an ErrorsField.  There's also an errorPlacement property which tells KRAD what aspect of the rendered field to render errors to.
-
-(!) {color:red}Not quite sure at this point. I have thought about the hard settings of Left, Right, Top and all that for errors, labels, and so on. But that will get{color}
-{color:red}really hard to manage and implement, especially if we allow all the different pieces of the attribute field to have those settings. The other option is{color}
-{color:red}to implement a layout manager for the part of the attribute field. One possibility there is to implement a sort of CSS layout. The advanced layout of CSS3{color}
-{color:red}might work well. The datatable jQuery plugin we are using actually uses it to configure where the various things will go. I am just now sure what the support is for that. I have a lot of work left with the attribute field piece{color} :-)
 
 The AttributeField also holds the Formatter responsible for taking Strings in the HTTP request and translating them into different data types.  If the attribute's control is a MultiValueControl with an OptionsFinder, the AttributeField also holds that.
 
@@ -362,11 +357,9 @@ Developers who worked with checkboxes in the KNS may remember that KNS rendered 
 
 h4. MultiValue Controls
 
-Certain controls let the user choose among multiple values.  All of these controls extend org.kuali.rice.kns.uif.control.MultiValueControlBase.  To make these controls work, KRAD needs to know what the set of choice values are and MultiValueControlBase supports those through the property options which takes a java.util.List of venerable org.kuali.rice.core.util.KeyLabelPair objects.  Each KeyLabelPair maps a code value to a the display label which is what the user sees for the control (these two values could be the same but often times, the label is a more user-friendly representation of the key code). *JAMES: HOW TO SET UP OPTIONS FINDERS IN KRAD?*
+Certain controls let the user choose among multiple values.  All of these controls extend org.kuali.rice.kns.uif.control.MultiValueControlBase.  To make these controls work, KRAD needs to know what the set of choice values are and MultiValueControlBase supports those through the property options which takes a java.util.List of venerable org.kuali.rice.core.util.KeyLabelPair objects.  Each KeyLabelPair maps a code value to a the display label which is what the user sees for the control (these two values could be the same but often times, the label is a more user-friendly representation of the key code).
 
-(!)
-{color:red}This is an area of improvement we would like to make. Right now it is just taking a value finder class as was done in the KNS. However, would like to make this an actual injected bean, then we can setup different values finders that take configuration. One base values finder is similar to what they did in KC. You can configure it with a class, and property key/value names that should make up the options. It will then do the query and build up the list. I am sure there will be others. Also there will be a new method to the KeyValuesFinder interface that takes in the model getOptions(Object model) (or something{color}
-{color:red}like that) that can be implemented to build options based on the context and will be invoked in the apply model phase.{color}
+This List is often passed in via a bean configuration.  This means that KRAD will be able to use an innovation from the KC team which created a generic bean to create the List of KeyLabelPair objects and then configured the bean with the business object and fields to tap.  Bottom line: any MultiValueControl will be much easier to configure in KRAD than in the KNS.
 
 h5. SelectControl
 
@@ -419,7 +412,7 @@ Now that we've explored each component type in detail, let's see what they share
 
 || Property | Type | Explanation ||
 | id | java.lang.String | The Component's unique name within the application space.  This property is autogenerated by KRAD and should never be reset by the developer |
-| componentTypeName | java.lang.String | The type name of the Component: "Text" for the Text Control, for instance, or "Quickfinder" for the Quickfinder widget |
+| componentTypeName | java.lang.String | The type name of the Component: "Text" for the Text Control, for instance, or "Quickfinder" for the Quickfinder widget.  This helps KRAD find the tile associated with the Component in the data dictionary.|
 | template | java.lang.String | As discussed in [Tiles as Templates#tiles_as_templates|Tiles as Templates#tiles_as_templates], the path to the JSP representing the tile for this component |
 | componentInitializers | List<org.kuali.rice.kns.uif.initializer.ComponentIntializer> | A list of all ComponentInitializers that should be run on the component upon initialization.  Covered in more detail in [Component Intializers#component_initializers|Component Intializers#component_initializers] |
 | name | java.lang.String | The developer set identifier for this Component, which can be used to refer to this Component either in data dictionary configuration or in scripts. |
@@ -445,17 +438,15 @@ This is incredibly important because the injection of a Tile template path into 
 
 Furthermore, since each Component bean handles its own rendering Tile template, gone are the generic KNS tags - like kul:rowDisplay and kul:htmlControlAttribute - which depended on complex logic within the tag itself to decide rendering and which were nearly impossible to customize.  It's a huge step forward for application developers to be able to customize the user interface of their application.
 
-(!) {color:red}Maybe add a little bit about the standard contract component type templates have. And also how a developer could render a group completely on their{color}
-{color:red}own by its template?{color}
+Every tile associated with a Component expects the instance of the Component configuration passed in.  For instance, the Group tile (web/src/main/webapp/krad/WEB-INF/jsp/container/group/group.jsp) expects an attribute called "group" which holds the Group's configuration.  By passing in the actual configuration bean and adhering to a standard contract, templates can be switched out without breaking caller's calls to them.  Let's look at each of the template contracts.
+
+*JAMES: TEMPLATE TYPES*
 
 h4. Component Initializers{anchor: component_initializers}
 
-It's often useful for Components, upon initialization, to have some access to the rest of the Component tree.  For instance, when a Group is initialized, it may want to cull out any Label Fields within it so that it can decide how to render them: above Controls or beside Controls.  This culling is done via a ComponentInitializer.  Therefore, any Component can have associated with it a List of org.kuali.rice.kns.uif.initializer.ComponentIntializer implementations.
+It's often useful for Components, upon initialization, to perform different initializations in different contexts.  For instance, when an AttributeField which uses a checkbox as its Control is rendered in a Lookup, that checkbox should be rendered as special radio button group (offering the choices "Yes", "No", and "Both").  A ComponentInitializer applied to the LookupView can traverse the Component tree, switching out these instances of AttributeField without affecting any other View contexts.  Any Component can have associated with it a List of org.kuali.rice.kns.uif.initializer.ComponentIntializer implementations, and that List of initializations will change within the different View contexts that it participates in.
 
 Each ComponentIntializer has two methods which must be given implementations.  getSupportedComponents returns the Class of the Components which support the initializer.  performInitialization is passed in the parent view and the Component that this initializer is working on, and that is where the manipulation of the Component tree is carried out.
-
-(!) {color:red}Just a note hear I actually pulled the label field initializer and put it in the grid layout manager. The reason being I need it to run in places after{color}
-{color:red}the initialize phase. However I think I can still make use the ComponentInitializer interface for things coming so it is still around.{color}
 
 h4. Component Decorators{anchor: component_decorators}
 

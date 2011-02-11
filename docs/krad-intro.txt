@@ -79,7 +79,7 @@ h3. Containers
 
 In KRAD, a Container is simply a Component with a main job of containing other components to render.  Several Containers have the ability to Contain other Containers - Views can Contain Groups, for instance, and Groups, in turn, can contain any other kind of component - including other Groups.
 
-By default, Containers have three areas: a header, encapsulated in a HeaderField; a footer, which is just a Group, and then any other encapsulated items which make up the body.  The renderHeader and renderFooter properties of the Container can be set to false to turn off heater and footer rendering.  Body rendering cannot be turned off because the point of the Container is to render some kind of contained body elements.  Body elements are also laid out on a page by a LayoutManager, which are [discussed in more detail#layout_managers|discussed in more detail#layout_managers].
+By default, Containers have three areas: a header, encapsulated in a HeaderField; a footer, which is just a Group, and then any other encapsulated items which make up the body.  The renderHeader and renderFooter properties of the Container can be set to false to turn off heater and footer rendering.  Body rendering cannot be turned off because the point of the Container is to render some kind of contained body elements.  Body elements are also laid out on a page by a LayoutManager, which are [discussed in more detail|#layout_managers].
 
 There are two main Containers: the View and the Group, each of which have various children that add functionality.
 
@@ -106,15 +106,15 @@ The rendering of a View is initiated by either an HTTP GET or POST request.  In 
 !KRADViewLifecycleGET.jpg|border=1!
 GET: starting from scratch
 
-Above, we see a diagram of the lifecycle stages for the GET version of the View lifecycle.  A GET call causes the Spring MVC Binder to make a call to org.kuali.rice.kns.uif.service.ViewService's.getView(String viewId, Map<String, String> parameters).  This, in turn, calls the View's associated ViewHelperService implementation to call ViewHelperService.performInitialization to initialize the View Component and all contained child Components.
+Above, we see a diagram of the lifecycle stages for the GET version of the View lifecycle.  A GET request runs through any configured HandlerInterceptors (these are Spring MVC configured versions of Servlet filters, giving the ability to perform actions at a very low level during the request/response lifecycle) and, those complete, causes the Spring MVC Binder to make a call to org.kuali.rice.kns.uif.service.ViewService's.getView(String viewId, Map<String, String> parameters).  This, in turn, calls the View's associated ViewHelperService implementation to call ViewHelperService.performInitialization to initialize the View Component and all contained child Components.
 
 Many custom Views will have custom ViewHelperService implementations.  For instance, InquiryView uses org.kuali.rice.kns.inquiry.KualiInquirableImpl (or a child) as its ViewHelperService implementation.  LookableHelperServices will likely also act as ViewHelperServices.
 
-Spring MVC then takes over again, populating the form, which populates all allowed fields possible from the HTTP request parameters or the retrieval of the model from the database, formats and masks or unmasks values, and sets default values.  After that, Spring MVC invokes the form's postBind, passes through any configured HandlerInterceptors, and finally reaches the controller's method to perform business logic.  All of that complete, the ViewService.updateView is called to make sure that the View can respond to any changes to the form which took place during the call to the controller before the View is rendered.  
+Spring MVC then takes over again, populating the form, which populates all allowed fields possible from the HTTP request parameters or the retrieval of the model from the database, formats and masks or unmasks values, and sets default values.  After that, Spring MVC invokes the form's postBind and finally reaches the controller's method to perform business logic.  All of that complete, the ViewService.updateView is called to make sure that the View can respond to any changes to the form which took place during the call to the controller before the View is rendered.  
 
 ViewService.updateView is responsible for moving the View through the next two stages of the lifecycle: the Apply Model phase, which is carried out by a call to the View's ViewHelperService implementation of performUpdate().  This phase is specifically meant to make changes to the View based on any changes which occurred to the model during the controller phase.  
 
-Then ViewService.updateView calls the ViewHelperService's performFinalize() which does the Finalization phase.
+Then ViewService.updateView calls the ViewHelperService's performFinalize() which, as the method name subtly suggestions, performs the Finalization phase.
 
 The differentiation between the Apply Model phase and the Finalization phase is a bit tricky, but it comes down to responsibility.  The Apply Model phase is all about changing View state based on anything known about the model.  State may change drastically during this phase - often times, the Component tree is changed with new Fields being created.  The Finalization phase is about doing the last bit of tidying up based on the changes that Apply Model just made; the shape of the Component tree is not changed, though each Component in the tree may be modified in response to the changes that occurred during the Apply Model phase.
 
@@ -130,7 +130,7 @@ If a POST request is made and the formKey parameter finds the associated form in
 !KRAD View Lifecycle Post No Session.jpg|border=1!
 POST: form is not in session, must be reconstructed
 
-If the POST request is made and the formKey parameter does not an associated form from the session, then things get complex.  The form is pulled from the long term session persistent storage in the database, and ViewService.reconstructView is called to create a new View and populate it to what it was before the session died.  ViewService.reconstructView moves the View through all three stages of the lifecycle, one after another: Initialization, Apply Model, and finally Finalization.  But then, as the graph shows, the View continues its normal course.  So after the controller is processed, ViewService.updateService is called as always, and the View moves through the Apply Model and Finalization phases for the second time during the rendering, as the model may well have changed during controller processing.
+If the POST request is made and the formKey parameter does not an associated form from the session, then things get complex.  After the HandlerInterceptors are run through, the form is pulled from the long term session persistent storage in the database, and ViewService.reconstructView is called to create a new View and populate it to what it was before the session died.  ViewService.reconstructView moves the View through all three stages of the lifecycle, one after another: Initialization, Apply Model, and finally Finalization.  But then, as the graph shows, the View continues its normal course.  So after the controller is processed, ViewService.updateService is called as always, and the View moves through the Apply Model and Finalization phases for the second time during the rendering, as the model may well have changed during controller processing.
 
 By understanding the View lifecycle, and how those phases filter down through every Component nested within the View, a fuller understanding of how KRAD interacts with the HTTP request/response cycle is achieved - as well as providing powerful ways to customize that process and knowing just which hooks to place customizations into.
 
@@ -150,30 +150,9 @@ h5. CollectionGroup
 
 A very common practice among rendering frameworks is that all members of a java.util.Collection are rendered using the same set of Components, often within a table.  KRAD naturally associates each member row of the table with a Group - but to accomplish this, a special kind of Group - org.kuali.rice.kns.uif.container.CollectionGroup - was created.  The developer needs to set the collectionName.  There are a number of other properties on CollectionGroup which KRAD populates as it builds the View; the developer need not concern herself with explaining to the CollectionGroup the full path to the collection.
 
-(!) {color:red}The binding stuff is confusing, I admit. Primarily because we are trying to support multiple models on the{color}
-{color:red}form, but still keep configuration down for when only one model is involved (like in the frameworks). Let me explain a little more:{color}
-
-{color:red}So we have the form as the top level (we have attempted to support other top level objects, like dtos or just{color}
-{color:red}a business object, but not sure how feasible that will be). From that we can have a top level bo (like document,{color}
-{color:red}or bo for inquiry). For this you can define a default 'modelName' in the View. The special view types like Inquiry{color}
-{color:red}View already define this property, so it does not need to be redefined. Then on the AttributeField you can set the{color}
-{color:red}binding as bindToForm or bindToModel. The default for AttributeField is bindToModel (there is another bean FormField which has default bindToForm). Then the 'name' given on the attribute field is assumed to be on the default model path, unless the modelPath has been specified. This is only needed when you have multiple top level{color}
-{color:red}bos and your attribute field is not on the default. So on the form we have bo1, and bo2, and our field is on bo2{color}
-{color:red}instead of bo1, we would need to set the modelPath to bo1. For convenience you can also set this on the Group so all the fields in the group will inherit that modelPath. Like AttributeFields, the name gives the property path on{color}
-{color:red}the model. So the collection name would point to the collection property on the default model (unless modelPath was given). Ok, to add to the complexity there is a bindByNamePrefix. So if all your fields where nested in another bo, like bo.bo2.field, bo.bo2.field2, ... You could set the bindByNamePrefix to b02 and that will be prepended to name to form the property path. Again you can set this on the Group for all the fields in the group.{color}
-{color:red}So the complete binding path is formed like this:{color}
-
-{color:red}If model field and modelPath not given: defaultModelPath + bindByNamePrefix + name{color}
-{color:red}If form field: bindByNamePrefix + name{color}
-
-{color:red}For collection fields: defaultModelPath (or modelPath if given) + collection bindByNamePrefix + collection name + attribute bindBynamePrefix + attribute name{color}
-
-{color:red}I struggled with this. I almost thought to eliminate complexity that for each attribute field you would specify the full path. That would allow support for form fields or any bo field. But of course that would be a lot of duplication. Most of the time, at least how we have structured things in the past you would not need to worry{color}
-{color:red}about the bindingInfo at all, just in these cases that fall outside. I would really like to know your opinion\!{color}
-
 CollectionGroups can also show a set of actions on each row.  An example would be the edit and copy tags that show up in each row of a Lookup.  The CollectionGroup can also render a sequence associated with the Collection, so that each row is numbered "1", "2", etc. which makes it easier for users to differentiate among many rows.  There's also an option to turn header labels on and off for each row.  Finally, a CollectionGroup can have a number of sub-CollectionGroups associated with it, making rendering very flexible indeed.
 
-(!) {color:red}Not sure how much detail we want to get into here. But there are these 'prototypes' that setup how the table cells or groups (for stacked) will look. They can control things like header style, action field layout and so on.{color}
+(!) {color:red}Not sure how much detail we want to get into here. But there are these 'prototypes' that setup how the table cells or groups (for stacked) will look. They can control things like header style, action field layout and so on.{color} *JAMES: Research*
 
 h5. Navigation Groups
 
@@ -185,9 +164,9 @@ Controls, Fields, and Widgets - and even other Groups - can be thrown into a Con
 
 The designers of KRAD decided to apply a venerable idea present in the first version of the Java Advanced Window Toolkit - the concept of Layout Managers.  A LayoutManager is simply a bean which will build the HTML to display Components with a certain algorithm.
 
-For instance, there is the GridLayoutManager.  The GridLayoutManager places sub-Components into a set of side-by-side columns.  For instance, in when a KNS maintenance document copies a business object, it shows four columns side by side: two columns for the original business object's labels and controls and two columns for the copied object's labels and controls.  In KRAD, GridLayoutManager will provide the support for that kind of layout.
+For instance, there is the GridLayoutManager.  The GridLayoutManager places sub-Components into a set of side-by-side columns.  For instance, in when a KNS maintenance document copies a business object, it shows four columns side by side: two columns for the original business object's labels and controls and two columns for the copied object's labels and controls.  In KRAD, GridLayoutManager will provide the support for that kind of layout
 
-(!) {color:red}Maybe mention some of the options like row, col span and width.{color}
+GridLayout manager has properties to define numberOfColumns, applyAlternatingRowStyles (often used so that the background color of rows alternate), and renderLabelFieldsSeparately.  Also, each Component has some properties which GridLayout consults in rendering: colSpan and rowSpan which say how many columns or rows in the grid a Component should fill, and width, which is the width the cell the Component is in should take up (often in tables, these are listed as percentages - "50%" would take up half the table's own width).
 
 There's also the BoxLayoutManager, which works just like the BoxLayoutManager in the Java AWT.  A BoxLayoutManager is given an aspect - either HORIZONTAL or VERTICAL - and it renders all sub-Components either side by side in the case of HORIZONTAL or on top of each other in the case of VERTICAL.  A simple enough behavior, but nesting Groups with different BoxLayoutManager aspects provides a simple yet flexible way to arrange sub-Components.  The BoxLayoutManager also provides the ability to set the padding in between sub-Components.
 
@@ -239,7 +218,7 @@ AttributeField also holds errors associated with the attribute.  If the Control 
 
 The AttributeField also holds the Formatter responsible for taking Strings in the HTTP request and translating them into different data types.  If the attribute's control is a MultiValueControl with an OptionsFinder, the AttributeField also holds that.
 
-Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below#data_bindings|below#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page.  Developers don't need to worry about those details.
+Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below|#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page.  Developers don't need to worry about those details.
 
 The AttributeField, of course, populates all of these values precisely from the data dictionary.  However, any AttributeField can override any of the data dictionary's values by having the equivalent properties set in configuration.  This makes AttributeFields all the more flexible.
 
@@ -265,12 +244,6 @@ h4. HeaderField
 
 A HeaderField will display Header text on a page.  Headers often create a sense of visual hierarchy to a page and therefore are very important structural markers.  HeaderFields have passed in a headerLevel: a number between 1 and 6 representing the importance of the Header on the page (1 being the most important, 6 being the least) and headerText, which is the text the header will display.
 
-(!) {color:red}For sure\! First though I want to mention that for things like Groups the headerText gets set from the title, so usually you don't need to set the headerText directly, only when you are using a HeaderField somewhere else. So the goal is to have this convention for resources. If you put the text into the dictionary it would be used as the default, or you can leave it blank. Then there will be a step that looks for messages from the configuration service and if found populates those onto the component. Not sure exactly what the convention will be, but maybe something like this:{color}
-
-{color:red}Say we have group with name 'TravelAccount-Officers', then for the title we would look for a key: TravelAccount-Officers.title from the KualiConfigurationService (which will be enhanced to read from a message table as well, so the message could be in the table or resources). For an AttributeField 'name', we would look for TravelAccount-Officers.name.label, TravelAccount-Officers.name.summary, TravelAccount-Officers.name.watermark.{color}
-{color:red}And so on for all the text fields. We will be implementing this in the regular dictionary as well. One tricky thing here is namespacing, we might have{color}
-{color:red}to require the view name as part of the key. We would also look into allow a specific key to be given, maybe we don't need that for each property but{color}
-{color:red}could give it for the group or field, then we use the convention to find the various messages. Thoughts?{color}
 
 h4. ImageField
 
@@ -294,19 +267,19 @@ A messageField displays text on the rendered page within a span.  Its messageTex
 
 Those are KRAD's fields.  But how do Controls, Fields, and Widgets get the data they should display during render or populate the underlying page model when a request occurs?  That happens through Spring's Data Bindings mechanism.
 
+h4. Fields and Messages
+
+Several Fields display various kinds of text to the user: not only MessageField but also LabelField, HeaderField, ErrorsField, and AttributesField.  In practically all of these cases, the text to be displayed can be added via a property.  However, that's not the preferred method of getting text.  As Java developers well know, text should come from a properties file which contains all the messages used in the application.  These can be switched out easily, allowing for easy customization and internationalization.  Given this, KRAD helps developers use messages.
+
+For example, let's say a Group has a HeaderField for its header.  The text could be passed in via property - or KRAD will simply take the name of the group (say, "TravelAccount-Officers") and look in the configured messages for a property "TravelAccount-Officers.title".  A label for an AttributeField would look for "\{group name\}.\{attribute property name\}.label".  This convention will make it much easier to assign properties for all the text used in an application built on KRAD.
+
 h3. Data Bindings{anchor:data_bindings}
 
 One of the major changes that KRAD will bring will be a move away from Apache Struts 1.2\+ to Spring 3.0's Web MVC.  This means many things: changes to Controllers, some updates to Forms - though the KRAD team is working on scripts to make these changes as painless as possible.
 
 A major concept invoked by WebMVC is that of data binding.  Data binding simply means that parameter names from a request will be mapped into the form.  Spring handles much of this automatically, by simply using the Form as the root of a property tree and then mapping nested, indexed, or even indexed and nested properties into the form.
 
-Spring does need help on mapping parameters into classes it doesn't handle automatically - KualiDecimal, for instance.  In these cases, Java provides PropertyEditors which can convert Strings into complex objects.  There are a number of mechanisms that help Spring associate a PropertyEditor implementation with a complex object like KualiDecimal. *JERRY: WHAT IS THE RECOMMENDED PROPERTY EDITOR REGISTRATION MECHANISM?* *James: PropertyEditors for common types like KualiDecimal will have global editors registered.  Editors can be registered at the field level in the BO DD or the View DD.  The global registry can be changed by replacing UifConfigurableWebBindingInitializer in the krad servlet context.  A converter class, KualiFormatterPropertyEditor, is provided adapt KNS formatters into PropertyEditors (though this is not recommended).*
-
-(!) {color:red}I would not worry to much about this at this point, I don't think developers will need to know about them. We will continue to deal with Formatters.{color}
-{color:red}The PropertyEditors were used pre Spring 3, now Spring has the concept of Formatters as well. A lot of what is in this package right now is figuring out{color}
-{color:red}how Spring works, now sure what the final process will look like. But hopefully developers will not need to know anything in addition to the formatters.{color}
-
-Creating a PropertyEditor is a straightforward process.  Java provides the java.beans.PropertyEditorSupport object which can be extended.  That class has two crucial methods to override: String getAsText(), which converts the contents of the object into text; and void setAsText(String text) which takes a String and converts it into the complex object.
+Spring does need help on mapping parameters into classes it doesn't handle automatically - KualiDecimal, for instance.  In these cases, Java provides PropertyEditors which can convert Strings into complex objects.  There are a number of mechanisms that help Spring associate a PropertyEditor implementation with a complex object like KualiDecimal.  Commonly used PropertyEditors, like the one used with KualiDecimal, will be globally registered in org.kuali.rice.kns.web.spring.UifConfigurableWebBindingInitializer.
 
 The Spring documentation covers how it uses data bindings in much more detail [on the SpringSource website|http://static.springsource.org/spring/docs/2.0.x/reference/validation.html] Spring has a heavy reliance on this mechanism throughout its source code beyond populating form data; thankfully, Spring's developers exposed their standard way to populating business objects as an easy way KRAD can populate a form from an HTTP request's posted variables.
 
@@ -314,18 +287,10 @@ As KRAD renders a page with form data, it will properly generate the data bindin
 
 What if the developer of a new Component wants to participate in the data binding process?  In that case, the new Component should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has one method, getBindingInfo(), which returns a populated instance of org.kuali.rice.kns.uif.BindingInfo.  BindingInfo encapsulates a number of properties:
 * bindingName - this is the name of the property to bind to, either within the form or the model.
-* modelName - if this property is supposed to bind to a model, what's the path of the model to the form?
 * bindByNamePrefix - this is a prefix generated by KRAD, typically when rendering a Collection.  Basically, it generates the proper name and index (for example, "collectionItem[0]") and holds that for the sake of the current binding.
-* bindToModel - when true, this means that the given property should be bound to some root model.  The classic root model of a KRAD application is, of course, a document - so properties related to documents should have bindToModel set to true.
 * bindToForm - when true, this makes sure that the given property is bound to the Struts MVC form itself.
 
-(!) {color:red}They cannot both be false, in the setters for each I flip the other (well I guess they could be set to false using direct field population). Also as you have probably seen I gave explained a bit about the binding info above.{color}
-
 Easily, the most important Component implementing this interface is the AttributeField.  AttributeFields display and read data on business objects and documents, so naturally they participate in the data binding process.
-*JERRY, WHY DON'T THE CONTROLS IMPLEMENT DATA BINDING?*
-
-(!) {color:red}I think they probably good. One thing to note is CollectionGroup also implements DataBinding, because it relates to a collection property on the model.{color}
-{color:red}However, we don't ever modify the collection directly so it doesn't have a control (each of its line fields do). So to be keeping AttributeField implementing the interface seems more consistent. Do you agree?{color}
 
 h3. Controls
 
@@ -413,8 +378,8 @@ Now that we've explored each component type in detail, let's see what they share
 || Property | Type | Explanation ||
 | id | java.lang.String | The Component's unique name within the application space.  This property is autogenerated by KRAD and should never be reset by the developer |
 | componentTypeName | java.lang.String | The type name of the Component: "Text" for the Text Control, for instance, or "Quickfinder" for the Quickfinder widget.  This helps KRAD find the tile associated with the Component in the data dictionary.|
-| template | java.lang.String | As discussed in [Tiles as Templates#tiles_as_templates|Tiles as Templates#tiles_as_templates], the path to the JSP representing the tile for this component |
-| componentInitializers | List<org.kuali.rice.kns.uif.initializer.ComponentIntializer> | A list of all ComponentInitializers that should be run on the component upon initialization.  Covered in more detail in [Component Intializers#component_initializers|Component Intializers#component_initializers] |
+| template | java.lang.String | As discussed in [Tiles as Templates|#tiles_as_templates], the path to the JSP representing the tile for this component |
+| componentInitializers | List<org.kuali.rice.kns.uif.initializer.ComponentIntializer> | A list of all ComponentInitializers that should be run on the component upon initialization.  Covered in more detail in [Component Intializers|#component_initializers] |
 | name | java.lang.String | The developer set identifier for this Component, which can be used to refer to this Component either in data dictionary configuration or in scripts. |
 | render | boolean | Determines if this Component should be rendered. |
 | hidden | boolean | Determines if the Component should be rendered in a way not visible to the user, for instance via an <input type="hidden"/> tag. |
@@ -427,7 +392,7 @@ Now that we've explored each component type in detail, let's see what they share
 | valign | java.lang.String | The vertical alignment of the Component within its Container. The allowed values are "baseline" (which aligns the baseline of the characters of this Component to align with the baseline of the parent - this is the default); "sub" (making the text align as subscript); "super" (making the text align as superscript); "top" (which aligns the text of the Component with the top of the tallest element - text or non-text - on the rest of the line); "text-top" (which aligns the text of the Component with the top of the tallest text element on the rest of the line); "middle"; "bottom"; or "text-bottom" (which, like "text-top" aligns with the bottom of only text elements on the rest of the line). |
 | colSpan | int | The number of table columns in the parent Container that this Component will span. |
 | rowSpan | int | The number of table rows in the parent Container that this Component will span. |
-| componentDecorator | org.kuali.rice.kns.uif.decorator.ComponentDecorator | The decorator for the component, as discussed in the section on [Component Decorators#component_decorators|Component Decorators#component_decorators]\\ |
+| componentDecorator | org.kuali.rice.kns.uif.decorator.ComponentDecorator | The decorator for the component, as discussed in the section on [Component Decorators|#component_decorators]\\ |
 | decoratorChain | org.kuali.rice.kns.uif.decorator.DecoratorChain | Set by KRAD, this property contains an encapsulation of the decorated Component - ie, this - and the chain of decorators which are supposed to affect the rendering of that Component. |
 
 h4. Tiles as Templates{anchor:tiles_as_templates}

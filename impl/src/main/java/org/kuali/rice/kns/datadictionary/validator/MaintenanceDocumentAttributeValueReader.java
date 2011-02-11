@@ -31,7 +31,8 @@ import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
-import org.kuali.rice.kns.dto.Validatable;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -45,13 +46,13 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	private final static Logger LOG = Logger.getLogger(MaintenanceDocumentAttributeValueReader.class);
 	
 	private List<Validatable> attributeDefinitions;
-	private Map<String, Validatable> attributeDefinitionMap;
+	private Map<String, AttributeDefinition> attributeDefinitionMap;
 	
 	public MaintenanceDocumentAttributeValueReader(Object object, String entryName, MaintenanceDocumentEntry entry, PersistenceStructureService persistenceStructureService) {
 		super(object, entryName, entry);
 		
 		this.attributeDefinitions = new LinkedList<Validatable>();
-		this.attributeDefinitionMap = new HashMap<String, Validatable>();
+		this.attributeDefinitionMap = new HashMap<String, AttributeDefinition>();
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
 			List<? extends MaintainableItemDefinition> itemDefinitions = sectionDefinition.getMaintainableItems();
 			
@@ -112,6 +113,12 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 		return attributeDefinitions;
 	}
 
+	@Override
+	public String getLabel(String attributeName) {
+		AttributeDefinition attributeDefinition = attributeDefinitionMap != null ? attributeDefinitionMap.get(attributeName) : null;
+		return attributeDefinition != null ? attributeDefinition.getLabel()  : attributeName;
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getType(java.lang.String)
 	 */
@@ -124,7 +131,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getValue(java.lang.String)
 	 */
 	@Override
-	public <X> X getValue(String attributeName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public <X> X getValue(String attributeName) throws AttributeValidationException {
 		return (X) attributeValueMap.get(attributeName);
 	}
 

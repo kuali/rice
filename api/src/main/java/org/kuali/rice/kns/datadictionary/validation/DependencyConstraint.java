@@ -1,11 +1,11 @@
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RequiredConstraint implements Constraint {
+public class DependencyConstraint implements Constraint {
 	@XmlElement
     protected String fieldPath;
 

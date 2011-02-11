@@ -9,7 +9,6 @@
 package org.kuali.rice.kns.datadictionary.validator;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,28 +19,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.LogicalOperators;
-import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.dto.CaseConstraint;
-import org.kuali.rice.kns.dto.ConstraintHolder;
-import org.kuali.rice.kns.dto.DataType;
-import org.kuali.rice.kns.dto.ExistenceConstrained;
-import org.kuali.rice.kns.dto.Formatable;
-import org.kuali.rice.kns.dto.MustOccurConstraint;
-import org.kuali.rice.kns.dto.RequiredConstraint;
-import org.kuali.rice.kns.dto.ValidCharsConstraint;
-import org.kuali.rice.kns.dto.Validatable;
-import org.kuali.rice.kns.dto.WhenConstraint;
+import org.kuali.rice.kns.datadictionary.validation.CaseConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.ConstraintHolder;
+import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.DataTypeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.DependencyConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.ExistenceConstrained;
+import org.kuali.rice.kns.datadictionary.validation.ExistenceConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint;
+import org.kuali.rice.kns.datadictionary.validation.MustOccursConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.DependencyConstraint;
+import org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.QuantityConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.web.format.DateFormatter;
 
 
 public class DefaultValidatorImpl implements Validator {
@@ -302,22 +301,29 @@ public class DefaultValidatorImpl implements Validator {
 //    	
 //    }
     
-    @Override
-	public List<ValidationResultInfo> validate(String entryName, AttributeValueReader valueReader, boolean checkIfRequired) {
-    	Stack<String> elementStack = new Stack<String>();
-    	
-    	return validateObject(entryName, valueReader, elementStack, true, checkIfRequired);
-    }
+//    @Override
+//	public List<ValidationResultInfo> validate(String entryName, AttributeValueReader valueReader, boolean checkIfRequired) {
+//    	Stack<String> elementStack = new Stack<String>();
+//    	
+//    	return validateObject(entryName, valueReader, elementStack, true, checkIfRequired);
+//    }
     
     @Override
-	public void validate(String entryName, String attributeName, AttributeValueReader valueReader, boolean checkIfRequired) {
+	public void validate(AttributeValueReader valueReader, boolean checkIfRequired) {
     	Stack<String> elementStack = new Stack<String>();
     	
-    	List<ValidationResultInfo> results = validateField(entryName, attributeName, valueReader, elementStack, checkIfRequired);
+    	List<ValidationResultInfo> results = null;
+    	
+    	if (valueReader.getAttributeName() == null) {
+    		results = validateObject(valueReader, elementStack, true, checkIfRequired);
+    		
+    	} else {
+	    	results = validateField(valueReader, elementStack, checkIfRequired);
+    	}
     	
     	if (results != null) {
     		for (ValidationResultInfo result : results) {
-    			setFieldError(entryName, attributeName, result.getErrorKey(), result.getErrorParameters());
+    			setFieldError(valueReader.getEntryName(), valueReader.getAttributeName(), result.getErrorKey(), result.getErrorParameters());
     		}
     	}
     }
@@ -357,7 +363,7 @@ public class DefaultValidatorImpl implements Validator {
 //    }
 
     
-    private List<ValidationResultInfo> validateObject(String entryName, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean isRoot, boolean checkIfRequired) {
+    private List<ValidationResultInfo> validateObject(AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean isRoot, boolean checkIfRequired) {
 
        List<ValidationResultInfo> results = new ArrayList<ValidationResultInfo>();
 
@@ -381,14 +387,15 @@ public class DefaultValidatorImpl implements Validator {
         		continue;
         	
         	String attributeName = definition.getName();
+        	attributeValueReader.setAttributeName(attributeName);
         	
-            List<ValidationResultInfo> l = validateField(definition, entryName, attributeName, attributeValueReader, elementStack, checkIfRequired);
+            List<ValidationResultInfo> l = validateField(definition, attributeValueReader, elementStack, checkIfRequired);
 
-        	if (l != null) {
-        		for (ValidationResultInfo result : l) {
-        			setFieldError(entryName, attributeName, result.getErrorKey(), result.getErrorParameters());
-        		}
-        	}
+//        	if (l != null) {
+//        		for (ValidationResultInfo result : l) {
+//        			setFieldError(entryName, attributeName, result.getErrorKey(), result.getErrorParameters());
+//        		}
+//        	}
             
 //            if (l != null && l.size() > 0) {
 //            	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
@@ -425,47 +432,44 @@ public class DefaultValidatorImpl implements Validator {
         return results;
     }
     
-    public List<ValidationResultInfo> validateField(String entryName, String attributeName, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
-		Validatable definition = attributeValueReader.getDefinition(attributeName);
-        return validateField(definition, entryName, attributeName, attributeValueReader, elementStack, checkIfRequired);
-    }
-
-    public List<ValidationResultInfo> validateField(Validatable definition, String entryName, String attributeName, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
-    	Object value;
-		try {
-			value = attributeValueReader.getValue(attributeName);
-		} catch (IllegalArgumentException e) {
-			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
-		} catch (IllegalAccessException e) {
-			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
-		} catch (InvocationTargetException e) {
-			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
-		}
-
-    	return validateField(definition, entryName, attributeName, value, attributeValueReader, elementStack, checkIfRequired);
+    public List<ValidationResultInfo> validateField(AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+		Validatable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
+        return validateField(definition, attributeValueReader, elementStack, checkIfRequired);
     }
     
-    public List<ValidationResultInfo> validateField(Validatable definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
-
+    public List<ValidationResultInfo> validateField(Validatable definition, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+    	
     	List<ValidationResultInfo> results = new ArrayList<ValidationResultInfo>();
-
-    	// Since the attribute definition is where we keep constraints -- if the reader can't provide one, then it's an exception
+    	
     	if (definition == null)
-    		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + attributeName + "\" on entry \"" + entryName + "\" because no attribute definition can be found.");
+    		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + passedAttributeValueReader.getAttributeName() + "\" on entry \"" + passedAttributeValueReader.getEntryName() + "\" because no attribute definition can be found.");
     	
-    	// Handle null values in field
-    	// FIXME: JLR - removing empty string check here - need to re-add somewhere else, most likely
-    	if (ValidatorUtils.isNullOrEmpty(value)) { 
-    		processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack, checkIfRequired);
-    		return results;
-    	}
-
-    	// Check to see if this attribute has been declared to have a specific 'data type' like they do in Kuali Student
     	DataType dataType = definition.getDataType();
+    	boolean isComplex = dataType != null && dataType.equals(DataType.COMPLEX);
     	
-    	// As per the KS-code, the only constraints that apply to complex objects structures are 1. TypeStateCase, 2. MinOccurs, and 3. MaxOccurs
-    	if (dataType != null && dataType.equals(DataType.COMPLEX)) {
-    		String childEntryName = definition.getChildEntryName();
+    	Object value = passedAttributeValueReader.getValue();
+    	
+    	if (ValidatorUtils.isNullOrEmpty(value)) { 
+    		processConstraints(results, definition, passedAttributeValueReader, elementStack, checkIfRequired);
+    	}
+    	
+    	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, value, passedAttributeValueReader, elementStack, isComplex);
+		
+		if (value instanceof Collection) {
+			// Obviously, it's not the child entry's attribute definition being passed here, but that's okay, if isComplex=true, definition is ignored
+			processCollection(results, definition, (Collection<?>)value, attributeValueReader, elementStack, checkIfRequired, isComplex);
+        } else {
+        	processObject(results, definition, value, attributeValueReader, elementStack, checkIfRequired, isComplex);
+        }
+		
+		return results;
+    }
+
+    protected AttributeValueReader resolveAttributeValueReader(Validatable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean isComplex) {
+    	if (isComplex && definition instanceof HierarchicallyConstrained) {
+    		
+    		// The idea here is that a 'HierarchicallyConstrained' definition provides the business object name 
+        	String childEntryName = ((HierarchicallyConstrained)definition).getChildEntryName();
 
     		DataDictionaryEntry childEntry = childEntryName != null ? getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
 
@@ -474,65 +478,65 @@ public class DefaultValidatorImpl implements Validator {
     		
     		elementStack.push(childEntryName);
     		
-    		AttributeValueReader nestedAttributeValueReader = new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry);
-    		
-    		if (value instanceof Collection) {
-
-    			// FIXME: JLR - doesn't seem to be used. 
-                String xPathForCollection = getElementXpath(elementStack) + "/*";
-
-                int i=0;
-                for (Object o : (Collection<?>) value) {
-                	// FIXME: JLR - in code below this is Integer.toBinaryString()  -- should they be the same? 
-                	elementStack.push(Integer.toString(i));
-                	results.addAll(validateObject(childEntryName, nestedAttributeValueReader, elementStack, false, checkIfRequired));
-                    elementStack.pop();
-                    i++;
-                }
-                
-                Collection<?> collection = (Collection<?>)value;
-                ValidatorUtils.addResult(results, ValidatorUtils.validateQuantity(collection, definition, childEntryName, attributeName));
-                
-//                if (checkIfRequired)
-//                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
-//
-//                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
-            } else {
-            	results.addAll(validateObject(childEntryName, nestedAttributeValueReader, elementStack, false, checkIfRequired));
-            }
-        } else { // If non complex data type
-
-            if (value instanceof Collection) {
-
-                if (((Collection<?>)value).isEmpty()) {
-                    processConstraint(results, definition, entryName, attributeName, null, attributeValueReader, elementStack, checkIfRequired);
-                }
-
-            	int i = 0;
-                for (Object o : (Collection<?>) value) {
-                	elementStack.push(Integer.toBinaryString(i));
-                    processConstraint(results, definition, entryName, attributeName, o, attributeValueReader, elementStack, checkIfRequired);
-                    elementStack.pop();
-                    i++;
-                }
-
-                String xPath = getElementXpath(elementStack) + "/" + attributeName + "/*";
-                
-                Collection<?> collection = (Collection<?>)value;
-                ValidatorUtils.addResult(results, ValidatorUtils.validateQuantity(collection, definition, entryName, attributeName));
-
-//                if (checkIfRequired)
-//                	checkFieldRequired(definition, entryName, ((Collection<?>) value).size());
-//                
-//                checkFieldTooMany(definition, entryName, ((Collection<?>) value).size());
-            } else {
-                processConstraint(results, definition, entryName, attributeName, value, attributeValueReader, elementStack, checkIfRequired);
-            }
-
-        }
-        return results;
+    		// Create a new attribute value reader using the current attribute value as its 'object', along with the correct dictionary metadata 
+    		// that's available using the child entry name
+    		return new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry);
+    	}
+    	return passedAttributeValueReader;
     }
-
+    
+//    protected void process(Validatable definition, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired) {
+//    	List<ValidationResultInfo> results = new ArrayList<ValidationResultInfo>();
+//    	
+//    	if (definition == null)
+//    		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + passedAttributeValueReader.getAttributeName() + "\" on entry \"" + passedAttributeValueReader.getEntryName() + "\" because no attribute definition can be found.");
+//    	
+//    	DataType dataType = definition.getDataType();
+//    	boolean isComplex = dataType != null && dataType.equals(DataType.COMPLEX);
+//    	
+//    	Object value = passedAttributeValueReader.getValue();
+//    	
+//    	if (ValidatorUtils.isNullOrEmpty(value)) { 
+//    		processConstraints(results, definition, value, passedAttributeValueReader, elementStack, checkIfRequired);
+//    	}
+//    	
+//    	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, value, passedAttributeValueReader, elementStack, isComplex);
+//		
+//		if (value instanceof Collection) {
+//			// Obviously, it's not the child entry's attribute definition being passed here, but that's okay, if isComplex=true, definition is ignored
+//			processCollection(results, definition, (Collection<?>)value, attributeValueReader, elementStack, checkIfRequired, isComplex);
+//        } else {
+//        	processObject(results, definition, value, attributeValueReader, elementStack, checkIfRequired, isComplex);
+//        }
+//    }
+//    
+    protected void processObject(List<ValidationResultInfo> results, Validatable definition, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
+    	if (isComplex)
+    		results.addAll(validateObject(attributeValueReader, elementStack, false, checkIfRequired));
+    	else
+    		processConstraints(results, definition, attributeValueReader, elementStack, checkIfRequired);
+    }
+    
+    protected void processCollection(List<ValidationResultInfo> results, Validatable definition, Collection<?> collection, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
+        int i=0;
+        for (Object o : collection) {
+        	elementStack.push(Integer.toString(i));
+        	if (isComplex)
+        		results.addAll(validateObject(attributeValueReader, elementStack, false, checkIfRequired));
+        	else 
+        		processConstraints(results, definition, attributeValueReader, elementStack, checkIfRequired);
+        	
+        	elementStack.pop();
+            i++;
+        }
+    
+        // Only try to validate quantity if the definition implements QuantityConstrained
+        if (definition instanceof QuantityConstrained) 
+        	ValidatorUtils.addResult(results, ValidatorUtils.validateQuantity(collection, (QuantityConstrained)definition, attributeValueReader.getEntryName(), attributeValueReader.getAttributeName()));
+    
+    }
+    
+    
 //    protected Integer tryParse(String s) {
 //        Integer result = null;
 //        if (s != null) {
@@ -557,79 +561,113 @@ public class DefaultValidatorImpl implements Validator {
     
     private static final String[] DATE_RANGE_ERROR_PREFIXES = { KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX, KNSConstants.LOOKUP_RANGE_UPPER_BOUND_PROPERTY_PREFIX };
     
-    protected void processConstraint(List<ValidationResultInfo> valResults, Validatable definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doCheckForExistence) {
+//    private ConstraintProcessor<Validatable>[] DEFAULT_CONSTRAINT_PROCESSORS = { new CaseConstraintProcessor(), new ExistenceConstraintProcessor() };
+    
+	@SuppressWarnings("rawtypes")
+	private static final List<ConstraintProcessor> DEFAULT_PROCESSORS = 
+		Arrays.asList((ConstraintProcessor)new CaseConstraintProcessor(), 
+				(ConstraintProcessor)new ExistenceConstraintProcessor(),
+				(ConstraintProcessor)new DataTypeConstraintProcessor(), 
+				(ConstraintProcessor)new ValidCharactersConstraintProcessor(),
+				(ConstraintProcessor)new DependencyConstraintProcessor(),
+				(ConstraintProcessor)new MustOccursConstraintProcessor());
+    
+	@SuppressWarnings("rawtypes")
+	private List<ConstraintProcessor> processors = DEFAULT_PROCESSORS;
+	
+	
+    protected void processConstraints(List<ValidationResultInfo> valResults, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
 
-    	try {
-    		Validatable child = null;
-    		// Process Case Constraint
-    		// Case Constraint are only evaluated on the field. Nested case constraints are currently ignored
-    		CaseConstraint caseConstraint = definition.getCaseConstraint();
-    		if (null != caseConstraint) {
-    			child = processCaseConstraint(valResults, caseConstraint, definition, entryName, attributeName, value, attributeValueReader, elementStack);
+    		if (processors != null) {
+    			Validatable selectedDefinition = definition;
+    			AttributeValueReader selectedAttributeValueReader = attributeValueReader;
+    			for (ConstraintProcessor<Validatable> processor : processors) {
+    				
+    				// Let the calling method opt out of any optional processing
+    				if (!doOptionalProcessing && processor.isOptional())
+    					continue;
+    				
+    				// Only process if the type of the definition is one that the processor handles
+    				Class<? extends Validatable> type = processor.getType();
+    				if (!type.isInstance(selectedDefinition)) 
+    					continue;
+
+    				
+    				ConstraintValidationResult result = processor.process(selectedDefinition, selectedAttributeValueReader);
+    				
+    				// Change the selected definition to whatever was returned from the processor
+    				selectedDefinition = result.getDefinition();
+    				// Change the selected attribute value reader to whatever was returned from the processor
+    				selectedAttributeValueReader = result.getAttributeValueReader();
+    				// Keep track of all the validation results
+    				valResults.addAll(result.getValidationResults());
+    			}
     		}
+    		
+//    		Validatable child = null;
+//    		// Process Case Constraint
+//    		// Case Constraint are only evaluated on the field. Nested case constraints are currently ignored
+//    		CaseConstraint caseConstraint = definition.getCaseConstraint();
+//    		if (null != caseConstraint) {
+//    			child = processCaseConstraint(valResults, caseConstraint, definition, entryName, attributeName, value, attributeValueReader, elementStack);
+//    		}
     		
     		// FIXME: does the attribute value reader need to change if the nested definition is different from the child definition? 
     		
-    		Validatable nestedDefinition = (null != child) ? child : definition;
+//    		Validatable nestedDefinition = (null != child) ? child : definition;
+//
+//    		// Check for existence
+//    		if (doOptionalProcessing) {
+//	        	ValidationResultInfo existsResult = processExistenceConstraint(nestedDefinition, entryName, attributeName, value);
+//	        	if (existsResult != null && existsResult.isError()) {
+//	        		ValidatorUtils.addResult(valResults, existsResult);
+//	        		// If the value failed the existence check, then there's no point in further validation
+//	        		return;
+//	        	}
+//    		} else {
+//    			// Even if we're not checking for existence, we still can't validate a blank or null value
+//    			if (ValidatorUtils.isNullOrEmpty(value))
+//            		return;
+//    		}
+//        	
+//        	// Check data type
+//        	DataType dataType = nestedDefinition.getDataType();
+//        	if (dataType != null) {
+//        		ValidatorUtils.addResult(valResults, ValidatorUtils.validateDataType(value, dataType, entryName, attributeName));
+//        	}
+//    		
+//
+//    		String elementPath = getElementXpath(elementStack) + "/" + attributeName;
+//
+//    		
+//    		// Process Valid Chars Constraint
+//    		ValidCharsConstraint validCharsConstraint = nestedDefinition.getValidChars();
+//    		if (null != validCharsConstraint) {
+//        		// Added a mix-in interface for this purpose so classes that implement Validatable don't have to opt into this KNS-behavior, as described below
+//            	if (definition instanceof Formatable) {
+//            		ValidatorUtils.addResult(valResults, doProcessFormattableValidCharConstraint(validCharsConstraint, (Formatable)definition, entryName, attributeName, value, attributeValueReader, elementPath));
+//            	} else {
+//	        		ValidatorUtils.addResult(valResults, doProcessValidCharConstraint(validCharsConstraint, entryName, attributeName, value, elementPath));
+//            	}
+//    		}
+//
+//    		// Process Require Constraints (only if this field has value)
+//    		List<RequiredConstraint> requiredConstraints = nestedDefinition.getRequireConstraint();
+//    		if (null != requiredConstraints && requiredConstraints.size() > 0) {
+//    			for (RequiredConstraint requiredConstraint : requiredConstraints) {
+//    				ValidatorUtils.addResult(valResults, processRequiredConstraint(requiredConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath));
+//    			}
+//    		}
+//
+//    		// Process Occurs Constraint
+//    		List<MustOccurConstraint> mustOccurConstraints = nestedDefinition.getOccursConstraint();
+//    		if (null != mustOccurConstraints && mustOccurConstraints.size() > 0) {
+//    			for (MustOccurConstraint occursConstraint : mustOccurConstraints) {
+//    				ValidatorUtils.addResult(valResults, processMustOccurConstraint(occursConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath));
+//    			}
+//    		}
 
-    		// Check for existence
-    		if (doCheckForExistence) {
-	        	ValidationResultInfo existsResult = processExistenceConstraint(nestedDefinition, entryName, attributeName, value);
-	        	if (existsResult != null && existsResult.isError()) {
-	        		ValidatorUtils.addResult(valResults, existsResult);
-	        		// If the value failed the existence check, then there's no point in further validation
-	        		return;
-	        	}
-    		} else {
-    			// Even if we're not checking for existence, we still can't validate a blank or null value
-    			if (ValidatorUtils.isNullOrEmpty(value))
-            		return;
-    		}
-        	
-        	// Check data type
-        	DataType dataType = nestedDefinition.getDataType();
-        	if (dataType != null) {
-        		ValidatorUtils.addResult(valResults, ValidatorUtils.validateDataType(value, dataType, entryName, attributeName));
-        	}
-    		
 
-    		String elementPath = getElementXpath(elementStack) + "/" + attributeName;
-
-    		
-    		// Process Valid Chars Constraint
-    		ValidCharsConstraint validCharsConstraint = nestedDefinition.getValidChars();
-    		if (null != validCharsConstraint) {
-        		// Added a mix-in interface for this purpose so classes that implement Validatable don't have to opt into this KNS-behavior, as described below
-            	if (definition instanceof Formatable) {
-            		ValidatorUtils.addResult(valResults, doProcessFormattableValidCharConstraint(validCharsConstraint, (Formatable)definition, entryName, attributeName, value, attributeValueReader, elementPath));
-            	} else {
-	        		ValidatorUtils.addResult(valResults, doProcessValidCharConstraint(validCharsConstraint, entryName, attributeName, value, elementPath));
-            	}
-    		}
-
-    		// Process Require Constraints (only if this field has value)
-    		List<RequiredConstraint> requiredConstraints = nestedDefinition.getRequireConstraint();
-    		if (null != requiredConstraints && requiredConstraints.size() > 0) {
-    			for (RequiredConstraint requiredConstraint : requiredConstraints) {
-    				ValidatorUtils.addResult(valResults, processRequiredConstraint(requiredConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath));
-    			}
-    		}
-
-    		// Process Occurs Constraint
-    		List<MustOccurConstraint> mustOccurConstraints = nestedDefinition.getOccursConstraint();
-    		if (null != mustOccurConstraints && mustOccurConstraints.size() > 0) {
-    			for (MustOccurConstraint occursConstraint : mustOccurConstraints) {
-    				ValidatorUtils.addResult(valResults, processMustOccurConstraint(occursConstraint, nestedDefinition, entryName, attributeName, attributeValueReader, elementPath));
-    			}
-    		}
-
-		} catch (IllegalArgumentException e) {
-			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
-		} catch (IllegalAccessException e) {
-			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
-		} catch (InvocationTargetException e) {
-			throw new AttributeValidationException("Could not validate attribute \"" + attributeName + "\" for entry \"" + entryName + "\" - unable to get the value for validation.", e);
-		}
 
     	// Process lookup Constraint
     	//        if (null != constraint.getLookupDefinition()) {
@@ -637,41 +675,41 @@ public class DefaultValidatorImpl implements Validator {
     	//        }
     }
 
-    protected ValidationResultInfo processRequiredConstraint(RequiredConstraint constraint, Validatable definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
-        ValidationResultInfo val = null;
-
-        String fieldName = constraint.getFieldPath();
-        Object fieldValue = dataProvider.getValue(fieldName);
-
-        boolean result = true;
-
-        if (fieldValue instanceof java.lang.String) {
-            result = ValidatorUtils.hasText((String) fieldValue);
-        } else if (fieldValue instanceof Collection) {
-            result = (((Collection<?>) fieldValue).size() > 0);
-        } else {
-            result = (null != fieldValue) ? true : false;
-        }
-
-        if (!result) {
-//            Map<String, Object> rMap = new HashMap<String, Object>();
-//            rMap.put("field1", field.getName());
-//            rMap.put("field2", fieldName);
-//            val = new ValidationResultInfo(element, fieldValue);
-//            val.setError(MessageUtils.interpolate(getMessage("validation.requiresField"), rMap));
-        	
-        	val = new ValidationResultInfo(entryName, attributeName);
-        	
-        	Validatable attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, fieldName);
-        	if (attributeDefinition != null)
-        		fieldName = attributeDefinition.getLabel();
-        	
-        	val.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, fieldName);
-        }
-
-        return val;
-    }
+//    protected ValidationResultInfo processRequiredConstraint(RequiredConstraint constraint, Validatable definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+//
+//        ValidationResultInfo val = null;
+//
+//        String fieldName = constraint.getFieldPath();
+//        Object fieldValue = dataProvider.getValue(fieldName);
+//
+//        boolean result = true;
+//
+//        if (fieldValue instanceof java.lang.String) {
+//            result = ValidatorUtils.hasText((String) fieldValue);
+//        } else if (fieldValue instanceof Collection) {
+//            result = (((Collection<?>) fieldValue).size() > 0);
+//        } else {
+//            result = (null != fieldValue) ? true : false;
+//        }
+//
+//        if (!result) {
+////            Map<String, Object> rMap = new HashMap<String, Object>();
+////            rMap.put("field1", field.getName());
+////            rMap.put("field2", fieldName);
+////            val = new ValidationResultInfo(element, fieldValue);
+////            val.setError(MessageUtils.interpolate(getMessage("validation.requiresField"), rMap));
+//        	
+//        	val = new ValidationResultInfo(entryName, attributeName);
+//        	
+//        	Validatable attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, fieldName);
+//        	if (attributeDefinition != null)
+//        		fieldName = attributeDefinition.getLabel();
+//        	
+//        	val.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, fieldName);
+//        }
+//
+//        return val;
+//    }
 
     /**
      * Process caseConstraint tag and sets any of the base constraint items if any of the when condition matches
@@ -685,181 +723,181 @@ public class DefaultValidatorImpl implements Validator {
      * @throws IllegalAccessException 
      * @throws IllegalArgumentException 
      */
-    protected Validatable processCaseConstraint(List<ValidationResultInfo> valResults, CaseConstraint caseConstraint, Validatable definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
-        CaseConstraint constraint = definition.getCaseConstraint();
-
-        if (null == constraint) {
-            return null;
-        }
-
-        String operator = (ValidatorUtils.hasText(constraint.getOperator())) ? constraint.getOperator() : "EQUALS";
-        AttributeValueReader nestedReader = (ValidatorUtils.hasText(constraint.getFieldPath())) ? ValidatorUtils.getDefinition(constraint.getFieldPath(), attributeValueReader) : null;
-
-        // TODO: What happens when the field is not in the dataProvider?
-        Validatable caseField = (null != nestedReader) ? nestedReader.getDefinition(nestedReader.getCurrentName()) : null;
-        Object fieldValue = (null != nestedReader) ? nestedReader.getValue(nestedReader.getCurrentName()) : value;
-        DataType fieldDataType = (null != caseField ? caseField.getDataType():null);
-
-        // If fieldValue is null then skip Case check
-        if(null == fieldValue) {
-            return null;
-        }
-
-        DateParser dateParser = new ServerDateParser();
-        // Extract value for field Key
-        for (WhenConstraint wc : constraint.getWhenConstraint()) {
-
-            List<Object> whenValueList = wc.getValues();
-
-            for (Object whenValue : whenValueList) {
-                if (ValidatorUtils.compareValues(fieldValue, whenValue, fieldDataType, operator, constraint.isCaseSensitive(), dateParser) && null != wc.getConstraint()) {
-                    return wc.getConstraint();
-                }
-            }
-        }
-
-        return null;
-    }
-    
-    protected ValidationResultInfo processFormatterValidation(Class<?> formatterClass, String entryName, String attributeName, String parsedAttributeValue, String errorKeyPrefix) {
-    	
-    	
-//    	Class<?> formatterClass = ClassLoaderUtils.getClass(definition.getFormatterClass());
+//    protected Validatable processCaseConstraint(List<ValidationResultInfo> valResults, CaseConstraint caseConstraint, Validatable definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 //
-//		if (formatterClass != null) {
-			boolean isError=true;
-//			String errorKeyPrefix = "";
-			try {
-
-//				// this is a special case for date ranges in order to set the proper error message
-//				if (DateFormatter.class.isAssignableFrom(formatterClass)) {
-//					String[] values = originalValue.split("\\.\\."); // is it a range
-//					if(values.length == 2 && parsedAttributeValues.size() == 2){ // make sure it's not like a .. b | c
-//						checkDateBounds = true; // now we need to check that a <= b
-//						if(parsedAttributeValues.indexOf(attributeValue) == 0){ // only care about lower bound
-//							errorKeyPrefix = KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX;
+//        CaseConstraint constraint = definition.getCaseConstraint();
+//
+//        if (null == constraint) {
+//            return null;
+//        }
+//
+//        String operator = (ValidatorUtils.hasText(constraint.getOperator())) ? constraint.getOperator() : "EQUALS";
+//        AttributeValueReader nestedReader = (ValidatorUtils.hasText(constraint.getFieldPath())) ? ValidatorUtils.getDefinition(constraint.getFieldPath(), attributeValueReader) : null;
+//
+//        // TODO: What happens when the field is not in the dataProvider?
+//        Validatable caseField = (null != nestedReader) ? nestedReader.getDefinition(nestedReader.getAttributeName()) : null;
+//        Object fieldValue = (null != nestedReader) ? nestedReader.getValue(nestedReader.getAttributeName()) : value;
+//        DataType fieldDataType = (null != caseField ? caseField.getDataType():null);
+//
+//        // If fieldValue is null then skip Case check
+//        if(null == fieldValue) {
+//            return null;
+//        }
+//
+//        DateParser dateParser = new ServerDateParser();
+//        // Extract value for field Key
+//        for (WhenConstraint wc : constraint.getWhenConstraint()) {
+//
+//            List<Object> whenValueList = wc.getValues();
+//
+//            for (Object whenValue : whenValueList) {
+//                if (ValidatorUtils.compareValues(fieldValue, whenValue, fieldDataType, operator, constraint.isCaseSensitive(), dateParser) && null != wc.getConstraint()) {
+//                    return wc.getConstraint();
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
+    
+//    protected ValidationResultInfo processFormatterValidation(Class<?> formatterClass, String entryName, String attributeName, String parsedAttributeValue, String errorKeyPrefix) {
+//    	
+//    	
+////    	Class<?> formatterClass = ClassLoaderUtils.getClass(definition.getFormatterClass());
+////
+////		if (formatterClass != null) {
+//			boolean isError=true;
+////			String errorKeyPrefix = "";
+//			try {
+//
+////				// this is a special case for date ranges in order to set the proper error message
+////				if (DateFormatter.class.isAssignableFrom(formatterClass)) {
+////					String[] values = originalValue.split("\\.\\."); // is it a range
+////					if(values.length == 2 && parsedAttributeValues.size() == 2){ // make sure it's not like a .. b | c
+////						checkDateBounds = true; // now we need to check that a <= b
+////						if(parsedAttributeValues.indexOf(attributeValue) == 0){ // only care about lower bound
+////							errorKeyPrefix = KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX;
+////						}
+////					}
+////				}
+//
+//				Method validatorMethod = formatterClass.getDeclaredMethod(VALIDATE_METHOD, new Class<?>[] {String.class});
+//				Object o = validatorMethod.invoke(formatterClass.newInstance(), parsedAttributeValue);
+//				if (o instanceof Boolean) {
+//					isError = !((Boolean)o).booleanValue();
+//				}
+//			} catch (Exception e) {
+//				if ( LOG.isDebugEnabled() ) 
+//					LOG.debug(e.getMessage(), e);
+//				
+//				isError = true;
+//			}
+//			
+//			if (isError) {
+////				checkDateBounds = false; // it's already invalid, no need to check date bounds
+//				String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
+//				String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
+//				ValidationResultInfo result = new ValidationResultInfo(entryName, errorKeyPrefix + attributeName);
+//				result.setError(errorMessageKey, errorMessageParameters);
+//				return result;
+//			}
+////		} else {
+////			// if it fails the default validation and has no formatter class then it's still a std failure.
+////			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
+////			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+////			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+////		}
+//			
+//		return null;
+//    }
+//
+//    protected ValidationResultInfo doProcessFormattableValidCharConstraint(ValidCharsConstraint validCharsConstraint, Formatable definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+//		// This is a strange KNS thing for validating searchable fields -- they sometimes come in a date range format, for example 2/12/2010..2/14/2010, and need to be split up
+//		List<String> parsedAttributeValues = attributeValueReader.getCleanSearchableValues(attributeName);
+//		
+//		if (parsedAttributeValues != null) {
+//			
+//			Class<?> formatterClass = null;
+//			Boolean doValidateDateRangeOrder = null;
+//			
+//			// It can't be a date range if it's more than two fields, for example "a .. b | c" is not a date range -- this saves us a tiny bit of processing later
+//			if (parsedAttributeValues.size() != 2)
+//				doValidateDateRangeOrder = Boolean.FALSE;
+//			
+//			// Use integer to iterate since we need to track which field we're looking at
+//			for (int i=0;i<parsedAttributeValues.size();i++) {
+//				String parsedAttributeValue = parsedAttributeValues.get(i);
+//				
+//				ValidationResultInfo result = doProcessValidCharConstraint(validCharsConstraint, entryName, attributeName, parsedAttributeValue, element);
+//		
+//				// If this is an error then some non-null validation result will be returned
+//				if (result != null) {
+//					// Another strange KNS thing -- if the validation fails (not sure why only in that case) then some further error checking is done using the formatter, if one exists
+//					if (formatterClass == null) {
+//    					String formatterClassName = definition.getFormatterClass();
+//    					if (formatterClassName != null)
+//    						formatterClass = ClassLoaderUtils.getClass(formatterClassName);
+//					}
+//					
+//					if (formatterClass != null) {
+//						// Use the Boolean value being null to ensure we only do this once
+//						if (doValidateDateRangeOrder == null) {
+//							// We only want to validate a date range if we're dealing with something that has a date formatter on it and that looks like an actual range (is made up of 2 values with a between operator between them)
+//    						doValidateDateRangeOrder = Boolean.valueOf(DateFormatter.class.isAssignableFrom(formatterClass) && StringUtils.contains(ValidatorUtils.getString(value), LogicalOperators.BETWEEN_OPERATOR)); 
 //						}
+//						
+//						ValidationResultInfo formatterValidationResult = processFormatterValidation(formatterClass, entryName, attributeName, parsedAttributeValue, DATE_RANGE_ERROR_PREFIXES[i]);
+//						if (formatterValidationResult != null) {
+//							return formatterValidationResult;
+//						}
+//					} else {
+//						// Otherwise, just report the validation result (apparently the formatter can't provide any fall-through validation because it doesn't exist)
+//						return result;
 //					}
 //				}
-
-				Method validatorMethod = formatterClass.getDeclaredMethod(VALIDATE_METHOD, new Class<?>[] {String.class});
-				Object o = validatorMethod.invoke(formatterClass.newInstance(), parsedAttributeValue);
-				if (o instanceof Boolean) {
-					isError = !((Boolean)o).booleanValue();
-				}
-			} catch (Exception e) {
-				if ( LOG.isDebugEnabled() ) 
-					LOG.debug(e.getMessage(), e);
-				
-				isError = true;
-			}
-			
-			if (isError) {
-//				checkDateBounds = false; // it's already invalid, no need to check date bounds
-				String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
-				String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
-				ValidationResultInfo result = new ValidationResultInfo(entryName, errorKeyPrefix + attributeName);
-				result.setError(errorMessageKey, errorMessageParameters);
-				return result;
-			}
-//		} else {
-//			// if it fails the default validation and has no formatter class then it's still a std failure.
-//			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-//			String[] errorMessageParameters = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-//			GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
+//			}
+//			
+//	    	if (doValidateDateRangeOrder != null && doValidateDateRangeOrder.booleanValue()) {
+//	    		ValidationResultInfo dateOrderValidationResult = ValidatorUtils.validateDateOrder(parsedAttributeValues.get(0), parsedAttributeValues.get(1), entryName, attributeName);
+//	    		return dateOrderValidationResult;
+//	    	}
 //		}
-			
-		return null;
-    }
-
-    protected ValidationResultInfo doProcessFormattableValidCharConstraint(ValidCharsConstraint validCharsConstraint, Formatable definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		// This is a strange KNS thing for validating searchable fields -- they sometimes come in a date range format, for example 2/12/2010..2/14/2010, and need to be split up
-		List<String> parsedAttributeValues = attributeValueReader.getCleanSearchableValues(attributeName);
-		
-		if (parsedAttributeValues != null) {
-			
-			Class<?> formatterClass = null;
-			Boolean doValidateDateRangeOrder = null;
-			
-			// It can't be a date range if it's more than two fields, for example "a .. b | c" is not a date range -- this saves us a tiny bit of processing later
-			if (parsedAttributeValues.size() != 2)
-				doValidateDateRangeOrder = Boolean.FALSE;
-			
-			// Use integer to iterate since we need to track which field we're looking at
-			for (int i=0;i<parsedAttributeValues.size();i++) {
-				String parsedAttributeValue = parsedAttributeValues.get(i);
-				
-				ValidationResultInfo result = doProcessValidCharConstraint(validCharsConstraint, entryName, attributeName, parsedAttributeValue, element);
-		
-				// If this is an error then some non-null validation result will be returned
-				if (result != null) {
-					// Another strange KNS thing -- if the validation fails (not sure why only in that case) then some further error checking is done using the formatter, if one exists
-					if (formatterClass == null) {
-    					String formatterClassName = definition.getFormatterClass();
-    					if (formatterClassName != null)
-    						formatterClass = ClassLoaderUtils.getClass(formatterClassName);
-					}
-					
-					if (formatterClass != null) {
-						// Use the Boolean value being null to ensure we only do this once
-						if (doValidateDateRangeOrder == null) {
-							// We only want to validate a date range if we're dealing with something that has a date formatter on it and that looks like an actual range (is made up of 2 values with a between operator between them)
-    						doValidateDateRangeOrder = Boolean.valueOf(DateFormatter.class.isAssignableFrom(formatterClass) && StringUtils.contains(ValidatorUtils.getString(value), LogicalOperators.BETWEEN_OPERATOR)); 
-						}
-						
-						ValidationResultInfo formatterValidationResult = processFormatterValidation(formatterClass, entryName, attributeName, parsedAttributeValue, DATE_RANGE_ERROR_PREFIXES[i]);
-						if (formatterValidationResult != null) {
-							return formatterValidationResult;
-						}
-					} else {
-						// Otherwise, just report the validation result (apparently the formatter can't provide any fall-through validation because it doesn't exist)
-						return result;
-					}
-				}
-			}
-			
-	    	if (doValidateDateRangeOrder != null && doValidateDateRangeOrder.booleanValue()) {
-	    		ValidationResultInfo dateOrderValidationResult = ValidatorUtils.validateDateOrder(parsedAttributeValues.get(0), parsedAttributeValues.get(1), entryName, attributeName);
-	    		return dateOrderValidationResult;
-	    	}
-		}
-		
-		return null;
-    }
-    
-    protected ValidationResultInfo doProcessValidCharConstraint(ValidCharsConstraint validCharsConstraint, String entryName, String attributeName, Object value, String element) {
-
-        ValidationResultInfo val = null;
-
-        StringBuilder fieldValue = new StringBuilder();
-        String validChars = validCharsConstraint.getValue();
-
-        fieldValue.append(ValidatorUtils.getString(value));
-
-        int typIdx = validChars.indexOf(":");
-        String processorType = "regex";
-        if (-1 == typIdx) {
-            validChars = "[" + validChars + "]*";
-        } else {
-            processorType = validChars.substring(0, typIdx);
-            validChars = validChars.substring(typIdx + 1);
-        }
-
-        if ("regex".equalsIgnoreCase(processorType) && !validChars.equals(".*")) {
-            if (!fieldValue.toString().matches(validChars)) {
-            	val = new ValidationResultInfo(entryName, attributeName);
-            	if (validCharsConstraint.getLabelKey() != null) {
-            		// FIXME: This shouldn't surface label key itself to the user - it should look up the label key, but this needs to be implemented in Rice
-            		val.setError(RiceKeyConstants.ERROR_CUSTOM, validCharsConstraint.getLabelKey());
-            	} else {
-            		val.setError(RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
-            	}
-            }
-        }
-
-        return val;
-    }
+//		
+//		return null;
+//    }
+//    
+//    protected ValidationResultInfo doProcessValidCharConstraint(ValidCharsConstraint validCharsConstraint, String entryName, String attributeName, Object value, String element) {
+//
+//        ValidationResultInfo val = null;
+//
+//        StringBuilder fieldValue = new StringBuilder();
+//        String validChars = validCharsConstraint.getValue();
+//
+//        fieldValue.append(ValidatorUtils.getString(value));
+//
+//        int typIdx = validChars.indexOf(":");
+//        String processorType = "regex";
+//        if (-1 == typIdx) {
+//            validChars = "[" + validChars + "]*";
+//        } else {
+//            processorType = validChars.substring(0, typIdx);
+//            validChars = validChars.substring(typIdx + 1);
+//        }
+//
+//        if ("regex".equalsIgnoreCase(processorType) && !validChars.equals(".*")) {
+//            if (!fieldValue.toString().matches(validChars)) {
+//            	val = new ValidationResultInfo(entryName, attributeName);
+//            	if (validCharsConstraint.getLabelKey() != null) {
+//            		// FIXME: This shouldn't surface label key itself to the user - it should look up the label key, but this needs to be implemented in Rice
+//            		val.setError(RiceKeyConstants.ERROR_CUSTOM, validCharsConstraint.getLabelKey());
+//            	} else {
+//            		val.setError(RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
+//            	}
+//            }
+//        }
+//
+//        return val;
+//    }
 
     /**
      * Computes if all the filed required in the occurs clause are between the min and max
@@ -876,34 +914,34 @@ public class DefaultValidatorImpl implements Validator {
      * @throws InvocationTargetException 
      * @throws IllegalAccessException 
      * @throws IllegalArgumentException 
-     */
-    protected ValidationResultInfo processMustOccurConstraint(MustOccurConstraint constraint, Validatable definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-
-        boolean result = false;
-        int trueCount = 0;
-
-        ValidationResultInfo val = null;
-
-        for (RequiredConstraint rc : constraint.getRequiredFields()) {
-            trueCount += (processRequiredConstraint(rc, definition, entryName, attributeName, dataProvider, "") != null) ? 1 : 0;
-        }
-
-        for (MustOccurConstraint oc : constraint.getOccurs()) {
-            trueCount += (processMustOccurConstraint(oc, definition, entryName, attributeName, dataProvider, "") != null) ? 1 : 0;
-        }
-
-        result = (trueCount >= constraint.getMin() && trueCount <= constraint.getMax()) ? true : false;
-
-        if (!result) {
-         // TODO: figure out what data should go here instead of null
-//            val = new ValidationResultInfo(element, null);
-//            val.setError(getMessage("validation.occurs"));
-        	val = new ValidationResultInfo(entryName, attributeName);
-        	val.setError(RiceKeyConstants.ERROR_OCCURS);
-        }
-
-        return val;
-    }
+//     */
+//    protected ValidationResultInfo processMustOccurConstraint(MustOccurConstraint constraint, Validatable definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+//
+//        boolean result = false;
+//        int trueCount = 0;
+//
+//        ValidationResultInfo val = null;
+//
+//        for (RequiredConstraint rc : constraint.getRequiredFields()) {
+//            trueCount += (processRequiredConstraint(rc, definition, entryName, attributeName, dataProvider, "") != null) ? 1 : 0;
+//        }
+//
+//        for (MustOccurConstraint oc : constraint.getOccurs()) {
+//            trueCount += (processMustOccurConstraint(oc, definition, entryName, attributeName, dataProvider, "") != null) ? 1 : 0;
+//        }
+//
+//        result = (trueCount >= constraint.getMin() && trueCount <= constraint.getMax()) ? true : false;
+//
+//        if (!result) {
+//         // TODO: figure out what data should go here instead of null
+////            val = new ValidationResultInfo(element, null);
+////            val.setError(getMessage("validation.occurs"));
+//        	val = new ValidationResultInfo(entryName, attributeName);
+//        	val.setError(RiceKeyConstants.ERROR_OCCURS);
+//        }
+//
+//        return val;
+//    }
 
     // TODO: Implement lookup constraint
 //    protected void processLookupConstraint(List<ValidationResultInfo> valResults, LookupConstraint lookupConstraint, AttributeDefinition field, Stack<String> elementStack, ConstraintDataProvider dataProvider) {

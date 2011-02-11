@@ -89,18 +89,6 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
-    <property name="validChars">
-		<bean class="org.kuali.rice.kns.dto.ValidCharsConstraint">
-			<property name="value" value="regex:Group\s\w+"/>
-		</bean>
-	</property>
-    <property name="requireConstraint">
-		<list>	
-			<bean class="org.kuali.rice.kns.dto.RequiredConstraint">
-				<property name="fieldPath" value="groupDescription"/>
-			</bean>
-		</list>
-	</property>
   </bean>
 
 	<!-- Added Group Description -->

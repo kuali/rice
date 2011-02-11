@@ -583,14 +583,6 @@
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService"/>
 		</property>
-		<property name="validator">
-			<bean class="org.kuali.rice.kns.datadictionary.validator.DefaultValidatorImpl">
-				<property name="dataDictionaryService">
-					<ref bean="dataDictionaryService" />
-				</property>
-
-			</bean>
-		</property>
 	</bean>
 
 	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc"/>

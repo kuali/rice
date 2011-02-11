@@ -15,15 +15,15 @@
 
 package org.kuali.rice.kns.datadictionary.validator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.dto.Validatable;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
 public interface AttributeValueReader {
 
-	public String getCurrentName();
+	public String getAttributeName();
 	
 	public Validatable getDefinition(String attributeName);
 	
@@ -33,15 +33,23 @@ public interface AttributeValueReader {
 	
 	public DataDictionaryEntry getEntry(String entryName);
 	
+	public String getEntryName();
+	
+	public String getLabel(String attributeName);
+	
 	public String getPath();
 	
 	public Class<?> getType(String attributeName);
 	
-	public <X> X getValue(String attributeName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException;
+	public <X> X getValue() throws AttributeValidationException;
 	
-	public List<String> getCleanSearchableValues(String attributeName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException;
+	public <X> X getValue(String attributeName) throws AttributeValidationException;
 	
-	public void setCurrentName(String attributeName);
+	public List<String> getCleanSearchableValues(String attributeName) throws AttributeValidationException;
+	
+	public void setAttributeName(String attributeName);
+	
+	public void setEntryName(String entryName);
 	
 }
 

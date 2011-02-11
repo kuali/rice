@@ -1,10 +1,12 @@
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WhenConstraint implements Constraint {

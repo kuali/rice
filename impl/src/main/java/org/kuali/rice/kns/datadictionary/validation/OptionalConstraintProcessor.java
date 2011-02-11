@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation;
+
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+
 
 /**
- * This interface defines methods that must be implemented by classes that want to be processed as 
  * 
  * @author James Renfro, University of Washington 
  */
-public interface LengthConstrained {
+public abstract class OptionalConstraintProcessor<D extends Validatable> implements ConstraintProcessor<D> {
 
-	public Integer getMaxLength();
-	
-	public Integer getMinLength();
-	
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#isOptional()
+	 */
+	@Override
+	public boolean isOptional() {
+		return true;
+	}
+
 }

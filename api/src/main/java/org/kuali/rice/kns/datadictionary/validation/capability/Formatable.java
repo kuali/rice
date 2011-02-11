@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
 /**
  * 
  * @author James Renfro, University of Washington 
  */
-public interface SizeConstrained {
+public interface Formatable {
 
-	public String getExclusiveMin();
-	
-	public String getInclusiveMax();
+	public String getFormatterClass();
 	
 }

@@ -13,36 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
 import java.util.List;
 
+import org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint;
+
 /**
- * This interface defines methods that must be implemented by classes that you want to participate in dictionary validation as for example 'attribute-level' object structure
- * definitions. 
  * 
  * @author James Renfro, University of Washington 
  */
-public interface Validatable extends ExistenceConstrained, QuantityConstrained, HierarchicallyConstrained, LengthConstrained, SizeConstrained {
+public interface MustOccurConstrained extends Validatable {
 
-	public CaseConstraint getCaseConstraint();
-	
-	public DataType getDataType();
-	
-	public String getLabel();
-	
-	// FIXME: rename to getLookupConstraint()
-	public LookupConstraint getLookupDefinition();
-	
 	// FIXME: rename to getMustOccursConstraints()
 	public List<MustOccurConstraint> getOccursConstraint();
-	
-	public String getName();
-	
-	// FIXME: rename to getRequiredConstraints()
-	public List<RequiredConstraint> getRequireConstraint();
-	
-	// FIXME: rename to getValidCharactersConstraint()
-	public ValidCharsConstraint getValidChars();
 	
 }

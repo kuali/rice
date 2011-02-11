@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation.capability;
+
+import org.kuali.rice.kns.datadictionary.validation.CaseConstraint;
 
 /**
  * 
  * @author James Renfro, University of Washington 
  */
-public interface QuantityConstrained {
+public interface CaseConstrained extends Validatable {
 
-	public Integer getMaxOccurs();
-	
-	public Integer getMinOccurs();
+	public CaseConstraint getCaseConstraint();
 	
 }

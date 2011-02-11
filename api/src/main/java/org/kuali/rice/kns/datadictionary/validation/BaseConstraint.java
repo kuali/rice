@@ -1,4 +1,4 @@
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

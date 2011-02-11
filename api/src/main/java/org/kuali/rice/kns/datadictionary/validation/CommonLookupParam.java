@@ -1,4 +1,4 @@
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.io.Serializable;
 import java.util.ArrayList;

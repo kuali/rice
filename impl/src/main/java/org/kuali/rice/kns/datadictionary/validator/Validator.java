@@ -10,9 +10,9 @@ public interface Validator {
 	public List<ValidationResultInfo> validateField(AttributeDefinitionDTO field, BusinessObjectEntryDTO objStruct, ConstraintDataProvider dataProvider, Stack<String> elementStack);
 	*/
 	
-	public List<ValidationResultInfo> validate(String entryName, AttributeValueReader valueReader, boolean checkIfRequired);
+//	public List<ValidationResultInfo> validate(String entryName, AttributeValueReader valueReader, boolean checkIfRequired);
 	
-	public void validate(String entryName, String fieldName, AttributeValueReader valueReader, boolean checkIfRequired);
+	public void validate(AttributeValueReader valueReader, boolean checkIfRequired);
 	
 	
 //	public List<ValidationResultInfo> validateObject(String fieldName, Object businessObject, Stack<String> elementStack);

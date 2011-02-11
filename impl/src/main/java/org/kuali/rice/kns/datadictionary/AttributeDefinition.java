@@ -25,15 +25,23 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
+import org.kuali.rice.kns.datadictionary.validation.CaseConstraint;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.ExistenceConstrained;
+import org.kuali.rice.kns.datadictionary.validation.LookupConstraint;
+import org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint;
+import org.kuali.rice.kns.datadictionary.validation.DependencyConstraint;
+import org.kuali.rice.kns.datadictionary.validation.ValidCharsConstraint;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
-import org.kuali.rice.kns.dto.CaseConstraint;
-import org.kuali.rice.kns.dto.DataType;
-import org.kuali.rice.kns.dto.Formatable;
-import org.kuali.rice.kns.dto.LookupConstraint;
-import org.kuali.rice.kns.dto.MustOccurConstraint;
-import org.kuali.rice.kns.dto.RequiredConstraint;
-import org.kuali.rice.kns.dto.ValidCharsConstraint;
-import org.kuali.rice.kns.dto.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.CaseConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.DependencyConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.Formatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.QuantityConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.SizeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrained;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -44,7 +52,7 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  * 
  */
-public class AttributeDefinition extends DataDictionaryDefinitionBase implements Validatable, Formatable {
+public class AttributeDefinition extends DataDictionaryDefinitionBase implements CaseConstrained, DependencyConstrained, ExistenceConstrained, Formatable, QuantityConstrained, HierarchicallyConstrained, MustOccurConstrained, LengthConstrained, SizeConstrained, ValidCharactersConstrained {
 	private static final long serialVersionUID = -2490613377818442742L;
 
 	protected Boolean forceUppercase = Boolean.FALSE;
@@ -91,7 +99,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	protected Integer minOccurs;
 	protected Integer maxOccurs;
     protected CaseConstraint caseConstraint;
-    protected List<RequiredConstraint> requireConstraint;
+    protected List<DependencyConstraint> requireConstraint;
 	protected List<MustOccurConstraint> occursConstraint;
 	protected LookupConstraint lookupDefinition;// If the user wants to match
 	// against two searches, that
@@ -652,14 +660,14 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	/**
 	 * @return the requireConstraint
 	 */
-	public List<RequiredConstraint> getRequireConstraint() {
+	public List<DependencyConstraint> getRequireConstraint() {
 		return this.requireConstraint;
 	}
 
 	/**
 	 * @param requireConstraint the requireConstraint to set
 	 */
-	public void setRequireConstraint(List<RequiredConstraint> requireConstraint) {
+	public void setRequireConstraint(List<DependencyConstraint> requireConstraint) {
 		this.requireConstraint = requireConstraint;
 	}
 

@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.dto.Validatable;
-import org.kuali.rice.kns.dto.DataType;
-import org.kuali.rice.kns.dto.ExistenceConstrained;
-import org.kuali.rice.kns.dto.LengthConstrained;
-import org.kuali.rice.kns.dto.QuantityConstrained;
-import org.kuali.rice.kns.dto.SizeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.ExistenceConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.QuantityConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.SizeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -227,28 +227,28 @@ public class ValidatorUtils {
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	public static AttributeValueReader getDefinition(String key, AttributeValueReader attributeValueReader) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		String[] lookupPathTokens = getPathTokens(key);
-		
-		AttributeValueReader localAttributeValueReader = attributeValueReader;
-		for(int i = 0; i < lookupPathTokens.length; i++) {
-			for (Validatable f : localAttributeValueReader.getDefinitions()) {
-				String attributeName = f.getName();
-				if (attributeName.equals(lookupPathTokens[i])) {
-					if(i==lookupPathTokens.length-1){
-						localAttributeValueReader.setCurrentName(attributeName);
-						return localAttributeValueReader;
-					}
-					String childEntryName = f.getChildEntryName();
-					DataDictionaryEntry entry = attributeValueReader.getEntry(childEntryName);
-					Object value = attributeValueReader.getValue(attributeName);
-					localAttributeValueReader = new DictionaryObjectAttributeValueReader(value, childEntryName, entry);
-					break;
-				}
-			}
-		 }
-		return null;
-	}
+//	public static AttributeValueReader getDefinition(String key, AttributeValueReader attributeValueReader) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+//		String[] lookupPathTokens = getPathTokens(key);
+//		
+//		AttributeValueReader localAttributeValueReader = attributeValueReader;
+//		for(int i = 0; i < lookupPathTokens.length; i++) {
+//			for (Validatable f : localAttributeValueReader.getDefinitions()) {
+//				String attributeName = f.getName();
+//				if (attributeName.equals(lookupPathTokens[i])) {
+//					if(i==lookupPathTokens.length-1){
+//						localAttributeValueReader.setAttributeName(attributeName);
+//						return localAttributeValueReader;
+//					}
+//					String childEntryName = f.getChildEntryName();
+//					DataDictionaryEntry entry = attributeValueReader.getEntry(childEntryName);
+//					Object value = attributeValueReader.getValue(attributeName);
+//					localAttributeValueReader = new DictionaryObjectAttributeValueReader(value, childEntryName, entry);
+//					break;
+//				}
+//			}
+//		 }
+//		return null;
+//	}
 	
 	
 	
@@ -341,68 +341,68 @@ public class ValidatorUtils {
 	}
 	
 	
-	public static ValidationResultInfo validateDataType(Object value, DataType dataType, String entryName, String attributeName) {
-		ValidationResultInfo result = new ValidationResultInfo(entryName, attributeName);
-		
-		try {
-			convertToDataType(value, dataType);
-		} catch (Exception e) {		
-			switch (dataType) {
-			case BOOLEAN:
-				result.setError(RiceKeyConstants.ERROR_BOOLEAN);
-				break;
-			case INTEGER:
-				result.setError(RiceKeyConstants.ERROR_INTEGER);
-				break;
-			case LONG:
-				result.setError(RiceKeyConstants.ERROR_LONG);
-				break;
-			case DOUBLE:
-				result.setError(RiceKeyConstants.ERROR_BIG_DECIMAL);
-				break;
-			case FLOAT:
-				result.setError(RiceKeyConstants.ERROR_BIG_DECIMAL);
-				break;
-			case TRUNCATED_DATE:
-			case DATE:
-				result.setError(RiceKeyConstants.ERROR_BIG_DECIMAL);
-				break;
-			case STRING:
-			case COMPLEX:
-				result.setError(RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
-				break;
-			}
-		}
-		
-		return result;
-	}
+//	public static ValidationResultInfo validateDataType(Object value, DataType dataType, String entryName, String attributeName) {
+//		ValidationResultInfo result = new ValidationResultInfo(entryName, attributeName);
+//		
+//		try {
+//			convertToDataType(value, dataType);
+//		} catch (Exception e) {		
+//			switch (dataType) {
+//			case BOOLEAN:
+//				result.setError(RiceKeyConstants.ERROR_BOOLEAN);
+//				break;
+//			case INTEGER:
+//				result.setError(RiceKeyConstants.ERROR_INTEGER);
+//				break;
+//			case LONG:
+//				result.setError(RiceKeyConstants.ERROR_LONG);
+//				break;
+//			case DOUBLE:
+//				result.setError(RiceKeyConstants.ERROR_BIG_DECIMAL);
+//				break;
+//			case FLOAT:
+//				result.setError(RiceKeyConstants.ERROR_BIG_DECIMAL);
+//				break;
+//			case TRUNCATED_DATE:
+//			case DATE:
+//				result.setError(RiceKeyConstants.ERROR_BIG_DECIMAL);
+//				break;
+//			case STRING:
+//			case COMPLEX:
+//				result.setError(RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
+//				break;
+//			}
+//		}
+//		
+//		return result;
+//	}
 	
-	public static ValidationResultInfo validateDateOrder(String firstDateTime, String secondDateTime, String entryName, String attributeName) {
-		// this means that we only have 2 values and it's a date range.
-		java.sql.Timestamp lVal = null;
-		java.sql.Timestamp uVal = null;
-		try {
-			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(firstDateTime);
-			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(secondDateTime);
-		} catch (Exception ex){
-			// this shouldn't happen because the tests passed above.
-			String errorMessageKey = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
-			String[] errorMessageParameters = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
-			ValidationResultInfo result = new ValidationResultInfo(entryName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + attributeName);
-			result.setError(errorMessageKey, errorMessageParameters);
-			return result;
-		}
-
-		if(lVal != null && lVal.compareTo(uVal) > 0){ // check the bounds
-			String errorMessageKey = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
-			String[] errorMessageParameters = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
-			ValidationResultInfo result = new ValidationResultInfo(entryName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + attributeName);
-			result.setError(errorMessageKey + ".range", errorMessageParameters);
-			return result;
-		}
-		
-		return null;
-	}
+//	public static ValidationResultInfo validateDateOrder(String firstDateTime, String secondDateTime, String entryName, String attributeName) {
+//		// this means that we only have 2 values and it's a date range.
+//		java.sql.Timestamp lVal = null;
+//		java.sql.Timestamp uVal = null;
+//		try {
+//			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(firstDateTime);
+//			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(secondDateTime);
+//		} catch (Exception ex){
+//			// this shouldn't happen because the tests passed above.
+//			String errorMessageKey = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
+//			String[] errorMessageParameters = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
+//			ValidationResultInfo result = new ValidationResultInfo(entryName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + attributeName);
+//			result.setError(errorMessageKey, errorMessageParameters);
+//			return result;
+//		}
+//
+//		if(lVal != null && lVal.compareTo(uVal) > 0){ // check the bounds
+//			String errorMessageKey = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);
+//			String[] errorMessageParameters = KNSServiceLocator.getDataDictionaryService().getAttributeValidatingErrorMessageParameters(entryName, attributeName);
+//			ValidationResultInfo result = new ValidationResultInfo(entryName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + attributeName);
+//			result.setError(errorMessageKey + ".range", errorMessageParameters);
+//			return result;
+//		}
+//		
+//		return null;
+//	}
 	
 	public static ValidationResultInfo validateQuantity(Collection<?> collection, QuantityConstrained attribute, String entryName, String attributeName) throws IllegalArgumentException {
 		
@@ -653,7 +653,7 @@ public class ValidatorUtils {
 //	}
 //	
 	
-    private static String[] getPathTokens(String fieldPath) {
+    public static String[] getPathTokens(String fieldPath) {
         return (fieldPath != null && fieldPath.contains(".") ? fieldPath.split("\\.") : new String[]{fieldPath});
     }
 

@@ -1,4 +1,4 @@
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MustOccurConstraint implements Constraint {
     @XmlElement
-    private List<RequiredConstraint> requiredFields;
+    private List<DependencyConstraint> requiredFields;
 	@XmlElement
     private List<MustOccurConstraint> occurs;
 	@XmlElement
@@ -17,11 +17,11 @@ public class MustOccurConstraint implements Constraint {
 	@XmlElement
 	private Integer max;
 
-	public List<RequiredConstraint> getRequiredFields() {
+	public List<DependencyConstraint> getRequiredFields() {
 		return requiredFields;
 	}
 
-	public void setRequiredFields(List<RequiredConstraint> requiredFields) {
+	public void setRequiredFields(List<DependencyConstraint> requiredFields) {
 		this.requiredFields = requiredFields;
 	}
 

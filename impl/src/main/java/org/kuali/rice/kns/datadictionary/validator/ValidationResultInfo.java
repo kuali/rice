@@ -47,15 +47,6 @@ public class ValidationResultInfo implements Serializable{
         }
     }	
 
- private transient Object invalidData = null;
-
-//	public ValidationResultInfo(String element) {
-//		super();
-//		this.level = ErrorLevel.OK;
-//		this.element = element;
-//	}
-//
-	
 	
 	@XmlElement
 	protected String element;
@@ -190,7 +181,7 @@ public class ValidationResultInfo implements Serializable{
     }
 
     public String toString(){
-    	return "[" + level + "] Path: [" + element + "] - " + message + " data=[" + invalidData + "]";
+    	return "Entry: [" + entryName + "] Attribute: [" + attributeName + "] - " + errorKey + " data=[" + errorParameters + "]";
     }
 
 	/**

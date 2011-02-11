@@ -30,7 +30,8 @@ import java.util.Map;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
-import org.kuali.rice.kns.dto.Validatable;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
 /**
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
@@ -45,7 +46,6 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 
 	protected Object object;
 	protected DataDictionaryEntry entry;
-	protected String entryName;
 
 	protected Map<String, PropertyDescriptor> beanInfo;
 	
@@ -85,6 +85,12 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 	
 	@Override
+	public String getLabel(String attributeName) {
+		AttributeDefinition attributeDefinition = entry != null ? entry.getAttributeDefinition(attributeName) : null;
+		return attributeDefinition != null ? attributeDefinition.getLabel()  : attributeName;
+	}
+	
+	@Override
 	public String getPath() {
 		return entryName != null ? entryName : "";
 	}
@@ -104,19 +110,36 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		return attributeType;
 	}
 	
+	@Override
+	public <X> X getValue() throws AttributeValidationException {
+		return getValue(attributeName);
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <X> X getValue(String attributeName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public <X> X getValue(String attributeName) throws AttributeValidationException {
 		X attributeValue = (X) attributeValueMap.get(attributeName);
 		
 		if (attributeValue != null)
 			return attributeValue;
 		
-		PropertyDescriptor propertyDescriptor = beanInfo.get(attributeName);
-		Method readMethod = propertyDescriptor.getReadMethod();
+		Exception e = null;
+		try {
+			PropertyDescriptor propertyDescriptor = beanInfo.get(attributeName);
+			Method readMethod = propertyDescriptor.getReadMethod();
+			
+			attributeValue = (X) readMethod.invoke(object);
+
+		} catch (IllegalArgumentException iae) {
+			e = iae;
+		} catch (IllegalAccessException iace) {
+			e = iace;
+		} catch (InvocationTargetException ite) {
+			e = ite;
+		}
 		
-		attributeValue = (X) readMethod.invoke(object);
+		if (e != null)
+			throw new AttributeValidationException("Unable to lookup attribute value by name (" + attributeName + ") using introspection", e);
 		
 		if (attributeValue != null)
 			attributeValueMap.put(attributeName, attributeValue);

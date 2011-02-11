@@ -1,4 +1,4 @@
-package org.kuali.rice.kns.dto;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ConstraintHolder implements Validatable {
@@ -43,7 +45,7 @@ public class ConstraintHolder implements Validatable {
     protected CaseConstraint caseConstraint;
 	
 	@XmlElement
-    protected List<RequiredConstraint> requireConstraint;
+    protected List<DependencyConstraint> requireConstraint;
 
 	@XmlElement
 	protected List<MustOccurConstraint> occursConstraint;
@@ -130,15 +132,15 @@ public class ConstraintHolder implements Validatable {
 		this.maxOccurs = maxOccurs;
 	}
 
-	public List<RequiredConstraint> getRequireConstraint() {
+	public List<DependencyConstraint> getRequireConstraint() {
         if(null == requireConstraint) {
-            this.requireConstraint = new ArrayList<RequiredConstraint>();
+            this.requireConstraint = new ArrayList<DependencyConstraint>();
         }
 
 	    return requireConstraint;
 	}
 
-	public void setRequireConstraint(List<RequiredConstraint> requireConstraint) {
+	public void setRequireConstraint(List<DependencyConstraint> requireConstraint) {
 	    this.requireConstraint = requireConstraint;
 	}
 

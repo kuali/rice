@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.dto.Constraint;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+
 
 /**
+ * This interface defines methods that must be implemented by classes that you want to participate in dictionary validation as for example 'attribute-level' object structure
+ * definitions. 
  * 
  * @author James Renfro, University of Washington 
  */
-public interface ConstraintProcessor<C extends Constraint> {
+public interface Validatable {
 	
+	public DataType getDataType();
 	
+	public String getLabel();
 	
+	public String getName();
 	
-	
-
 }

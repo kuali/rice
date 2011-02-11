@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kns.datadictionary.validator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.DataTypeUtil;
 
@@ -29,10 +29,11 @@ import org.kuali.rice.kns.util.DataTypeUtil;
  */
 public abstract class BaseAttributeValueReader implements AttributeValueReader {
 
-	protected String currentName;
+	protected String entryName;
+	protected String attributeName;
 	
 	@Override
-	public List<String> getCleanSearchableValues(String attributeKey) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public List<String> getCleanSearchableValues(String attributeKey) throws AttributeValidationException {
 		Class<?> attributeType = getType(attributeKey);		
 		Object rawValue = getValue(attributeKey);
 		
@@ -50,16 +51,30 @@ public abstract class BaseAttributeValueReader implements AttributeValueReader {
 	 * @return the currentName
 	 */
 	@Override
-	public String getCurrentName() {
-		return this.currentName;
+	public String getAttributeName() {
+		return this.attributeName;
 	}
 
 	/**
 	 * @param currentName the currentName to set
 	 */
 	@Override
-	public void setCurrentName(String currentName) {
-		this.currentName = currentName;
+	public void setAttributeName(String currentName) {
+		this.attributeName = currentName;
+	}
+
+	/**
+	 * @return the entryName
+	 */
+	public String getEntryName() {
+		return this.entryName;
+	}
+
+	/**
+	 * @param entryName the entryName to set
+	 */
+	public void setEntryName(String entryName) {
+		this.entryName = entryName;
 	}
 	
 }

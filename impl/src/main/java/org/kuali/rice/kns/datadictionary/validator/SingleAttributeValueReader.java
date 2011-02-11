@@ -20,7 +20,8 @@ import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.dto.Validatable;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
 
 /**
@@ -38,8 +39,10 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	private Object value;
 	private AttributeDefinition definition;
 	
-	public SingleAttributeValueReader(Object value, AttributeDefinition definition) {
+	public SingleAttributeValueReader(Object value, String entryName, String attributeName, AttributeDefinition definition) {
 		this.value = value;
+		this.entryName = entryName;
+		this.attributeName = attributeName;
 		this.definition = definition;
 	}
 	
@@ -58,6 +61,14 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	@Override
 	public DataDictionaryEntry getEntry() {
 		return null;
+	}
+
+	@Override
+	public String getLabel(String attributeName) {
+		if (definition != null && definition.getName() != null && definition.getName().equals(attributeName))
+			return definition.getLabel();
+		
+		return attributeName;
 	}
 	
 	@Override
@@ -78,9 +89,12 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	}
 
 	@Override
-	public <X> X getValue(String attributeName)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public <X> X getValue() throws AttributeValidationException {
+		return (X) value;
+	}
+	
+	@Override
+	public <X> X getValue(String attributeName) throws AttributeValidationException {
 		Validatable attributeDefinition = getDefinition(attributeName);
 		
 		if (attributeDefinition != null)

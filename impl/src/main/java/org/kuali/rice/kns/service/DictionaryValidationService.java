@@ -124,6 +124,16 @@ public interface DictionaryValidationService {
      */
     public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix);
 
+    
+    /**
+     * Validates an object based on the dictionary entry found using entryName. 
+     * 
+     * @param object
+     * @param entryName
+     */
+    public void validate(Object object, String entryName);
+    
+    
     /**
      * Validates the business object against the dictionary, uses reflection to get any child business objects, and recursively
      * calls back. Adds errors to the map as they are encountered.

@@ -1031,7 +1031,7 @@
 	<scm>
 		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-3-1-br</connection>
 		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-3-1-br</developerConnection>
-		<url>https://test.kuali.org/fisheye/browse/rice/branches/rice-release-1-0-3-1-br</url>
+		<url>https://test.kuali.org/svn/rice/branches/rice-release-1-0-3-1-br</url>
 	</scm>
 	<distributionManagement>
                 <repository>

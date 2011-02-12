@@ -53,8 +53,8 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         
-        if(handler instanceof UifControllerBase<?>) {
-            UifControllerBase<?> controller = (UifControllerBase<?>)handler;
+        if(handler instanceof UifControllerBase) {
+            UifControllerBase controller = (UifControllerBase)handler;
             UifFormBase form = null;
             
             Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);

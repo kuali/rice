@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.web.spring.controller;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -65,39 +63,36 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class UifControllerBase<T extends UifFormBase> {
+public abstract class UifControllerBase {
 
     /**
-     * This method will create the model(form) object on the initial request before
-     * it is passed to the Binder/BeanWrapper.
+     * This method will create/obtain the model(form) object before it is passed to the
+     * Binder/BeanWrapper.
+     * 
+     * This method is not intended to be overridden by client applications as it handles
+     * framework setup and session maintenance.  Clients should override
+     * createIntialForm() instead when they need custom form initialization.
      * 
      * @param request
      * @return
      */
-    @ModelAttribute()
-    public T initForm(HttpServletRequest request) {
-        T form;
-        
-        try {
-            // walk up the class hierarchy until a superclass with a generic
-            // declaration is found - this would happen if the controller is
-            // extended and the form type is not changed
-            Class<?> clazz = this.getClass();
-            Type type = clazz.getGenericSuperclass();
-            while(! (type instanceof ParameterizedType) ) {
-                clazz = clazz.getSuperclass();
-                type = clazz.getGenericSuperclass();
-            }
-            
-            clazz = (Class<?>)((ParameterizedType)type).getActualTypeArguments()[0];
-            form = (T) clazz.newInstance();
-        }
-        catch(Exception ex) {
-            throw new RuntimeException("Controllers extending UifControllerBase must declare a form type", ex);
-        }
-
-        return form;
+    @ModelAttribute(value="KualiForm")
+    public UifFormBase initForm(HttpServletRequest request) {
+        return createInitialForm(request);
     }
+    
+    /**
+     * This method will be called to create a new model(form) object when necessary.  This
+     * usually occurs on the initial request in a conversation (when the model is not
+     * present in the session).
+     * 
+     * This method must be overridden when extending a controller and using a different
+     * form type than the superclass.
+     * 
+     * @param request
+     * @return
+     */
+    protected abstract UifFormBase createInitialForm(HttpServletRequest request);
     
 	private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
 	{
@@ -176,7 +171,7 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
-	public ModelAndView addLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
+	public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
@@ -208,7 +203,7 @@ public abstract class UifControllerBase<T extends UifFormBase> {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteLine")
-	public ModelAndView deleteLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
+	public ModelAndView deleteLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		String selectedCollectionPath = uifForm.getSelectedCollectionPath();

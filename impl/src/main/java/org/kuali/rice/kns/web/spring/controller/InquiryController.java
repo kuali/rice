@@ -37,10 +37,15 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(value = "/inquiry")
-public class InquiryController extends UifControllerBase<InquiryForm> {
+public class InquiryController extends UifControllerBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryController.class);
+	
+	@Override
+    protected InquiryForm createInitialForm(HttpServletRequest request) {
+        return new InquiryForm();
+    }
 
-	@RequestMapping(params = "methodToCall=start")
+    @RequestMapping(params = "methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") InquiryForm inquiryForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 		return continueWithInquiry(inquiryForm, result, request, response);

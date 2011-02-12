@@ -40,10 +40,15 @@ import edu.sampleu.travel.bo.TravelAccount;
  */
 @Controller
 @RequestMapping(value = "/uitest")
-public class UITestController extends UifControllerBase<UITestForm> {
+public class UITestController extends UifControllerBase {
 	private static final String testViewId = "testView1";
 
-	@RequestMapping(params = "methodToCall=start")
+	@Override
+    protected UITestForm createInitialForm(HttpServletRequest request) {
+        return new UITestForm();
+    }
+
+    @RequestMapping(params = "methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 

@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
-import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * Base form class for views within the KRAD User Interface Framework

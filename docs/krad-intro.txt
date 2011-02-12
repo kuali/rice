@@ -23,7 +23,7 @@ KRAD will power up its interactivity offerings by using the JQuery library, curr
 - *Messages* There are many ways in which rich functionality can be incorporated to inform the user of their progress in an application.  KRAD will support many different kinds of notification schemes to keep the user on top of application progress.  On forms, there will be much more flexibility than in the KNS to display simple constraint messages on fields and fields can also be preset with sample data - known as a watermark - which is removed when focus is given to the field but hints the user into entering the appropriate data.  Notifications will appear when background processes have completed.  There will be rollover help on fields and time notifications (such as progress bars) when a given process is completing which help the user understand that the application needs to finish a process.  This wide range of interactive messages will make it easier for users to have a fuller picture of all the application is doing.
 - *Progressive Disclosure* No one likes forms which present too many choices, especially choices that don't apply to the user's current circumstance.  If a user has to enter a state tax rate on a form, the tax rate field shouldn't show up until the user has chosen a state and the application has determined that the state needs to have a tax rate filled in.  The KNS adopted a principle of "progressive disclosure" - that a form should only show the parts that a user needs currently, and that those parts should appear or disappear based on earlier decisions by the user.  However, this was difficult to implement in the KNS and the fact that a return/request cycle was necessary before the form changed made the experience trying for users as well.  KRAD will support a much more interactive progressive disclosure experience, making "mini-trips" to the server through AJAX, pulling back needed pieces of the form only when key fields have been entered.
 - *Client Side Validation* The KNS provided a lot of validations which could be configured in the data dictionary: making sure required fields were filled in, checking that entered text followed a specific format pattern, verifying that the length of the field did not surpass some set limit.  In the KNS, though, all of these checks took place during request processing: the user had to submit the form before any validation could happen - and in the cases of some documents, that took quite a while.  KRAD will have the ability to push some of these validations to the client side to be checked via JavaScript, meaning that the user gets feedback on errors much quicker and in a less frustrating fashion.
-- *Table Tools* A lot of data in KNS documents gets presented in tables: all the diverse kinds of lookup results, maintenance document collections, KFS accounting lines, KC (*JAMES: FIND EXAMPLE IN KC*).  KRAD will make all of those tables more powerful.  It allows client side sorting of several kinds of tables - meaning that users can find the data they want without having to get all the data back from the server.  It allows filtering of tables too.  If the table is editable, it even adds the line in the client side, only pushing it to the server when the user is ready for a full server push.  Tables in KRAD applications will help application users have their complex data just how and when they need it.
+- *Table Tools* A lot of data in KNS documents gets presented in tables: all the diverse kinds of lookup results, maintenance document collections, KFS accounting lines, KC (*FORTHCOMING: EXAMPLE FROM KC*).  KRAD will make all of those tables more powerful.  It allows client side sorting of several kinds of tables - meaning that users can find the data they want without having to get all the data back from the server.  It allows filtering of tables too.  If the table is editable, it even adds the line in the client side, only pushing it to the server when the user is ready for a full server push.  Tables in KRAD applications will help application users have their complex data just how and when they need it.
 - *Themes* Practically the first customization implementing institutions work on in deployed Kuali applications is skinning the site with their own schools' colors.  Rightly so that institutions should be able to customize their colors as tradition dictates.  By heavy leveraging of CSS, a requirement simply of making much rich user interface technology work, it will become much easier to redesign a look and feel of a site to match the expectations of your users...or the desire to show off some school pride.
 - *AJAX Enabled Fields* In KNS applications, there are many controls where the user tabs out of the control and information about that value pops up - for instance, a Person lookup where tabbing out of a field where a principalId has been added fills in the full name of the Person so the user gets instant verification that they entered the right authorization name.  IN KRAD, there will be even more support for this kind of information so that the read only information pulled back from the server can be more complete and assist the user that much more in the process of creating documents.
 
@@ -106,7 +106,7 @@ The rendering of a View is initiated by either an HTTP GET or POST request.  In 
 !KRADViewLifecycleGET.jpg|border=1!
 GET: starting from scratch
 
-Above, we see a diagram of the lifecycle stages for the GET version of the View lifecycle.  A GET request runs through any configured HandlerInterceptors (these are Spring MVC configured versions of Servlet filters, giving the ability to perform actions at a very low level during the request/response lifecycle) and, those complete, causes the Spring MVC Binder to make a call to org.kuali.rice.kns.uif.service.ViewService's.getView(String viewId, Map<String, String> parameters).  This, in turn, calls the View's associated ViewHelperService implementation to call ViewHelperService.performInitialization to initialize the View Component and all contained child Components.
+Above, we see a diagram of the lifecycle stages for the GET version of the View lifecycle.  A GET request runs through any configured HandlerInterceptors (these are Spring MVC configured versions of Servlet filters, giving the ability to perform actions at a very low level during the request/response lifecycle) and, those complete, creates the form to be populated with data.  That form is then passed to the configured DataBinder which, in addition to populating the form, makes a call to org.kuali.rice.kns.uif.service.ViewService's.getView(String viewId, Map<String, String> parameters).  This, in turn, calls the View's associated ViewHelperService implementation to call ViewHelperService.performInitialization to initialize the View Component and all contained child Components.
 
 Many custom Views will have custom ViewHelperService implementations.  For instance, InquiryView uses org.kuali.rice.kns.inquiry.KualiInquirableImpl (or a child) as its ViewHelperService implementation.  LookableHelperServices will likely also act as ViewHelperServices.
 
@@ -152,8 +152,6 @@ A very common practice among rendering frameworks is that all members of a java.
 
 CollectionGroups can also show a set of actions on each row.  An example would be the edit and copy tags that show up in each row of a Lookup.  The CollectionGroup can also render a sequence associated with the Collection, so that each row is numbered "1", "2", etc. which makes it easier for users to differentiate among many rows.  There's also an option to turn header labels on and off for each row.  Finally, a CollectionGroup can have a number of sub-CollectionGroups associated with it, making rendering very flexible indeed.
 
-(!) {color:red}Not sure how much detail we want to get into here. But there are these 'prototypes' that setup how the table cells or groups (for stacked) will look. They can control things like header style, action field layout and so on.{color} *JAMES: Research*
-
 h5. Navigation Groups
 
 A NavigationGroup is, like a CollectionGroup, a special kind of Group which renders elements used in navigation such as the different pages which make up a multiple page document like the KC Proposal document.  NavigationGroup has one special property: navigationType which needs to be set to one of the values given in org.kuali.rice.kns.uif.UifConstants.NavigationType: either VERTICAL_MENU, which places the navigation at the very left part of the rendered page with links stacked atop each other, or the traditional HORIZONTAL_TABS which renders the links side by side and displays the menu at the very top of the page.
@@ -176,7 +174,7 @@ By default, TableLayoutManager provides a sequence field for each row of Fields,
 
 When rendering a Collection, maybe a TableLayoutManager is too much of a straight jacket for each row.  Perhaps, for each row in a Collection, a whole different Group needs to be specified which can be customized to show the rows in a very different way than the line of Fields TableLayoutManager provides.  A good example comes from the Maintenance Document framework, where collection rows aren't tabular but rather boxed.  In cases like this, there's the StackedLayoutManager which takes a List of Groups and renders each row of a collection within that List of Groups.
 
-The StackedLayoutManager provides a way to add a summaryTitle and summaryFields for each collection row: special information that will be featured prominently in rendering so each row line can be quickly recognized for what data it holds.  There's also a lineGroupPrototype property which can be used to override the Groups that each line will render as. *JAMES: double check rendering*
+The StackedLayoutManager provides a way to add a summaryTitle and summaryFields for each collection row: special information that will be featured prominently in rendering so each row line can be quickly recognized for what data it holds.  There's also a lineGroupPrototype property which can be used to override the Groups that each line will render as.
 
 h3. Fields
 
@@ -304,7 +302,7 @@ TextControls have two major properties.  First, the size property limits the tex
 
 h4. TextAreaControl
 
-This Control represents a text area on the page, a control which accepts large amounts of text.  It maps to the HTML <textarea> tag.  TextAreas can be associated with a BigTextArea Widget *JAMES - real name when added* which pops up a window allowing the user to enter text in a large space without losing space in the page's real estate.  This functionality is used extensively in Kuali Coeus.
+This Control represents a text area on the page, a control which accepts large amounts of text.  It maps to the HTML <textarea> tag.  TextAreas can be associated with a BigTextArea Widget *FORTHCOMING: real widget name* which pops up a window allowing the user to enter text in a large space without losing space in the page's real estate.  This functionality is used extensively in Kuali Coeus.
 
 h4. FileControl
 
@@ -405,7 +403,20 @@ Furthermore, since each Component bean handles its own rendering Tile template, 
 
 Every tile associated with a Component expects the instance of the Component configuration passed in.  For instance, the Group tile (web/src/main/webapp/krad/WEB-INF/jsp/container/group/group.jsp) expects an attribute called "group" which holds the Group's configuration.  By passing in the actual configuration bean and adhering to a standard contract, templates can be switched out without breaking caller's calls to them.  Let's look at each of the template contracts.
 
-*JAMES: TEMPLATE TYPES*
+||Template Type||Expected Attributes||
+|View Container| * *view* - the view to be rendered by the tile |
+|Group Container| * *group* - the group to be rendered by the tile |
+|Layout| * *items* - the items which are to be laid out within the rendered tile
+* *manager* - the instance of the LayoutManager implementation responsible for laying child Components out within the tile |
+|Field| * *field* - the field to be rendered by the tile |
+|Control| * *control* - the control to be rendered in the tile
+* *field* - the AttributeField which the control is associated with |
+|Widget| * *widget* - the widget to be rendered by the tile
+* *componentId* - the id of the component this widget is supporting |
+|Decorator| * *decorator* - the decorator that this tile will be rendering 
+* *decoratorChain* - the chain of decorators the to-be-rendered decorator is a member of
+* *templateParameters* - a Map of parameters passed to the decorator's template to control various dynamic aspects of rendering |
+|State| These templates simply store information which should be passed on POST requests; the View automatically decides which State templates to render.  There are no expected attributes. |
 
 h4. Component Initializers{anchor: component_initializers}
 

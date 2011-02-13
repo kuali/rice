@@ -585,7 +585,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 	/***
 	 * @see org.kuali.core.service.BusinessObjectMetaDataService#listPrimaryKeyFieldNames(java.lang.Class)
 	 */
-	public List listPrimaryKeyFieldNames(Class clazz) {
+	public List<String> listPrimaryKeyFieldNames(Class<?> clazz) {
 		if (persistenceStructureService.isPersistable(clazz)) {
 			return persistenceStructureService.listPrimaryKeyFieldNames(clazz);
 		}
@@ -602,7 +602,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		if(pks != null && !pks.isEmpty())
 			return pks;
 
-		return new ArrayList();
+		return new ArrayList<String>();
 
 
 

@@ -179,7 +179,7 @@ public interface BusinessObjectMetaDataService {
      * @param clazz
      * @return
      */
-    public List listPrimaryKeyFieldNames(Class clazz);
+    public List<String> listPrimaryKeyFieldNames(Class<?> clazz);
 
     /**
      *

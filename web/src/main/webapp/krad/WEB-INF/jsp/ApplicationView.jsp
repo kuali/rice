@@ -16,5 +16,8 @@
 
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
+<%-- NOTE: Put application content here (such as a header, 
+or application navigation) to wrap all the views --%>
+
 <%-- let view handler render page --%>
 <krad:template component="${KualiForm.view}"/>

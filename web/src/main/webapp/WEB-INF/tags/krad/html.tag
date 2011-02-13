@@ -15,15 +15,9 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="headerTitle" required="false" description="The title of this page which will be displayed in the browser's header bar." %>
-<%@ attribute name="additionalScriptFiles" required="false" type="java.util.List" description="A List of JavaScript file names to have included on the page." %>
-<%@ attribute name="htmlFormAction" required="false" description="The URL that the HTML form rendered on this page will be posted to." %>
-<%@ attribute name="renderForm" required="false" description="Boolean value indicating whether a form tag should be rendered or not. (defaults to true)" %>
-<%@ attribute name="renderMultipart" required="false" description="Boolean value of whether the HTML form rendred on this page will be encoded to accept multipart - ie, uploaded attachment - input." %>
-
-<c:if test="${empty renderForm}">
-  <c:set var="renderForm" value="true"/>
-</c:if>
+<%@ attribute name="view" required="true" 
+              description="The view instance the html page is being rendered for."
+              type="org.kuali.rice.kns.uif.container.View"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -41,14 +35,21 @@
     <krad:scriptingVariables/>
 
     <title>
-      <!-- bean:message key="app.title" /--> <!--  find spring replacement -->
-      :: ${headerTitle}
+      <!-- bean:message key="app.title" /--> <!--  TODO: find spring replacement -->
+      :: ${view.title}
     </title>
 
     <c:forEach items="${fn:split(ConfigProperties.css.files, ',')}"	var="cssFile">
       <c:if test="${fn:length(fn:trim(cssFile)) > 0}">
         <link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css" />
       </c:if>
+    </c:forEach>
+    
+    <c:forEach items="${view.additionalCssFiles}" var="cssFile" >
+      <c:if test="${fn:startsWith(cssFile, '/')}">
+        <c:set var="cssFile" value="${pageContext.request.contextPath}/${fn:substringAfter(cssFile,'/')}"/>
+      </c:if>
+      <link href="${cssFile}" rel="stylesheet" type="text/css" />
     </c:forEach>
 
     <c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}"	var="javascriptFile">
@@ -57,8 +58,11 @@
       </c:if>
     </c:forEach>
     
-    <c:forEach items="${additionalScriptFiles}" var="scriptFile" >
-        <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
+    <c:forEach items="${view.additionalScriptFiles}" var="scriptFile" >
+      <c:if test="${fn:startsWith(scriptFile, '/')}">
+        <c:set var="scriptFile" value="${pageContext.request.contextPath}/${scriptFile}"/>
+      </c:if>
+      <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
     </c:forEach>
   </head>
 
@@ -69,33 +73,29 @@
 
     <krad:backdoor/>
 
-    <c:set var="encoding" value=""/>
-    <c:if test="${not empty renderMultipart and renderMultipart eq true}">
-       <c:set var="encoding" value="multipart/form-data"/>
-    </c:if>
-
     <!----------------------------------- #BEGIN FORM --------------------------------------->
-    <c:if test="${renderForm}">
+    <c:if test="${view.renderForm}">
       <form:form 
          id="kualiForm"
-         action="${htmlFormAction}"
+         action="${pageContext.request.contextPath}/spring/${view.controllerRequestMapping}"
          method="post"
-         enctype="${encoding}"
+         enctype="multipart/form-data"
          modelAttribute="KualiForm"
-         onsubmit="doLoading(true);return hasFormAlreadyBeenSubmitted();">
+         onsubmit="createLoading(true);return hasFormAlreadyBeenSubmitted();"
+         cssStyle="form_format topLabel page">
 
          <a name="topOfForm"></a>
       
          <jsp:doBody/>
 
-          <div id="formComplete"></div>
-        </form:form>
-        <!----------------------------------- End Form --------------------------------------->
-     </c:if>  
+         <div id="formComplete"></div>
+      </form:form>
+      <!----------------------------------- End Form --------------------------------------->
+    </c:if>  
    
-     <c:if test="${!renderForm}"> 
+    <c:if test="${!view.renderForm}"> 
        <jsp:doBody/>
-     </c:if>  
+    </c:if>  
     
    </div> 
    </body>

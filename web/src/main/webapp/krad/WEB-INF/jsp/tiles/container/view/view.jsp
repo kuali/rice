@@ -13,59 +13,37 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="view" classname="org.kuali.rice.kns.uif.container.View"/>
 
 <!-- begin of view render -->
-<krad:html htmlFormAction="${pageContext.request.contextPath}/spring/${view.controllerRequestMapping}"
-                  headerTitle="${view.title}" additionalScriptFiles="${view.additionalScriptFiles}"
-                  renderForm="${view.renderForm}" renderMultipart="true">
-        
-  <table width="100%">
-   <c:if test="${view.renderHeader}">    
-     <tr>    
-       <td colspan="4">   
-         <!----------------------------------- #VIEW HEADER --------------------------------------->
-         <krad:template component="${view.header}"/>
-       </td>
-     </tr>
-   </c:if>  
+<krad:html view="${view}">
    
-   <tr>   
-     <td width="30px">
-       <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
-       <krad:template component="${view.navigation}" currentPageId="{view.currentPageId}"/>
-     </td>
-     
-     <td width="1%">
-       <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
-                     alt="" width="20" height="20" />
-     </td>
-     
-     <td>
-       <%-- begin of page render --%>
-       <krad:template component="${view.currentPage}"/>
-       <%-- end of page render --%>
+   <!----------------------------------- #VIEW HEADER --------------------------------------->   
+   <div id="viewheader_div">
+      <krad:template component="${view.header}"/>
+   </div>
+   
+   <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
+   <div id="viewnavigation_div">
+      <krad:template component="${view.navigation}" currentPageId="{view.currentPageId}"/>
+   </div>
+   
+   <!----------------------------------- #VIEW PAGE --------------------------------------->  
+   <div id="viewpage_div">
+      <krad:template component="${view.currentPage}"/>
+   </div>
        
-       <%-- write out view id as hidden so the view can be reconstructed if necessary --%>
-       <c:if test="${view.renderForm}">
-         <form:hidden path="viewId"/>
-       </c:if>
-     </td>
-     
-     <td width="20">
-       <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/>
-     </td>     
-   </tr>
+   <%-- write out view id as hidden so the view can be reconstructed if necessary --%>
+   <c:if test="${view.renderForm}">
+       <form:hidden path="viewId"/>
+   </c:if>
     
-   <tr>
-      <td colspan="4">   
-        <!----------------------------------- #VIEW FOOTER --------------------------------------->
-        <krad:template component="${view.footer}"/>
-      </td>
-   </tr> 
-  </table> 
+   <!----------------------------------- #VIEW FOOTER --------------------------------------->
+   <div id="viewfooter_div">
+      <krad:template component="${view.footer}"/>
+   </div>
+        
 </krad:html>
 <!-- end of view render -->

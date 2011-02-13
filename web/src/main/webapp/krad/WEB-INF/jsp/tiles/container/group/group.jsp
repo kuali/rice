@@ -19,10 +19,8 @@
 
 <krad:div component="${group}">
 
-  <c:if test="${group.renderHeader}">
-    <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
-    <krad:template component="${group.header}"/>
-  </c:if>
+  <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
+  <krad:template component="${group.header}"/>
   
   <%-- group summary text --%>
   <krad:template component="${group.summaryMessageField}"/>
@@ -34,9 +32,7 @@
         <tiles:putAttribute name="container" value="${group}"/>
   </tiles:insertTemplate>
 
-  <c:if test="${group.renderFooter}">
-    <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
-    <krad:template component="${group.footer}"/>
-  </c:if>
+  <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
+  <krad:template component="${group.footer}"/>
     
 </krad:div>

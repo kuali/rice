@@ -48,7 +48,7 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 		InquiryView inquiryView = (InquiryView) view;
 
 		parameters.put(ViewTypeParameterNames.NAME, inquiryView.getName());
-		parameters.put(ViewTypeParameterNames.MODEL_CLASS_NAME, inquiryView.getModelClassName().getName());
+		parameters.put(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME, inquiryView.getInquiryObjectClassName().getName());
 
 		return parameters;
 	}
@@ -66,12 +66,12 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 			parameters.put(ViewTypeParameterNames.NAME, UifConstants.DEFAULT_VIEW_NAME);
 		}
 
-		if (requestParameters.containsKey(ViewTypeParameterNames.MODEL_CLASS_NAME)) {
-			parameters.put(ViewTypeParameterNames.MODEL_CLASS_NAME,
-					requestParameters.get(ViewTypeParameterNames.MODEL_CLASS_NAME));
+		if (requestParameters.containsKey(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME)) {
+			parameters.put(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME,
+					requestParameters.get(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME));
 		}
 		else {
-			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.MODEL_CLASS_NAME
+			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME
 					+ "' must be given to find an inquiry view.");
 		}
 

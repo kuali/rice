@@ -39,10 +39,10 @@ import org.kuali.rice.kns.uif.field.GroupField;
  */
 public class Group extends ContainerBase {
 	private static final long serialVersionUID = 7953641325356535509L;
-	
+
 	private String fieldBindByNamePrefix;
-	private String fieldBindModelPath;
-	
+	private String fieldBindingObjectPath;
+
 	private List<? extends Component> items;
 
 	/**
@@ -82,9 +82,9 @@ public class Group extends ContainerBase {
 					attributeField.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
 				}
 
-				if (StringUtils.isNotBlank(fieldBindModelPath)
-						&& StringUtils.isBlank(attributeField.getBindingInfo().getModelPath())) {
-					attributeField.getBindingInfo().setModelPath(fieldBindModelPath);
+				if (StringUtils.isNotBlank(fieldBindingObjectPath)
+						&& StringUtils.isBlank(attributeField.getBindingInfo().getBindingObjectPath())) {
+					attributeField.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
 				}
 			}
 			// set on GroupField's group to recursively set AttributeFields
@@ -95,8 +95,8 @@ public class Group extends ContainerBase {
 					if (StringUtils.isBlank(groupField.getGroup().getFieldBindByNamePrefix())) {
 						groupField.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
 					}
-					if (StringUtils.isBlank(groupField.getGroup().getFieldBindModelPath())) {
-						groupField.getGroup().setFieldBindModelPath(fieldBindModelPath);
+					if (StringUtils.isBlank(groupField.getGroup().getFieldBindingObjectPath())) {
+						groupField.getGroup().setFieldBindingObjectPath(fieldBindingObjectPath);
 					}
 				}
 			}
@@ -150,41 +150,48 @@ public class Group extends ContainerBase {
 	}
 
 	/**
-	 * Model path to set on each of the group's <code>AttributeField</code>
-	 * instances
+	 * Object binding path to set on each of the group's
+	 * <code>AttributeField</code> instances
 	 * 
 	 * <p>
-	 * When the attributes of the group belong to a model whose path is
+	 * When the attributes of the group belong to a object whose path is
 	 * different from the default then this property can be given to set each of
-	 * the attributes instead of setting the model path on each one. The model
-	 * path can be overridden at the attribute level. The model path is set to
-	 * the fieldBindModelPath during the initialize phase.
+	 * the attributes instead of setting the model path on each one. The object
+	 * path can be overridden at the attribute level. The object path is set to
+	 * the fieldBindingObjectPath during the initialize phase.
 	 * </p>
 	 * 
 	 * @return String model path to set
+	 * @see org.kuali.rice.kns.uif.BindingInfo.getBindingObjectPath()
 	 */
-	public String getFieldBindModelPath() {
-		return this.fieldBindModelPath;
+	public String getFieldBindingObjectPath() {
+		return this.fieldBindingObjectPath;
 	}
 
 	/**
-	 * Setter for the field model path
+	 * Setter for the field object binding path
 	 * 
-	 * @param fieldBindModelPath
+	 * @param fieldBindingObjectPath
 	 */
-	public void setFieldBindModelPath(String fieldBindModelPath) {
-		this.fieldBindModelPath = fieldBindModelPath;
+	public void setFieldBindingObjectPath(String fieldBindingObjectPath) {
+		this.fieldBindingObjectPath = fieldBindingObjectPath;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.container.ContainerBase#getItems()
+	 */
 	@Override
 	public List<? extends Component> getItems() {
 		return this.items;
 	}
 
+	/**
+	 * Setter for the Group's list of components
+	 * 
+	 * @param items
+	 */
 	public void setItems(List<? extends Component> items) {
 		this.items = items;
 	}
-	
-	
 
 }

@@ -29,7 +29,7 @@ public class UifConstants extends JSTLConstants {
 
 	public static final String DEFAULT_MODEL_NAME = "KualiForm";
 	public static final String DEFAULT_VIEW_NAME = "default";
-	public static final String SPRING_VIEW_ID = "View";
+	public static final String SPRING_VIEW_ID = "ApplicationView";
 
 	public static class RequestParameterName {
 		public static final String VIEW_ID = "viewId";
@@ -76,7 +76,7 @@ public class UifConstants extends JSTLConstants {
 
 	public static class ViewTypeParameterNames {
 		public static final String NAME = "name";
-		public static final String MODEL_CLASS_NAME = "modelClassName";
+		public static final String INQUIRY_OBJECT_CLASS_NAME = "inquiryObjectClassName";
 	}
 
 	public static class ActionParameterNames {

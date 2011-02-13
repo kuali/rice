@@ -34,5 +34,5 @@
 </krad:div>
 
 <script type="text/javascript">
-  doNavigation("${group.id}", "${group.navigationType}");
+  createNavigation("${group.id}", "${group.navigationType}");
 </script>

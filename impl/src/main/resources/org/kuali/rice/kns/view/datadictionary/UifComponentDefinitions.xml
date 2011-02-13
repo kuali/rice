@@ -18,12 +18,36 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+
+  <!-- View -->
+  
+  <bean id="View" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
+      <property name="viewHelperServiceBeanId" value="ViewHelperService"/>
+      <property name="header">
+        <bean parent="HeaderView"/>
+      </property> 
+      <property name="footer">
+        <bean parent="Footer"/>
+      </property> 
+      <property name="additionalCssFiles">
+        <list>
+          <value>/krad/css/kuali-stacked.css</value>
+        </list>
+      </property>        
+  </bean>
+  
+  <bean id="FormView" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
+      <property name="footer">
+        <ref bean="Footer_SaveCloseCancel"/>
+      </property>
+  </bean>
   
   <!-- Pages -->
    
-  <bean id="Page" abstract="true" parent="Group">
+  <bean id="GroupPage" abstract="true" parent="Group">
       <property name="header">
-        <bean parent="PageHeader"/>
+        <bean parent="HeaderPage"/>
       </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
@@ -32,23 +56,20 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Sections -->
   
-  <bean id="Section" abstract="true" parent="Group">
-      <property name="header">
-        <bean parent="Header"/>
-      </property> 
+  <bean id="GroupSection" abstract="true" parent="Group">
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property> 
   </bean>   
   
-  <bean id="PanelSection" abstract="true" parent="Section">
+  <bean id="GroupSection_Accordion" abstract="true" parent="GroupSection">
       <property name="decorator">
-        <bean parent="PanelDecorator"/>
+        <bean parent="AccordionDecorator"/>
       </property>
       <property name="renderHeader" value="false"/>
   </bean> 
   
-  <bean id="PanelGridSection" abstract="true" parent="PanelSection">
+  <bean id="GroupSectionGridLayout_Accordion" abstract="true" parent="GroupSection_Accordion">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property> 
@@ -59,7 +80,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Group" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="header">
-        <bean parent="HeaderThree"/>
+        <bean parent="HeaderTwo" p:styleClass="info"/>
       </property> 
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
@@ -75,18 +96,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
-  <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/navigationGroup.jsp"/>
-  </bean>
-  
-  <bean id="MenuNavigation" abstract="true" parent="NavigationGroup">
-      <property name="navigationType" value="VERTICAL_MENU"/>
-  </bean>
-  
   <bean id="GroupBodyOnly" abstract="true" parent="Group">
       <property name="renderHeader" value="false"/>
       <property name="renderFooter" value="false"/>
   </bean>  
+  
+  <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/navigationGroup.jsp"/>
+  </bean>
+  
+  <bean id="NavigationGroupMenu" abstract="true" parent="NavigationGroup">
+      <property name="navigationType" value="VERTICAL_MENU"/>
+  </bean>
   
   <bean id="CollectionGroup" abstract="true" class="org.kuali.rice.kns.uif.container.CollectionGroup" parent="Group">
       <property name="bindingInfo">
@@ -106,7 +127,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>          
       <property name="actionFields">
         <list>
-          <bean parent="ActionField" p:methodToCall="deleteLine" p:actionLabel="delete"/>
+          <bean parent="ActionField_Secondary" p:methodToCall="deleteLine" p:actionLabel="delete"/>
         </list>
       </property>
       <property name="layoutManager">
@@ -114,32 +135,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
   </bean> 
   
-  <bean id="CollectionTableGroup" abstract="true" parent="CollectionGroup">
+  <bean id="CollectionGroup_Accordion" abstract="true" parent="CollectionGroup">
+      <property name="decorator">
+        <bean parent="AccordionDecorator"/>
+      </property>
+      <property name="renderHeader" value="false"/>
+  </bean>
+  
+  <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroup">
       <property name="layoutManager">
         <bean parent="TableLayoutManager"/>
       </property> 
   </bean>   
   
-  <bean id="PanelCollectionGroup" abstract="true" parent="CollectionGroup">
+  <bean id="CollectionGroupTableLayout_Accordion" abstract="true" parent="CollectionGroupTableLayout">
       <property name="decorator">
-        <bean parent="PanelDecorator"/>
-      </property>
-      <property name="renderHeader" value="false"/>
-  </bean>
-  
-  <bean id="PanelCollectionTableGroup" abstract="true" parent="CollectionTableGroup">
-      <property name="decorator">
-        <bean parent="PanelDecorator"/>
+        <bean parent="AccordionDecorator"/>
       </property>  
       <property name="renderHeader" value="false"/>
   </bean>  
   
   <!-- Decorators -->
   
-  <bean id="PanelDecorator" class="org.kuali.rice.kns.uif.decorator.PanelDecorator" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/decorator/panel.jsp"/>
-      <property name="panelHeader">
-        <bean parent="PanelHeader"/>
+  <bean id="AccordionDecorator" class="org.kuali.rice.kns.uif.decorator.AccordionDecorator" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/decorator/accordion.jsp"/>
+      <property name="accordionHeader">
+        <bean parent="Header_Accordion"/>
       </property>
       <property name="styleClass" value="tab-container"/>
   </bean> 
@@ -148,6 +169,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="AttributeField" abstract="true" class="org.kuali.rice.kns.uif.field.AttributeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/attributeField.jsp"/>
+      <property name="styleClass" value="field-attribute"/>
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>      
@@ -156,14 +178,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>  
   
-  <bean id="FormField" abstract="true" parent="AttributeField">
+  <bean id="AttributeField_Form" abstract="true" parent="AttributeField">
       <property name="bindingInfo.bindToForm" value="true"/>
   </bean>    
   
   <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.uif.field.LabelField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/labelField.jsp"/>
       <property name="align" value="right"/>
-      <property name="style" value="font-size: .8em;font-weight: bold;"/>
+      <property name="styleClass" value="desc"/>
       <property name="requiredMessageField">
         <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClass="required"/>
       </property>   
@@ -171,10 +193,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="ActionField" abstract="true" class="org.kuali.rice.kns.uif.field.ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/actionField.jsp"/>
+      <property name="styleClass" value="ui-priority-primary"/>
+  </bean>  
+  
+  <bean id="ActionField_Secondary" abstract="true" parent="ActionField">
+      <property name="styleClass" value="ui-priority-secondary"/>
   </bean>  
   
   <bean id="ActionLinkField" abstract="true" parent="ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/actionLinkField.jsp"/>
+      <property name="styleClass" value="action"/>
   </bean>  
   
   <bean id="LinkField" abstract="true" class="org.kuali.rice.kns.uif.field.LinkField" scope="prototype">
@@ -228,15 +256,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="headerLevel" value="h6"/>
   </bean>      
   
-  <bean id="ViewHeader" abstract="true" parent="Header">
-      <property name="styleClass" value="headerarea"/>
+  <bean id="HeaderView" abstract="true" parent="Header">
+      <property name="styleClass" value="view_header"/>
   </bean>
   
-  <bean id="PageHeader" abstract="true" parent="Header">
-      <property name="styleClass" value="pageHeader"/>
+  <bean id="HeaderPage" abstract="true" parent="Header">
+      <property name="styleClass" value="page_header"/>
   </bean>  
   
-  <bean id="PanelHeader" abstract="true" parent="Header">
+  <bean id="Header_Accordion" abstract="true" parent="Header">
       <property name="styleClass" value="tab-new"/>
   </bean>
   
@@ -287,6 +315,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/stacked.jsp"/>
       <property name="lineGroupPrototype">
         <bean parent="GroupGridLayout">
+           <property name="header">
+             <bean parent="HeaderThree"/>
+           </property>
            <property name="footer">
              <bean parent="Footer"/>
            </property>
@@ -335,6 +366,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="DatePicker" class="org.kuali.rice.kns.uif.widget.DatePicker" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/datePicker.jsp"/>
+      <property name="styleClass" value="calendar"/>
       <property name="widgetOptions">
           <map>
               <entry key="showOn" value="button"/>

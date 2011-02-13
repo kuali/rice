@@ -169,7 +169,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		if (StringUtils.isBlank(dictionaryAttributeName) && StringUtils.isBlank(dictionaryObjectEntry)
 				&& !field.getBindingInfo().isBindToForm()) {
 			dictionaryAttributeName = field.getName();
-			Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, field.getBindingInfo().getModelPath());
+			Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());
 			if (dictionaryModelClass != null) {
 				dictionaryObjectEntry = dictionaryModelClass.getName();
 			}

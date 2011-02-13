@@ -20,15 +20,22 @@ import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Type of <code>View</code> that provides a read-only display of a record of
+ * data (object instance)
+ * 
+ * <p>
+ * The <code>InquiryView</code> provides the interface for the Inquiry
+ * framework. It works with the <code>Inquirable</code> service and inquiry
+ * controller. The view does render a form to support the configuration of
+ * actions to perform operations on the data.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InquiryView extends FormView {
 	private static final long serialVersionUID = 716926008488403616L;
 
-	private Class<?> modelClassName;
+	private Class<?> inquiryObjectClassName;
 
 	private Class<? extends InquiryPresentationController> presentationControllerClass;
 	private Class<? extends InquiryAuthorizer> authorizerClass;
@@ -43,7 +50,7 @@ public class InquiryView extends FormView {
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
-	 * <li>Set the modelClasses map for the bo path</li>
+	 * <li>Set the abstractTypeClasses map for the inquiry object path</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -53,15 +60,32 @@ public class InquiryView extends FormView {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		getModelClasses().put(getDefaultModelPath(), modelClassName);
+		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), inquiryObjectClassName);
 	}
 
-	public Class<?> getModelClassName() {
-		return this.modelClassName;
+	/**
+	 * Class name for the object the inquiry applies to
+	 * 
+	 * <p>
+	 * The inquiry class name is used to pick up a dictionary entry which will
+	 * feed the attribute field definitions and other configuration. In addition
+	 * it is to configure the <code>Inquirable</code> which will carry out the
+	 * inquiry action
+	 * </p>
+	 * 
+	 * @return Class<?> inquiry object class
+	 */
+	public Class<?> getInquiryObjectClassName() {
+		return this.inquiryObjectClassName;
 	}
 
-	public void setModelClassName(Class<?> modelClassName) {
-		this.modelClassName = modelClassName;
+	/**
+	 * Setter for the inquiry class name
+	 * 
+	 * @param inquiryObjectClassName
+	 */
+	public void setInquiryObjectClassName(Class<?> inquiryObjectClassName) {
+		this.inquiryObjectClassName = inquiryObjectClassName;
 	}
 
 	public Class<? extends InquiryPresentationController> getPresentationControllerClass() {

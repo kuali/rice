@@ -63,10 +63,11 @@ public class View extends ContainerBase {
 	private NavigationGroup navigation;
 
 	private Class<?> formClass;
-	private String defaultModelPath;
-	private Map<String, Class<?>> modelClasses;
+	private String defaultBindingObjectPath;
+	private Map<String, Class<?>> abstractTypeClasses;
 
 	private List<String> additionalScriptFiles;
+	private List<String> additionalCssFiles;
 
 	private String viewTypeName;
 	private String viewHelperServiceBeanId;
@@ -89,8 +90,10 @@ public class View extends ContainerBase {
 
 		viewIndex = new ViewIndex();
 
+		additionalScriptFiles = new ArrayList<String>();
+		additionalCssFiles = new ArrayList<String>();
 		items = new ArrayList<Group>();
-		modelClasses = new HashMap<String, Class<?>>();
+		abstractTypeClasses = new HashMap<String, Class<?>>();
 		allowedParameters = new HashSet<String>();
 		context = new HashMap<String, String>();
 	}
@@ -229,76 +232,142 @@ public class View extends ContainerBase {
 		this.navigation = navigation;
 	}
 
+	/**
+	 * Class of the Form that should be used with the <code>View</code>
+	 * instance. The form is the top level object for all the view's data and is
+	 * used to present and accept data in the user interface. All form classes
+	 * should extend UifFormBase
+	 * 
+	 * @return Class<?> class for the view's form
+	 * @see org.kuali.rice.kns.web.spring.form.UifFormBase
+	 */
 	public Class<?> getFormClass() {
 		return this.formClass;
 	}
 
+	/**
+	 * Setter for the form class
+	 * 
+	 * @param formClass
+	 */
 	public void setFormClass(Class<?> formClass) {
 		this.formClass = formClass;
 	}
 
-	public String getDefaultModelPath() {
-		return this.defaultModelPath;
-	}
-
-	public void setDefaultModelPath(String defaultModelPath) {
-		this.defaultModelPath = defaultModelPath;
+	/**
+	 * For <code>View</code> types that work primarily with one nested object of
+	 * the form (for instance document, or bo) the default binding object path
+	 * can be set for each of the views <code>DataBinding</code> components. If
+	 * the component does not set its own binding object path it will inherit
+	 * the default
+	 * 
+	 * @return String binding path to the object from the form
+	 * @see org.kuali.rice.kns.uif.BindingInfo.getBindingObjectPath()
+	 */
+	public String getDefaultBindingObjectPath() {
+		return this.defaultBindingObjectPath;
 	}
 
 	/**
-	 * Declares the model classes that will provide the view's data
+	 * Setter for the default binding object path to use for the view
 	 * 
-	 * <p>
-	 * Each <code>Map</code> entry defines a model. The <code>Map</code> key
-	 * gives a name that should be associated with the model. When the view also
-	 * contains a form class, this name should be the property name on the form
-	 * that holds the model. This will be used to create the final bindingPath
-	 * for the attributes that belong to that model.
-	 * </p>
-	 * 
-	 * <p>
-	 * The <code>Map</code> value gives the <code>Class</code> for the model.
-	 * This is used to find dictionary entries along with creating new instances
-	 * of the model when needed.
-	 * </p>
-	 * 
-	 * @return Map<String, Class> of model entries
+	 * @param defaultBindingObjectPath
 	 */
-	public Map<String, Class<?>> getModelClasses() {
-		return this.modelClasses;
+	public void setDefaultBindingObjectPath(String defaultBindingObjectPath) {
+		this.defaultBindingObjectPath = defaultBindingObjectPath;
 	}
 
 	/**
-	 * Setter for the model classes Map
+	 * Configures the concrete classes that will be used for properties in the
+	 * form object graph that have an abstract or interface type
 	 * 
-	 * @param modelClasses
+	 * <p>
+	 * For properties that have an abstract or interface type, it is not
+	 * possible to perform operations like getting/settings property values and
+	 * getting information from the dictionary. When these properties are
+	 * encountered in the object graph, this <code>Map</code> will be consulted
+	 * to determine the concrete type to use.
+	 * </p>
+	 * 
+	 * <p>
+	 * e.g. Suppose we have a property document.accountingLine.accountNumber and
+	 * the accountingLine property on the document instance has an interface
+	 * type 'AccountingLine'. We can then put an entry into this map with key
+	 * 'document.accountingLine', and value
+	 * 'org.kuali.rice.sampleapp.TravelAccountingLine'. When getting the
+	 * property type or an entry from the dictionary for accountNumber, the
+	 * TravelAccountingLine class will be used.
+	 * </p>
+	 * 
+	 * @return Map<String, Class> of class implementations keyed by path
 	 */
-	public void setModelClasses(Map<String, Class<?>> modelClasses) {
-		this.modelClasses = modelClasses;
+	public Map<String, Class<?>> getAbstractTypeClasses() {
+		return this.abstractTypeClasses;
+	}
+
+	/**
+	 * Setter for the Map of class implementations keyed by path
+	 * 
+	 * @param abstractTypeClasses
+	 */
+	public void setAbstractTypeClasses(Map<String, Class<?>> abstractTypeClasses) {
+		this.abstractTypeClasses = abstractTypeClasses;
 	}
 
 	/**
 	 * Declares additional script files that should be included with the
 	 * <code>View</code>. These files are brought into the HTML page along with
 	 * common script files configured for the Rice application. Each entry
-	 * should contain the path to the script relative to the web root.
+	 * contain the path to the CSS file, either a relative path, path from web
+	 * root, or full URI
+	 * 
 	 * <p>
-	 * e.g. '/krad/scripts/myScript.js'
+	 * e.g. '/krad/scripts/myScript.js', '../scripts/myScript.js',
+	 * 'http://my.edu/web/myScript.js'
 	 * </p>
 	 * 
-	 * @return
+	 * @return List<String> script file locations
 	 */
 	public List<String> getAdditionalScriptFiles() {
 		return this.additionalScriptFiles;
 	}
 
 	/**
-	 * Setter for the List of additional script files to include
+	 * Setter for the List of additional script files to included with the
+	 * <code>View</code>
 	 * 
 	 * @param additionalScriptFiles
 	 */
 	public void setAdditionalScriptFiles(List<String> additionalScriptFiles) {
 		this.additionalScriptFiles = additionalScriptFiles;
+	}
+
+	/**
+	 * Declares additional CSS files that should be included with the
+	 * <code>View</code>. These files are brought into the HTML page along with
+	 * common CSS files configured for the Rice application. Each entry should
+	 * contain the path to the CSS file, either a relative path, path from web
+	 * root, or full URI
+	 * 
+	 * <p>
+	 * e.g. '/krad/css/stacked-view.css', '../css/stacked-view.css',
+	 * 'http://my.edu/web/stacked-view.css'
+	 * </p>
+	 * 
+	 * @return List<String> CSS file locations
+	 */
+	public List<String> getAdditionalCssFiles() {
+		return this.additionalCssFiles;
+	}
+
+	/**
+	 * Setter for the List of additional CSS files to included with the
+	 * <code>View</code>
+	 * 
+	 * @param additionalCssFiles
+	 */
+	public void setAdditionalCssFiles(List<String> additionalCssFiles) {
+		this.additionalCssFiles = additionalCssFiles;
 	}
 
 	public boolean isDialogMode() {

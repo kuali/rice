@@ -1137,8 +1137,10 @@ th.infoline {
 .summary {
 	font-size: small;
 	font-style: italic;
+	margin-left: 50px;
 	margin-bottom: 5px;
 	display: inline-block;
+	clear:left;
 }
 
 .required {

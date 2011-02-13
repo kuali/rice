@@ -23,5 +23,5 @@
  --%>
  
 <script type="text/javascript">
-  doTable('${componentId}', ${widget.widgetOptionsJSString});
+  createTable('${componentId}', ${widget.widgetOptionsJSString});
 </script>

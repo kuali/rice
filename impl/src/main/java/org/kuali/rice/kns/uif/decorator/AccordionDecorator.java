@@ -19,32 +19,32 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.ComponentBase;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.HeaderField;
 
 /**
- * Decorator that wraps a <code>Group</code> with a collapsible panel.
+ * Decorator that wraps a <code>Group</code> with an accordion (collapsible
+ * behavior).
  * 
  * <p>
- * The panel renderer will call the group's template to render within the panel.
- * The panelText is the text that will be displayed within the panel. If not set
- * the header text from the group will be used. The panel header can be
- * configured to style the panel.
+ * The accordion renderer will call the group's template to render within the
+ * collapsible header. The accordionText is the text that will be displayed
+ * within the header. If not set the header text from the group will be used.
+ * The accordionHeader can be configured to style the header.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PanelDecorator extends ComponentBase implements ComponentDecorator {
+public class AccordionDecorator extends DecoratorBase {
 	private static final long serialVersionUID = -2973529947669065264L;
 
-	private String panelText;
+	private String accordionText;
 	private boolean defaultOpen;
 
-	private HeaderField panelHeader;
+	private HeaderField accordionHeader;
 
-	public PanelDecorator() {
+	public AccordionDecorator() {
 		defaultOpen = true;
 	}
 
@@ -52,8 +52,8 @@ public class PanelDecorator extends ComponentBase implements ComponentDecorator 
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
-	 * <li>Set header text (if blank) on panel header to the panel text property
-	 * </li>
+	 * <li>Set header text (if blank) on accordion header to the accordion text
+	 * property</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -61,8 +61,8 @@ public class PanelDecorator extends ComponentBase implements ComponentDecorator 
 	 */
 	@Override
 	public void performInitialization(View view) {
-		if (StringUtils.isBlank(panelHeader.getHeaderText())) {
-			panelHeader.setHeaderText(panelText);
+		if (StringUtils.isBlank(accordionHeader.getHeaderText())) {
+			accordionHeader.setHeaderText(accordionText);
 		}
 	}
 
@@ -80,24 +80,16 @@ public class PanelDecorator extends ComponentBase implements ComponentDecorator 
 	public List<Component> getNestedComponents() {
 		List<Component> components = super.getNestedComponents();
 
-		components.add(panelHeader);
+		components.add(accordionHeader);
 
 		return components;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "panel";
-	}
-
-	/**
-	 * Indicates whether the panel should be open on initial display or closed.
-	 * Defaults to true
+	 * Indicates whether the accordion should be open on initial display or
+	 * closed. Defaults to true
 	 * 
-	 * @return boolean true if panel should be open, false if it should be
+	 * @return boolean true if accordion should be open, false if it should be
 	 *         closed
 	 */
 	public boolean isDefaultOpen() {
@@ -114,41 +106,41 @@ public class PanelDecorator extends ComponentBase implements ComponentDecorator 
 	}
 
 	/**
-	 * Text that should be displayed in the panel. This will be set as the
-	 * header text in the panel header
+	 * Text that should be displayed in the accordion header. This will be set
+	 * as the header text in the accordion header
 	 * 
 	 * @return String header text
 	 */
-	public String getPanelText() {
-		return this.panelText;
+	public String getAccordionText() {
+		return this.accordionText;
 	}
 
 	/**
-	 * Setter for the panel header text
+	 * Setter for the accordion header text
 	 * 
-	 * @param panelText
+	 * @param accordionText
 	 */
-	public void setPanelText(String panelText) {
-		this.panelText = panelText;
+	public void setAccordionText(String accordionText) {
+		this.accordionText = accordionText;
 	}
 
 	/**
-	 * <code>HeaderField</code> for the panel that defines the style class and
-	 * other configuration for the header
+	 * <code>HeaderField</code> for the accordion that defines the style class
+	 * and other configuration for the header
 	 * 
-	 * @return HeaderField for panel
+	 * @return HeaderField for accordion
 	 */
-	public HeaderField getPanelHeader() {
-		return this.panelHeader;
+	public HeaderField getAccordionHeader() {
+		return this.accordionHeader;
 	}
 
 	/**
-	 * Setter for the panel header field
+	 * Setter for the accordion header field
 	 * 
-	 * @param panelHeader
+	 * @param accordionHeader
 	 */
-	public void setPanelHeader(HeaderField panelHeader) {
-		this.panelHeader = panelHeader;
+	public void setAccordionHeader(HeaderField accordionHeader) {
+		this.accordionHeader = accordionHeader;
 	}
 
 }

@@ -97,7 +97,7 @@ public class CollectionGroup extends Group implements DataBinding {
 	 */
 	@Override
 	public void performInitialization(View view) {
-		setFieldBindModelPath(getBindingInfo().getModelPath());
+		setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
 
 		super.performInitialization(view);
 

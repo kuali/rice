@@ -110,6 +110,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	@Override
 	public void performFinalize(View view, Object model) {
 		super.performFinalize(view, model);
+		
+		if (!renderHeader && (header != null)) {
+			header.setRender(false);
+		}
+		
+		if (!renderFooter && (footer != null)) {
+			footer.setRender(false);
+		}
 
 		if (layoutManager != null) {
 			layoutManager.performFinalize(view, model, this);

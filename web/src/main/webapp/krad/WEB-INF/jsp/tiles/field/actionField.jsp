@@ -23,6 +23,6 @@
  --%>
  
 <input type="submit" id="${field.id}" onClick="setMethodToCall('${field.methodToCall}');"
-       name="${field.name}" value="${field.actionLabel}"/>
+       name="${field.name}" value="${field.actionLabel}" class="${field.styleClass}"/>
        
-<krad:dynoParameters componentId="${field.id}" parameters="${field.actionParameters}"/>
+<krad:actionParameters componentId="${field.id}" parameters="${field.actionParameters}"/>

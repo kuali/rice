@@ -48,7 +48,7 @@ public class UITestController extends UifControllerBase {
         return new UITestForm();
     }
 
-    @RequestMapping(params = "methodToCall=start")
+	@RequestMapping(params = "methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
@@ -93,18 +93,18 @@ public class UITestController extends UifControllerBase {
 		return getUIFModelAndView(uiTestForm, testViewId, "page1");
 	}
 
-	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigateToPage1")
-	public ModelAndView navigateToPage1(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
-			HttpServletRequest request, HttpServletResponse response) {
-
-		return getUIFModelAndView(uiTestForm, testViewId, "page1");
-	}
-
-	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigateToPage2")
-	public ModelAndView navigateToPage2(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
+	public ModelAndView save(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		return getUIFModelAndView(uiTestForm, testViewId, "page2");
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
+	public ModelAndView close(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		return getUIFModelAndView(uiTestForm, testViewId, "page1");
 	}
 
 }

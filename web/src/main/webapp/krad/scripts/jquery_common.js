@@ -219,7 +219,7 @@ function substringBetween(parseString, matchString1, matchString2) {
  * @param navigationType -
  *          the navigation style to render
  */
-function doNavigation(listId, navigationType) {
+function createNavigation(listId, navigationType) {
 	if (navigationType == "VERTICAL_MENU") {
 		doVerticalMenu(listId);
 	}
@@ -231,7 +231,7 @@ function doNavigation(listId, navigationType) {
  * @param listId -
  *          unique id for the unordered list
  */
-function doVerticalMenu(listId) {
+function createVerticalMenu(listId) {
 	$(document).ready(function() {
 		$("#" + listId).sidebar();
 	})
@@ -249,46 +249,46 @@ function doVerticalMenu(listId) {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function doDatePicker(controlId, options) {
+function createDatePicker(controlId, options) {
   $(function() {
    	$("#" + controlId).datepicker(options);
 	});	
 }
 
 /**
- * Sets up the script necessary to toggle a group as a panel
+ * Sets up the script necessary to toggle a group as a accordion
  * 
- * @param panelToggleLink -
- *          id for the link that should toggle the panel
- * @param openPanelHeaderContents -
- *          contents that should go in the panel header when the panel is open
- * @param closedPanelHeaderContents -
- *          contents that should go in the panel header when the panel is closed
- * @param panelDiv -
- *          id for the div that wraps the panel contents
+ * @param accordionToggleLink -
+ *          id for the link that should toggle the accordion
+ * @param openAccordionHeaderContents -
+ *          contents that should go in the accordion header when the accordion is open
+ * @param closedAccordionHeaderContents -
+ *          contents that should go in the accordion header when the accordion is closed
+ * @param accordionDiv -
+ *          id for the div that wraps the accordion contents
  * @param isOpen -
- *          boolean that indicates whether the panel should be set to open
+ *          boolean that indicates whether the accordion should be set to open
  *          initially (true) or closed (false)
  */
-function doPanel(panelToggleLink, openPanelHeaderContents, closedPanelHeaderContents, 
-		             panelDiv, isOpen) {
+function createAccordion(accordionToggleLink, openAccordionHeaderContents, closedAccordionHeaderContents, 
+		             accordionDiv, isOpen) {
   $(document).ready(function() {
   	if (isOpen) {
-  		$("#" + panelDiv).slideDown(000);
-  		$("#" + panelToggleLink).html(openPanelHeaderContents);
+  		$("#" + accordionDiv).slideDown(000);
+  		$("#" + accordionToggleLink).html(openAccordionHeaderContents);
   	}
   	else {
-  		$("#" + panelDiv).slideUp(000);
-  		$("#" + panelToggleLink).html(closedPanelHeaderContents);
+  		$("#" + accordionDiv).slideUp(000);
+  		$("#" + accordionToggleLink).html(closedAccordionHeaderContents);
   	} 
  
-    $("#" + panelToggleLink).toggle(
+    $("#" + accordionToggleLink).toggle(
        function() {
-         $("#" + panelDiv).slideUp(300);
-         $("#" + panelToggleLink).html(closedPanelHeaderContents);
+         $("#" + accordionDiv).slideUp(500);
+         $("#" + accordionToggleLink).html(closedAccordionHeaderContents);
        }, function() {
-         $("#" + panelDiv).slideDown(300);
-         $("#" + panelToggleLink).html(openPanelHeaderContents);
+         $("#" + accordionDiv).slideDown(500);
+         $("#" + accordionToggleLink).html(openAccordionHeaderContents);
        }
     );
   });
@@ -303,7 +303,7 @@ function doPanel(panelToggleLink, openPanelHeaderContents, closedPanelHeaderCont
  *          boolean that indicates whether the loading indicator should be shown
  *          (true) or hidden (false)
  */
-function doLoading(showLoading) {
+function createLoading(showLoading) {
 	if (showLoading) {
 	  $("#page_div").showLoading();
 	}
@@ -323,7 +323,7 @@ function doLoading(showLoading) {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function doTable(controlId, options) {
+function createTable(controlId, options) {
 	$(document).ready(function() {
 		var oTable = $("#" + controlId).dataTable({"sDom": 'T<"clear">lfrtip',
 		                              "oTableTools": {

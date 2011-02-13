@@ -29,10 +29,7 @@
     <property name="entryPageId" value="page1" />
     <property name="items">
       <list>
-        <bean parent="Page" p:id="page1">
-          <property name="header">
-            <ref bean="PagePanelHeader" />
-          </property>
+        <bean parent="Page_Accordion" p:id="page1">
           <property name="items">
             <list>
               <ref bean="FiscalOfficer-InquiryView-Section1" />
@@ -41,20 +38,12 @@
         </bean>
       </list>
     </property>
-    <property name="modelClasses">
-      <map>
-        <entry key="travelAccount1" value="edu.sampleu.travel.bo.FiscalOfficer" />
-      </map>
-    </property>
     <property name="formClass"
       value="org.kuali.rice.kns.web.struts.form.InquiryForm" />
     <property name="controllerRequestMapping" value="inquiry" />
-    <property name="footer">
-      <ref bean="testViewFooter" />
-    </property>
   </bean>
 
-  <bean id="FiscalOfficer-InquiryView-Section1" parent="PanelGridSection">
+  <bean id="FiscalOfficer-InquiryView-Section1" parent="GroupSectionGridLayout_Accordion">
     <property name="id" value="FiscalOfficer-InquiryView-Section1" />
     <property name="title" value="Fiscal Officer" />
     <property name="summary" value="A Fiscal Officer." />

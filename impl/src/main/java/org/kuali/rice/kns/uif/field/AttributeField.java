@@ -42,8 +42,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 	private static final long serialVersionUID = -3703656713706343840L;
 	
 	// value props
-	private Object value;
-	private String formattedValue;
 	private String defaultValue;
 	private Integer maxLength;
 
@@ -161,22 +159,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 		components.add(errorsField);
 
 		return components;
-	}
-
-	public Object getValue() {
-		return this.value;
-	}
-
-	public void setValue(Object value) {
-		this.value = value;
-	}
-
-	public String getFormattedValue() {
-		return this.formattedValue;
-	}
-
-	public void setFormattedValue(String formattedValue) {
-		this.formattedValue = formattedValue;
 	}
 
 	public String getDefaultValue() {

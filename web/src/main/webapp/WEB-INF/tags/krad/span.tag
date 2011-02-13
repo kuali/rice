@@ -15,19 +15,19 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="field" required="true" 
-              description="The UIF Field for which the span will be wrapping." 
-              type="org.kuali.rice.kns.uif.field.Field"%>
+<%@ attribute name="component" required="true" 
+              description="The UIF component for which the span will be wrapping." 
+              type="org.kuali.rice.kns.uif.Component"%>
 <%@ attribute name="idSuffix" required="false" 
               description="String to suffix the id with"%>               
               
-<c:if test="${!empty field.style}">
-  <c:set var="style" value="style=\"${field.style}\""/>
+<c:if test="${!empty component.style}">
+  <c:set var="style" value="style=\"${component.style}\""/>
 </c:if>   
 
-<c:set var="id" value="${field.id}"/>
+<c:set var="id" value="${component.id}"/>
 <c:if test="${!empty idSuffix}">
   <c:set var="id" value="${id}_${idSuffix}"/>
 </c:if>             
 
-<span id="${id}" class="${field.styleClass}" ${style}><jsp:doBody/></span>
+<span id="${id}" class="${component.styleClass}" ${style}><jsp:doBody/></span>

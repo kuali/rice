@@ -23,5 +23,5 @@
  --%>
  
 <script type="text/javascript">
-  doDatePicker('${componentId}', ${widget.widgetOptionsJSString});
+   createDatePicker('${componentId}', ${widget.widgetOptionsJSString});
 </script>

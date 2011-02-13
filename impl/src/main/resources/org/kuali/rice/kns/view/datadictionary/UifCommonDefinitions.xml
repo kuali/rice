@@ -19,41 +19,49 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  limitations under the License.
 -->
 
-  <bean id="View" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
-      <property name="viewHelperServiceBeanId" value="ViewHelperService"/>
-      <property name="header">
-        <bean parent="ViewHeader"/>
-      </property> 
-      <property name="footer">
-        <bean parent="Footer"/>
-      </property>            
-  </bean>
+  <!-- Common Views -->
   
-  <bean id="FormView" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
-  </bean>
-
   <bean id="InquiryView" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
      <property name="name" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
-     <property name="defaultModelPath" value="bo"/>
+     <property name="defaultBindingObjectPath" value="bo"/>
      <property name="controllerRequestMapping" value="inquiry"/>
      <property name="readOnly" value="true"/>
      <property name="footer">
-        <ref bean="inquiryFooter"/>
+        <ref bean="FooterInquiry"/>
      </property>     
   </bean>
+   
+  <!-- Common Pages --> 
   
-  <bean id="inquiryFooter" parent="Footer">
+  <bean id="Page_Accordion" parent="GroupPage">
+      <property name="header">
+         <ref bean="HeaderPage_AccordionActions"/>
+      </property>
+  </bean>
+  
+  <bean id="PageInquiry" parent="GroupPage">
+      <property name="header">
+         <ref bean="HeaderPageInquiry"/>
+      </property>
+  </bean>
+  
+  <!-- Common Groups -->
+  <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
+      <property name="styleClass" value="right"/>
       <property name="items">
-        <list> 
-          <bean parent="ActionField" p:methodToCall="close" p:actionLabel="Close"/>
-        </list>
-      </property>  
-   </bean>
+         <list> 
+            <bean parent="ActionField_Secondary" p:methodToCall="expandAll" p:actionLabel="expand all"/>
+            <bean parent="ActionField_Secondary" p:methodToCall="closeAll" p:actionLabel="collapse all"/>
+         </list>
+      </property>
+      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
 
-  <bean id="PagePanelHeader" parent="PageHeader">
+  <!-- Common Headers --> 
+  
+  <bean id="HeaderPage_AccordionActions" parent="HeaderPage">
       <property name="group">
        <bean parent="GroupBodyOnly">
         <property name="items">
@@ -67,24 +75,38 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </list>
               </property>
             </bean>   
-                           
-            <bean parent="GroupBodyOnly">
-              <property name="styleClass" value="right"/>
-              <property name="items">
-                <list> 
-                 <bean parent="ActionField" p:methodToCall="expandAll" p:actionLabel="expand all"/>
-                 <bean parent="ActionField" p:methodToCall="closeAll" p:actionLabel="collapse all"/>
-                </list>
-              </property>
-              <property name="layoutManager.orientation" value="HORIZONTAL"/> 
-            </bean>
+            <bean parent="Group_ExpandCloseActions"/>
           </list>  
         </property>
         <property name="layoutManager.orientation" value="HORIZONTAL"/> 
-        <property name="style" value="padding-bottom: 50px;"/>
        </bean> 
       </property>
   </bean>
-
+  
+  <bean id="HeaderPageInquiry" parent="HeaderPage">
+     <property name="group">
+       <bean parent="Group_ExpandCloseActions"/>
+     </property>
+  </bean>
+  
+  <!-- Common Footers -->
+  
+  <bean id="FooterInquiry" parent="Footer">
+      <property name="items">
+        <list> 
+          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close"/>
+        </list>
+      </property>  
+  </bean>
+  
+  <bean id="Footer_SaveCloseCancel" parent="Footer">
+      <property name="items">
+        <list> 
+          <bean parent="ActionField" p:methodToCall="save" p:actionLabel="Save"/>
+          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close"/>
+          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+        </list>
+      </property>  
+  </bean>  
 
 </beans>

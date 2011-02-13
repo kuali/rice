@@ -34,7 +34,7 @@ public class ViewModelUtils {
 		// TODO: make this do partial matching & collection matching
 
 		// check if property path matches one of the modelClass entries
-		Map<String, Class<?>> modelClasses = view.getModelClasses();
+		Map<String, Class<?>> modelClasses = view.getAbstractTypeClasses();
 		for (String path : modelClasses.keySet()) {
 			if (StringUtils.equals(path, propertyPath)) {
 				propertyType = modelClasses.get(path);

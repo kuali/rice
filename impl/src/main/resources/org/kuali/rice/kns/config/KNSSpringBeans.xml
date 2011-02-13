@@ -206,10 +206,9 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifViewDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifCommonDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
             </list>
 		</property>
@@ -253,10 +252,9 @@
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifViewDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifCommonDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                       
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
             </list>
 		</property>
@@ -335,10 +333,9 @@
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifViewDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifCommonDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>       
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
 			</list>
 		</property>

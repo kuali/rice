@@ -194,7 +194,7 @@ An ActionField represents an element that gives the user the ability to perform 
 
 An ActionField must have either a methodToCall or navigateToPageId set.  Setting the methodToCall will end up calling a method on a controller, and the great majority of ActionFields will populate this property.  navigateToPageId would be used for ActionFields which move the user around in a multi-page document, like the Kuali Coeus Proposal.
 
-The actionParameters property is a map of parameters which will be passed along as part of the HTTP request (these parameters are embedded into the page, each as <input type="hidden" /> by the dynoParamters.tag - tag which can embed parameters in other contexts as well if a developer is creating custom Tiles).  The actionLabel property represents the text which will be displayed on the button or link.  Finally, ActionField has a boolean property, clientSideCall, which will be set to true if the ActionField represents an action which is handled by Javascript.
+The actionParameters property is a map of parameters which will be passed along as part of the HTTP request (these parameters are embedded into the page, each as <input type="hidden" /> by the actionParamters.tag - tag which can embed parameters in other contexts as well if a developer is creating custom Tiles).  The actionLabel property represents the text which will be displayed on the button or link.  Finally, ActionField has a boolean property, clientSideCall, which will be set to true if the ActionField represents an action which is handled by Javascript.
 
 h4. AttributeField
 
@@ -407,14 +407,15 @@ Every tile associated with a Component expects the instance of the Component con
 |View Container| * *view* - the view to be rendered by the tile |
 |Group Container| * *group* - the group to be rendered by the tile |
 |Layout| * *items* - the items which are to be laid out within the rendered tile
-* *manager* - the instance of the LayoutManager implementation responsible for laying child Components out within the tile |
+* *manager* - the instance of the LayoutManager implementation responsible for laying child Components out within the tile
+* *container* - the container which holds the items being laid out |
 |Field| * *field* - the field to be rendered by the tile |
 |Control| * *control* - the control to be rendered in the tile
 * *field* - the AttributeField which the control is associated with |
 |Widget| * *widget* - the widget to be rendered by the tile
 * *componentId* - the id of the component this widget is supporting |
 |Decorator| * *decorator* - the decorator that this tile will be rendering 
-* *decoratorChain* - the chain of decorators the to-be-rendered decorator is a member of
+* *decoratorChain* - the chain of decorators the to-be-rendered decorator is a member of, with the component being decorated at the beginning of the chain
 * *templateParameters* - a Map of parameters passed to the decorator's template to control various dynamic aspects of rendering |
 |State| These templates simply store information which should be passed on POST requests; the View automatically decides which State templates to render.  There are no expected attributes. |
 
@@ -428,6 +429,6 @@ h4. Component Decorators{anchor: component_decorators}
 
 Components are powerful, it's true, but putting too much power into a single Component often violates the principle of separation of concerns.  Classes which implement org.kuali.rice.kns.uif.decorator.ComponentDecorator provide a little extra functionality to another Component, without making the code for that wrapped Component more complex.
 
-For instance, many Groups represent tabs which can be opened or closed.  A Group was written simply to be a simple Container of Components - making all of them understand collapsing behavior seems a bit overkill, especially considering how general Groups are.  Therefore, a ComponentDecorator - org.kuali.rice.kns.uif.decorator.PanelGroupDecorator - was created to add collapsing behavior to Groups.  Parent Containers which want to apply collapsing behavior to child Groups will add the name of the Group and the ComponentDecorator to a map called "componentDecorators" and the collapsing behavior will be added during rendering.
+For instance, many Groups represent tabs which can be opened or closed.  A Group was written simply to be a simple Container of Components - making all of them understand collapsing behavior seems a bit overkill, especially considering how general Groups are.  Therefore, a ComponentDecorator - org.kuali.rice.kns.uif.decorator.AccordianDecorator - was created to add collapsing behavior to Groups.  Parent Containers which want to apply collapsing behavior to child Groups will add the name of the Group and the ComponentDecorator to a map called "componentDecorators" and the collapsing behavior will be added during rendering.
 
 Each Component can have a single ComponentDecorator set on it as a property.  However, each ComponentDecorator allows a single ComponentDecorator to be added as a property, and therefore, a long chain of ComponentDecorators can be created.  KRAD will support clever ways to flatten out that chain when configuring, so that each ComponentDecorator will have its own properties set separately, without having to refer to the chain.

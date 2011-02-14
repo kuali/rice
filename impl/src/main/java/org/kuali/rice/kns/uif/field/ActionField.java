@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
@@ -29,7 +30,7 @@ import org.kuali.rice.kns.uif.container.View;
  */
 public class ActionField extends FieldBase {
 	private static final long serialVersionUID = 1025672792657238829L;
-	
+
 	private String methodToCall;
 	private String navigateToPageId;
 
@@ -40,6 +41,8 @@ public class ActionField extends FieldBase {
 	private Map<String, String> actionParameters;
 
 	public ActionField() {
+		clientSideCall = false;
+
 		actionParameters = new HashMap<String, String>();
 	}
 
@@ -62,6 +65,23 @@ public class ActionField extends FieldBase {
 		}
 	}
 
+	/**
+	 * Add methodToCall action parameter if set and setup event code for client
+	 * side method calls
+	 * 
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
+	 */
+	@Override
+	public void performFinalize(View view, Object model) {
+		super.performFinalize(view, model);
+
+		if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)
+				&& StringUtils.isNotBlank(methodToCall) && !clientSideCall) {
+			actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
+		}
+	}
+
 	public String getMethodToCall() {
 		return this.methodToCall;
 	}
@@ -76,6 +96,22 @@ public class ActionField extends FieldBase {
 
 	public void setClientSideCall(boolean clientSideCall) {
 		this.clientSideCall = clientSideCall;
+	}
+
+	/**
+	 * Builds up the client side JavaScript code for calling the action's method
+	 * 
+	 * @return String JavaScript handing code
+	 */
+	public String getClientSideEventCode() {
+		String eventCode = "";
+
+		// TODO: need client side method parameters once el support is in
+		if (clientSideCall) {
+			eventCode = methodToCall + "();";
+		}
+
+		return eventCode;
 	}
 
 	public String getActionLabel() {

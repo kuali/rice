@@ -52,8 +52,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClass" value="right"/>
       <property name="items">
          <list> 
-            <bean parent="ActionField_Secondary" p:methodToCall="expandAll" p:actionLabel="expand all"/>
-            <bean parent="ActionField_Secondary" p:methodToCall="closeAll" p:actionLabel="collapse all"/>
+           <bean parent="ActionField_Secondary" p:methodToCall="expandAccordions" 
+                 p:clientSideCall="true" p:actionLabel="expand all"/>
+           <bean parent="ActionField_Secondary" p:methodToCall="collapseAccordions" 
+                 p:clientSideCall="true" p:actionLabel="collapse all"/>
          </list>
       </property>
       <property name="layoutManager.orientation" value="HORIZONTAL"/> 
@@ -108,5 +110,5 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </list>
       </property>  
   </bean>  
-
+            
 </beans>

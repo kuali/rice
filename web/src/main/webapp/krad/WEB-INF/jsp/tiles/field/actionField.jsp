@@ -22,7 +22,19 @@
     
  --%>
  
-<input type="submit" id="${field.id}" onClick="setMethodToCall('${field.methodToCall}');"
+<input type="submit" id="${field.id}"
        name="${field.name}" value="${field.actionLabel}" class="${field.styleClass}"/>
        
 <krad:actionParameters componentId="${field.id}" parameters="${field.actionParameters}"/>
+
+<%-- setup client side call --%>
+<c:if test="${field.clientSideCall}">
+   <script type="text/javascript">
+ 	 $(document).ready(function() {
+		 $("#" + "${field.id}").click(function() {
+			 ${field.clientSideEventCode}
+			 return false;
+		 });
+ 	 });
+   </script>
+</c:if>

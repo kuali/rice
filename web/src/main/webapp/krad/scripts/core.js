@@ -445,3 +445,18 @@ function setMethodToCall(methodToCall) {
 function writeHiddenToForm(propertyName, propertyValue) {
 	$("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo($("#formComplete"));
 }
+
+/**
+ * Expands all the accordion divs on the page
+ */
+function expandAccordions() {
+	$("div.accordion").slideDown(100);
+}
+
+/**
+ * Collapses all the accordion divs on the page
+ */
+function collapseAccordions() {
+	$("div.accordion").slideUp(100);
+}
+

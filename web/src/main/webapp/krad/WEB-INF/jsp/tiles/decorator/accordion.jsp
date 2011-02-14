@@ -38,7 +38,7 @@
 </div>
 
 <%-- render next decorator or the decorated group --%>
-<div id="${accordionDiv}" class="${decorator.styleClass}">
+<div id="${accordionDiv}" class="${decorator.styleClass} accordion">
   <krad:template component="${decoratorChain.decoratedComponent}" templateParameters="${templateParameters}"/>
 </div>
 

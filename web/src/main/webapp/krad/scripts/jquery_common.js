@@ -234,7 +234,7 @@ function createNavigation(listId, navigationType) {
 function createVerticalMenu(listId) {
 	$(document).ready(function() {
 		$("#" + listId).sidebar();
-	})
+	});
 }
 
 /**

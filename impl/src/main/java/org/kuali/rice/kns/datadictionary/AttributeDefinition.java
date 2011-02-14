@@ -30,17 +30,17 @@ import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.ExistenceConstrained;
 import org.kuali.rice.kns.datadictionary.validation.LookupConstraint;
 import org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint;
-import org.kuali.rice.kns.datadictionary.validation.DependencyConstraint;
-import org.kuali.rice.kns.datadictionary.validation.ValidCharsConstraint;
+import org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.datadictionary.validation.capability.CaseConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.DependencyConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrained;
 import org.kuali.rice.kns.datadictionary.validation.capability.Formatable;
 import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrained;
 import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrained;
 import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.QuantityConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.SizeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrained;
 import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrained;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -52,7 +52,7 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  * 
  */
-public class AttributeDefinition extends DataDictionaryDefinitionBase implements CaseConstrained, DependencyConstrained, ExistenceConstrained, Formatable, QuantityConstrained, HierarchicallyConstrained, MustOccurConstrained, LengthConstrained, SizeConstrained, ValidCharactersConstrained {
+public class AttributeDefinition extends DataDictionaryDefinitionBase implements CaseConstrained, PrerequisiteConstrained, ExistenceConstrained, Formatable, CollectionSizeConstrained, HierarchicallyConstrained, MustOccurConstrained, LengthConstrained, RangeConstrained, ValidCharactersConstrained {
 	private static final long serialVersionUID = -2490613377818442742L;
 
 	protected Boolean forceUppercase = Boolean.FALSE;
@@ -95,12 +95,12 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	
 	// KS-style constraints 
 	protected String customValidatorClass;
-	protected ValidCharsConstraint validChars;	
+	protected ValidCharactersConstraint validCharactersConstraint;	
 	protected Integer minOccurs;
 	protected Integer maxOccurs;
     protected CaseConstraint caseConstraint;
-    protected List<DependencyConstraint> requireConstraint;
-	protected List<MustOccurConstraint> occursConstraint;
+    protected List<PrerequisiteConstraint> dependencyConstraints;
+	protected List<MustOccurConstraint> mustOccurConstraints;
 	protected LookupConstraint lookupDefinition;// If the user wants to match
 	// against two searches, that
 	// search must be defined as
@@ -509,11 +509,11 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		}
 
 		if (validationPattern != null) {
-			if (validChars == null) {
-				validChars = new ValidCharsConstraint();
+			if (validCharactersConstraint == null) {
+				validCharactersConstraint = new ValidCharactersConstraint();
 			}
 			
-			validChars.setValue(new StringBuilder().append("regex:").append(validationPattern.getRegexPattern()).toString());
+			validCharactersConstraint.setValue(new StringBuilder().append("regex:").append(validationPattern.getRegexPattern()).toString());
 		}
 	}
 
@@ -602,22 +602,23 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	/**
 	 * @return the validChars
 	 */
-	public ValidCharsConstraint getValidChars() {
-		return this.validChars;
+	@Override
+	public ValidCharactersConstraint getValidCharactersConstraint() {
+		return this.validCharactersConstraint;
 	}
 
 	/**
-	 * @param validChars the validChars to set
+	 * @param validCharactersConstraint the validChars to set
 	 */
-	public void setValidChars(ValidCharsConstraint validChars) {
-		this.validChars = validChars;
+	public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
+		this.validCharactersConstraint = validCharactersConstraint;
 	}
 
 	/**
 	 * @return the minOccurs
 	 */
 	@Override
-	public Integer getMinOccurs() {
+	public Integer getMinimumNumberOfElements() {
 		return this.minOccurs;
 	}
 
@@ -632,7 +633,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * @return the maxOccurs
 	 */
 	@Override
-	public Integer getMaxOccurs() {
+	public Integer getMaximumNumberOfElements() {
 		return this.maxOccurs;
 	}
 
@@ -646,6 +647,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	/**
 	 * @return the caseConstraint
 	 */
+	@Override
 	public CaseConstraint getCaseConstraint() {
 		return this.caseConstraint;
 	}
@@ -660,29 +662,31 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	/**
 	 * @return the requireConstraint
 	 */
-	public List<DependencyConstraint> getRequireConstraint() {
-		return this.requireConstraint;
+	@Override
+	public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
+		return this.dependencyConstraints;
 	}
 
 	/**
-	 * @param requireConstraint the requireConstraint to set
+	 * @param dependencyConstraints the requireConstraint to set
 	 */
-	public void setRequireConstraint(List<DependencyConstraint> requireConstraint) {
-		this.requireConstraint = requireConstraint;
+	public void setPrerequisiteConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
+		this.dependencyConstraints = dependencyConstraints;
 	}
 
 	/**
 	 * @return the occursConstraint
 	 */
-	public List<MustOccurConstraint> getOccursConstraint() {
-		return this.occursConstraint;
+	@Override
+	public List<MustOccurConstraint> getMustOccurConstraints() {
+		return this.mustOccurConstraints;
 	}
 
 	/**
-	 * @param occursConstraint the occursConstraint to set
+	 * @param mustOccurConstraints the occursConstraint to set
 	 */
-	public void setOccursConstraint(List<MustOccurConstraint> occursConstraint) {
-		this.occursConstraint = occursConstraint;
+	public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
+		this.mustOccurConstraints = mustOccurConstraints;
 	}
 
 	/**

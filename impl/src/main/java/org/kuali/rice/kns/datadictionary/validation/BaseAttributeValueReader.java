@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.util.List;
 
 import org.kuali.rice.core.jdbc.SqlBuilder;
-import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.kns.util.DataTypeUtil;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public abstract class BaseAttributeValueReader implements AttributeValueReader {
 
@@ -40,11 +39,6 @@ public abstract class BaseAttributeValueReader implements AttributeValueReader {
 		String attributeInValue = rawValue != null ? rawValue.toString() : "";
 		String attributeDataType = DataTypeUtil.determineDataType(attributeType);
 		return SqlBuilder.getCleanedSearchableValues(attributeInValue, attributeDataType);
-	}
-	
-	@Override
-	public DataDictionaryEntry getEntry(String entryName) {
-		return KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
 	}
 
 	/**
@@ -66,15 +60,9 @@ public abstract class BaseAttributeValueReader implements AttributeValueReader {
 	/**
 	 * @return the entryName
 	 */
+	@Override
 	public String getEntryName() {
 		return this.entryName;
-	}
-
-	/**
-	 * @param entryName the entryName to set
-	 */
-	public void setEntryName(String entryName) {
-		this.entryName = entryName;
 	}
 	
 }

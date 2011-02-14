@@ -13,11 +13,10 @@
  * permissions and limitations under the License.
  */
 
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.util.List;
 
-import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
@@ -28,10 +27,6 @@ public interface AttributeValueReader {
 	public Validatable getDefinition(String attributeName);
 	
 	public List<Validatable> getDefinitions();
-	
-	public DataDictionaryEntry getEntry();
-	
-	public DataDictionaryEntry getEntry(String entryName);
 	
 	public String getEntryName();
 	
@@ -48,8 +43,6 @@ public interface AttributeValueReader {
 	public List<String> getCleanSearchableValues(String attributeName) throws AttributeValidationException;
 	
 	public void setAttributeName(String attributeName);
-	
-	public void setEntryName(String entryName);
 	
 }
 

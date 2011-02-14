@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.ValidCharsConstraint;
+import org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraint;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface ValidCharactersConstrained extends Validatable {
 
 	// FIXME: rename to getValidCharactersConstraint()
-	public ValidCharsConstraint getValidChars();
+	public ValidCharactersConstraint getValidCharactersConstraint();
 	
 }

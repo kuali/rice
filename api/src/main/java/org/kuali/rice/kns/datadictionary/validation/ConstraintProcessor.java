@@ -17,8 +17,6 @@ package org.kuali.rice.kns.datadictionary.validation;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-import org.kuali.rice.kns.datadictionary.validator.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validator.ConstraintValidationResult;
 
 /**
  * This interface defines the signature for constraint processors, which abstract the core functionality of validation in the
@@ -29,11 +27,13 @@ import org.kuali.rice.kns.datadictionary.validator.ConstraintValidationResult;
  * have forced business logic into what are naturally API classes (classes that implement Constraint). This strategy separates
  * the two functions. 
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface ConstraintProcessor<D extends Validatable> {
+public interface ConstraintProcessor<T, D extends Validatable> {
 
-	public ConstraintValidationResult process(D definition, AttributeValueReader attributeValueReader) throws AttributeValidationException;
+	public ConstraintValidationResult process(DictionaryValidationResult result, T value, D definition, AttributeValueReader attributeValueReader) throws AttributeValidationException;
+	
+	public String getName();
 	
 	public Class<D> getType();
 	
@@ -44,15 +44,5 @@ public interface ConstraintProcessor<D extends Validatable> {
 	 * @return true if this processor can be turned off by some pieces of code, false otherwise
 	 */
 	public boolean isOptional();
-	
-//	public Validatable processCaseConstraint(List<ValidationResultInfo> valResults, CaseConstraint caseConstraint, Validatable definition, String entryName, String attributeName, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException;
-//	
-//	public ValidationResultInfo processExistenceConstraint(ExistenceConstrained definition, String entryName, String attributeName, Object value);
-//	
-//	public ValidationResultInfo processFormatterValidation(Class<?> formatterClass, String entryName, String attributeName, String parsedAttributeValue, String errorKeyPrefix);
-//	
-//	public ValidationResultInfo processMustOccurConstraint(MustOccurConstraint constraint, Validatable definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException;
-//	
-//	public ValidationResultInfo processRequiredConstraint(RequiredConstraint constraint, Validatable definition, String entryName, String attributeName, AttributeValueReader dataProvider, String element) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException ;
-//	
+		
 }

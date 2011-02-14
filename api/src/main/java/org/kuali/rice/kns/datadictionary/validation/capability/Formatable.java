@@ -17,7 +17,7 @@ package org.kuali.rice.kns.datadictionary.validation.capability;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface Formatable {
 

@@ -35,7 +35,7 @@ public class ConstraintHolder implements Validatable {
 	@XmlElement
 	protected Integer maxLength;	
 	@XmlElement
-	protected ValidCharsConstraint validChars;	
+	protected ValidCharactersConstraint validChars;	
 	@XmlElement
 	protected Integer minOccurs;
 	@XmlElement
@@ -45,7 +45,7 @@ public class ConstraintHolder implements Validatable {
     protected CaseConstraint caseConstraint;
 	
 	@XmlElement
-    protected List<DependencyConstraint> requireConstraint;
+    protected List<PrerequisiteConstraint> requireConstraint;
 
 	@XmlElement
 	protected List<MustOccurConstraint> occursConstraint;
@@ -108,11 +108,11 @@ public class ConstraintHolder implements Validatable {
 		this.maxLength = maxLength;
 	}
 
-	public ValidCharsConstraint getValidChars() {
+	public ValidCharactersConstraint getValidChars() {
 		return validChars;
 	}
 
-	public void setValidChars(ValidCharsConstraint validChars) {
+	public void setValidChars(ValidCharactersConstraint validChars) {
 		this.validChars = validChars;
 	}
 
@@ -132,15 +132,15 @@ public class ConstraintHolder implements Validatable {
 		this.maxOccurs = maxOccurs;
 	}
 
-	public List<DependencyConstraint> getRequireConstraint() {
+	public List<PrerequisiteConstraint> getRequireConstraint() {
         if(null == requireConstraint) {
-            this.requireConstraint = new ArrayList<DependencyConstraint>();
+            this.requireConstraint = new ArrayList<PrerequisiteConstraint>();
         }
 
 	    return requireConstraint;
 	}
 
-	public void setRequireConstraint(List<DependencyConstraint> requireConstraint) {
+	public void setRequireConstraint(List<PrerequisiteConstraint> requireConstraint) {
 	    this.requireConstraint = requireConstraint;
 	}
 

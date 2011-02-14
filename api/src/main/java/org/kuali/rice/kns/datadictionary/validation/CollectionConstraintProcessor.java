@@ -15,21 +15,17 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
+import java.util.Collection;
+
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
-
 /**
+ * This is a marker interface for 'collection constraint processors', that is - a constraint processor that tests collections
+ * rather than their elements. Maybe the best example of a collection-based constraint is a constraint on the number of elements 
+ * in that collection -- for example, a constraint that ensures that there are between 1 and 10 elements in a collection. 
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public abstract class OptionalConstraintProcessor<D extends Validatable> implements ConstraintProcessor<D> {
-
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#isOptional()
-	 */
-	@Override
-	public boolean isOptional() {
-		return true;
-	}
-
+public interface CollectionConstraintProcessor<T extends Collection<?>, D extends Validatable> extends ConstraintProcessor<T, D> {
+	// Empty
 }

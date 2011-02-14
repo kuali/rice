@@ -90,39 +90,21 @@
     <property name="minLength" value="2"/>
     <property name="maxLength" value="5"/>
     <property name="required" value="true"/>
-    <property name="validChars">
-		<bean class="org.kuali.rice.kns.datadictionary.validation.ValidCharsConstraint">
+    <property name="validCharactersConstraint">
+		<bean class="org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraint">
 			<property name="value" value="regex:\d{3}"/>
 		</bean>
 	</property>
-	<property name="requireConstraint">
+	<property name="prerequisiteConstraints">
 		<list>	
-			<bean class="org.kuali.rice.kns.datadictionary.validation.DependencyConstraint">
-				<property name="fieldPath" value="alternatePostalCountryCode"/>
+			<bean class="org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint">
+				<property name="attributePath" value="alternatePostalCountryCode"/>
 			</bean>
 		</list>
 	</property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
-    <!--property name="constraint">
-    	<bean class="org.kuali.rice.kns.dto.Constraint">
-    	    <property name="minLength" value="2"/>
-    		<property name="maxLength" value="5"/>
-    		<property name="validChars">
-    			<bean class="org.kuali.rice.kns.dto.ValidCharsConstraint">
-    				<property name="value" value="regex:\d{3}"/>
-    			</bean>
-    		</property>
-    		<property name="requireConstraint">
-    		<list>	
-    			<bean class="org.kuali.rice.kns.dto.RequiredConstraint">
-    				<property name="fieldPath" value="alternatePostalCountryCode"/>
-    			</bean>
-    		</list>
-    		</property>
-    	</bean>
-    </property-->
     <property name="summary" value="Postal Country Name"/>
     <property name="description" value="Postal Country Name..."/>
   </bean>

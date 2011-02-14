@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.capability;
+package org.kuali.rice.kns.datadictionary.validation.processor;
 
-import java.util.List;
+import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
-import org.kuali.rice.kns.datadictionary.validation.DependencyConstraint;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface DependencyConstrained extends Validatable {
-	
-	// FIXME: rename to getDepedencyConstraints()
-	public List<DependencyConstraint> getRequireConstraint();
-	
+public abstract class OptionalElementConstraintProcessor<D extends Validatable> implements ConstraintProcessor<Object, D> {
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#isOptional()
+	 */
+	@Override
+	public boolean isOptional() {
+		return true;
+	}
+
 }

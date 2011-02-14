@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -22,7 +22,6 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
  * those fields, with some guidance from the DataDictionaryEntry object. 
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public class DictionaryObjectAttributeValueReader extends BaseAttributeValueReader {
 
@@ -49,6 +48,8 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 
 	protected Map<String, PropertyDescriptor> beanInfo;
 	
+	private String attributePath;
+	
 	public DictionaryObjectAttributeValueReader(Object object, String entryName, DataDictionaryEntry entry) {
 		this.object = object;
 		this.entry = entry;
@@ -59,6 +60,11 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		
 		this.attributeTypeMap = new HashMap<String, Class<?>>();
 		this.attributeValueMap = new HashMap<String, Object>();
+	}
+	
+	public DictionaryObjectAttributeValueReader(Object object, String entryName, DataDictionaryEntry entry, String attributePath) {
+		this(object, entryName, entry);
+		this.attributePath = attributePath;
 	}
 	
 	@Override
@@ -80,11 +86,6 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 	
 	@Override
-	public DataDictionaryEntry getEntry() {
-		return entry;
-	}
-	
-	@Override
 	public String getLabel(String attributeName) {
 		AttributeDefinition attributeDefinition = entry != null ? entry.getAttributeDefinition(attributeName) : null;
 		return attributeDefinition != null ? attributeDefinition.getLabel()  : attributeName;
@@ -92,7 +93,8 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	
 	@Override
 	public String getPath() {
-		return entryName != null ? entryName : "";
+		String path = ValidatorUtils.buildPath(attributePath, attributeName);
+		return path != null ? path : "";
 	}
 
 	@Override

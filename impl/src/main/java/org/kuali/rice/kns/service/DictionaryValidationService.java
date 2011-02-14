@@ -126,13 +126,55 @@ public interface DictionaryValidationService {
 
     
     /**
-     * Validates an object based on the dictionary entry found using entryName. 
+     * Validates an object using the passed entry name to look up metadata in the dictionary
      * 
-     * @param object
-     * @param entryName
+     * @param object - an object to validate
+     * @param entryName - the dictionary entry name to look up the metadata associated with this object
+     * 
+     * @since 1.1
      */
     public void validate(Object object, String entryName);
     
+    
+    /**
+     * Same as {@link #validate(java.lang.Object, java.lang.String)} except that it provides a boolean parameter for the 
+     * calling method to choose whether to do optional processing (generally to check if blank/empty values are required or not).  
+     * 
+     * @param object - an object to validate
+     * @param entryName - the dictionary entry name to look up the metadata associated with this object
+     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
+     * 
+     * @since 1.1
+     */
+    public void validate(Object object, String entryName, boolean doOptionalProcessing);
+    
+    
+    /**
+     * Validates a single attribute on the passed object using the passed entry name to look up 
+     * metadata in the dictionary. 
+     * 
+     * @param object - an object to validate
+     * @param entryName - the dictionary entry name to look up the metadata associated with this object
+     * @param attributeName - the name of the attribute (field) on the object that should be validated
+     * 
+     * @since 1.1
+     */
+    public void validate(Object object, String entryName, String attributeName);
+    
+   
+    /**
+     * Same as {@link #validate(Object, String, String)} except that it provides a boolean parameter for the 
+     * calling method to choose whether to do optional processing (generally to check if blank/empty values are required or not). 
+     * 
+     * @param object - an object to validate
+     * @param entryName - the dictionary entry name to look up the metadata associated with this object
+     * @param attributeName - the name of the attribute (field) on the object that should be validated
+     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
+     * 
+     * @since 1.1
+     */
+    public void validate(Object object, String entryName, String attributeName, boolean doOptionalProcessing);
+   
     
     /**
      * Validates the business object against the dictionary, uses reflection to get any child business objects, and recursively
@@ -140,8 +182,10 @@ public interface DictionaryValidationService {
      * 
      * @param businessObject - business object to validate
      * @param depth - Specify how deep the recrusion should go (0 based). If a negative number is supplied, it's infinite.
+     * 
+     * @deprecated since 1.1
      */
-    public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth);
+    @Deprecated public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth);
 
     /**
      * Validates an attribute of a given class for proper min, max length, syntax, and required.

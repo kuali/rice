@@ -13,17 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.capability;
+package org.kuali.rice.kns.datadictionary.validation.processor;
+
+import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
 
 /**
- * This interface defines methods that must be implemented by classes that want to be processed as 
+ * This abstract class can be extended by constraint processor classes that
+ * must be processed on every validation.  
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface LengthConstrained extends Validatable {
+public abstract class MandatoryElementConstraintProcessor<D extends Validatable> implements ConstraintProcessor<Object, D> {
 
-	public Integer getMaxLength();
-	
-	public Integer getMinLength();
-	
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#isOptional()
+	 */
+	@Override
+	public boolean isOptional() {
+		return false;
+	}
+
 }

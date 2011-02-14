@@ -19,7 +19,7 @@ import org.kuali.rice.kns.datadictionary.validation.LookupConstraint;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface LookupConstrained extends Validatable {
 

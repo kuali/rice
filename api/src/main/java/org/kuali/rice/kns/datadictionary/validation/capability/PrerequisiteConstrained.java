@@ -15,14 +15,17 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
-/**
- * 
- * @author James Renfro, University of Washington 
- */
-public interface QuantityConstrained extends Validatable {
+import java.util.List;
 
-	public Integer getMaxOccurs();
+import org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint;
+
+/**
+ * An attribute or field is dependency constrained when it 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
+ */
+public interface PrerequisiteConstrained extends Validatable {
 	
-	public Integer getMinOccurs();
+	public List<PrerequisiteConstraint> getPrerequisiteConstraints();
 	
 }

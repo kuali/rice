@@ -19,11 +19,11 @@ import org.kuali.rice.kns.datadictionary.validation.ExistenceConstrained;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface FullyConstrained extends CaseConstrained, ExistenceConstrained, QuantityConstrained, 
+public interface FullyConstrained extends CaseConstrained, ExistenceConstrained, CollectionSizeConstrained, 
 	HierarchicallyConstrained, MustOccurConstrained, LengthConstrained, 
-	SizeConstrained, ValidCharactersConstrained {
+	RangeConstrained, ValidCharactersConstrained {
 
 	
 }

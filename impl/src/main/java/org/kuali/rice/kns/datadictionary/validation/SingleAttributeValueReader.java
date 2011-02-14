@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -32,7 +32,7 @@ import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
  * and we want to limit access to (for example) validation that requires only a single attribute value. 
  * This eliminates more complicated validation like 'this field is required when another field is filled in.'
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public class SingleAttributeValueReader extends BaseAttributeValueReader {
 
@@ -56,12 +56,6 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	public List<Validatable> getDefinitions() {
 		return null;
 	}
-	
-
-	@Override
-	public DataDictionaryEntry getEntry() {
-		return null;
-	}
 
 	@Override
 	public String getLabel(String attributeName) {
@@ -73,8 +67,7 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	
 	@Override
 	public String getPath() {
-		DataDictionaryEntry dictionaryEntry = getEntry();
-		return dictionaryEntry != null ? dictionaryEntry.getFullClassName() : "";
+		return attributeName;
 	}
 
 	@Override

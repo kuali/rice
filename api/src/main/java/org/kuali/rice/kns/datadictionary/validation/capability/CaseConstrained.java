@@ -19,7 +19,7 @@ import org.kuali.rice.kns.datadictionary.validation.CaseConstraint;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface CaseConstrained extends Validatable {
 

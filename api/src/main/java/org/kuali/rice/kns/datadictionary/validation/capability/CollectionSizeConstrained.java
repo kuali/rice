@@ -16,14 +16,13 @@
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
 /**
- * This interface defines methods that must be implemented by classes that want to be processed as 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface LengthConstrained extends Validatable {
+public interface CollectionSizeConstrained extends Validatable {
 
-	public Integer getMaxLength();
+	public Integer getMaximumNumberOfElements();
 	
-	public Integer getMinLength();
+	public Integer getMinimumNumberOfElements();
 	
 }

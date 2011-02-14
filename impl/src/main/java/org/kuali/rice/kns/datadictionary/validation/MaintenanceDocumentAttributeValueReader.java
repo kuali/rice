@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -39,7 +39,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAttributeValueReader {
 
@@ -58,37 +58,37 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 			
 			for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
 				if (itemDefinition instanceof MaintainableFieldDefinition) {
-					String attributeName = itemDefinition.getName();
-					AttributeDefinition attributeDefinition = KNSServiceLocator.getDataDictionaryService().getAttributeDefinition(object.getClass().getName(), attributeName);
+					String itemDefinitionName = itemDefinition.getName();
+					AttributeDefinition attributeDefinition = KNSServiceLocator.getDataDictionaryService().getAttributeDefinition(object.getClass().getName(), itemDefinitionName);
 						
 						//entry.getAttributeDefinition(attributeName);
 					boolean isAttributeDefined = attributeDefinition != null;
 						//getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName());
 			        if (isAttributeDefined) {
 			        	attributeDefinitions.add(attributeDefinition);
-			        	attributeDefinitionMap.put(attributeName, attributeDefinition);
-			        	PropertyDescriptor propertyDescriptor = beanInfo.get(attributeName);
+			        	attributeDefinitionMap.put(itemDefinitionName, attributeDefinition);
+			        	PropertyDescriptor propertyDescriptor = beanInfo.get(itemDefinitionName);
 			    		Method readMethod = propertyDescriptor.getReadMethod();
 			    		
 						try {
 							Object attributeValue = readMethod.invoke(object);
 							
 							if (attributeValue != null && StringUtils.isNotBlank(attributeValue.toString())) {
-				    			Class<?> propertyType = ObjectUtils.getPropertyType(object, attributeName, persistenceStructureService);
-				    			attributeTypeMap.put(attributeName, propertyType);
+				    			Class<?> propertyType = ObjectUtils.getPropertyType(object, itemDefinitionName, persistenceStructureService);
+				    			attributeTypeMap.put(itemDefinitionName, propertyType);
 				    			if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
 					                // check value format against dictionary
 				                    if (!TypeUtils.isTemporalClass(propertyType)) {
-				                    	attributeValueMap.put(attributeName, attributeValue);
+				                    	attributeValueMap.put(itemDefinitionName, attributeValue);
 				                    }
 					            }
 				    		}
 						} catch (IllegalArgumentException e) {
-							LOG.warn("Failed to invoke read method on object when looking for " + attributeName + " as a field of " + entry.getDocumentTypeName(), e);
+							LOG.warn("Failed to invoke read method on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
 						} catch (IllegalAccessException e) {
-							LOG.warn("Failed to invoke read method on object when looking for " + attributeName + " as a field of " + entry.getDocumentTypeName(), e);
+							LOG.warn("Failed to invoke read method on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
 						} catch (InvocationTargetException e) {
-							LOG.warn("Failed to invoke read method on object when looking for " + attributeName + " as a field of " + entry.getDocumentTypeName(), e);						
+							LOG.warn("Failed to invoke read method on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);						
 			        	}
 			    		
 			        }
@@ -98,7 +98,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getDefinition(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getDefinition(java.lang.String)
 	 */
 	@Override
 	public Validatable getDefinition(String attributeName) {
@@ -106,7 +106,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getDefinitions()
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getDefinitions()
 	 */
 	@Override
 	public List<Validatable> getDefinitions() {
@@ -120,7 +120,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getType(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getType(java.lang.String)
 	 */
 	@Override
 	public Class<?> getType(String attributeName) {
@@ -128,7 +128,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validator.AttributeValueReader#getValue(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getValue(java.lang.String)
 	 */
 	@Override
 	public <X> X getValue(String attributeName) throws AttributeValidationException {

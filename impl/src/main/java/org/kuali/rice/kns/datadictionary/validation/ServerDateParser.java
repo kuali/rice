@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,7 +51,7 @@ public class ServerDateParser implements DateParser {
     }
 
     /**
-     * @see org.kuali.student.common.validator.old.DateParser#toString(java.util.Date)
+     * @see org.kuali.rice.kns.datadictionary.validation.student.common.validator.old.DateParser#toString(java.util.Date)
      */
     @Override
     public String toString(Date date) {

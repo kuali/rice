@@ -35,44 +35,41 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jdbc.SqlBuilder;
-import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.CaseConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.CollectionConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.DataType;
-import org.kuali.rice.kns.datadictionary.validation.DataTypeConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.DependencyConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ExistenceConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.MustOccursConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.MaintenanceDocumentAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.SingleAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.QuantityConstrained;
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-import org.kuali.rice.kns.datadictionary.validator.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validator.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validator.DictionaryObjectAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validator.MaintenanceDocumentAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validator.SingleAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validator.ValidationResultInfo;
-import org.kuali.rice.kns.datadictionary.validator.Validator;
-import org.kuali.rice.kns.datadictionary.validator.ValidatorUtils;
+import org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.LengthConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.PrerequisiteConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.RangeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.ValidCharactersConstraintProcessor;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
-import org.kuali.rice.kns.exception.InfrastructureException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -123,20 +120,46 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	return java.util.Collections.newSetFromMap(new IdentityHashMap<BusinessObject, Boolean>());
     }
     
-    public void validate(Object object, String entryName) {
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String)
+     */
+    @Override
+	public void validate(Object object, String entryName) {
     	validate(object, entryName, true);
     }
     
-    public void validate(Object object, String entryName, boolean validateRequired) {
-    	DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
-    	validate(new DictionaryObjectAttributeValueReader(object, entryName, entry), validateRequired);
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String, boolean)
+     */
+    @Override
+	public void validate(Object object, String entryName, boolean validateRequired) {
+    	validate(object, entryName, null, validateRequired);
     }
     
-    public void validate(Object object, String entryName, String attributeName) {
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String, java.lang.String)
+     */
+    @Override
+	public void validate(Object object, String entryName, String attributeName) {
     	validate(object, entryName, attributeName, true);
     }
     
-    public void validate(Object object, String entryName, String attributeName, boolean validateRequired) {
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String, java.lang.String, boolean)
+     */
+    @Override
+	public void validate(Object object, String entryName, String attributeName, boolean doOptionalProcessing) {
+    	DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
+    	AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
+    	attributeValueReader.setAttributeName(attributeName);
+    	validate(attributeValueReader, doOptionalProcessing);
+    }
+    
+    public void validate(String entryName, String attributeName, Object attributeValue) {
+    	validate(entryName, attributeName, attributeValue, true);
+    }
+    
+    public void validate(String entryName, String attributeName, Object attributeValue, boolean doOptionalProcessing) {
        	AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, attributeName);
     	
     	if (attributeDefinition == null) {
@@ -145,16 +168,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		return;
     	}
     	
-    	SingleAttributeValueReader attributeValueReader = new SingleAttributeValueReader(object, entryName, attributeName, attributeDefinition);
-    	
-    	// FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
-    	validate(attributeValueReader, validateRequired);
+    	SingleAttributeValueReader attributeValueReader = new SingleAttributeValueReader(attributeValue, entryName, attributeName, attributeDefinition);
+    	validate(attributeValueReader, doOptionalProcessing);
     }
     
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocument(org.kuali.rice.kns.document.Document)
      */
-    public void validateDocument(Document document) {
+    @Override
+	public void validateDocument(Document document) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
         validate(document, documentEntryName);
@@ -177,19 +199,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
         validate(document, documentEntryName, attributeName, true);
-        
-//        AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(documentEntryName, attributeName);
-//    	
-//    	if (attributeDefinition == null) {
-//    		// FIXME: JLR - this is what the code was doing effectively already, but seems weird not to throw an exception here if you try to validate 
-//    		// something that doesn't have an attribute definition
-//    		return;
-//    	}
-//        
-//        SingleAttributeValueReader attributeValueReader = new SingleAttributeValueReader(document, documentEntryName, attributeName, attributeDefinition);
-//    	
-//    	// FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
-//    	validator.validate(attributeValueReader, true);
         
 //        try {
 //            PropertyDescriptor attributeDescriptor = PropertyUtils.getPropertyDescriptor(document, attributeName);
@@ -722,22 +731,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	
     	// validate the primitive attributes if defined in the dictionary
         if (null != propertyDescriptor) { // && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
-        	String attributeName = propertyDescriptor.getName();
-        	
-        	validate(object, entryName, attributeName, validateRequired);
-        	
-//        	AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, attributeName);
-//        	
-//        	if (attributeDefinition == null) {
-//        		// FIXME: JLR - this is what the code was doing effectively already, but seems weird not to throw an exception here if you try to validate 
-//        		// something that doesn't have an attribute definition
-//        		return;
-//        	}
-//        	
-//        	SingleAttributeValueReader attributeValueReader = new SingleAttributeValueReader(object, entryName, attributeName, attributeDefinition);
-//        	
-//        	// FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
-//        	validator.validate(attributeValueReader, validateRequired);
+        	validate(object, entryName, propertyDescriptor.getName(), validateRequired);
         	
 //            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
 //            Class propertyType = propertyDescriptor.getPropertyType();
@@ -1144,93 +1138,123 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * 1.1 validation members
      */
 	@SuppressWarnings("rawtypes")
-	private static final List<ConstraintProcessor> DEFAULT_PROCESSORS = 
+	private static final List<ConstraintProcessor> DEFAULT_ELEMENT_PROCESSORS = 
 		Arrays.asList((ConstraintProcessor)new CaseConstraintProcessor(), 
 				(ConstraintProcessor)new ExistenceConstraintProcessor(),
 				(ConstraintProcessor)new DataTypeConstraintProcessor(), 
+				(ConstraintProcessor)new RangeConstraintProcessor(),
+				(ConstraintProcessor)new LengthConstraintProcessor(),
 				(ConstraintProcessor)new ValidCharactersConstraintProcessor(),
-				(ConstraintProcessor)new DependencyConstraintProcessor(),
-				(ConstraintProcessor)new MustOccursConstraintProcessor());
+				(ConstraintProcessor)new PrerequisiteConstraintProcessor(),
+				(ConstraintProcessor)new MustOccurConstraintProcessor());
+	
+	@SuppressWarnings("rawtypes")
+	private static final List<CollectionConstraintProcessor> DEFAULT_COLLECTION_PROCESSORS = 
+		Arrays.asList((CollectionConstraintProcessor)new CollectionSizeConstraintProcessor());
+	
     
 	@SuppressWarnings("rawtypes")
-	private List<ConstraintProcessor> processors = DEFAULT_PROCESSORS;
+	private List<ConstraintProcessor> elementProcessors = DEFAULT_ELEMENT_PROCESSORS;
+	
+	@SuppressWarnings("rawtypes")
+	private List<CollectionConstraintProcessor> collectionProcessors = DEFAULT_COLLECTION_PROCESSORS;
 	
     
     /*
      * 1.1 validation methods 
      */
-	protected void validate(AttributeValueReader valueReader, boolean checkIfRequired) {
+	
+	/*
+	 * This is the top-level validation method for all attribute value readers
+	 */
+	protected DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing) {
     	Stack<String> elementStack = new Stack<String>();
     	
-    	List<ValidationResultInfo> results = null;
+    	DictionaryValidationResult result = new DictionaryValidationResult();
     	
-    	if (valueReader.getAttributeName() == null) {
-    		results = validateObject(valueReader, elementStack, true, checkIfRequired);
-    		
-    	} else {
-	    	results = validateField(valueReader, elementStack, checkIfRequired);
+    	if (valueReader.getAttributeName() == null) 
+    		validateObject(result, valueReader, elementStack, doOptionalProcessing);
+    	else 
+	    	validateAttribute(result, valueReader, elementStack, doOptionalProcessing);
+    	
+    	if (result.getNumberOfErrors() > 0) {
+	    	for (Iterator<ConstraintValidationResult> iterator = result.iterator() ; iterator.hasNext() ;) {
+	    		ConstraintValidationResult constraintValidationResult = iterator.next();
+	    		if (constraintValidationResult.getStatus().getLevel() >= ErrorLevel.WARN.getLevel()) 
+	    			setFieldError(constraintValidationResult.getEntryName(), constraintValidationResult.getAttributeName(), constraintValidationResult.getErrorKey(), constraintValidationResult.getErrorParameters());   		
+	    	}
     	}
     	
-    	if (results != null) {
-    		for (ValidationResultInfo result : results) {
-    			setFieldError(result.getEntryName(), result.getAttributeName(), result.getErrorKey(), result.getErrorParameters());
-    		}
-    	}
+    	return result;
     }
 	
-	private void processObject(List<ValidationResultInfo> results, Validatable definition, Object value, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
-    	if (isComplex)
-    		results.addAll(validateObject(attributeValueReader, elementStack, false, checkIfRequired));
-    	else
-    		processConstraints(results, definition, attributeValueReader, elementStack, checkIfRequired);
+	private void processObject(DictionaryValidationResult result, Validatable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
+    	if (isComplex) {
+    		// In the case of complex objects, need to build a new attribute value reader for this object and its dictionary entry
+        	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, value, passedAttributeValueReader, elementStack, isComplex);
+    		validateObject(result, attributeValueReader, elementStack, checkIfRequired);
+    	} else
+    		processElementConstraints(result, value, definition, passedAttributeValueReader, elementStack, checkIfRequired);
     }
     
-    private void processCollection(List<ValidationResultInfo> results, Validatable definition, Collection<?> collection, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
+    private void processCollection(DictionaryValidationResult result, Validatable definition, Collection<?> collection, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
         int i=0;
-        for (Object o : collection) {
+        for (Object element : collection) {
         	elementStack.push(Integer.toString(i));
-        	if (isComplex)
-        		results.addAll(validateObject(attributeValueReader, elementStack, false, checkIfRequired));
-        	else 
-        		processConstraints(results, definition, attributeValueReader, elementStack, checkIfRequired);
+        	if (isComplex) {
+        		// In the case of complex objects, have to resolve a new attribute value reader based on the child entry name and this particular element (as the business object)
+            	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, element, passedAttributeValueReader, elementStack, isComplex);
+        		validateObject(result, attributeValueReader, elementStack, checkIfRequired);
+        	} else 
+        		processElementConstraints(result, element, definition, passedAttributeValueReader, elementStack, checkIfRequired);
         	
         	elementStack.pop();
             i++;
         }
     
-        // Only try to validate quantity if the definition implements QuantityConstrained
-        if (definition instanceof QuantityConstrained) 
-        	ValidatorUtils.addResult(results, ValidatorUtils.validateQuantity(collection, (QuantityConstrained)definition, attributeValueReader.getEntryName(), attributeValueReader.getAttributeName()));
+        processCollectionConstraints(result, collection, definition, passedAttributeValueReader, elementStack, checkIfRequired);
     }
 	
-    private void processConstraints(List<ValidationResultInfo> valResults, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-
-		if (processors != null) {
+    private void processElementConstraints(DictionaryValidationResult result, Object value, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
+    	processConstraints(result, elementProcessors, value, definition, attributeValueReader, elementStack, doOptionalProcessing);
+    }
+    
+    private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
+    	processConstraints(result, collectionProcessors, collection, definition, attributeValueReader, elementStack, doOptionalProcessing);
+    }    
+    
+    @SuppressWarnings("rawtypes")
+	private void processConstraints(DictionaryValidationResult result, List<? extends ConstraintProcessor> constraintProcessors, Object object, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
+		if (constraintProcessors != null) {
 			Validatable selectedDefinition = definition;
 			AttributeValueReader selectedAttributeValueReader = attributeValueReader;
-			for (ConstraintProcessor<Validatable> processor : processors) {
+			for (ConstraintProcessor<Object, Validatable> processor : constraintProcessors) {
 				
 				// Let the calling method opt out of any optional processing
-				if (!doOptionalProcessing && processor.isOptional())
+				if (!doOptionalProcessing && processor.isOptional()) {
+					result.addSkipped(attributeValueReader, processor.getName());
 					continue;
+				}
 				
 				// Only process if the type of the definition is one that the processor handles
 				Class<? extends Validatable> type = processor.getType();
-				if (!type.isInstance(selectedDefinition)) 
+				if (!type.isInstance(selectedDefinition)) {
+					result.addSkipped(attributeValueReader, processor.getName());
 					continue;
+				}
 
-				
-				ConstraintValidationResult result = processor.process(selectedDefinition, selectedAttributeValueReader);
+				ConstraintValidationResult constraintValidationResult = processor.process(result, object, selectedDefinition, selectedAttributeValueReader);
 				
 				// Change the selected definition to whatever was returned from the processor
-				selectedDefinition = result.getDefinition();
+				if (constraintValidationResult.getDefinition() != null)
+					selectedDefinition = constraintValidationResult.getDefinition();
 				// Change the selected attribute value reader to whatever was returned from the processor
-				selectedAttributeValueReader = result.getAttributeValueReader();
-				// Keep track of all the validation results
-				valResults.addAll(result.getValidationResults());
+				if (constraintValidationResult.getAttributeValueReader() != null)
+					selectedAttributeValueReader = constraintValidationResult.getAttributeValueReader();
 			}
 		}
     }
+    
     
 	private AttributeValueReader resolveAttributeValueReader(Validatable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean isComplex) {
     	if (isComplex && definition instanceof HierarchicallyConstrained) {
@@ -1247,7 +1271,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		
     		// Create a new attribute value reader using the current attribute value as its 'object', along with the correct dictionary metadata 
     		// that's available using the child entry name
-    		return new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry);
+    		return new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry, passedAttributeValueReader.getPath());
     	}
     	return passedAttributeValueReader;
     }
@@ -1263,110 +1287,74 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	GlobalVariables.getMessageMap().putError(attributeName, key, array);
     }
 	
-	private List<ValidationResultInfo> validateField(AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+	private void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
 		Validatable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
-        return validateField(definition, attributeValueReader, elementStack, checkIfRequired);
+        validateAttribute(result, definition, attributeValueReader, elementStack, checkIfRequired);
     }
     
-    private List<ValidationResultInfo> validateField(Validatable definition, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
-    	
-    	List<ValidationResultInfo> results = new ArrayList<ValidationResultInfo>();
+    private void validateAttribute(DictionaryValidationResult result, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
     	
     	if (definition == null)
-    		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + passedAttributeValueReader.getAttributeName() + "\" on entry \"" + passedAttributeValueReader.getEntryName() + "\" because no attribute definition can be found.");
+    		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + attributeValueReader.getAttributeName() + "\" on entry \"" + attributeValueReader.getEntryName() + "\" because no attribute definition can be found.");
     	
     	DataType dataType = definition.getDataType();
     	boolean isComplex = dataType != null && dataType.equals(DataType.COMPLEX);
     	
-    	Object value = passedAttributeValueReader.getValue();
+    	Object value = attributeValueReader.getValue();
     	
     	if (ValidatorUtils.isNullOrEmpty(value)) { 
-    		processConstraints(results, definition, passedAttributeValueReader, elementStack, checkIfRequired);
+    		processElementConstraints(result, value, definition, attributeValueReader, elementStack, checkIfRequired);
     	}
     	
-    	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, value, passedAttributeValueReader, elementStack, isComplex);
-		
 		if (value instanceof Collection) {
 			// Obviously, it's not the child entry's attribute definition being passed here, but that's okay, if isComplex=true, definition is ignored
-			processCollection(results, definition, (Collection<?>)value, attributeValueReader, elementStack, checkIfRequired, isComplex);
+			processCollection(result, definition, (Collection<?>)value, attributeValueReader, elementStack, checkIfRequired, isComplex);
         } else {
-        	processObject(results, definition, value, attributeValueReader, elementStack, checkIfRequired, isComplex);
+        	processObject(result, definition, value, attributeValueReader, elementStack, checkIfRequired, isComplex);
         }
 		
-		return results;
     }
     
-    
-    private List<ValidationResultInfo> validateObject(AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean isRoot, boolean checkIfRequired) {
 
-        List<ValidationResultInfo> results = new ArrayList<ValidationResultInfo>();
+    private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) throws AttributeValidationException {
 
-         // Push object structure to the top of the stack
-         StringBuilder objXPathElement = new StringBuilder(attributeValueReader.getPath());
+    	// This method can be called recursively on objects that are themselves attributes of other objects, in which case a path 
+    	// will be maintained in the attribute value reader, using the standard bean notation with "." delimiters
+    	// for example on a Car object the business object volume control knob might be indicated by "dashboard.radio.volumeControl"
+    	String attributePath = attributeValueReader.getPath();
+    	
+    	// If this attribute path is something other than "" when trimmed of whitespace, then we can safely assume we're dealing with an attribute object
+    	boolean isObjectAnAttribute = StringUtils.isNotBlank(attributePath);
+    	
+    	// The KS code kept track of the recursion using a stack - presumably for error checking - but it is not currently being used by this code and should probably be
+    	// eliminated or made use of in some way.
+    	if (isObjectAnAttribute) 
+    		elementStack.push(attributePath);
 
-         if(!isRoot && !objXPathElement.toString().isEmpty()){
-         	elementStack.push(objXPathElement.toString());
-         }
 
-         List<Validatable> definitions = attributeValueReader.getDefinitions();
-      
-         // Do nothing if the attribute value reader doesn't contain a dictionary entry or has no child definitions
-         if (null == attributeValueReader.getEntry() || null == definitions) {
-             return results;
-         }
-         
-         
-         for (Validatable definition : definitions) {
-         	if (definition == null)
-         		continue;
-         	
-         	String attributeName = definition.getName();
-         	attributeValueReader.setAttributeName(attributeName);
-         	
-             List<ValidationResultInfo> l = validateField(definition, attributeValueReader, elementStack, checkIfRequired);
+    	List<Validatable> definitions = attributeValueReader.getDefinitions();
 
-//         	if (l != null) {
-//         		for (ValidationResultInfo result : l) {
-//         			setFieldError(entryName, attributeName, result.getErrorKey(), result.getErrorParameters());
-//         		}
-//         	}
-             
-//             if (l != null && l.size() > 0) {
-//             	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
-//             	GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, "LENGTH" });
-//             }
-//             
-             results.addAll(l);
+    	// Exit if the attribute value reader has no child definitions
+    	if (null == definitions) 
+    		return;
 
-             // Use Custom Validators
- // FIXME: JLR - turning off custom validators
-//             String customValidatorClass = f.getCustomValidatorClass(); //f.getConstraint() != null ? f.getConstraint().getCustomValidatorClass() : null;
-//             if (customValidatorClass != null) {
-//             	Validator customValidator = validatorFactory.getValidator(customValidatorClass);
-//             	if(customValidator==null){
-//             		throw new RuntimeException("Custom Validator "+customValidatorClass+" was not configured in this context");
-//             	}
-//             	l = customValidator.validateObject(f.getName(),data,elementStack);
-//             	results.addAll(l);
-//             }
-         }
-         if (!isRoot && !objXPathElement.toString().isEmpty()){
-         	elementStack.pop();
-         }
+    	// Otherwise, iterate through those definitions and 
+    	for (Validatable definition : definitions) {
+    		if (definition == null)
+    			continue;
 
-         /* All Field validations are returned right now */
-         // List<ValidationResultInfo> resultsBuffer = new
-         // ArrayList<ValidationResultInfo>();
-         // for (ValidationResultContainer vc : results) {
-         // if (skipFields.contains(vc.getElement()) == false) {
-         // resultsBuffer.add(vc);
-         // }
-         // }
-         // results = resultsBuffer;
-         return results;
-     }
-    
+    		String attributeName = definition.getName();
+    		attributeValueReader.setAttributeName(attributeName);
 
+    		validateAttribute(result, definition, attributeValueReader, elementStack, doOptionalProcessing);
+
+    		// FIXME: Need to check that it's okay that custom validators are no longer possible - alternative is to inject custom processors
+    	}
+    	
+    	if (isObjectAnAttribute)
+    		elementStack.pop();
+    	
+    }
 
     /**
      * @return Returns the dataDictionaryService.
@@ -1435,13 +1423,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	 * @return the processors
 	 */
 	public List<ConstraintProcessor> getProcessors() {
-		return this.processors;
+		return this.elementProcessors;
 	}
 
 	/**
 	 * @param processors the processors to set
 	 */
 	public void setProcessors(List<ConstraintProcessor> processors) {
-		this.processors = processors;
+		this.elementProcessors = processors;
 	}
 }

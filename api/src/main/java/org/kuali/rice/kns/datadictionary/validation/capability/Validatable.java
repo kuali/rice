@@ -22,7 +22,7 @@ import org.kuali.rice.kns.datadictionary.validation.DataType;
  * This interface defines methods that must be implemented by classes that you want to participate in dictionary validation as for example 'attribute-level' object structure
  * definitions. 
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface Validatable {
 	

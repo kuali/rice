@@ -21,11 +21,11 @@ import org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint;
 
 /**
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface MustOccurConstrained extends Validatable {
 
 	// FIXME: rename to getMustOccursConstraints()
-	public List<MustOccurConstraint> getOccursConstraint();
+	public List<MustOccurConstraint> getMustOccurConstraints();
 	
 }

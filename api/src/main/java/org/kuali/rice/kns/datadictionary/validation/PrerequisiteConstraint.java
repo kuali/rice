@@ -5,15 +5,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DependencyConstraint implements Constraint {
+public class PrerequisiteConstraint implements Constraint {
 	@XmlElement
-    protected String fieldPath;
+    protected String attributePath;
 
-	public String getFieldPath() {
-		return fieldPath;
+	public String getAttributePath() {
+		return attributePath;
 	}
 
-	public void setFieldPath(String fieldPath) {
-		this.fieldPath = fieldPath;
+	public void setAttributePath(String attributePath) {
+		this.attributePath = attributePath;
 	}
 }

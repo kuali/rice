@@ -85,25 +85,34 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Traveler Destination"/>
     <property name="maxLength" value="60"/>
-    <property name="validationPattern">
+    <!--property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
-    </property>
-    <property name="validChars">
-		<bean class="org.kuali.rice.kns.datadictionary.validation.ValidCharsConstraint">
-			<property name="value" value="regex:\d{3}"/>
-		</bean>
-	</property>
+    </property-->
     <property name="required" value="true"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="60"/>
     </property>
-    <property name="requireConstraint">
+	<property name="validCharactersConstraint">
+		<bean class="org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraint">
+			<property name="value" value="regex:\d{3}"/>
+		</bean>
+	</property>
+	<property name="prerequisiteConstraints">
 		<list>	
-			<bean class="org.kuali.rice.kns.datadictionary.validation.DependencyConstraint">
-				<property name="fieldPath" value="origin"/>
+			<bean class="org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint">
+				<property name="attributePath" value="origin"/>
 			</bean>
 		</list>
 	</property>
+	<!--property name="mustOccurConstraints">
+		<list>
+			<bean class="org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint">
+				<property name="min" value="1"/>
+				<property name="max" value="2"/>
+				
+			</bean>
+		</list>
+	</property-->
     <property name="summary" value="Traveler Destination"/>
     <property name="name" value="destination"/>
     <property name="label" value="Traveler Destination"/>

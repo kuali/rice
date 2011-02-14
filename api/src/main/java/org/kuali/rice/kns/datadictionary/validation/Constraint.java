@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary.validation;
 /**
  * This is just a marker interface for constraints. It's necessary for the generics to work in the {@link ConstraintProcessor}. 
  * 
- * @author James Renfro, University of Washington 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface Constraint {
 	// Empty

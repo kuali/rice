@@ -7,30 +7,31 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MustOccurConstraint implements Constraint {
+public class MustOccurConstraint extends BaseConstraint {
+	
     @XmlElement
-    private List<DependencyConstraint> requiredFields;
+    private List<PrerequisiteConstraint> prerequisiteConstraints;
 	@XmlElement
-    private List<MustOccurConstraint> occurs;
+    private List<MustOccurConstraint> mustOccurConstraints;
 	@XmlElement
 	private Integer min;
 	@XmlElement
 	private Integer max;
 
-	public List<DependencyConstraint> getRequiredFields() {
-		return requiredFields;
+	public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
+		return prerequisiteConstraints;
 	}
 
-	public void setRequiredFields(List<DependencyConstraint> requiredFields) {
-		this.requiredFields = requiredFields;
+	public void setPrerequisiteConstraints(List<PrerequisiteConstraint> prerequisiteConstraints) {
+		this.prerequisiteConstraints = prerequisiteConstraints;
 	}
 
-	public List<MustOccurConstraint> getOccurs() {
-		return occurs;
+	public List<MustOccurConstraint> getMustOccurConstraints() {
+		return mustOccurConstraints;
 	}
 
-	public void setOccurs(List<MustOccurConstraint> occurs) {
-		this.occurs = occurs;
+	public void setMustOccurConstraints(List<MustOccurConstraint> occurs) {
+		this.mustOccurConstraints = occurs;
 	}
 
 	public Integer getMin() {

@@ -13,27 +13,14 @@
  * permissions and limitations under the License.
  */
 
-package org.kuali.rice.kns.datadictionary.validator;
+package org.kuali.rice.kns.datadictionary.validation;
 
-public class DateParseException extends RuntimeException {
+import java.util.Date;
 
-    private static final long serialVersionUID = 1L;
-
-    public DateParseException() {
-        super();
-    }
-
-    public DateParseException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public DateParseException(String message) {
-        super(message);
-    }
-
-    public DateParseException(Throwable cause) {
-        super(cause);
-    }
+public interface DateParser {
+	
+    public Date parseDate(String input) throws IllegalArgumentException;
     
-
+    public String toString(Date date);
+    
 }

@@ -15,22 +15,24 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+public enum ErrorLevel {
+    NOCONSTRAINT(-2), INAPPLICABLE(-1), OK(0), WARN(1), ERROR(2);
 
-/**
- * This abstract class can be extended by constraint processor classes that
- * must be processed on every validation.  
- * 
- * @author James Renfro, University of Washington 
- */
-public abstract class MandatoryConstraintProcessor<D extends Validatable> implements ConstraintProcessor<D> {
+    int level;
 
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#isOptional()
-	 */
-	@Override
-	public boolean isOptional() {
-		return false;
-	}
+    private ErrorLevel(int level) {
+        this.level = level;
+    }
 
+    public int getLevel() {
+        return level;
+    }
+    
+    public static ErrorLevel min(ErrorLevel e1, ErrorLevel e2) {
+    	return e1.ordinal() < e2.ordinal() ? e1 : e2;
+    }
+    public static ErrorLevel max(ErrorLevel e1, ErrorLevel e2) {
+    	return e1.ordinal() > e2.ordinal() ? e1 : e2;
+    }
+    
 }

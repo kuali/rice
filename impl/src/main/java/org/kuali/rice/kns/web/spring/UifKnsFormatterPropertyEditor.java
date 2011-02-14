@@ -26,8 +26,8 @@ import org.kuali.rice.kns.web.format.Formatter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KualiFormatterPropertyEditor extends PropertyEditorSupport {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiFormatterPropertyEditor.class);
+public class UifKnsFormatterPropertyEditor extends PropertyEditorSupport {
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifKnsFormatterPropertyEditor.class);
 
 	Formatter formatter;
 
@@ -36,7 +36,7 @@ public class KualiFormatterPropertyEditor extends PropertyEditorSupport {
      * 
      * @param formatter
      */
-    public KualiFormatterPropertyEditor(Class<? extends Formatter> formatterClass) {
+    public UifKnsFormatterPropertyEditor(Class<? extends Formatter> formatterClass) {
 	    super();
         try {
             formatter = formatterClass.newInstance();

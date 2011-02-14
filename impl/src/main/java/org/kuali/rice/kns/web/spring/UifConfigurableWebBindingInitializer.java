@@ -37,10 +37,10 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
 
 	@Override
     public void initBinder(WebDataBinder binder, WebRequest request) {
-        binder.registerCustomEditor(AbstractKualiDecimal.class, new KualiFormatterPropertyEditor(BigDecimalFormatter.class));
-        binder.registerCustomEditor(KualiDecimal.class, new KualiFormatterPropertyEditor(CurrencyFormatter.class)); 
-        binder.registerCustomEditor(KualiInteger.class, new KualiFormatterPropertyEditor(KualiIntegerCurrencyFormatter.class));
-        binder.registerCustomEditor(KualiPercent.class, new KualiFormatterPropertyEditor(PercentageFormatter.class));
+        binder.registerCustomEditor(AbstractKualiDecimal.class, new UifKnsFormatterPropertyEditor(BigDecimalFormatter.class));
+        binder.registerCustomEditor(KualiDecimal.class, new UifKnsFormatterPropertyEditor(CurrencyFormatter.class)); 
+        binder.registerCustomEditor(KualiInteger.class, new UifKnsFormatterPropertyEditor(KualiIntegerCurrencyFormatter.class));
+        binder.registerCustomEditor(KualiPercent.class, new UifKnsFormatterPropertyEditor(PercentageFormatter.class));
         
         // TODO do we need this since we are switching to spring tags
         binder.registerCustomEditor(boolean.class, new UifBooleanEditor());

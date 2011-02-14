@@ -67,7 +67,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             
             // make sure the user can do what they're trying to according to the module that owns the functionality
             // this is done post handle to be able to access the form and whatever processing
-            // was done (this was the same pre-krad
+            // was done (this was the same pre-krad)
             if (!controller.getMethodToCallsToNotCheckAuthorization().contains(methodToCall)) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("'" + methodToCall + "' not in set of excempt methods: " + controller.getMethodToCallsToNotCheckAuthorization());

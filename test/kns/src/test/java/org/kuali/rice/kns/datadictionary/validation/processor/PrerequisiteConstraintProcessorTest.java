@@ -16,6 +16,11 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 /**
+ * Things this test should check:
+ * 
+ * 1. value entered, prerequisite also entered (success) 
+ * 2. value entered, prerequisite empty (failure) 
+ * 3. value entered, no prerequisite defined (exception) 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

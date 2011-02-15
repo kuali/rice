@@ -36,6 +36,11 @@ import org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor;
 
 /**
+ * Things this test should check:
+ * 
+ * 1. city and state entered, but no postal code (success) {@link #testCityStateNoPostalSuccess()}
+ * 2. city entered, no state or postal code (failure) {@link #testCityNoStateNoPostalFailure()}
+ * 3. postal code entered but no city or state (success) {@link #testPostalNoCityStateSuccess()}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

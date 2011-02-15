@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;

@@ -23,14 +23,15 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.LogicalOperators;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.Formatable;
 import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrained;
+import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -55,10 +56,29 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 	private DataDictionaryService dataDictionaryService;
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ConstraintValidationResult process(DictionaryValidationResult result, Object value, ValidCharactersConstrained definition, AttributeValueReader attributeValueReader)	throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Object value, ValidCharactersConstrained definition, AttributeValueReader attributeValueReader)	throws AttributeValidationException {
+		
+    	return new ProcessorResult(processSingleValidCharacterConstraint(result, value, definition, attributeValueReader));
+	}
+
+	@Override 
+	public String getName() {
+		return CONSTRAINT_NAME;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 */
+	@Override
+	public Class<ValidCharactersConstrained> getType() {
+		return ValidCharactersConstrained.class;
+	}
+	
+	
+	protected ConstraintValidationResult processSingleValidCharacterConstraint(DictionaryValidationResult result, Object value, ValidCharactersConstrained definition, AttributeValueReader attributeValueReader)	throws AttributeValidationException {
 		
 		ValidCharactersConstraint validCharsConstraint = definition.getValidCharactersConstraint();
 
@@ -81,20 +101,6 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
     	result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
     	return constraintValidationResult;
 	}
-
-	@Override 
-	public String getName() {
-		return CONSTRAINT_NAME;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#getType()
-	 */
-	@Override
-	public Class<ValidCharactersConstrained> getType() {
-		return ValidCharactersConstrained.class;
-	}
-	
 	
     protected ConstraintValidationResult doProcessFormattableValidCharConstraint(DictionaryValidationResult result, ValidCharactersConstraint validCharsConstraint, Formatable definition, Object value, AttributeValueReader attributeValueReader) throws AttributeValidationException {
     	String entryName = attributeValueReader.getEntryName();

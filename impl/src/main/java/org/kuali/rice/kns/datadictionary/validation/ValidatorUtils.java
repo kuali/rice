@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 

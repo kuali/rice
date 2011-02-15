@@ -16,19 +16,20 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.DateParser;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.ServerDateParser;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -45,11 +46,30 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 	private DateParser parser;
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ConstraintValidationResult process(DictionaryValidationResult result, Object value, RangeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Object value, RangeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		
+		// Since any given definition that is range constrained only expressed a single min and max, it means that there is only a single constraint to impose
+		return new ProcessorResult(processSingleRangeConstraint(result, value, definition, attributeValueReader));
+	}
+	
+	@Override 
+	public String getName() {
+		return CONSTRAINT_NAME;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 */
+	@Override
+	public Class<RangeConstrained> getType() {
+		return RangeConstrained.class;
+	}
+
+	
+	protected ConstraintValidationResult processSingleRangeConstraint(DictionaryValidationResult result, Object value, RangeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
 		if (ValidatorUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
@@ -71,20 +91,6 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 		
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
-	
-	@Override 
-	public String getName() {
-		return CONSTRAINT_NAME;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#getType()
-	 */
-	@Override
-	public Class<RangeConstrained> getType() {
-		return RangeConstrained.class;
-	}
-
 	
 	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Date value, RangeConstrained attribute, AttributeValueReader attributeValueReader) throws IllegalArgumentException {	
 		DateParser dateParser = getDateParser();

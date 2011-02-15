@@ -25,15 +25,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
-import org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint;
-import org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 
 /**
  * Things this test should check:
@@ -161,7 +161,7 @@ public class MustOccurConstraintProcessorTest {
 		
 		Object value = attributeValueReader.getValue();
 		
-		return processor.process(dictionaryValidationResult, value, definition, attributeValueReader);
+		return processor.process(dictionaryValidationResult, value, definition, attributeValueReader).getFirstConstraintValidationResult();
 	}
 
 }

@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.processor;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
 
 /**
- * This abstract class can be extended by constraint processor classes that
- * must be processed on every validation.  
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public abstract class MandatoryElementConstraintProcessor<D extends Validatable> implements ConstraintProcessor<Object, D> {
+public interface FullyConstrained extends CaseConstrained, ExistenceConstrained, CollectionSizeConstrained, 
+	HierarchicallyConstrained, MustOccurConstrained, LengthConstrained, 
+	RangeConstrained, ValidCharactersConstrained {
 
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#isOptional()
-	 */
-	@Override
-	public boolean isOptional() {
-		return false;
-	}
-
+	
 }

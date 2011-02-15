@@ -18,14 +18,14 @@ package org.kuali.rice.kns.datadictionary.validation.processor;
 import java.util.Collection;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.CollectionConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -38,11 +38,39 @@ public class CollectionSizeConstraintProcessor implements CollectionConstraintPr
 	private static final String CONSTRAINT_NAME = "collection size constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ConstraintValidationResult process(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		
+		// To accommodate the needs of other processors, the ConstraintProcessor.process() method returns a list of ConstraintValidationResult objects
+		// but since a definition that is collection size constrained only provides a single max and minimum, there is effectively a single constraint
+		// being imposed.
+        return new ProcessorResult(processSingleCollectionSizeConstraint(result, collection, definition, attributeValueReader));
+	}
+
+	@Override 
+	public String getName() {
+		return CONSTRAINT_NAME;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 */
+	@Override
+	public Class<CollectionSizeConstrained> getType() {
+		return CollectionSizeConstrained.class;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#isOptional()
+	 */
+	@Override
+	public boolean isOptional() {
+		return false;
+	}
+
+	protected ConstraintValidationResult processSingleCollectionSizeConstraint(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		Integer sizeOfCollection = Integer.valueOf(collection.size());
 		
 		Integer maxOccurances = definition.getMaximumNumberOfElements();
@@ -74,27 +102,7 @@ public class CollectionSizeConstraintProcessor implements CollectionConstraintPr
         else 
         	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_MIN_OCCURS, minErrorParameter);
         
-	}
-
-	@Override 
-	public String getName() {
-		return CONSTRAINT_NAME;
+        // Obviously the last else above is unnecessary, since anything after it is dead code, but keeping it seems clearer than dropping it
 	}
 	
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#getType()
-	 */
-	@Override
-	public Class<CollectionSizeConstrained> getType() {
-		return CollectionSizeConstrained.class;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#isOptional()
-	 */
-	@Override
-	public boolean isOptional() {
-		return false;
-	}
-
 }

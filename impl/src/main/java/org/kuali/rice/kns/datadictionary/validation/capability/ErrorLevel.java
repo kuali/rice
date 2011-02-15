@@ -13,24 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.processor;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
+public enum ErrorLevel {
+    NOCONSTRAINT(-2), INAPPLICABLE(-1), OK(0), WARN(1), ERROR(2);
 
+    int level;
 
-/**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
- */
-public abstract class OptionalElementConstraintProcessor<D extends Validatable> implements ConstraintProcessor<Object, D> {
+    private ErrorLevel(int level) {
+        this.level = level;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#isOptional()
-	 */
-	@Override
-	public boolean isOptional() {
-		return true;
-	}
-
+    public int getLevel() {
+        return level;
+    }
+    
+    public static ErrorLevel min(ErrorLevel e1, ErrorLevel e2) {
+    	return e1.ordinal() < e2.ordinal() ? e1 : e2;
+    }
+    public static ErrorLevel max(ErrorLevel e1, ErrorLevel e2) {
+    	return e1.ordinal() > e2.ordinal() ? e1 : e2;
+    }
+    
 }

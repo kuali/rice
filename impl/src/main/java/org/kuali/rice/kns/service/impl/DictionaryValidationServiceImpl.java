@@ -19,7 +19,6 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.IdentityHashMap;
@@ -46,19 +45,17 @@ import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.CollectionConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MaintenanceDocumentAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.SingleAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
+import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrained;
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor;
@@ -68,6 +65,9 @@ import org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstrain
 import org.kuali.rice.kns.datadictionary.validation.processor.PrerequisiteConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.RangeConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.ValidCharactersConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
@@ -1243,14 +1243,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 					continue;
 				}
 
-				ConstraintValidationResult constraintValidationResult = processor.process(result, object, selectedDefinition, selectedAttributeValueReader);
+				ProcessorResult processorResult = processor.process(result, object, selectedDefinition, selectedAttributeValueReader);
 				
 				// Change the selected definition to whatever was returned from the processor
-				if (constraintValidationResult.getDefinition() != null)
-					selectedDefinition = constraintValidationResult.getDefinition();
+				if (processorResult.isDefinitionProvided())
+					selectedDefinition = processorResult.getDefinition();
 				// Change the selected attribute value reader to whatever was returned from the processor
-				if (constraintValidationResult.getAttributeValueReader() != null)
-					selectedAttributeValueReader = constraintValidationResult.getAttributeValueReader();
+				if (processorResult.isAttributeValueReaderProvided())
+					selectedAttributeValueReader = processorResult.getAttributeValueReader();
 			}
 		}
     }

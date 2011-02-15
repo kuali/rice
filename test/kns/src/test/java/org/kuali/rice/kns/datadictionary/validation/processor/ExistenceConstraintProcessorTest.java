@@ -21,14 +21,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DataType;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
 import org.kuali.rice.kns.datadictionary.validation.SingleAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
+import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 
 
 /**
@@ -139,7 +139,7 @@ public class ExistenceConstraintProcessorTest {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		// This means that we do track everything above and including 'ok' results
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, cityRequiredDefinition, attributeValueReader);
+		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, cityRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
 		
 		// Make sure that the constraint we were looking for got run
 		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
@@ -153,7 +153,7 @@ public class ExistenceConstraintProcessorTest {
 		AttributeValueReader attributeValueReader = new SingleAttributeValueReader(noPostalCodeOrCityAddress.getCity(), "org.kuali.rice.kns.datadictionary.validation.MockAddress", "city", cityRequiredDefinition);
 		Object value = attributeValueReader.getValue();
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, cityRequiredDefinition, attributeValueReader);
+		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, cityRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
 		
 		// Make sure that the constraint we were looking for got run
 		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
@@ -181,7 +181,7 @@ public class ExistenceConstraintProcessorTest {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		// This means that we do track everything above and including 'ok' results
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNotRequiredDefinition, attributeValueReader);
+		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNotRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
 		
 		// Make sure that the constraint we were looking for got run
 		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
@@ -197,7 +197,7 @@ public class ExistenceConstraintProcessorTest {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		// This means that we do track everything above and including 'ok' results
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNotRequiredDefinition, attributeValueReader);
+		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNotRequiredDefinition, attributeValueReader).getFirstConstraintValidationResult();
 		
 		// Make sure that the constraint we were looking for got run
 		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
@@ -214,7 +214,7 @@ public class ExistenceConstraintProcessorTest {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		// This means that we do track everything above and including 'ok' results
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNoConstraintDefinition, attributeValueReader);
+		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNoConstraintDefinition, attributeValueReader).getFirstConstraintValidationResult();
 		
 		// Make sure that the constraint we were looking for got run
 		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());
@@ -230,7 +230,7 @@ public class ExistenceConstraintProcessorTest {
 		DictionaryValidationResult dictionaryValidationResult = new DictionaryValidationResult();
 		// This means that we do track everything above and including 'ok' results
 		dictionaryValidationResult.setErrorLevel(ErrorLevel.OK);
-		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNoConstraintDefinition, attributeValueReader);
+		ConstraintValidationResult constraintValidationResult = processor.process(dictionaryValidationResult, value, countryNoConstraintDefinition, attributeValueReader).getFirstConstraintValidationResult();
 		
 		// Make sure that the constraint we were looking for got run
 		Assert.assertEquals(new ExistenceConstraintProcessor().getName(), constraintValidationResult.getConstraintName());

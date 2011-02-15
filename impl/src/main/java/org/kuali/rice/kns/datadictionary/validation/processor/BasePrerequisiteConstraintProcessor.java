@@ -18,12 +18,12 @@ package org.kuali.rice.kns.datadictionary.validation.processor;
 import java.util.Collection;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**

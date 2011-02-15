@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.processor;
+package org.kuali.rice.kns.datadictionary.validation.constraint;
+
+import java.util.Collection;
 
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
 
 /**
- * This abstract class can be extended by constraint processor classes that
- * must be processed on every validation.  
+ * This is a marker interface for 'collection constraint processors', that is - a constraint processor that tests collections
+ * rather than their elements. Maybe the best example of a collection-based constraint is a constraint on the number of elements 
+ * in that collection -- for example, a constraint that ensures that there are between 1 and 10 elements in a collection. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public abstract class MandatoryElementConstraintProcessor<D extends Validatable> implements ConstraintProcessor<Object, D> {
-
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#isOptional()
-	 */
-	@Override
-	public boolean isOptional() {
-		return false;
-	}
-
+public interface CollectionConstraintProcessor<T extends Collection<?>, D extends Validatable> extends ConstraintProcessor<T, D> {
+	// Empty
 }

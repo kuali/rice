@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.util.DataTypeUtil;
 
 /**

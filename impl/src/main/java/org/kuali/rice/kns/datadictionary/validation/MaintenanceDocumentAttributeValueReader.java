@@ -98,7 +98,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getDefinition(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getDefinition(java.lang.String)
 	 */
 	@Override
 	public Validatable getDefinition(String attributeName) {
@@ -106,7 +106,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getDefinitions()
+	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getDefinitions()
 	 */
 	@Override
 	public List<Validatable> getDefinitions() {
@@ -120,7 +120,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getType(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getType(java.lang.String)
 	 */
 	@Override
 	public Class<?> getType(String attributeName) {
@@ -128,7 +128,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getValue(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getValue(java.lang.String)
 	 */
 	@Override
 	public <X> X getValue(String attributeName) throws AttributeValidationException {

@@ -91,13 +91,13 @@
     <property name="maxLength" value="5"/>
     <property name="required" value="true"/>
     <property name="validCharactersConstraint">
-		<bean class="org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraint">
+		<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
 			<property name="value" value="regex:\d{3}"/>
 		</bean>
 	</property>
 	<property name="prerequisiteConstraints">
 		<list>	
-			<bean class="org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint">
+			<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
 				<property name="attributePath" value="alternatePostalCountryCode"/>
 			</bean>
 		</list>

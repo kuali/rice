@@ -15,13 +15,15 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
+import java.util.Collections;
+
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.ExistenceConstrained;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.ExistenceConstrained;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -33,11 +35,31 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 	private static final String CONSTRAINT_NAME = "existence constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ConstraintValidationResult process(DictionaryValidationResult result, Object value, ExistenceConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Object value, ExistenceConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
+		// To accommodate the needs of other processors, the ConstraintProcessor.process() method returns a list of ConstraintValidationResult objects
+		// but since a definition that is existence constrained only provides a single isRequired field, there is effectively a single constraint
+		// being imposed.
+		return new ProcessorResult(processSingleExistenceConstraint(result, value, definition, attributeValueReader));
+	}
+
+	@Override 
+	public String getName() {
+		return CONSTRAINT_NAME;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 */
+	@Override
+	public Class<ExistenceConstrained> getType() {
+		return ExistenceConstrained.class;
+	}
+
+	protected ConstraintValidationResult processSingleExistenceConstraint(DictionaryValidationResult result, Object value, ExistenceConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// If it's not set, then there's no constraint
 		if (definition.isRequired() == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
@@ -52,18 +74,5 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
-
-	@Override 
-	public String getName() {
-		return CONSTRAINT_NAME;
-	}
 	
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#getType()
-	 */
-	@Override
-	public Class<ExistenceConstrained> getType() {
-		return ExistenceConstrained.class;
-	}
-
 }

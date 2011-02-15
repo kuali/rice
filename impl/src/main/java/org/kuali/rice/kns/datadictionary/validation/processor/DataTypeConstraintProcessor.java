@@ -16,13 +16,13 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.DataType;
-import org.kuali.rice.kns.datadictionary.validation.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
+import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -34,14 +34,31 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 	private static final String CONSTRAINT_NAME = "data type constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ConstraintValidationResult process(DictionaryValidationResult result, Object value, Validatable definition, AttributeValueReader attributeValueReader)
+	public ProcessorResult process(DictionaryValidationResult result, Object value, Validatable definition, AttributeValueReader attributeValueReader)
 			throws AttributeValidationException {
 
 		DataType dataType = definition.getDataType();
 		
+		return new ProcessorResult(processDataTypeConstraint(result, dataType, value, attributeValueReader));
+	}
+	
+	@Override 
+	public String getName() {
+		return CONSTRAINT_NAME;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 */
+	@Override
+	public Class<Validatable> getType() {
+		return Validatable.class;
+	}
+	
+	protected ConstraintValidationResult processDataTypeConstraint(DictionaryValidationResult result, DataType dataType, Object value, AttributeValueReader attributeValueReader) {
 		if (dataType == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
 		
@@ -79,19 +96,6 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 		}
 		
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
-	}
-	
-	@Override 
-	public String getName() {
-		return CONSTRAINT_NAME;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.ConstraintProcessor#getType()
-	 */
-	@Override
-	public Class<Validatable> getType() {
-		return Validatable.class;
 	}
 	
 }

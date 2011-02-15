@@ -80,8 +80,8 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 		Integer maxLength = attribute.getMaxLength();
 		Integer minLength = attribute.getMinLength();
 		
-		Result lessThanMax = ValidatorUtils.isLessThan(valueLength, maxLength);
-		Result greaterThanMin = ValidatorUtils.isGreaterThan(valueLength, minLength);
+		Result lessThanMax = ValidatorUtils.isLessThanOrEqual(valueLength, maxLength);
+		Result greaterThanMin = ValidatorUtils.isGreaterThanOrEqual(valueLength, minLength);
 		
         // It's okay for one end of the range to be undefined - that's not an error. It's only an error if one of them is invalid 
         if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) { 

@@ -83,7 +83,9 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("serverIp", ipNumber);
-    	crit.addEqualTo("serviceNamespace", serviceNamespace);
+        if (serviceNamespace != null) {
+    	    crit.addEqualTo("serviceNamespace", serviceNamespace);
+        }
     	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
     			new QueryByCriteria(ServiceInfo.class, crit));
     }
@@ -112,10 +114,6 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     	for (ServiceInfo serviceInfo : localServices) {
     		getPersistenceBrokerTemplate().delete(serviceInfo);
     	}
-    	/*Criteria crit = new Criteria();
-    	crit.addEqualTo("serverIp", ipNumber);
-    	crit.addEqualTo("serviceNamespace", serviceNamespace);
-    	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));*/
     }
 
 }

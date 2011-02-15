@@ -21,7 +21,6 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import javax.xml.namespace.QName;
 
 import org.apache.struts.action.ActionForm;
@@ -30,16 +29,15 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 
 /**
@@ -63,19 +61,14 @@ public class ServiceRegistryAction extends KSBAction {
     }
     
 	/**
-     * Enable deletion of localhost service registry entries
+     * Enable deletion of localhost service registry entries.
      */
-//FIXME: RICE MODULARITY
-//this method references KEWServiceLocator.getDataSource() which no longer exists.    
-/*    public ActionForward deleteLocalhostEntries(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+    public ActionForward deleteLocalhostEntries(ActionMapping mapping, ActionForm form, HttpServletRequest request,
         	HttpServletResponse response) throws IOException, ServletException {
-    	String sqlString = "delete from KRSB_SVC_DEF_T where SVC_URL like '%localhost%'";
-    	DataSource ds = (DataSource) KEWServiceLocator.getDataSource();
-		JdbcTemplate t = new JdbcTemplate(ds);
-		final String sqlToExec = sqlString;
-		t.execute(sqlToExec);
+    	ServiceRegistry registry = KSBServiceLocator.getServiceRegistry();
+        registry.removeLocallyPublishedServices("localhost",null);//Namespace unspecified to match all localhost records
 		return mapping.findForward("basic");
-    }*/
+    }
 
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {

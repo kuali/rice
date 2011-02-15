@@ -81,7 +81,9 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
     	Query query = entityManager.createNamedQuery("ServiceInfo.FindLocallyPublishedServices");
     	query.setParameter("serverIp", ipNumber);
-    	query.setParameter("serviceNamespace", serviceNamespace);
+        if (serviceNamespace != null) {
+    	    query.setParameter("serviceNamespace", serviceNamespace);
+        }
     	return (List<ServiceInfo>) query.getResultList();
     }
 
@@ -99,10 +101,6 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     }
 
     public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace) {
-    	//Query query = entityManager.createNamedQuery("ServiceInfo.DeleteLocallyPublishedServices");
-    	//query.setParameter("serverIp", ipNumber);
-    	//query.setParameter("serviceNamespace", serviceNamespace);
-		//query.executeUpdate();
     	List<ServiceInfo> localServices = findLocallyPublishedServices(ipNumber, serviceNamespace);
     	for (ServiceInfo localService : localServices) {
     		entityManager.remove(entityManager.find(FlattenedServiceDefinition.class, localService.getFlattenedServiceDefinitionId()));

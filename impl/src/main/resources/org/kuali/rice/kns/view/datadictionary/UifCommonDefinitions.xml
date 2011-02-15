@@ -28,8 +28,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="defaultBindingObjectPath" value="bo"/>
      <property name="controllerRequestMapping" value="inquiry"/>
      <property name="readOnly" value="true"/>
+     <property name="singlePageView" value="true"/>
+     <property name="page">
+        <bean parent="PageInquiry"/>
+     </property>
      <property name="footer">
-        <ref bean="FooterInquiry"/>
+        <bean parent="FooterInquiry"/>
+     </property>     
+  </bean>
+  
+  <bean id="DocumentView" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="FormView">
+     <property name="formClass" value="org.kuali.rice.kns.web.spring.form.DocumentFormBase"/>
+     <property name="defaultBindingObjectPath" value="document"/>
+     <property name="footer">
+        <bean parent="FooterDocument"/>
+     </property>     
+  </bean>
+  
+  <bean id="MaintenanceView" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
+     <property name="name" value="default"/>
+     <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
+     <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
+     <property name="defaultBindingObjectPath" value="document.newMaintainableObject"/>
+     <property name="controllerRequestMapping" value="maintenance"/>  
+     <property name="singlePageView" value="true"/>
+     <property name="page">
+        <bean parent="Page_Accordion"/>
      </property>     
   </bean>
    
@@ -101,12 +125,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
   </bean>
   
+  <bean id="FooterDocument" parent="Footer">
+      <property name="items">
+        <list> 
+          <bean parent="ActionField" p:methodToCall="submit" p:actionLabel="submit"/>
+          <bean parent="ActionField" p:methodToCall="save" p:actionLabel="save"/>
+          <bean parent="ActionField" p:methodToCall="blanketApprove" p:actionLabel="blanket approve"/>
+          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="close"/>
+          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="cancel"/>
+        </list>
+      </property>  
+  </bean>  
+  
   <bean id="Footer_SaveCloseCancel" parent="Footer">
       <property name="items">
         <list> 
-          <bean parent="ActionField" p:methodToCall="save" p:actionLabel="Save"/>
-          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close"/>
-          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+          <bean parent="ActionField" p:methodToCall="save" p:actionLabel="save"/>
+          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="close"/>
+          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="cancel"/>
         </list>
       </property>  
   </bean>  

@@ -21,66 +21,60 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="TravelAccount-InquiryView" parent="InquiryView">
      <property name="title" value="Travel Account Inquiry"/>
-     <property name="inquiryObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-     <property name="items">
-      <list>
-        <bean parent="PageInquiry">
-          <property name="Items">
-            <list>
-             <bean parent="GroupSectionGridLayout_Accordion">
-               <property name="layoutManager.numberOfColumns" value="2"/>
-               <property name="items">
-                 <list>
+     <property name="objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+     <property name="Items">
+         <list>
+           <bean parent="GroupSectionGridLayout_Accordion">
+             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="items">
+               <list>
+                <bean parent="AttributeField" p:name="number"/>
+                <bean parent="AttributeField" p:name="name"/>
+                <bean parent="AttributeField" p:name="extension.accountType.codeAndDescription"/>
+                <bean parent="AttributeField" p:name="subAccount"/>
+                <bean parent="AttributeField" p:name="subAccountName"/>
+                <bean parent="AttributeField" p:name="createDate"/>
+                <bean parent="AttributeField" p:name="subsidizedPercent"/>
+                <bean parent="AttributeField" p:name="foId"/>
+               </list>
+             </property>
+             <property name="title" value="Account Information"/>
+           </bean>
+           <bean parent="CollectionGroup_Accordion">
+              <property name="title" value="Fiscal Officer Accounts"/>  
+              <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+              <property name="name" value="fiscalOfficer.accounts"/>
+              <property name="items">
+                <list>
                   <bean parent="AttributeField" p:name="number"/>
                   <bean parent="AttributeField" p:name="name"/>
-                  <bean parent="AttributeField" p:name="extension.accountType.codeAndDescription"/>
-                  <bean parent="AttributeField" p:name="subAccount"/>
-                  <bean parent="AttributeField" p:name="subAccountName"/>
-                  <bean parent="AttributeField" p:name="createDate"/>
-                  <bean parent="AttributeField" p:name="subsidizedPercent"/>
                   <bean parent="AttributeField" p:name="foId"/>
-                 </list>
-               </property>
-               <property name="title" value="Account Information"/>
-             </bean>
-             <!-- <bean parent="PanelCollectionGroup">
-               <property name="title" value="Fiscal Officer Accounts"/>  
-               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-               <property name="name" value="fiscalOfficer.accounts"/>
-               <property name="items">
-                 <list>
-                   <bean parent="AttributeField" p:name="number"/>
-                   <bean parent="AttributeField" p:name="name"/>
-                   <bean parent="AttributeField" p:name="foId"/>
-                 </list>
-               </property>      
-               <property name="layoutManager.summaryTitle" value="Travel Account"/> 
-               <property name="layoutManager.summaryFields">
-                <list>
-                 <value>number</value>
                 </list>
-               </property>
-              </bean> --> 
-             <bean parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="5">
-               <property name="title" value="Fiscal Officer Accounts"/>  
-               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-               <property name="name" value="fiscalOfficer.accounts"/>
-               <property name="layoutManager.renderSequenceField" value="false"/>
-               <property name="items">
-                 <list>
-                   <bean parent="AttributeField" p:name="number"/>
-                   <bean parent="AttributeField" p:name="name"/>
-                   <bean parent="AttributeField" p:name="foId"/>
-                   <bean parent="AttributeField" p:name="subsidizedPercent"/>
-                   <bean parent="AttributeField" p:name="createDate"/>
-                  </list>
-               </property>      
-              </bean>                
-           </list>
-        </property>  
-       </bean>      
-      </list>
-    </property>
+              </property>      
+              <property name="layoutManager.summaryTitle" value="Travel Account"/> 
+              <property name="layoutManager.summaryFields">
+                <list>
+                  <value>number</value>
+                </list>
+              </property>
+           </bean>
+           <bean parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="5">
+              <property name="title" value="Fiscal Officer Accounts"/>  
+              <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+              <property name="name" value="fiscalOfficer.accounts"/>
+              <property name="layoutManager.renderSequenceField" value="false"/>
+              <property name="items">
+                <list>
+                  <bean parent="AttributeField" p:name="number"/>
+                  <bean parent="AttributeField" p:name="name"/>
+                  <bean parent="AttributeField" p:name="foId"/>
+                  <bean parent="AttributeField" p:name="subsidizedPercent"/>
+                  <bean parent="AttributeField" p:name="createDate"/>
+                 </list>
+              </property>      
+           </bean>                
+         </list>
+     </property>
   </bean>
 
 </beans>

@@ -78,6 +78,9 @@ public class View extends ContainerBase {
 	private String viewStatus;
 	private ViewIndex viewIndex;
 
+	private boolean singlePageView;
+	private Group page;
+
 	private List<? extends Group> items;
 
 	// TODO: scripting variables, should be in context
@@ -85,6 +88,7 @@ public class View extends ContainerBase {
 
 	public View() {
 		dialogMode = false;
+		singlePageView = false;
 		viewTypeName = ViewType.DEFAULT;
 		viewStatus = UifConstants.ViewStatus.CREATED;
 
@@ -102,6 +106,8 @@ public class View extends ContainerBase {
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
+	 * <li>If a single paged view, set items in page group and put the page in
+	 * the items list</li>
 	 * <li>If current page id is not set, it is set to the configured entry page
 	 * or first item in list id</li>
 	 * </ul>
@@ -109,16 +115,32 @@ public class View extends ContainerBase {
 	 * 
 	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
+		// populate items on page for single paged view
+		if (singlePageView) {
+			if (page != null) {
+				page.setItems(new ArrayList<Group>(items));
+
+				// reset the items list to include the one page
+				items = new ArrayList<Group>();
+				((List<Group>) items).add(page);
+			}
+			else {
+				throw new RuntimeException("For single paged views the page Group must be set.");
+			}
+		}
+
+		// set the entry page
 		if (StringUtils.isNotBlank(entryPageId)) {
-			this.currentPageId = this.entryPageId;
+			currentPageId = entryPageId;
 		}
 		else {
 			Group firstPageGroup = getItems().get(0);
-			this.currentPageId = firstPageGroup.getId();
+			currentPageId = firstPageGroup.getId();
 		}
 	}
 
@@ -161,9 +183,9 @@ public class View extends ContainerBase {
 	 */
 	public Group getCurrentPage() {
 		for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext();) {
-			Group page = iterator.next();
-			if (page.getId().equals(getCurrentPageId())) {
-				return page;
+			Group pageGroup = iterator.next();
+			if (pageGroup.getId().equals(getCurrentPageId())) {
+				return pageGroup;
 			}
 		}
 
@@ -378,10 +400,28 @@ public class View extends ContainerBase {
 		this.dialogMode = dialogMode;
 	}
 
+	/**
+	 * View type name the view is associated with
+	 * 
+	 * <p>
+	 * Views that share common features and functionality can be grouped by the
+	 * view type. Usually view types extend the <code>View</code> class to
+	 * provide additional configuration and to set defaults. View types can also
+	 * implement the <code>ViewTypeService</code> to add special indexing and
+	 * retrieval of views.
+	 * </p>
+	 * 
+	 * @return String view type name for the view
+	 */
 	public String getViewTypeName() {
 		return this.viewTypeName;
 	}
 
+	/**
+	 * Setter for the view's type name
+	 * 
+	 * @param viewTypeName
+	 */
 	public void setViewTypeName(String viewTypeName) {
 		this.viewTypeName = viewTypeName;
 	}
@@ -499,6 +539,51 @@ public class View extends ContainerBase {
 	 */
 	public void setViewIndex(ViewIndex viewIndex) {
 		this.viewIndex = viewIndex;
+	}
+
+	/**
+	 * Indicates whether the <code>View</code> only has a single page
+	 * <code>Group</code> or contains multiple page <code>Group</code>
+	 * instances. In the case of a single page it is assumed the group's items
+	 * list contains the section groups for the page, and the page itself is
+	 * given by the page property ({@link #getPage()}. This is for convenience
+	 * of configuration and also can drive other configuration like styling.
+	 * 
+	 * @return boolean true if the view only contains one page group, false if
+	 *         it contains multple pages
+	 */
+	public boolean isSinglePageView() {
+		return this.singlePageView;
+	}
+
+	/**
+	 * Setter for the single page indicator
+	 * 
+	 * @param singlePageView
+	 */
+	public void setSinglePageView(boolean singlePageView) {
+		this.singlePageView = singlePageView;
+	}
+
+	/**
+	 * For single paged views ({@link #isSinglePageView()}, gives the page
+	 * <code>Group</code> the view should render. The actual items for the page
+	 * is taken from the group's items list ({@link #getItems()}, and set onto
+	 * the give page group. This is for convenience of configuration.
+	 * 
+	 * @return Group page group for single page views
+	 */
+	public Group getPage() {
+		return this.page;
+	}
+
+	/**
+	 * Setter for the page group for single page views
+	 * 
+	 * @param page
+	 */
+	public void setPage(Group page) {
+		this.page = page;
 	}
 
 	/**

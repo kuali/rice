@@ -32,7 +32,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.spring.form.KualiSpringInterceptorForm;
+import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.kns.web.ui.HeaderField;
 import org.springframework.util.AutoPopulatingList;
@@ -40,7 +40,7 @@ import org.springframework.util.AutoPopulatingList;
 /**
  * This class common properites for all action forms.
  */
-public class KualiForm extends KualiSpringInterceptorForm {
+public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
 
     private static final String literalPrefixAndDelimiter =

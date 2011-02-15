@@ -27,11 +27,12 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
+import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
  * This interface defines basic methods that all maintainable objects must provide.
  */
-public interface Maintainable extends java.io.Serializable, SelectiveReferenceRefresher {
+public interface Maintainable extends ViewHelperService, java.io.Serializable, SelectiveReferenceRefresher {
 
     /**
      * This is a hook to allow the document to override the generic document title.
@@ -63,6 +64,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     /**
      * Returns a string that will be displayed as title on the maintenance screen.
      */
+    @Deprecated
     public String getMaintainableTitle();
 
     /**
@@ -76,6 +78,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param oldMaintainable - If this is the new maintainable, the old is passed in for reference.  If it is the old maintainable, then null will be passed in
      * @return
      */
+    @Deprecated
     public List getSections(MaintenanceDocument maintenanceDocument, Maintainable oldMaintainable);
 
 
@@ -86,6 +89,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param maintenanceDocument
      * @return
      */
+    @Deprecated
     public Map populateBusinessObject(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall);
 
 
@@ -115,6 +119,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param docTypeName
      *
      */
+    @Deprecated
     public void setGenerateDefaultValues(String docTypeName);
 
 
@@ -123,6 +128,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param docTypeName
      * 
      */
+    @Deprecated
     public void setGenerateBlankRequiredValues(String docTypeName);
 
 
@@ -172,6 +178,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param colClass
      * @param addBO
      */
+    @Deprecated
     public void processBeforeAddLine(String colName, Class colClass, BusinessObject addBO);
     
     /**
@@ -195,6 +202,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param fieldValues
      * @return
      */
+    @Deprecated
     public Map<String, String> populateNewCollectionLines( Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall );
     
     /**
@@ -203,6 +211,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param collectionName
      * @return
      */
+    @Deprecated
     public PersistableBusinessObject getNewCollectionLine( String collectionName );
 
     /**
@@ -210,6 +219,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * 
      * @param collectionName
      */
+    @Deprecated
     public void addNewLineToCollection( String collectionName );
     
     /**
@@ -227,12 +237,14 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param collectionName - name of the collection (or sub-collection) to check inactive record display setting
      * @return true if inactive records should be displayed, false otherwise
      */
+    @Deprecated
     public boolean getShowInactiveRecords(String collectionName);
     
     /**
      * Returns the Map used to control the state of inactive record collection display. Exposed for setting from the
      * maintenance jsp.
      */
+    @Deprecated
     public Map<String, Boolean> getInactiveRecordDisplay();
     
     /**
@@ -241,6 +253,7 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @param collectionName - name of the collection (or sub-collection) to set inactive record display setting
      * @param showInactive - true to display inactive, false to not display inactive records
      */
+    @Deprecated
     public void setShowInactiveRecords(String collectionName, boolean showInactive);
     
     public void addMultipleValueLookupResults(MaintenanceDocument document, String collectionName, Collection<PersistableBusinessObject> rawValues, boolean needsBlank, PersistableBusinessObject bo);

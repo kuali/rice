@@ -26,16 +26,20 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
  * This interface defines the methods for inquirables.
  */
 public interface Inquirable extends ViewHelperService {
+	@Deprecated
     public String getHtmlMenuBar();
 
+    @Deprecated
     public String getTitle();
 
     public BusinessObject getBusinessObject(Map fieldValues);
 
+    @Deprecated
     public List getSections(BusinessObject bo);
 
     public void setBusinessObjectClass(Class businessObjectClass);
 
+    @Deprecated
     public void addAdditionalSections(List columns, BusinessObject bo);
     
     /**
@@ -44,12 +48,14 @@ public interface Inquirable extends ViewHelperService {
      * @param collectionName - name of the collection (or sub-collection) to check inactive record display setting
      * @return true if inactive records should be displayed, false otherwise
      */
+    @Deprecated
     public boolean getShowInactiveRecords(String collectionName);
     
     /**
      * Returns the Map used to control the state of inactive record collection display. Exposed for setting from the
      * maintenance jsp.
      */
+    @Deprecated
     public Map<String, Boolean> getInactiveRecordDisplay();
     
     /**
@@ -58,6 +64,7 @@ public interface Inquirable extends ViewHelperService {
      * @param collectionName - name of the collection (or sub-collection) to set inactive record display setting
      * @param showInactive - true to display inactive, false to not display inactive records
      */
+    @Deprecated
     public void setShowInactiveRecords(String collectionName, boolean showInactive);
     
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry);

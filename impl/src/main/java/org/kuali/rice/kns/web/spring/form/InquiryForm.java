@@ -40,14 +40,14 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
- * This class is the model for Inquiries.
+ * Form class for <code>InquiryView</code> screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InquiryForm extends UifFormBase {
 	private static final Logger LOG = Logger.getLogger(InquiryForm.class);
 
-	private String inquiryObjectClassName;
+	private String objectClassName;
 	private boolean canExport;
 
 	/**
@@ -75,10 +75,10 @@ public class InquiryForm extends UifFormBase {
 
 			inquirable = (Inquirable) getView().getViewHelperService();
 			try {
-				inquirable.setBusinessObjectClass(Class.forName(inquiryObjectClassName));
+				inquirable.setBusinessObjectClass(Class.forName(objectClassName));
 			}
 			catch (ClassNotFoundException e) {
-				throw new RuntimeException("Unable to get new instance for object class: " + inquiryObjectClassName, e);
+				throw new RuntimeException("Unable to get new instance for object class: " + objectClassName, e);
 			}
 
 			// the following variable is true if the method to call is not
@@ -100,10 +100,10 @@ public class InquiryForm extends UifFormBase {
 			this.inquiryPrimaryKeys = new HashMap<String, String>();
 			this.inquiryDecryptedPrimaryKeys = new HashMap<String, String>();
 
-			populatePKFieldValues(request, getInquiryObjectClassName(), passedFromPreviousInquiry);
+			populatePKFieldValues(request, getObjectClassName(), passedFromPreviousInquiry);
 
 			// populateInactiveRecordsInIntoInquirable(inquirable, request);
-			populateExportCapabilities(getInquiryObjectClassName());
+			populateExportCapabilities(getObjectClassName());
 		}
 	}
 
@@ -154,7 +154,7 @@ public class InquiryForm extends UifFormBase {
 							// require a DD entry for the attribute. it is only
 							// checking keys
 							// so most likely there should be an entry.
-							LOG.warn("BO class " + inquiryObjectClassName + " property " + boKey
+							LOG.warn("BO class " + objectClassName + " property " + boKey
 									+ " should probably have a DD definition.", ex);
 						}
 
@@ -169,7 +169,7 @@ public class InquiryForm extends UifFormBase {
 								inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameter));
 							}
 							catch (GeneralSecurityException e) {
-								LOG.error("BO class " + inquiryObjectClassName + " property " + boKey
+								LOG.error("BO class " + objectClassName + " property " + boKey
 										+ " should have been encrypted, but there was a problem decrypting it.");
 								throw e;
 							}
@@ -243,12 +243,12 @@ public class InquiryForm extends UifFormBase {
 		return altKeys != null ? altKeys : new ArrayList<List<String>>();
 	}
 
-	public String getInquiryObjectClassName() {
-		return this.inquiryObjectClassName;
+	public String getObjectClassName() {
+		return this.objectClassName;
 	}
 
-	public void setInquiryObjectClassName(String inquiryObjectClassName) {
-		this.inquiryObjectClassName = inquiryObjectClassName;
+	public void setObjectClassName(String objectClassName) {
+		this.objectClassName = objectClassName;
 	}
 
 	public BusinessObject getBo() {

@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.web.spring.form;
+package edu.sampleu.travel.krad.form;
 
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 
 import edu.sampleu.travel.bo.TravelAccount;
 

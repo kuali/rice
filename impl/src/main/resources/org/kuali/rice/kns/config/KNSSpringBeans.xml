@@ -208,6 +208,7 @@
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifCommonDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestMaintenance.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
             </list>
@@ -254,6 +255,7 @@
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifCommonDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestMaintenance.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                       
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
             </list>
@@ -335,6 +337,7 @@
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UifCommonDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestMaintenance.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>       
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
 			</list>
@@ -859,6 +862,39 @@
             <ref bean="dataDictionaryService" />
         </property>        
 	</bean>
+    
+    <bean id="kualiMaintainable" class="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" scope="prototype">
+        <property name="persistenceStructureService">
+            <ref bean="persistenceStructureService" />
+        </property>
+        <property name="maintenanceDocumentDictionaryService">
+            <ref bean="maintenanceDocumentDictionaryService" />
+        </property>      
+        <property name="dataDictionaryService">
+            <ref bean="dataDictionaryService" />
+        </property>
+        <property name="businessObjectService">
+            <ref bean="businessObjectService" />
+        </property>     
+        <property name="businessObjectDictionaryService">
+            <ref bean="businessObjectDictionaryService" />
+        </property>
+        <property name="encryptionService">
+            <ref bean="encryptionService" />
+        </property>   
+        <property name="businessObjectMetaDataService">
+            <ref bean="businessObjectMetaDataService" />
+        </property>   
+        <property name="businessObjectAuthorizationService">
+            <ref bean="businessObjectAuthorizationService" />
+        </property>   
+        <property name="maintenanceDocumentService">
+            <ref bean="maintenanceDocumentService" />
+        </property>
+        <property name="documentHelperService">
+            <ref bean="documentHelperService" />
+        </property>                         
+    </bean>
 
 	<bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
 
@@ -1222,6 +1258,7 @@
       <property name="viewTypeServices">
         <list>
           <ref bean="inquiryViewTypeService"/>
+          <ref bean="maintenanceViewTypeService"/>
         </list>
       </property>
   </bean>
@@ -1231,5 +1268,14 @@
   </bean>
   
   <bean id="inquiryViewTypeService" class="org.kuali.rice.kns.uif.service.impl.InquiryViewTypeServiceImpl"/>
+  
+  <bean id="maintenanceViewTypeService" class="org.kuali.rice.kns.uif.service.impl.MaintenanceViewTypeServiceImpl">
+      <property name="documentService">
+          <ref bean="documentService" />
+      </property> 
+      <property name="maintenanceDocumentDictionaryService">
+          <ref bean="maintenanceDocumentDictionaryService" />
+      </property>       
+  </bean>
   
 </beans>

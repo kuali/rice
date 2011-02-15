@@ -23,7 +23,7 @@
 <krad:span component="${field}" idSuffix="attribute">
 
   <%-- render field label left --%>
-  <c:if test="${renderLabel && (field.labelPlacement eq 'LEFT')}">
+  <c:if test="${renderLabel && ((field.labelPlacement eq 'LEFT') || (field.labelPlacement eq 'TOP'))}">
     <krad:template component="${field.labelField}"/>
   </c:if>
 

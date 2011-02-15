@@ -20,47 +20,52 @@ import java.util.List;
 import org.kuali.rice.kns.document.Document;
 
 /**
+ * Base form for all <code>DocumentView</code> screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentFormBase extends UifFormBase {
+	protected String docTypeName;
+	protected String annotation = "";
 
-    private List<String> additionalScriptFiles;
-    private String annotation = "";
-    private Document document;
-    private String docTypeName;
-    
-    
-    public List<String> getAdditionalScriptFiles() {
-        return this.additionalScriptFiles;
-    }
+	protected Document document;
 
-    public void setAdditionalScriptFiles(List<String> additionalScriptFiles) {
-        this.additionalScriptFiles = additionalScriptFiles;
-    }
+	protected List<String> additionalScriptFiles;
 
-    public String getAnnotation() {
-        return this.annotation;
-    }
+	public DocumentFormBase() {
 
-    public void setAnnotation(String annotation) {
-        this.annotation = annotation;
-    }
+	}
 
-    public Document getDocument() {
-        return this.document;
-    }
-    
-    public void setDocument(Document document) {
-        this.document = document;
-    }
-    
-    public String getDocTypeName() {
-        return this.docTypeName;
-    }
-    
-    public void setDocTypeName(String docTypeName) {
-        this.docTypeName = docTypeName;
-    }
-    
+	public List<String> getAdditionalScriptFiles() {
+		return this.additionalScriptFiles;
+	}
+
+	public void setAdditionalScriptFiles(List<String> additionalScriptFiles) {
+		this.additionalScriptFiles = additionalScriptFiles;
+	}
+
+	public String getAnnotation() {
+		return this.annotation;
+	}
+
+	public void setAnnotation(String annotation) {
+		this.annotation = annotation;
+	}
+
+	public Document getDocument() {
+		return this.document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+
+	public String getDocTypeName() {
+		return this.docTypeName;
+	}
+
+	public void setDocTypeName(String docTypeName) {
+		this.docTypeName = docTypeName;
+	}
+
 }

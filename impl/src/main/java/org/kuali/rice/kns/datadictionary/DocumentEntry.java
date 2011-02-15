@@ -226,6 +226,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
      * 
      * @return displayTopicFieldInNotes boolean
      */
+    @Deprecated
     public boolean getDisplayTopicFieldInNotes() {
         return displayTopicFieldInNotes;
     }
@@ -234,6 +235,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             This field contains a value of true or false.
             If true, then the "Notes and Attachments" tab will render a column for a note topic.
      */
+    @Deprecated
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;
     }
@@ -283,6 +285,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         class. This is used to determine the set of file types that are allowed
         to be attached to the document.
      */
+    @Deprecated
     public void setAttachmentTypesValuesFinderClass(Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass) {
         if (attachmentTypesValuesFinderClass == null) {
             throw new IllegalArgumentException("invalid (null) attachmentTypesValuesFinderClass");
@@ -294,6 +297,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#getKeyValuesFinder()
      */
+    @Deprecated
     public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {
         return attachmentTypesValuesFinderClass;
     }
@@ -311,10 +315,12 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
         return allowsCopy;
     }
     
+    @Deprecated
     public List<HeaderNavigation> getHeaderNavigationList() {
         return headerNavigationList;
     }
 
+    @Deprecated
     public List<String> getWebScriptFiles() {
         return webScriptFiles;
     }
@@ -324,6 +330,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             that are necessary for processing the document.  The specified
             javascript files will be included in the generated html.
      */
+    @Deprecated
     public void setWebScriptFiles(List<String> webScriptFiles) {
         this.webScriptFiles = webScriptFiles;
     }
@@ -331,6 +338,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * @return the allowsNoteAttachments
      */
+    @Deprecated
     public boolean getAllowsNoteAttachments() {
         return this.allowsNoteAttachments;
     }
@@ -340,6 +348,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             If true, then a document screen includes notes with attachments. Otherwise,
             only notes is displayed.
      */
+    @Deprecated
     public void setAllowsNoteAttachments(boolean allowsNoteAttachments) {
         this.allowsNoteAttachments = allowsNoteAttachments;
     }
@@ -347,6 +356,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * @return the allowsNoteFYI
      */
+    @Deprecated
     public boolean getAllowsNoteFYI() {
     	return allowsNoteFYI;
     }
@@ -354,6 +364,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     /**
      * This is an indicator for determining whether to render the AdHoc FYI recipient box and Send FYI button.
      */
+    @Deprecated
     public void setAllowsNoteFYI(boolean allowsNoteFYI) {
     	this.allowsNoteFYI = allowsNoteFYI;
     }
@@ -383,6 +394,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
             The headerNavigation element defines a set of additional
             tabs which will appear on the document.
      */
+	 @Deprecated
     public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
         this.headerNavigationList = headerNavigationList;
     }
@@ -423,11 +435,12 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
 
-
+    @Deprecated
 	public boolean isSessionDocument() {
 		return this.sessionDocument;
 	}
 
+    @Deprecated
 	public void setSessionDocument(boolean sessionDocument) {
 		this.sessionDocument = sessionDocument;
 	}
@@ -454,6 +467,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	/**
 	 * @return the derivedValuesSetter
 	 */
+	 @Deprecated
 	public Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass() {
 		return this.derivedValuesSetterClass;
 	}
@@ -461,6 +475,7 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
 	/**
 	 * @param derivedValuesSetter the derivedValuesSetter to set
 	 */
+	 @Deprecated
 	public void setDerivedValuesSetterClass(
 			Class<? extends DerivedValuesSetter> derivedValuesSetter) {
 		this.derivedValuesSetterClass = derivedValuesSetter;

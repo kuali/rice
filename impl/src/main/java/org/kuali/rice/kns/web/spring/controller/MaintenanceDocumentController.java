@@ -91,23 +91,23 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     }
     
     protected void setupMaintenance(MaintenanceForm form, HttpServletRequest request, String maintenanceAction) throws Exception {
-        MaintenanceDocument document = form.getDocument();
+        MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
         
         // create a new document object, if required (on NEW object, or other reasons)
         if (document == null) {
-            if (StringUtils.isEmpty(form.getBusinessObjectClassName()) && StringUtils.isEmpty(form.getDocTypeName())) {
+            if (StringUtils.isEmpty(form.getObjectClassName()) && StringUtils.isEmpty(form.getDocTypeName())) {
                 throw new IllegalArgumentException("Document type name or bo class not given!");
             }
 
             String documentTypeName = form.getDocTypeName();
             // get document type if not passed
             if (StringUtils.isEmpty(documentTypeName)) {
-                documentTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(Class.forName(form.getBusinessObjectClassName()));
+                documentTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(Class.forName(form.getObjectClassName()));
                 form.setDocTypeName(documentTypeName);
             }
 
             if (StringUtils.isEmpty(documentTypeName)) {
-                throw new RuntimeException("documentTypeName is empty; does this Business Object have a maintenance document definition? " + form.getBusinessObjectClassName());
+                throw new RuntimeException("documentTypeName is empty; does this Business Object have a maintenance document definition? " + form.getObjectClassName());
             }
 
             // check doc type allows new or copy if that action was requested
@@ -130,10 +130,10 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             Map<String, String> requestParameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
             PersistableBusinessObject oldBusinessObject = null;
             try {
-                oldBusinessObject = (PersistableBusinessObject) lookupService.findObjectBySearch(Class.forName(form.getBusinessObjectClassName()), requestParameters);
+                oldBusinessObject = (PersistableBusinessObject) lookupService.findObjectBySearch(Class.forName(form.getObjectClassName()), requestParameters);
             } catch (ClassNotPersistenceCapableException ex) {
                 if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
-                    throw new RuntimeException("BO Class: " + form.getBusinessObjectClassName() + " is not persistable and is not externalizable - configuration error");
+                    throw new RuntimeException("BO Class: " + form.getObjectClassName() + " is not persistable and is not externalizable - configuration error");
                 }
                 // otherwise, let fall through
             }
@@ -161,9 +161,9 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
             // set business object instance for editing
             document.getOldMaintainableObject().setBusinessObject(oldBusinessObject);
-            document.getOldMaintainableObject().setBoClass(Class.forName(form.getBusinessObjectClassName()));
+            document.getOldMaintainableObject().setBoClass(Class.forName(form.getObjectClassName()));
             document.getNewMaintainableObject().setBusinessObject(newBusinessObject);
-            document.getNewMaintainableObject().setBoClass(Class.forName(form.getBusinessObjectClassName()));
+            document.getNewMaintainableObject().setBoClass(Class.forName(form.getObjectClassName()));
 
             // on a COPY, clear any fields that this user isnt authorized for, and also
             // clear the primary key fields

@@ -73,7 +73,7 @@ form ul:after,form li:after, form li div:after{
 * html form li div{display:inline-block;}
 *+html form ul, *+html form li div{display:inline-block;}
 
-form li div{
+form li{
 	margin:0;
 	padding:0;
 	color:#444;
@@ -170,11 +170,12 @@ form li div label, form li span label{
 	color:#444;
 	display:block;
 }
-label.desc{
+.desc{
 	font-size:95%;
 	line-height:150%;
 	margin-right:5px;
-	padding:0 0 3px 0;
+    padding-bottom: 5px;	
+    padding-top: 5px;
 	border:none;
 }
 label.choice{

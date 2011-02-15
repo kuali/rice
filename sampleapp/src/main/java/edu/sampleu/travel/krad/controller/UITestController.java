@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.web.spring.controller;
+package edu.sampleu.travel.krad.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.kns.web.spring.form.UITestForm;
+import org.kuali.rice.kns.web.spring.controller.UifControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.sampleu.travel.bo.FiscalOfficer;
 import edu.sampleu.travel.bo.TravelAccount;
+import edu.sampleu.travel.krad.form.UITestForm;
 
 /**
  * Controller for the Test UI Page

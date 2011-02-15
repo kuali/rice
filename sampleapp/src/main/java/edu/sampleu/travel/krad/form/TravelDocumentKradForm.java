@@ -46,7 +46,6 @@ public class TravelDocumentKradForm extends KualiTransactionalDocumentFormBase {
 
     public TravelDocumentKradForm() {
         super();
-        this.setUsingSpring(true);
         this.setDocument(new TravelDocument2());
     }
 

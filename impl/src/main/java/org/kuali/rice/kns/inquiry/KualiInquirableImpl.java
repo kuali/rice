@@ -129,6 +129,7 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
     /**
      * Objects extending KualiInquirableBase must specify the Section objects used to display the inquiry result.
      */
+    @Deprecated
     public List<Section> getSections(BusinessObject bo) {
 
         List<Section> sections = new ArrayList<Section>();
@@ -378,12 +379,14 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
     	return titleText;
     }
 
+    @Deprecated
     public void addAdditionalSections(List columns, BusinessObject bo) {
     }
 
     /**
      * @see org.kuali.rice.kns.inquiry.Inquirable#getHtmlMenuBar()
      */
+    @Deprecated
     public String getHtmlMenuBar() {
         // TODO: replace with inquiry menu bar
         return getBusinessObjectDictionaryService().getLookupMenuBar(getBusinessObjectClass());
@@ -392,6 +395,7 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
     /**
      * @see org.kuali.rice.kns.inquiry.Inquirable#getTitle()
      */
+    @Deprecated
     public String getTitle() {
         return getBusinessObjectDictionaryService().getInquiryTitle(getBusinessObjectClass());
     }
@@ -413,12 +417,14 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
     /**
      * @see org.kuali.rice.kns.inquiry.Inquirable#getInactiveRecordDisplay()
      */
+    @Deprecated
     public Map<String, Boolean> getInactiveRecordDisplay() {
 	return inactiveRecordDisplay;
 }
     /**
      * @see org.kuali.rice.kns.inquiry.Inquirable#getShowInactiveRecords(java.lang.String)
      */
+    @Deprecated
     public boolean getShowInactiveRecords(String collectionName) {
 	return InactiveRecordsHidingUtils.getShowInactiveRecords(inactiveRecordDisplay, collectionName);
     }
@@ -426,6 +432,7 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
     /**
      * @see org.kuali.rice.kns.inquiry.Inquirable#setShowInactiveRecords(java.lang.String, boolean)
      */
+    @Deprecated
     public void setShowInactiveRecords(String collectionName, boolean showInactive) {
 	InactiveRecordsHidingUtils.setShowInactiveRecords(inactiveRecordDisplay, collectionName, showInactive);
     }

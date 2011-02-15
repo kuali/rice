@@ -77,6 +77,7 @@ public class UifConstants extends JSTLConstants {
 	public static class ViewTypeParameterNames {
 		public static final String NAME = "name";
 		public static final String INQUIRY_OBJECT_CLASS_NAME = "inquiryObjectClassName";
+		public static final String OBJECT_CLASS_NAME = "objectClassName";
 	}
 
 	public static class ActionParameterNames {

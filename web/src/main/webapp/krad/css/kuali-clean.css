@@ -203,8 +203,9 @@ div.globalbuttons
 	padding-bottom: 5px;	
 }
 
-.field-attribute
+.field_attribute
 {
+   vertical-align: middle;
    padding-bottom: 5px;	
    padding-top: 5px;	
 }
@@ -219,3 +220,18 @@ th.infoline {
 	border-bottom-color: #163746;
 	border-left-color: #163746;
 }
+
+.labelTop {
+	font-weight: bold;
+	font-size:95%;
+	display:block;
+	padding-top: 15px;
+	padding-bottom: 5px;
+}
+
+.layout_center {
+	width: 200px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 15px;
+}	

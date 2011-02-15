@@ -169,7 +169,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="AttributeField" abstract="true" class="org.kuali.rice.kns.uif.field.AttributeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/attributeField.jsp"/>
-      <property name="styleClass" value="field-attribute"/>
+      <property name="styleClass" value="field_attribute"/>
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>      

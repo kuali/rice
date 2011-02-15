@@ -30,7 +30,7 @@ import org.kuali.rice.kns.uif.service.ViewTypeService;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InquiryViewTypeServiceImpl implements ViewTypeService {
+public class InquiryViewTypeServiceImpl  implements ViewTypeService {
 
 	/**
 	 * @see org.kuali.rice.kns.uif.service.ViewTypeService#getViewTypeName()
@@ -38,7 +38,7 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 	public String getViewTypeName() {
 		return ViewType.INQUIRY;
 	}
-
+	
 	/**
 	 * @see org.kuali.rice.kns.uif.service.ViewTypeService#getParametersFromView(org.kuali.rice.kns.uif.container.View)
 	 */
@@ -48,7 +48,7 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 		InquiryView inquiryView = (InquiryView) view;
 
 		parameters.put(ViewTypeParameterNames.NAME, inquiryView.getName());
-		parameters.put(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME, inquiryView.getInquiryObjectClassName().getName());
+		parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME, inquiryView.getObjectClassName().getName());
 
 		return parameters;
 	}
@@ -66,15 +66,16 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 			parameters.put(ViewTypeParameterNames.NAME, UifConstants.DEFAULT_VIEW_NAME);
 		}
 
-		if (requestParameters.containsKey(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME)) {
-			parameters.put(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME,
-					requestParameters.get(ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME));
+		if (requestParameters.containsKey(ViewTypeParameterNames.OBJECT_CLASS_NAME)) {
+			parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME,
+					requestParameters.get(ViewTypeParameterNames.OBJECT_CLASS_NAME));
 		}
 		else {
-			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.INQUIRY_OBJECT_CLASS_NAME
-					+ "' must be given to find an inquiry view.");
+			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.OBJECT_CLASS_NAME
+					+ "' must be given to find views of type: " + getViewTypeName());
 		}
 
 		return parameters;
 	}
+
 }

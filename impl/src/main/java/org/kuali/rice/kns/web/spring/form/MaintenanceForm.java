@@ -15,37 +15,34 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
-import org.kuali.rice.kns.document.MaintenanceDocument;
 
 /**
+ * Form class for <code>MaintenanceView</code> screens
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceForm extends DocumentFormBase {
-    
-    protected String businessObjectClassName;
-    protected String maintenanceAction;
-    
+	protected String objectClassName;
+	protected String maintenanceAction;
 
-    @Override
-    public MaintenanceDocument getDocument() {
-        return this.getDocument();
-    }
-    
-    public String getBusinessObjectClassName() {
-        return this.businessObjectClassName;
-    }
+	public MaintenanceForm() {
 
-    public void setBusinessObjectClassName(String businessObjectClassName) {
-        this.businessObjectClassName = businessObjectClassName;
-    }
+	}
 
-    public String getMaintenanceAction() {
-        return this.maintenanceAction;
-    }
+	public String getObjectClassName() {
+		return this.objectClassName;
+	}
 
-    public void setMaintenanceAction(String maintenanceAction) {
-        this.maintenanceAction = maintenanceAction;
-    }
-    
+	public void setObjectClassName(String objectClassName) {
+		this.objectClassName = objectClassName;
+	}
+
+	public String getMaintenanceAction() {
+		return this.maintenanceAction;
+	}
+
+	public void setMaintenanceAction(String maintenanceAction) {
+		this.maintenanceAction = maintenanceAction;
+	}
+
 }

@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.maintenance;
 
 import java.beans.PropertyDescriptor;
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -61,6 +60,7 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -76,7 +76,7 @@ import org.kuali.rice.kns.web.ui.SectionBridge;
 /**
  * Base Maintainable class to hold things common to all maintainables.
  */
-public class KualiMaintainableImpl implements Maintainable, Serializable {
+public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Maintainable {
     private static final long serialVersionUID = 4814145799502207182L;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintainableImpl.class);
@@ -91,18 +91,16 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     
     protected String docTypeName;
 
-    protected static PersistenceStructureService persistenceStructureService;
-    
-    protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-    protected static DataDictionaryService dataDictionaryService;
-    protected static BusinessObjectService businessObjectService;
-    protected static BusinessObjectDictionaryService businessObjectDictionaryService;
-    protected static EncryptionService encryptionService;
-    protected static org.kuali.rice.kim.service.PersonService personService;
-    protected static BusinessObjectMetaDataService businessObjectMetaDataService;
-    protected static BusinessObjectAuthorizationService businessObjectAuthorizationService;
-    protected static MaintenanceDocumentService maintenanceDocumentService;
-    protected static DocumentHelperService documentHelperService;
+    protected  PersistenceStructureService persistenceStructureService;
+    protected  MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    protected  BusinessObjectService businessObjectService;
+    protected  BusinessObjectDictionaryService businessObjectDictionaryService;
+    protected  EncryptionService encryptionService;
+    protected  org.kuali.rice.kim.service.PersonService personService;
+    protected  BusinessObjectMetaDataService businessObjectMetaDataService;
+    protected  BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    protected  MaintenanceDocumentService maintenanceDocumentService;
+    protected  DocumentHelperService documentHelperService;
     
     /**
      * Default empty constructor
@@ -1157,83 +1155,118 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		return null;
 	}
 
-	public static PersistenceStructureService getPersistenceStructureService() {
-	    if ( persistenceStructureService == null ) {
-	        persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
-	    }
-	    return persistenceStructureService;
+	protected PersistenceStructureService getPersistenceStructureService() {
+		if (persistenceStructureService == null) {
+			persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+		}
+		return persistenceStructureService;
 	}
 
-    public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-        if ( maintenanceDocumentDictionaryService == null ) {
-            maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
-        }
-        return maintenanceDocumentDictionaryService;
-    }
+	protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		if (maintenanceDocumentDictionaryService == null) {
+			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+		}
+		return maintenanceDocumentDictionaryService;
+	}
 
-    public static DataDictionaryService getDataDictionaryService() {
-        if ( dataDictionaryService == null ) {
-            dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
-        }
-        return dataDictionaryService;
-    }
+	protected BusinessObjectService getBusinessObjectService() {
+		if (businessObjectService == null) {
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+		}
+		return businessObjectService;
+	}
 
-    public static BusinessObjectService getBusinessObjectService() {
-        if ( businessObjectService == null ) {
-            businessObjectService = KNSServiceLocator.getBusinessObjectService();
-        }
-        return businessObjectService;
-    }
+	protected BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+		if (businessObjectDictionaryService == null) {
+			businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+		}
+		return businessObjectDictionaryService;
+	}
 
-    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-        if ( businessObjectDictionaryService == null ) {
-            businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
-        }
-        return businessObjectDictionaryService;
-    }
+	protected EncryptionService getEncryptionService() {
+		if (encryptionService == null) {
+			encryptionService = KNSServiceLocator.getEncryptionService();
+		}
+		return encryptionService;
+	}
 
-    public static EncryptionService getEncryptionService() {
-        if ( encryptionService == null ) {
-            encryptionService = KNSServiceLocator.getEncryptionService();
-        }
-        return encryptionService;
-    }
+	protected org.kuali.rice.kim.service.PersonService getPersonService() {
+		if (personService == null) {
+			personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
+		}
+		return personService;
+	}
 
-    public static org.kuali.rice.kim.service.PersonService getPersonService() {
-        if ( personService == null ) {
-            personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
-        }
-        return personService;
-    }
+	protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+		if (businessObjectMetaDataService == null) {
+			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+		}
+		return businessObjectMetaDataService;
+	}
 
-    public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
-        if ( businessObjectMetaDataService == null ) {
-            businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
-        }
-        return businessObjectMetaDataService;
-    }
+	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+		if (businessObjectAuthorizationService == null) {
+			businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+		}
+		return businessObjectAuthorizationService;
+	}
 
-    public static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
-    	if (businessObjectAuthorizationService == null) {
-    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
-    	}
-    	return businessObjectAuthorizationService;
-    }
-    
-    public static MaintenanceDocumentService getMaintenanceDocumentService() {
-    	if (maintenanceDocumentService == null) {
-    		maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
-    	}
-    	return maintenanceDocumentService;
-    }
-    
-    public static DocumentHelperService getDocumentHelperService() {
-    	if (documentHelperService == null) {
-    		documentHelperService = KNSServiceLocator.getDocumentHelperService();
-    	}
-    	return documentHelperService;
-    }
-    
+	protected MaintenanceDocumentService getMaintenanceDocumentService() {
+		if (maintenanceDocumentService == null) {
+			maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+		}
+		return maintenanceDocumentService;
+	}
+
+	protected DocumentHelperService getDocumentHelperService() {
+		if (documentHelperService == null) {
+			documentHelperService = KNSServiceLocator.getDocumentHelperService();
+		}
+		return documentHelperService;
+	}
+
+	public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
+		this.persistenceStructureService = persistenceStructureService;
+	}
+
+	public void setMaintenanceDocumentDictionaryService(
+			MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
+		this.maintenanceDocumentDictionaryService = maintenanceDocumentDictionaryService;
+	}
+
+	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+		this.businessObjectService = businessObjectService;
+	}
+
+	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
+		this.businessObjectDictionaryService = businessObjectDictionaryService;
+	}
+
+	public void setEncryptionService(EncryptionService encryptionService) {
+		this.encryptionService = encryptionService;
+	}
+
+	public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+		this.personService = personService;
+	}
+
+	public void setBusinessObjectMetaDataService(BusinessObjectMetaDataService businessObjectMetaDataService) {
+		this.businessObjectMetaDataService = businessObjectMetaDataService;
+	}
+
+	public void setBusinessObjectAuthorizationService(
+			BusinessObjectAuthorizationService businessObjectAuthorizationService) {
+		this.businessObjectAuthorizationService = businessObjectAuthorizationService;
+	}
+
+	public void setMaintenanceDocumentService(MaintenanceDocumentService maintenanceDocumentService) {
+		this.maintenanceDocumentService = maintenanceDocumentService;
+	}
+
+	public void setDocumentHelperService(DocumentHelperService documentHelperService) {
+		this.documentHelperService = documentHelperService;
+	}
+
 	/**
 	 * @see org.kuali.rice.kns.maintenance.Maintainable#clearBusinessObjectOfRestrictedValues(org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions)
 	 */

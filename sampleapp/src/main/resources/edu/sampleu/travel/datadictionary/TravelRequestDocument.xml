@@ -93,20 +93,20 @@
       <bean parent="TextControlDefinition" p:size="60"/>
     </property>
 	<property name="validCharactersConstraint">
-		<bean class="org.kuali.rice.kns.datadictionary.validation.ValidCharactersConstraint">
+		<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
 			<property name="value" value="regex:\d{3}"/>
 		</bean>
 	</property>
 	<property name="prerequisiteConstraints">
 		<list>	
-			<bean class="org.kuali.rice.kns.datadictionary.validation.PrerequisiteConstraint">
+			<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
 				<property name="attributePath" value="origin"/>
 			</bean>
 		</list>
 	</property>
 	<!--property name="mustOccurConstraints">
 		<list>
-			<bean class="org.kuali.rice.kns.datadictionary.validation.MustOccurConstraint">
+			<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
 				<property name="min" value="1"/>
 				<property name="max" value="2"/>
 				

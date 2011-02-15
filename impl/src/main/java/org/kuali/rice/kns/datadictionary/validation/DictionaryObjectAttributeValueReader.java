@@ -114,7 +114,8 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	
 	@Override
 	public <X> X getValue() throws AttributeValidationException {
-		return getValue(attributeName);
+		Object value = getValue(attributeName);
+		return (X) value;
 	}
 	
 	@SuppressWarnings("unchecked")

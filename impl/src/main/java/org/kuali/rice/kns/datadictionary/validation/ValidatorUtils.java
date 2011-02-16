@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -225,7 +226,7 @@ public class ValidatorUtils {
 	
 	public static enum Result { VALID, INVALID, UNDEFINED };
 	
-	public static Object convertToDataType(Object value, DataType dataType) {
+	public static Object convertToDataType(Object value, DataType dataType) throws AttributeValidationException {
 		Object returnValue = value;
 		
 		if (null == value)
@@ -235,6 +236,10 @@ public class ValidatorUtils {
 		case BOOLEAN:
 			if (! (value instanceof Boolean)) {
 				returnValue = Boolean.valueOf(value.toString());
+				
+				// Since the Boolean.valueOf is exceptionally loose - it basically takes any string and makes it false
+				if (!value.toString().equalsIgnoreCase("TRUE") && !value.toString().equalsIgnoreCase("FALSE"))
+					throw new AttributeValidationException("Value " + value.toString() + " is not a boolean!");
 			}
 			break;
 		case INTEGER:
@@ -251,11 +256,19 @@ public class ValidatorUtils {
 			if (! (value instanceof Number)) {
 				returnValue = Double.valueOf(value.toString());
 			}
+			if (((Double)returnValue).isNaN())
+				throw new AttributeValidationException("Infinite Double values are not valid!");		
+			if (((Double)returnValue).isInfinite())
+				throw new AttributeValidationException("Infinite Double values are not valid!");
 			break;
 		case FLOAT:
 			if (! (value instanceof Number)) {
 				returnValue = Float.valueOf(value.toString());
 			}
+			if (((Float)returnValue).isNaN())
+				throw new AttributeValidationException("NaN Float values are not valid!");
+			if (((Float)returnValue).isInfinite())
+				throw new AttributeValidationException("Infinite Float values are not valid!");
 			break;
 		case TRUNCATED_DATE:
 		case DATE:

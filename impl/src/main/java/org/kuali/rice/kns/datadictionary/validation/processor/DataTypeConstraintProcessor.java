@@ -70,32 +70,26 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 		} catch (Exception e) {		
 			switch (dataType) {
 			case BOOLEAN:
-				result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BOOLEAN);
-				break;
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BOOLEAN);
 			case INTEGER:
-				result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INTEGER);
-				break;
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INTEGER);
 			case LONG:
-				result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_LONG);
-				break;
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_LONG);
 			case DOUBLE:
-				result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
-				break;
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
 			case FLOAT:
-				result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
-				break;
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
 			case TRUNCATED_DATE:
 			case DATE:
-				result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
-				break;
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
 			case STRING:
 			case COMPLEX:
-				result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
-				break;
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
 			}
 		}
 		
-		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
+		// If we get here then it was a success!
+		return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
 	}
 	
 }

@@ -33,7 +33,7 @@ public class ConstraintValidationResult {
 	private String entryName;
 	private String attributeName;
 	private String constraintName;
-	private ErrorLevel level = ErrorLevel.OK;
+	private ErrorLevel level;
 	
 	private String errorKey;
 	private String[] errorParameters;
@@ -45,6 +45,13 @@ public class ConstraintValidationResult {
 	public ConstraintValidationResult(String constraintName) {
 		this.constraintName = constraintName;
 		this.children = new LinkedList<ConstraintValidationResult>();
+		this.level = ErrorLevel.OK;
+	}
+	
+	public ConstraintValidationResult(String constraintName, ErrorLevel level) {
+		this.constraintName = constraintName;
+		this.children = new LinkedList<ConstraintValidationResult>();
+		this.level = level;
 	}
 	
 	public void addChild(ConstraintValidationResult child) {

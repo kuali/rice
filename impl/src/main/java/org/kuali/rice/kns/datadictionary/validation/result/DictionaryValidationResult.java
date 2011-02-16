@@ -85,7 +85,7 @@ public class DictionaryValidationResult {
 	
 	public ConstraintValidationResult addWarning(AttributeValueReader attributeValueReader, String constraintName, String errorKey, String... errorParameters) {
 		if (errorLevel.getLevel() > ErrorLevel.WARN.getLevel())
-			return new ConstraintValidationResult(constraintName);
+			return new ConstraintValidationResult(constraintName, ErrorLevel.WARN);
 		
 		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
 		constraintValidationResult.setWarning(errorKey, errorParameters);
@@ -95,14 +95,14 @@ public class DictionaryValidationResult {
 
 	public ConstraintValidationResult addSuccess(AttributeValueReader attributeValueReader, String constraintName) {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
-			return new ConstraintValidationResult(constraintName);
+			return new ConstraintValidationResult(constraintName, ErrorLevel.OK);
 		
 		return getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
 	}
 	
 	public ConstraintValidationResult addSkipped(AttributeValueReader attributeValueReader, String constraintName) {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
-			return new ConstraintValidationResult(constraintName);
+			return new ConstraintValidationResult(constraintName, ErrorLevel.INAPPLICABLE);
 		
 		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
 		constraintValidationResult.setStatus(ErrorLevel.INAPPLICABLE);
@@ -111,7 +111,7 @@ public class DictionaryValidationResult {
 	
 	public ConstraintValidationResult addNoConstraint(AttributeValueReader attributeValueReader, String constraintName) {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
-			return new ConstraintValidationResult(constraintName);
+			return new ConstraintValidationResult(constraintName, ErrorLevel.NOCONSTRAINT);
 		
 		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
 		constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);

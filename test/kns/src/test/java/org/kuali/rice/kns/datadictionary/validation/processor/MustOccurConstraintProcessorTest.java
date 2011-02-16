@@ -52,9 +52,9 @@ public class MustOccurConstraintProcessorTest {
 	
 	private DictionaryValidationResult dictionaryValidationResult;
 	
-	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA");
-	private MockAddress noStateOrPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "", "USA");
-	private MockAddress noCityStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "", "12340", "USA");
+	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
+	private MockAddress noStateOrPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "", "USA", null);
+	private MockAddress noCityStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
 	
 	@SuppressWarnings("boxing")
 	@Before

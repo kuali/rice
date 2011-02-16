@@ -15,20 +15,24 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
+import java.util.Date;
+
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public class MockAddress {
 	private String street1, street2, city, state, postalCode, country;
+	private Date effectiveDate;
 	
-	public MockAddress(String street1, String street2, String city, String state, String postalCode, String country) {
+	public MockAddress(String street1, String street2, String city, String state, String postalCode, String country, Date effectiveDate) {
 		this.street1 = street1;
 		this.street2 = street2;
 		this.city = city;
 		this.state = state;
 		this.postalCode = postalCode;
 		this.country = country;
+		this.effectiveDate = effectiveDate;
 	}
 
 	/**
@@ -113,5 +117,19 @@ public class MockAddress {
 	 */
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	/**
+	 * @return the effectiveDate
+	 */
+	public Date getEffectiveDate() {
+		return this.effectiveDate;
+	}
+
+	/**
+	 * @param effectiveDate the effectiveDate to set
+	 */
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
 	}
 }

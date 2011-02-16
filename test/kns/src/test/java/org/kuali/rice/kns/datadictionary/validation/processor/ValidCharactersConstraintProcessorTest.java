@@ -54,8 +54,8 @@ public class ValidCharactersConstraintProcessorTest {
 	
 	private ValidCharactersConstraintProcessor processor;
 	
-	private MockAddress washingtonDCAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA");
-	private MockAddress newYorkNYAddress = new MockAddress("5 Presidential Street", "Suite 800", "New York", "NY", "", "USA");
+	private MockAddress washingtonDCAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
+	private MockAddress newYorkNYAddress = new MockAddress("5 Presidential Street", "Suite 800", "New York", "NY", "", "USA", null);
 	
 	@Before
 	public void setUp() throws Exception {

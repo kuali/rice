@@ -50,9 +50,9 @@ public class ExistenceConstraintProcessorTest {
 	private AttributeDefinition countryNoConstraintDefinition;
 	private ExistenceConstraintProcessor processor;
 	
-	private MockAddress noPostalCodeOrCityAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "", "12340", "USA");
-	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "USA");
-	private MockAddress noPostalCodeOrCountryAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "");
+	private MockAddress noPostalCodeOrCityAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "", "12340", "USA", null);
+	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "USA", null);
+	private MockAddress noPostalCodeOrCountryAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "12340", "", null);
 	
 	
 	@Before

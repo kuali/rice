@@ -67,9 +67,9 @@ public class CollectionSizeConstraintProcessorTest {
 		companyWithThreeAddressesAndThreeContactEmails = new MockCompany("3M");
 		
 		List<MockAddress> addresses = new ArrayList<MockAddress>();
-		addresses.add(new MockAddress("123 Broadway", "Suite 1200", "New York", "NY", "10005", "USA"));
-		addresses.add(new MockAddress("124 Broadway", "Suite 1300", "New York", "NY", "10005", "USA"));
-		addresses.add(new MockAddress("125 Broadway", "Suite 1400", "New York", "NY", "10005", "USA"));
+		addresses.add(new MockAddress("123 Broadway", "Suite 1200", "New York", "NY", "10005", "USA", null));
+		addresses.add(new MockAddress("124 Broadway", "Suite 1300", "New York", "NY", "10005", "USA", null));
+		addresses.add(new MockAddress("125 Broadway", "Suite 1400", "New York", "NY", "10005", "USA", null));
 		companyWithThreeAddressesAndThreeContactEmails.setAddresses(addresses);
 		
 		List<String> contactEmails = new ArrayList<String>();

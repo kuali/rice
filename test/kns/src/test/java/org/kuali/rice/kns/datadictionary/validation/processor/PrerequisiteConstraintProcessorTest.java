@@ -52,10 +52,10 @@ public class PrerequisiteConstraintProcessorTest {
 	
 	private PrerequisiteConstraintProcessor processor;
 	
-	private MockAddress street1PostalCodeCityStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA");
-	private MockAddress noStreet1PostalCodeAddress = new MockAddress("", "Suite 800", "Washington", "DC", "", "USA");
-	private MockAddress noStreet1CityStateAddress = new MockAddress("", "Suite 800", "", "", "12340", "USA");
-	private MockAddress noStreet2Address = new MockAddress("893 Presidential Ave", null, "Washington", "DC", "12340", "USA");
+	private MockAddress street1PostalCodeCityStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
+	private MockAddress noStreet1PostalCodeAddress = new MockAddress("", "Suite 800", "Washington", "DC", "", "USA", null);
+	private MockAddress noStreet1CityStateAddress = new MockAddress("", "Suite 800", "", "", "12340", "USA", null);
+	private MockAddress noStreet2Address = new MockAddress("893 Presidential Ave", null, "Washington", "DC", "12340", "USA", null);
 	
 	@Before
 	public void setUp() throws Exception {

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <!-- Base Groups -->
+  
+  <bean id="Group" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
+      <property name="header">
+        <bean parent="HeaderTwo" p:styleClass="info"/>
+      </property> 
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property>  
+      <property name="summaryMessageField">
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClass="summary"/>
+      </property>            
+  </bean> 
+  
+  <bean id="GroupGridLayout" abstract="true" parent="Group">
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager"/>
+      </property>
+  </bean>
+  
+  <bean id="GroupBodyOnly" abstract="true" parent="Group">
+      <property name="renderHeader" value="false"/>
+      <property name="renderFooter" value="false"/>
+  </bean>  
+  
+  <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/navigationGroup.jsp"/>
+  </bean>
+  
+  <bean id="NavigationGroupMenu" abstract="true" parent="NavigationGroup">
+      <property name="navigationType" value="VERTICAL_MENU"/>
+  </bean>
+  
+  <bean id="GroupSection" abstract="true" parent="Group">
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property> 
+  </bean>   
+  
+  <bean id="GroupSection_Accordion" abstract="true" parent="GroupSection">
+      <property name="decorator">
+        <bean parent="AccordionDecorator"/>
+      </property>
+      <property name="renderHeader" value="false"/>
+  </bean> 
+  
+  <bean id="GroupSectionGridLayout_Accordion" abstract="true" parent="GroupSection_Accordion">
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager"/>
+      </property> 
+  </bean>    
+  
+  <bean id="CollectionGroup" abstract="true" class="org.kuali.rice.kns.uif.container.CollectionGroup" parent="Group">
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="addLineBindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>      
+      <property name="addLineLabelField">
+        <bean parent="LabelField" p:labelText="add" 
+              p:requiredMessageField.render="false"/>
+      </property>  
+      <property name="addLineActionFields">
+        <list>
+          <bean parent="ActionField" p:methodToCall="addLine" p:actionLabel="add"/>
+        </list>
+      </property>          
+      <property name="actionFields">
+        <list>
+          <bean parent="ActionField_Secondary" p:methodToCall="deleteLine" p:actionLabel="delete"/>
+        </list>
+      </property>
+      <property name="layoutManager">
+        <bean parent="StackedLayoutManager"/>
+      </property> 
+  </bean> 
+  
+  <bean id="CollectionGroup_Accordion" abstract="true" parent="CollectionGroup">
+      <property name="decorator">
+        <bean parent="AccordionDecorator"/>
+      </property>
+      <property name="renderHeader" value="false"/>
+  </bean>
+  
+  <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroup">
+      <property name="layoutManager">
+        <bean parent="TableLayoutManager"/>
+      </property> 
+  </bean>   
+  
+  <bean id="CollectionGroupTableLayout_Accordion" abstract="true" parent="CollectionGroupTableLayout">
+      <property name="decorator">
+        <bean parent="AccordionDecorator"/>
+      </property>  
+      <property name="renderHeader" value="false"/>
+  </bean> 
+
+  <!-- Common Groups -->
+  
+  <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
+      <property name="styleClass" value="group_expandclose"/>
+      <property name="items">
+         <list> 
+           <bean parent="ActionField_ExpandAccordions"/>
+           <bean parent="ActionField_CollapseAccordions"/>
+         </list>
+      </property>
+      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
+  
+  <bean id="Group_ExpandCloseActionsRequired" parent="GroupBodyOnly">
+      <property name="styleClass" value="group_expandclose"/>
+      <property name="items">
+         <list> 
+           <bean parent="ActionField_ExpandAccordions"/>
+           <bean parent="ActionField_CollapseAccordions"/>
+           <bean parent="MessageField_RequiredIndicator"/>
+         </list>
+      </property>
+      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
+  
+</beans>  

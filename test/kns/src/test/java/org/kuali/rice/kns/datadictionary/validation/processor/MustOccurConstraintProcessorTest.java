@@ -134,7 +134,7 @@ public class MustOccurConstraintProcessorTest {
 		ConstraintValidationResult result = process(dictionaryValidationResult, noPostalCodeAddress, "country");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-		Assert.assertEquals(ErrorLevel.NOCONSTRAINT, result.getStatus());
+		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new MustOccurConstraintProcessor().getName(), result.getConstraintName());
 	}
 	
@@ -150,7 +150,7 @@ public class MustOccurConstraintProcessorTest {
 	public void testPostalNoCityStateSuccess() {
 		ConstraintValidationResult result = process(dictionaryValidationResult, noCityStateAddress, "country");
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-		Assert.assertEquals(ErrorLevel.NOCONSTRAINT, result.getStatus());
+		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new MustOccurConstraintProcessor().getName(), result.getConstraintName());
 	}
 	

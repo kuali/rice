@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.View;
@@ -452,6 +453,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	protected DataDictionaryService getDataDictionaryService() {
+		if (dataDictionaryService == null) {
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
 		return this.dataDictionaryService;
 	}
 

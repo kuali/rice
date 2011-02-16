@@ -639,6 +639,8 @@ public class View extends ContainerBase {
 		return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED)
 				|| StringUtils.equals(viewStatus, ViewStatus.FINAL);
 	}
+	
+	// TODO: isUpdated()
 
 	/**
 	 * Indicates whether the view has been updated from the model and final

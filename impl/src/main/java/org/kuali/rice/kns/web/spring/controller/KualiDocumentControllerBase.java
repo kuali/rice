@@ -31,13 +31,13 @@ import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.sampleu.travel.krad.form.TravelDocumentKradForm;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 
@@ -72,7 +72,7 @@ public class KualiDocumentControllerBase {
      * @throws Exception
      */
 	@RequestMapping(params="methodToCall=docHandler")
-    public ModelAndView docHandler(@ModelAttribute("KualiForm") TravelDocumentKradForm kualiDocumentFormBase, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView docHandler(@ModelAttribute("KualiForm") KualiTransactionalDocumentFormBase kualiDocumentFormBase, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         String command = kualiDocumentFormBase.getCommand();
 

@@ -57,12 +57,6 @@ public class KNSServiceLocatorInternal {
 	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
     }
 
-    public static final String PARAMETER_SERVER_SERVICE = "parameterServerService";
-    
-    public static ParameterServerService getParameterServerService() {
-    	return (ParameterServerService) getService(PARAMETER_SERVER_SERVICE);
-    }
-
     public static final String NAMESPACE_SERVICE = "namespaceService";
 
     public static NamespaceService getNamespaceService() {

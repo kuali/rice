@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "http://db.apache.org/dtds/1.0/repository.dtd">-->
+
 <descriptor-repository version="1.0" isolation-level="repeatable-read">
   <!-- Connection descriptor -->
   <jdbc-connection-descriptor jcd-alias="kenDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
 		useAutoCommit="0" ignoreAutoCommitExceptions="false">
-		<sequence-manager className="org.kuali.rice.core.ojb.ConfigurableSequenceManager">
+	  <object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+      <sequence-manager className="org.kuali.rice.core.ojb.ConfigurableSequenceManager">
 			<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
 		</sequence-manager>
-		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
 	</jdbc-connection-descriptor>
 
   <!-- Class/table mappings -->

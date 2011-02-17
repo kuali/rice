@@ -43,10 +43,10 @@ public class EDocLiteFormTest extends BaseRiceTestCase {
 //        req.addParameter("multiple_value", "value0");
 //        req.addParameter("multiple_value", "value1");
 //        req.addParameter("single_value", "value0");
-//        String[] values = req.getParameterValues("multiple_value");
+//        String[] values = req.getParameterValuesAsString("multiple_value");
 //        assertNotNull(values);
 //        assertEquals(2, values.length);
-//        values = req.getParameterValues("single_value");
+//        values = req.getParameterValuesAsString("single_value");
 //        assertNotNull(values);
 //        assertEquals(1, values.length);
 //

@@ -46,7 +46,7 @@ public class KualiLogoutAction extends Action {
         // can't check for the existence of a simple parameter, so catch exception and
         // defualt to config parameter
         try {
-            redirectString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
+            redirectString = KNSServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
         }
         catch(IllegalArgumentException ex) {
             redirectString = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.LOGOFF_REDIRECT_URL_PROPERTY);

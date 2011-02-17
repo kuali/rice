@@ -15,17 +15,13 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.datadictionary.*;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.rule.BusinessRule;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This interface defines methods that a MaintenanceDocumentDictionary Service must provide. Defines the API for the interacting
@@ -81,22 +77,6 @@ public interface MaintenanceDocumentDictionaryService {
      * @return A Collection of ReferenceDefinitions
      */
     public Collection getDefaultExistenceChecks(String docTypeName);
-
-    /**
-     * The collection of apcRuleDefinition objects defined as applyApcRules for the MaintenanceDocument
-     * 
-     * @param businessObjectClass
-     * @return A collection of ApcRuleDefinitions
-     */
-    public Collection getApplyApcRules(Class businessObjectClass);
-
-    /**
-     * The collection of apcRuleDefinition objects defined as applyApcRules for the MaintenanceDocument
-     * 
-     * @param docTypeName
-     * @return A collection of ApcRuleDefinitions
-     */
-    public Collection getApplyApcRules(String docTypeName);
 
     /**
      * A List of field names used as locking keys

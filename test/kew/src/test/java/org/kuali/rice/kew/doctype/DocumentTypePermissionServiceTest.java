@@ -23,7 +23,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -62,16 +62,6 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 		KimPrincipal ewestfalPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 		assertNotNull(testDocType);
 		assertTrue("ewestfal should be allowed to initiate", service.canInitiate(ewestfalPrincipal.getPrincipalId(), testDocType));
-	}
-	
-	private void turnOnKimPermissionPriority() throws Exception {
-		Parameter kimPriorityParam = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
-		if (kimPriorityParam == null) {
-			kimPriorityParam = new Parameter();
-			//kimPriorityParam.set
-			// TODO
-		}
-		
-	}
+    }
 	
 }

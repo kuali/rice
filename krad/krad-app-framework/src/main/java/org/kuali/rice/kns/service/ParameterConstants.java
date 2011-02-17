@@ -24,7 +24,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 
 
 public final class ParameterConstants {
-    public static final String NERVOUS_SYSTEM_NAMESPACE = KNSConstants.KNS_NAMESPACE;
     public static final String ALL_COMPONENT = "All";
     public static final String DOCUMENT_COMPONENT = "Document";
     public static final String LOOKUP_COMPONENT = "Lookup";
@@ -40,26 +39,6 @@ public final class ParameterConstants {
     @Target( { ElementType.TYPE })
     public static @interface COMPONENT {
         String component();
-    }
-
-    @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
-    @COMPONENT(component = ALL_COMPONENT)
-    public static final class NERVOUS_SYSTEM_ALL {
-    }
-
-    @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
-    @COMPONENT(component = DOCUMENT_COMPONENT)
-    public static final class NERVOUS_SYSTEM_DOCUMENT {
-    }
-
-    @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
-    @COMPONENT(component = LOOKUP_COMPONENT)
-    public static final class NERVOUS_SYSTEM_LOOKUP {
-    }
-
-    @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
-    @COMPONENT(component = BATCH_COMPONENT)
-    public static final class NERVOUS_SYSTEM_BATCH {
     }
 
 	private ParameterConstants() {

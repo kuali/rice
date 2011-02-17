@@ -138,7 +138,7 @@ public class BackdoorAction extends KualiAction {
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
 
-    	Boolean showBackdoorLogin = KNSServiceLocator.getParameterService().getIndicatorParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+    	Boolean showBackdoorLogin = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
         backdoorForm.setShowBackdoorLogin(showBackdoorLogin);
         setFormGroupPermission(backdoorForm, request);
         if (backdoorForm.getGraphic() != null) {

@@ -1,0 +1,394 @@
+/*
+ * Copyright 2007-2009 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kns.service;
+
+import org.kuali.rice.core.api.parameter.Parameter;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import java.util.Collection;
+
+/**
+ * This service is used by krad to interact with {@link Parameter Parameters}.
+ *
+ * This service can be viewed a convenient wrapper around the {@link org.kuali.rice.core.api.parameter.ParameterService}.
+ * Please see {@link org.kuali.rice.core.api.parameter.ParameterService} for details on the behavior of this service.
+ */
+public interface ClientParameterService {
+
+    /**
+     * This will create a {@link Parameter} exactly like the parameter passed in.
+     *
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#createParameter(org.kuali.rice.core.api.parameter.Parameter)} for details
+     */
+    void createParameter(Parameter parameter);
+
+    /**
+     * This will update a {@link Parameter}.
+     *
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#updateParameter(org.kuali.rice.core.api.parameter.Parameter)} for details
+     */
+    void updateParameter(Parameter parameter);
+
+    /**
+     * This method checks if a parameter exists.  It will never return null.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     *  <p>
+     *     If the parameter does not exist under the application
+     *     code, then this method will check if the parameter
+     *     exists under the default rice application code and
+     *     will return that parameter.
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @return true or false
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     */
+    Boolean parameterExists(Class<?> componentClass, String parameterName);
+
+    /**
+     * This method checks if a parameter exists.  It will never return null.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from the passed in namespace code</li>
+     *       <li>component code: from the passed in component code</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     *  <p>
+     *     If the parameter does not exist under the application
+     *     code, then this method will check if the parameter
+     *     exists under the default rice application code and
+     *     will return that parameter.
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @return true or false
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     */
+    Boolean parameterExists(String namespaceCode, String componentCode, String parameterName);
+
+    /**
+     * Retrieves a parameter's string value.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @return string value or null
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    String getParameterValueAsString(Class<?> componentClass, String parameterName);
+
+    /**
+     * Retrieves a parameter's string value.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from the passed in namespace code</li>
+     *       <li>component code: from the passed in component code</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @return string value or null
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName);
+
+    /**
+     * Retrieves a parameter's boolean value.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @return true, false, null
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName);
+
+   /**
+     * Retrieves a parameter's boolean value.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from the passed in namespace code</li>
+     *       <li>component code: from the passed in component code</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @return true, false, null
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName);
+
+    /**
+     * Retrieves a parameter.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @return true or false
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameter(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Parameter getParameter(Class<?> componentClass, String parameterName);
+
+    /**
+     * Retrieves a parameter.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from the passed in namespace code</li>
+     *       <li>component code: from the passed in component code</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @return true or false
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameter(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Parameter getParameter(String namespaceCode, String componentCode, String parameterName);
+
+    /**
+     * Retrieves a parameter's string values where a parameter contains 1 or more values.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @return string values or empty Collection
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Collection<String> getParameterValuesAsString(Class<?> componentClass, String parameterName);
+
+    /**
+     * Retrieves a parameter's string values where a parameter contains 1 or more values.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @return string values or empty Collection
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Collection<String> getParameterValuesAsString(String namespaceCode, String componentCode, String parameterName);
+
+    /**
+     * Retrieves a subParameter's string value.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @return string value or null
+     * @param subParameterName the subParameter name
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getSubParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     */
+    String getSubParameterValueAsString(Class<?> componentClass, String parameterName, String subParameterName);
+
+    /**
+     * Retrieves a subParameter's string value.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from the passed in namespace code</li>
+     *       <li>component code: from the passed in component code</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @param subParameterName the subParameter name
+     * @return string value or null
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getSubParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     */
+    String getSubParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName);
+
+    /**
+     * Retrieves a subParameter's string values where a subParameter contains 1 or more values.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @param subParameterName the subParameter name
+     * @return string values or empty Collection
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getSubParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     */
+    Collection<String> getSubParameterValuesAsString(Class<?> componentClass, String parameterName, String subParameterName);
+
+    /**
+     * Retrieves a subParameter's string values where a subParameter contains 1 or more values.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.kns.service.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.kns.service.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @param subParameterName the subParameter name
+     * @return string values or empty Collection
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getSubParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     */
+    Collection<String> getSubParameterValuesAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName);
+}

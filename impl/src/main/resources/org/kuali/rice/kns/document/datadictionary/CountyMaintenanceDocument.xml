@@ -37,16 +37,7 @@
         <value>stateCode</value>
       </list>
     </property>
-    
-    
-    
-    
-    <!--  <property name="helpDefinition" >
-      <bean parent="HelpDefinition"
-            p:parameterNamespace="KR-NS"
-            p:parameterName="COUNTY"
-            p:parameterDetailType="County" /> 
-    </property> -->
+
     <property name="documentTypeName" value="CountyMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     

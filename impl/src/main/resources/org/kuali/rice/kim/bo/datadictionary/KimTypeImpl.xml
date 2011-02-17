@@ -87,7 +87,7 @@
 	</bean>
 
 	<bean id="KimTypeImpl-namespaceCode" parent="KimTypeImpl-namespaceCode-parentBean"/>
-	<bean id="KimTypeImpl-namespaceCode-parentBean" abstract="true" parent="Parameter-parameterNamespaceCode">
+	<bean id="KimTypeImpl-namespaceCode-parentBean" abstract="true" parent="Parameter-namespaceCode">
 		<property name="name" value="namespaceCode"/>
 		<property name="forceUppercase" value="false"/>
 		<property name="label" value="Namespace Code"/>

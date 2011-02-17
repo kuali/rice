@@ -17,6 +17,8 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.parameter.EvaluationOperator;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -28,7 +30,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -86,26 +87,25 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
         // delete the parameter
-        KNSServiceLocator.getBusinessObjectService().delete(KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
+        KNSServiceLocator.getBusinessObjectService().delete(ParameterBo.from(KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP)));
 
         // old parameter value will still be cached, let's flush the cache
-        KNSServiceLocator.getParameterService().clearCache();
+        //KNSServiceLocator.getParameterService().clearCache();
         
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
     }
 
     private void adjustResultSetCapApplicationConstantValue(Integer newValue) {
-        Parameter ps = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
-        if (ps == null) {
-            ps = new Parameter( KEWConstants.DOC_SEARCH_RESULT_CAP, newValue.toString(), "A" );
-        }
-        ps.setParameterNamespaceCode(KEWConstants.KEW_NAMESPACE);
-        ps.setParameterName(KEWConstants.DOC_SEARCH_RESULT_CAP);
-        ps.setParameterValue(newValue.toString());
+        ParameterBo ps = ParameterBo.from(KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
+
+        ps.setNamespaceCode(KEWConstants.KEW_NAMESPACE);
+        ps.setName(KEWConstants.DOC_SEARCH_RESULT_CAP);
+        ps.setValue(newValue.toString());
         ps.setParameterTypeCode("CONFG");
         //ps.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
-        ps.setParameterDetailTypeCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
+        ps.setComponentCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
+        ps.setEvaluationOperatorCode(EvaluationOperator.ALLOW.getOperatorCode());
         KNSServiceLocator.getBusinessObjectService().save(ps);
     }
 

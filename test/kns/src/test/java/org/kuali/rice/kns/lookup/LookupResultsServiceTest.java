@@ -24,10 +24,10 @@ import java.util.Set;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.test.KNSTestCase;
@@ -51,10 +51,10 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	@Ignore
 	@Test public void testLookupIds() {
 		Map<String, String> parameterPK = new HashMap<String, String>();
-		parameterPK.put("parameterNamespaceCode", MOCK_PARAMETER_NMSPC);
-		parameterPK.put("parameterDetailTypeCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
-		parameterPK.put("parameterName", MOCK_PARAMETER_NAME);
-		final Parameter parameter = (Parameter) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(Parameter.class, parameterPK);
+		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);
+		parameterPK.put("componentCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
+		parameterPK.put("name", MOCK_PARAMETER_NAME);
+		final ParameterBo parameter = (ParameterBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
 		final Person person = KIMServiceLocator.getPersonService().getPerson(LookupResultsServiceTest.MOCK_PERSON);
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("horse");
 		final LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
@@ -71,10 +71,10 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	@Ignore
 	@Test public void testPersistableBusinessObjectSearch() {
 		Map<String, String> parameterPK = new HashMap<String, String>();
-		parameterPK.put("parameterNamespaceCode", MOCK_PARAMETER_NMSPC);
-		parameterPK.put("parameterDetailTypeCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
-		parameterPK.put("parameterName", MOCK_PARAMETER_NAME);
-		final Parameter parameter = (Parameter) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(Parameter.class, parameterPK);
+		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);
+		parameterPK.put("componentCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
+		parameterPK.put("name", MOCK_PARAMETER_NAME);
+		final ParameterBo parameter = (ParameterBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
 		final LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
 		
 		try {
@@ -83,15 +83,15 @@ public class LookupResultsServiceTest extends KNSTestCase {
 			lookupResultsService.persistSelectedObjectIds("testPBOSearch", parameterIds, LookupResultsServiceTest.MOCK_PERSON);
 			
 			// now try to retrieve
-			Collection<Parameter> retrievedParameters = lookupResultsService.retrieveSelectedResultBOs("testPBOSearch", Parameter.class, LookupResultsServiceTest.MOCK_PERSON);
+			Collection<ParameterBo> retrievedParameters = lookupResultsService.retrieveSelectedResultBOs("testPBOSearch", ParameterBo.class, LookupResultsServiceTest.MOCK_PERSON);
 			org.junit.Assert.assertNotNull("We have a collection of retrieved Parameters", retrievedParameters);
 			org.junit.Assert.assertEquals("Retrieved parameters collection size is 1", new Integer(1), new Integer(retrievedParameters.size()));
-			final Iterator<Parameter> parameterIterator = retrievedParameters.iterator();
-			final Parameter retrievedParameter = parameterIterator.next();
+			final Iterator<ParameterBo> parameterIterator = retrievedParameters.iterator();
+			final ParameterBo retrievedParameter = parameterIterator.next();
 			while (parameterIterator.hasNext()) {
 				parameterIterator.next(); // just in case!!
 			}
-			org.junit.Assert.assertTrue("Parameter was one which was saved", retrievedParameter.getParameterNamespaceCode().equals(MOCK_PARAMETER_NMSPC) && retrievedParameter.getParameterDetailTypeCode().equals(MOCK_PARAMETER_DETAIL_TYPE_CODE) && retrievedParameter.getParameterName().equals(MOCK_PARAMETER_NAME));
+			org.junit.Assert.assertTrue("Parameter was one which was saved", retrievedParameter.getNamespaceCode().equals(MOCK_PARAMETER_NMSPC) && retrievedParameter.getComponentCode().equals(MOCK_PARAMETER_DETAIL_TYPE_CODE) && retrievedParameter.getName().equals(MOCK_PARAMETER_NAME));
 		} catch (Exception e) {
 			org.junit.Assert.fail("Exception was thrown: "+e.toString());
 		}

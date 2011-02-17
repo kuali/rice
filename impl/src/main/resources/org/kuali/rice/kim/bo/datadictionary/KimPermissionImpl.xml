@@ -51,7 +51,7 @@
   </bean>
 
   <bean id="KimPermissionImpl-template.namespaceCode" parent="KimPermissionImpl-template.namespaceCode-parentBean"/>
-  <bean id="KimPermissionImpl-template.namespaceCode-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  <bean id="KimPermissionImpl-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
   </bean>
     
   <bean id="KimPermissionImpl-templateId" parent="KimPermissionImpl-templateId-parentBean"/>
@@ -70,7 +70,7 @@
   
   
   <bean id="KimPermissionImpl-namespaceCode" parent="KimPermissionImpl-namespaceCode-parentBean"/>
-  <bean id="KimPermissionImpl-namespaceCode-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
+  <bean id="KimPermissionImpl-namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
   </bean>
   
   <bean id="KimPermissionImpl-name" parent="KimPermissionImpl-name-parentBean"/>

@@ -27,6 +27,6 @@ public class ParameterMaintainable extends KualiMaintainableImpl {
     @Override
     public void saveBusinessObject() {
         super.saveBusinessObject();
-        KNSServiceLocator.getParameterService().clearCache();
+        //KNSServiceLocator.getParameterService().clearCache();
     }
 }

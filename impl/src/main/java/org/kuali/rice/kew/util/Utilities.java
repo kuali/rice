@@ -18,11 +18,11 @@ package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import java.net.InetAddress;
@@ -70,11 +70,11 @@ public final class Utilities {
     }
     
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
         if (parameter == null) {
             return null;
         }
-        return parameter.getParameterValue();
+        return parameter.getValue();
     }
 
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name) {
@@ -82,11 +82,11 @@ public final class Utilities {
     }
     
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
-        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
-        if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
+        Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
+        if (parameter == null || StringUtils.isBlank(parameter.getValue())) {
             return defaultValue;
         }
-        if (parameter.getParameterValue().trim().equals("Y")) {
+        if (parameter.getValue().trim().equals("Y")) {
             return true;
         } else {
             return false;

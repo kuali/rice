@@ -18,7 +18,7 @@
   <bean id="ParameterType" parent="ParameterType-parentBean"/>
 
   <bean id="ParameterType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.ParameterType"/>
+    <property name="businessObjectClass" value="org.kuali.rice.core.impl.parameter.ParameterTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="ParameterType-inquiryDefinition"/>
     </property>
@@ -31,7 +31,6 @@
       <list>
         <ref bean="ParameterType-code"/>
         <ref bean="ParameterType-name"/>
-        <ref bean="ParameterType-codeAndDescription"/>
         <ref bean="ParameterType-active"/>
       </list>
     </property>
@@ -70,24 +69,6 @@
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="required" value="true"/>
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40"/>
-    </property>
-    <property name="summary" value="The name of the parameter type."/>
-    <property name="description" value="The name of the parameter type."/>
-  </bean>
-  <bean id="ParameterType-codeAndDescription" parent="ParameterType-codeAndDescription-parentBean"/>
-
-  <bean id="ParameterType-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="codeAndDescription"/>
-    <property name="forceUppercase" value="false"/>
-    <property name="label" value="Parameter Type"/>
-    <property name="shortLabel" value="Parm Type"/>
-    <property name="maxLength" value="100"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
-    </property>
-    <property name="required" value="false"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>

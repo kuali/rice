@@ -198,28 +198,6 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     }
 
     /**
-     * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getApplyApcRules(java.lang.Class)
-     */
-    public Collection getApplyApcRules(Class businessObjectClass) {
-        return getApplyApcRules(getDocumentTypeName(businessObjectClass));
-    }
-
-    /**
-     * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getApplyApcRules(java.lang.String)
-     */
-    public Collection getApplyApcRules(String docTypeName) {
-
-        Collection apcRules = null;
-
-        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(docTypeName);
-        if (entry != null) {
-            apcRules = entry.getApcRules();
-        }
-
-        return apcRules;
-    }
-
-    /**
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getLockingKeys(java.lang.String)
      */
     public List getLockingKeys(String docTypeName) {

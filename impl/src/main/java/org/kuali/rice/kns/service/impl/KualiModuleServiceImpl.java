@@ -15,20 +15,23 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.Namespace;
-import org.kuali.rice.core.KualiException;
+import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class KualiModuleServiceImpl implements KualiModuleService, InitializingBean, ApplicationContextAware {
 
@@ -59,10 +62,6 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
         return null;
     }
 
-    
-    /**
-     * @see org.kuali.rice.kns.service.KualiModuleService#getModuleServiceByCode(java.lang.String)
-     */
     @Override
 	public ModuleService getModuleServiceByNamespaceCode(String namespaceCode) {
         for (ModuleService moduleService : installedModuleServices) {
@@ -107,9 +106,6 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
     	return null;
     }
 
-    /***
-     * @see org.kuali.core.service.KualiModuleService#getResponsibleModuleServiceForJob(java.lang.String)
-     */
     @Override
 	public ModuleService getResponsibleModuleServiceForJob(String jobName){
         for(ModuleService moduleService : installedModuleServices){
@@ -136,16 +132,10 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
         return packages;
     }
 
-	/***
-     * 
-     * This method uses BusinessObjectService to get the namespace name
-     * 
-     * @see org.kuali.core.service.KualiModuleService#getNamespaceName(java.lang.String)
-     */
     @Override
 	public String getNamespaceName(final String namespaceCode){
-    	Namespace parameterNamespace = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
-				Namespace.class, new HashMap<String, String>() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
+    	NamespaceBo parameterNamespace = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
+				NamespaceBo.class, new HashMap<String, String>() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }
     
@@ -171,6 +161,65 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 			}
 		}
 	}
+
+    @Override
+    public String getNamespaceCode(Class<?> documentOrStepClass) {
+        if (documentOrStepClass == null) {
+            throw new IllegalArgumentException("documentOrStepClass must not be null");
+        }
+
+        if (documentOrStepClass.isAnnotationPresent(ParameterConstants.NAMESPACE.class)) {
+            return (documentOrStepClass.getAnnotation(ParameterConstants.NAMESPACE.class)).namespace();
+        }
+        ModuleService moduleService = getResponsibleModuleService(documentOrStepClass);
+        if (moduleService != null) {
+            return moduleService.getModuleConfiguration().getNamespaceCode();
+        }
+        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kns")) {
+            return KNSConstants.KNS_NAMESPACE;
+        }
+        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kew")) {
+            return "KR-WKFLW";
+        }
+        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kim")) {
+            return "KR-IDM";
+        }
+        throw new IllegalArgumentException("Unable to determine the namespace code for documentOrStepClass " + documentOrStepClass.getName());
+    }
+
+    @Override
+    public String getComponentCode(Class<?> documentOrStepClass) {
+        if (documentOrStepClass == null) {
+            throw new IllegalArgumentException("documentOrStepClass must not be null");
+        }
+
+        if (documentOrStepClass.isAnnotationPresent(ParameterConstants.COMPONENT.class)) {
+            return documentOrStepClass.getAnnotation(ParameterConstants.COMPONENT.class).component();
+        } else if (TransactionalDocument.class.isAssignableFrom(documentOrStepClass)) {
+            return documentOrStepClass.getSimpleName().replace("Document", "");
+        } else if (BusinessObject.class.isAssignableFrom(documentOrStepClass)) {
+            return documentOrStepClass.getSimpleName();
+        } else {
+            if (STEP_CLASS != null && STEP_CLASS.isAssignableFrom(documentOrStepClass)) {
+                return documentOrStepClass.getSimpleName();
+            }
+        }
+        throw new IllegalArgumentException("Unable to determine the component code for documentOrStepClass " + documentOrStepClass.getName());
+    }
+
+    private static final Class<?> STEP_CLASS;
+    static {
+        Class<?> clazz;
+        try {
+            ClassLoader cl = ClassLoaderUtils.getDefaultClassLoader();
+            // TODO: Warning!  Kludge!  Hack!  Will be replaced!  KULRICE-2921
+            clazz =  Class.forName("org.kuali.kfs.sys.batch.Step", true, cl);
+        } catch (Exception e) {
+            //swallowing: really what do we do here?  This is basically asking - are we on kfs?
+            clazz = null;
+        }
+        STEP_CLASS = clazz;
+    }
 
 }
 

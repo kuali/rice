@@ -6,5 +6,5 @@ package org.kuali.rice.core.mo;
  * See Effective Java 2nd ed. page 15 for more information.
  */
 public interface ModelBuilder {
-     <T> T build();
+     /*<T> T*/ Object build();
 }

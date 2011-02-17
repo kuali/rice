@@ -230,7 +230,7 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Country.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/County.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
-				<value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Component.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Namespace.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
@@ -240,7 +240,7 @@
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/CampusTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/CountryMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kns/document/datadictionary/ComponentMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
@@ -304,7 +304,7 @@
 
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/Namespace.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterType.xml</value>
-                <value>classpath:org/kuali/rice/kns/bo/datadictionary/ParameterDetailType.xml</value>
+                <value>classpath:org/kuali/rice/kns/bo/datadictionary/Component.xml</value>
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/Parameter.xml</value>
 
                 <value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
@@ -313,7 +313,7 @@
 
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/NamespaceMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterDetailTypeMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kns/document/datadictionary/ComponentMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterMaintenanceDocument.xml</value>
 
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/CampusMaintenanceDocument.xml</value>
@@ -715,13 +715,17 @@
 	</bean>
     <bean id="namespaceService" class="org.kuali.rice.kns.service.impl.NamespaceServiceImpl">
     </bean>	
-    
-	<bean id="parameterService" class="org.kuali.rice.kns.service.impl.ParameterServiceProxyImpl"/>
-	<bean id="parameterServerService" class="org.kuali.rice.kns.service.impl.ParameterServiceImpl">
-		<property name="dataDictionaryService" ref="dataDictionaryService" />
+
+    <bean id="parameterService" class="org.kuali.rice.core.impl.parameter.ParameterServiceImpl">
+        <property name="businessObjectService" ref="businessObjectService" />
+    </bean>
+
+	<bean id="clientParameterService" class="org.kuali.rice.kns.service.impl.ClientParameterServiceImpl">
+		<property name="parameterService" ref="parameterService" />
 		<property name="kualiModuleService" ref="kualiModuleService" />
-		<property name="businessObjectService" ref="businessObjectService" />
+		<property name="applicationCode" value="${app.namespace}" />
 	</bean>
+
     <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kns.lookup.ParameterLookupableHelperServiceImpl"
@@ -731,9 +735,9 @@
     </bean>
 
     <!-- placeholder so applications can override without making DD changes-->
-    <bean id="parameterDetailTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
+    <bean id="componentLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
         <property name="lookupableHelperService">
-            <bean class="org.kuali.rice.kns.lookup.ParameterDetailTypeLookupableHelperServiceImpl"
+            <bean class="org.kuali.rice.kns.lookup.ComponentLookupableHelperServiceImpl"
                 parent="lookupableHelperService">
             </bean>
         </property>
@@ -1037,10 +1041,10 @@
     	<property name="kualiModuleService" ref="kualiModuleService" />
     	<property name="businessObjects">
             <list>
-				<value>org.kuali.rice.kns.bo.Namespace</value>
-				<value>org.kuali.rice.kns.bo.ParameterType</value>
-				<value>org.kuali.rice.kns.bo.ParameterDetailType</value>
-				<value>org.kuali.rice.kns.bo.Parameter</value>
+				<value>org.kuali.rice.core.impl.namespace.NamespaceBo</value>
+				<value>org.kuali.rice.core.impl.parameter.ParameterTypeBo</value>
+				<value>org.kuali.rice.core.impl.component.ComponentBo</value>
+				<value>org.kuali.rice.core.impl.parameter.ParameterBo</value>
             </list>
         </property>
     </bean>

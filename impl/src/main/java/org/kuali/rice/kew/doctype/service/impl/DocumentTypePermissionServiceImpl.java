@@ -31,7 +31,6 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
@@ -402,8 +401,8 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
 	
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
-		Parameter kimPriorityParam = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
-		if (kimPriorityParam == null || "Y".equals(kimPriorityParam.getParameterValue())) {
+		Boolean b =  KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		if (b == null || b) {
 			return getIdentityManagementService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
 		}
 		return false;

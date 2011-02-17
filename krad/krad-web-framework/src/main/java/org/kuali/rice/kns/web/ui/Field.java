@@ -53,7 +53,6 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     public static final String LOOKUP_RESULT_ONLY = "lookupresultonly";
     public static final String DROPDOWN_REFRESH = "dropdown_refresh";
     public static final String DROPDOWN_SCRIPT = "dropdown_script";
-    public static final String DROPDOWN_APC = "dropdown_apc";
     public static final String CHECKBOX = "checkbox";
     public static final String CURRENCY = "currency";
     public static final String TEXT_AREA = "textarea";
@@ -313,7 +312,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
             return false;
         }
         // JJH: Would it be good to create a InputField Set and test to see if the fieldType exists in the set?
-        if (fieldType.equals(Field.DROPDOWN) || fieldType.equals(Field.DROPDOWN_REFRESH) || fieldType.equals(Field.TEXT) || fieldType.equals(Field.RADIO) || fieldType.equals(Field.CURRENCY) || fieldType.equals(Field.KUALIUSER) || fieldType.equals(Field.DROPDOWN_SCRIPT) || fieldType.equals(Field.DROPDOWN_APC) || fieldType.equals(LOOKUP_READONLY) || fieldType.equals(TEXT_AREA)) {
+        if (fieldType.equals(Field.DROPDOWN) || fieldType.equals(Field.DROPDOWN_REFRESH) || fieldType.equals(Field.TEXT) || fieldType.equals(Field.RADIO) || fieldType.equals(Field.CURRENCY) || fieldType.equals(Field.KUALIUSER) || fieldType.equals(Field.DROPDOWN_SCRIPT) || fieldType.equals(LOOKUP_READONLY) || fieldType.equals(TEXT_AREA)) {
             return true;
         } else {
             return false;
@@ -484,14 +483,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     }
 
     /**
-     * @return Returns DROPDOWN_APC
-     */
-    public String getDROPDOWN_APC() {
-        return DROPDOWN_APC;
-    }
-
-    /**
-     * @return Returns DROPDOWN_APC
+     * @return Returns MULTISELECT
      */
     public String getMULTISELECT() {
         return MULTISELECT;

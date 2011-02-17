@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.bo;
 
-import org.kuali.rice.kns.bo.BusinessObject;;
-
 public interface ExternalizableBusinessObject extends BusinessObject {
 
 }

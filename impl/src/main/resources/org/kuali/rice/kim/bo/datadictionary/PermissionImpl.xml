@@ -109,7 +109,7 @@
   </bean>
 
   <bean id="PermissionImpl-template.namespaceCode" parent="PermissionImpl-template.namespaceCode-parentBean"/>
-  <bean id="PermissionImpl-template.namespaceCode-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  <bean id="PermissionImpl-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
   </bean>
     
   <bean id="PermissionImpl-templateId" parent="PermissionImpl-templateId-parentBean"/>
@@ -153,7 +153,7 @@
   
   
   <bean id="PermissionImpl-namespaceCode" parent="PermissionImpl-namespaceCode-parentBean"/>
-  <bean id="PermissionImpl-namespaceCode-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
+  <bean id="PermissionImpl-namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
   </bean>
 
   <bean id="PermissionImpl-permissionId" parent="PermissionImpl-permissionId-parentBean"/>
@@ -189,7 +189,7 @@
   </bean>
 
   <bean id="PermissionImpl-assignedToRoleNamespaceForLookup" parent="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
+  <bean id="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
   </bean>
 
   <bean id="PermissionImpl-assignedToRoleNameForLookup" parent="PermissionImpl-assignedToRoleNameForLookup-parentBean"/>
@@ -204,7 +204,7 @@
   </bean>
   
   <bean id="PermissionImpl-assignedToGroupNamespaceForLookup" parent="PermissionImpl-assignedToGroupNamespaceForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToGroupNamespaceForLookup-parentBean" parent="Parameter-parameterNamespaceCode" abstract="true" p:name="assignedToGroupNamespaceForLookup" p:label="Group Namespace" p:shortLabel="Group Namespace" p:required="false">
+  <bean id="PermissionImpl-assignedToGroupNamespaceForLookup-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="assignedToGroupNamespaceForLookup" p:label="Group Namespace" p:shortLabel="Group Namespace" p:required="false">
   </bean>
 
   <bean id="PermissionImpl-assignedToGroupNameForLookup" parent="PermissionImpl-assignedToGroupNameForLookup-parentBean"/>

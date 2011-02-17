@@ -14,6 +14,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+<!--<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "http://db.apache.org/dtds/1.0/repository.dtd">-->
+
 <descriptor-repository version="1.0">
 
   <class-descriptor class="org.kuali.rice.kim.test.bo.BOContainingPerson" table="KR_KIM_TEST_BO">

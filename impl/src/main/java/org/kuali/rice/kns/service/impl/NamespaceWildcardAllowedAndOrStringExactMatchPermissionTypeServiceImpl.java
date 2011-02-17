@@ -23,11 +23,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
@@ -100,12 +100,12 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 		// Check if "namespaceCode" is one of the permission detail values.
 		if (attributes.containsKey(NAMESPACE_CODE)) {
 			nonNamespaceCodeAttributes.remove(NAMESPACE_CODE);
-			Collection<Namespace> namespaces = KNSServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded(
-					Namespace.class, Collections.singletonMap("code", attributes.get(NAMESPACE_CODE)));
+			Collection<NamespaceBo> namespaces = KNSServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded(
+					NamespaceBo.class, Collections.singletonMap("code", attributes.get(NAMESPACE_CODE)));
 			// If the lookup service found at least one namespace, perform exists-and-active checks on each one.
 			if (namespaces != null && !namespaces.isEmpty()) {
-				for (Namespace namespace : namespaces) {
-					errors.putAll(super.validateReferencesExistAndActive(kimType, new AttributeSet(NAMESPACE_CODE, namespace.getNamespaceCode()), previousValidationErrors));
+				for (NamespaceBo namespace : namespaces) {
+					errors.putAll(super.validateReferencesExistAndActive(kimType, new AttributeSet(NAMESPACE_CODE, namespace.getCode()), previousValidationErrors));
 				}
 			} else {
 				// If no namespaces were found, let the superclass generate an appropriate error.

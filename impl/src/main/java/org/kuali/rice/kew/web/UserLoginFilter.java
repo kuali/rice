@@ -40,8 +40,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.AuthenticationException;
+import org.kuali.rice.kns.service.ClientParameterService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
 
@@ -58,7 +58,7 @@ public class UserLoginFilter implements Filter {
 	
 	private IdentityManagementService identityManagementService;
 	private KualiConfigurationService kualiConfigurationService;
-	private ParameterService parameterService;
+	private ClientParameterService parameterService;
 	
 	private FilterConfig filterConfig;
 	
@@ -163,7 +163,7 @@ public class UserLoginFilter implements Filter {
 		
 		if ( StringUtils.isNotBlank(backdoor) ) {
 			if ( !getKualiConfigurationService().isProductionEnvironment() ) {
-				if ( getParameterService().getIndicatorParameter(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
+				if ( getParameterService().getParameterValueAsBoolean(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
 					WebUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
 				}
 			}
@@ -204,9 +204,9 @@ public class UserLoginFilter implements Filter {
     	return this.kualiConfigurationService;
     }
     
-    private ParameterService getParameterService() {
+    private ClientParameterService getParameterService() {
     	if (this.parameterService == null) {
-    		this.parameterService = KNSServiceLocator.getParameterService();
+    		this.parameterService = KNSServiceLocator.getClientParameterService();
     	}
     	
     	return this.parameterService;

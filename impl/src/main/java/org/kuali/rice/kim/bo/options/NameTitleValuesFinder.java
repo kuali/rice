@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.options;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
@@ -41,9 +42,9 @@ public class NameTitleValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
 
-    	List<String> values = KNSServiceLocator.getParameterService().getParameterValues(
-    			KimConstants.NAMESPACE_CODE, PARAM_BO_CLASSNAME, "PREFIXES"
-    			);
+    	Collection<String> values = KNSServiceLocator.getClientParameterService().getParameterValuesAsString(
+                KimConstants.NAMESPACE_CODE, PARAM_BO_CLASSNAME, "PREFIXES"
+        );
         List<KeyValue> labels = new ArrayList<KeyValue>();
         labels.add(new ConcreteKeyValue("", ""));
         for (String title : values) {

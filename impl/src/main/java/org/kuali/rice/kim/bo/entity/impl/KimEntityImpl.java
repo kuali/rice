@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
@@ -362,5 +364,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 		}
 	}	
 	*/
+
+    public static void main(String...s) throws Throwable {
+        System.err.println(PropertyUtils.getPropertyType(new ParameterBo(), "parameterType"));
+    }
 	
 }

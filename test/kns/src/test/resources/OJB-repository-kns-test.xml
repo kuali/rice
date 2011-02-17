@@ -14,19 +14,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+<!--<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "http://db.apache.org/dtds/1.0/repository.dtd">-->
+
 <descriptor-repository version="1.0">
 
-	<descriptor-repository version="1.0">
-		<jdbc-connection-descriptor 
-			jcd-alias="dataSource"
-			default-connection="false" 
-			platform="Oracle9i" 
-			jdbc-level="3.0"
-			useAutoCommit="0">
-			<sequence-manager className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl" />
-			<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
-		</jdbc-connection-descriptor>
-	</descriptor-repository>
+    <jdbc-connection-descriptor
+        jcd-alias="dataSource"
+        default-connection="false"
+        platform="Oracle9i"
+        jdbc-level="3.0"
+        useAutoCommit="0">
+        <object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+        <sequence-manager className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl" />
+    </jdbc-connection-descriptor>
 	
 	<class-descriptor class="org.kuali.rice.kns.test.document.AccountRequestDocument" table="TRV_DOC_2">
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
@@ -35,7 +37,7 @@
 		<field-descriptor name="reason2" column="dest" jdbc-type="VARCHAR" />
 
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"></field-descriptor>
 		<!--  object references -->
 		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
@@ -57,10 +59,18 @@
 		<field-descriptor name="reason2" column="dest" jdbc-type="VARCHAR" />
 
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"></field-descriptor>
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"/>
 		<!--  object references -->
 		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+        <reference-descriptor name="child" class-ref="org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+		<reference-descriptor name="parent" class-ref="org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference" auto-retrieve="true" auto-update="object"
 			auto-delete="object">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
@@ -69,14 +79,6 @@
 			<fk-pointing-to-this-class column="DOC_HDR_ID" />
 			<fk-pointing-to-element-class column="ACCT_NUM" />
 		</collection-descriptor>
-		<reference-descriptor name="child" class-ref="org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference" auto-retrieve="true" auto-update="object"
-			auto-delete="object">
-			<foreignkey field-ref="documentNumber" />
-		</reference-descriptor>
-		<reference-descriptor name="parent" class-ref="org.kuali.rice.kns.test.document.AccountRequestDocumentWithCyclicalReference" auto-retrieve="true" auto-update="object"
-			auto-delete="object">
-			<foreignkey field-ref="documentNumber" />
-		</reference-descriptor>
 	</class-descriptor>
 	
 	<class-descriptor class="org.kuali.rice.kns.test.document.bo.AccountManager" table="TRV_ACCT_FO">
@@ -91,7 +93,7 @@
 	<class-descriptor class="org.kuali.rice.kns.test.document.bo.Account" table="TRV_ACCT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
-		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" nillable="false" />
+		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" nullable="false" />
 
 		<reference-descriptor name="accountManager" class-ref="org.kuali.rice.kns.test.document.bo.AccountManager" auto-delete="none" auto-retrieve="true" auto-update="object" proxy="true">
 			<foreignkey field-ref="amId" />
@@ -118,20 +120,20 @@
 	
 	<class-descriptor class="org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument" table="ACCT_DD_ATTR_DOC">
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="BIGINT" nillable="false"/>
-		<field-descriptor name="accountOwner" column="ACCT_OWNR" jdbc-type="VARCHAR" nillable="false"/>
-		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" nillable="false"/>
-		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="DATE" nillable="false"/>
-		<field-descriptor name="accountState" column="ACCT_STAT" jdbc-type="VARCHAR" nillable="false"/>
-		<field-descriptor name="accountUpdateDateTime" column="ACCT_UPDATE_DT_TM" jdbc-type="TIMESTAMP" nillable="false"/>
+		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="BIGINT" nullable="false"/>
+		<field-descriptor name="accountOwner" column="ACCT_OWNR" jdbc-type="VARCHAR" nullable="false"/>
+		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" nullable="false"/>
+		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="DATE" nullable="false"/>
+		<field-descriptor name="accountState" column="ACCT_STAT" jdbc-type="VARCHAR" nullable="false"/>
+		<field-descriptor name="accountUpdateDateTime" column="ACCT_UPDATE_DT_TM" jdbc-type="TIMESTAMP" nullable="false"/>
 		<field-descriptor name="accountAwake" column="ACCT_AWAKE" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 	
 	<class-descriptor class="org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument" table="TST_SEARCH_ATTR_INDX_TST_DOC_T">
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="routeLevelCount" column="RTE_LVL_CNT" jdbc-type="BIGINT"/>
 		<field-descriptor name="constantString" column="CNSTNT_STR" jdbc-type="VARCHAR"/>

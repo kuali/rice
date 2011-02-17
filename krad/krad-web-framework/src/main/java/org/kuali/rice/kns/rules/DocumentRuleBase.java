@@ -497,9 +497,9 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     	}
     	
     	boolean patternFound = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
-		boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
-				KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
-				KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
+		boolean warnForSensitiveData = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+                KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
     	if (patternFound && !warnForSensitiveData) {
     		dataValid = false;
     		GlobalVariables.getMessageMap().putError(fieldName,

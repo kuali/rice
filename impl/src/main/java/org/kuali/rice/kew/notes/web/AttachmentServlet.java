@@ -67,7 +67,7 @@ public class AttachmentServlet extends HttpServlet {
 		boolean secureChecks = true;
 		String secureAttachmentsParam = null;
 		try {
-			secureAttachmentsParam = KNSServiceLocator.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "All", KEWConstants.SECURE_ATTACHMENTS_PARAM);
+			secureAttachmentsParam = KNSServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "All", KEWConstants.SECURE_ATTACHMENTS_PARAM);
 		} catch (Exception e) {
 			LOG.info("Attempted to retrieve parameter value, but could not. Defaulting to unsecured attachment retrieval. " + e.getMessage());
 		}
@@ -94,13 +94,11 @@ public class AttachmentServlet extends HttpServlet {
 						FileInputStream attachmentFile = new FileInputStream(file);
 						BufferedInputStream inputStream = new BufferedInputStream(attachmentFile);
 						OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
-						
-						int bytesWritten = 0;
+
 						try {
 							int c;
 							while ((c = inputStream.read()) != -1) {
 								outputStream.write(c);
-								bytesWritten++;
 							}
 						} finally {
 							inputStream.close();

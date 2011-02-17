@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
+import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.*;
 
 /**
@@ -56,9 +57,9 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String qualifierResolverProvidedIdentifier;
 	
 	protected Campus campus;
-	protected Namespace parameterNamespace;
-	protected ParameterDetailType parameterDetailType;
-	protected Parameter parameter;
+	protected NamespaceBo namespace;
+	protected ComponentBo component;
+	protected ParameterBo parameter;
 	protected DocumentType documentType;
 
 	/**
@@ -419,27 +420,27 @@ public class KimAttributes extends TransientBusinessObjectBase {
 		this.campus = campus;
 	}
 
-	public Namespace getParameterNamespace() {
-		return this.parameterNamespace;
+	public NamespaceBo getNamespace() {
+		return this.namespace;
 	}
 
-	public void setParameterNamespace(Namespace parameterNamespace) {
-		this.parameterNamespace = parameterNamespace;
+	public void setNamespace(NamespaceBo namespace) {
+		this.namespace = namespace;
 	}
 
-	public ParameterDetailType getParameterDetailType() {
-		return this.parameterDetailType;
+	public ComponentBo getComponent() {
+		return this.component;
 	}
 
-	public void setParameterDetailType(ParameterDetailType parameterDetailType) {
-		this.parameterDetailType = parameterDetailType;
+	public void setComponent(ComponentBo component) {
+		this.component = component;
 	}
 
-	public Parameter getParameter() {
+	public ParameterBo getParameter() {
 		return this.parameter;
 	}
 
-	public void setParameter(Parameter parameter) {
+	public void setParameter(ParameterBo parameter) {
 		this.parameter = parameter;
 	}
 

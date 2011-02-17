@@ -2,6 +2,7 @@ package org.kuali.rice.kns.service;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.api.parameter.ParameterService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.KualiConfigurationService;
@@ -16,6 +17,7 @@ public class KNSServiceLocator {
     public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
     public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
     public static final String PARAMETER_SERVICE = "parameterService";
+    public static final String CLIENT_PARAMETER_SERVICE = "clientParameterService";
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
     public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "knsApplicationEntityManagerFactory";
     public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
@@ -24,7 +26,7 @@ public class KNSServiceLocator {
     public static final String KEY_VALUES_SERVICE = "keyValuesService";
 
 
-    static <T extends Object> T getService(String serviceName) {
+    static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
@@ -60,6 +62,10 @@ public class KNSServiceLocator {
         return getService(KUALI_CONFIGURATION_SERVICE);
     }
 
+    public static ClientParameterService getClientParameterService() {
+        return getService(CLIENT_PARAMETER_SERVICE);
+    }
+
     public static ParameterService getParameterService() {
         return getService(PARAMETER_SERVICE);
     }
@@ -85,6 +91,6 @@ public class KNSServiceLocator {
     }
 
     public static KeyValuesService getKeyValuesService() {
-        return (KeyValuesService) getService(KEY_VALUES_SERVICE);
+        return getService(KEY_VALUES_SERVICE);
     }
 }

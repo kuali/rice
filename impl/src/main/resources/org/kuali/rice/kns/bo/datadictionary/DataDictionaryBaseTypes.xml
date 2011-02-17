@@ -82,9 +82,6 @@
 	<bean id="MonthValidationPattern"
 		class="org.kuali.rice.kns.datadictionary.validation.fieldlevel.MonthValidationPattern"
 		abstract="true" />
-	<bean id="ApcSelectControlDefinition"
-		class="org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition"
-		abstract="true" />
 	<bean id="WorkflowPropertyGroup" class="org.kuali.rice.kns.datadictionary.WorkflowPropertyGroup"
 		abstract="true" />
 	<bean id="PrimitiveAttributeDefinition"
@@ -106,8 +103,6 @@
 		abstract="true" />
 	<bean id="DateValidationPattern"
 		class="org.kuali.rice.kns.datadictionary.validation.fieldlevel.DateValidationPattern"
-		abstract="true" />
-	<bean id="ApcRuleDefinition" class="org.kuali.rice.kns.datadictionary.ApcRuleDefinition"
 		abstract="true" />
 	<bean id="FieldDefinition" class="org.kuali.rice.kns.datadictionary.FieldDefinition"
 		abstract="true" />

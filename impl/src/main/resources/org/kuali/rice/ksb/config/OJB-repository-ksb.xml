@@ -14,6 +14,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+<!--<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "http://db.apache.org/dtds/1.0/repository.dtd">-->
+
 <descriptor-repository version="1.0">
 
 	<jdbc-connection-descriptor jcd-alias="ksbMessageDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
@@ -59,11 +63,11 @@
 			sequence-name="KRSB_SVC_DEF_S" />
 		<field-descriptor column="SVC_NMSPC" name="serviceNamespace" jdbc-type="VARCHAR" />
 		<field-descriptor column="SRVR_IP" name="serverIp" jdbc-type="VARCHAR" />
-		<field-descriptor column="SVC_URL" name="endpointUrl" jdbc-type="VARCHAR"></field-descriptor>
+		<field-descriptor column="SVC_URL" name="endpointUrl" jdbc-type="VARCHAR"/>
 		<field-descriptor column="SVC_ALIVE" name="alive" jdbc-type="BIT" />
-		<field-descriptor column="SVC_NM" name="serviceName" jdbc-type="VARCHAR"></field-descriptor>
+		<field-descriptor column="SVC_NM" name="serviceName" jdbc-type="VARCHAR"/>
 		<field-descriptor column="FLT_SVC_DEF_ID" name="flattenedServiceDefinitionId" jdbc-type="BIGINT" access="anonymous" indexed="true" />
-		<field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"></field-descriptor>
+		<field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
 		<field-descriptor column="SVC_DEF_CHKSM" name="checksum" jdbc-type="VARCHAR" />
 		<reference-descriptor name="serializedServiceNamespace" class-ref="org.kuali.rice.ksb.messaging.FlattenedServiceDefinition"
 				proxy="true" auto-retrieve="true" auto-update="true" auto-delete="true">
@@ -79,26 +83,43 @@
 
 	<class-descriptor class="org.kuali.rice.ksb.messaging.bam.BAMTargetEntry" table="KRSB_BAM_T">
 		<field-descriptor name="bamId" column="BAM_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KRSB_BAM_S" />
-		<field-descriptor name="serviceName" column="SVC_NM" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor name="serviceURL" column="SVC_URL" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor name="methodName" column="MTHD_NM" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor name="threadName" column="THRD_NM" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor name="callDate" column="CALL_DT" jdbc-type="TIMESTAMP"></field-descriptor>
-		<field-descriptor name="targetToString" column="TGT_TO_STR" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor name="serverInvocation" column="SRVR_IND" jdbc-type="BIT"></field-descriptor>
-		<field-descriptor name="exceptionToString" column="EXCPN_TO_STR" jdbc-type="VARCHAR"></field-descriptor>
-		<field-descriptor name="exceptionMessage" column="EXCPN_MSG" jdbc-type="CLOB"></field-descriptor>
+		<field-descriptor name="serviceName" column="SVC_NM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="serviceURL" column="SVC_URL" jdbc-type="VARCHAR"/>
+		<field-descriptor name="methodName" column="MTHD_NM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="threadName" column="THRD_NM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="callDate" column="CALL_DT" jdbc-type="TIMESTAMP"/>
+		<field-descriptor name="targetToString" column="TGT_TO_STR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="serverInvocation" column="SRVR_IND" jdbc-type="BIT"/>
+		<field-descriptor name="exceptionToString" column="EXCPN_TO_STR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="exceptionMessage" column="EXCPN_MSG" jdbc-type="CLOB"/>
 		<collection-descriptor element-class-ref="org.kuali.rice.ksb.messaging.bam.BAMParam" name="bamParams" auto-retrieve="true" auto-update="true"
 			auto-delete="true">
 			<inverse-foreignkey field-ref="bamId" />
 		</collection-descriptor>
 	</class-descriptor>
 
+    <class-descriptor class="org.kuali.rice.ksb.messaging.bam.BAMTargetEntry" table="KRSB_BAM_T">
+        <field-descriptor name="bamId" column="BAM_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KRSB_BAM_S" />
+        <field-descriptor name="serviceName" column="SVC_NM" jdbc-type="VARCHAR"/>
+        <field-descriptor name="serviceURL" column="SVC_URL" jdbc-type="VARCHAR"/>
+        <field-descriptor name="methodName" column="MTHD_NM" jdbc-type="VARCHAR"/>
+        <field-descriptor name="threadName" column="THRD_NM" jdbc-type="VARCHAR"/>
+        <field-descriptor name="callDate" column="CALL_DT" jdbc-type="TIMESTAMP"/>
+        <field-descriptor name="targetToString" column="TGT_TO_STR" jdbc-type="VARCHAR"/>
+        <field-descriptor name="serverInvocation" column="SRVR_IND" jdbc-type="BIT"/>
+        <field-descriptor name="exceptionToString" column="EXCPN_TO_STR" jdbc-type="VARCHAR"/>
+        <field-descriptor name="exceptionMessage" column="EXCPN_MSG" jdbc-type="CLOB"/>
+        <collection-descriptor element-class-ref="org.kuali.rice.ksb.messaging.bam.BAMParam"
+            name="bamParams"  auto-retrieve="true" auto-update="true" auto-delete="true">
+            <inverse-foreignkey field-ref="bamId"  />
+        </collection-descriptor>
+    </class-descriptor>
+
 	<class-descriptor class="org.kuali.rice.ksb.messaging.bam.BAMParam" table="KRSB_BAM_PARM_T">
 		<field-descriptor name="bamParamId" column="BAM_PARM_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true"
 			sequence-name="KRSB_BAM_PARM_S" />
 		<field-descriptor name="bamId" column="BAM_ID" jdbc-type="BIGINT" access="anonymous" />
-		<field-descriptor name="param" column="PARM" jdbc-type="VARCHAR"></field-descriptor>
+		<field-descriptor name="param" column="PARM" jdbc-type="VARCHAR"/>
 		<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.ksb.messaging.bam.BAMTargetEntry"
 			name="bamTargetEntry">
 			<foreignkey field-ref="bamId" />

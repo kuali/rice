@@ -95,7 +95,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected LookupResultsService lookupResultsService;
     protected String docNum;
     protected KualiConfigurationService configurationService;
-    protected ParameterService parameterService;
+    protected ClientParameterService parameterService;
     protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
 
     /**
@@ -292,14 +292,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
 
-    public ParameterService getParameterService() {
+    public ClientParameterService getParameterService() {
         if (parameterService == null) {
-            parameterService = KNSServiceLocator.getParameterService();
+            parameterService = KNSServiceLocator.getClientParameterService();
         }
         return parameterService;
     }
 
-    public void setParameterService(ParameterService parameterService) {
+    public void setParameterService(ClientParameterService parameterService) {
         this.parameterService = parameterService;
     }
 
@@ -694,7 +694,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         if (fieldDefinedMaxLength == null) {
             if (RESULTS_DEFAULT_MAX_COLUMN_LENGTH == null) {
                 try {
-                    RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf(getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH));
+                    RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf(getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH));
                 } catch (NumberFormatException ex) {
                     LOG.error("Lookup field max length parameter not found and unable to parse default set in system parameters (RESULTS_DEFAULT_MAX_COLUMN_LENGTH).");
                 }

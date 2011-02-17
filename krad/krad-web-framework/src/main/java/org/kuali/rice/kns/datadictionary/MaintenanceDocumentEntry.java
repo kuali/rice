@@ -41,9 +41,9 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 
     protected List<MaintainableSectionDefinition> maintainableSections = new ArrayList<MaintainableSectionDefinition>();
     protected List<String> lockingKeys = new ArrayList<String>();
-    protected List<ApcRuleDefinition> apcRules = new ArrayList<ApcRuleDefinition>();
+
     protected Map<String,MaintainableSectionDefinition> maintainableSectionMap = new LinkedHashMap<String, MaintainableSectionDefinition>();
-    protected Map<String,ApcRuleDefinition> apcRuleMap = new LinkedHashMap<String, ApcRuleDefinition>();
+
     
     protected boolean allowsNewOrCopy = true;
     protected String additionalSectionsFile;
@@ -122,29 +122,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     }
 
     /**
-     * 
-     * @return List of all apcRule ApcRuleDefinitions associated with this MaintenanceDocument, in the order in which they were
-     *         added
-     * 
-     */
-    public List<ApcRuleDefinition> getApcRules() {
-        return apcRules;
-    }
-
-    /**
-     * 
-     * @return List of all apcRule rule's fieldNames associated with this MaintenanceDocument, in the order in which they were added
-     * 
-     */
-    public List<String> getApcRuleFieldNames() {
-        List<String> fieldNames = new ArrayList<String>();
-        fieldNames.addAll(this.apcRuleMap.keySet());
-
-        return fieldNames;
-    }
-    
-
-    /**
      * Gets the allowsNewOrCopy attribute. 
      * @return Returns the allowsNewOrCopy.
      */
@@ -183,10 +160,6 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 
         for ( ReferenceDefinition reference : defaultExistenceChecks ) {
             reference.completeValidation(businessObjectClass, null);
-        }
-
-        for ( ApcRuleDefinition apcRule : apcRules ) {
-            apcRule.completeValidation(businessObjectClass, null);
         }
 
         if (documentAuthorizerClass != null && !MaintenanceDocumentAuthorizer.class.isAssignableFrom(documentAuthorizerClass)) {
@@ -269,37 +242,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         this.maintainableSections = maintainableSections;
     }
 
-    /*
-                    The apcRule element is used to specifiy legal values
-                    for an attribute.  This is done by specifiying the key
-                    to the System Parameters table that indicates
-                    the allowable values.
 
-                    JSTL: apcRules are Maps with the following keys:
-                    * attributeName (String)
-                    * parameterNamespace (String)
-                    * parameterDetailType (String)
-                    * parameterName (String)
-                    * errorMessage (String) a property key usually defined in ApplicationResources.properties
-
-                    See DictionaryValidationService.validateApcRule
-     */
-    public void setApcRules(List<ApcRuleDefinition> apcRules) {
-        apcRuleMap.clear();
-        for ( ApcRuleDefinition apcRule : apcRules ) {
-            if (apcRule == null) {
-                throw new IllegalArgumentException("invalid (null) apcRule");
-            }
-    
-            String keyName = apcRule.getAttributeName();
-            if (apcRuleMap.containsKey(keyName)) {
-                throw new DuplicateEntryException("duplicate apcRule entry for attribute '" + keyName + "'");
-            }
-    
-            apcRuleMap.put(keyName, apcRule);
-        }
-        this.apcRules = apcRules;
-    }
     
     /**
 	 * @return the preserveLockingKeysOnCopy
@@ -323,7 +266,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 	}
 
 	/**
-	 * @param allowRecordDeletion the allowRecordDeletion to set
+	 * @param allowsRecordDeletion the allowRecordDeletion to set
 	 */
 	public void setAllowsRecordDeletion(boolean allowsRecordDeletion) {
 		this.allowsRecordDeletion = allowsRecordDeletion;

@@ -21,8 +21,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.PagingBannerUtils;
@@ -77,12 +77,12 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 
 	public int getRecordsPerPage() {
 		if ( recordsPerPage == -1 ) {
-			Parameter param = KNSServiceLocator.getParameterService().retrieveParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
+			Parameter param = KNSServiceLocator.getClientParameterService().getParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
 			if ( param != null ) {
 				try {
-					recordsPerPage = Integer.parseInt( param.getParameterValue() );
+					recordsPerPage = Integer.parseInt( param.getValue() );
 				} catch ( NumberFormatException ex ) {
-					LOG.error( "Unable to parse parameter " + KimConstants.NAMESPACE_CODE+"/"+KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE+"/"+MAX_MEMBERS_PER_PAGE_PARM + "(+"+param.getParameterValue()+") as an int - defaulting to 1." );
+					LOG.error( "Unable to parse parameter " + KimConstants.NAMESPACE_CODE+"/"+KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE+"/"+MAX_MEMBERS_PER_PAGE_PARM + "(+"+param.getValue()+") as an int - defaulting to 1." );
 					recordsPerPage = 1;
 				}
 			} else {

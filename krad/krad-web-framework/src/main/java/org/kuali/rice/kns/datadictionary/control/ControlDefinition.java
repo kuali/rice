@@ -56,11 +56,6 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isMultiselect();
 
     /**
-     * @return true if this ControlDefinition instance represents an HTML select control that is tied to an APC rule
-     */
-    public boolean isApcSelect();
-
-    /**
      * @return true if this ControlDefinition instance represents an HTML text control
      */
     public boolean isText();

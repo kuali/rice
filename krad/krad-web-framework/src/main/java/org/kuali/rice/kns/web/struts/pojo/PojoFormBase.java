@@ -444,7 +444,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	    customInitMaxUploadSizes();
     	    // if it's still empty, add the default
     	    if ( maxUploadFileSizes.isEmpty() ) {
-    	        addMaxUploadSize(KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.MAX_UPLOAD_SIZE_PARM_NM));
+    	        addMaxUploadSize(KNSServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.MAX_UPLOAD_SIZE_PARM_NM));
     	    }
     	}	
     }

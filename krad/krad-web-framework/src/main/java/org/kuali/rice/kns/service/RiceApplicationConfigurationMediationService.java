@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
 /**
@@ -45,7 +45,7 @@ public interface RiceApplicationConfigurationMediationService {
 	/**
 	 * Returns the non-database components that have been published by all Rice client applications.
 	 */
-	List<ParameterDetailType> getNonDatabaseComponents();
+	List<ComponentBo> getNonDatabaseComponents();
     
     /**
 	 * This method will return the attribute definition from the local data dictionary of the

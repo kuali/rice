@@ -32,6 +32,20 @@ public final class CoreConstants {
     		throw new UnsupportedOperationException("do not call");
     	}
 	}
+    
+    public final static class Namespaces {
+    	public static final String ROOT_NAMESPACE_PREFIX = "http://rice.kuali.org";
+    	public static final String CORE_NAMESPACE_PREFIX = ROOT_NAMESPACE_PREFIX + "/core";
+    	public static final String PARAMETER_NAMESPACE_PREFIX = CORE_NAMESPACE_PREFIX + "/parameter";
+    	public static final String COMPONENT_NAMESPACE_PREFIX = CORE_NAMESPACE_PREFIX + "/component";
+    	public static final String NAMESPACE_NAMESPACE_PREFIX = CORE_NAMESPACE_PREFIX + "/namespace";
+    	
+    	public static final String MAJOR_VERSION = "v1_1";
+    	
+    	public static final String PARAMETER_NAMESPACE = PARAMETER_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
+    	public static final String COMPONENT_NAMESPACE = COMPONENT_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
+    	public static final String NAMESPACE_NAMESPACE = NAMESPACE_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
+    }
 	
 	public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
     public static final String STRING_TO_TIMESTAMP_FORMATS = "STRING_TO_TIMESTAMP_FORMATS";

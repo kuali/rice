@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.lang.reflect.InvocationTargetException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
@@ -31,29 +23,18 @@ import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.BusinessObjectRelationship;
-import org.kuali.rice.kns.bo.Inactivateable;
-import org.kuali.rice.kns.bo.KualiCode;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.*;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.*;
 import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
-import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
@@ -63,6 +44,10 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
+
+import java.lang.reflect.InvocationTargetException;
+import java.security.GeneralSecurityException;
+import java.util.*;
 
 
 /**
@@ -137,10 +122,6 @@ public final class FieldUtils {
 
 			if (control.isMultiselect()) {
 				fieldType = Field.MULTISELECT;
-			}
-
-			if (control.isApcSelect()) {
-				fieldType = Field.DROPDOWN_APC;
 			}
 
 			if (control.isCheckbox()) {
@@ -243,7 +224,7 @@ public final class FieldUtils {
 
 			// for dropdown and radio, get instance of specified KeyValuesFinder and set field values
 			if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType)
-					|| Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType)
+					|| Field.DROPDOWN_SCRIPT.equals(fieldType)
 					|| Field.MULTISELECT.equals(fieldType)) {
 				String keyFinderClassName = control.getValuesFinderClass();
 
@@ -253,20 +234,12 @@ public final class FieldUtils {
 						KeyValuesFinder finder = (KeyValuesFinder) keyFinderClass.newInstance();
 
 						if (finder != null) {
-							if (finder instanceof ApcValuesFinder && control instanceof ApcSelectControlDefinition) {
-								((ApcValuesFinder) finder).setParameterNamespace(((ApcSelectControlDefinition) control)
-										.getParameterNamespace());
-								((ApcValuesFinder) finder)
-										.setParameterDetailType(((ApcSelectControlDefinition) control)
-												.getParameterDetailType());
-								((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) control)
-										.getParameterName());
-							} else if (finder instanceof PersistableBusinessObjectValuesFinder) {
+							if (finder instanceof PersistableBusinessObjectValuesFinder) {
 								((PersistableBusinessObjectValuesFinder) finder)
 										.setBusinessObjectClass(ClassLoaderUtils.getClass(control
-												.getBusinessObjectClass()));
+                                                .getBusinessObjectClass()));
 								((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(control
-										.getKeyAttribute());
+                                        .getKeyAttribute());
 								((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(control
 										.getLabelAttribute());
 								if (control.getIncludeBlankRow() != null) {
@@ -274,7 +247,7 @@ public final class FieldUtils {
 											.getIncludeBlankRow());
 								}
 								((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(control
-										.getIncludeKeyInLabel());
+                                        .getIncludeKeyInLabel());
 							}
 							field.setFieldValidValues(finder.getKeyValues());
 							field.setFieldInactiveValidValues(finder.getKeyValues(false));

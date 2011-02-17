@@ -48,6 +48,7 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -74,7 +75,7 @@ public class MetadataManager {
 		return entityDescriptor;
 	}
 	
-	public static Map<String, Object> getPersistableBusinessObjectPrimaryKeyValuePairs(Object object) {
+	public static Map<String, Object> getPersistableBusinessObjectPrimaryKeyValuePairs(PersistableBusinessObject object) {
 		Map<String, Object> pks = new HashMap<String, Object>();
 		EntityDescriptor descriptor = getEntityDescriptor(object.getClass());
 		for (FieldDescriptor fieldDescriptor : descriptor.getPrimaryKeys()) {
@@ -99,7 +100,7 @@ public class MetadataManager {
 	 * @param object the object to get a primary key value from
 	 * @return a primary key value
 	 */
-	public static Object getPersistableBusinessObjectPrimaryKeyObject(Object object) {
+	public static Object getPersistableBusinessObjectPrimaryKeyObject(PersistableBusinessObject object) {
 		final EntityDescriptor descriptor = getEntityDescriptor(object.getClass());
 		final Class idClass = descriptor.getIdClass();
 		if (idClass != null) {

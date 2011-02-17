@@ -17,13 +17,13 @@ package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.Comparator;
 
-import org.kuali.rice.kns.bo.ParameterType;
+import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 
-public class ParameterTypeComparator implements Comparator<ParameterType> {
+public class ParameterTypeComparator implements Comparator<ParameterTypeBo> {
 
-    public int compare(ParameterType o1, ParameterType o2) {
+    public int compare(ParameterTypeBo o1, ParameterTypeBo o2) {
 
-        return o1.getParameterTypeCode().compareTo( o2.getParameterTypeCode() );
+        return o1.getCode().compareTo( o2.getCode() );
     }
 
 }

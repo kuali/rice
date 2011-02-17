@@ -14,7 +14,7 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 
 /**
@@ -35,7 +35,7 @@ public interface RiceApplicationConfigurationService {
      * 
      * @return List<ParameterDetailedType> containing the detailed types configured in non-database sources
      */
-    List<ParameterDetailType> getNonDatabaseComponents();
+    List<ComponentBo> getNonDatabaseComponents();
     
     /**
      * Checks whether this application is responsible for the package given.  It will

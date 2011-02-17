@@ -140,7 +140,7 @@ public abstract class KualiAction extends DispatchAction {
         // check if demonstration encryption is enabled
         if ( LOG.isEnabledFor(Level.WARN) ) {
 	        if ( OUTPUT_ENCRYPTION_WARNING == null ) {
-	        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration;
+	        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration;
 	        }
 	        if ( OUTPUT_ENCRYPTION_WARNING.booleanValue() ) {
 	            LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");

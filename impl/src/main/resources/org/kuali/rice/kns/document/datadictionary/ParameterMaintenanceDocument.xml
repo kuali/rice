@@ -18,7 +18,7 @@
   <bean id="ParameterMaintenanceDocument" parent="ParameterMaintenanceDocument-parentBean"/>
 
   <bean id="ParameterMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.Parameter"/>
+    <property name="businessObjectClass" value="org.kuali.rice.core.impl.parameter.ParameterBo"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.document.ParameterMaintainable"/>
     <property name="maintainableSections">
       <list>
@@ -27,16 +27,16 @@
     </property>
     <property name="defaultExistenceChecks">
       <list>
-        <bean parent="ReferenceDefinition" p:attributeName="parameterNamespace" p:attributeToHighlightOnFail="parameterNamespaceCode"/>
+        <bean parent="ReferenceDefinition" p:attributeName="namespace" p:attributeToHighlightOnFail="namespaceCode"/>
         <bean parent="ReferenceDefinition" p:attributeName="parameterType" p:attributeToHighlightOnFail="parameterTypeCode"/>
       </list>
     </property>
     <property name="lockingKeys">
       <list>
-        <value>parameterNamespaceCode</value>
-        <value>parameterDetailTypeCode</value>
-        <value>parameterApplicationNamespaceCode</value>
-        <value>parameterName</value>
+        <value>namespaceCode</value>
+        <value>componentCode</value>
+        <value>applicationCode</value>
+        <value>name</value>
       </list>
     </property>
     <property name="documentTypeName" value="ParameterMaintenanceDocument"/>
@@ -57,14 +57,14 @@
   <bean id="ParameterMaintenanceDocument-EditParameter-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterNamespaceCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterDetailTypeCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterApplicationNamespaceCode" p:defaultValue="KUALI"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterName"/>
-        <bean parent="MaintainableFieldDefinition" p:required="false" p:name="parameterValue"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterDescription"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="componentCode"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="applicationCode" p:defaultValue="KUALI"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
+        <bean parent="MaintainableFieldDefinition" p:required="false" p:name="value"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="description"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterTypeCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="parameterConstraintCode"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="evaluationOperatorCode"/>
       </list>
     </property>
     <property name="id" value="Edit Parameter"/>

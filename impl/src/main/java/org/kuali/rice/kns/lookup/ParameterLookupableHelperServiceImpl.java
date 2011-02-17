@@ -27,18 +27,16 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.bo.ParameterDetailType;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.ClientParameterService;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -48,19 +46,21 @@ import org.kuali.rice.kns.util.ObjectUtils;
  */
 public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ParameterLookupableHelperServiceImpl.class);
-	
-    private ParameterService parameterService;
+    private static final String COMPONENT_NAME = "component.name";
+    private static final String NAMESPACE_CODE = "namespaceCode";
+
+    private ClientParameterService parameterService;
 
     @Override
     protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
     	
         boolean allowsEdit = false;
-        Parameter parm = (Parameter)businessObject;
+        ParameterBo parm = (ParameterBo)businessObject;
         
         AttributeSet permissionDetails = new AttributeSet();
-        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getParameterNamespaceCode());
-        permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getParameterDetailTypeCode());
-        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getParameterName());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
+        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
         allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KNSConstants.KNS_NAMESPACE,
@@ -75,16 +75,16 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         List<? extends BusinessObject> results;
         
         // get the DD detail types
-        List<ParameterDetailType> ddDetailTypes = KNSServiceLocatorInternal.getParameterServerService().getNonDatabaseComponents();
-        if (fieldValues.containsKey("parameterDetailType.parameterDetailTypeName") && !StringUtils.isBlank(fieldValues.get("parameterDetailType.parameterDetailTypeName"))) {
-        	final Set<ParameterDetailType> matchingDetailTypes = new HashSet<ParameterDetailType>();
+        List<ComponentBo> ddDetailTypes = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+        if (fieldValues.containsKey(COMPONENT_NAME) && !StringUtils.isBlank(fieldValues.get(COMPONENT_NAME))) {
+        	final Set<ComponentBo> matchingDetailTypes = new HashSet<ComponentBo>();
             // perform a basic database lookup for detail types codes
-            String parameterNamespaceCode = fieldValues.get("parameterNamespaceCode");
-            String parameterDetailTypeName = fieldValues.get("parameterDetailType.parameterDetailTypeName");
+            String namespaceCode = fieldValues.get(NAMESPACE_CODE);
+            String parameterDetailTypeName = fieldValues.get(COMPONENT_NAME);
 
-            List<ParameterDetailType> dbDetailTypes = 
-            	(List<ParameterDetailType>)getBusinessObjectService().findAll(ParameterDetailType.class);
-            List<ParameterDetailType> allDetailTypes = new ArrayList<ParameterDetailType>(ddDetailTypes.size() + dbDetailTypes.size());
+            List<ComponentBo> dbDetailTypes =
+            	(List<ComponentBo>)getBusinessObjectService().findAll(ComponentBo.class);
+            List<ComponentBo> allDetailTypes = new ArrayList<ComponentBo>(ddDetailTypes.size() + dbDetailTypes.size());
             allDetailTypes.addAll(dbDetailTypes);
             allDetailTypes.addAll(ddDetailTypes);
             
@@ -93,15 +93,15 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             
             // filter all detail types by their name
             Pattern nameRegex = getParameterDetailTypeNameRegex(parameterDetailTypeName);
-            for (ParameterDetailType detailType : allDetailTypes) {
-                if (StringUtils.isBlank(parameterNamespaceCode) || detailType.getParameterNamespaceCode().equals(parameterNamespaceCode)) {
-                    if (nameRegex == null || (detailType.getParameterDetailTypeName() != null && nameRegex.matcher(detailType.getParameterDetailTypeName().toUpperCase()).matches())) {
+            for (ComponentBo detailType : allDetailTypes) {
+                if (StringUtils.isBlank(namespaceCode) || detailType.getNamespaceCode().equals(namespaceCode)) {
+                    if (nameRegex == null || (detailType.getCode() != null && nameRegex.matcher(detailType.getCode().toUpperCase()).matches())) {
                     	matchingDetailTypes.add(detailType);
                     }
                 }
             }
             // we're filtering in memory, so remove this criteria
-            fieldValues.remove("parameterDetailType.parameterDetailTypeName");
+            fieldValues.remove(COMPONENT_NAME);
             
             results = super.getSearchResults(fieldValues);
             // attach the DD detail types to your results before we filter (else filtering won't work correctly)
@@ -109,7 +109,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             // filter down to just results with matching parameter component (ParameterDetailType)
             CollectionUtils.filter(results, new Predicate() {
             	public boolean evaluate(Object object) {
-            		return matchingDetailTypes.contains(((Parameter)object).getParameterDetailType());
+            		return matchingDetailTypes.contains(((ParameterBo)object).getComponentCode());
             	}
             });
         }
@@ -126,17 +126,17 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
 	 * @param allDetailTypes
 	 */
 	private void reportDuplicateDetailTypes(
-			List<ParameterDetailType> allDetailTypes) {
+			List<ComponentBo> allDetailTypes) {
 		// check for duplicates between DD and DB 
-		Set<ParameterDetailType> dupCheck = new HashSet<ParameterDetailType>();
-		for (ParameterDetailType detailType : allDetailTypes) {
+		Set<ComponentBo> dupCheck = new HashSet<ComponentBo>();
+		for (ComponentBo detailType : allDetailTypes) {
 			if (dupCheck.contains(detailType)) {
-				ParameterDetailType duplicate = null;
-				for (ParameterDetailType d : dupCheck) if (d.equals(detailType)) {
+				ComponentBo duplicate = null;
+				for (ComponentBo d : dupCheck) if (d.equals(detailType)) {
 					duplicate = d;
 					break;
 				}
-				LOG.error(ParameterDetailType.class.getSimpleName() + "found with duplicate keys: " + detailType + " and " + duplicate);
+				LOG.error(ComponentBo.class.getSimpleName() + "found with duplicate keys: " + detailType + " and " + duplicate);
 			} else {
 				dupCheck.add(detailType);
 			}
@@ -172,20 +172,15 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
 	 */
 	private void attachDataDictionaryDetailTypes(
 			List<? extends BusinessObject> parameters,
-			List<ParameterDetailType> ddDetailTypes) {
+			List<ComponentBo> ddDetailTypes) {
 		// attach the non-database parameterDetailTypes
-        Map<String, ParameterDetailType> ddDetailTypeMap = new HashMap<String, ParameterDetailType>(ddDetailTypes.size());
-        for (ParameterDetailType detailType : ddDetailTypes) {
-            ddDetailTypeMap.put(detailType.getParameterDetailTypeCode(), detailType);
-        }
-        for (BusinessObject obj : parameters) {
-            if (ObjectUtils.isNull(((Parameter) obj).getParameterDetailType())) {
-                ((Parameter) obj).setParameterDetailType(ddDetailTypeMap.get(((Parameter) obj).getParameterDetailTypeCode()));
-            }
+        Map<String, ComponentBo> ddDetailTypeMap = new HashMap<String, ComponentBo>(ddDetailTypes.size());
+        for (ComponentBo detailType : ddDetailTypes) {
+            ddDetailTypeMap.put(detailType.getCode(), detailType);
         }
 	}
 
-    public void setParameterService(ParameterService parameterService) {
+    public void setParameterService(ClientParameterService parameterService) {
         this.parameterService = parameterService;
     }
     

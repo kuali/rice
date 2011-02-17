@@ -19,6 +19,8 @@ package org.kuali.rice.kew.server;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -36,7 +38,6 @@ import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -550,10 +551,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
      */
     @Test public void testIsLastApproverActivation() throws Exception {
         // first test without the parameter set
-        Parameter lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        Parameter lastApproverActivateParameter = KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
-        assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getParameterValue()));
-        String originalParameterValue = lastApproverActivateParameter.getParameterValue();
+        assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getValue()));
+        String originalParameterValue = lastApproverActivateParameter.getValue();
         
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.routeDocument("");
@@ -635,12 +636,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // Now set up the app constant that checks force action properly and try a new document
         String parameterValue = "Y";
-        lastApproverActivateParameter.setParameterValue(parameterValue);
-        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
+        Parameter.Builder b = Parameter.Builder.create(lastApproverActivateParameter);
+        b.setValue(parameterValue);
+        KNSServiceLocator.getBusinessObjectService().save(ParameterBo.from(b.build()));
 
-        lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        lastApproverActivateParameter = KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
-        assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getParameterValue());
+        assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getValue());
 
 
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
@@ -696,8 +698,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Document should be processed.", document.stateIsProcessed());
 
         // set parameter value back to it's original value
-        lastApproverActivateParameter.setParameterValue("");
-        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
+        Parameter.Builder b2 = Parameter.Builder.create(lastApproverActivateParameter);
+        b2.setValue("");
+        KNSServiceLocator.getBusinessObjectService().save(ParameterBo.from(b2.build()));
     }
 
     @Test public void testIsFinalApprover() throws Exception {

@@ -310,11 +310,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
                                         includeBlankRow		boolean String
                                         includeKeyInLabel   boolean String
 
-                    apcSelect           apcSelect           boolean String
-                                        paramNamespace      String
-                                        parameterDetailType String
-                                        parameterName       String
-
                     text                text                boolean String
                                         size                String
 

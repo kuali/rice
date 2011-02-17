@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
 
@@ -39,12 +39,12 @@ public class NamespaceValuesFinder extends KeyValuesBase {
 
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-        List<Namespace> bos = (List) boService.findAll(Namespace.class);
+        List<NamespaceBo> bos = (List) boService.findAll(NamespaceBo.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if ( bos == null ) {
-        	bos = new ArrayList<Namespace>(0);
+        	bos = new ArrayList<NamespaceBo>(0);
         } else {
-        	bos = new ArrayList<Namespace>( bos );
+        	bos = new ArrayList<NamespaceBo>( bos );
         }
 
         // sort using comparator.
@@ -53,8 +53,8 @@ public class NamespaceValuesFinder extends KeyValuesBase {
         // create a new list (code, descriptive-name)
         List<KeyValue> labels = new ArrayList<KeyValue>( bos.size() );
         labels.add(new ConcreteKeyValue("", ""));
-        for ( Namespace bo : bos ) {
-            labels.add( new ConcreteKeyValue(bo.getNamespaceCode(), bo.getCodeAndDescription() ) );
+        for ( NamespaceBo bo : bos ) {
+            labels.add( new ConcreteKeyValue(bo.getCode(), bo.getName() ) );
         }
         return labels;
     }

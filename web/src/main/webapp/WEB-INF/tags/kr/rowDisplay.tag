@@ -447,7 +447,7 @@
 
                 </c:when>
 
-                <c:when test="${field.fieldType eq field.DROPDOWN || field.fieldType eq field.DROPDOWN_APC}">
+                <c:when test="${field.fieldType eq field.DROPDOWN}">
 
                     <kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}"
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%"

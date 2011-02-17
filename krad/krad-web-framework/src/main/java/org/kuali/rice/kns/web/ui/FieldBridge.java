@@ -15,27 +15,14 @@
  */
 package org.kuali.rice.kns.web.ui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
-import org.kuali.rice.kns.datadictionary.FieldDefinition;
-import org.kuali.rice.kns.datadictionary.FieldDefinitionI;
-import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
-import org.kuali.rice.kns.datadictionary.control.ApcSelectControlDefinition;
+import org.kuali.rice.kns.datadictionary.*;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -44,6 +31,11 @@ import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public class FieldBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldBridge.class);
@@ -197,14 +189,6 @@ public class FieldBridge {
      */
     private static String lookupFinderValue(ControlDefinition fieldControl, Object prop, KeyValuesFinder finder) {
         String propValue = null;
-
-        if (finder != null) {
-            if (finder instanceof ApcValuesFinder && fieldControl instanceof ApcSelectControlDefinition) {
-                ((ApcValuesFinder) finder).setParameterNamespace(((ApcSelectControlDefinition) fieldControl).getParameterNamespace());
-                ((ApcValuesFinder) finder).setParameterDetailType(((ApcSelectControlDefinition) fieldControl).getParameterDetailType());
-                ((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) fieldControl).getParameterName());
-            }
-        }
 
         // KULRICE-1808 : PersistableBusinessObjectValuesFinder is not working for inquiries that have child objects with ValuesFinder populated select lists
         if (finder instanceof PersistableBusinessObjectValuesFinder) {

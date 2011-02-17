@@ -76,20 +76,8 @@ import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
 
-import org.kuali.rice.kns.service.AttachmentService;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.service.KualiRuleService;
-import org.kuali.rice.kns.service.NoteService;
-import org.kuali.rice.kns.service.ParameterConstants;
-import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.service.PessimisticLockService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.ClientParameterService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -124,7 +112,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private DocumentHelperService documentHelperService;
     private DocumentService documentService;
     private KualiConfigurationService kualiConfigurationService;
-    private ParameterService parameterService;
+    private ClientParameterService parameterService;
     private PessimisticLockService pessimisticLockService;
     private KualiRuleService kualiRuleService;
     private IdentityManagementService identityManagementService;
@@ -250,7 +238,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
                 setupPessimisticLockMessages(document, request);
                 if (!document.getPessimisticLocks().isEmpty()) {
-                    String warningMinutes = getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
+                    String warningMinutes = getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
                     request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MINUTES, warningMinutes);
                     request.setAttribute(KNSConstants.SESSION_TIMEOUT_WARNING_MILLISECONDS, (request.getSession().getMaxInactiveInterval() - (Integer.valueOf(warningMinutes) * 60)) * 1000);
                 }
@@ -622,7 +610,7 @@ public class KualiDocumentActionBase extends KualiAction {
         boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
 
         // check if warning is configured in which case we will prompt, or if not business rules will thrown an error
-        boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+        boolean warnForSensitiveData = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
 
@@ -901,7 +889,7 @@ public class KualiDocumentActionBase extends KualiAction {
         disapprovalNoteText = introNoteMessage + reason;
 
         // check for sensitive data in note
-        boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+        boolean warnForSensitiveData = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
         if (warnForSensitiveData) {
@@ -1502,7 +1490,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return a value from {@link KEWConstants}
      */
     protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
-        return getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
+        return getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
     }
 
     public ActionForward sendNoteWorkflowNotification(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1757,9 +1745,9 @@ public class KualiDocumentActionBase extends KualiAction {
         return this.kualiConfigurationService;
     }
 
-    protected ParameterService getParameterService() {
+    protected ClientParameterService getParameterService() {
         if (parameterService == null) {
-            parameterService = KNSServiceLocator.getParameterService();
+            parameterService = KNSServiceLocator.getClientParameterService();
         }
         return this.parameterService;
     }

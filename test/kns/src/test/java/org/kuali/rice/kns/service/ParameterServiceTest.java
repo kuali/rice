@@ -16,9 +16,7 @@
 package org.kuali.rice.kns.service;
 
 import org.junit.Test;
-import org.kuali.rice.kns.bo.Namespace;
-import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.bo.ParameterDetailType;
+import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
@@ -46,20 +44,13 @@ public class ParameterServiceTest extends KNSTestCase {
     	String parameterName = "RESULTS_LIMIT";
     	String parameterValue = "200";
     	
-    	Parameter resultsLimitParam = KNSServiceLocator.getParameterService().retrieveParameter(namespaceCode, parameterDetailTypeCode, parameterName);
+    	Parameter resultsLimitParam = KNSServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
     	assertNotNull("RESULTS_LIMIT should be non-null", resultsLimitParam);
-    	assertEquals(parameterValue, resultsLimitParam.getParameterValue());
+    	assertEquals(parameterValue, resultsLimitParam.getValue());
     	
-    	ParameterDetailType detailType = resultsLimitParam.getParameterDetailType();
+    	String detailType = resultsLimitParam.getComponentCode();
     	assertNotNull("Should have a detail type: " + detailType);
     	
-    	assertEquals(parameterDetailTypeCode, detailType.getParameterDetailTypeCode());
-    	assertEquals(parameterDetailTypeCode, detailType.getParameterDetailTypeName());
-    	assertEquals(namespaceCode, detailType.getParameterNamespaceCode());
-    	
-    	Namespace namespace = detailType.getParameterNamespace();
-    	assertNotNull("Should have a namespace", namespace);
-    	assertEquals(namespaceCode, namespace.getNamespaceCode());
     }
     
     @Test    
@@ -69,11 +60,11 @@ public class ParameterServiceTest extends KNSTestCase {
     	String parameterName = "PREFIXES";
     	String parameterValue = "Ms;Mrs;Mr;Dr";
     	
-    	Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(namespaceCode, parameterDetailTypeCode, parameterName);
+    	Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
     	assertNotNull("Parameter should be non-null", parameter);
-    	assertEquals(parameterValue, parameter.getParameterValue());
+    	assertEquals(parameterValue, parameter.getValue());
     	
-    	ParameterDetailType detailType = parameter.getParameterDetailType();
+    	String detailType = parameter.getComponentCode();
 
     	assertTrue("Should not have a detail type because no record in database", ObjectUtils.isNull(detailType));
     	

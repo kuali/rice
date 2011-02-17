@@ -25,10 +25,10 @@
     <class>org.kuali.rice.kns.document.MaintenanceDocumentBase</class>
     <class>org.kuali.rice.kns.document.MaintenanceLock</class>
     <class>org.kuali.rice.kns.bo.DocumentHeader</class>
-    <class>org.kuali.rice.kns.bo.Namespace</class>
-    <class>org.kuali.rice.kns.bo.ParameterType</class>
-    <class>org.kuali.rice.kns.bo.ParameterDetailType</class>
-    <class>org.kuali.rice.kns.bo.Parameter</class>
+    <class>org.kuali.rice.core.impl.namespace.NamespaceBo</class>
+    <class>org.kuali.rice.core.impl.parameter.ParameterTypeBo</class>
+    <class>org.kuali.rice.core.impl.component.ComponentBo</class>
+    <class>org.kuali.rice.core.impl.parameter.ParameterBo</class>
     <class>org.kuali.rice.kns.bo.Note</class>
     <class>org.kuali.rice.kns.bo.NoteType</class>
     <class>org.kuali.rice.kns.bo.Attachment</class>
@@ -51,10 +51,10 @@
     <class>org.kuali.rice.kns.document.MaintenanceDocumentBase</class>
     <class>org.kuali.rice.kns.document.MaintenanceLock</class>
     <class>org.kuali.rice.kns.bo.DocumentHeader</class>
-    <class>org.kuali.rice.kns.bo.Namespace</class>
-    <class>org.kuali.rice.kns.bo.ParameterType</class>
-    <class>org.kuali.rice.kns.bo.ParameterDetailType</class>
-    <class>org.kuali.rice.kns.bo.Parameter</class>
+    <class>org.kuali.rice.core.impl.namespace.NamespaceBo</class>
+    <class>org.kuali.rice.core.impl.parameter.ParameterTypeBo</class>
+    <class>org.kuali.rice.core.impl.component.ComponentBo</class>
+    <class>org.kuali.rice.core.impl.parameter.ParameterBo</class>
     <class>org.kuali.rice.kns.bo.Note</class>
     <class>org.kuali.rice.kns.bo.NoteType</class>
     <class>org.kuali.rice.kns.bo.Attachment</class>

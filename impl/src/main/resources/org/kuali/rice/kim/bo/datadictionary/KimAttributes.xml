@@ -58,27 +58,27 @@
             </list>
           </property>
         </bean>
-        <bean parent="RelationshipDefinition" p:objectAttributeName="parameterNamespace">
+        <bean parent="RelationshipDefinition" p:objectAttributeName="namespace">
           <property name="primitiveAttributes">
             <list>
               <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="code"/>
             </list>
           </property>
         </bean>
-        <bean parent="RelationshipDefinition" p:objectAttributeName="parameterDetailType">
+        <bean parent="RelationshipDefinition" p:objectAttributeName="component">
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="parameterNamespaceCode"/>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="componentName" p:targetName="parameterDetailTypeCode"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="namespaceCode"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="componentName" p:targetName="code"/>
             </list>
           </property>
         </bean>
         <bean parent="RelationshipDefinition" p:objectAttributeName="parameter">
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="parameterNamespaceCode"/>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="componentName" p:targetName="parameterDetailTypeCode"/>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterName" p:targetName="parameterName"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="namespaceCode"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="componentName" p:targetName="componentCode"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="parameterName" p:targetName="name"/>
             </list>
           </property>
         </bean>
@@ -101,11 +101,11 @@
   </bean>
   
   <bean id="KimAttributes-namespaceCode" parent="Namespace-code" p:name="namespaceCode"/>
-  <bean id="KimAttributes-componentName" parent="ParameterDetailType-parameterDetailTypeCode" p:name="componentName"/>
+  <bean id="KimAttributes-componentName" parent="Component-code" p:name="componentName"/>
   <bean id="KimAttributes-roleName" parent="RoleImpl-roleName"/>
   <bean id="KimAttributes-groupName" parent="GroupImpl-groupName"/>
   <bean id="KimAttributes-documentNumber" parent="DocumentHeader-documentNumber"/>
-  <bean id="KimAttributes-parameterName" parent="Parameter-parameterName"/>
+  <bean id="KimAttributes-parameterName" parent="Parameter-name"  p:name="parameterName"/>
 
   <bean id="KimAttributes-existingRecordsOnly" parent="KimAttributes-existingRecordsOnly-parentBean"/>
   <bean id="KimAttributes-existingRecordsOnly-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean" p:name="existingRecordsOnly" p:label="Existing Records Only" p:shortLabel="Existing Records Only"/>
@@ -198,7 +198,7 @@
   <!-- Should be converted to use KimPermissionImpl.xml once created -->
   <bean id="KimAttributes-permissionName" parent="KimAttributes-permissionName-parentBean"/>
   <bean id="KimAttributes-permissionName-parentBean" parent="KimPermissionImpl-name" abstract="true" p:name="permissionName" p:required="false">
-  </bean>    
+  </bean>
 
   <!-- Should be converted to use KimResponsibilityImpl.xml once created -->
   <bean id="KimAttributes-responsibilityName" parent="KimAttributes-responsibilityName-parentBean"/>

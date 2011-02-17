@@ -16,6 +16,10 @@
 package org.kuali.rice.kns.service;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.core.impl.parameter.ParameterId;
+import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.bo.*;
 import org.kuali.rice.kns.test.document.bo.Account;
@@ -83,23 +87,23 @@ public class MetadataManagerTest extends KNSTestCase {
 	 */
 	@Test
 	public void testPKObjectForEntity() {
-		ParameterType parameterType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterType.class, "CONFG");
+		ParameterTypeBo parameterType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterTypeBo.class, "CONFG");
 		assertNotNull("ParameterType should not be null", parameterType);
 		
 		Object pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(parameterType);
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"CONFG\"", "CONFG", pkValue);
 		
-		Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
+		Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
 		assertNotNull("State should not be null", parameter);
 		
-		pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(parameter);
+		pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(ParameterBo.from(parameter));
 		org.junit.Assert.assertEquals("Composite pkValue for Parameter should have class of ParameterId", ParameterId.class, pkValue.getClass());
 		ParameterId parameterId = (ParameterId)pkValue;
-		assertEquals("namespace code was not correctly set", "KR-NS", parameterId.getParameterNamespaceCode());
-		assertEquals("parameter detail type code was not correctly set", "Lookup", parameterId.getParameterDetailTypeCode());
-		assertEquals("parameter name was not correctly set", "MULTIPLE_VALUE_RESULTS_PER_PAGE", parameterId.getParameterName());
-		assertEquals("parameterApplicationNamespaceCode was not correctly set", "KUALI", parameterId.getParameterApplicationNamespaceCode());
+		assertEquals("namespace code was not correctly set", "KR-NS", parameterId.getNamespaceCode());
+		assertEquals("parameter detail type code was not correctly set", "Lookup", parameterId.getComponentCode());
+		assertEquals("parameter name was not correctly set", "MULTIPLE_VALUE_RESULTS_PER_PAGE", parameterId.getName());
+		assertEquals("parameterApplicationNamespaceCode was not correctly set", "KUALI", parameterId.getApplicationCode());
 	}
 	
 	/**

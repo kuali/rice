@@ -75,6 +75,9 @@ public interface KualiModuleService {
      * @return
      */
     public String getNamespaceName(String namespaceCode);
+
+    String getNamespaceCode(Class<?> documentOrStepClass);
+    String getComponentCode(Class<?> documentOrStepClass);
     
 }
 

@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.kns.util;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
+import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Utility map for the action form to provide a way for calling functions through jstl.
@@ -111,10 +110,6 @@ public class ActionFormUtilMap extends HashMap {
         try {
             Class finderClass = Class.forName((String) key);
             finder = (KeyValuesFinder) finderClass.newInstance();
-            if (finder instanceof ApcValuesFinder) {
-                throw new IllegalArgumentException("Cannot currently use <apcSelect> in this form");
-            }
-
             optionsList = finder.getKeyValues();
         }
         catch (ClassNotFoundException e) {
@@ -174,9 +169,7 @@ public class ActionFormUtilMap extends HashMap {
         try {
     		Class finderClass = Class.forName((String) key);
             finder = (KeyValuesFinder) finderClass.newInstance();
-            if (finder instanceof ApcValuesFinder) {
-                throw new IllegalArgumentException("Cannot currently use <apcSelect> in this form");
-            } else if (finder instanceof PersistableBusinessObjectValuesFinder) {
+            if (finder instanceof PersistableBusinessObjectValuesFinder) {
                 String businessObjectClassName = StringUtils.replace((String) boClass, "|", ".");
                 Class businessObjectClass = Class.forName((String) businessObjectClassName);
                 ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(businessObjectClass);

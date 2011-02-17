@@ -16,12 +16,12 @@
 package org.kuali.rice.kim.inquiry;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
@@ -60,9 +60,9 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 		} else if(NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");
-			Namespace parameterNamespace = new Namespace();
+			NamespaceBo parameterNamespace = new NamespaceBo();
 			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
-			return getInquiryUrlForPrimaryKeys(Namespace.class, parameterNamespace, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
 		} else if("kimTypeInfo.name".equals(attributeName)){
 			KimTypeImpl kimType = new KimTypeImpl();
 			kimType.setKimTypeId( ((GroupImpl)businessObject).getKimTypeId() );

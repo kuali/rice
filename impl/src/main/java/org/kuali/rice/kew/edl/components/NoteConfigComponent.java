@@ -84,7 +84,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 	private List<String> to;
 	private List<String> cc = new ArrayList<String>();
 	private List<String> bc = new ArrayList<String>();
-	private static final String DEFAULT_EMAIL_FROM_ADDRESS = KNSServiceLocator.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = KNSServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 		NoteForm noteForm = new NoteForm(edlContext.getRequestParser());

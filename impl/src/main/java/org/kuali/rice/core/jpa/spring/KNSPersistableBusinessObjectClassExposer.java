@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.core.jpa.spring;
 
+import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,12 +57,12 @@ public class KNSPersistableBusinessObjectClassExposer implements
 		knsBOs.add(org.kuali.rice.kns.bo.LookupResults.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.KualiCodeBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.MultipleValueLookupMetadata.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.Namespace.class.getName());
+		knsBOs.add(NamespaceBo.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.Note.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.NoteType.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.Parameter.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.ParameterDetailType.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.ParameterType.class.getName());
+		knsBOs.add(ParameterBo.class.getName());
+		knsBOs.add(ComponentBo.class.getName());
+		knsBOs.add(ParameterTypeBo.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PersistableAttachmentBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PersistableBusinessObjectBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase.class.getName());

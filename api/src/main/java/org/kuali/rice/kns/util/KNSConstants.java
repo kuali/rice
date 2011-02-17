@@ -477,9 +477,6 @@ public final class KNSConstants {
     public static final String NAVIGATE_TO = "navigateTo.";
     public static final String HEADER_DISPATCH = "headerDispatch.";
 
-    public static final String APC_ALLOWED_OPERATOR = "A";
-//    public static final String APC_DENIED_OPERATOR = "D";
-
     public static final String MULTIPLE_VALUE = "multipleValues";
 
     // Agency type codes

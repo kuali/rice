@@ -21,7 +21,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.ClientParameterService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -30,7 +30,7 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 public class DocumentPresentationControllerBase implements DocumentPresentationController {
 //    private static Log LOG = LogFactory.getLog(DocumentPresentationControllerBase.class);
 
-	private static transient ParameterService parameterService;
+	private static transient ClientParameterService parameterService;
   
     public boolean canInitiate(String documentTypeName) {
     	return true;
@@ -141,7 +141,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * @return boolean (true if can perform route report)
      */
     protected boolean canPerformRouteReport(Document document){
-        return getParameterService().getIndicatorParameter( KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
+        return getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
     
    
@@ -165,7 +165,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	// check system parameter - if Y, use default workflow behavior: allow a user with the permission
     	// to perform the blanket approve action at any time
     	try {
-	    	if ( getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND) ) {
+	    	if ( getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND) ) {
 	    		return canEdit(document);
 	    	}
     	} catch ( IllegalArgumentException ex ) {
@@ -285,12 +285,12 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return documentActions;
     }
 
-	protected ParameterService getParameterService() {
+	protected ClientParameterService getParameterService() {
 		if ( parameterService == null ) {
-			parameterService = KNSServiceLocator.getParameterService();
+			parameterService = KNSServiceLocator.getClientParameterService();
 		}
 		return parameterService;
 	}
-    
-        
+
+
 }

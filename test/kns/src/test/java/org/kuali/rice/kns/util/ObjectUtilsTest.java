@@ -17,8 +17,8 @@ package org.kuali.rice.kns.util;
 
 import edu.sampleu.travel.bo.TravelAccountUseRate;
 import org.junit.Test;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.web.format.*;
-import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -35,13 +35,13 @@ import static org.junit.Assert.assertTrue;
 public class ObjectUtilsTest extends KNSTestCase {
     @Test
     public void testObjectUtils_equalsByKey() throws Exception {
-        Parameter parameterInDB = new Parameter();
-        parameterInDB.setParameterNamespaceCode("KR-NS");
-        parameterInDB.setParameterName("OBJ_UTIL_TEST");
+        ParameterBo parameterInDB = new ParameterBo();
+        parameterInDB.setNamespaceCode("KR-NS");
+        parameterInDB.setName("OBJ_UTIL_TEST");
         
-        Parameter parameterNew = new Parameter();
-        parameterNew.setParameterNamespaceCode("KR-NS");
-        parameterInDB.setParameterName(null);
+        ParameterBo parameterNew = new ParameterBo();
+        parameterNew.setNamespaceCode("KR-NS");
+        parameterInDB.setName(null);
         
         boolean equalsResult = false;
         equalsResult = ObjectUtils.equalByKeys(parameterInDB, parameterNew);

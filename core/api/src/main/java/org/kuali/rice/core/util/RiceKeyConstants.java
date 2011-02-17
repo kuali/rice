@@ -143,8 +143,6 @@ public final class RiceKeyConstants {
     public static final String ERROR_APPLICATION_PARAMETERS_DENIED_RESTRICTION = "error.applicationParametersDeniedRestriction";
     public static final String ERROR_PAYMENT_REASON_ALLOWED_RESTRICTION = "error.paymentReasonAllowedRestriction";
     public static final String ERROR_PAYMENT_REASON_DENIED_RESTRICTION = "error.paymentReasonDeniedRestriction";
-    public static final String ERROR_APC_INDIRECT_DENIED_MULTIPLE = "error.apc.indirectDeniedMultiple";
-    public static final String ERROR_APC_INDIRECT_ALLOWED_MULTIPLE = "error.apc.indirectAllowedMultiple";
 
     public static final Object WARNING_LINE_IMPORT_LENGTH_MISMATCH = "warning.core.bo.AccountImportLengthMismatch";
 

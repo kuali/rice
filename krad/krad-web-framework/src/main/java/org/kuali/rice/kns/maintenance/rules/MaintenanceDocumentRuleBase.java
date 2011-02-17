@@ -650,10 +650,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // do default (ie, mandatory) existence checks
         dictionaryValidationService.validateDefaultExistenceChecks(businessObject);
 
-        // do apc checks
-        dictionaryValidationService.validateApcRules(businessObject);
-
-
         // explicitly remove the errorPath we've added
         GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
 
@@ -1172,59 +1168,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 // add a field error
                 putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS, new String[] { fieldNameReadable, fKeysReadable });
             }
-        }
-
-        return success;
-    }
-
-    /**
-     *
-     * This method is a shallow inverse wrapper around applyApcRule, it simply reverses the return value, for better readability in
-     * an if test.
-     *
-     * This method applies an APC rule based on the values provided.
-     *
-     * It will throw an ApplicationParameterException if the APC Group and Parm do not exist in the system.
-     *
-     * @param apcGroupName - The script or group name in the APC system. If the value is null or blank, an IllegalArgumentException
-     *        will be thrown.
-     * @param parameterName - The name of the parm/rule in the APC system. If the value is null or blank, an IllegalArgumentException
-     *        will be thrown.
-     * @param valueToTest - The String value to test against the APC rule. The value may be null or blank without throwing an error,
-     *        but the rule will likely fail if null or blank.
-     * @return True if the rule fails, False if the rule passes.
-     *
-     */
-    protected boolean apcRuleFails(String parameterNamespace, String parameterDetailTypeCode, String parameterName, String valueToTest) {
-        if (applyApcRule(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest) == false) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     *
-     * This method applies an APC rule based on the values provided.
-     *
-     * It will throw an ApplicationParameterException if the APC Group and Parm do not exist in the system.
-     *
-     * @param apcGroupName - The script or group name in the APC system. If the value is null or blank, an IllegalArgumentException
-     *        will be thrown.
-     * @param parameterName - The name of the parm/rule in the APC system. If the value is null or blank, an IllegalArgumentException
-     *        will be thrown.
-     * @param valueToTest - The String value to test against the APC rule. The value may be null or blank without throwing an error,
-     *        but the rule will likely fail if null or blank.
-     * @return True if the rule passes, False if the rule fails.
-     *
-     */
-    protected boolean applyApcRule(String parameterNamespace, String parameterDetailTypeCode, String parameterName, String valueToTest) {
-
-        // default to success
-        boolean success = true;
-
-        // apply the rule, see if it fails
-        if (!KNSServiceLocator.getParameterService().getParameterEvaluator(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest).evaluationSucceeds()) {
-            success = false;
         }
 
         return success;

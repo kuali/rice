@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.kns.bo.Namespace;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
 
 /**
  * Kuali Rice Namespace Service 
@@ -30,5 +30,5 @@ public interface NamespaceService {
 	 * @param namespaceCode
 	 * @return its associated ParameterNamespace
 	 */
-	Namespace getNamespace(String namespaceCode);	
+	NamespaceBo getNamespace(String namespaceCode);
 }

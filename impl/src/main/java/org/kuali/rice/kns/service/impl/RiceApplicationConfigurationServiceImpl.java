@@ -18,9 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
@@ -36,10 +36,10 @@ import org.kuali.rice.kns.util.KNSUtils;
 public class RiceApplicationConfigurationServiceImpl implements RiceApplicationConfigurationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationServiceImpl.class);
     
-    protected List<ParameterDetailType> components = new ArrayList<ParameterDetailType>();
+    protected List<ComponentBo> components = new ArrayList<ComponentBo>();
     protected List<String> packagePrefixes = new ArrayList<String>();
     private KualiConfigurationService kualiConfigurationService;
-    private ParameterService parameterService;    
+    private KualiModuleService kualiModuleService;
     private DataDictionaryService dataDictionaryService;
     
     public String getConfigurationParameter( String parameterName ){
@@ -52,17 +52,17 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
      * 
      * @return List<ParameterDetailedType> containing the detailed types derived from the data dictionary and Spring
      */
-    public List<ParameterDetailType> getNonDatabaseComponents() {
+    public List<ComponentBo> getNonDatabaseComponents() {
         if (components.isEmpty()) {
-            Map<String, ParameterDetailType> uniqueParameterDetailTypeMap = new HashMap<String, ParameterDetailType>();
+            Map<String, ComponentBo> uniqueParameterDetailTypeMap = new HashMap<String, ComponentBo>();
                         
             DataDictionaryService dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
             
             //dataDictionaryService.getDataDictionary().forceCompleteDataDictionaryLoad();
             for (BusinessObjectEntry businessObjectEntry : dataDictionaryService.getDataDictionary().getBusinessObjectEntries().values()) {
                 try {
-                    ParameterDetailType parameterDetailType = getParameterDetailType((businessObjectEntry.getBaseBusinessObjectClass() != null) ? businessObjectEntry.getBaseBusinessObjectClass() : businessObjectEntry.getBusinessObjectClass());
-                    uniqueParameterDetailTypeMap.put(parameterDetailType.getParameterDetailTypeCode(), parameterDetailType);
+                    ComponentBo parameterDetailType = getParameterDetailType((businessObjectEntry.getBaseBusinessObjectClass() != null) ? businessObjectEntry.getBaseBusinessObjectClass() : businessObjectEntry.getBusinessObjectClass());
+                    uniqueParameterDetailTypeMap.put(parameterDetailType.getCode(), parameterDetailType);
                 }
                 catch (Exception e) {
                     LOG.error("The getDataDictionaryAndSpringComponents method of ParameterUtils encountered an exception while trying to create the detail type for business object class: " + businessObjectEntry.getBusinessObjectClass(), e);
@@ -71,8 +71,8 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
             for (DocumentEntry documentEntry : dataDictionaryService.getDataDictionary().getDocumentEntries().values()) {
                 if (documentEntry instanceof TransactionalDocumentEntry) {
                     try {
-                        ParameterDetailType parameterDetailType = getParameterDetailType((documentEntry.getBaseDocumentClass() != null) ? documentEntry.getBaseDocumentClass() : documentEntry.getDocumentClass());
-                        uniqueParameterDetailTypeMap.put(parameterDetailType.getParameterDetailTypeCode(), parameterDetailType);
+                        ComponentBo parameterDetailType = getParameterDetailType((documentEntry.getBaseDocumentClass() != null) ? documentEntry.getBaseDocumentClass() : documentEntry.getDocumentClass());
+                        uniqueParameterDetailTypeMap.put(parameterDetailType.getCode(), parameterDetailType);
                     }
                     catch (Exception e) {
                         LOG.error("The getNonDatabaseDetailTypes method of ParameterServiceImpl encountered an exception while trying to create the detail type for transactional document class: " +
@@ -86,10 +86,17 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     }
     
     @SuppressWarnings("unchecked")
-	protected ParameterDetailType getParameterDetailType(Class documentOrStepClass) {
-        String detailTypeString = getParameterService().getDetailType(documentOrStepClass);
+	protected ComponentBo getParameterDetailType(Class documentOrStepClass) {
+        String detailTypeString = getKualiModuleService().getComponentCode(documentOrStepClass);
+
         String detailTypeName = getDetailTypeName(documentOrStepClass);
-        ParameterDetailType detailType = new ParameterDetailType(getParameterService().getNamespace(documentOrStepClass), detailTypeString, (detailTypeName == null) ? detailTypeString : detailTypeName);
+
+        String namespace = getKualiModuleService().getNamespaceCode(documentOrStepClass);
+        String name = (detailTypeName == null) ? detailTypeString : detailTypeName;
+        ComponentBo detailType = new ComponentBo();
+        detailType.setNamespaceCode(namespace);
+        detailType.setCode(detailTypeName);
+        detailType.setName(name);
         detailType.refreshNonUpdateableReferences();
         return detailType;
     }
@@ -150,11 +157,11 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 		return kualiConfigurationService;
 	}
     
-    protected ParameterService getParameterService() {
-    	if (parameterService == null) {
-    		parameterService = KNSServiceLocator.getParameterService();
+    protected KualiModuleService getKualiModuleService() {
+    	if (kualiModuleService == null) {
+    		kualiModuleService = KNSServiceLocatorWeb.getKualiModuleService();
     	}
-    	return parameterService;
+    	return kualiModuleService;
     }
 
     protected DataDictionaryService getDataDictionaryService() {

@@ -18,7 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kns.bo.Namespace;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NamespaceService;
 
@@ -30,10 +30,10 @@ import org.kuali.rice.kns.service.NamespaceService;
  */
 public class NamespaceServiceImpl implements NamespaceService {
 
-	public Namespace getNamespace(String namespaceCode) {
+	public NamespaceBo getNamespace(String namespaceCode) {
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("code", namespaceCode);
-		return (Namespace) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(Namespace.class, criteria);
+		return (NamespaceBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(NamespaceBo.class, criteria);
 	}
 
 }

@@ -56,7 +56,7 @@ public class KualiHelpAction extends KualiAction {
     
     private static DataDictionaryService dataDictionaryService;
     private static KualiConfigurationService kualiConfigurationService;
-    private static ParameterService parameterService;
+    private static ClientParameterService parameterService;
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
     private DataDictionaryService getDataDictionaryService() {
@@ -71,9 +71,9 @@ public class KualiHelpAction extends KualiAction {
         }
         return kualiConfigurationService;
     }
-    private ParameterService getParameterService() {
+    private ClientParameterService getParameterService() {
         if ( parameterService == null ) {
-            parameterService = KNSServiceLocator.getParameterService();
+            parameterService = KNSServiceLocator.getClientParameterService();
         }
         return parameterService;
     }
@@ -444,6 +444,6 @@ public class KualiHelpAction extends KualiAction {
     }
 
     private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
-        return getConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_HELP_URL_KEY) + getParameterService().getParameterValue(parameterNamespace, parameterDetailTypeCode, parameterName);
+        return getConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_HELP_URL_KEY) + getParameterService().getParameterValueAsString(parameterNamespace, parameterDetailTypeCode, parameterName);
     }    
 }

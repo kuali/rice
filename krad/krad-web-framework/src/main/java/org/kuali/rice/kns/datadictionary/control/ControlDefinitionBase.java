@@ -116,15 +116,6 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     }
 
     /**
-     *
-     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isApcSelect()
-     */
-
-    public boolean isApcSelect() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isText()
      */
     public boolean isText() {
@@ -356,7 +347,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isMultiselect() && !isApcSelect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()&& !isButton() && !isLink()) {
+        if (!isCheckbox() && !isHidden() && !isRadio() && !isSelect() && !isMultiselect() && !isText() && !isTextarea() && !isCurrency() && !isKualiUser() && !isLookupHidden() && !isLookupReadonly() && !isWorkflowWorkgroup() && !isFile()&& !isButton() && !isLink()) {
             throw new CompletionException("error validating " + rootBusinessObjectClass.getName() + " control: unknown control type in control definition (" + "" + ")");
         }
         if (valuesFinderClass != null) {

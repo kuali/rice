@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.beans.PropertyDescriptor;
-
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
+
+import java.beans.PropertyDescriptor;
 
 
 /**
@@ -287,9 +286,6 @@ public interface DictionaryValidationService {
      * 
      * @param bo - the BusinessObject instance to be tested.
      * @param referenceName - the member name on the bo to be tested for existence and active-state
-     * @param activeIndicatorAttributeName - the name on the class of the referenceName member to indicate active status
-     * @param activeIndicatorReversed - a flag to indicate if the flag means closed or inactive, rather than active
-     * @param activeIndicatorSet - a flag to control whether active state testing happens at all
      * @param attributeToHighlightOnFail - the fieldName to highlight with the error message on a failure
      * @param displayFieldName - the human-readable display name of the failed field, to go in the error message
      * @return true or false as per the criteria above
@@ -339,7 +335,7 @@ public interface DictionaryValidationService {
 	 * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the errorMap with no
 	 * prefix, other than what has already been pushed onto the errorMap.
 	 * 
-	 * @param doc document instance that should be tested
+	 * @param document document instance that should be tested
 	 * @return true if all passed existence tests, false if any failed
 	 * 
 	 */
@@ -354,7 +350,7 @@ public interface DictionaryValidationService {
 	 * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the errorMap with no
 	 * prefix, other than what has already been pushed onto the errorMap.
 	 * 
-	 * @param doc document instance that should be tested
+	 * @param document document instance that should be tested
 	 * @param accountingLine that should be tested
 	 * @param collectionName that should be tested
 	 * @return true if all passed existence tests, false if any failed
@@ -362,33 +358,7 @@ public interface DictionaryValidationService {
 	 */
 	public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document, BusinessObject accountingLine, String collectionName);
     
-    /**
-     * 
-     * This method applies a specific rule against the given BusinessObject as defined in the MaintenanceDocument.xml file.
-     * 
-     * Appropriate errors will also be placed in the GlobalVariables.ErrorMap.
-     * 
-     * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the errorMap with no
-     * prefix, other than what has already been pushed onto the errorMap.
-     * 
-     * @param bo
-     * @param apcRule
-     * @return true if rule passes
-     */
-    public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule);
 
-    /**
-     * This method applies all rules against the given BusinessObject as defined in the MaintenanceDocument.xml file.
-     * 
-     * Appropriate errors will also be placed in the GlobalVariables.ErrorMap.
-     * 
-     * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the errorMap with no
-     * prefix, other than what has already been pushed onto the errorMap.
-     * 
-     * @param bo
-     * @return true if rule passes
-     */
-    public boolean validateApcRules(BusinessObject bo);
     
     public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired);
 }

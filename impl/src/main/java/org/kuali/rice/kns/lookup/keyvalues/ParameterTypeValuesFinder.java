@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.bo.ParameterType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
 
@@ -39,12 +39,12 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
 
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-        List<ParameterType> bos = (List) boService.findAll(ParameterType.class);
+        List<ParameterTypeBo> bos = (List) boService.findAll(ParameterTypeBo.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if ( bos == null ) {
-        	bos = new ArrayList<ParameterType>(0);
+        	bos = new ArrayList<ParameterTypeBo>(0);
         } else {
-        	bos = new ArrayList<ParameterType>( bos );
+        	bos = new ArrayList<ParameterTypeBo>( bos );
         }
 
         // sort using comparator.
@@ -53,8 +53,8 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
         // create a new list (code, descriptive-name)
         List<KeyValue> labels = new ArrayList<KeyValue>( bos.size() );
 
-        for ( ParameterType bo : bos ) {
-            labels.add( new ConcreteKeyValue(bo.getParameterTypeCode(), bo.getParameterTypeName() ) );
+        for ( ParameterTypeBo bo : bos ) {
+            labels.add( new ConcreteKeyValue(bo.getCode(), bo.getName() ) );
         }
 
         return labels;

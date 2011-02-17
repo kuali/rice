@@ -92,17 +92,31 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="60"/>
     </property>
-	<property name="validCharactersConstraint">
+	<!--property name="validCharactersConstraint">
 		<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
-			<property name="value" value="regex:\d{3}"/>
+			<property name="value" value="regex:\W{3}"/>
 		</bean>
-	</property>
-	<property name="prerequisiteConstraints">
+	</property-->
+	<!--property name="prerequisiteConstraints">
 		<list>	
 			<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
 				<property name="attributePath" value="origin"/>
 			</bean>
 		</list>
+	</property-->
+	<property name="caseConstraint">
+		<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+			<property name="whenConstraint">
+				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+					<property name="value" value="USA"/>
+					<property name="constraint">
+						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
+							<property name="attributePath" value="origin"/>
+						</bean>
+					</property>
+				</bean>
+			</property>
+		</bean>
 	</property>
 	<!--property name="mustOccurConstraints">
 		<list>

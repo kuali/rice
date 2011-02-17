@@ -27,3 +27,9 @@
                rows="${control.rows}" cols="${control.cols}" 
                cssClass="${control.styleClass}" cssStyle="${control.style}"
                tabindex="${control.tabIndex}"/>
+               
+<c:if test="${(!empty control.watermarkText)}">
+	<script type="text/javascript">
+  		$("#" + "${control.id}").watermark("${control.watermarkText}");
+	</script>
+</c:if>               

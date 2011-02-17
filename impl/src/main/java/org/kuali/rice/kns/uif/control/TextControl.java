@@ -29,7 +29,8 @@ public class TextControl extends ControlBase {
 	private int size;
 
 	private DatePicker datePicker;
-
+	private String watermarkText;
+	
 	public TextControl() {
 
 	}
@@ -62,4 +63,17 @@ public class TextControl extends ControlBase {
 		this.datePicker = datePicker;
 	}
 
+	/**
+	 * @return the watermarkText
+	 */
+	public String getWatermarkText() {
+		return this.watermarkText;
+	}
+
+	/**
+	 * @param watermarkText the watermarkText to set
+	 */
+	public void setWatermarkText(String watermarkText) {
+		this.watermarkText = watermarkText;
+	}
 }

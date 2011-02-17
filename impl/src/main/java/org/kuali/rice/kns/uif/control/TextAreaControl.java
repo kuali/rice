@@ -26,7 +26,8 @@ public class TextAreaControl extends ControlBase {
 	
 	private int rows;
 	private int cols;
-
+	private String watermarkText;
+	
 	public TextAreaControl() {
 
 	}
@@ -55,6 +56,20 @@ public class TextAreaControl extends ControlBase {
 
 	public void setCols(int cols) {
 		this.cols = cols;
+	}
+	
+	/**
+	 * @return the watermarkText
+	 */
+	public String getWatermarkText() {
+		return this.watermarkText;
+	}
+
+	/**
+	 * @param watermarkText the watermarkText to set
+	 */
+	public void setWatermarkText(String watermarkText) {
+		this.watermarkText = watermarkText;
 	}
 
 }

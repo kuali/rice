@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
-import java.util.Collections;
-
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.ExistenceConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.ExistenceConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
@@ -30,20 +31,20 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class ExistenceConstraintProcessor extends OptionalElementConstraintProcessor<ExistenceConstrained> {
+public class ExistenceConstraintProcessor extends OptionalElementConstraintProcessor<ExistenceConstraint> {
 
 	private static final String CONSTRAINT_NAME = "existence constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ProcessorResult process(DictionaryValidationResult result, Object value, ExistenceConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Object value, ExistenceConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
 		// To accommodate the needs of other processors, the ConstraintProcessor.process() method returns a list of ConstraintValidationResult objects
 		// but since a definition that is existence constrained only provides a single isRequired field, there is effectively a single constraint
 		// being imposed.
-		return new ProcessorResult(processSingleExistenceConstraint(result, value, definition, attributeValueReader));
+		return new ProcessorResult(processSingleExistenceConstraint(result, value, constraint, attributeValueReader));
 	}
 
 	@Override 
@@ -52,19 +53,19 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
 	@Override
-	public Class<ExistenceConstrained> getType() {
-		return ExistenceConstrained.class;
+	public Class<? extends Constraint> getConstraintType() {
+		return ExistenceConstraint.class;
 	}
 
-	protected ConstraintValidationResult processSingleExistenceConstraint(DictionaryValidationResult result, Object value, ExistenceConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	protected ConstraintValidationResult processSingleExistenceConstraint(DictionaryValidationResult result, Object value, ExistenceConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// If it's not set, then there's no constraint
-		if (definition.isRequired() == null)
+		if (constraint.isRequired() == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
 		
-		if (definition.isRequired().booleanValue()) {
+		if (constraint.isRequired().booleanValue()) {
 			// If this attribute is required and the value is null then 
 			if (ValidatorUtils.isNullOrEmpty(value)) 
 				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED);

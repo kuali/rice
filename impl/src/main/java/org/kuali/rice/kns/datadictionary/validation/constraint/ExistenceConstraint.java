@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.capability;
+package org.kuali.rice.kns.datadictionary.validation.constraint;
 
 /**
- * This interface defines methods that must be implemented by classes that want to be processed as 
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface LengthConstrained extends Validatable {
+public interface ExistenceConstraint extends Constraint {
 
-	public Integer getMaxLength();
-	
-	public Integer getMinLength();
+	public Boolean isRequired();
 	
 }

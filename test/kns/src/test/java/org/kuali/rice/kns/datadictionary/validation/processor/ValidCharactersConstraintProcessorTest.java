@@ -27,7 +27,7 @@ import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeVal
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
-import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
@@ -57,6 +57,10 @@ public class ValidCharactersConstraintProcessorTest {
 	private MockAddress washingtonDCAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
 	private MockAddress newYorkNYAddress = new MockAddress("5 Presidential Street", "Suite 800", "New York", "NY", "", "USA", null);
 	
+	private ValidCharactersConstraint street1ValidCharactersConstraint;
+	private ValidCharactersConstraint stateValidCharactersConstraint;
+	
+	
 	@Before
 	public void setUp() throws Exception {
 		
@@ -69,7 +73,7 @@ public class ValidCharactersConstraintProcessorTest {
 		
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 		
-		ValidCharactersConstraint street1ValidCharactersConstraint = new ValidCharactersConstraint();
+		street1ValidCharactersConstraint = new ValidCharactersConstraint();
 		street1ValidCharactersConstraint.setValue("regex:\\d{3}\\s+\\w+\\s+Ave");
 		
 		street1Definition = new AttributeDefinition();
@@ -85,7 +89,7 @@ public class ValidCharactersConstraintProcessorTest {
 		cityDefinition.setName("city");
 		attributes.add(cityDefinition);
 		
-		ValidCharactersConstraint stateValidCharactersConstraint = new ValidCharactersConstraint();
+		stateValidCharactersConstraint = new ValidCharactersConstraint();
 		stateValidCharactersConstraint.setValue("ABCD");
 		
 		stateDefinition = new AttributeDefinition();
@@ -106,7 +110,7 @@ public class ValidCharactersConstraintProcessorTest {
 	
 	@Test
 	public void testValueAllValidChars() {
-		ConstraintValidationResult result = process(washingtonDCAddress, "state", stateDefinition);
+		ConstraintValidationResult result = process(washingtonDCAddress, "state", stateValidCharactersConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
@@ -115,7 +119,7 @@ public class ValidCharactersConstraintProcessorTest {
 	
 	@Test
 	public void testValueNotValidChars() {
-		ConstraintValidationResult result = process(newYorkNYAddress, "state", stateDefinition);
+		ConstraintValidationResult result = process(newYorkNYAddress, "state", stateValidCharactersConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
@@ -124,7 +128,7 @@ public class ValidCharactersConstraintProcessorTest {
 	
 	@Test
 	public void testValueMatchingRegex() {
-		ConstraintValidationResult result = process(washingtonDCAddress, "street1", street1Definition);
+		ConstraintValidationResult result = process(washingtonDCAddress, "street1", street1ValidCharactersConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
@@ -133,7 +137,7 @@ public class ValidCharactersConstraintProcessorTest {
 	
 	@Test
 	public void testValueNotMatchingRegex() {
-		ConstraintValidationResult result = process(newYorkNYAddress, "street1", street1Definition);
+		ConstraintValidationResult result = process(newYorkNYAddress, "street1", street1ValidCharactersConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
@@ -142,19 +146,19 @@ public class ValidCharactersConstraintProcessorTest {
 	
 	@Test
 	public void testValueNotConstrained() {
-		ConstraintValidationResult result = process(washingtonDCAddress, "street2", street2Definition);
+		ConstraintValidationResult result = process(washingtonDCAddress, "street2", null);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.NOCONSTRAINT, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
 	
-	private ConstraintValidationResult process(Object object, String attributeName, ValidCharactersConstrained definition) {
+	private ConstraintValidationResult process(Object object, String attributeName, ValidCharactersConstraint constraint) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
 		
 		Object value = attributeValueReader.getValue();
-		return processor.process(dictionaryValidationResult, value, definition, attributeValueReader).getFirstConstraintValidationResult();
+		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader).getFirstConstraintValidationResult();
 	}
 
 }

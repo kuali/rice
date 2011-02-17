@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.capability;
+package org.kuali.rice.kns.datadictionary.validation.constraint;
+
+import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 
 /**
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface RangeConstrained extends Validatable {
+public interface DataTypeConstraint extends Constraint {
 
-	public String getExclusiveMin();
-	
-	public String getInclusiveMax();
+	public DataType getDataType();
 	
 }

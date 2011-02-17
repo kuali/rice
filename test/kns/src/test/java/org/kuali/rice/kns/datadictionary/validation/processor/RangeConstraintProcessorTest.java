@@ -28,7 +28,7 @@ import org.kuali.rice.kns.datadictionary.validation.MockAddress;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
-import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
@@ -161,7 +161,7 @@ public class RangeConstraintProcessorTest {
 	}
 	
 	
-	private ConstraintValidationResult process(Object object, String attributeName, RangeConstrained definition) {
+	private ConstraintValidationResult process(Object object, String attributeName, RangeConstrainable definition) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
 		

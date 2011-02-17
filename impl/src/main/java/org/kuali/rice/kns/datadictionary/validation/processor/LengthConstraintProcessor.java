@@ -20,7 +20,9 @@ import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
@@ -30,20 +32,20 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class LengthConstraintProcessor extends MandatoryElementConstraintProcessor<LengthConstrained> {
+public class LengthConstraintProcessor extends MandatoryElementConstraintProcessor<LengthConstraint> {
 
 	private static final String CONSTRAINT_NAME = "length constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ProcessorResult process(DictionaryValidationResult result, Object value, LengthConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Object value, LengthConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
 		// To accommodate the needs of other processors, the ConstraintProcessor.process() method returns a list of ConstraintValidationResult objects
 		// but since a definition that is length constrained only constrains a single field, there is effectively always a single constraint
 		// being imposed
-		return new ProcessorResult(processSingleLengthConstraint(result, value, definition, attributeValueReader));
+		return new ProcessorResult(processSingleLengthConstraint(result, value, constraint, attributeValueReader));
 	}
 
 	@Override 
@@ -52,19 +54,19 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
 	@Override
-	public Class<LengthConstrained> getType() {
-		return LengthConstrained.class;
+	public Class<? extends Constraint> getConstraintType() {
+		return LengthConstraint.class;
 	}
 	
-	protected ConstraintValidationResult processSingleLengthConstraint(DictionaryValidationResult result, Object value, LengthConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	protected ConstraintValidationResult processSingleLengthConstraint(DictionaryValidationResult result, Object value, LengthConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
 		if (ValidatorUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 
-		DataType dataType = definition.getDataType();
+		DataType dataType = constraint.getDataType();
 		Object typedValue = value;
 
 		if (dataType != null) {
@@ -73,18 +75,18 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 
 		// The only thing that can have a length constraint currently is a string. 
 		if (typedValue instanceof String) {
-			return validateLength(result, (String)typedValue, definition, attributeValueReader);
+			return validateLength(result, (String)typedValue, constraint, attributeValueReader);
 		} 
 		
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
 	
 	
-	protected ConstraintValidationResult validateLength(DictionaryValidationResult result, String value, LengthConstrained attribute, AttributeValueReader attributeValueReader) throws IllegalArgumentException {
+	protected ConstraintValidationResult validateLength(DictionaryValidationResult result, String value, LengthConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {
 		Integer valueLength = Integer.valueOf(value.length());
 		
-		Integer maxLength = attribute.getMaxLength();
-		Integer minLength = attribute.getMinLength();
+		Integer maxLength = constraint.getMaxLength();
+		Integer minLength = constraint.getMinLength();
 		
 		Result lessThanMax = ValidatorUtils.isLessThanOrEqual(valueLength, maxLength);
 		Result greaterThanMin = ValidatorUtils.isGreaterThanOrEqual(valueLength, minLength);

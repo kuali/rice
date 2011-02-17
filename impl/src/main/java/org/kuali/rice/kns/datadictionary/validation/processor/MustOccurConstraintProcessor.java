@@ -16,15 +16,15 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
-import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
@@ -36,48 +36,36 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProcessor<MustOccurConstrained> {
+public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProcessor<MustOccurConstraint> {
 
 	private static final String CONSTRAINT_NAME = "must occur constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Constrainable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result,
-			Object value, MustOccurConstrained definition, AttributeValueReader attributeValueReader)
+			Object value, MustOccurConstraint constraint, AttributeValueReader attributeValueReader)
 			throws AttributeValidationException {
 
 		if (ValidatorUtils.isNullOrEmpty(value))
 			return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
 		
-		List<ConstraintValidationResult> constraintValidationResults = new ArrayList<ConstraintValidationResult>();
-		
-		List<MustOccurConstraint> mustOccurConstraints = definition.getMustOccurConstraints();
-		if (null != mustOccurConstraints && mustOccurConstraints.size() > 0) {
-			for (MustOccurConstraint occursConstraint : mustOccurConstraints) {
-				ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
+
+		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
 				
-				if (!processMustOccurConstraint(constraintValidationResult, occursConstraint, definition, attributeValueReader)) {
-					// If the processing of this constraint was not successful then it's an error
-					constraintValidationResult.setError(RiceKeyConstants.ERROR_OCCURS);
-				} 
-				
-				// Store the label key (if one exists) for this constraint on the constraint validation result so it can be shown later
-				constraintValidationResult.setConstraintLabelKey(occursConstraint.getLabelKey());
-				// Add it to the DictionaryValidationResult object
-				result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
-				// And also add it to the list of 
-				constraintValidationResults.add(constraintValidationResult);
-			}
-		}
-		
-		// If there were results, then return them
-		if (constraintValidationResults.size() > 0)
-			return new ProcessorResult(constraintValidationResults);
-		
-		// Otherwise, it's a case of not really having a constraint
-		return new ProcessorResult(result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME));
+		if (!processMustOccurConstraint(constraintValidationResult, constraint, attributeValueReader)) {
+			// If the processing of this constraint was not successful then it's an error
+			constraintValidationResult.setError(RiceKeyConstants.ERROR_OCCURS);
+		} 
+
+		// Store the label key (if one exists) for this constraint on the constraint validation result so it can be shown later
+		constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+		// Add it to the DictionaryValidationResult object
+		result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
+
+		return new ProcessorResult(constraintValidationResult);
+
 	}
 	
 	@Override 
@@ -86,14 +74,14 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
 	@Override
-	public Class<MustOccurConstrained> getType() {
-		return MustOccurConstrained.class;
+	public Class<? extends Constraint> getConstraintType() {
+		return MustOccurConstraint.class;
 	}
 	
-    protected boolean processMustOccurConstraint(ConstraintValidationResult topLevelResult, MustOccurConstraint constraint, Validatable definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+    protected boolean processMustOccurConstraint(ConstraintValidationResult topLevelResult, MustOccurConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
         boolean isSuccessful = false;
         int trueCount = 0;
@@ -115,7 +103,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 	        	// then pass it in to the recursive call so that prerequisite constraints can be placed under it
 	        	ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
 	        	topLevelResult.addChild(constraintValidationResult);
-	            trueCount += (processMustOccurConstraint(constraintValidationResult, mustOccurConstraint, definition, attributeValueReader)) ? 1 : 0;
+	            trueCount += (processMustOccurConstraint(constraintValidationResult, mustOccurConstraint, attributeValueReader)) ? 1 : 0;
 	        }
         }
 
@@ -123,10 +111,6 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
         int maximum = constraint.getMax() != null ? constraint.getMax().intValue() : 0;
         
         isSuccessful = (trueCount >= minimum && trueCount <= maximum) ? true : false;
-
-//        if (!isSuccessful) {
-//        	result.setError(RiceKeyConstants.ERROR_OCCURS);
-//        }
 
         return isSuccessful;
     }

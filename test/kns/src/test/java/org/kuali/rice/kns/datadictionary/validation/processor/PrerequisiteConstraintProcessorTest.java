@@ -27,7 +27,7 @@ import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeVal
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
-import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
@@ -57,6 +57,8 @@ public class PrerequisiteConstraintProcessorTest {
 	private MockAddress noStreet1CityStateAddress = new MockAddress("", "Suite 800", "", "", "12340", "USA", null);
 	private MockAddress noStreet2Address = new MockAddress("893 Presidential Ave", null, "Washington", "DC", "12340", "USA", null);
 	
+	private PrerequisiteConstraint street1Constraint, cityConstraint, stateConstraint;
+	
 	@Before
 	public void setUp() throws Exception {
 		
@@ -67,13 +69,13 @@ public class PrerequisiteConstraintProcessorTest {
 		
 		addressEntry = new BusinessObjectEntry();
 		
-		PrerequisiteConstraint street1Constraint = new PrerequisiteConstraint();
+		street1Constraint = new PrerequisiteConstraint();
 		street1Constraint.setAttributePath("street1");
 			
-		PrerequisiteConstraint cityConstraint = new PrerequisiteConstraint();
+		cityConstraint = new PrerequisiteConstraint();
 		cityConstraint.setAttributePath("city");
 		
-		PrerequisiteConstraint stateConstraint = new PrerequisiteConstraint();
+		stateConstraint = new PrerequisiteConstraint();
 		stateConstraint.setAttributePath("state");
 		
 		List<PrerequisiteConstraint> prerequisiteConstraints = new ArrayList<PrerequisiteConstraint>();
@@ -114,7 +116,7 @@ public class PrerequisiteConstraintProcessorTest {
 	
 	@Test
 	public void testAllPrerequisitesSatisfiedSuccess() {
-		ConstraintValidationResult result = process(street1PostalCodeCityStateAddress, "street2", street2Definition);
+		ConstraintValidationResult result = process(street1PostalCodeCityStateAddress, "street2", street1Constraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
@@ -123,7 +125,7 @@ public class PrerequisiteConstraintProcessorTest {
 	
 	@Test
 	public void testOnePrerequisiteMissingFailure() {
-		ConstraintValidationResult result = process(noStreet1PostalCodeAddress, "street2", street2Definition);
+		ConstraintValidationResult result = process(noStreet1PostalCodeAddress, "street2", street1Constraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
@@ -132,16 +134,21 @@ public class PrerequisiteConstraintProcessorTest {
 	
 	@Test
 	public void testAllPrerequisitesMissingFailure() {
-		ConstraintValidationResult result = process(noStreet1CityStateAddress, "street2", street2Definition);
+		ConstraintValidationResult result = process(noStreet1CityStateAddress, "street2", street1Constraint);
+		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
+		result = process(noStreet1CityStateAddress, "street2", cityConstraint);
+		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
+		result = process(noStreet1CityStateAddress, "street2", stateConstraint);
+		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
+		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(3, dictionaryValidationResult.getNumberOfErrors());
-		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new PrerequisiteConstraintProcessor().getName(), result.getConstraintName());
 	}
 	
 	@Test
 	public void testAttributeEmptySkipped() {
-		ConstraintValidationResult result = process(noStreet2Address, "street2", street2Definition);
+		ConstraintValidationResult result = process(noStreet2Address, "street2", street1Constraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.INAPPLICABLE, result.getStatus());
@@ -150,19 +157,19 @@ public class PrerequisiteConstraintProcessorTest {
 	
 	@Test
 	public void testAttributeWithoutConstraintNoConstraint() {
-		ConstraintValidationResult result = process(noStreet2Address, "street1", street1Definition);
+		ConstraintValidationResult result = process(noStreet2Address, "street1", null);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.NOCONSTRAINT, result.getStatus());
 		Assert.assertEquals(new PrerequisiteConstraintProcessor().getName(), result.getConstraintName());
 	}
 	
-	private ConstraintValidationResult process(Object object, String attributeName, PrerequisiteConstrained definition) {
+	private ConstraintValidationResult process(Object object, String attributeName, PrerequisiteConstraint constraint) {
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
 		
 		Object value = attributeValueReader.getValue();
-		return processor.process(dictionaryValidationResult, value, definition, attributeValueReader).getFirstConstraintValidationResult();
+		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader).getFirstConstraintValidationResult();
 	}
 	
 }

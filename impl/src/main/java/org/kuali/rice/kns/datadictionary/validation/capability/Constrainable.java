@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.constraint;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
+
 
 /**
- * This is just a marker interface for constraints. It's necessary for the generics to work in the {@link ConstraintProcessor}. 
+ * This interface defines methods that must be implemented by classes that you want to participate in dictionary validation as for example 'attribute-level' object structure
+ * definitions. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface Constraint {
-	// Empty
+public interface Constrainable {
+	
+	public String getLabel();
+	
+	public String getName();
+	
 }

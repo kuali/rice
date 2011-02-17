@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.constraint.LookupConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.RangeConstraint;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface LookupConstrained extends Validatable {
+public interface RangeConstrainable extends Constrainable, RangeConstraint {
 
-	// FIXME: rename to getLookupConstraint()
-	public LookupConstraint getLookupDefinition();
+	// Empty
 	
 }

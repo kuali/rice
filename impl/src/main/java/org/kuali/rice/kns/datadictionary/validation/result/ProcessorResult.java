@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.result;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 
 /**
  * 
@@ -27,7 +29,8 @@ import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
  */
 public class ProcessorResult {
 
-	private final transient Validatable definition;
+	private final transient List<Constraint> constraints;
+	private final transient Constrainable definition;
 	private final transient AttributeValueReader attributeValueReader;
 	
 	private final List<ConstraintValidationResult> constraintValidationResults;
@@ -36,20 +39,22 @@ public class ProcessorResult {
 		this(constraintValidationResult, null, null);
 	}
 	
-	public ProcessorResult(ConstraintValidationResult constraintValidationResult, Validatable definition, AttributeValueReader attributeValueReader) {
+	public ProcessorResult(ConstraintValidationResult constraintValidationResult, Constrainable definition, AttributeValueReader attributeValueReader, Constraint... constraints) {
 		this.constraintValidationResults = Collections.singletonList(constraintValidationResult);
 		this.definition = definition;
 		this.attributeValueReader = attributeValueReader;
+		this.constraints = Arrays.asList(constraints);
 	}
 	
 	public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults) {
 		this(constraintValidationResults, null, null);
 	}
 	
-	public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults, Validatable definition, AttributeValueReader attributeValueReader) {
+	public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults, Constrainable definition, AttributeValueReader attributeValueReader, Constraint... constraints) {
 		this.constraintValidationResults = constraintValidationResults;
 		this.definition = definition;
 		this.attributeValueReader = attributeValueReader;
+		this.constraints = Arrays.asList(constraints);
 	}
 	
 	public boolean isSingleConstraintResult() {
@@ -78,7 +83,7 @@ public class ProcessorResult {
 	/**
 	 * @return the definition
 	 */
-	public Validatable getDefinition() {
+	public Constrainable getDefinition() {
 		return this.definition;
 	}
 
@@ -87,6 +92,13 @@ public class ProcessorResult {
 	 */
 	public AttributeValueReader getAttributeValueReader() {
 		return this.attributeValueReader;
+	}
+
+	/**
+	 * @return the constraints
+	 */
+	public List<Constraint> getConstraints() {
+		return this.constraints;
 	}
 		
 }

@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -50,14 +51,26 @@ import org.kuali.rice.kns.datadictionary.validation.MaintenanceDocumentAttribute
 import org.kuali.rice.kns.datadictionary.validation.SingleAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
-import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.RangeConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider;
+import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider;
 import org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.CollectionConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.LengthConstraintProcessor;
@@ -124,35 +137,41 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String)
      */
     @Override
-	public void validate(Object object, String entryName) {
-    	validate(object, entryName, true);
+	public DictionaryValidationResult validate(Object object, String entryName) {
+    	return validate(object, entryName, true);
     }
     
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String, boolean)
      */
     @Override
-	public void validate(Object object, String entryName, boolean validateRequired) {
-    	validate(object, entryName, null, validateRequired);
+	public DictionaryValidationResult validate(Object object, String entryName, boolean validateRequired) {
+    	return validate(object, entryName, (String)null, validateRequired);
     }
     
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String, java.lang.String)
      */
     @Override
-	public void validate(Object object, String entryName, String attributeName) {
-    	validate(object, entryName, attributeName, true);
+	public DictionaryValidationResult validate(Object object, String entryName, String attributeName) {
+    	return validate(object, entryName, attributeName, true);
     }
     
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String, java.lang.String, boolean)
      */
     @Override
-	public void validate(Object object, String entryName, String attributeName, boolean doOptionalProcessing) {
+	public DictionaryValidationResult validate(Object object, String entryName, String attributeName, boolean doOptionalProcessing) {
     	DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
     	AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
     	attributeValueReader.setAttributeName(attributeName);
-    	validate(attributeValueReader, doOptionalProcessing);
+    	return validate(attributeValueReader, doOptionalProcessing);
+    }
+    
+    @Override
+    public DictionaryValidationResult validate(Object object, String entryName, DataDictionaryEntry entry, boolean doOptionalProcessing) {
+    	AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object,entryName, entry);
+    	return validate(attributeValueReader, doOptionalProcessing);
     }
     
     public void validate(String entryName, String attributeName, Object attributeValue) {
@@ -1137,6 +1156,32 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /*
      * 1.1 validation members
      */
+    
+    @SuppressWarnings("rawtypes")
+	private static final Class[] DEFAULT_ELEMENT_CONSTRAINT_TYPES = 
+    {
+    	CaseConstraint.class,
+    	ExistenceConstraint.class,
+    	DataTypeConstraint.class,
+    	RangeConstraint.class,
+    	LengthConstraint.class,
+    	ValidCharactersConstraint.class,
+    	PrerequisiteConstraint.class,
+    	MustOccurConstraint.class
+    };
+    
+    @SuppressWarnings("rawtypes")
+	private static final Class[] DEFAULT_COLLECTION_CONSTRAINT_TYPES = 
+    {
+    	CollectionSizeConstraint.class
+    };
+    
+    @SuppressWarnings("rawtypes")
+	private static final ConstraintProvider[] DEFAULT_CONSTRAINT_PROVIDERS = 
+    {
+    	new AttributeDefinitionConstraintProvider()
+    };
+
 	@SuppressWarnings("rawtypes")
 	private static final List<ConstraintProcessor> DEFAULT_ELEMENT_PROCESSORS = 
 		Arrays.asList((ConstraintProcessor)new CaseConstraintProcessor(), 
@@ -1152,6 +1197,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	private static final List<CollectionConstraintProcessor> DEFAULT_COLLECTION_PROCESSORS = 
 		Arrays.asList((CollectionConstraintProcessor)new CollectionSizeConstraintProcessor());
 	
+	
+    private List<ConstraintProvider> constraintProviders = Arrays.asList(DEFAULT_CONSTRAINT_PROVIDERS);
+	
+    @SuppressWarnings("rawtypes")
+    private List<Class> elementConstraintTypes = Arrays.asList(DEFAULT_ELEMENT_CONSTRAINT_TYPES);
+    
+    @SuppressWarnings("rawtypes")
+    private List<Class> collectionConstraintTypes = Arrays.asList(DEFAULT_COLLECTION_CONSTRAINT_TYPES);
     
 	@SuppressWarnings("rawtypes")
 	private List<ConstraintProcessor> elementProcessors = DEFAULT_ELEMENT_PROCESSORS;
@@ -1167,7 +1220,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/*
 	 * This is the top-level validation method for all attribute value readers
 	 */
-	protected DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing) {
+	public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing) {
     	Stack<String> elementStack = new Stack<String>();
     	
     	DictionaryValidationResult result = new DictionaryValidationResult();
@@ -1188,7 +1241,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	return result;
     }
 	
-	private void processObject(DictionaryValidationResult result, Validatable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
+	private void processObject(DictionaryValidationResult result, Constrainable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
     	if (isComplex) {
     		// In the case of complex objects, need to build a new attribute value reader for this object and its dictionary entry
         	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, value, passedAttributeValueReader, elementStack, isComplex);
@@ -1197,7 +1250,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		processElementConstraints(result, value, definition, passedAttributeValueReader, elementStack, checkIfRequired);
     }
     
-    private void processCollection(DictionaryValidationResult result, Validatable definition, Collection<?> collection, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
+    private void processCollection(DictionaryValidationResult result, Constrainable definition, Collection<?> collection, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
         int i=0;
         for (Object element : collection) {
         	elementStack.push(Integer.toString(i));
@@ -1215,20 +1268,27 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         processCollectionConstraints(result, collection, definition, passedAttributeValueReader, elementStack, checkIfRequired);
     }
 	
-    private void processElementConstraints(DictionaryValidationResult result, Object value, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-    	processConstraints(result, elementProcessors, value, definition, attributeValueReader, elementStack, doOptionalProcessing);
+    private void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
+    	processConstraints(result, elementProcessors, elementConstraintTypes, value, definition, attributeValueReader, elementStack, doOptionalProcessing);
     }
     
-    private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-    	processConstraints(result, collectionProcessors, collection, definition, attributeValueReader, elementStack, doOptionalProcessing);
-    }    
+    private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
+    	processConstraints(result, collectionProcessors, collectionConstraintTypes, collection, definition, attributeValueReader, elementStack, doOptionalProcessing);
+    }
     
     @SuppressWarnings("rawtypes")
-	private void processConstraints(DictionaryValidationResult result, List<? extends ConstraintProcessor> constraintProcessors, Object object, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
+	private void processConstraints(DictionaryValidationResult result, List<? extends ConstraintProcessor> constraintProcessors, List<Class> constraintTypes, Object object, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
 		if (constraintProcessors != null) {
-			Validatable selectedDefinition = definition;
+			Constrainable selectedDefinition = definition;
 			AttributeValueReader selectedAttributeValueReader = attributeValueReader;
-			for (ConstraintProcessor<Object, Validatable> processor : constraintProcessors) {
+			
+			
+			// First - take the constrainable definition and get its constraints
+			
+			Queue<Constraint> constraintQueue = new LinkedList<Constraint>();
+			
+			// Using a for loop to iterate through constraint processors because ordering is important 
+			for (ConstraintProcessor<Object, Constraint> processor : constraintProcessors) {
 				
 				// Let the calling method opt out of any optional processing
 				if (!doOptionalProcessing && processor.isOptional()) {
@@ -1236,31 +1296,66 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 					continue;
 				}
 				
-				// Only process if the type of the definition is one that the processor handles
-				Class<? extends Validatable> type = processor.getType();
-				if (!type.isInstance(selectedDefinition)) {
+				Class<? extends Constraint> constraintType = processor.getConstraintType();
+				
+				// Add all of the constraints for this constraint type for all providers to the queue
+				for (ConstraintProvider constraintProvider : constraintProviders) {	
+					if (constraintProvider.isSupported(selectedDefinition)) {
+						Collection<Constraint> constraintList = constraintProvider.getConstraints(selectedDefinition, constraintType);
+						if (constraintList != null)
+							constraintQueue.addAll(constraintList);
+					}
+				}
+				
+				// If there are no constraints provided for this definition, then just skip it
+				if (constraintQueue.isEmpty()) {
 					result.addSkipped(attributeValueReader, processor.getName());
 					continue;
 				}
-
-				ProcessorResult processorResult = processor.process(result, object, selectedDefinition, selectedAttributeValueReader);
 				
-				// Change the selected definition to whatever was returned from the processor
-				if (processorResult.isDefinitionProvided())
-					selectedDefinition = processorResult.getDefinition();
-				// Change the selected attribute value reader to whatever was returned from the processor
-				if (processorResult.isAttributeValueReaderProvided())
-					selectedAttributeValueReader = processorResult.getAttributeValueReader();
+				Collection<Constraint> additionalConstraints = new LinkedList<Constraint>();
+				
+				// This loop is functionally identical to a for loop, but it has the advantage of letting us keep the queue around
+				// and populate it with any new constraints contributed by the processor
+				while (!constraintQueue.isEmpty()) {
+					
+					Constraint constraint = constraintQueue.poll();
+					
+					// If this constraint is not one that this process handles, then skip and add to the queue for the next processor;
+					// obviously this would be redundant (we're only looking at constraints that this processor can process) except that
+					// the previous processor might have stuck a new constraint (or constraints) on the queue
+					if (!constraintType.isInstance(constraint)) {
+						result.addSkipped(attributeValueReader, processor.getName());
+						additionalConstraints.add(constraint);
+						continue;
+					}
+					
+					ProcessorResult processorResult = processor.process(result, object, constraint, selectedAttributeValueReader);
+					
+					Collection<Constraint> processorResultContraints = processorResult.getConstraints();
+					if (processorResultContraints != null && processorResultContraints.size() > 0)
+						additionalConstraints.addAll(processorResultContraints);
+					
+					// Change the selected definition to whatever was returned from the processor
+					if (processorResult.isDefinitionProvided())
+						selectedDefinition = processorResult.getDefinition();
+					// Change the selected attribute value reader to whatever was returned from the processor
+					if (processorResult.isAttributeValueReaderProvided())
+						selectedAttributeValueReader = processorResult.getAttributeValueReader();
+				}
+				
+				// After iterating through all the constraints for this processor, add additional constraints for following processors
+				constraintQueue.addAll(additionalConstraints);
 			}
 		}
     }
     
     
-	private AttributeValueReader resolveAttributeValueReader(Validatable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean isComplex) {
-    	if (isComplex && definition instanceof HierarchicallyConstrained) {
+	private AttributeValueReader resolveAttributeValueReader(Constrainable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean isComplex) {
+    	if (isComplex && definition instanceof HierarchicallyConstrainable) {
     		
     		// The idea here is that a 'HierarchicallyConstrained' definition provides the business object name 
-        	String childEntryName = ((HierarchicallyConstrained)definition).getChildEntryName();
+        	String childEntryName = ((HierarchicallyConstrainable)definition).getChildEntryName();
 
     		DataDictionaryEntry childEntry = childEntryName != null ? getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
 
@@ -1277,6 +1372,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 	
     private void setFieldError(String entryName, String attributeName, String key, String ... args) {
+    	if (getDataDictionaryService() == null)
+    		return;
+    	
     	String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
     	// FIXME: There's got to be a cleaner way of doing this.
     	List<String> list = new LinkedList<String>();
@@ -1288,16 +1386,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 	
 	private void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
-		Validatable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
+		Constrainable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
         validateAttribute(result, definition, attributeValueReader, elementStack, checkIfRequired);
     }
     
-    private void validateAttribute(DictionaryValidationResult result, Validatable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+    private void validateAttribute(DictionaryValidationResult result, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
     	
     	if (definition == null)
     		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + attributeValueReader.getAttributeName() + "\" on entry \"" + attributeValueReader.getEntryName() + "\" because no attribute definition can be found.");
     	
-    	DataType dataType = definition.getDataType();
+    	DataType dataType = definition instanceof DataTypeConstraint ? ((DataTypeConstraint)definition).getDataType() : null;
     	boolean isComplex = dataType != null && dataType.equals(DataType.COMPLEX);
     	
     	Object value = attributeValueReader.getValue();
@@ -1332,14 +1430,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		elementStack.push(attributePath);
 
 
-    	List<Validatable> definitions = attributeValueReader.getDefinitions();
+    	List<Constrainable> definitions = attributeValueReader.getDefinitions();
 
     	// Exit if the attribute value reader has no child definitions
     	if (null == definitions) 
     		return;
 
     	// Otherwise, iterate through those definitions and 
-    	for (Validatable definition : definitions) {
+    	for (Constrainable definition : definitions) {
     		if (definition == null)
     			continue;
 

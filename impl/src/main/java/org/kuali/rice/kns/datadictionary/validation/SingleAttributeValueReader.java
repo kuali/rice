@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint;
 
 
 /**
@@ -47,13 +46,13 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	}
 	
 	@Override
-	public Validatable getDefinition(String attributeName) {
+	public Constrainable getDefinition(String attributeName) {
 		// Only return the definition if you have it, and if it's the definition for the passed attribute name
 		return definition != null && definition.getName() != null && definition.getName().equals(attributeName) ? definition : null;
 	}
 	
 	@Override
-	public List<Validatable> getDefinitions() {
+	public List<Constrainable> getDefinitions() {
 		return null;
 	}
 
@@ -71,11 +70,14 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	}
 
 	@Override
-	public Class<?> getType(String attributeName) {
-		Validatable attributeDefinition = getDefinition(attributeName);
+	public Class<?> getType(String selectedAttributeName) {
+		Constrainable attributeDefinition = getDefinition(selectedAttributeName);
 		
-		if (attributeDefinition != null && attributeDefinition.getDataType() != null)
-			return attributeDefinition.getDataType().getType();
+		if (attributeDefinition != null && attributeDefinition instanceof DataTypeConstraint) {
+			DataTypeConstraint dataTypeConstraint = (DataTypeConstraint)attributeDefinition;
+			if (dataTypeConstraint.getDataType() != null)
+				return dataTypeConstraint.getDataType().getType();
+		}
 		
 		// Assuming we can reliably guess
 		return value != null ? value.getClass() : null;
@@ -88,7 +90,7 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	
 	@Override
 	public <X> X getValue(String attributeName) throws AttributeValidationException {
-		Validatable attributeDefinition = getDefinition(attributeName);
+		Constrainable attributeDefinition = getDefinition(attributeName);
 		
 		if (attributeDefinition != null)
 			return (X) value;

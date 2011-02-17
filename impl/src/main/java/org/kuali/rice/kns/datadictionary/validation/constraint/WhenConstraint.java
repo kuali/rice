@@ -6,13 +6,11 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WhenConstraint implements Constraint {
 	protected List<Object> values;
 	protected String valuePath;
-	protected Validatable constraint;
+	protected Constraint constraint;
 
 	public List<Object> getValues() {
 		return values;
@@ -35,11 +33,11 @@ public class WhenConstraint implements Constraint {
 		this.valuePath = valuePath;
 	}
 
-	public Validatable getConstraint() {
+	public Constraint getConstraint() {
 		return constraint;
 	}
 
-	public void setConstraint(Validatable constraint) {
+	public void setConstraint(Constraint constraint) {
 		this.constraint = constraint;
 	}
 }

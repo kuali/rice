@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.constraint;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
 
 /**
- * This is just a marker interface for constraints. It's necessary for the generics to work in the {@link ConstraintProcessor}. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface Constraint {
+public interface CollectionSizeConstrainable extends Constrainable, CollectionSizeConstraint {
+
 	// Empty
+	
 }

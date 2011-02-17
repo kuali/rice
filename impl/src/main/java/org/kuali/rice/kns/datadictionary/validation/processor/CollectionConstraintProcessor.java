@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.constraint;
+package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import java.util.Collection;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 
 /**
  * This is a marker interface for 'collection constraint processors', that is - a constraint processor that tests collections
@@ -26,6 +26,6 @@ import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface CollectionConstraintProcessor<T extends Collection<?>, D extends Validatable> extends ConstraintProcessor<T, D> {
+public interface CollectionConstraintProcessor<T extends Collection<?>, C extends Constraint> extends ConstraintProcessor<T, C> {
 	// Empty
 }

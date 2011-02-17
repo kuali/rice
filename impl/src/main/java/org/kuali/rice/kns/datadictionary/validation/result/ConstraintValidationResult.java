@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
 
 /**
  * This is a composite class for all the different members that need to be returned when a {@link ConstraintProcessor}

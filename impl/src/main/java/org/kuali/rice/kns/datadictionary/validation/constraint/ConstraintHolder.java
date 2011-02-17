@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConstraintHolder implements Validatable {
+public class ConstraintHolder implements Constrainable {
 	public static final String UNBOUNDED = "unbounded";
 	public static final String SINGLE = "1";
 	

@@ -15,13 +15,15 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
+import org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint;
+
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface ExistenceConstrained extends Validatable {
+public interface ExistenceConstrainable extends Constrainable, ExistenceConstraint {
 
-	public Boolean isRequired();
+	// Empty
 	
 }

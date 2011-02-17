@@ -15,12 +15,17 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
+import java.util.List;
+
+import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
+
 /**
+ * An attribute or field is dependency constrained when it 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface HierarchicallyConstrained extends Validatable {
-
-	public String getChildEntryName();
+public interface PrerequisiteConstrainable extends Constrainable {
+	
+	public List<PrerequisiteConstraint> getPrerequisiteConstraints();
 	
 }

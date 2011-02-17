@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.constraint;
-
-import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
+package org.kuali.rice.kns.datadictionary.validation.capability;
 
 /**
- * This is just a marker interface for constraints. It's necessary for the generics to work in the {@link ConstraintProcessor}. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface Constraint {
-	// Empty
+public interface HierarchicallyConstrainable extends Constrainable {
+
+	public String getChildEntryName();
+	
 }

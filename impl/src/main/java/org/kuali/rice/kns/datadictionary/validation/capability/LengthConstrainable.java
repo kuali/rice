@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint;
 
 /**
+ * This interface defines methods that must be implemented by classes that want to be processed as 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface ValidCharactersConstrained extends Validatable {
+public interface LengthConstrainable extends Constrainable, LengthConstraint {
 
-	// FIXME: rename to getValidCharactersConstraint()
-	public ValidCharactersConstraint getValidCharactersConstraint();
+	// Empty
 	
 }

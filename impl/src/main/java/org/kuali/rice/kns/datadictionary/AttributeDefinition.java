@@ -26,17 +26,17 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
-import org.kuali.rice.kns.datadictionary.validation.capability.CaseConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.CaseConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.ExistenceConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.ExistenceConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.Formatable;
-import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrained;
-import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.LookupConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
@@ -52,7 +52,7 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  * 
  */
-public class AttributeDefinition extends DataDictionaryDefinitionBase implements CaseConstrained, PrerequisiteConstrained, ExistenceConstrained, Formatable, CollectionSizeConstrained, HierarchicallyConstrained, MustOccurConstrained, LengthConstrained, RangeConstrained, ValidCharactersConstrained {
+public class AttributeDefinition extends DataDictionaryDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, ExistenceConstrainable, Formatable, CollectionSizeConstrainable, HierarchicallyConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
 	private static final long serialVersionUID = -2490613377818442742L;
 
 	protected Boolean forceUppercase = Boolean.FALSE;

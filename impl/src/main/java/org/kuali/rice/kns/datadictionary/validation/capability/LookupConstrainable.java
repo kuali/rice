@@ -15,17 +15,15 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import java.util.List;
-
-import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.LookupConstraint;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface MustOccurConstrained extends Validatable {
+public interface LookupConstrainable extends Constrainable {
 
-	// FIXME: rename to getMustOccursConstraints()
-	public List<MustOccurConstraint> getMustOccurConstraints();
+	// FIXME: rename to getLookupConstraint()
+	public LookupConstraint getLookupDefinition();
 	
 }

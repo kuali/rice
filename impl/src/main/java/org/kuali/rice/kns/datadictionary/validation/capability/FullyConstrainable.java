@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.capability;
 
-import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface CaseConstrained extends Validatable {
+public interface FullyConstrainable extends CaseConstrainable, ExistenceConstrainable, CollectionSizeConstrainable, 
+	HierarchicallyConstrainable, MustOccurConstrainable, LengthConstrainable, 
+	RangeConstrainable, ValidCharactersConstrainable {
 
-	public CaseConstraint getCaseConstraint();
-	
+	// Empty
 }

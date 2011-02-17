@@ -25,9 +25,9 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.Formatable;
-import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrained;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
@@ -44,7 +44,7 @@ import org.kuali.rice.kns.web.format.DateFormatter;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class ValidCharactersConstraintProcessor extends MandatoryElementConstraintProcessor<ValidCharactersConstrained> {
+public class ValidCharactersConstraintProcessor extends MandatoryElementConstraintProcessor<ValidCharactersConstraint> {
 
 	public static final String VALIDATE_METHOD = "validate";
 	
@@ -56,12 +56,12 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 	private DataDictionaryService dataDictionaryService;
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ProcessorResult process(DictionaryValidationResult result, Object value, ValidCharactersConstrained definition, AttributeValueReader attributeValueReader)	throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Object value, ValidCharactersConstraint constraint, AttributeValueReader attributeValueReader)	throws AttributeValidationException {
 		
-    	return new ProcessorResult(processSingleValidCharacterConstraint(result, value, definition, attributeValueReader));
+    	return new ProcessorResult(processSingleValidCharacterConstraint(result, value, constraint, attributeValueReader));
 	}
 
 	@Override 
@@ -70,19 +70,17 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
 	@Override
-	public Class<ValidCharactersConstrained> getType() {
-		return ValidCharactersConstrained.class;
+	public Class<? extends Constraint> getConstraintType() {
+		return ValidCharactersConstraint.class;
 	}
 	
 	
-	protected ConstraintValidationResult processSingleValidCharacterConstraint(DictionaryValidationResult result, Object value, ValidCharactersConstrained definition, AttributeValueReader attributeValueReader)	throws AttributeValidationException {
+	protected ConstraintValidationResult processSingleValidCharacterConstraint(DictionaryValidationResult result, Object value, ValidCharactersConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		
-		ValidCharactersConstraint validCharsConstraint = definition.getValidCharactersConstraint();
-
-		if (validCharsConstraint == null) 
+		if (constraint == null) 
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
 		
 		if (ValidatorUtils.isNullOrEmpty(value))
@@ -90,11 +88,12 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 		
 		// This mix-in interface is here to allow some definitions to avoid the extra processing that goes on in KNS
 		// to decipher and validate things like date range strings -- something that looks like "02/02/2002..03/03/2003"
+		Constrainable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
     	if (definition instanceof Formatable) {
-    		return doProcessFormattableValidCharConstraint(result, validCharsConstraint, (Formatable)definition, value, attributeValueReader);
+    		return doProcessFormattableValidCharConstraint(result, constraint, (Formatable)definition, value, attributeValueReader);
     	} 
     	
-    	ConstraintValidationResult constraintValidationResult = doProcessValidCharConstraint(validCharsConstraint, value);
+    	ConstraintValidationResult constraintValidationResult = doProcessValidCharConstraint(constraint, value);
     	if (constraintValidationResult == null)
     		return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
     	

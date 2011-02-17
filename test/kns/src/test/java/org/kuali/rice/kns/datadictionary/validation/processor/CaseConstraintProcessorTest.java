@@ -15,11 +15,83 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.MockAddress;
+import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
+
+
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CaseConstraintProcessorTest {
+public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest {
+
+	private MockAddress londonAddress = new MockAddress("812 Maiden Lane", "", "London", "", "", "UK", null);
+	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
+	private MockAddress noStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
+	
+	
+	@Test
+	public void testCaseConstraintNotInvoked() {
+		ProcessorResult processorResult = processRaw(londonAddress, "country", countryIsUSACaseConstraint);
+		ConstraintValidationResult result = processorResult.getFirstConstraintValidationResult();
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
+		Assert.assertEquals(new CaseConstraintProcessor().getName(), result.getConstraintName());
+		
+		List<Constraint> constraints = processorResult.getConstraints();
+		
+		Assert.assertNotNull(constraints);
+		Assert.assertEquals(1, constraints.size());
+		
+		Constraint constraint = constraints.get(0);
+		
+		Assert.assertTrue(constraint instanceof PrerequisiteConstraint);
+		
+		PrerequisiteConstraint prerequisiteConstraint = (PrerequisiteConstraint)constraint;
+		
+		Assert.assertEquals("state", prerequisiteConstraint.getAttributePath());
+	}
+	
+	@Test
+	public void testCaseConstraintInvoked() {
+		ProcessorResult processorResult = processRaw(noStateAddress, "country", countryIsUSACaseConstraint);
+		
+		List<Constraint> constraints = processorResult.getConstraints();
+		
+		Assert.assertNotNull(constraints);
+		Assert.assertEquals(1, constraints.size());
+		
+		Constraint constraint = constraints.get(0);
+		
+		Assert.assertTrue(constraint instanceof PrerequisiteConstraint);
+		
+		PrerequisiteConstraint prerequisiteConstraint = (PrerequisiteConstraint)constraint;
+		
+		Assert.assertEquals("state", prerequisiteConstraint.getAttributePath());
+		
+		ConstraintValidationResult result = processorResult.getFirstConstraintValidationResult();
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
+		Assert.assertEquals(new CaseConstraintProcessor().getName(), result.getConstraintName());
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.BaseConstraintProcessorTest#newProcessor()
+	 */
+	@Override
+	protected CaseConstraintProcessor newProcessor() {
+		return new CaseConstraintProcessor();
+	}
 
 }

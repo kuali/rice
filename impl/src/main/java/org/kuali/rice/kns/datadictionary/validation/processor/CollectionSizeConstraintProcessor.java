@@ -21,8 +21,10 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrained;
-import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
@@ -33,20 +35,20 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class CollectionSizeConstraintProcessor implements CollectionConstraintProcessor<Collection<?>, CollectionSizeConstrained> {
+public class CollectionSizeConstraintProcessor implements CollectionConstraintProcessor<Collection<?>, CollectionSizeConstraint> {
 
 	private static final String CONSTRAINT_NAME = "collection size constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ProcessorResult process(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		
 		// To accommodate the needs of other processors, the ConstraintProcessor.process() method returns a list of ConstraintValidationResult objects
 		// but since a definition that is collection size constrained only provides a single max and minimum, there is effectively a single constraint
 		// being imposed.
-        return new ProcessorResult(processSingleCollectionSizeConstraint(result, collection, definition, attributeValueReader));
+        return new ProcessorResult(processSingleCollectionSizeConstraint(result, collection, constraint, attributeValueReader));
 	}
 
 	@Override 
@@ -55,26 +57,26 @@ public class CollectionSizeConstraintProcessor implements CollectionConstraintPr
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
 	@Override
-	public Class<CollectionSizeConstrained> getType() {
-		return CollectionSizeConstrained.class;
+	public Class<? extends Constraint> getConstraintType() {
+		return CollectionSizeConstraint.class;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#isOptional()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#isOptional()
 	 */
 	@Override
 	public boolean isOptional() {
 		return false;
 	}
 
-	protected ConstraintValidationResult processSingleCollectionSizeConstraint(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	protected ConstraintValidationResult processSingleCollectionSizeConstraint(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		Integer sizeOfCollection = Integer.valueOf(collection.size());
 		
-		Integer maxOccurances = definition.getMaximumNumberOfElements();
-		Integer minOccurances = definition.getMinimumNumberOfElements();
+		Integer maxOccurances = constraint.getMaximumNumberOfElements();
+		Integer minOccurances = constraint.getMinimumNumberOfElements();
 		
 		Result lessThanMax = ValidatorUtils.isLessThanOrEqual(sizeOfCollection, maxOccurances);
 		Result greaterThanMin = ValidatorUtils.isGreaterThanOrEqual(sizeOfCollection, minOccurances);

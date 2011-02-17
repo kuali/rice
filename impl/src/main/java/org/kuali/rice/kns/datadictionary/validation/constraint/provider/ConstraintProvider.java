@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.capability;
+package org.kuali.rice.kns.datadictionary.validation.constraint.provider;
 
 import java.util.List;
 
-import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 
 /**
- * An attribute or field is dependency constrained when it 
+ * A constraint provider is a class that is able to extract a list of constraints from
+ * a constrainable definition for an attribute in the data dictionary. 
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface PrerequisiteConstrained extends Validatable {
+public interface ConstraintProvider<T extends Constrainable> {
+
+	public List<Constraint> getConstraints(T definition, Class<? extends Constraint> constraintType);
 	
-	public List<PrerequisiteConstraint> getPrerequisiteConstraints();
+	public boolean isSupported(Constrainable definition);
 	
 }

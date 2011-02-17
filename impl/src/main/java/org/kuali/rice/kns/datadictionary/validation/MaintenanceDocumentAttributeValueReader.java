@@ -32,7 +32,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -45,13 +45,13 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 
 	private final static Logger LOG = Logger.getLogger(MaintenanceDocumentAttributeValueReader.class);
 	
-	private List<Validatable> attributeDefinitions;
+	private List<Constrainable> attributeDefinitions;
 	private Map<String, AttributeDefinition> attributeDefinitionMap;
 	
 	public MaintenanceDocumentAttributeValueReader(Object object, String entryName, MaintenanceDocumentEntry entry, PersistenceStructureService persistenceStructureService) {
 		super(object, entryName, entry);
 		
-		this.attributeDefinitions = new LinkedList<Validatable>();
+		this.attributeDefinitions = new LinkedList<Constrainable>();
 		this.attributeDefinitionMap = new HashMap<String, AttributeDefinition>();
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
 			List<? extends MaintainableItemDefinition> itemDefinitions = sectionDefinition.getMaintainableItems();
@@ -101,7 +101,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getDefinition(java.lang.String)
 	 */
 	@Override
-	public Validatable getDefinition(String attributeName) {
+	public Constrainable getDefinition(String attributeName) {
 		return attributeDefinitionMap != null ? attributeDefinitionMap.get(attributeName) : null;
 	}
 
@@ -109,7 +109,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getDefinitions()
 	 */
 	@Override
-	public List<Validatable> getDefinitions() {
+	public List<Constrainable> getDefinitions() {
 		return attributeDefinitions;
 	}
 

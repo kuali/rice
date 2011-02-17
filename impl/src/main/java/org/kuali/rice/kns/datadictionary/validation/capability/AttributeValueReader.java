@@ -23,9 +23,9 @@ public interface AttributeValueReader {
 
 	public String getAttributeName();
 	
-	public Validatable getDefinition(String attributeName);
+	public Constrainable getDefinition(String attributeName);
 	
-	public List<Validatable> getDefinitions();
+	public List<Constrainable> getDefinitions();
 	
 	public String getEntryName();
 	

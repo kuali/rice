@@ -20,20 +20,28 @@ import java.util.Collection;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public abstract class BasePrerequisiteConstraintProcessor<D extends Validatable> extends MandatoryElementConstraintProcessor<D> {
+public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> extends MandatoryElementConstraintProcessor<C> {
 	
 	protected ConstraintValidationResult processPrerequisiteConstraint(PrerequisiteConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
+		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(getName());
+		
+		if (constraint == null) {
+			constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);
+			return constraintValidationResult;
+		}
+			
+		
     	// TODO: Does this code need to be able to look at more than just the other immediate members of the object? 
         String attributeName = constraint.getAttributePath();
         
@@ -53,7 +61,7 @@ public abstract class BasePrerequisiteConstraintProcessor<D extends Validatable>
         	isSuccessful = (null != value) ? true : false;
         }
 
-        ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(getName());
+        
         
         if (!isSuccessful) {        	
         	String label = attributeValueReader.getLabel(attributeName); 

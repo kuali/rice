@@ -19,7 +19,9 @@ import java.beans.PropertyDescriptor;
 
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 
@@ -130,10 +132,11 @@ public interface DictionaryValidationService {
      * 
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
+     * @return TODO
      * 
      * @since 1.1
      */
-    public void validate(Object object, String entryName);
+    public DictionaryValidationResult validate(Object object, String entryName);
     
     
     /**
@@ -143,10 +146,11 @@ public interface DictionaryValidationService {
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
      * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
+     * @return TODO
      * 
      * @since 1.1
      */
-    public void validate(Object object, String entryName, boolean doOptionalProcessing);
+    public DictionaryValidationResult validate(Object object, String entryName, boolean doOptionalProcessing);
     
     
     /**
@@ -156,10 +160,11 @@ public interface DictionaryValidationService {
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
      * @param attributeName - the name of the attribute (field) on the object that should be validated
+     * @return TODO
      * 
      * @since 1.1
      */
-    public void validate(Object object, String entryName, String attributeName);
+    public DictionaryValidationResult validate(Object object, String entryName, String attributeName);
     
    
     /**
@@ -170,11 +175,24 @@ public interface DictionaryValidationService {
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
      * @param attributeName - the name of the attribute (field) on the object that should be validated
      * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
+     * @return TODO
      * 
      * @since 1.1
      */
-    public void validate(Object object, String entryName, String attributeName, boolean doOptionalProcessing);
+    public DictionaryValidationResult validate(Object object, String entryName, String attributeName, boolean doOptionalProcessing);
    
+    
+    /**
+     * This method ...
+     * 
+     * @param object
+     * @param entryName
+     * @param entry
+     * @param doOptionalProcessing
+     * @return
+     */
+    public DictionaryValidationResult validate(Object object, String entryName, DataDictionaryEntry entry, boolean doOptionalProcessing);
+    
     
     /**
      * Validates the business object against the dictionary, uses reflection to get any child business objects, and recursively

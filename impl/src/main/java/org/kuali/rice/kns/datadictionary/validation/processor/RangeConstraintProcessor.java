@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Date;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
@@ -26,7 +25,9 @@ import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
 import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrained;
+import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.RangeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
@@ -34,25 +35,25 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This class enforces range constraints - that is, constraints that keep a number or a date within a specific range. An attribute 
- * that is {@link RangeConstrained} will expose a minimum and maximum value, and these will be validated against the passed
+ * that is {@link RangeConstrainable} will expose a minimum and maximum value, and these will be validated against the passed
  * value in the code below. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class RangeConstraintProcessor extends MandatoryElementConstraintProcessor<RangeConstrained> {
+public class RangeConstraintProcessor extends MandatoryElementConstraintProcessor<RangeConstraint> {
 
 	private static final String CONSTRAINT_NAME = "range constraint";
 	
 	private DateParser parser;
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
 	 */
 	@Override
-	public ProcessorResult process(DictionaryValidationResult result, Object value, RangeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	public ProcessorResult process(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		
 		// Since any given definition that is range constrained only expressed a single min and max, it means that there is only a single constraint to impose
-		return new ProcessorResult(processSingleRangeConstraint(result, value, definition, attributeValueReader));
+		return new ProcessorResult(processSingleRangeConstraint(result, value, constraint, attributeValueReader));
 	}
 	
 	@Override 
@@ -61,22 +62,21 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#getType()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#getConstraintType()
 	 */
 	@Override
-	public Class<RangeConstrained> getType() {
-		return RangeConstrained.class;
+	public Class<? extends Constraint> getConstraintType() {
+		return RangeConstraint.class;
 	}
-
 	
-	protected ConstraintValidationResult processSingleRangeConstraint(DictionaryValidationResult result, Object value, RangeConstrained definition, AttributeValueReader attributeValueReader) throws AttributeValidationException {
+	protected ConstraintValidationResult processSingleRangeConstraint(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
 		if (ValidatorUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 		
 	
 		// This is necessary because sometimes we'll be getting a string, for example, that represents a date. 
-		DataType dataType = definition.getDataType();
+		DataType dataType = constraint.getDataType();
 		Object typedValue = value;
 
 		if (dataType != null) {
@@ -85,20 +85,20 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 
 		// TODO: decide if there is any reason why the following would be insufficient - i.e. if something numeric could still be cast to String at this point
 		if (typedValue instanceof Date)
-			return validateRange(result, (Date)typedValue, definition, attributeValueReader);
+			return validateRange(result, (Date)typedValue, constraint, attributeValueReader);
 		else if (typedValue instanceof Number)
-			return validateRange(result, (Number)typedValue, definition, attributeValueReader);
+			return validateRange(result, (Number)typedValue, constraint, attributeValueReader);
 		
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
 	
-	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Date value, RangeConstrained attribute, AttributeValueReader attributeValueReader) throws IllegalArgumentException {	
+	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Date value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {	
 		DateParser dateParser = getDateParser();
 		
 		Date date = value != null ? ValidatorUtils.getDate(value, dateParser) : null;
 
-        String inclusiveMaxText = attribute.getInclusiveMax();
-        String exclusiveMinText = attribute.getExclusiveMin();
+        String inclusiveMaxText = constraint.getInclusiveMax();
+        String exclusiveMinText = constraint.getExclusiveMin();
 
         Date inclusiveMax = inclusiveMaxText != null ? ValidatorUtils.getDate(inclusiveMaxText, dateParser) : null;
         Date exclusiveMin = exclusiveMinText != null ? ValidatorUtils.getDate(exclusiveMinText, dateParser) : null;
@@ -106,14 +106,14 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 		return isInRange(result, date, inclusiveMax, inclusiveMaxText, exclusiveMin, exclusiveMinText, attributeValueReader);
 	}
 	
-	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Number value, RangeConstrained attribute, AttributeValueReader attributeValueReader) throws IllegalArgumentException {
+	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Number value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {
 
 		// TODO: JLR - need a code review of the conversions below to make sure this is the best way to ensure accuracy across all numerics
         // This will throw NumberFormatException if the value is 'NaN' or infinity... probably shouldn't be a NFE but something more intelligible at a higher level
         BigDecimal number = value != null ? new BigDecimal(value.toString()) : null;
 
-        String inclusiveMaxText = attribute.getInclusiveMax();
-        String exclusiveMinText = attribute.getExclusiveMin();
+        String inclusiveMaxText = constraint.getInclusiveMax();
+        String exclusiveMinText = constraint.getExclusiveMin();
         
         BigDecimal inclusiveMax = inclusiveMaxText != null ? new BigDecimal(inclusiveMaxText) : null;
         BigDecimal exclusiveMin = exclusiveMinText != null ? new BigDecimal(exclusiveMinText) : null;

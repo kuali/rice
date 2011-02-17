@@ -30,7 +30,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 
 /**
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
@@ -68,15 +68,15 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 	
 	@Override
-	public Validatable getDefinition(String attributeName) {
+	public Constrainable getDefinition(String attributeName) {
 		return entry != null ? entry.getAttributeDefinition(attributeName) : null;
 	}
 	
 	@Override
-	public List<Validatable> getDefinitions() {
+	public List<Constrainable> getDefinitions() {
 		if (entry instanceof DataDictionaryEntryBase) {
 			DataDictionaryEntryBase entryBase = (DataDictionaryEntryBase)entry;
-			List<Validatable> definitions = new ArrayList<Validatable>();
+			List<Constrainable> definitions = new ArrayList<Constrainable>();
 			List<AttributeDefinition> attributeDefinitions = entryBase.getAttributes();
 			definitions.addAll(attributeDefinitions);
 			return definitions;

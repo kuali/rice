@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.constraint;
+package org.kuali.rice.kns.datadictionary.validation.processor;
 
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 
@@ -33,13 +34,13 @@ import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public interface ConstraintProcessor<T, D extends Validatable> {
+public interface ConstraintProcessor<T, C extends Constraint> {
 
-	public ProcessorResult process(DictionaryValidationResult result, T value, D definition, AttributeValueReader attributeValueReader) throws AttributeValidationException;
+	public ProcessorResult process(DictionaryValidationResult result, T value, C constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException;
 	
 	public String getName();
 	
-	public Class<D> getType();
+	public Class<? extends Constraint> getConstraintType();
 	
 	/**
 	 * This method return true if the processing of this constraint is something that can be opted out of by some pieces of code.
@@ -48,5 +49,5 @@ public interface ConstraintProcessor<T, D extends Validatable> {
 	 * @return true if this processor can be turned off by some pieces of code, false otherwise
 	 */
 	public boolean isOptional();
-		
+	
 }

@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.Validatable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 
 /**
  * This abstract class can be extended by constraint processor classes that
@@ -24,10 +23,10 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcess
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public abstract class MandatoryElementConstraintProcessor<D extends Validatable> implements ConstraintProcessor<Object, D> {
+public abstract class MandatoryElementConstraintProcessor<C extends Constraint> implements ConstraintProcessor<Object, C> {
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.ConstraintProcessor#isOptional()
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#isOptional()
 	 */
 	@Override
 	public boolean isOptional() {

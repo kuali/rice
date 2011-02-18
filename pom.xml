@@ -604,7 +604,8 @@ limitations under the License.
 		<module>edl</module>
         <module>krad</module>
         <module>client-contrib</module>
-    </modules>
+        <module>shareddata</module>
+  </modules>
 
 	<repositories>
 		<repository>

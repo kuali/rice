@@ -120,7 +120,7 @@ public class DictionaryValidationResult {
 	
 	public Iterator<ConstraintValidationResult> iterator() {
 		
-		if (iterator == null) {
+//		if (iterator == null || iterator.hasNext() == false) {
 			iterator = new Iterator<ConstraintValidationResult>() {
 	
 				private Iterator<EntryValidationResult> entryIterator;
@@ -173,7 +173,7 @@ public class DictionaryValidationResult {
 				}
 				
 			};
-		}
+//		}
 		
 		return iterator;
 	}

@@ -17,6 +17,7 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Assert;
@@ -25,13 +26,14 @@ import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
 import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint;
+import org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 
@@ -55,9 +57,10 @@ public class DictionaryValidationServiceImplTest {
 	protected MustOccurConstraint topLevelConstraint;
 	
 	
-	private MockAddress londonAddress = new MockAddress("812 Maiden Lane", "", "London", "", "", "UK", null);
-	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
-	private MockAddress noStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
+	private MockAddress validLondonAddress = new MockAddress("812 Maiden Lane", "", "London", "", "SE1 0P3", "UK", null);
+	private MockAddress validUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
+	private MockAddress noStateUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
+	private MockAddress noZipNoCityUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "DC", "", "USA", null);
 	
 	
 	@Before
@@ -95,6 +98,8 @@ public class DictionaryValidationServiceImplTest {
 		topLevelConstraint.setMustOccurConstraints(Collections.singletonList(cityStateConstraint));
 		
 		mustOccurConstraints.add(topLevelConstraint);
+		
+		addressEntry.setMustOccurConstraints(mustOccurConstraints);
 		
 		List<WhenConstraint> whenConstraints = new ArrayList<WhenConstraint>();
 		
@@ -141,9 +146,9 @@ public class DictionaryValidationServiceImplTest {
 		
 		postalCodeDefinition = new AttributeDefinition();
 		postalCodeDefinition.setName("postalCode");
-		postalCodeDefinition.setExclusiveMin("1000");
-		postalCodeDefinition.setInclusiveMax("99999");
-		postalCodeDefinition.setDataType(DataType.LONG);
+//		postalCodeDefinition.setExclusiveMin("1000");
+//		postalCodeDefinition.setInclusiveMax("99999");
+//		postalCodeDefinition.setDataType(DataType.STRING);
 		attributes.add(postalCodeDefinition);
 		
 		countryDefinition = new AttributeDefinition();
@@ -158,7 +163,7 @@ public class DictionaryValidationServiceImplTest {
 	
 	@Test
 	public void testValidNonUSAddress() {
-		DictionaryValidationResult dictionaryValidationResult = service.validate(londonAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		DictionaryValidationResult dictionaryValidationResult = service.validate(validLondonAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
@@ -166,7 +171,7 @@ public class DictionaryValidationServiceImplTest {
 	
 	@Test
 	public void testValidUSAddress() {
-		DictionaryValidationResult dictionaryValidationResult = service.validate(noPostalCodeAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		DictionaryValidationResult dictionaryValidationResult = service.validate(validUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
@@ -174,10 +179,50 @@ public class DictionaryValidationServiceImplTest {
 	
 	@Test
 	public void testInvalidUSAddress() {
-		DictionaryValidationResult dictionaryValidationResult = service.validate(noStateAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		DictionaryValidationResult dictionaryValidationResult = service.validate(noStateUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+	}
+	
+	@Test
+	public void testNoStateNoZipUSAddress() {
+		DictionaryValidationResult dictionaryValidationResult = service.validate(noZipNoCityUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
+		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+		
+		if (dictionaryValidationResult.getNumberOfErrors() > 0) {
+	    	for (Iterator<ConstraintValidationResult> iterator = dictionaryValidationResult.iterator() ; iterator.hasNext() ;) {
+	    		ConstraintValidationResult constraintValidationResult = iterator.next();
+	    		if (constraintValidationResult.getStatus().getLevel() >= ErrorLevel.WARN.getLevel()) {
+	    			// The top level error should be an occurs error
+	    			Assert.assertEquals(ErrorLevel.ERROR, constraintValidationResult.getStatus());
+	    			Assert.assertEquals("error.occurs", constraintValidationResult.getErrorKey());
+	    			// It should have two children
+	    			List<ConstraintValidationResult> children = constraintValidationResult.getChildren();
+	    			Assert.assertNotNull(children);
+	    			Assert.assertEquals(2, children.size());
+	    			// The first child should have it's own child 
+	    			ConstraintValidationResult child1 = children.get(0);
+	    			ConstraintValidationResult child2 = children.get(1);
+	    			
+	    			Assert.assertEquals("error.requiresField", child1.getErrorKey());
+	    			Assert.assertArrayEquals(new String[] { "postalCode" }, child1.getErrorParameters());
+	    			
+	    			List<ConstraintValidationResult> grandchildren = child2.getChildren();
+	    			Assert.assertNotNull(grandchildren);
+	    			Assert.assertEquals(2, grandchildren.size());
+	    			ConstraintValidationResult grandchild1 = grandchildren.get(0);
+	    			Assert.assertEquals(ErrorLevel.ERROR, grandchild1.getStatus());
+	    			Assert.assertEquals("error.requiresField", grandchild1.getErrorKey());
+	    			Assert.assertArrayEquals(new String[] { "city" }, grandchild1.getErrorParameters());
+	    			ConstraintValidationResult grandchild2 = grandchildren.get(1);
+	    			Assert.assertEquals(ErrorLevel.OK, grandchild2.getStatus());
+	    			Assert.assertEquals(new MustOccurConstraintProcessor().getName(), grandchild2.getConstraintName());
+	    		}
+	    	}
+    	}
 	}
 	
 }

@@ -39,7 +39,7 @@ public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTes
 	
 	@Test
 	public void testCityStateNoPostalSuccess() {
-		ConstraintValidationResult result = process(noPostalCodeAddress, "country", topLevelConstraint);
+		ConstraintValidationResult result = process(noPostalCodeAddress, null, topLevelConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
@@ -48,7 +48,7 @@ public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTes
 	
 	@Test
 	public void testCityNoStateNoPostalFailure() {
-		ConstraintValidationResult result = process(noStateOrPostalCodeAddress, "country", topLevelConstraint);
+		ConstraintValidationResult result = process(noStateOrPostalCodeAddress, null, topLevelConstraint);
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new MustOccurConstraintProcessor().getName(), result.getConstraintName());
@@ -56,7 +56,7 @@ public class MustOccurConstraintProcessorTest extends BaseConstraintProcessorTes
 	
 	@Test
 	public void testPostalNoCityStateSuccess() {
-		ConstraintValidationResult result = process(noCityStateAddress, "country", topLevelConstraint);
+		ConstraintValidationResult result = process(noCityStateAddress, null, topLevelConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new MustOccurConstraintProcessor().getName(), result.getConstraintName());

@@ -15,16 +15,22 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import java.util.List;
+
+import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
+
 /**
  * This is a generic dictionary entry for an object that does not have to implement BusinessObject. It provides support
  * for general objects as required by Kuali Student. 
  * 
- * @author James Renfro 
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class ObjectDictionaryEntry extends DataDictionaryEntryBase{
+public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements MustOccurConstrainable {
 
 	private String name;
 	private Class<?> objectClass;
+	private List<MustOccurConstraint> mustOccurConstraints;
 	
 	/**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getJstlKey()
@@ -77,6 +83,21 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase{
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the mustOccurConstraints
+	 */
+	public List<MustOccurConstraint> getMustOccurConstraints() {
+		return this.mustOccurConstraints;
+	}
+
+	/**
+	 * @param mustOccurConstraints the mustOccurConstraints to set
+	 */
+	public void setMustOccurConstraints(
+			List<MustOccurConstraint> mustOccurConstraints) {
+		this.mustOccurConstraints = mustOccurConstraints;
 	}
 
 }

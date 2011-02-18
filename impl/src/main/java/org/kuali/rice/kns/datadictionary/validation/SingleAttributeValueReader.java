@@ -55,6 +55,14 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	public List<Constrainable> getDefinitions() {
 		return null;
 	}
+	
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getEntry()
+	 */
+	@Override
+	public Constrainable getEntry() {
+		return null;
+	}
 
 	@Override
 	public String getLabel(String attributeName) {
@@ -62,6 +70,11 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 			return definition.getLabel();
 		
 		return attributeName;
+	}
+	
+	@Override
+	public Object getObject() {
+		return null;
 	}
 	
 	@Override

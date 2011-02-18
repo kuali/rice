@@ -86,9 +86,22 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 	
 	@Override
+	public Constrainable getEntry() {
+		if (entry instanceof Constrainable)
+			return (Constrainable) entry;
+			
+		return null;
+	}
+	
+	@Override
 	public String getLabel(String attributeName) {
 		AttributeDefinition attributeDefinition = entry != null ? entry.getAttributeDefinition(attributeName) : null;
 		return attributeDefinition != null ? attributeDefinition.getLabel()  : attributeName;
+	}
+
+	@Override
+	public Object getObject() {
+		return this.object;
 	}
 	
 	@Override
@@ -173,6 +186,5 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		}
 		return properties;
 	}
-
 
 }

@@ -29,6 +29,24 @@
     <property name="allowsNoteFYI" value="true"/>
     <property name="usePessimisticLocking" value="true"/>
     
+    <property name="mustOccurConstraints">
+		<list>
+			<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+				<property name="min" value="1"/>
+				<property name="max" value="2"/>
+				<property name="mustOccurConstraints">
+					<list>
+						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+							<property name="min" value="2"/>
+							<property name="max" value="2"/>
+							
+						<bean>
+					</list>
+				</property>
+			</bean>
+		</list>
+	</property>
+    
     <property name="attributes">
       <list>
         <ref bean="TravelRequest-traveler"/>

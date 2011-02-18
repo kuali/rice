@@ -16,10 +16,8 @@
 package org.kuali.rice.kns.datadictionary.validation.constraint.provider;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
@@ -37,7 +35,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersCo
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeDefinitionConstraintProvider implements ConstraintProvider<AttributeDefinition> {
+public class AttributeDefinitionConstraintProvider extends BaseConstraintProvider<AttributeDefinition> {
 
 	private ConstraintResolver<AttributeDefinition> CASE_CONSTRAINT_RESOLVER = new ConstraintResolver<AttributeDefinition>() {
 		@Override
@@ -83,49 +81,6 @@ public class AttributeDefinitionConstraintProvider implements ConstraintProvider
 		}
 	};
 	
-	private Map<Class<? extends Constraint>, ConstraintResolver<AttributeDefinition>> resolverMap;
-	
-	public void init() {
-		resolverMap = new HashMap<Class<? extends Constraint>, ConstraintResolver<AttributeDefinition>>();
-		resolverMap.put(CaseConstraint.class, CASE_CONSTRAINT_RESOLVER);
-		resolverMap.put(ExistenceConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
-		resolverMap.put(DataTypeConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
-		resolverMap.put(LengthConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
-		resolverMap.put(ValidCharactersConstraint.class, VALID_CHARACTERS_CONSTRAINT_RESOLVER);
-		resolverMap.put(PrerequisiteConstraint.class, PREREQUISITE_CONSTRAINT_RESOLVER);
-		resolverMap.put(MustOccurConstraint.class, MUST_OCCUR_CONSTRAINT_RESOLVER);
-		resolverMap.put(CollectionSizeConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
-	}
-	
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider#getConstraints(org.kuali.rice.kns.datadictionary.validation.capability.Constrainable, java.lang.Class)
-	 */
-	@Override
-	public List<Constraint> getConstraints(AttributeDefinition definition, Class<? extends Constraint> constraintType) {
-		if (resolverMap == null)
-			init();
-		
-		ConstraintResolver<AttributeDefinition> resolver = resolverMap.get(constraintType);
-
-		if (resolver == null)
-			return null;
-		
-		return resolver.resolve(definition);
-	}
-	
-	public Set<Class<? extends Constraint>> getConstraintTypes() {
-		if (resolverMap == null)
-			init();
-		
-		return resolverMap.keySet();
-	}
-	
-	public interface ConstraintResolver<T extends Constrainable> {
-		
-		public <C extends Constraint> List<C> resolve(T definition);
-		
-	}
-
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider#isSupported(org.kuali.rice.kns.datadictionary.validation.capability.Constrainable)
 	 */
@@ -136,6 +91,21 @@ public class AttributeDefinitionConstraintProvider implements ConstraintProvider
 			return true;
 		
 		return false;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.provider.BaseConstraintProvider#initializeResolverMap(java.util.Map)
+	 */
+	@Override
+	protected void initializeResolverMap(Map<Class<? extends Constraint>, ConstraintResolver<AttributeDefinition>> resolverMap) {
+		resolverMap.put(CaseConstraint.class, CASE_CONSTRAINT_RESOLVER);
+		resolverMap.put(ExistenceConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
+		resolverMap.put(DataTypeConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
+		resolverMap.put(LengthConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
+		resolverMap.put(ValidCharactersConstraint.class, VALID_CHARACTERS_CONSTRAINT_RESOLVER);
+		resolverMap.put(PrerequisiteConstraint.class, PREREQUISITE_CONSTRAINT_RESOLVER);
+		resolverMap.put(MustOccurConstraint.class, MUST_OCCUR_CONSTRAINT_RESOLVER);
+		resolverMap.put(CollectionSizeConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
 	}
 
 }

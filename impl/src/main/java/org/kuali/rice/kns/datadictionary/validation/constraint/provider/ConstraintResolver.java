@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.capability;
+package org.kuali.rice.kns.datadictionary.validation.constraint.provider;
 
+import java.util.List;
 
+import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 
-/**
- * This interface defines methods that must be implemented by classes that you want to participate in dictionary validation as for example 'attribute-level' object structure
- * definitions. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org) 
- */
-public interface Constrainable {
+public interface ConstraintResolver<T extends Constrainable> {
 	
-	public String getName();
+	public <C extends Constraint> List<C> resolve(T definition);
 	
 }

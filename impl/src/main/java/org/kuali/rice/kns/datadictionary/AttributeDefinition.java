@@ -126,7 +126,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		return this.forceUppercase;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
@@ -141,7 +140,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.name = name;
 	}
 
-	@Override
 	public String getLabel() {
 		return label;
 	}

@@ -67,6 +67,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.RangeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider;
 import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider;
+import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider;
 import org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
@@ -1179,7 +1180,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     @SuppressWarnings("rawtypes")
 	private static final ConstraintProvider[] DEFAULT_CONSTRAINT_PROVIDERS = 
     {
-    	new AttributeDefinitionConstraintProvider()
+    	new AttributeDefinitionConstraintProvider(),
+    	new ObjectDictionaryEntryConstraintProvider()
     };
 
 	@SuppressWarnings("rawtypes")
@@ -1395,24 +1397,27 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	if (definition == null)
     		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + attributeValueReader.getAttributeName() + "\" on entry \"" + attributeValueReader.getEntryName() + "\" because no attribute definition can be found.");
     	
+    	Object value = attributeValueReader.getValue();
+    	
+    	validateConstrainableObject(result, value, definition, attributeValueReader, elementStack, checkIfRequired);
+    	
+    }
+    
+    private void validateConstrainableObject(DictionaryValidationResult result, Object value, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
     	DataType dataType = definition instanceof DataTypeConstraint ? ((DataTypeConstraint)definition).getDataType() : null;
     	boolean isComplex = dataType != null && dataType.equals(DataType.COMPLEX);
-    	
-    	Object value = attributeValueReader.getValue();
     	
     	if (ValidatorUtils.isNullOrEmpty(value)) { 
     		processElementConstraints(result, value, definition, attributeValueReader, elementStack, checkIfRequired);
     	}
     	
-		if (value instanceof Collection) {
+    	if (value instanceof Collection) {
 			// Obviously, it's not the child entry's attribute definition being passed here, but that's okay, if isComplex=true, definition is ignored
 			processCollection(result, definition, (Collection<?>)value, attributeValueReader, elementStack, checkIfRequired, isComplex);
         } else {
         	processObject(result, definition, value, attributeValueReader, elementStack, checkIfRequired, isComplex);
         }
-		
     }
-    
 
     private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) throws AttributeValidationException {
 
@@ -1429,6 +1434,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	if (isObjectAnAttribute) 
     		elementStack.push(attributePath);
 
+    	// If the entry itself is constrainable then the attribute value reader will return it here and we'll need to check if it has any constraints
+    	Constrainable entry = attributeValueReader.getEntry();
+    	
+    	if (entry != null)
+    		validateConstrainableObject(result, attributeValueReader.getObject(), entry, attributeValueReader, elementStack, doOptionalProcessing);
 
     	List<Constrainable> definitions = attributeValueReader.getDefinitions();
 

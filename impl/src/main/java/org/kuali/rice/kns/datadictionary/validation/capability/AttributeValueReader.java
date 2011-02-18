@@ -27,9 +27,13 @@ public interface AttributeValueReader {
 	
 	public List<Constrainable> getDefinitions();
 	
+	public Constrainable getEntry();
+	
 	public String getEntryName();
 	
 	public String getLabel(String attributeName);
+	
+	public Object getObject();
 	
 	public String getPath();
 	

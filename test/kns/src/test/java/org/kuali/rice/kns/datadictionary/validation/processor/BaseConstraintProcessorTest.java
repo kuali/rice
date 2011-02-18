@@ -96,6 +96,8 @@ public abstract class BaseConstraintProcessorTest<P extends ConstraintProcessor>
 		
 		mustOccurConstraints.add(topLevelConstraint);
 		
+		addressEntry.setMustOccurConstraints(mustOccurConstraints);
+		
 		List<WhenConstraint> whenConstraints = new ArrayList<WhenConstraint>();
 		
 		PrerequisiteConstraint prerequisiteConstraint = new PrerequisiteConstraint();
@@ -148,7 +150,6 @@ public abstract class BaseConstraintProcessorTest<P extends ConstraintProcessor>
 		
 		countryDefinition = new AttributeDefinition();
 		countryDefinition.setName("country");
-		countryDefinition.setMustOccurConstraints(mustOccurConstraints);
 		countryDefinition.setCaseConstraint(countryIsUSACaseConstraint);
 		attributes.add(countryDefinition);
 		
@@ -164,7 +165,7 @@ public abstract class BaseConstraintProcessorTest<P extends ConstraintProcessor>
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry);
 		attributeValueReader.setAttributeName(attributeName);
 		
-		Object value = attributeValueReader.getValue();
+		Object value = attributeName != null ? attributeValueReader.getValue() : object;
 		
 		return processor.process(dictionaryValidationResult, value, constraint, attributeValueReader);
 	}

@@ -61,6 +61,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      </property>     
   </bean>
   
+  <bean id="LookupView" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
+     <property name="name" value="default"/>
+     <property name="viewHelperServiceBeanId" value="kualiLookupable"/>
+     <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
+<!--
+     <property name="defaultBindingObjectPath" value="bo"/>
+-->
+     <property name="controllerRequestMapping" value="lookup"/>
+     <property name="readOnly" value="false"/>
+     <property name="singlePageView" value="true"/>
+     <property name="page">
+        <bean parent="PageLookup"/>
+     </property>
+      <property name="footer">
+        <bean parent="Footer"/>
+      </property>
+  </bean>
+  
   <bean id="DocumentView" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="FormView">
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.DocumentFormBase"/>
      <property name="defaultBindingObjectPath" value="document"/>
@@ -106,4 +124,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
             
+  <bean id="PageLookup" parent="Page">
+    <property name="renderFooter" value="false"/>
+      <property name="header">
+        <ref bean="HeaderPage_NoActions"/>
+      </property>
+  </bean>
+  
 </beans>

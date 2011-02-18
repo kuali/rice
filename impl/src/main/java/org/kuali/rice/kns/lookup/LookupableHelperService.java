@@ -237,15 +237,26 @@ public interface LookupableHelperService extends Serializable{
 
     public String getBackLocation();
 
+	/**
+	 * This method performs the lookup and returns a collection of BO items
+	 * 
+	 * @param lookupForm
+	 * @param resultTable
+	 * @param bounded
+	 * @return the list of result BOs, possibly bounded
+	 * 
+	 * @deprecated Use {@link #performLookup(org.kuali.rice.kns.web.spring.form.LookupForm, List, boolean)} instead.
+	 */
+	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded);
+
     /**
-     *
      * This method performs the lookup and returns a collection of BO items
-     * @param lookupForm
-     * @param resultTable
+     * 
+     * @param criteriaFieldsForLookup
      * @param bounded
      * @return the list of result BOs, possibly bounded
      */
-    public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded);
+    public Collection<? extends BusinessObject> performSearch(Map<String,String> criteriaFieldsForLookup, boolean bounded);
 
     /**
      * This method returns a list of the default columns used to sort the result set.  For multiple value lookups,
@@ -288,6 +299,11 @@ public interface LookupableHelperService extends Serializable{
      * 
      * This method allows for overriding the clear behavior
      *
+     */
+    public void performClear(Map fieldsForLookup);
+    
+    /**
+     * @deprecated Use {@link #performClear(Map)} instead.
      */
     public void performClear(LookupForm lookupForm);
     

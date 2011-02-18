@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
@@ -33,7 +34,7 @@ import org.kuali.rice.kns.web.ui.ResultRow;
  * (getCreateNewUrl, getHtmlMenuBar, getTitle, getRows, getExtraButton{Source,Params})
  *
  */
-public interface Lookupable extends Serializable {
+public interface Lookupable extends ViewHelperService {
 
     /**
      * Initializes the lookup with a businss object class
@@ -103,14 +104,18 @@ public interface Lookupable extends Serializable {
     public void validateSearchParameters(Map fieldValues);
 
     /**
-     *
-     * This method performs the lookup and returns a collection of lookup items
-     * @param lookupForm
-     * @param resultTable
-     * @param bounded
-     * @return results of lookup
+     * @deprecated Use {@link #performLookup(org.kuali.rice.kns.web.spring.form.LookupForm, boolean)} instead.
      */
-    public Collection performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded);
+    public Collection performLookup(org.kuali.rice.kns.web.struts.form.LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded);
+
+    /**
+     * This method ...
+     * 
+     * @param criteriaFieldsForLookup
+     * @param bounded
+     * @return the list of result BOs, possibly bounded
+     */
+    public Collection<? extends BusinessObject> performSearch(Map<String,String> criteriaFieldsForLookup, boolean bounded);
 
     /**
      * Performs a search and returns result list.
@@ -213,11 +218,16 @@ public interface Lookupable extends Serializable {
     public List getDefaultSortColumns();
 
     /**
-     *
-     * This method allows for customization of the lookup clear
-     *
+     * @deprecated Use {@link #performClear(Map)} method instead.
      */
     public void performClear(LookupForm lookupForm);
+
+    /**
+    *
+    * This method allows for customization of the lookup clear
+    *
+    */
+   public void performClear(Map fieldsForLookup);
 
     /**
      *

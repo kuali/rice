@@ -632,7 +632,9 @@
 		<property name="lookupableHelperService">
 			<ref bean="lookupableHelperService" />
 		</property>
-
+        <property name="dataDictionaryService">
+            <ref bean="dataDictionaryService" />
+        </property>
 	</bean>
 
 	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl" scope="prototype">
@@ -1261,6 +1263,7 @@
       <property name="viewTypeServices">
         <list>
           <ref bean="inquiryViewTypeService"/>
+          <ref bean="lookupViewTypeService"/>
           <ref bean="maintenanceViewTypeService"/>
         </list>
       </property>
@@ -1271,6 +1274,8 @@
   </bean>
   
   <bean id="inquiryViewTypeService" class="org.kuali.rice.kns.uif.service.impl.InquiryViewTypeServiceImpl"/>
+  
+  <bean id="lookupViewTypeService" class="org.kuali.rice.kns.uif.service.impl.LookupViewTypeServiceImpl"/>
   
   <bean id="maintenanceViewTypeService" class="org.kuali.rice.kns.uif.service.impl.MaintenanceViewTypeServiceImpl">
       <property name="documentService">

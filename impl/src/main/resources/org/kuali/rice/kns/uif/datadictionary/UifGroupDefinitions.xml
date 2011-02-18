@@ -119,7 +119,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean> 
 
   <!-- Common Groups -->
-  
+
   <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
       <property name="styleClass" value="group_expandclose"/>
       <property name="items">

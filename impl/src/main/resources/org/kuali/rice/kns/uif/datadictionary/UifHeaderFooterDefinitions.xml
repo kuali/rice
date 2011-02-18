@@ -59,6 +59,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
 
   <!-- Common Headers --> 
+  <bean id="HeaderPage_NoActions" parent="HeaderPage">
+    <property name="group">
+      <bean parent="GroupBodyOnly">
+        <property name="styleClass" value="right"/>
+        <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+      </bean>
+    </property>
+  </bean>
   
   <bean id="HeaderPage_AccordionEdit" parent="HeaderPage">
      <property name="group">

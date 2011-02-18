@@ -63,7 +63,7 @@ public class UifFormBase {
 	    // do nothing
 	}
 
-	/**
+   	/**
 	 * Unique Id for the <code>View</code> instance. This is specified for a
 	 * view in its definition by setting the 'id' property.
 	 * 

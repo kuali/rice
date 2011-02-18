@@ -24,6 +24,7 @@ import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Kuali lookup implementation. Implements methods necessary to render the lookup and provides search and return methods.
  */
 @Transactional
-public class KualiLookupableImpl implements Lookupable {
+public class KualiLookupableImpl extends ViewHelperServiceImpl implements Lookupable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableImpl.class);
     protected static final String[] IGNORE_LIST = { KNSConstants.DOC_FORM_KEY, KNSConstants.BACK_LOCATION };
 
@@ -298,13 +299,18 @@ public class KualiLookupableImpl implements Lookupable {
     }
 
     /**
-     * Performs a lookup that can only return one row.
-     * @see org.kuali.rice.kns.lookup.Lookupable#performLookup(org.kuali.rice.kns.web.struts.form.LookupForm, java.util.List, boolean)
+     * @deprecated Use {@link #performLookup(org.kuali.rice.kns.web.spring.form.LookupForm, List, boolean)} instead.
      */
-    public Collection performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded) {
+    public Collection performLookup(org.kuali.rice.kns.web.struts.form.LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded) {
         return getLookupableHelperService().performLookup(lookupForm, resultTable, bounded);
     }
 
+    /**
+     * @see org.kuali.rice.kns.lookup.Lookupable#performSearch(java.util.Map, boolean)
+     */
+    public Collection<? extends BusinessObject> performSearch(Map<String,String> criteriaFieldsForLookup, boolean bounded) {
+    	return getLookupableHelperService().performSearch(criteriaFieldsForLookup, bounded);
+    }
 
     public boolean isSearchUsingOnlyPrimaryKeyValues() {
         return getLookupableHelperService().isSearchUsingOnlyPrimaryKeyValues();
@@ -315,13 +321,21 @@ public class KualiLookupableImpl implements Lookupable {
         return getLookupableHelperService().getPrimaryKeyFieldLabels();
     }
 
+    /**
+     * @deprecated Use {@link #performClear(Map)} method instead.
+     */
+	public void performClear(LookupForm lookupForm) {
+		 getLookupableHelperService().performClear(lookupForm);
+	}
+
 	/**
 	 * calls the lookup helper service to do "clear" behaviors
 	 *
-	 * @see org.kuali.rice.kns.lookup.Lookupable#performClear()
+	 * @see Lookupable#performClear(Map)
+	 * 
 	 */
-	public void performClear(LookupForm lookupForm) {
-		 getLookupableHelperService().performClear(lookupForm);
+	public void performClear(Map fieldsForLookup) {
+		 getLookupableHelperService().performClear(fieldsForLookup);
 	}
 
 	/**

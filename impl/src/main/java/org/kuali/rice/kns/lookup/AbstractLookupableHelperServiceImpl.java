@@ -938,85 +938,87 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  *
 	  * @see org.kuali.core.lookup.LookupableHelperService#validateSearchParameters(java.util.Map)
 	  */
-	 public void validateSearchParameters(Map fieldValues) {
-		 List<String> lookupFieldAttributeList = null;
-		 if(getBusinessObjectMetaDataService().isLookupable(getBusinessObjectClass())) {
-			 lookupFieldAttributeList = getBusinessObjectMetaDataService().getLookupableFieldNames(getBusinessObjectClass());
-		 }
-		 if (lookupFieldAttributeList == null) {
-			 throw new RuntimeException("Lookup not defined for business object " + getBusinessObjectClass());
-		 }
-		 for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
-			 String attributeName = (String) iter.next();
-			 if (fieldValues.containsKey(attributeName)) {
-				 // get label of attribute for message
-				 String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), attributeName);
+	public void validateSearchParameters(Map fieldValues) {
+		List<String> lookupFieldAttributeList = null;
+		if (getBusinessObjectMetaDataService().isLookupable(getBusinessObjectClass())) {
+			lookupFieldAttributeList = getBusinessObjectMetaDataService().getLookupableFieldNames(getBusinessObjectClass());
+		}
+		if (lookupFieldAttributeList == null) {
+			throw new RuntimeException("Lookup not defined for business object " + getBusinessObjectClass());
+		}
+		for (Iterator iter = lookupFieldAttributeList.iterator(); iter.hasNext();) {
+			String attributeName = (String) iter.next();
+			if (fieldValues.containsKey(attributeName)) {
+				// get label of attribute for message
+				String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), attributeName);
 
-				 String attributeValue = (String) fieldValues.get(attributeName);
+				String attributeValue = (String) fieldValues.get(attributeName);
 
-				 // check for required if field does not have value
-				 if (StringUtils.isBlank(attributeValue)) {
-					 if ((getBusinessObjectDictionaryService().getLookupAttributeRequired(getBusinessObjectClass(), attributeName)).booleanValue()) {
-                        GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
-                    }
-                }
-                validateSearchParameterWildcardAndOperators(attributeName, attributeValue);
-            }
-        }
+				// check for required if field does not have value
+				if (StringUtils.isBlank(attributeValue)) {
+					if ((getBusinessObjectDictionaryService().getLookupAttributeRequired(getBusinessObjectClass(), attributeName)).booleanValue()) {
+						GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
+					}
+				}
+				validateSearchParameterWildcardAndOperators(attributeName, attributeValue);
+			}
+		}
 
-        if (GlobalVariables.getMessageMap().hasErrors()) {
-            throw new ValidationException("errors in search criteria");
-					 }
-				 }
+		if (GlobalVariables.getMessageMap().hasErrors()) {
+			throw new ValidationException("errors in search criteria");
+		}
+	}
 
-    protected void validateSearchParameterWildcardAndOperators(String attributeName, String attributeValue) {
-    	if (StringUtils.isBlank(attributeValue))
-    		return;
+	protected void validateSearchParameterWildcardAndOperators(String attributeName, String attributeValue) {
+		if (StringUtils.isBlank(attributeValue))
+			return;
 
-    	// make sure a wildcard/operator is in the value
-    	boolean found = false;
-						 for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
-							 String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
+		// make sure a wildcard/operator is in the value
+		boolean found = false;
+		for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
+			String queryCharacter = KNSConstants.QUERY_CHARACTERS[i];
 
-							 if (attributeValue.contains(queryCharacter)) {
-                found = true;
-            }
-							 }
-        if (!found)
-        	return;
+			if (attributeValue.contains(queryCharacter)) {
+				found = true;
+			}
+		}
+		if (!found)
+			return;
 
-    	String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), attributeName);
-    	if (getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, attributeName)) {
-    		BusinessObject example = null;
-    		try {
-    			example = (BusinessObject) businessObjectClass.newInstance();
-						 }
-    		catch (Exception e) {
-    			LOG.error("Exception caught instantiating " + businessObjectClass.getName(), e);
-    			throw new RuntimeException("Cannot instantiate " + businessObjectClass.getName(), e);
-					 }
+		String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), attributeName);
+		if (getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, attributeName)) {
+			BusinessObject example = null;
+			try {
+				example = (BusinessObject) businessObjectClass.newInstance();
+			} catch (Exception e) {
+				LOG.error("Exception caught instantiating " + businessObjectClass.getName(), e);
+				throw new RuntimeException("Cannot instantiate " + businessObjectClass.getName(), e);
+			}
 
-    		Class propertyType = ObjectUtils.getPropertyType(example, attributeName, getPersistenceStructureService());
-    		if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-    			GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, attributeLabel);
-				 }
-    		if (TypeUtils.isStringClass(propertyType)) {
-    			GlobalVariables.getMessageMap().putInfo(attributeName, RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, attributeLabel);
-			 }
-		 }
-    	else {
-    		if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
-	        	if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-	        		// encrypted values usually come from the DB, so we don't need to filter for wildcards
+			Class propertyType = ObjectUtils.getPropertyType(example, attributeName, getPersistenceStructureService());
+			if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
+				GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, attributeLabel);
+			}
+			if (TypeUtils.isStringClass(propertyType)) {
+				GlobalVariables.getMessageMap().putInfo(attributeName, RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, attributeLabel);
+			}
+		} else {
+			if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, attributeName)) {
+				if (!attributeValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+					// encrypted values usually come from the DB, so we don't
+					// need to filter for wildcards
 
-	        		// wildcards are not allowed on restricted fields, because they are typically encrypted, and wildcard searches cannot be performed without
-	        		// decrypting every row, which is currently not supported by KNS
+					// wildcards are not allowed on restricted fields, because
+					// they are typically encrypted, and wildcard searches
+					// cannot be performed without
+					// decrypting every row, which is currently not supported by
+					// KNS
 
-                    GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
-		 }
-	 }
-	 }
-	 }
+					GlobalVariables.getMessageMap().putError(attributeName, RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Constructs the list of rows for the search fields. All properties for the field objects come
@@ -1072,6 +1074,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 * @param resultTable
 	 * @param bounded
 	 * @return
+	 * 
+	 * @deprecated Use {@link #performLookup(org.kuali.rice.kns.web.spring.form.LookupForm, List, boolean)} instead.
 	 */
 	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
 		Map lookupFormFields = lookupForm.getFieldsForLookup();
@@ -1082,7 +1086,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 		preprocessDateFields(lookupFormFields);
 
-		Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
 		// call search method to get results
 		if (bounded) {
 			displayList = getSearchResults(lookupForm.getFieldsForLookup());
@@ -1188,7 +1191,119 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		return displayList;
 	}
 
-	/**
+    public Collection<? extends BusinessObject> performSearch(Map<String,String> criteriaFieldsForLookup, boolean bounded) {
+		setBackLocation(criteriaFieldsForLookup.get(KNSConstants.BACK_LOCATION));
+		setDocFormKey(criteriaFieldsForLookup.get(KNSConstants.DOC_FORM_KEY));
+		Collection<? extends BusinessObject> displayList;
+
+		preprocessDateFields(criteriaFieldsForLookup);
+
+		// call search method to get results
+		if (bounded) {
+			displayList = getSearchResults(criteriaFieldsForLookup);
+		} else {
+			displayList = getSearchResultsUnbounded(criteriaFieldsForLookup);
+		}
+
+//		boolean hasReturnableRow = false;
+//
+//		List returnKeys = getReturnKeys();
+//		List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+//		Person user = GlobalVariables.getUserSession().getPerson();
+//
+//		// iterate through result list and wrap rows with return url and action
+//		// urls
+//		for (Iterator iter = displayList.iterator(); iter.hasNext();) {
+//			BusinessObject element = (BusinessObject) iter.next();
+//
+//			final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
+//			if (lookupId != null) {
+//				lookupForm.setLookupObjectId(lookupId);
+//			}
+//
+//			BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService()
+//					.getLookupResultRestrictions(element, user);
+//
+//			HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+//			String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
+//			// Fix for JIRA - KFSMI-2417
+//			if ("".equals(actionUrls)) {
+//				actionUrls = ACTION_URLS_EMPTY;
+//			}
+//
+//			List<Column> columns = getColumns();
+//			for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+//				Column col = (Column) iterator.next();
+//				
+//				String propValue = ObjectUtils.getFormattedPropertyValue(element, col.getPropertyName(), col.getFormatter());
+//				Class propClass = getPropertyClass(element, col.getPropertyName());
+//
+//				col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
+//				col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
+//
+//				String propValueBeforePotientalMasking = propValue;
+//				propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue,
+//						businessObjectRestrictions);
+//				col.setPropertyValue(propValue);
+//
+//				// if property value is masked, don't display additional or alternate properties, or allow totals
+//				if (StringUtils.equals(propValueBeforePotientalMasking, propValue)) {
+//					if (StringUtils.isNotBlank(col.getAlternateDisplayPropertyName())) {
+//						String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(element, col
+//								.getAlternateDisplayPropertyName(), null);
+//						col.setPropertyValue(alternatePropertyValue);
+//					}
+//
+//					if (StringUtils.isNotBlank(col.getAdditionalDisplayPropertyName())) {
+//						String additionalPropertyValue = ObjectUtils.getFormattedPropertyValue(element, col
+//								.getAdditionalDisplayPropertyName(), null);
+//						col.setPropertyValue(col.getPropertyValue() + " *-* " + additionalPropertyValue);
+//					}
+//				}
+//				else {
+//					col.setTotal(false);
+//				}
+//				
+//				if (col.isTotal()) {
+//					Object unformattedPropValue = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+//					col.setUnformattedPropertyValue(unformattedPropValue);
+//				}
+//
+//				if (StringUtils.isNotBlank(propValue)) {
+//					col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+//				}
+//			}
+//
+//			ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
+//			row.setRowId(returnUrl.getName());
+//			row.setReturnUrlHtmlData(returnUrl);
+//
+//			// because of concerns of the BO being cached in session on the
+//			// ResultRow,
+//			// let's only attach it when needed (currently in the case of
+//			// export)
+//			if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
+//				row.setBusinessObject(element);
+//			}
+//
+//			if (lookupId != null) {
+//				row.setObjectId(lookupId);
+//			}
+//
+//			boolean rowReturnable = isResultReturnable(element);
+//			row.setRowReturnable(rowReturnable);
+//			if (rowReturnable) {
+//				hasReturnableRow = true;
+//			}
+//			resultTable.add(row);
+//		}
+//
+//		lookupForm.setHasReturnableRow(hasReturnableRow);
+
+		return displayList;
+    }
+
+    /**
 	 * Gets the Class for the property in the given BusinessObject instance, if
 	 * property is not accessible then runtime exception is thrown
 	 * 
@@ -1321,6 +1436,27 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * This method does the logic for the clear action.
 	  * 
 	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#performClear()
+	  */
+	 public void performClear(Map fieldsForLookup) {
+		 for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {
+			 Row row = (Row) iter.next();
+			 for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+				 Field field = (Field) iterator.next();
+				 if (field.isSecure()) {
+					 field.setSecure(false);
+					 field.setDisplayMaskValue(null);
+					 field.setEncryptedValue(null);
+				 }
+
+				if (!field.getFieldType().equals(Field.RADIO)) {
+					field.setPropertyValue(field.getDefaultValue());
+				}
+			}
+		 }
+	 }
+
+	 /**
+	  * @deprecated Use {@link #performClear(Map)} instead.
 	  */
 	 public void performClear(LookupForm lookupForm) {
 		 for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {

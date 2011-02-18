@@ -24,13 +24,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="items">
        <list>
+          <bean parent="Group_DocumentOverview"/>
           <bean parent="GroupSectionGridLayout_Accordion">
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
                 <bean parent="AttributeField" p:name="number"/>
                 <bean parent="AttributeField" p:name="name"/>
-                <bean parent="AttributeField" p:name="extension.accountType.codeAndDescription"/>
+                <bean parent="AttributeField" p:name="extension.accountTypeCode"/>
                 <bean parent="AttributeField" p:name="subAccount"/>
                 <bean parent="AttributeField" p:name="subAccountName"/>
                 <bean parent="AttributeField" p:name="createDate"/>
@@ -39,7 +40,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </list>
              </property>
              <property name="title" value="Account Information"/>
-          </bean>    
+          </bean> 
+          <bean parent="Group_DocumentNotes"/>   
        </list>
      </property>
   </bean>    

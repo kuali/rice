@@ -29,11 +29,6 @@
   <ul class="chan">
      <li><portal:portalLink displayTitle="true" title="Spring - Create New Sample Application Travel Request (KualiDocumentActionBase)" url="${ConfigProperties.application.url}/travelDocument2.mvc?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest" /></li>
   </ul>
-<br/>
-  <ul class="chan">
-     <li><portal:portalLink displayTitle="true" title="Spring - Lookup Travel Account" url="${ConfigProperties.application.url}/lookup.mvc?methodToCall=start&objectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
-  </ul>
-
   
 </div>
 <channel:portalChannelBottom />

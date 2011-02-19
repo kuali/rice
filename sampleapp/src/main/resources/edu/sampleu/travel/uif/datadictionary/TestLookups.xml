@@ -22,85 +22,106 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="TravelAccount-LookupView" parent="LookupView">
     <property name="title" value="Travel Account Lookup"/>
     <property name="objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-    <property name="Items">
+    <property name="criteriaFields">
       <list>
-        <bean parent="GroupGridLayout">
-          <property name="renderHeader" value="false"/>
-          <property name="title" value="Lookup Criteria"/>
-          <property name="name" value="criteriaGroup"/>
-          <property name="layoutManager.numberOfColumns" value="2"/>
-          <property name="items">
-            <list>
-              <bean parent="AttributeField_Form" p:name="objectClassName">
-                <property name="control">
-                  <bean parent="HiddenControl"/>
-                </property>
-              </bean>
-              <bean parent="AttributeField_Form" p:name="backLocation">
-                <property name="control">
-                  <bean parent="HiddenControl"/>
-                </property>
-              </bean>
-              <bean parent="AttributeField_Form" p:name="backLocation">
-                <property name="control">
-                  <bean parent="HiddenControl"/>
-                </property>
-              </bean>
-<!--
-              <bean parent="AttributeField" p:name="name"/>
-              <bean parent="AttributeField" p:name="extension.accountType.codeAndDescription"/>
-              <bean parent="AttributeField" p:name="subAccount"/>
-              <bean parent="AttributeField" p:name="subAccountName"/>
-              <bean parent="AttributeField" p:name="createDate"/>
-              <bean parent="AttributeField" p:name="subsidizedPercent"/>
-              <bean parent="AttributeField" p:name="foId"/>
--->
-            </list>
-          </property>
-        </bean>
-        <bean id="Group_SearchClearCancel" class="org.kuali.rice.kns.uif.container.Group">
-          <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
-          <property name="renderHeader" value="false"/>
-          <property name="layoutManager">
-            <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
-          </property>
-          <property name="styleClass" value="globalbuttons"/>
-          <property name="items">
-            <list> 
-              <bean parent="ActionField" p:methodToCall="search" p:actionLabel="search"/>
-              <bean parent="ActionField" p:methodToCall="clearValues" p:actionLabel="clear values"/>
-              <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="cancel"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
-          <property name="title" value="Search Results"/>
-          <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="name" value="searchResults"/>
-<!--
-          <property name="bindingInfo.bindingObjectPath" value="searchResults"/>
--->
-          <property name="layoutManager.renderSequenceField" value="false"/>
-          <property name="items">
-            <list>
-              <bean parent="AttributeField" p:name="number" p:required="true"/>
-              <bean parent="AttributeField" p:name="name"/>
-              <bean parent="FieldGroup" p:label="Sub Account">
-                <property name="items">
-                     <list>
-                      <bean parent="AttributeField" p:name="subAccount" p:showLabel="false"/>
-                      <bean parent="AttributeField" p:name="subAccountName" p:readOnly="true" p:showLabel="false"/>
-                     </list>
-                </property>
-              </bean>
-              <bean parent="AttributeField" p:name="subsidizedPercent"/>
-              <bean parent="AttributeField" p:name="createDate"/>
-              <bean parent="AttributeField" p:name="foId"/>
-            </list>
-          </property>
-          <property name="summary" value="Search Result Summary"/>
-        </bean>
+        <!-- p:dictionaryObjectEntry=edu.sampleu.travel.bo.TravelAccount --> 
+        <bean parent="AttributeField" p:name="number"/>
+        <bean parent="AttributeField" p:name="name"/>
+        <bean parent="AttributeField" p:name="subAccount"/>
+        <bean parent="AttributeField" p:name="subAccountName"/>
+        <bean parent="AttributeField" p:name="createDate"/>
+        <bean parent="AttributeField" p:name="subsidizedPercent"/>
+        <bean parent="AttributeField" p:name="foId"/> <!-- p:forceLookup="true" -->
+        <bean parent="AttributeField" p:name="extension.accountTypeCode"/>
       </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:name="number"/> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:name="name"/> <!-- p:forceInquiry="true" -->
+<!--
+        <bean parent="FieldGroup" p:label="Sub Account">
+          <property name="readOnly" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:name="subAccount" p:readOnly="true" p:showLabel="false"/>
+              <bean parent="AttributeField" p:name="subAccountName" p:readOnly="true" p:showLabel="false"/>
+            </list>
+          </property>
+        </bean>
+-->
+        <bean parent="AttributeField" p:name="subAccount"/>
+        <bean parent="AttributeField" p:name="subAccountName"/>
+        <bean parent="AttributeField" p:name="subsidizedPercent"/>
+        <bean parent="AttributeField" p:name="createDate"/>
+        <bean parent="AttributeField" p:name="extension.accountType.codeAndDescription"/> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:name="foId"/> <!-- p:forceInquiry="true" -->
+      </list>
+    </property>
+
+    <!-- BELOW WILL BE COPIED OUT TO COMMON BEAN DEFINITIONS -->
+
+    <property name="criteriaGroup">
+      <bean parent="GroupGridLayout">
+        <property name="renderHeader" value="false"/>
+        <property name="title" value="Lookup Criteria"/>
+        <property name="fieldBindingObjectPath" value="criteriaFields"/>
+        <property name="layoutManager.numberOfColumns" value="2"/>
+        <property name="footer">
+          <bean id="Group_SearchClearCancel" parent="Footer">
+            <property name="items">
+              <list> 
+                <bean parent="ActionField" p:methodToCall="search" p:actionLabel="search"/>
+                <bean parent="ActionField" p:methodToCall="clearValues" p:actionLabel="clear values"/>
+                <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="cancel"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="resultsGroup">
+      <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
+        <property name="name" value="searchResults"/>
+<!--
+        <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+        <property name="bindingInfo.bindingObjectPath" value="searchResults"/>
+-->
+        <property name="layoutManager.renderSequenceField" value="false"/>
+        <property name="renderAddLine" value="false"/>
+        <property name="readOnly" value="true"/>
+      </bean>
+    </property>
+    <property name="formGroup">
+      <bean parent="GroupBodyOnly">
+        <property name="layoutManager">
+          <bean parent="GridLayoutManager"/>
+        </property>
+        <property name="items">
+          <list>
+            <bean parent="AttributeField_Form" p:name="objectClassName">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:name="backLocation">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:name="conversionFields">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:name="readOnlyFields">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 

@@ -457,7 +457,7 @@ public class View extends ContainerBase {
 		ViewHelperService viewHelperService = KNSServiceLocator.getService(getViewHelperServiceBeanId());
 
 		if (viewHelperService == null) {
-			throw new RuntimeException("Unable to find ViewHelperService for view: " + getId());
+			throw new RuntimeException("Unable to find ViewHelperService (using bean id: " + getViewHelperServiceBeanId() + ") for view: " + getId());
 		}
 
 		return viewHelperService;

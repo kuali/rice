@@ -170,7 +170,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		if (StringUtils.isBlank(dictionaryAttributeName) && StringUtils.isBlank(dictionaryObjectEntry)
 				&& !field.getBindingInfo().isBindToForm()) {
 			dictionaryAttributeName = field.getName();
-			Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());
+			Class<?> dictionaryModelClass = getDictionaryModelClass(view, field);
 			if (dictionaryModelClass != null) {
 				dictionaryObjectEntry = dictionaryModelClass.getName();
 			}
@@ -185,6 +185,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 				field.copyFromAttributeDefinition(attributeDefinition);
 			}
 		}
+	}
+
+	protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
+		return ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());
 	}
 
 	/**

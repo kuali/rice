@@ -65,9 +65,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="name" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiLookupable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
-<!--
-     <property name="defaultBindingObjectPath" value="bo"/>
--->
      <property name="controllerRequestMapping" value="lookup"/>
      <property name="readOnly" value="false"/>
      <property name="singlePageView" value="true"/>

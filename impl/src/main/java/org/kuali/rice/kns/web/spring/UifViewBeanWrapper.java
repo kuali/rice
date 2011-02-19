@@ -25,7 +25,6 @@ import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
-import org.springframework.beans.PropertyValues;
 
 /**
  * This class is a top level BeanWrapper for a UIF View (form).  It will call the
@@ -60,6 +59,9 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     
     
     protected void callViewService(String propertyName) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting view service call for property '" + propertyName + "'");
+        }
         Class<? extends Formatter> formatterClass = null;
         
         // viewId should be determined in UifAnnotationMethodHandlerAdapter so
@@ -77,7 +79,7 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         boolean requiresEncryption = false;
         if(af != null) {
         	if (af.getAttributeSecurity() != null) {
-        		if (af.getAttributeSecurity().isMask() || af.getAttributeSecurity().isPartialMask()) {
+        		if (af.getAttributeSecurity().hasRestrictionThatRemovesValueFromUI()) {
         			requiresEncryption = true;
         		}
         	}
@@ -145,15 +147,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     public void setPropertyValue(String propertyName, Object value) throws BeansException {
         callViewService(propertyName);
         super.setPropertyValue(propertyName, value);
-    }
-
-    @Override
-    public void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown, boolean ignoreInvalid) throws BeansException {
-        
-        for(PropertyValue pv : pvs.getPropertyValues()) {
-            callViewService(pv.getName());
-        }
-        super.setPropertyValues(pvs, ignoreUnknown, ignoreInvalid);
     }
 
     @Override

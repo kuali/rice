@@ -32,8 +32,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
-import edu.sampleu.travel.bo.TravelAccount;
-
 /**
  * This class is the model for Lookups
  * 
@@ -44,10 +42,10 @@ public class LookupForm extends UifFormBase {
 
 	private String objectClassName;
 	private Map<String, String> criteriaFields;
-	private Map criteriaFieldsForLookup;
+	private Map<String, String> criteriaFieldsForLookup;
 	private Lookupable lookupable;
 	private String conversionFields;
-	private Map fieldConversions;
+	private Map<String, String> fieldConversions;
 	
 	private Collection<? extends BusinessObject> searchResults;
 
@@ -55,41 +53,6 @@ public class LookupForm extends UifFormBase {
     	super();
     	setViewTypeName(ViewType.LOOKUP);
     }
-
-	/**
-	 * Holds instances for collection add lines. The key of the Map gives the
-	 * collection name the line instance applies to, the Map value is an
-	 * instance of the collection object class that holds the new line data
-	 * 
-	 * @return Map<String, Object> new collection lines
-	 */
-	public Map<String, Object> getNewCollectionLines() {
-		try {
-			if (this.newCollectionLines.isEmpty()) {
-				Class boClass = Class.forName(getObjectClassName());
-				this.newCollectionLines.put("searchResults", boClass.newInstance());
-			}
-			return this.newCollectionLines;
-		} catch (ClassNotFoundException e) {
-			LOG.error("Object class " + getObjectClassName() + " not found");
-			throw new RuntimeException("Object class " + getObjectClassName() + " not found", e);
-		} catch (InstantiationException e) {
-			LOG.error(e);
-			throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-			LOG.error(e);
-			throw new RuntimeException(e);
-        }
-	}
-
-	/**
-	 * Setter for the new collection lines Map
-	 * 
-	 * @param newCollectionLines
-	 */
-	public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
-		this.newCollectionLines = newCollectionLines;
-	}
 
 	public String getObjectClassName() {
     	return this.objectClassName;
@@ -107,11 +70,11 @@ public class LookupForm extends UifFormBase {
     	this.criteriaFields = criteriaFields;
     }
 
-	public Map getCriteriaFieldsForLookup() {
+	public Map<String, String> getCriteriaFieldsForLookup() {
     	return this.criteriaFieldsForLookup;
     }
 
-	public void setCriteriaFieldsForLookup(Map criteriaFieldsForLookup) {
+	public void setCriteriaFieldsForLookup(Map<String, String> criteriaFieldsForLookup) {
     	this.criteriaFieldsForLookup = criteriaFieldsForLookup;
     }
 
@@ -131,11 +94,11 @@ public class LookupForm extends UifFormBase {
     	this.conversionFields = conversionFields;
     }
 
-	public Map getFieldConversions() {
+	public Map<String, String> getFieldConversions() {
     	return this.fieldConversions;
     }
 
-	public void setFieldConversions(Map fieldConversions) {
+	public void setFieldConversions(Map<String, String> fieldConversions) {
     	this.fieldConversions = fieldConversions;
     }
 

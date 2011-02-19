@@ -24,6 +24,10 @@
      <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry (KNS Parms)" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount"/></li>
      <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (New)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&viewTypeName=MAINTENANCE&objectClassName=edu.sampleu.travel.bo.TravelAccount"/></li> 
   </ul>
+<br/>
+  <ul class="chan">
+     <li><portal:portalLink displayTitle="true" title="Spring - Lookup Travel Account" url="${ConfigProperties.application.url}/lookup.mvc?methodToCall=start&objectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
+  </ul>
   
 </div>
 <channel:portalChannelBottom />

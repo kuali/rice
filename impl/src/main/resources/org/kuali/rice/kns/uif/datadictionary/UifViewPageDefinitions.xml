@@ -23,6 +23,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="View" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
       <property name="viewHelperServiceBeanId" value="ViewHelperService"/>
+      <property name="styleClass" value="workarea"/>
       <property name="header">
         <bean parent="HeaderView"/>
       </property> 
@@ -33,11 +34,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <list>
           <value>/krad/css/kuali-stacked.css</value>
         </list>
-      </property>        
+      </property>
   </bean>
   
   <bean id="FormView" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
+      <property name="onSubmitScript" value="createLoading(true);return hasFormAlreadyBeenSubmitted();"/>
       <property name="footer">
         <ref bean="Footer_SaveCloseCancel"/>
       </property>
@@ -88,9 +90,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="name" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
-     <property name="defaultBindingObjectPath" value="document.newMaintainableObject"/>
+     <property name="defaultBindingObjectPath" value="document.newMaintainableObject.businessObject"/>
      <property name="controllerRequestMapping" value="maintenance"/>  
      <property name="singlePageView" value="true"/>
+     <property name="header">
+        <bean parent="HeaderViewDocument"/>
+     </property>
      <property name="page">
         <bean parent="Page_Accordion"/>
      </property>     

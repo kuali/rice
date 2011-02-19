@@ -305,10 +305,10 @@ function createAccordion(accordionToggleLink, openAccordionHeaderContents, close
  */
 function createLoading(showLoading) {
 	if (showLoading) {
-	  $("#page_div").showLoading();
+	  $("#view_div").showLoading();
 	}
 	else {
-		$("#page_div").hideLoading();
+		$("#view_div").hideLoading();
 	}
 }
 
@@ -325,18 +325,7 @@ function createLoading(showLoading) {
  */
 function createTable(controlId, options) {
 	$(document).ready(function() {
-		var oTable = $("#" + controlId).dataTable({"sDom": 'T<"clear">lfrtip',
-		                              "oTableTools": {
-		                                         	"sSwfPath": "/kr-dev/krad/scripts/jquery/copy_cvs_xls_pdf.swf"
-	                                            	}	});
-		
-		$('td', oTable.fnGetNodes()).hover( function() {
-			var iCol = $('td').index(this) % 5;
-			var nTrs = oTable.fnGetNodes();
-			$('td:nth-child('+(iCol+1)+')', nTrs).addClass( 'highlighted' );
-		}, function() {
-			$('td.highlighted', oTable.fnGetNodes()).removeClass('highlighted');
-		} );
+		var oTable = $("#" + controlId).dataTable(options);
 	})
 }
 

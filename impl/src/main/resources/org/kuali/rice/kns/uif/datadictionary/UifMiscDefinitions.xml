@@ -50,6 +50,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="TableTools" class="org.kuali.rice.kns.uif.widget.TableTools" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableTools.jsp"/>
+      <property name="widgetOptions">
+          <map>
+              <entry key="sDom" value="T&lt;'clear'&gt;lfrtip"/>   
+          </map>      
+      </property>
   </bean>
   
   <!-- Other -->

@@ -67,6 +67,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/messageField.jsp"/>
   </bean> 
   
+  <bean id="IframeField" abstract="true" class="org.kuali.rice.kns.uif.field.IframeField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/iframeField.jsp"/>
+  </bean>  
+  
   <bean id="GroupField" abstract="true" class="org.kuali.rice.kns.uif.field.GroupField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/groupField.jsp"/>
       <property name="group">
@@ -93,5 +97,44 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                  
   <bean id="ActionField_CollapseAccordions" parent="ActionField_Secondary" p:methodToCall="collapseAccordions" 
         p:clientSideCall="true" p:actionLabel="collapse all" p:id="actn_cllps"/>
+        
+  <bean id="AttributeField_DocumentNumber" parent="AttributeField" p:name="documentNumber" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.DocumentHeader"/>  
+        
+  <bean id="AttributeField_DocumentStatus" parent="AttributeField" p:name="documentHeader.workflowDocument.statusDisplayValue" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.AttributeReferenceDummy" p:dictionaryAttributeName="workflowDocumentStatus"/> 
+        
+  <bean id="AttributeField_FormDocumentInitiatorNetworkId" parent="AttributeField_Form" p:name="documentInitiatorNetworkId" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.AttributeReferenceDummy" p:dictionaryAttributeName="initiatorNetworkId"/>     
+        
+  <bean id="AttributeField_FormDocumentCreateDate" parent="AttributeField_Form" p:name="documentCreateDate" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.AttributeReferenceDummy" p:dictionaryAttributeName="createDate"/>  
+        
+  <bean id="AttributeField_DocumentTemplateNumber" parent="AttributeField" p:name="documentTemplateNumber" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.DocumentHeader"/>                             
+        
+  <bean id="AttributeField_DocumentDescription" parent="AttributeField" p:name="documentDescription" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.DocumentHeader"/>   
+        
+  <bean id="AttributeField_Explanation" parent="AttributeField" p:name="explanation" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.DocumentHeader"/>   
+        
+  <bean id="AttributeField_OrganizationDocumentNumber" parent="AttributeField" p:name="organizationDocumentNumber" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.DocumentHeader"/>  
+        
+  <bean id="AttributeField_NotePostedTimestamp" parent="AttributeField" p:name="notePostedTimestamp" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/> 
+        
+  <bean id="AttributeField_AuthorUniversalIdentifier" parent="AttributeField" p:name="authorUniversalIdentifier" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
+        
+  <bean id="AttributeField_NoteTopicText" parent="AttributeField" p:name="noteTopicText" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
+        
+  <bean id="AttributeField_Attachment" parent="AttributeField" p:name="attachment" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
+        
+  <bean id="AttributeField_NoteText" parent="AttributeField" p:name="noteText" 
+        p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>                                                                         
         
 </beans>        

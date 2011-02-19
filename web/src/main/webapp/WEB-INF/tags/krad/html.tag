@@ -69,34 +69,36 @@
   <!----------------------------------- #BEGIN BODY --------------------------------------->
 
   <body>
-  <div id="page_div" class="workarea">
+    <krad:div component="${view}">
+      <span id="view_div">
 
-    <krad:backdoor/>
+      <krad:backdoor/>
 
-    <!----------------------------------- #BEGIN FORM --------------------------------------->
-    <c:if test="${view.renderForm}">
-      <form:form 
-         id="kualiForm"
-         action="${pageContext.request.contextPath}/spring/${view.controllerRequestMapping}"
-         method="post"
-         enctype="multipart/form-data"
-         modelAttribute="KualiForm"
-         onsubmit="createLoading(true);return hasFormAlreadyBeenSubmitted();"
-         cssStyle="form_format topLabel page">
+      <!----------------------------------- #BEGIN FORM --------------------------------------->
+      <c:if test="${view.renderForm}">
+        <form:form 
+           id="kualiForm"
+           action="${pageContext.request.contextPath}/spring/${view.controllerRequestMapping}"
+           method="post"
+           enctype="multipart/form-data"
+           modelAttribute="KualiForm"
+           onsubmit="${view.onSubmitScript}"
+           cssStyle="form_format topLabel page">
 
-         <a name="topOfForm"></a>
+           <a name="topOfForm"></a>
       
-         <jsp:doBody/>
+           <jsp:doBody/>
 
-         <div id="formComplete"></div>
-      </form:form>
-      <!----------------------------------- End Form --------------------------------------->
-    </c:if>  
+           <span id="formComplete"></span>
+        </form:form>
+        <!----------------------------------- End Form --------------------------------------->
+      </c:if>  
    
-    <c:if test="${!view.renderForm}"> 
-       <jsp:doBody/>
-    </c:if>  
+      <c:if test="${!view.renderForm}"> 
+         <jsp:doBody/>
+      </c:if>  
     
-   </div> 
-   </body>
+      </span>
+    </krad:div> 
+  </body>
 </html>

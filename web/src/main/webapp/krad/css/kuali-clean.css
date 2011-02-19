@@ -212,7 +212,6 @@ div.globalbuttons
 
 th.infoline {
 	background-color:#998549;
-	color: #FFF;
 	border-bottom-width: 1px;
 	border-left-width: 1px;
 	border-bottom-style: solid;
@@ -244,4 +243,43 @@ th.infoline {
 .group_expandclose #msg_reqind_REQUIRED {
 	display:block;
 	font-size: 90%;
+}
+
+.group_docheader {
+	width: 40%;
+	float: right;
+}
+
+.tableborders table {
+width:100%;
+border-collapse:collapse;
+border-top-width:1px;
+border-left-width:1px;
+border-top-style:solid;
+border-left-style:solid;
+font-size:1em;
+border-color:#CCC;
+}
+
+.tableborders th {
+background-color:#E5E5E5;
+font-weight:700;
+border-bottom-width:1px;
+border-right-width:1px;
+border-bottom-style:solid;
+border-right-style:solid;
+border-bottom-color:#CCC;
+border-right-color:#CCC;
+padding:3px;
+font-color: #000;
+}
+
+.tableborders td {
+border-bottom-width:1px;
+border-right-width:1px;
+border-bottom-style:solid;
+border-right-style:solid;
+border-bottom-color:#CCC;
+border-right-color:#CCC;
+padding:3px;
 }

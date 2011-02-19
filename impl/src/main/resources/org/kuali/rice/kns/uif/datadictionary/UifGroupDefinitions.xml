@@ -119,7 +119,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean> 
 
   <!-- Common Groups -->
-
+  
   <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
       <property name="styleClass" value="group_expandclose"/>
       <property name="items">
@@ -142,5 +142,67 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="layoutManager.orientation" value="HORIZONTAL"/> 
   </bean>
+  
+  <bean id="Group_DocumentHeader" parent="GroupBodyOnly" p:readOnly="true">
+      <property name="id" value="group_docheader"/>
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager" p:numberOfColumns="4"/>
+      </property> 
+      <property name="items">
+         <list> 
+           <bean parent="AttributeField_DocumentNumber"/>
+           <bean parent="AttributeField_DocumentStatus"/>
+           <bean parent="AttributeField_FormDocumentInitiatorNetworkId"/>
+           <bean parent="AttributeField_FormDocumentCreateDate"/>
+         </list>
+      </property>
+      <property name="fieldBindingObjectPath" value="document"/>
+  </bean>   
+  
+  <bean id="Group_DocumentOverview" parent="GroupSectionGridLayout_Accordion">
+      <property name="id" value="group_docoverview"/>
+      <property name="title" value="Document Overview"/>
+      <property name="items">
+         <list> 
+           <bean parent="AttributeField_DocumentDescription" p:required="true"/>
+           <bean parent="AttributeField_OrganizationDocumentNumber"/>
+           <bean parent="AttributeField_Explanation"/>
+         </list>
+      </property>
+      <property name="fieldBindingObjectPath" value="document.documentHeader"/>
+  </bean>  
+  
+  <bean id="Group_DocumentNotes" parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="4">
+      <property name="id" value="group_docnotes"/>
+      <property name="title" value="Notes and Attachments"/>
+      <property name="name" value="documentHeader.boNotes"/>
+      <property name="styleClass" value="tableborders"/>
+      <property name="collectionObjectClass" value="org.kuali.rice.kns.bo.Note"/>
+      <property name="layoutManager.sequenceAttributeName" value="notePostedTimestamp"/>
+      <property name="layoutManager.tableTools.render" value="false"/>
+      <property name="items">
+         <list> 
+           <bean parent="AttributeField_NotePostedTimestamp"/>
+           <bean parent="AttributeField_AuthorUniversalIdentifier"/>
+           <bean parent="AttributeField_NoteText"/>
+           <bean parent="AttributeField_Attachment"/>           
+         </list>
+      </property>
+      <property name="bindingInfo.bindingObjectPath" value="document"/>
+  </bean>    
+  
+  <bean id="Group_DocumentRouteLog" parent="GroupSection_Accordion">
+      <property name="id" value="group_docroutelog"/>
+      <property name="title" value="Route Log"/>
+      <property name="items">
+         <list> 
+           <bean parent="IframeField" p:height="500" p:width="95%" p:vspace="0" p:hspace="0" p:frameborder="0">
+             <property name="id" value="routeLogIFrame"/>
+             <property name="src" value="${ConfigProperties.workflow.url}/RouteLog.do?routeHeaderId=${KualiForm.workflowDocument.routeHeaderId}"/>
+             <property name="onLoadScript" value="setRouteLogIframeDimensions();"/>
+           </bean>
+         </list>
+      </property>
+  </bean>    
   
 </beans>  

@@ -16,19 +16,26 @@
 package org.kuali.rice.kns.uif.field;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Field that contains a header element and optionally a <code>Group</code> to
+ * present along with the header text
+ * 
+ * <p>
+ * Generally the group is used to display content to the right of the header,
+ * such as links for the group or other information
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HeaderField extends GroupField {
 	private static final long serialVersionUID = -6950408292923393244L;
-	
+
 	private String headerText;
 	private String headerLevel;
+	private String headerStyleClass;
+	private String headerStyle;
 
 	public HeaderField() {
-
+		super();
 	}
 
 	public String getHeaderText() {
@@ -45,6 +52,22 @@ public class HeaderField extends GroupField {
 
 	public void setHeaderLevel(String headerLevel) {
 		this.headerLevel = headerLevel;
+	}
+
+	public String getHeaderStyleClass() {
+		return this.headerStyleClass;
+	}
+
+	public void setHeaderStyleClass(String headerStyleClass) {
+		this.headerStyleClass = headerStyleClass;
+	}
+
+	public String getHeaderStyle() {
+		return this.headerStyle;
+	}
+
+	public void setHeaderStyle(String headerStyle) {
+		this.headerStyle = headerStyle;
 	}
 
 }

@@ -33,6 +33,15 @@
       The majority of logic is implemented in grid.tag
  --%>
 
-<table id="${manager.id}" style="${manager.style}" class="${manager.styleClass}">
-   <krad:grid items="${manager.gridFields}" numberOfColumns="${manager.numberOfColumns}" applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"/>
+<c:if test="${!empty manager.styleClass}">
+  <c:set var="class" value="class=\"${manager.styleClass}\""/>
+</c:if>
+
+<c:if test="${!empty manager.style}">
+  <c:set var="style" value="style=\"${manager.style}\""/>
+</c:if>
+
+<table id="${manager.id}" ${style} ${class}>
+   <krad:grid items="${manager.gridFields}" numberOfColumns="${manager.numberOfColumns}" 
+              applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"/>
 </table>

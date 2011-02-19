@@ -44,6 +44,9 @@
            <tiles:putAttribute name="${parameter.key}" value="${parameter.value}"/>
          </c:forEach>
        </tiles:insertTemplate>
+       
+       <%-- generate event code for component --%>
+       <krad:eventScript component="${component}"/>
      </c:otherwise>
    </c:choose>
 </c:if>            

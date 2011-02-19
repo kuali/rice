@@ -42,7 +42,7 @@ import edu.sampleu.travel.krad.form.UITestForm;
 @Controller
 @RequestMapping(value = "/uitest")
 public class UITestController extends UifControllerBase {
-	private static final String testViewId = "testView1";
+	private static final String testViewId = "Travel-testView1";
 
 	@Override
     protected UITestForm createInitialForm(HttpServletRequest request) {

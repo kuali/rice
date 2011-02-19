@@ -21,13 +21,11 @@
 <%@ attribute name="idSuffix" required="false" 
               description="String to suffix the id with"%>               
               
-<c:if test="${!empty component.style}">
-  <c:set var="style" value="style=\"${component.style}\""/>
-</c:if>   
+<krad:attributeBuilder component="${component}"/>
 
 <c:set var="id" value="${component.id}"/>
 <c:if test="${!empty idSuffix}">
   <c:set var="id" value="${id}_${idSuffix}"/>
 </c:if>             
 
-<span id="${id}" class="${component.styleClass}" ${style}><jsp:doBody/></span>
+<span id="${id}" ${class} ${style}><jsp:doBody/></span>

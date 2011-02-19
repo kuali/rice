@@ -160,7 +160,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 		// if entry given but not attribute name, use field name as attribute
 		// name
-		if (StringUtils.isNotBlank(dictionaryObjectEntry)) {
+		if (StringUtils.isNotBlank(dictionaryObjectEntry) && StringUtils.isBlank(dictionaryAttributeName)) {
 			dictionaryAttributeName = field.getName();
 		}
 

@@ -639,7 +639,7 @@ public class View extends ContainerBase {
 		return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED)
 				|| StringUtils.equals(viewStatus, ViewStatus.FINAL);
 	}
-	
+
 	// TODO: isUpdated()
 
 	/**
@@ -650,6 +650,17 @@ public class View extends ContainerBase {
 	 */
 	public boolean isFinal() {
 		return StringUtils.equals(viewStatus, ViewStatus.FINAL);
+	}
+
+	/**
+	 * onSubmit script configured on the <code>View</code>, gets placed on
+	 * the form element
+	 * 
+	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnSubmit()
+	 */
+	@Override
+	public boolean getSupportsOnSubmit() {
+		return true;
 	}
 
 }

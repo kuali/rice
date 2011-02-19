@@ -27,15 +27,21 @@
       property of the layout manager. The padding is implemented by setting the margin of the wrapping
       span style. For vertical orientation, the span style is set to block.
  --%>
+ 
+<c:if test="${!empty manager.styleClass}">
+  <c:set var="class" value="class=\"${manager.styleClass}\""/>
+</c:if>
+
+<c:if test="${!empty manager.style}">
+  <c:set var="style" value="style=\"${manager.style}\""/>
+</c:if>
 
 <%-- render items --%> 
-<div id="${manager.id}" style="${manager.style}" class="${manager.styleClass}">
-
+<div id="${manager.id}" ${style} ${class}>
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
      <%-- wrapping span gives a way to pad items and line break for vertical orientation --%>
      <span style="${manager.itemSpanStyle}">
        <krad:template component="${item}"/>
      </span>  
    </c:forEach>
-
 </div> 

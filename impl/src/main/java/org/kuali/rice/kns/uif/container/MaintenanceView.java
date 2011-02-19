@@ -45,8 +45,25 @@ public class MaintenanceView extends DocumentView {
 
 	public MaintenanceView() {
 		super();
-		
+
 		setViewTypeName(ViewType.MAINTENANCE);
+	}
+
+	/**
+	 * <p>
+	 * The following initialization is performed:
+	 * <ul>
+	 * <li>Set the abstractTypeClasses map for the maintenance object path</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 */
+	@Override
+	public void performInitialization(View view) {
+		super.performInitialization(view);
+
+		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), objectClassName);
 	}
 
 	public Class<?> getObjectClassName() {

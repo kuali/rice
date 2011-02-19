@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 /**
  * Base form for all <code>DocumentView</code> screens
@@ -33,7 +38,7 @@ public class DocumentFormBase extends UifFormBase {
 	protected List<String> additionalScriptFiles;
 
 	public DocumentFormBase() {
-
+		additionalScriptFiles = new ArrayList<String>();
 	}
 
 	public List<String> getAdditionalScriptFiles() {
@@ -66,6 +71,50 @@ public class DocumentFormBase extends UifFormBase {
 
 	public void setDocTypeName(String docTypeName) {
 		this.docTypeName = docTypeName;
+	}
+
+	/**
+	 * Retrieves the principal name (network id) for the document's initiator
+	 * 
+	 * @return String initiator name
+	 */
+	public String getDocumentInitiatorNetworkId() {
+		String initiatorNetworkId = "";
+		if (getWorkflowDocument() != null) {
+			String initiatorPrincipalId = getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
+			Person initiator = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+			if (initiator != null) {
+				initiatorNetworkId = initiator.getPrincipalName();
+			}
+		}
+
+		return initiatorNetworkId;
+	}
+
+	/**
+	 * Retrieves the create date for the forms document and formats for
+	 * presentation
+	 * 
+	 * @return String formatted document create date
+	 */
+	public String getDocumentCreateDate() {
+		String createDateStr = "";
+		if (getWorkflowDocument() != null && getWorkflowDocument().getCreateDate() != null) {
+			createDateStr = KNSServiceLocator.getDateTimeService().toString(getWorkflowDocument().getCreateDate(),
+					"hh:mm a MM/dd/yyyy");
+		}
+
+		return createDateStr;
+	}
+
+	/**
+	 * Retrieves the <code>WorkflowDocument</code> instance from the forms
+	 * document instance
+	 * 
+	 * @return WorkflowDocument for the forms document
+	 */
+	public KualiWorkflowDocument getWorkflowDocument() {
+		return getDocument().getDocumentHeader().getWorkflowDocument();
 	}
 
 }

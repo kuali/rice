@@ -34,8 +34,6 @@ import org.kuali.rice.kns.uif.widget.Help;
 public abstract class ContainerBase extends ComponentBase implements Container {
 	private static final long serialVersionUID = -4182226230601746657L;
 
-	private String title;
-
 	private String additionalErrorKeys;
 	private ErrorsField errorsField;
 
@@ -146,14 +144,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		}
 
 		return components;
-	}
-
-	public String getTitle() {
-		return this.title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getAdditionalErrorKeys() {

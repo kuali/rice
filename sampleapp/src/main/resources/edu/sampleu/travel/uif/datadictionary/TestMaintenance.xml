@@ -41,7 +41,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="title" value="Account Information"/>
           </bean> 
-          <bean parent="Group_DocumentNotes"/>   
+          <bean parent="Group_DocumentNotes" p:decorator.defaultOpen="false"/>  
+          <bean parent="Group_DocumentRouteLog" p:decorator.defaultOpen="false"/>  
        </list>
      </property>
   </bean>    

@@ -39,11 +39,15 @@
 		<filter-name>UserPreferencesFilter</filter-name>
 		<filter-class>org.kuali.rice.kew.web.UserPreferencesFilter</filter-class>
 	</filter>
-
-    <!--filter>
+    
+    <filter>
         <filter-name>JTidyFilter</filter-name>
         <filter-class>org.w3c.tidy.servlet.filter.JTidyFilter</filter-class>
-    </filter-->
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>wrap: 220;tidyMark: FALSE;smartIndent: TRUE;</param-value>
+        </init-param>
+    </filter>
 
 	<filter-mapping>
         <filter-name>HideWebInfFilter</filter-name>
@@ -120,11 +124,11 @@
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>krad</servlet-name>
     </filter-mapping>     
-
-    <!--filter-mapping>
+    
+    <filter-mapping>
         <filter-name>JTidyFilter</filter-name>
         <servlet-name>krad</servlet-name>
-    </filter-mapping-->
+    </filter-mapping>
 
     <listener>
       <listener-class>org.kuali.rice.core.web.listener.StandaloneInitializeListener</listener-class>
@@ -314,7 +318,7 @@
 		<url-pattern>/kew/EDocLite</url-pattern>
 	</servlet-mapping>
     
-    <servlet-mapping>
+     <servlet-mapping>
       <servlet-name>krad</servlet-name>
       <url-pattern>/spring/*</url-pattern>
     </servlet-mapping>    

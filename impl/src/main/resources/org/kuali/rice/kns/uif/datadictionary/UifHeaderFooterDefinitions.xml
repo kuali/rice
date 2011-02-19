@@ -80,6 +80,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      </property>
   </bean>
   
+  <bean id="HeaderViewDocument" abstract="true" parent="HeaderView">
+     <property name="headerStyleClass" value="left"/>
+     <property name="group">
+       <bean parent="Group_DocumentHeader" p:styleClass="group_docheader"/>
+     </property>
+  </bean>  
+  
   <!-- Base Footers -->
     
   <bean id="Footer" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">

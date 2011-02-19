@@ -15,12 +15,14 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="component" required="true" 
-              description="The UIF component for which the div will be wrapping." 
-              type="org.kuali.rice.kns.uif.Component"%>
+<%@ attribute name="fragment" required="true" 
+              description="The JSP fragment code that should be evaluated and returned" 
+              fragment="true"%>
               
-<krad:attributeBuilder component="${component}"/>            
+<%@ variable name-given="bufferOut" scope="AT_END" %>
+                           
+<%-- Evaluates the given fragments and places the result into a variable that can
+then be read by the calling template. This gives a mechanism for templates to buffer JSP
+code --%>  
 
-<div id="${component.id}_div" ${align} ${valign} ${class} ${style}>
-   <jsp:doBody/>
-</div>
+<jsp:invoke var="bufferOut" fragment="fragment" />

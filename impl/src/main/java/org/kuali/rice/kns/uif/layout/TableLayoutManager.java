@@ -94,12 +94,12 @@ public class TableLayoutManager extends GridLayoutManager {
 	 * columns property. The sequence and action fields (if render enabled) will
 	 * be placed at each end of the line (which could span multiple rows)
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performUpdate(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performUpdate(View view, Object model, Container container) {
-		super.performUpdate(view, model, container);
+	public void performApplyModel(View view, Object model, Container container) {
+		super.performApplyModel(view, model, container);
 
 		CollectionGroup collectionGroup = (CollectionGroup) container;
 
@@ -510,24 +510,24 @@ public class TableLayoutManager extends GridLayoutManager {
 	 * value of this field on the line will be retrieved and used as the
 	 * sequence value
 	 * 
-	 * @return String sequence attribute name
+	 * @return String sequence property name
 	 */
-	public String getSequenceAttributeName() {
+	public String getSequencePropertyName() {
 		if (sequenceFieldPrototype != null) {
-			return sequenceFieldPrototype.getName();
+			return sequenceFieldPrototype.getPropertyName();
 		}
 
 		return null;
 	}
 
 	/**
-	 * Setter for the sequence attribute name
+	 * Setter for the sequence property name
 	 * 
-	 * @param sequenceAttributeName
+	 * @param sequencePropertyName
 	 */
-	public void setSequenceAttributeName(String sequenceAttributeName) {
+	public void setSequencePropertyName(String sequencePropertyName) {
 		if (sequenceFieldPrototype != null) {
-			sequenceFieldPrototype.setName(sequenceAttributeName);
+			sequenceFieldPrototype.setPropertyName(sequencePropertyName);
 		}
 	}
 

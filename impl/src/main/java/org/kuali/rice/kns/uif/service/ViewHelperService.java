@@ -87,7 +87,7 @@ public interface ViewHelperService {
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performUpdate(View view, Object model);
+	public void performApplyModel(View view, Object model);
 
 	/**
 	 * The last phase before the view is rendered. Here final preparations can

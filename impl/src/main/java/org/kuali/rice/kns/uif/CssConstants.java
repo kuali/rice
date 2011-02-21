@@ -32,6 +32,16 @@ public class CssConstants {
 		public static final String INLINE_BLOCK = DISPLAY + "inline-block;";
 		public static final String NONE = DISPLAY + "none;";
 	}
+	
+	public static final String TEXT_ALIGN = "text-align: ";
+
+	public static class TextAligns {
+		public static final String LEFT = TEXT_ALIGN + "left;";
+		public static final String RIGHT = TEXT_ALIGN + "right;";
+		public static final String CENTER = TEXT_ALIGN + "center;";
+		public static final String JUSTIFY = TEXT_ALIGN + "justify;";
+		public static final String INHERIT = TEXT_ALIGN + "inherit;";
+	}
 
 	public static final String VERTICAL_ALIGN = "vertical-align: ";
 
@@ -48,6 +58,8 @@ public class CssConstants {
 		public static final String MARGIN_TOP = "margin-top: {0};";
 		public static final String MARGIN_BOTTOM = "margin-bottom: {0};";
 	}
+	
+	public static final String WIDTH = "width: ";
 
 	/**
 	 * Replaces parameters in the given CSS string with the corresponding

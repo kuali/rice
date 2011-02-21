@@ -28,14 +28,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="AttributeField" p:name="number"/>
-                <bean parent="AttributeField" p:name="name"/>
-                <bean parent="AttributeField" p:name="extension.accountType.codeAndDescription"/>
-                <bean parent="AttributeField" p:name="subAccount"/>
-                <bean parent="AttributeField" p:name="subAccountName"/>
-                <bean parent="AttributeField" p:name="createDate"/>
-                <bean parent="AttributeField" p:name="subsidizedPercent"/>
-                <bean parent="AttributeField" p:name="foId"/>
+                <bean parent="AttributeField" p:propertyName="number"/>
+                <bean parent="AttributeField" p:propertyName="name"/>
+                <bean parent="AttributeField" p:propertyName="extension.accountType.codeAndDescription"/>
+                <bean parent="AttributeField" p:propertyName="subAccount"/>
+                <bean parent="AttributeField" p:propertyName="subAccountName"/>
+                <bean parent="AttributeField" p:propertyName="createDate"/>
+                <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+                <bean parent="AttributeField" p:propertyName="foId"/>
                </list>
              </property>
              <property name="title" value="Account Information"/>
@@ -43,12 +43,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            <bean parent="CollectionGroup_Accordion">
               <property name="title" value="Fiscal Officer Accounts"/>  
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-              <property name="name" value="fiscalOfficer.accounts"/>
+              <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="items">
                 <list>
-                  <bean parent="AttributeField" p:name="number"/>
-                  <bean parent="AttributeField" p:name="name"/>
-                  <bean parent="AttributeField" p:name="foId"/>
+                  <bean parent="AttributeField" p:propertyName="number"/>
+                  <bean parent="AttributeField" p:propertyName="name"/>
+                  <bean parent="AttributeField" p:propertyName="foId"/>
                 </list>
               </property>      
               <property name="layoutManager.summaryTitle" value="Travel Account"/> 
@@ -61,15 +61,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            <bean parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="5">
               <property name="title" value="Fiscal Officer Accounts"/>  
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-              <property name="name" value="fiscalOfficer.accounts"/>
+              <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="layoutManager.renderSequenceField" value="false"/>
               <property name="items">
                 <list>
-                  <bean parent="AttributeField" p:name="number"/>
-                  <bean parent="AttributeField" p:name="name"/>
-                  <bean parent="AttributeField" p:name="foId"/>
-                  <bean parent="AttributeField" p:name="subsidizedPercent"/>
-                  <bean parent="AttributeField" p:name="createDate"/>
+                  <bean parent="AttributeField" p:propertyName="number"/>
+                  <bean parent="AttributeField" p:propertyName="name"/>
+                  <bean parent="AttributeField" p:propertyName="foId"/>
+                  <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+                  <bean parent="AttributeField" p:propertyName="createDate"/>
                  </list>
               </property>      
            </bean>                

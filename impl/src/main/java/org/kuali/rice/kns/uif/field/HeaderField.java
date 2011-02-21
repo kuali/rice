@@ -38,34 +38,90 @@ public class HeaderField extends GroupField {
 		super();
 	}
 
+	/**
+	 * Text that should be displayed on the header
+	 * 
+	 * @return String header text
+	 */
 	public String getHeaderText() {
 		return this.headerText;
 	}
 
+	/**
+	 * Setter for the header text
+	 * 
+	 * @param headerText
+	 */
 	public void setHeaderText(String headerText) {
 		this.headerText = headerText;
 	}
 
+	/**
+	 * HTML header level (h1 ... h6) that should be applied to the header text
+	 * 
+	 * @return String header level
+	 */
 	public String getHeaderLevel() {
 		return this.headerLevel;
 	}
 
+	/**
+	 * Setter for the header level
+	 * 
+	 * @param headerLevel
+	 */
 	public void setHeaderLevel(String headerLevel) {
 		this.headerLevel = headerLevel;
 	}
 
+	/**
+	 * Style class that should be applied to the header text
+	 * 
+	 * <p>
+	 * Note the style class given here applies to only the header text. The
+	 * style class property inherited from the <code>Component</code> interface
+	 * can be used to set the class for the whole header div (which could
+	 * include a nested <code>Group</code>)
+	 * </p>
+	 * 
+	 * @return String style class
+	 * @see org.kuali.rice.kns.uif.Component.getStyleClass()
+	 */
 	public String getHeaderStyleClass() {
 		return this.headerStyleClass;
 	}
 
+	/**
+	 * Setter for the header style class
+	 * 
+	 * @param headerStyleClass
+	 */
 	public void setHeaderStyleClass(String headerStyleClass) {
 		this.headerStyleClass = headerStyleClass;
 	}
 
+	/**
+	 * Style that should be applied to the header text
+	 * 
+	 * <p>
+	 * Note the style given here applies to only the header text. The style
+	 * property inherited from the <code>Component</code> interface can be used
+	 * to set the style for the whole header div (which could include a nested
+	 * <code>Group</code>)
+	 * </p>
+	 * 
+	 * @return String header style
+	 * @see org.kuali.rice.kns.uif.Component.getStyle()
+	 */
 	public String getHeaderStyle() {
 		return this.headerStyle;
 	}
 
+	/**
+	 * Setter for the header style
+	 * 
+	 * @param headerStyle
+	 */
 	public void setHeaderStyle(String headerStyle) {
 		this.headerStyle = headerStyle;
 	}

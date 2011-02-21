@@ -32,7 +32,7 @@ import org.kuali.rice.kns.uif.container.View;
  */
 public class GroupField extends FieldBase {
 	private static final long serialVersionUID = -505654043702442196L;
-	
+
 	private Group group;
 
 	public GroupField() {
@@ -70,14 +70,34 @@ public class GroupField extends FieldBase {
 		return components;
 	}
 
+	/**
+	 * <code>Group</code> instance that is contained within in the field
+	 * 
+	 * @return Group instance
+	 */
 	public Group getGroup() {
 		return this.group;
 	}
 
+	/**
+	 * Setter for the field's nested group
+	 * 
+	 * @param group
+	 */
 	public void setGroup(Group group) {
 		this.group = group;
 	}
 
+	/**
+	 * List of <code>Component</code> instances contained in the nested group
+	 * 
+	 * <p>
+	 * Convenience method for configuration to get the items List from the
+	 * field's nested group
+	 * </p>
+	 * 
+	 * @return List<? extends Component> items
+	 */
 	public List<? extends Component> getItems() {
 		if (group != null) {
 			return group.getItems();
@@ -86,6 +106,16 @@ public class GroupField extends FieldBase {
 		return null;
 	}
 
+	/**
+	 * Setter for the field's nested group items
+	 * 
+	 * <p>
+	 * Convenience method for configuration to set the items List for the
+	 * field's nested group
+	 * </p>
+	 * 
+	 * @param items
+	 */
 	public void setItems(List<? extends Component> items) {
 		if (group != null) {
 			group.setItems(items);

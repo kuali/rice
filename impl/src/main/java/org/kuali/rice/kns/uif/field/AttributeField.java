@@ -32,23 +32,34 @@ import org.kuali.rice.kns.web.format.Formatter;
 /**
  * Field that encapsulates data input/output captured by an attribute within the
  * application
- * <p>
  * 
+ * <p>
+ * The <code>AttributField</code> provides the majority of the data input/output
+ * for the screen. Through these fields the model can be displayed and updated.
+ * For data input, the field contains a <code>Control</code> instance will
+ * render an HTML control element(s). The attribute field also contains a
+ * <code>LabelField</code>, summary, and widgets such as a quickfinder (for
+ * looking up values) and inquiry (for getting more information on the value).
+ * <code>AttributeField</code> instances can have associated messages (errors)
+ * due to invalid input or business rule failures. Security can also be
+ * configured to restrict who may view the fields value.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeField extends FieldBase implements DataBinding {
 	private static final long serialVersionUID = -3703656713706343840L;
-	
+
 	// value props
 	private String defaultValue;
 	private Integer maxLength;
 
-	private BindingInfo bindingInfo;
-
 	private Formatter formatter;
 	private KeyValuesFinder optionsFinder;
+
+	// binding
+	private String propertyName;
+	private BindingInfo bindingInfo;
 
 	private String dictionaryAttributeName;
 	private String dictionaryObjectEntry;
@@ -85,7 +96,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		super.performInitialization(view);
 
 		if (bindingInfo != null) {
-			bindingInfo.setDefaults(view, this);
+			bindingInfo.setDefaults(view, getPropertyName());
 		}
 
 		if (control != null && StringUtils.isBlank(control.getId())) {
@@ -99,8 +110,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * Sets properties if blank to the corresponding property value in the
-	 * <code>AttributeDefinition</code>
+	 * Defaults the properties of the <code>AttributeField</code> to the
+	 * corresponding properties of its <code>AttributeDefinition</code>
+	 * retrieved from the dictionary (if such an entry exists). If the field
+	 * already contains a value for a property, the definitions value is not
+	 * used.
 	 * 
 	 * @param attributeDefinition
 	 *            - AttributeDefinition instance the property values should be
@@ -161,34 +175,108 @@ public class AttributeField extends FieldBase implements DataBinding {
 		return components;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.DataBinding#getPropertyName()
+	 */
+	public String getPropertyName() {
+		return this.propertyName;
+	}
+
+	/**
+	 * Setter for the component's property name
+	 * 
+	 * @param propertyName
+	 */
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
+	}
+
+	/**
+	 * Default value for the model property the field points to
+	 * 
+	 * <p>
+	 * When a new <code>View</code> instance is requested, the corresponding
+	 * model will be newly created. During this initialization process the value
+	 * for the model property will be set to the given default value (if set)
+	 * </p>
+	 * 
+	 * @return String default value
+	 */
 	public String getDefaultValue() {
 		return this.defaultValue;
 	}
 
+	/**
+	 * Setter for the fields default value
+	 * 
+	 * @param defaultValue
+	 */
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 
+	/**
+	 * <code>Formatter</code> instance that should be used when displaying and
+	 * accepting the field's value in the user interface
+	 * 
+	 * <p>
+	 * Formatters can provide conversion between datatypes in addition to
+	 * special string formatting such as currency display
+	 * </p>
+	 * 
+	 * @return Formatter instance
+	 * @see org.kuali.rice.kns.web.format.Formatter
+	 */
 	public Formatter getFormatter() {
 		return this.formatter;
 	}
 
+	/**
+	 * Setter for the field's formatter
+	 * 
+	 * @param formatter
+	 */
 	public void setFormatter(Formatter formatter) {
 		this.formatter = formatter;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.DataBinding#getBindingInfo()
+	 */
 	public BindingInfo getBindingInfo() {
 		return this.bindingInfo;
 	}
 
+	/**
+	 * Setter for the field's binding info
+	 * 
+	 * @param bindingInfo
+	 */
 	public void setBindingInfo(BindingInfo bindingInfo) {
 		this.bindingInfo = bindingInfo;
 	}
 
+	/**
+	 * <code>Control</code> instance that should be used to input data for the
+	 * field
+	 * 
+	 * <p>
+	 * When the field is editable, the control will be rendered so the user can
+	 * input a value(s). Controls typically are part of a Form and render
+	 * standard HTML control elements such as text input, select, and checkbox
+	 * </p>
+	 * 
+	 * @return Control instance
+	 */
 	public Control getControl() {
 		return this.control;
 	}
 
+	/**
+	 * Setter for the field's control
+	 * 
+	 * @param control
+	 */
 	public void setControl(Control control) {
 		this.control = control;
 	}
@@ -201,34 +289,110 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.errorMessagePlacement = errorMessagePlacement;
 	}
 
+	/**
+	 * Field that contains the messages (errors) for the attribute field. The
+	 * <code>ErrorsField</code> holds configuration on associated messages along
+	 * with information on rendering the messages in the user interface
+	 * 
+	 * @return ErrorsField instance
+	 */
 	public ErrorsField getErrorsField() {
 		return this.errorsField;
 	}
 
+	/**
+	 * Setter for the attribute field's errors field
+	 * 
+	 * @param errorsField
+	 */
 	public void setErrorsField(ErrorsField errorsField) {
 		this.errorsField = errorsField;
 	}
 
+	/**
+	 * Name of the attribute within the data dictionary the attribute field is
+	 * associated with
+	 * 
+	 * <p>
+	 * During the initialize phase for the <code>View</code>, properties for
+	 * attribute fields are defaulted from a corresponding
+	 * <code>AttributeDefinition</code> in the data dictionary. Based on the
+	 * propertyName and parent object class the framework attempts will
+	 * determine the attribute definition that is associated with the field and
+	 * set this property. However this property can also be set in the fields
+	 * configuration to use another dictionary attribute.
+	 * </p>
+	 * 
+	 * <p>
+	 * The attribute name is used along with the dictionary object entry to find
+	 * the <code>AttributeDefinition</code>
+	 * </p>
+	 * 
+	 * @return String attribute name
+	 */
 	public String getDictionaryAttributeName() {
 		return this.dictionaryAttributeName;
 	}
 
+	/**
+	 * Setter for the dictionary attribute name
+	 * 
+	 * @param dictionaryAttributeName
+	 */
 	public void setDictionaryAttributeName(String dictionaryAttributeName) {
 		this.dictionaryAttributeName = dictionaryAttributeName;
 	}
 
+	/**
+	 * Object entry name in the data dictionary the associated attribute is
+	 * apart of
+	 * 
+	 * <p>
+	 * During the initialize phase for the <code>View</code>, properties for
+	 * attribute fields are defaulted from a corresponding
+	 * <code>AttributeDefinition</code> in the data dictionary. Based on the
+	 * parent object class the framework will determine the object entry for the
+	 * associated attribute. However the object entry can be set in the field's
+	 * configuration to use another object entry for the attribute
+	 * </p>
+	 * 
+	 * <p>
+	 * The attribute name is used along with the dictionary object entry to find
+	 * the <code>AttributeDefinition</code>
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public String getDictionaryObjectEntry() {
 		return this.dictionaryObjectEntry;
 	}
 
+	/**
+	 * Setter for the dictionary object entry
+	 * 
+	 * @param dictionaryObjectEntry
+	 */
 	public void setDictionaryObjectEntry(String dictionaryObjectEntry) {
 		this.dictionaryObjectEntry = dictionaryObjectEntry;
 	}
 
+	/**
+	 * Instance of <code>KeyValluesFinder</code> that should be invoked to
+	 * provide a List of values the field can have. Generally used to provide
+	 * the options for a multi-value control or to validate the submitted field
+	 * value
+	 * 
+	 * @return KeyValuesFinder instance
+	 */
 	public KeyValuesFinder getOptionsFinder() {
 		return this.optionsFinder;
 	}
 
+	/**
+	 * Setter for the field's KeyValuesFinder instance
+	 * 
+	 * @param optionsFinder
+	 */
 	public void setOptionsFinder(KeyValuesFinder optionsFinder) {
 		this.optionsFinder = optionsFinder;
 	}

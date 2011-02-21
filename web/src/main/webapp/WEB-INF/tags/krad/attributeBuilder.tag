@@ -21,12 +21,9 @@
               
 <%@ variable name-given="class" scope="AT_END" %>
 <%@ variable name-given="style" scope="AT_END" %>
-<%@ variable name-given="align" scope="AT_END" %>
-<%@ variable name-given="valign" scope="AT_END" %>
-<%@ variable name-given="width" scope="AT_END" %>              
               
 <%-- Can be called by templates that are building HTML tags to build the standard attributes
-such as class, style, align, valign, and width. This tag checks whether the component actually
+such as class and style. This tag checks whether the component actually
 has a value for these settings before building up the attribute. This makes the outputted html
 cleaner and actually prevents problems from having any empty attribute value in some cases (like
 for style. The attribute strings can be referenced by the calling template through the exported
@@ -39,16 +36,3 @@ variables --%>
    <c:if test="${!empty component.style}">
       <c:set var="style" value="style=\"${component.style}\""/>
    </c:if>
-   
-   <c:if test="${!empty component.align}">
-      <c:set var="align" value="align=\"${component.align}\""/>
-   </c:if>
-
-   <c:if test="${!empty component.valign}">
-      <c:set var="valign" value="valign=\"${component.valign}\""/>
-   </c:if>   
-   
-   <c:if test="${!empty component.width}">
-      <c:set var="width" value="width=\"${component.width}\""/>
-   </c:if>      
-

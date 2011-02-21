@@ -33,6 +33,14 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
  * maintenance controller.
  * </p>
  * 
+ * <p>
+ * Maintenance views are primarily configured by the object class they are
+ * associated with. This provides the default dictionary information for the
+ * fields. If more than one maintenance view is needed for the same object
+ * class, the view name can be used to further identify an unique view
+ * </p>
+ * *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceView extends DocumentView {
@@ -66,10 +74,27 @@ public class MaintenanceView extends DocumentView {
 		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), objectClassName);
 	}
 
+	/**
+	 * Class name for the object the maintenance document applies to
+	 * 
+	 * <p>
+	 * The object class name is used to pick up a dictionary entry which will
+	 * feed the attribute field definitions and other configuration. In addition
+	 * it is used to configure the <code>Maintainable</code> which will carry
+	 * out the maintenance action
+	 * </p>
+	 * 
+	 * @return Class<?> maintenance object class
+	 */
 	public Class<?> getObjectClassName() {
 		return this.objectClassName;
 	}
 
+	/**
+	 * Setter for the object class name 
+	 * 
+	 * @param objectClassName
+	 */
 	public void setObjectClassName(Class<?> objectClassName) {
 		this.objectClassName = objectClassName;
 	}

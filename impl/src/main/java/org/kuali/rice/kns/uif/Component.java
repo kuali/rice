@@ -98,6 +98,30 @@ public interface Component extends Serializable {
 	public String getTemplate();
 
 	/**
+	 * Setter for the components template
+	 * 
+	 * @param template
+	 */
+	public void setTemplate(String template);
+
+	/**
+	 * A title for the component. Depending on the component can be used in
+	 * various ways. For example with a Container component the title is used to
+	 * set the header text. For components like controls other other components
+	 * that render an HTML element it is used to set the HTML title attribute
+	 * 
+	 * @return String title for component
+	 */
+	public String getTitle();
+
+	/**
+	 * Setter for the components title
+	 * 
+	 * @param title
+	 */
+	public void setTitle(String title);
+
+	/**
 	 * Should be called to initialize the component
 	 * <p>
 	 * Where components can set defaults and setup other necessary state. The
@@ -125,7 +149,7 @@ public interface Component extends Serializable {
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performUpdate(View view, Object model);
+	public void performApplyModel(View view, Object model);
 
 	/**
 	 * The last phase before the view is rendered. Here final preparations can
@@ -165,15 +189,12 @@ public interface Component extends Serializable {
 	public List<ComponentInitializer> getComponentInitializers();
 
 	/**
-	 * The name for the component
-	 * <p>
-	 * The name is an alternative way to uniquely identify a component. It can
-	 * be used to give a more informative identifier for the component.
-	 * </p>
+	 * Setter for the components List of <code>ComponentInitializer</code>
+	 * instances
 	 * 
-	 * @return String name
+	 * @param componentInitializers
 	 */
-	public String getName();
+	public void setComponentInitializers(List<ComponentInitializer> componentInitializers);
 
 	/**
 	 * Indicates whether the component should be rendered in the UI
@@ -186,6 +207,13 @@ public interface Component extends Serializable {
 	 *         should not be
 	 */
 	public boolean isRender();
+
+	/**
+	 * Setter for the components render indicator
+	 * 
+	 * @param render
+	 */
+	public void setRender(boolean render);
 
 	/**
 	 * Indicates whether the component should be hidden in the UI
@@ -274,6 +302,13 @@ public interface Component extends Serializable {
 	public String getStyle();
 
 	/**
+	 * Setter for the components style
+	 * 
+	 * @param style
+	 */
+	public void setStyle(String style);
+
+	/**
 	 * CSS style class(s) to be applied to the component
 	 * <p>
 	 * Declares additional style classes for the component. Multiple classes are
@@ -291,48 +326,11 @@ public interface Component extends Serializable {
 	public String getStyleClass();
 
 	/**
-	 * Width the component should take up in the container
-	 * <p>
-	 * All components belong to a <code>Container</code> and are placed using a
-	 * <code>LayoutManager</code>. This property specifies a width the component
-	 * should take up in the Container. This is not applicable for all layout
-	 * managers. Any valid html width setting can be given (fixed width,
-	 * percentage)
-	 * </p>
-	 * <p>
-	 * e.g. '30%', '55px'
-	 * </p>
+	 * Setter for the components style class
 	 * 
-	 * @return String width string
+	 * @param styleClass
 	 */
-	public String getWidth();
-
-	/**
-	 * Horizontal alignment of the component within its container
-	 * <p>
-	 * All components belong to a <code>Container</code> and are placed using a
-	 * <code>LayoutManager</code>. This property specifies how the component
-	 * should be aligned horizontally within the container. Any valid html align
-	 * setting can be given (left, center, right)
-	 * </p>
-	 * 
-	 * @return String horizontal align
-	 */
-	public String getAlign();
-
-	/**
-	 * Vertical alignment of the component within its container
-	 * <p>
-	 * All components belong to a <code>Container</code> and are placed using a
-	 * <code>LayoutManager</code>. This property specifies how the component
-	 * should be aligned vertically within the container. Any valid html valign
-	 * setting can be given (top, middle, bottom). Note note all container
-	 * support the valign setting
-	 * </p>
-	 * 
-	 * @return String vertical align
-	 */
-	public String getValign();
+	public void setStyleClass(String styleClass);
 
 	/**
 	 * Number of places the component should take up horizontally in the
@@ -347,6 +345,13 @@ public interface Component extends Serializable {
 	 * @return int number of columns to span
 	 */
 	public int getColSpan();
+
+	/**
+	 * Setter for the components column span
+	 * 
+	 * @param colSpan
+	 */
+	public void setColSpan(int colSpan);
 
 	/**
 	 * Number of places the component should take up vertically in the container
@@ -385,6 +390,13 @@ public interface Component extends Serializable {
 	public ComponentDecorator getDecorator();
 
 	/**
+	 * Setter for the components decorator
+	 * 
+	 * @param decorator
+	 */
+	public void setDecorator(ComponentDecorator decorator);
+
+	/**
 	 * Returns the <code>DecoratorChain</code> instance that will return the
 	 * <code>ComponentDecorator</code> instances for the component in the
 	 * correct order for rendering
@@ -392,5 +404,22 @@ public interface Component extends Serializable {
 	 * @return DecoratorChain instance
 	 */
 	public DecoratorChain getDecoratorChain();
+
+	/**
+	 * Can be used to order a component within a List of other components, lower
+	 * numbers are placed higher up in the list, while higher numbers are placed
+	 * lower in the list
+	 * 
+	 * @return int ordering number
+	 * @see org.springframework.core.Ordered#getOrder()
+	 */
+	public int getOrder();
+
+	/**
+	 * Setter for the component's order
+	 * 
+	 * @param order
+	 */
+	public void setOrder(int order);
 
 }

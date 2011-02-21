@@ -59,7 +59,7 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 
 		MaintenanceView maintenanceView = (MaintenanceView) view;
 
-		parameters.put(ViewTypeParameterNames.NAME, maintenanceView.getName());
+		parameters.put(ViewTypeParameterNames.NAME, maintenanceView.getViewName());
 		parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME, maintenanceView.getObjectClassName().getName());
 
 		return parameters;

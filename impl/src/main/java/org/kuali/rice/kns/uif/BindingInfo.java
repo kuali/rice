@@ -47,9 +47,25 @@ public class BindingInfo implements Serializable {
 		bindToForm = false;
 	}
 
-	public void setDefaults(View view, Component component) {
+	/**
+	 * Sets up some default binding properties based on the view configuration
+	 * and the component's property name
+	 * 
+	 * <p>
+	 * Sets the bindingName (if not set) to the given property name, and if the
+	 * binding object path has not been set uses the default binding object path
+	 * setup for the view
+	 * </p>
+	 * 
+	 * @param view
+	 *            - the view instance the component belongs to
+	 * @param propertyName
+	 *            - name of the property (relative to the parent object) the
+	 *            component binds to
+	 */
+	public void setDefaults(View view, String propertyName) {
 		if (StringUtils.isBlank(bindingName)) {
-			bindingName = component.getName();
+			bindingName = propertyName;
 		}
 
 		if (StringUtils.isBlank(bindingObjectPath)) {

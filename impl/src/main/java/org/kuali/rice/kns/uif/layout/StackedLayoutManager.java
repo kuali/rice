@@ -76,12 +76,12 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	 * line if enabled). The groups are added to the stackedGroups
 	 * <code>List</code> and picked up by the template.
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performUpdate(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performUpdate(View view, Object model, Container container) {
-		super.performUpdate(view, model, container);
+	public void performApplyModel(View view, Object model, Container container) {
+		super.performApplyModel(view, model, container);
 
 		if (!(container instanceof CollectionGroup)) {
 			throw new IllegalArgumentException(

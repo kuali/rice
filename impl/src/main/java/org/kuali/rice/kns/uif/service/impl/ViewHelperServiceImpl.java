@@ -161,7 +161,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// if entry given but not attribute name, use field name as attribute
 		// name
 		if (StringUtils.isNotBlank(dictionaryObjectEntry) && StringUtils.isBlank(dictionaryAttributeName)) {
-			dictionaryAttributeName = field.getName();
+			dictionaryAttributeName = field.getPropertyName();
 		}
 
 		// if both dictionary names not given and the field is from a model,
@@ -169,7 +169,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// name
 		if (StringUtils.isBlank(dictionaryAttributeName) && StringUtils.isBlank(dictionaryObjectEntry)
 				&& !field.getBindingInfo().isBindToForm()) {
-			dictionaryAttributeName = field.getName();
+			dictionaryAttributeName = field.getPropertyName();
 			Class<?> dictionaryModelClass = getDictionaryModelClass(view, field);
 			if (dictionaryModelClass != null) {
 				dictionaryObjectEntry = dictionaryModelClass.getName();
@@ -192,12 +192,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performUpdate(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void performUpdate(View view, Object model) {
-		performComponentUpdate(view, view, model);
+	public void performApplyModel(View view, Object model) {
+		performComponentApplyModel(view, view, model);
 	}
 
 	/**
@@ -218,13 +218,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 * @param model
 	 *            - top level object containing the data
 	 */
-	protected void performComponentUpdate(View view, Component component, Object model) {
+	protected void performComponentApplyModel(View view, Component component, Object model) {
 		if (component == null) {
 			return;
 		}
 
 		// invoke component to perform its conditional logic
-		component.performUpdate(view, model);
+		component.performApplyModel(view, model);
 
 		// invoke service override hook
 		performCustomApplyModel(view, component, model);
@@ -232,7 +232,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// get components children and recursively call perform conditional
 		// logic
 		for (Component nestedComponent : component.getNestedComponents()) {
-			performComponentUpdate(view, nestedComponent, model);
+			performComponentApplyModel(view, nestedComponent, model);
 		}
 	}
 

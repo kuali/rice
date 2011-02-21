@@ -120,7 +120,7 @@ public class ViewServiceImpl implements ViewService {
 
 		// Apply Model Phase
 		LOG.debug("performing apply model phase for view: " + view.getId());
-		helperService.performUpdate(view, model);
+		helperService.performApplyModel(view, model);
 
 		// Update State Phase
 		LOG.debug("performing update state phase for view: " + view.getId());

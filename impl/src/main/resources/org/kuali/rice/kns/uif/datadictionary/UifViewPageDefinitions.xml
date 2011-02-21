@@ -48,7 +48,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <!-- Common Views -->
   
   <bean id="InquiryView" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
-     <property name="name" value="default"/>
+     <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
      <property name="defaultBindingObjectPath" value="bo"/>
@@ -64,7 +64,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="LookupView" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
-     <property name="name" value="default"/>
+     <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiLookupable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
      <property name="controllerRequestMapping" value="lookup"/>
@@ -87,7 +87,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="MaintenanceView" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
-     <property name="name" value="default"/>
+     <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
      <property name="defaultBindingObjectPath" value="document.newMaintainableObject.businessObject"/>
@@ -98,7 +98,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      </property>
      <property name="page">
         <bean parent="Page_Accordion"/>
-     </property>     
+     </property> 
+     <property name="itemOrderingSequence" value="11"/>
+     <property name="items">
+       <list>
+          <bean parent="Group_DocumentOverview" p:order="10"/>
+          <bean parent="Group_DocumentNotes" p:decorator.defaultOpen="false" p:order="30"/>  
+          <bean parent="Group_DocumentRouteLog" p:decorator.defaultOpen="false" p:order="40"/>  
+       </list>
+     </property>         
   </bean>
   
   <!-- Base Pages -->

@@ -299,14 +299,4 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnMouseMoveScript();
 
-	/**
-	 * Indicates whether there are any supported events for the component and
-	 * whether there is actual script code configured for one of the supported
-	 * events
-	 * 
-	 * @return boolean true if there is event code for the component, false if
-	 *         there is no code
-	 */
-	public boolean getHasEventScript();
-
 }

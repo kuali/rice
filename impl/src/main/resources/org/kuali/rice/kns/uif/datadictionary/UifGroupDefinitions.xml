@@ -175,10 +175,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Group_DocumentNotes" parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="4">
       <property name="id" value="group_docnotes"/>
       <property name="title" value="Notes and Attachments"/>
-      <property name="name" value="documentHeader.boNotes"/>
+      <property name="propertyName" value="documentHeader.boNotes"/>
       <property name="styleClass" value="tableborders"/>
       <property name="collectionObjectClass" value="org.kuali.rice.kns.bo.Note"/>
-      <property name="layoutManager.sequenceAttributeName" value="notePostedTimestamp"/>
+      <property name="layoutManager.sequencePropertyName" value="notePostedTimestamp"/>
       <property name="layoutManager.tableTools.render" value="false"/>
       <property name="items">
          <list> 

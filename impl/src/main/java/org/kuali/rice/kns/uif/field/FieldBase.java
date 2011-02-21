@@ -33,16 +33,15 @@ import org.kuali.rice.kns.uif.container.View;
  * 
  * <p>
  * Holds a nested <code>LabelField</code> with configuration for rendering the
- * label.
+ * label and configuration on label placement.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FieldBase extends ComponentBase implements Field {
 	private static final long serialVersionUID = -5888414844802862760L;
-	
+
 	private String shortLabel;
-	private boolean showLabel;
 
 	private LabelField labelField;
 
@@ -50,7 +49,6 @@ public class FieldBase extends ComponentBase implements Field {
 	private boolean labelFieldRendered;
 
 	public FieldBase() {
-		showLabel = true;
 		labelFieldRendered = false;
 
 		labelPlacement = Position.LEFT;
@@ -112,6 +110,9 @@ public class FieldBase extends ComponentBase implements Field {
 		return components;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.field.Field#getLabel()
+	 */
 	public String getLabel() {
 		if (labelField != null) {
 			return labelField.getLabelText();
@@ -120,32 +121,57 @@ public class FieldBase extends ComponentBase implements Field {
 		return null;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.field.Field#setLabel(java.lang.String)
+	 */
 	public void setLabel(String label) {
 		if (labelField != null) {
 			labelField.setLabelText(label);
 		}
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.field.Field#getShortLabel()
+	 */
 	public String getShortLabel() {
 		return this.shortLabel;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.field.Field#setShortLabel(java.lang.String)
+	 */
 	public void setShortLabel(String shortLabel) {
 		this.shortLabel = shortLabel;
 	}
 
-	public boolean isShowLabel() {
-		return this.showLabel;
-	}
-
+	/**
+	 * Sets whether the label should be displayed
+	 * 
+	 * <p>
+	 * Convenience method for configuration that sets the render indicator on
+	 * the fields <code>LabelField</code> instance
+	 * </p>
+	 * 
+	 * @param showLabel
+	 *            boolean true if label should be displayed, false if the label
+	 *            should not be displayed
+	 */
 	public void setShowLabel(boolean showLabel) {
-		this.showLabel = showLabel;
+		if (labelField != null) {
+			labelField.setRender(showLabel);
+		}
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.field.Field#getLabelField()
+	 */
 	public LabelField getLabelField() {
 		return this.labelField;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.field.Field#setLabelField(org.kuali.rice.kns.uif.field.LabelField)
+	 */
 	public void setLabelField(LabelField labelField) {
 		this.labelField = labelField;
 	}
@@ -159,21 +185,14 @@ public class FieldBase extends ComponentBase implements Field {
 	}
 
 	/**
-	 * Indicates whether the contained <code>LabelField</code> has been rendered
-	 * as part of another field and thus should not be rendered with the
-	 * attribute
-	 * 
-	 * @return boolean true if the label field has been rendered, false if it
-	 *         should be rendered with the attribute
+	 * @see org.kuali.rice.kns.uif.field.Field#isLabelFieldRendered()
 	 */
 	public boolean isLabelFieldRendered() {
 		return this.labelFieldRendered;
 	}
 
 	/**
-	 * Setter for the label field rendered indicator
-	 * 
-	 * @param labelFieldRendered
+	 * @see org.kuali.rice.kns.uif.field.Field#setLabelFieldRendered(boolean)
 	 */
 	public void setLabelFieldRendered(boolean labelFieldRendered) {
 		this.labelFieldRendered = labelFieldRendered;

@@ -16,31 +16,23 @@
 package org.kuali.rice.kns.uif.container;
 
 /**
+ * Provides configuration for <code>View</code> instances that render an HTML
+ * form
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FormView extends View {
 	private static final long serialVersionUID = -3291164284675273147L;
-
-	private String stateHandler;
 
 	// TODO: is this necessary or can we determine it based on request?
 	private String controllerRequestMapping;
 
 	private boolean renderForm;
 	private boolean validateModelData;
-	private String persistenceMode;
 
 	public FormView() {
 		renderForm = true;
 		validateModelData = true;
-	}
-
-	public String getStateHandler() {
-		return this.stateHandler;
-	}
-
-	public void setStateHandler(String stateHandler) {
-		this.stateHandler = stateHandler;
 	}
 
 	/**
@@ -93,27 +85,6 @@ public class FormView extends View {
 
 	public void setControllerRequestMapping(String controllerRequestMapping) {
 		this.controllerRequestMapping = controllerRequestMapping;
-	}
-
-	/**
-	 * Mode for storing the views state. By default the REQUEST and SESSION
-	 * modes are supported. This affects how hidden data and containers are
-	 * rendered and how the view is restored on post back
-	 * 
-	 * @return String persistence mode
-	 * @see org.kuali.rice.kns.uif.UifConstants.PersistenceMode
-	 */
-	public String getPersistenceMode() {
-		return this.persistenceMode;
-	}
-
-	/**
-	 * Setter for the views persistence mode
-	 * 
-	 * @param persistenceMode
-	 */
-	public void setPersistenceMode(String persistenceMode) {
-		this.persistenceMode = persistenceMode;
 	}
 
 }

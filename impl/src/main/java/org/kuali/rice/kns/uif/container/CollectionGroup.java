@@ -59,6 +59,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
 	private Class<?> collectionObjectClass;
 
+	private String propertyName;
 	private BindingInfo bindingInfo;
 
 	private boolean renderAddLine;
@@ -102,11 +103,11 @@ public class CollectionGroup extends Group implements DataBinding {
 		super.performInitialization(view);
 
 		if (bindingInfo != null) {
-			bindingInfo.setDefaults(view, this);
+			bindingInfo.setDefaults(view, getPropertyName());
 		}
 
 		if (addLineBindingInfo != null) {
-			addLineBindingInfo.setDefaults(view, this);
+			addLineBindingInfo.setDefaults(view, getPropertyName());
 			addLineBindingInfo.setBindingName(addLineName);
 			if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
 				addLineBindingInfo.setBindByNamePrefix(getFieldBindByNamePrefix());
@@ -181,7 +182,7 @@ public class CollectionGroup extends Group implements DataBinding {
 	 */
 	public String initNewCollectionLine(Object model, boolean clearLine) {
 		if (!(model instanceof UifFormBase)) {
-			throw new RuntimeException("Cannot create new collection line for group: " + getName()
+			throw new RuntimeException("Cannot create new collection line for group: " + getPropertyName()
 					+ ". Model does not extend " + UifFormBase.class.getName());
 		}
 
@@ -203,7 +204,7 @@ public class CollectionGroup extends Group implements DataBinding {
 				newCollectionLines.put(getBindingInfo().getBindingPath(), newLineInstance);
 			}
 			catch (Exception e) {
-				throw new RuntimeException("Cannot create new add line instance for group: " + getName()
+				throw new RuntimeException("Cannot create new add line instance for group: " + getPropertyName()
 						+ " with collection class: " + getCollectionObjectClass().getName());
 			}
 		}
@@ -241,6 +242,22 @@ public class CollectionGroup extends Group implements DataBinding {
 	 */
 	public void setCollectionObjectClass(Class<?> collectionObjectClass) {
 		this.collectionObjectClass = collectionObjectClass;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.DataBinding#getPropertyName()
+	 */
+	public String getPropertyName() {
+		return this.propertyName;
+	}
+
+	/**
+	 * Setter for the collections property name
+	 * 
+	 * @param propertyName
+	 */
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
 	}
 
 	/**

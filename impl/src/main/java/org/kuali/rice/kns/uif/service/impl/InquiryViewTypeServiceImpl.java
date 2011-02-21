@@ -47,7 +47,7 @@ public class InquiryViewTypeServiceImpl  implements ViewTypeService {
 
 		InquiryView inquiryView = (InquiryView) view;
 
-		parameters.put(ViewTypeParameterNames.NAME, inquiryView.getName());
+		parameters.put(ViewTypeParameterNames.NAME, inquiryView.getViewName());
 		parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME, inquiryView.getObjectClassName().getName());
 
 		return parameters;

@@ -30,6 +30,13 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
  * actions to perform operations on the data.
  * </p>
  * 
+ * <p>
+ * Inquiry views are primarily configured by the object class they are
+ * associated with. This provides the default dictionary information for the
+ * fields. If more than one inquiry view is needed for the same object class,
+ * the view name can be used to further identify an unique view
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InquiryView extends FormView {
@@ -69,7 +76,7 @@ public class InquiryView extends FormView {
 	 * <p>
 	 * The object class name is used to pick up a dictionary entry which will
 	 * feed the attribute field definitions and other configuration. In addition
-	 * it is to configure the <code>Inquirable</code> which will carry out the
+	 * it is used to configure the <code>Inquirable</code> which will carry out the
 	 * inquiry action
 	 * </p>
 	 * 
@@ -88,19 +95,56 @@ public class InquiryView extends FormView {
 		this.objectClassName = objectClassName;
 	}
 
+	/**
+	 * <code>InquiryPresentationController</code> class that should be used for
+	 * the <code>InquiryView</code> instance
+	 * 
+	 * <p>
+	 * The presentation controller is consulted to determine component (group,
+	 * field) state such as required, read-only, and hidden. The presentation
+	 * controller does not take into account user permissions
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public Class<? extends InquiryPresentationController> getPresentationControllerClass() {
 		return this.presentationControllerClass;
 	}
 
+	/**
+	 * Setter for the inquiry views presentation controller
+	 * 
+	 * @param presentationControllerClass
+	 */
 	public void setPresentationControllerClass(
 			Class<? extends InquiryPresentationController> presentationControllerClass) {
 		this.presentationControllerClass = presentationControllerClass;
 	}
 
+	/**
+	 * <code>InquiryAuthorizer</code> class that should be used for the
+	 * <code>InquiryView</code> instance
+	 * 
+	 * <p>
+	 * The authorizer class is consulted to determine component (group, field)
+	 * state such as required, read-only, and hidden based on the users
+	 * permissions. It typically communicates with the Kuali Identity Management
+	 * system to determine roles and permissions. It is used with the
+	 * presentation controller and dictionary conditional logic to determine the
+	 * final component state
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public Class<? extends InquiryAuthorizer> getAuthorizerClass() {
 		return this.authorizerClass;
 	}
 
+	/**
+	 * Setter for the inquiry views authorizer class
+	 * 
+	 * @param authorizerClass
+	 */
 	public void setAuthorizerClass(Class<? extends InquiryAuthorizer> authorizerClass) {
 		this.authorizerClass = authorizerClass;
 	}

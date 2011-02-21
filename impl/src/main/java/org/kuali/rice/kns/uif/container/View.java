@@ -29,6 +29,7 @@ import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
@@ -57,6 +58,8 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
 public class View extends ContainerBase {
 	private static final long serialVersionUID = -1220009725554576953L;
 
+	private String viewName;
+
 	private String entryPageId;
 	private String currentPageId;
 
@@ -82,6 +85,9 @@ public class View extends ContainerBase {
 	private Group page;
 
 	private List<? extends Group> items;
+
+	private LinkField viewMenuLink;
+	private String viewMenuGrouping;
 
 	// TODO: scripting variables, should be in context
 	private boolean dialogMode;
@@ -190,6 +196,34 @@ public class View extends ContainerBase {
 		}
 
 		return null;
+	}
+
+	/**
+	 * View name provides an identifier for a view within a type. That is if a
+	 * set of <code>View</code> instances have the same values for the
+	 * properties that are used to retrieve them by their type, the name can be
+	 * given to further qualify the view that should be retrieved.
+	 * 
+	 * <p>
+	 * A view type like the <code>LookupView</code> might have several views for
+	 * the same object class, but one that is the 'default' lookup and another
+	 * that is the 'advanced' lookup. Therefore the name on the first could be
+	 * set to 'default', and likewise the name for the second 'advanced'.
+	 * </p>
+	 * 
+	 * @return String name of view
+	 */
+	public String getViewName() {
+		return this.viewName;
+	}
+
+	/**
+	 * Setter for the view's name
+	 * 
+	 * @param viewName
+	 */
+	public void setViewName(String viewName) {
+		this.viewName = viewName;
 	}
 
 	/**
@@ -457,7 +491,8 @@ public class View extends ContainerBase {
 		ViewHelperService viewHelperService = KNSServiceLocator.getService(getViewHelperServiceBeanId());
 
 		if (viewHelperService == null) {
-			throw new RuntimeException("Unable to find ViewHelperService (using bean id: " + getViewHelperServiceBeanId() + ") for view: " + getId());
+			throw new RuntimeException("Unable to find ViewHelperService (using bean id: "
+					+ getViewHelperServiceBeanId() + ") for view: " + getId());
 		}
 
 		return viewHelperService;
@@ -604,6 +639,44 @@ public class View extends ContainerBase {
 	}
 
 	/**
+	 * Provides configuration for displaying a link to the view from an
+	 * application menu
+	 * 
+	 * @return LinkField view link field
+	 */
+	public LinkField getViewMenuLink() {
+		return this.viewMenuLink;
+	}
+
+	/**
+	 * Setter for the views link field
+	 * 
+	 * @param viewMenuLink
+	 */
+	public void setViewMenuLink(LinkField viewMenuLink) {
+		this.viewMenuLink = viewMenuLink;
+	}
+
+	/**
+	 * Provides a grouping string for the view to group its menu link (within a
+	 * portal for instance)
+	 * 
+	 * @return String menu grouping
+	 */
+	public String getViewMenuGrouping() {
+		return this.viewMenuGrouping;
+	}
+
+	/**
+	 * Setter for the views menu grouping
+	 * 
+	 * @param viewMenuGrouping
+	 */
+	public void setViewMenuGrouping(String viewMenuGrouping) {
+		this.viewMenuGrouping = viewMenuGrouping;
+	}
+
+	/**
 	 * Indicates what lifecycle phase the View instance is in
 	 * 
 	 * <p>
@@ -640,8 +713,6 @@ public class View extends ContainerBase {
 				|| StringUtils.equals(viewStatus, ViewStatus.FINAL);
 	}
 
-	// TODO: isUpdated()
-
 	/**
 	 * Indicates whether the view has been updated from the model and final
 	 * updates made
@@ -653,8 +724,8 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * onSubmit script configured on the <code>View</code>, gets placed on
-	 * the form element
+	 * onSubmit script configured on the <code>View</code>, gets placed on the
+	 * form element
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnSubmit()
 	 */

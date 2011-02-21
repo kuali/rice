@@ -22,8 +22,7 @@
     
  --%>
  
-<input type="submit" id="${field.id}"
-       name="${field.name}" value="${field.actionLabel}" class="${field.styleClass}"/>
+<input type="submit" id="${field.id}" value="${field.actionLabel}" class="${field.styleClass}"/>
        
 <krad:actionParameters componentId="${field.id}" parameters="${field.actionParameters}"/>
 

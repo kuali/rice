@@ -47,7 +47,7 @@ public class LookupViewTypeServiceImpl implements ViewTypeService {
 
 		LookupView lookupView = (LookupView) view;
 
-		parameters.put(ViewTypeParameterNames.NAME, lookupView.getName());
+		parameters.put(ViewTypeParameterNames.NAME, lookupView.getViewName());
 		parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME, lookupView.getObjectClassName().getName());
 
 		return parameters;

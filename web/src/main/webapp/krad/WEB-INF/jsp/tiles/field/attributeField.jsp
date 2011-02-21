@@ -17,8 +17,8 @@
 
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.AttributeField"/>
 
-<%-- check to see if label has been rendered in another field (grid layout) and should be shown --%>
-<c:set var="renderLabel" value="${!field.labelFieldRendered && field.showLabel}"/>
+<%-- check to see if label has been rendered in another field (grid layout)--%>
+<c:set var="renderLabel" value="${!field.labelFieldRendered}"/>
 
 <krad:span component="${field}" idSuffix="attribute">
 

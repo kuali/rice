@@ -60,7 +60,7 @@ public interface LayoutManager extends Serializable {
 	 * @param container
 	 *            - Container the layout manager applies to
 	 */
-	public void performUpdate(View view, Object model, Container container);
+	public void performApplyModel(View view, Object model, Container container);
 
 	/**
 	 * The last phase before the view is rendered. Here final preparations can

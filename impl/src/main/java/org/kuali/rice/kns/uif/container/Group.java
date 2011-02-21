@@ -32,7 +32,16 @@ import org.kuali.rice.kns.uif.field.GroupField;
  * 
  * <p>
  * Groups can exist at different levels of the <code>View</code>, providing
- * conceptual groupings such as the page, section, and group.
+ * conceptual groupings such as the page, section, and group. In addition, other
+ * group types can be created to add behavior like collection support
+ * </p>
+ * 
+ * <p>
+ * <code>Group</code> implementation has properties for defaulting the binding
+ * information (such as the parent object path and a binding prefix) for the
+ * fields it contains. During the phase these properties (if given) are set on
+ * the fields contained in the <code>Group</code> that implement
+ * <code>DataBinding</code>, unless they have already been set on the field.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

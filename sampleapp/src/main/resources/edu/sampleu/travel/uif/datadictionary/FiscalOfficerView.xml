@@ -50,8 +50,8 @@
     <property name="fieldBindByNamePrefix" value="bo" />
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:name="id" />
-        <bean parent="AttributeField" p:name="userName" />
+        <bean parent="AttributeField" p:propertyName="id" />
+        <bean parent="AttributeField" p:propertyName="userName" />
       </list>
     </property>
   </bean> 

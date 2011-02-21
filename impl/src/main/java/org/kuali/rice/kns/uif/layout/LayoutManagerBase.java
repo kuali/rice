@@ -59,10 +59,10 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performUpdate(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
-	public void performUpdate(View view, Object model, Container container) {
+	public void performApplyModel(View view, Object model, Container container) {
 
 	}
 

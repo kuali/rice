@@ -37,11 +37,6 @@ public class UifConstants extends JSTLConstants {
 		public static final String VIEW_TYPE_NAME = "viewTypeName";
 	}
 
-	public static class PersistenceMode {
-		public static final String REQUEST = "REQUEST";
-		public static final String SESSION = "SESSION";
-	}
-
 	public static class Position {
 		public static final String BOTTOM = "BOTTOM";
 		public static final String LEFT = "LEFT";

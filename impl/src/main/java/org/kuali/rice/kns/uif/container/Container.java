@@ -48,6 +48,7 @@ public interface Container extends Component {
 	/**
 	 * <code>List</code> of <code>Component</code> instances that are held by
 	 * the container
+	 * 
 	 * <p>
 	 * Contained components are rendered within the section template by calling
 	 * the associated <code>LayoutManager</code>
@@ -60,6 +61,7 @@ public interface Container extends Component {
 	/**
 	 * <code>Set</code> of <code>Component</code> classes that may be placed
 	 * into the container
+	 * 
 	 * <p>
 	 * If an empty or null list is returned, it is assumed the container
 	 * supports all components. The returned set will be used by dictionary
@@ -74,6 +76,7 @@ public interface Container extends Component {
 	/**
 	 * <code>LayoutManager</code> that should be used to layout the components
 	 * in the container
+	 * 
 	 * <p>
 	 * The template associated with the layout manager will be invoked passing
 	 * in the List of components from the container. This list is exported under
@@ -85,7 +88,15 @@ public interface Container extends Component {
 	public LayoutManager getLayoutManager();
 
 	/**
+	 * Setter for the containers layout manager
+	 * 
+	 * @param layoutManager
+	 */
+	public void setLayoutManager(LayoutManager layoutManager);
+
+	/**
 	 * <code>HeaderField</code> associated with the container
+	 * 
 	 * <p>
 	 * Header fields are generally rendered at the beginning of the container to
 	 * indicate a grouping, although this is determined by the template
@@ -102,21 +113,15 @@ public interface Container extends Component {
 	public HeaderField getHeader();
 
 	/**
-	 * Indicates whether the <code>HeaderField</code> associated with the
-	 * <code>Container</code> should be rendered
-	 * <p>
-	 * For nested groups (like Field Groups) it is often necessary to only show
-	 * the container body (the contained components). This method allows the
-	 * header to not be displayed
-	 * </p>
+	 * Setter for the containers header field
 	 * 
-	 * @return boolean true if the header should be rendered, false if it should
-	 *         not be
+	 * @param header
 	 */
-	public boolean isRenderHeader();
+	public void setHeader(HeaderField header);
 
 	/**
 	 * Footer <code>Group</code> associated with the container
+	 * 
 	 * <p>
 	 * The footer is usually rendered at the end of the container. Often this is
 	 * a place to put actions (buttons) for the container.
@@ -131,22 +136,16 @@ public interface Container extends Component {
 	public Group getFooter();
 
 	/**
-	 * Indicates whether the footer associated with the <code>Container</code>
-	 * should be rendered
-	 * <p>
-	 * For nested groups it is often necessary to only show the container body
-	 * (the contained components). This method allows the footer to not be
-	 * displayed
-	 * </p>
+	 * Setter for the containers footer
 	 * 
-	 * @return boolean true if the footer should be rendered, false if it should
-	 *         not be
+	 * @param footer
 	 */
-	public boolean isRenderFooter();
+	public void setFooter(Group footer);
 
 	/**
 	 * Text for the container that provides a summary description or
 	 * instructions
+	 * 
 	 * <p>
 	 * Text is encapsulated in a <code>MessageField</code> that contains
 	 * rendering configuration.
@@ -159,9 +158,17 @@ public interface Container extends Component {
 	 * @return MessageField instance or Null
 	 */
 	public MessageField getSummaryMessageField();
+	
+	/**
+	 * Setter for the containers summary message field
+	 * 
+	 * @param summaryMessageField
+	 */
+	public void setSummaryMessageField(MessageField summaryMessageField) ;
 
 	/**
 	 * Field that contains the error messages for the container
+	 * 
 	 * <p>
 	 * Containers can collect the errors for the contained component and display
 	 * either all the messages or counts. This <code>Field</code> is used to
@@ -174,7 +181,15 @@ public interface Container extends Component {
 	public ErrorsField getErrorsField();
 
 	/**
+	 * Setter for the containers errors field
+	 * 
+	 * @param errorsField
+	 */
+	public void setErrorsField(ErrorsField errorsField);
+
+	/**
 	 * Help configuration object for the container
+	 * 
 	 * <p>
 	 * External help information can be configured for the container. The
 	 * <code>Help</code> object can the configuration for rendering a link to
@@ -184,5 +199,12 @@ public interface Container extends Component {
 	 * @return Help for container
 	 */
 	public Help getHelp();
+
+	/**
+	 * Setter for the containers help content
+	 * 
+	 * @param help
+	 */
+	public void setHelp(Help help);
 
 }

@@ -28,6 +28,21 @@ package org.kuali.rice.kns.uif;
  */
 public interface DataBinding {
 
+	/**
+	 * Returns the <code>BindingInfo</code> instance that is configured for the
+	 * component
+	 * 
+	 * @return BindingInfo
+	 * @see org.kuali.rice.kns.uif.BindingInfo
+	 */
 	public BindingInfo getBindingInfo();
+
+	/**
+	 * Name of the property (relative to the parent object) the component binds
+	 * to
+	 * 
+	 * @return String property name
+	 */
+	public String getPropertyName();
 
 }

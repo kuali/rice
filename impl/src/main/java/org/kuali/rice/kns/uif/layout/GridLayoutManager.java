@@ -90,7 +90,8 @@ public class GridLayoutManager extends LayoutManagerBase {
 			if (item instanceof Field) {
 				Field fieldLabel = (Field) item;
 
-				if (renderLabelFieldsSeparately && fieldLabel.getLabelField() != null && fieldLabel.isShowLabel()) {
+				if (renderLabelFieldsSeparately && fieldLabel.getLabelField() != null
+						&& fieldLabel.getLabelField().isRender()) {
 					gridFields.add(fieldLabel.getLabelField());
 
 					// set boolean to indicate label field should not be

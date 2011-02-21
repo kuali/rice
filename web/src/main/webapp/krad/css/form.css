@@ -176,8 +176,9 @@ form li div label, form li span label{
 	margin-right:5px;
     padding-bottom: 5px;	
     padding-top: 5px;
-    padding-right: 5px;
 	border:none;
+	text-align: right;
+	vertical-align: middle;
 }
 label.choice{
 	display:block;

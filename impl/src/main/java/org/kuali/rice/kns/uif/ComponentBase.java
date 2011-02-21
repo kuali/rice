@@ -23,28 +23,37 @@ import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
 import org.kuali.rice.kns.uif.decorator.DecoratorChain;
 import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
+import org.springframework.core.Ordered;
 
 /**
- * Base implementation of <code>Component</code>
+ * Base implementation of <code>Component</code> which other component
+ * implementations should extend
+ * 
+ * <p>
+ * Provides base component properties such as id and template. Also provides
+ * default implementation for the <code>ScriptEventSupport</code> and
+ * <code>Ordered</code> interfaces. By default no script events are supported.
+ * </p>
+ * 
+ * <p>
+ * <code>ComponentBase</code> also provides properties for a
+ * <code>ComponentDecorator</code> and a List of
+ * </code>ComponentInitializers</code>
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
- * @see org.kuali.rice.kns.uif.Component
  */
-public abstract class ComponentBase implements Component, ScriptEventSupport {
+public abstract class ComponentBase implements Component, Ordered, ScriptEventSupport {
 	private static final long serialVersionUID = -4449335748129894350L;
 
 	private String id;
-	private String name;
 	private String template;
 	private String title;
 
 	private boolean render;
-
 	private boolean hidden;
 	private boolean readOnly;
 	private Boolean required;
-	private boolean disclosure;
 
 	private String align;
 	private String valign;
@@ -53,6 +62,8 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private int rowSpan;
 	private String style;
 	private String styleClass;
+
+	private int order;
 
 	private String onLoadScript;
 	private String onUnloadScript;
@@ -80,6 +91,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	public ComponentBase() {
 		componentInitializers = new ArrayList<ComponentInitializer>();
 
+		order = 0;
 		colSpan = 1;
 		rowSpan = 1;
 
@@ -106,10 +118,10 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * components</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.Component#performUpdate(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.Component#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
-	public void performUpdate(View view, Object model) {
+	public void performApplyModel(View view, Object model) {
 		if (isReadOnly()) {
 			for (Component component : getNestedComponents()) {
 				if (component != null) {
@@ -123,6 +135,8 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * The following setup is done here:
 	 * 
 	 * <ul>
+	 * <li>If any of the style properties were given, sets the style string on
+	 * the style property</li>
 	 * <li>Setup the decorator chain (if component has decorators) for rendering
 	 * </li>
 	 * </ul>
@@ -131,6 +145,19 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 *      java.lang.Object)
 	 */
 	public void performFinalize(View view, Object model) {
+		// add the align, valign, and width settings to style
+		if (StringUtils.isNotBlank(getAlign())) {
+			setStyle(getStyle() + CssConstants.TEXT_ALIGN + getAlign() + ";");
+		}
+
+		if (StringUtils.isNotBlank(getValign())) {
+			setStyle(getStyle() + CssConstants.VERTICAL_ALIGN + getValign() + ";");
+		}
+
+		if (StringUtils.isNotBlank(getWidth())) {
+			setStyle(getStyle() + CssConstants.WIDTH + getWidth() + ";");
+		}
+
 		decoratorChain = new DecoratorChain(this);
 	}
 
@@ -146,217 +173,292 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 		return components;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getId()
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setId(java.lang.String)
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getTemplate()
+	 */
 	public String getTemplate() {
 		return this.template;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setTemplate(java.lang.String)
+	 */
 	public void setTemplate(String template) {
 		this.template = template;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getTitle()
+	 */
 	public String getTitle() {
 		return this.title;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setTitle(java.lang.String)
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#isHidden()
+	 */
 	public boolean isHidden() {
 		return this.hidden;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setHidden(boolean)
+	 */
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#isReadOnly()
+	 */
 	public boolean isReadOnly() {
 		return this.readOnly;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setReadOnly(boolean)
+	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getRequired()
+	 */
 	public Boolean getRequired() {
 		return this.required;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setRequired(java.lang.Boolean)
+	 */
 	public void setRequired(Boolean required) {
 		this.required = required;
 	}
 
-	public boolean isDisclosure() {
-		return this.disclosure;
-	}
-
-	public void setDisclosure(boolean disclosure) {
-		this.disclosure = disclosure;
-	}
-
+	/**
+	 * Horizontal alignment of the component within its container
+	 * 
+	 * <p>
+	 * All components belong to a <code>Container</code> and are placed using a
+	 * <code>LayoutManager</code>. This property specifies how the component
+	 * should be aligned horizontally within the container. During the finalize
+	 * phase the CSS text-align style will be created for the align setting.
+	 * </p>
+	 * 
+	 * @return String horizontal align
+	 * @see org.kuali.rice.kns.uif.CssConstants.TextAligns
+	 */
 	public String getAlign() {
 		return this.align;
 	}
 
+	/**
+	 * Sets the components horizontal alignment
+	 * 
+	 * @param align
+	 */
 	public void setAlign(String align) {
 		this.align = align;
 	}
 
+	/**
+	 * Vertical alignment of the component within its container
+	 * 
+	 * <p>
+	 * All components belong to a <code>Container</code> and are placed using a
+	 * <code>LayoutManager</code>. This property specifies how the component
+	 * should be aligned vertically within the container. During the finalize
+	 * phase the CSS vertical-align style will be created for the valign
+	 * setting.
+	 * </p>
+	 * 
+	 * @return String vertical align
+	 * @see org.kuali.rice.kns.uif.CssConstants.VerticalAligns
+	 */
 	public String getValign() {
 		return this.valign;
 	}
 
+	/**
+	 * Setter for the component's vertical align
+	 * 
+	 * @param valign
+	 */
 	public void setValign(String valign) {
 		this.valign = valign;
 	}
 
+	/**
+	 * Width the component should take up in the container
+	 * 
+	 * <p>
+	 * All components belong to a <code>Container</code> and are placed using a
+	 * <code>LayoutManager</code>. This property specifies a width the component
+	 * should take up in the Container. This is not applicable for all layout
+	 * managers. During the finalize phase the CSS width style will be created
+	 * for the width setting.
+	 * </p>
+	 * 
+	 * <p>
+	 * e.g. '30%', '55px'
+	 * </p>
+	 * 
+	 * @return String width string
+	 */
 	public String getWidth() {
 		return this.width;
 	}
 
+	/**
+	 * Setter for the components width
+	 * 
+	 * @param width
+	 */
 	public void setWidth(String width) {
 		this.width = width;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getColSpan()
+	 */
 	public int getColSpan() {
 		return this.colSpan;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setColSpan(int)
+	 */
 	public void setColSpan(int colSpan) {
 		this.colSpan = colSpan;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getRowSpan()
+	 */
 	public int getRowSpan() {
 		return this.rowSpan;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setRowSpan(int)
+	 */
 	public void setRowSpan(int rowSpan) {
 		this.rowSpan = rowSpan;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getStyle()
+	 */
 	public String getStyle() {
 		return this.style;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setStyle(java.lang.String)
+	 */
 	public void setStyle(String style) {
 		this.style = style;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getStyleClass()
+	 */
 	public String getStyleClass() {
 		return this.styleClass;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setStyleClass(java.lang.String)
+	 */
 	public void setStyleClass(String styleClass) {
 		this.styleClass = styleClass;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#isRender()
+	 */
 	public boolean isRender() {
 		return this.render;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setRender(boolean)
+	 */
 	public void setRender(boolean render) {
 		this.render = render;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getComponentInitializers()
+	 */
 	public List<ComponentInitializer> getComponentInitializers() {
 		return this.componentInitializers;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setComponentInitializers(java.util.List)
+	 */
 	public void setComponentInitializers(List<ComponentInitializer> componentInitializers) {
 		this.componentInitializers = componentInitializers;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getDecorator()
+	 */
 	public ComponentDecorator getDecorator() {
 		return this.decorator;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setDecorator(org.kuali.rice.kns.uif.decorator.ComponentDecorator)
+	 */
 	public void setDecorator(ComponentDecorator decorator) {
 		this.decorator = decorator;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getDecoratorChain()
+	 */
 	public DecoratorChain getDecoratorChain() {
 		return this.decoratorChain;
 	}
 
-	public void setDecoratorChain(DecoratorChain decoratorChain) {
-		this.decoratorChain = decoratorChain;
+	/**
+	 * @see org.springframework.core.Ordered#getOrder()
+	 */
+	public int getOrder() {
+		return this.order;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getHasEventScript()
+	 * Setter for the component's order
+	 * 
+	 * @param order
 	 */
-	public boolean getHasEventScript() {
-		boolean hasEventScript = false;
-
-		if (getSupportsOnLoad() && StringUtils.isNotBlank(getOnLoadScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnUnload() && StringUtils.isNotBlank(getOnUnloadScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnClose() && StringUtils.isNotBlank(getOnCloseScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnBlur() && StringUtils.isNotBlank(getOnBlurScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnChange() && StringUtils.isNotBlank(getOnChangeScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnClick() && StringUtils.isNotBlank(getOnClickScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnDblClick() && StringUtils.isNotBlank(getOnDblClickScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnFocus() && StringUtils.isNotBlank(getOnFocusScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnSubmit() && StringUtils.isNotBlank(getOnSubmitScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnKeyPress() && StringUtils.isNotBlank(getOnKeyPressScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnKeyUp() && StringUtils.isNotBlank(getOnKeyUpScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnKeyDown() && StringUtils.isNotBlank(getOnKeyDownScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnMouseOver() && StringUtils.isNotBlank(getOnMouseOverScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnMouseOut() && StringUtils.isNotBlank(getOnMouseOutScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnMouseUp() && StringUtils.isNotBlank(getOnMouseUpScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnMouseDown() && StringUtils.isNotBlank(getOnMouseDownScript())) {
-			hasEventScript = true;
-		}
-		else if (getSupportsOnMouseMove() && StringUtils.isNotBlank(getOnMouseMoveScript())) {
-			hasEventScript = true;
-		}
-
-		return hasEventScript;
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	/**

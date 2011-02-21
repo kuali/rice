@@ -82,18 +82,47 @@ public class ActionField extends FieldBase {
 		}
 	}
 
+	/**
+	 * Name of the method that should be called when the action is selected
+	 * 
+	 * <p>
+	 * For a server side call (clientSideCall is false), gives the name of the
+	 * method in the mapped controller that should be invoked when the action is
+	 * selected. For client side calls gives the name of the script function
+	 * that should be invoked when the action is selected
+	 * </p>
+	 * 
+	 * @return String name of method to call
+	 */
 	public String getMethodToCall() {
 		return this.methodToCall;
 	}
 
+	/**
+	 * Setter for the actions method to call
+	 * 
+	 * @param methodToCall
+	 */
 	public void setMethodToCall(String methodToCall) {
 		this.methodToCall = methodToCall;
 	}
 
+	/**
+	 * Indicates whether the action invokes a client side function or a server
+	 * side. For server side calls this will typically be a form post
+	 * 
+	 * @return boolean true if action makes a client side call, false if the
+	 *         call is server side
+	 */
 	public boolean isClientSideCall() {
 		return this.clientSideCall;
 	}
 
+	/**
+	 * Setter for the client side call indicator
+	 * 
+	 * @param clientSideCall
+	 */
 	public void setClientSideCall(boolean clientSideCall) {
 		this.clientSideCall = clientSideCall;
 	}
@@ -114,18 +143,53 @@ public class ActionField extends FieldBase {
 		return eventCode;
 	}
 
+	/**
+	 * Label text for the action
+	 * 
+	 * <p>
+	 * The label text is used by the template renderers to give a human readable
+	 * label for the action. For buttons this generally is the button text,
+	 * while for an action link it would be the links displayed text
+	 * </p>
+	 * 
+	 * @return String label for action
+	 */
 	public String getActionLabel() {
 		return this.actionLabel;
 	}
 
+	/**
+	 * Setter for the actions label
+	 * 
+	 * @param actionLabel
+	 */
 	public void setActionLabel(String actionLabel) {
 		this.actionLabel = actionLabel;
 	}
 
+	/**
+	 * For an <code>ActionField</code> that is part of a
+	 * <code>NavigationGroup</code, the navigate to page id can be set to
+	 * configure the page that should be navigated to when the action is
+	 * selected
+	 * 
+	 * <p>
+	 * Support exists in the <code>UifControllerBase</code> for handling
+	 * navigation between pages
+	 * </p>
+	 * 
+	 * @return String id of page that should be rendered when the action item is
+	 *         selected
+	 */
 	public String getNavigateToPageId() {
 		return this.navigateToPageId;
 	}
 
+	/**
+	 * Setter for the navigate to page id
+	 * 
+	 * @param navigateToPageId
+	 */
 	public void setNavigateToPageId(String navigateToPageId) {
 		this.navigateToPageId = navigateToPageId;
 	}

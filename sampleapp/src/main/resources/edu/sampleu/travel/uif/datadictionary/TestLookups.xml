@@ -25,37 +25,37 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="criteriaFields">
       <list>
         <!-- p:dictionaryObjectEntry=edu.sampleu.travel.bo.TravelAccount --> 
-        <bean parent="AttributeField" p:name="number"/>
-        <bean parent="AttributeField" p:name="name"/>
-        <bean parent="AttributeField" p:name="subAccount"/>
-        <bean parent="AttributeField" p:name="subAccountName"/>
-        <bean parent="AttributeField" p:name="createDate"/>
-        <bean parent="AttributeField" p:name="subsidizedPercent"/>
-        <bean parent="AttributeField" p:name="foId"/> <!-- p:forceLookup="true" -->
-        <bean parent="AttributeField" p:name="extension.accountTypeCode"/>
+        <bean parent="AttributeField" p:propertyName="number"/>
+        <bean parent="AttributeField" p:propertyName="name"/>
+        <bean parent="AttributeField" p:propertyName="subAccount"/>
+        <bean parent="AttributeField" p:propertyName="subAccountName"/>
+        <bean parent="AttributeField" p:propertyName="createDate"/>
+        <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+        <bean parent="AttributeField" p:propertyName="foId"/> <!-- p:forceLookup="true" -->
+        <bean parent="AttributeField" p:propertyName="extension.accountTypeCode"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:name="number"/> <!-- p:forceInquiry="true" -->
-        <bean parent="AttributeField" p:name="name"/> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:propertyName="number"/> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:propertyName="name"/> <!-- p:forceInquiry="true" -->
 <!--
         <bean parent="FieldGroup" p:label="Sub Account">
           <property name="readOnly" value="true"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:name="subAccount" p:readOnly="true" p:showLabel="false"/>
-              <bean parent="AttributeField" p:name="subAccountName" p:readOnly="true" p:showLabel="false"/>
+              <bean parent="AttributeField" p:propertyName="subAccount" p:readOnly="true" p:showLabel="false"/>
+              <bean parent="AttributeField" p:propertyName="subAccountName" p:readOnly="true" p:showLabel="false"/>
             </list>
           </property>
         </bean>
 -->
-        <bean parent="AttributeField" p:name="subAccount"/>
-        <bean parent="AttributeField" p:name="subAccountName"/>
-        <bean parent="AttributeField" p:name="subsidizedPercent"/>
-        <bean parent="AttributeField" p:name="createDate"/>
-        <bean parent="AttributeField" p:name="extension.accountType.codeAndDescription"/> <!-- p:forceInquiry="true" -->
-        <bean parent="AttributeField" p:name="foId"/> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:propertyName="subAccount"/>
+        <bean parent="AttributeField" p:propertyName="subAccountName"/>
+        <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+        <bean parent="AttributeField" p:propertyName="createDate"/>
+        <bean parent="AttributeField" p:propertyName="extension.accountType.codeAndDescription"/> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:propertyName="foId"/> <!-- p:forceInquiry="true" -->
       </list>
     </property>
 
@@ -82,7 +82,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>
     <property name="resultsGroup">
       <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
-        <property name="name" value="searchResults"/>
+        <property name="propertyName" value="searchResults"/>
 <!--
         <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
         <property name="bindingInfo.bindingObjectPath" value="searchResults"/>
@@ -99,22 +99,22 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </property>
         <property name="items">
           <list>
-            <bean parent="AttributeField_Form" p:name="objectClassName">
+            <bean parent="AttributeField_Form" p:propertyName="objectClassName">
               <property name="control">
                 <bean parent="HiddenControl"/>
               </property>
             </bean>
-            <bean parent="AttributeField_Form" p:name="backLocation">
+            <bean parent="AttributeField_Form" p:propertyName="backLocation">
               <property name="control">
                 <bean parent="HiddenControl"/>
               </property>
             </bean>
-            <bean parent="AttributeField_Form" p:name="conversionFields">
+            <bean parent="AttributeField_Form" p:propertyName="conversionFields">
               <property name="control">
                 <bean parent="HiddenControl"/>
               </property>
             </bean>
-            <bean parent="AttributeField_Form" p:name="readOnlyFields">
+            <bean parent="AttributeField_Form" p:propertyName="readOnlyFields">
               <property name="control">
                 <bean parent="HiddenControl"/>
               </property>

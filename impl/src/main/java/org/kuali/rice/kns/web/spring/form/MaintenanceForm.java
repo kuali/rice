@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import org.kuali.rice.kns.document.MaintenanceDocument;
+
 
 /**
  * Form class for <code>MaintenanceView</code> screens
@@ -25,10 +27,12 @@ public class MaintenanceForm extends DocumentFormBase {
 	protected String objectClassName;
 	protected String maintenanceAction;
 
-	public MaintenanceForm() {
 
-	}
-
+	@Override
+    public MaintenanceDocument getDocument() {
+        return (MaintenanceDocument) super.getDocument();
+    }
+	
 	public String getObjectClassName() {
 		return this.objectClassName;
 	}

@@ -18,7 +18,8 @@ package org.kuali.rice.kew.docsearch;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.EvaluationOperator;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.api.parameter.ParameterType;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -75,19 +76,21 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName)));
 
+        Parameter orig = KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+
         // adjust the app constant to be greater than custom generator value
-        adjustResultSetCapApplicationConstantValue(CustomDocumentSearchGenerator.RESULT_SET_LIMIT + 1);
+        adjustResultSetCapApplicationConstantValue(orig, CustomDocumentSearchGenerator.RESULT_SET_LIMIT + 1);
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
 
         // adjust the app constant to be less than custom generator value
         int newLimit = CustomDocumentSearchGenerator.RESULT_SET_LIMIT - 1;
-        adjustResultSetCapApplicationConstantValue(newLimit);
+        adjustResultSetCapApplicationConstantValue(orig, newLimit);
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
-        // delete the parameter
-        KNSServiceLocator.getBusinessObjectService().delete(ParameterBo.from(KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP)));
+        // reset the parameter
+        adjustResultSetCapApplicationConstantValue(orig, Integer.valueOf(orig.getValue()));
 
         // old parameter value will still be cached, let's flush the cache
         //KNSServiceLocator.getParameterService().clearCache();
@@ -96,17 +99,17 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
     }
 
-    private void adjustResultSetCapApplicationConstantValue(Integer newValue) {
-        ParameterBo ps = ParameterBo.from(KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
+    private void adjustResultSetCapApplicationConstantValue(Parameter p, Integer newValue) {
+        Parameter.Builder ps = Parameter.Builder.create(p);
 
         ps.setNamespaceCode(KEWConstants.KEW_NAMESPACE);
         ps.setName(KEWConstants.DOC_SEARCH_RESULT_CAP);
         ps.setValue(newValue.toString());
-        ps.setParameterTypeCode("CONFG");
-        //ps.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
+        ps.setParameterType(ParameterType.Builder.create("CONFG"));
+
         ps.setComponentCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
-        ps.setEvaluationOperatorCode(EvaluationOperator.ALLOW.getOperatorCode());
-        KNSServiceLocator.getBusinessObjectService().save(ps);
+        ps.setEvaluationOperator(EvaluationOperator.ALLOW);
+        KNSServiceLocator.getClientParameterService().updateParameter(ps.build());
     }
 
     /**

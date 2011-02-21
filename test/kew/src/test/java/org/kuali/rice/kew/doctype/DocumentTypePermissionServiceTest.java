@@ -23,9 +23,6 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

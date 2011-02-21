@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
@@ -350,23 +348,4 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	public void setPrincipals(List<KimPrincipalImpl> principals) {
 		this.principals = principals;
 	}
-	
-	/** This possibly fixes an issue with afterLookup not following references and calling afterLookup?
-	@Override
-	public void afterLookup(PersistenceBroker persistenceBroker)
-			throws PersistenceBrokerException {
-		// afterLookup is not called recursively on all referenced objects, external entities can be encrypted coming out of the db, so let's resolve this by manaully walking down
-		super.afterLookup(persistenceBroker);
-		if (getExternalIdentifiers() != null) {
-			for (KimEntityExternalIdentifierImpl extId : getExternalIdentifiers()) {
-				extId.afterLookup(persistenceBroker);
-			}
-		}
-	}	
-	*/
-
-    public static void main(String...s) throws Throwable {
-        System.err.println(PropertyUtils.getPropertyType(new ParameterBo(), "parameterType"));
-    }
-	
 }

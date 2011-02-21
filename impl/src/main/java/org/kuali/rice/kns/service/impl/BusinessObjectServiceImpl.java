@@ -15,21 +15,9 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.beans.PropertyDescriptor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -44,6 +32,9 @@ import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.beans.PropertyDescriptor;
+import java.util.*;
 
 /**
  * This class is the service implementation for the BusinessObjectService structure. This is the default implementation, that is
@@ -256,14 +247,6 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#getReferenceIfExists(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
      */
     public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
-
-        if (bo instanceof ParameterBo) {
-            try {
-                System.err.println("ojb bo:" + PropertyUtils.getPropertyType(bo, "parameterType"));
-                System.err.println("new bo:" + PropertyUtils.getPropertyType(new ParameterBo(), "parameterType"));
-            } catch (Throwable t) { t.printStackTrace(); }
-        }
-
 
         BusinessObject referenceBo = null;
         boolean allFkeysHaveValues = true;

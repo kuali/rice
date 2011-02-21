@@ -20,7 +20,6 @@ package org.kuali.rice.kew.server;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -638,7 +637,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String parameterValue = "Y";
         Parameter.Builder b = Parameter.Builder.create(lastApproverActivateParameter);
         b.setValue(parameterValue);
-        KNSServiceLocator.getBusinessObjectService().save(ParameterBo.from(b.build()));
+        KNSServiceLocator.getClientParameterService().updateParameter(b.build());
 
         lastApproverActivateParameter = KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
@@ -700,7 +699,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // set parameter value back to it's original value
         Parameter.Builder b2 = Parameter.Builder.create(lastApproverActivateParameter);
         b2.setValue("");
-        KNSServiceLocator.getBusinessObjectService().save(ParameterBo.from(b2.build()));
+        KNSServiceLocator.getClientParameterService().updateParameter(b2.build());
     }
 
     @Test public void testIsFinalApprover() throws Exception {

@@ -1,15 +1,5 @@
 package org.kuali.rice.core.api.component;
 
-import java.io.Serializable;
-import java.util.Collection;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -17,6 +7,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
+
+import javax.xml.bind.annotation.*;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * An immutable representation of an Component.
@@ -32,7 +26,8 @@ import org.w3c.dom.Element;
     Component.Elements.CODE,
     Component.Elements.NAME,
     Component.Elements.VIRTUAL,
-    Component.Elements.ACTIVE
+    Component.Elements.ACTIVE,
+    "_elements"
 })
 public final class Component implements ComponentContract, ModelObjectComplete {
 	

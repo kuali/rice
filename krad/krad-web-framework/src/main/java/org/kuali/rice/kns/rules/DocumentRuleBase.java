@@ -13,6 +13,8 @@
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.framework.parameter.ParameterConstants;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.bo.Group;
@@ -28,20 +30,10 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.TransactionalDocument;
-import org.kuali.rice.kns.rule.AddAdHocRoutePersonRule;
-import org.kuali.rice.kns.rule.AddAdHocRouteWorkgroupRule;
-import org.kuali.rice.kns.rule.AddNoteRule;
-import org.kuali.rice.kns.rule.ApproveDocumentRule;
-import org.kuali.rice.kns.rule.RouteDocumentRule;
-import org.kuali.rice.kns.rule.SaveDocumentRule;
-import org.kuali.rice.kns.rule.SendAdHocRequestsRule;
+import org.kuali.rice.kns.rule.*;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 
@@ -497,7 +489,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     	}
     	
     	boolean patternFound = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
-		boolean warnForSensitiveData = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+		boolean warnForSensitiveData = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
     	if (patternFound && !warnForSensitiveData) {

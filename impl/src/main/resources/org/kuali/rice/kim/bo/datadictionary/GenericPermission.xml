@@ -44,7 +44,7 @@
         p:shortLabel="Permission Namespace" 
         p:required="true">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.NamespaceValuesFinder" p:includeKeyInLabel="true"/>
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.core.web.namespace.NamespaceValuesFinder" p:includeKeyInLabel="true"/>
     </property>
   </bean>
 

@@ -23,7 +23,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.test.bo.BOContainingPerson;
@@ -301,7 +300,6 @@ public class PersonServiceImplTest extends KIMTestCase {
 		public void setPersonAttribute(Person personAttribute) {
 			this.personAttribute = personAttribute;
 		}
-		public void prepareForWorkflow() {}
 		public void refresh() {}
 		public List<SampleChildBOWithPerson> getChildBos() {
 			return this.childBos;
@@ -338,7 +336,6 @@ public class PersonServiceImplTest extends KIMTestCase {
 		public void setChildsPersonAttribute(Person childsPersonAttribute) {
 			this.childsPersonAttribute = childsPersonAttribute;
 		}
-		public void prepareForWorkflow() {}
 		public void refresh() {}
 	}
 }

@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kim.inquiry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -29,6 +25,10 @@ import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -42,10 +42,6 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 	protected final String ROLE_ID = "roleId";
 	protected final String NAMESPACE_CODE = "namespaceCode";
 	
-    /**
-     * @see org.kuali.kfs.sys.businessobject.inquiry.KfsInquirableImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject,
-     *      java.lang.String, boolean)
-     */
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
 		if(ROLE_NAME.equals(attributeName)){

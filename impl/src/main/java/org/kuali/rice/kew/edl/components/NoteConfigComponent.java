@@ -21,13 +21,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.mail.EmailBcList;
-import org.kuali.rice.core.mail.EmailBody;
-import org.kuali.rice.core.mail.EmailCcList;
-import org.kuali.rice.core.mail.EmailContent;
-import org.kuali.rice.core.mail.EmailFrom;
-import org.kuali.rice.core.mail.EmailSubject;
-import org.kuali.rice.core.mail.EmailToList;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.core.mail.*;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
@@ -37,7 +32,7 @@ import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.mail.*;
+import org.kuali.rice.kew.mail.EmailStyleHelper;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;
@@ -49,7 +44,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -84,7 +78,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 	private List<String> to;
 	private List<String> cc = new ArrayList<String>();
 	private List<String> bc = new ArrayList<String>();
-	private static final String DEFAULT_EMAIL_FROM_ADDRESS = KNSServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 		NoteForm noteForm = new NoteForm(edlContext.getRequestParser());

@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.kuali.rice.kim.bo.Role;
+
+import java.io.Serializable;
 
 
 /**
@@ -89,9 +89,4 @@ public class KimRoleInfo implements Role, Serializable {
     public void refresh(){
     	
     }
-   
-    public void prepareForWorkflow(){
-    	
-    }
-
 }

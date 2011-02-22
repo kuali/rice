@@ -19,6 +19,7 @@ package org.kuali.rice.kew.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -70,7 +71,7 @@ public final class Utilities {
     }
     
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
+        Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
         if (parameter == null) {
             return null;
         }
@@ -82,7 +83,7 @@ public final class Utilities {
     }
     
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
-        Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
+        Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
         if (parameter == null || StringUtils.isBlank(parameter.getValue())) {
             return defaultValue;
         }

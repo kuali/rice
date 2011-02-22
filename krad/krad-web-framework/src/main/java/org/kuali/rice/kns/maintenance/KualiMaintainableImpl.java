@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.kns.maintenance;
 
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
@@ -35,34 +22,29 @@ import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.authorization.FieldRestriction;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeSecurity;
-import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
+import org.kuali.rice.kns.datadictionary.*;
 import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.MaintenanceUtils;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
+
+import java.beans.PropertyDescriptor;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.security.GeneralSecurityException;
+import java.util.*;
 
 /**
  * Base Maintainable class to hold things common to all maintainables.
@@ -547,9 +529,6 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @see org.kuali.rice.kns.maintenance.Maintainable#prepareForSave()
      */
     public void prepareForSave() {
-        if (businessObject != null) {
-            businessObject.prepareForWorkflow();
-        }
     }
 
     /**

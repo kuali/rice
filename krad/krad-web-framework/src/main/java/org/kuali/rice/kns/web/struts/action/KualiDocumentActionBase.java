@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -37,6 +22,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterConstants;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
@@ -50,13 +38,7 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.bo.AdHocRouteRecipient;
-import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
-import org.kuali.rice.kns.bo.Attachment;
-import org.kuali.rice.kns.bo.DocumentHeader;
-import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.*;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
@@ -70,28 +52,23 @@ import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
-import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
-import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
-import org.kuali.rice.kns.rule.event.AddNoteEvent;
-import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
-import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
-
+import org.kuali.rice.kns.rule.event.*;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.service.ClientParameterService;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.util.NoteType;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.SessionTicket;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.BlankFormFile;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springmodules.orm.ojb.OjbOperationException;
+
+import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 
 /**
@@ -610,7 +587,7 @@ public class KualiDocumentActionBase extends KualiAction {
         boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
 
         // check if warning is configured in which case we will prompt, or if not business rules will thrown an error
-        boolean warnForSensitiveData = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
 
@@ -889,7 +866,7 @@ public class KualiDocumentActionBase extends KualiAction {
         disapprovalNoteText = introNoteMessage + reason;
 
         // check for sensitive data in note
-        boolean warnForSensitiveData = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
         if (warnForSensitiveData) {
@@ -1747,7 +1724,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected ClientParameterService getParameterService() {
         if (parameterService == null) {
-            parameterService = KNSServiceLocator.getClientParameterService();
+            parameterService = CoreFrameworkServiceLocator.getClientParameterService();
         }
         return this.parameterService;
     }

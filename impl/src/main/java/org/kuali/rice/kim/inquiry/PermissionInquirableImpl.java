@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kim.inquiry;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
@@ -40,6 +35,11 @@ import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
@@ -50,11 +50,6 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 
 	transient private static PermissionService permissionService;
 
-	
-    /**
-     * @see org.kuali.kfs.sys.businessobject.inquiry.KfsInquirableImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject,
-     *      java.lang.String, boolean)
-     */
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
     	/*

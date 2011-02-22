@@ -16,21 +16,10 @@
  */
 package org.kuali.rice.kew.web;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -40,10 +29,16 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.AuthenticationException;
-import org.kuali.rice.kns.service.ClientParameterService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
+
+import javax.servlet.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.UUID;
 
 
 /**
@@ -206,7 +201,7 @@ public class UserLoginFilter implements Filter {
     
     private ClientParameterService getParameterService() {
     	if (this.parameterService == null) {
-    		this.parameterService = KNSServiceLocator.getClientParameterService();
+    		this.parameterService = CoreFrameworkServiceLocator.getClientParameterService();
     	}
     	
     	return this.parameterService;

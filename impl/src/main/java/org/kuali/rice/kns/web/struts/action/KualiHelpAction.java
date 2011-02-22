@@ -15,31 +15,28 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.HeaderNavigation;
-import org.kuali.rice.kns.datadictionary.HelpDefinition;
-import org.kuali.rice.kns.datadictionary.LookupDefinition;
-import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.datadictionary.*;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiHelpForm;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class handles requests for help text.
@@ -73,7 +70,7 @@ public class KualiHelpAction extends KualiAction {
     }
     private ClientParameterService getParameterService() {
         if ( parameterService == null ) {
-            parameterService = KNSServiceLocator.getClientParameterService();
+            parameterService = CoreFrameworkServiceLocator.getClientParameterService();
         }
         return parameterService;
     }
@@ -113,7 +110,7 @@ public class KualiHelpAction extends KualiAction {
     }
 
     /**
-     * @param a <code>{@link AttributeDefinition}</code>
+     * @param attribute <code>{@link AttributeDefinition}</code>
      * @return String
      */
     private String getAttributeMaxLength(AttributeDefinition attribute) throws Exception {
@@ -121,7 +118,7 @@ public class KualiHelpAction extends KualiAction {
     }
 
     /**
-     * @param a <code>{@link AttributeDefinition}</code>
+     * @param attribute <code>{@link AttributeDefinition}</code>
      * @return String
      */
     private String getAttributeValidationPatternName(AttributeDefinition attribute) throws Exception {

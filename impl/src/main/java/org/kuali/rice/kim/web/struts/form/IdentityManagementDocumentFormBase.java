@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.PagingBannerUtils;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -77,7 +76,7 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 
 	public int getRecordsPerPage() {
 		if ( recordsPerPage == -1 ) {
-			Parameter param = KNSServiceLocator.getClientParameterService().getParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
+			Parameter param = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
 			if ( param != null ) {
 				try {
 					recordsPerPage = Integer.parseInt( param.getValue() );

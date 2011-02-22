@@ -15,22 +15,25 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.document.TransactionalDocument;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.ModuleServiceNotFoundException;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class KualiModuleServiceImpl implements KualiModuleService, InitializingBean, ApplicationContextAware {
@@ -134,8 +137,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 
     @Override
 	public String getNamespaceName(final String namespaceCode){
-    	NamespaceBo parameterNamespace = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
-				NamespaceBo.class, new HashMap<String, String>() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
+    	Namespace parameterNamespace = CoreApiServiceLocator.getNamespaceService().getNamespace(namespaceCode);
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }
     

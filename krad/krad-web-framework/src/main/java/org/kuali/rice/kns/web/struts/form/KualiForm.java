@@ -15,27 +15,26 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ActionFormUtilMap;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.kns.web.ui.HeaderField;
+import org.springframework.util.AutoPopulatingList;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class common properites for all action forms.
@@ -135,7 +134,7 @@ public class KualiForm extends PojoFormBase {
      */
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
     	if ( ENABLE_FIELD_LEVEL_HELP_IND == null ) {
-    		ENABLE_FIELD_LEVEL_HELP_IND = KNSServiceLocator.getClientParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE,
+    		ENABLE_FIELD_LEVEL_HELP_IND = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE,
                     KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND);
     	}
     	setFieldLevelHelpEnabled( ENABLE_FIELD_LEVEL_HELP_IND.booleanValue() );

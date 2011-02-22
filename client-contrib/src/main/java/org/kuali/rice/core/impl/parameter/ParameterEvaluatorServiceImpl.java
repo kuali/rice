@@ -6,7 +6,7 @@ import org.kuali.rice.core.api.parameter.EvaluationOperator;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterEvaluator;
 import org.kuali.rice.core.api.parameter.ParameterEvaluatorService;
-import org.kuali.rice.kns.service.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ClientParameterService;
 
 import java.util.Arrays;
 import java.util.Collections;

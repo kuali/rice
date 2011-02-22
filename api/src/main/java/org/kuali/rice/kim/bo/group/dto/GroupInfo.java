@@ -15,18 +15,13 @@
  */
 package org.kuali.rice.kim.bo.group.dto;
 
-import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlElement;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Group;
+
+import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 
 
 /**
@@ -125,10 +120,6 @@ public class GroupInfo implements Group, Serializable {
 	}
 
     public void refresh(){
-    	
-    }
-    
-    public void prepareForWorkflow(){
     	
     }
 

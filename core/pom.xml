@@ -21,5 +21,7 @@
     <modules>
         <module>api</module>
         <module>impl</module>
+        <module>framework</module>
+        <module>web</module>
     </modules>
 </project>

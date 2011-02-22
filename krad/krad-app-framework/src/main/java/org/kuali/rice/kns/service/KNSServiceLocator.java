@@ -17,7 +17,6 @@ public class KNSServiceLocator {
     public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
     public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
     public static final String PARAMETER_SERVICE = "parameterService";
-    public static final String CLIENT_PARAMETER_SERVICE = "clientParameterService";
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
     public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "knsApplicationEntityManagerFactory";
     public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
@@ -60,10 +59,6 @@ public class KNSServiceLocator {
 
     public static KualiConfigurationService getKualiConfigurationService() {
         return getService(KUALI_CONFIGURATION_SERVICE);
-    }
-
-    public static ClientParameterService getClientParameterService() {
-        return getService(CLIENT_PARAMETER_SERVICE);
     }
 
     public static ParameterService getParameterService() {

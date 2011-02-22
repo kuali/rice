@@ -12,13 +12,8 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.api.component.Component;
+import org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -28,15 +23,16 @@ import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.service.ParameterConstants.COMPONENT;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
+
+import java.util.*;
 
 //@Transactional
 public class RiceApplicationConfigurationServiceImpl implements RiceApplicationConfigurationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationServiceImpl.class);
     
-    protected List<ComponentBo> components = new ArrayList<ComponentBo>();
+    protected List<Component> components = new ArrayList<Component>();
     protected List<String> packagePrefixes = new ArrayList<String>();
     private KualiConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
@@ -52,16 +48,16 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
      * 
      * @return List<ParameterDetailedType> containing the detailed types derived from the data dictionary and Spring
      */
-    public List<ComponentBo> getNonDatabaseComponents() {
+    public List<Component> getNonDatabaseComponents() {
         if (components.isEmpty()) {
-            Map<String, ComponentBo> uniqueParameterDetailTypeMap = new HashMap<String, ComponentBo>();
+            Map<String, Component> uniqueParameterDetailTypeMap = new HashMap<String, Component>();
                         
             DataDictionaryService dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
             
             //dataDictionaryService.getDataDictionary().forceCompleteDataDictionaryLoad();
             for (BusinessObjectEntry businessObjectEntry : dataDictionaryService.getDataDictionary().getBusinessObjectEntries().values()) {
                 try {
-                    ComponentBo parameterDetailType = getParameterDetailType((businessObjectEntry.getBaseBusinessObjectClass() != null) ? businessObjectEntry.getBaseBusinessObjectClass() : businessObjectEntry.getBusinessObjectClass());
+                    Component parameterDetailType = getParameterDetailType((businessObjectEntry.getBaseBusinessObjectClass() != null) ? businessObjectEntry.getBaseBusinessObjectClass() : businessObjectEntry.getBusinessObjectClass());
                     uniqueParameterDetailTypeMap.put(parameterDetailType.getCode(), parameterDetailType);
                 }
                 catch (Exception e) {
@@ -71,7 +67,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
             for (DocumentEntry documentEntry : dataDictionaryService.getDataDictionary().getDocumentEntries().values()) {
                 if (documentEntry instanceof TransactionalDocumentEntry) {
                     try {
-                        ComponentBo parameterDetailType = getParameterDetailType((documentEntry.getBaseDocumentClass() != null) ? documentEntry.getBaseDocumentClass() : documentEntry.getDocumentClass());
+                        Component parameterDetailType = getParameterDetailType((documentEntry.getBaseDocumentClass() != null) ? documentEntry.getBaseDocumentClass() : documentEntry.getDocumentClass());
                         uniqueParameterDetailTypeMap.put(parameterDetailType.getCode(), parameterDetailType);
                     }
                     catch (Exception e) {
@@ -86,19 +82,15 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     }
     
     @SuppressWarnings("unchecked")
-	protected ComponentBo getParameterDetailType(Class documentOrStepClass) {
+	protected Component getParameterDetailType(Class documentOrStepClass) {
         String detailTypeString = getKualiModuleService().getComponentCode(documentOrStepClass);
 
         String detailTypeName = getDetailTypeName(documentOrStepClass);
 
         String namespace = getKualiModuleService().getNamespaceCode(documentOrStepClass);
         String name = (detailTypeName == null) ? detailTypeString : detailTypeName;
-        ComponentBo detailType = new ComponentBo();
-        detailType.setNamespaceCode(namespace);
-        detailType.setCode(detailTypeName);
-        detailType.setName(name);
-        detailType.refreshNonUpdateableReferences();
-        return detailType;
+        Component.Builder detailType = Component.Builder.create(namespace, detailTypeName, name, false);
+        return detailType.build();
     }
 
     @SuppressWarnings("unchecked")

@@ -15,22 +15,21 @@
  */
 package org.kuali.rice.ken.web.spring;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.NamespaceService;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for KEN controllers for sending notifications
@@ -103,7 +102,7 @@ public class BaseSendNotificationController extends MultiActionController {
     }
 
     protected boolean isWorkgroupRecipientValid(String groupName, String namespaceCode, ErrorList errors) {
-    	NamespaceBo nSpace = getNamespaceService().getNamespace(namespaceCode);
+    	Namespace nSpace = getNamespaceService().getNamespace(namespaceCode);
     	if (nSpace == null) {
     		errors.addError((new StringBuilder()).append('\'').append(namespaceCode).append("' is not a valid namespace code").toString());
     		return false;

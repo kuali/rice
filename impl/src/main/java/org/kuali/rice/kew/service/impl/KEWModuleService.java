@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -27,6 +22,11 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The ModuleService for KEW
@@ -142,11 +142,6 @@ public class KEWModuleService extends ModuleServiceBase {
 			public String getRouteHeaderId() {
 
 				return routeHeaderValue.getRouteHeaderId().toString();
-			}
-
-			public void prepareForWorkflow() {
-				// does nothing
-
 			}
 
 			public void refresh() {

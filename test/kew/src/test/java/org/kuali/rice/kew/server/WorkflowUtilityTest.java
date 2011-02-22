@@ -20,6 +20,7 @@ package org.kuali.rice.kew.server;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -37,7 +38,6 @@ import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 import java.rmi.RemoteException;
@@ -550,7 +550,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
      */
     @Test public void testIsLastApproverActivation() throws Exception {
         // first test without the parameter set
-        Parameter lastApproverActivateParameter = KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        Parameter lastApproverActivateParameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
         assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getValue()));
         String originalParameterValue = lastApproverActivateParameter.getValue();
@@ -637,9 +637,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String parameterValue = "Y";
         Parameter.Builder b = Parameter.Builder.create(lastApproverActivateParameter);
         b.setValue(parameterValue);
-        KNSServiceLocator.getClientParameterService().updateParameter(b.build());
+        CoreFrameworkServiceLocator.getClientParameterService().updateParameter(b.build());
 
-        lastApproverActivateParameter = KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        lastApproverActivateParameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
         assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getValue());
 
@@ -699,7 +699,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // set parameter value back to it's original value
         Parameter.Builder b2 = Parameter.Builder.create(lastApproverActivateParameter);
         b2.setValue("");
-        KNSServiceLocator.getClientParameterService().updateParameter(b2.build());
+        CoreFrameworkServiceLocator.getClientParameterService().updateParameter(b2.build());
     }
 
     @Test public void testIsFinalApprover() throws Exception {

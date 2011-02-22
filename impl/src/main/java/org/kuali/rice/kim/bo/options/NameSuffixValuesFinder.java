@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kim.bo.options;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -42,7 +42,7 @@ public class NameSuffixValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
 
-    	Collection<String> values = KNSServiceLocator.getClientParameterService().getParameterValuesAsString(
+    	Collection<String> values = CoreFrameworkServiceLocator.getClientParameterService().getParameterValuesAsString(
                 KimConstants.NAMESPACE_CODE, PARAM_BO_CLASSNAME, "SUFFIXES"
         );
         List<KeyValue> labels = new ArrayList<KeyValue>();

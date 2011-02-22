@@ -44,10 +44,6 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 	protected final String GROUP_ID = "groupId";
 	protected final String NAMESPACE_CODE = "namespaceCode";
 	
-    /**
-     * @see org.kuali.kfs.sys.businessobject.inquiry.KfsInquirableImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject,
-     *      java.lang.String, boolean)
-     */
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
 		if(GROUP_NAME.equals(attributeName)){

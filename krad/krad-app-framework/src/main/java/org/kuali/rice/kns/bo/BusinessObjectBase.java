@@ -47,9 +47,10 @@ public abstract class BusinessObjectBase implements BusinessObject {
 	public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
-    
-    @Override
-	public void prepareForWorkflow() {
-	// do nothing
+
+    /** @deprecated will be removed in rice 1.1 */
+    @Deprecated
+    public final void prepareForWorkflow() {
+        throw new UnsupportedOperationException("do not call.  this method will be removed from rice 1.1");
     }
 }

@@ -15,27 +15,17 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.datadictionary.FieldDefinition;
-import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
-import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
-import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
-import org.kuali.rice.kns.datadictionary.SupportAttributeDefinition;
+import org.kuali.rice.kns.datadictionary.*;
 import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  *
@@ -270,11 +260,17 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 			if (StringUtils.isNotBlank(attributePrefix)) {
 				fullPrefix = attributePrefix + "." + localPrefix;
 			}
-			if (BusinessObject.class.isAssignableFrom(nestedClass)) {
-				relationship = getBusinessObjectRelationship(null, nestedClass,
-						localAttributeName, fullPrefix, keysOnly);
-			}
-			return relationship;
+
+            try {
+                if (BusinessObject.class.isAssignableFrom(nestedClass)) {
+				    relationship = getBusinessObjectRelationship(null, nestedClass,
+					    	localAttributeName, fullPrefix, keysOnly);
+			    }
+            } catch (NullPointerException e) {
+                 System.err.println("bo: " + bo + " localPrefix: " + localPrefix + " localAttributeName: " + localAttributeName + " fullPrefix: "  + fullPrefix + " keysOnly: " + keysOnly);
+            }
+
+            return relationship;
 		}
 		int maxSize = Integer.MAX_VALUE;
 		// try persistable reference first
@@ -555,10 +551,6 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		return relationships;
 	}
 
-	/***************************************************************************
-	 * @see org.kuali.rice.kns.service.BusinessObjectMetaDataService#getReferencesForForeignKey(java.lang.Class,
-	 *      java.lang.String)
-	 */
 	public Map<String, Class> getReferencesForForeignKey(BusinessObject bo,
 			String attributeName) {
 		List<BusinessObjectRelationship> businessObjectRelationships = getBusinessObjectRelationships(bo);
@@ -576,9 +568,6 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		return referencesForForeignKey;
 	}
 
-	/***
-	 * @see org.kuali.core.service.BusinessObjectMetaDataService#listPrimaryKeyFieldNames(java.lang.Class)
-	 */
 	public List listPrimaryKeyFieldNames(Class clazz) {
 		if (persistenceStructureService.isPersistable(clazz)) {
 			return persistenceStructureService.listPrimaryKeyFieldNames(clazz);

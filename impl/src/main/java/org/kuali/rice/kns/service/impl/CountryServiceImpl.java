@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kns.bo.Country;
+import org.kuali.rice.kns.service.CountryService;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.kns.bo.Country;
-import org.kuali.rice.kns.service.CountryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 public class CountryServiceImpl implements CountryService {
     private static Logger LOG = Logger.getLogger(CountryServiceImpl.class);
@@ -93,19 +93,13 @@ public class CountryServiceImpl implements CountryService {
 		
 		return this.getByAlternatePostalCountryCode(alternatePostalCountryCode);
 	}
-    
-    /**
-     * @see org.kuali.kfs.sys.service.CountryService#getDefaultCountry()
-     */
+
     public Country getDefaultCountry() {
-        String postalCountryCode = KNSServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE,
+        String postalCountryCode = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE,
                 KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
         return this.getByPrimaryId(postalCountryCode);
     }
-    
-    /**
-     * @see org.kuali.kfs.sys.service.CountryService#findAllCountriesNotRestricted()
-     */
+
     public List<Country> findAllCountriesNotRestricted() {
         List<String> criteriaValues = new ArrayList<String>();
         criteriaValues.add(null);

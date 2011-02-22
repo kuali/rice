@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.parameter.EvaluationOperator;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterType;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -31,7 +32,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 import static org.junit.Assert.assertEquals;
@@ -76,7 +76,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName)));
 
-        Parameter orig = KNSServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        Parameter orig = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
 
         // adjust the app constant to be greater than custom generator value
         adjustResultSetCapApplicationConstantValue(orig, CustomDocumentSearchGenerator.RESULT_SET_LIMIT + 1);
@@ -109,7 +109,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 
         ps.setComponentCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
         ps.setEvaluationOperator(EvaluationOperator.ALLOW);
-        KNSServiceLocator.getClientParameterService().updateParameter(ps.build());
+        CoreFrameworkServiceLocator.getClientParameterService().updateParameter(ps.build());
     }
 
     /**

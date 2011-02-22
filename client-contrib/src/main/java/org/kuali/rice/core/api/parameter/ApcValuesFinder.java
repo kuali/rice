@@ -12,14 +12,14 @@
  */
 package org.kuali.rice.core.api.parameter;
 
+import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.ClientParameterService;
 
 public class ApcValuesFinder extends KeyValuesBase {
 
@@ -56,7 +56,7 @@ public class ApcValuesFinder extends KeyValuesBase {
 
     @Override
 	public List<KeyValue> getKeyValues() {
-    	ClientParameterService parameterService = KNSServiceLocator.getClientParameterService();
+    	ClientParameterService parameterService = CoreFrameworkServiceLocator.getClientParameterService();
     	List<KeyValue> activeLabels = new ArrayList<KeyValue>();
     	activeLabels.add(new ConcreteKeyValue("", ""));
     	for (String parm : parameterService.getParameterValuesAsString(parameterNamespace, parameterDetailType, parameterName)) {

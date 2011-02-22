@@ -14,21 +14,17 @@ package org.kuali.rice.kns.service;
 
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
-import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import javax.persistence.EntityManagerFactory;
 
 public class KNSServiceLocatorInternal {
 

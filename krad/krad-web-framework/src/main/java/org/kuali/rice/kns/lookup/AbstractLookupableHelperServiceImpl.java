@@ -15,19 +15,9 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.security.GeneralSecurityException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
@@ -47,11 +37,7 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm;
@@ -59,6 +45,10 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.security.GeneralSecurityException;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This class declares many of the common spring injected properties, the get/set-ers for them,
@@ -294,7 +284,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     public ClientParameterService getParameterService() {
         if (parameterService == null) {
-            parameterService = KNSServiceLocator.getClientParameterService();
+            parameterService = CoreFrameworkServiceLocator.getClientParameterService();
         }
         return parameterService;
     }

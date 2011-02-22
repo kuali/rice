@@ -17,11 +17,14 @@ package org.kuali.rice.kns.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.impl.parameter.ParameterId;
 import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.kns.bo.*;
+import org.kuali.rice.kns.bo.CountryImpl;
+import org.kuali.rice.kns.bo.StateImpl;
+import org.kuali.rice.kns.bo.StateImplId;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
 import org.kuali.test.KNSTestCase;
@@ -94,7 +97,7 @@ public class MetadataManagerTest extends KNSTestCase {
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"CONFG\"", "CONFG", pkValue);
 		
-		Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
+		Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
 		assertNotNull("State should not be null", parameter);
 		
 		pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(ParameterBo.from(parameter));

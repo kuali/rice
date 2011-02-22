@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.bo.reference.dto;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kns.bo.KualiCode;
+
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -143,12 +143,6 @@ public abstract class KimCodeInfoBase implements KimCode {
 	public void setDisplaySortCode(String displaySortCode) {
 		this.displaySortCode = displaySortCode;
 	}	
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObject#prepareForWorkflow()
-	 */
-	public void prepareForWorkflow() {}
+
 	public void refresh() {}
 }

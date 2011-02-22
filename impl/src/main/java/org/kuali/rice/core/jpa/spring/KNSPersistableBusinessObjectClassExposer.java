@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.core.jpa.spring;
 
-import org.kuali.rice.core.impl.component.ComponentBo;
-import org.kuali.rice.core.impl.namespace.NamespaceBo;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
-import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +36,7 @@ public class KNSPersistableBusinessObjectClassExposer implements
 	@Override
 	public Set<String> exposePersistableBusinessObjectClassNames() {
 		Set<String> knsBOs = new HashSet<String>();
-		knsBOs.add(org.kuali.rice.kns.document.DocumentBase.class.getName());
+		/*knsBOs.add(org.kuali.rice.kns.document.DocumentBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.document.MaintenanceDocumentBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.document.MaintenanceLock.class.getName());
 		knsBOs.add(org.kuali.rice.kns.document.TransactionalDocumentBase.class.getName());
@@ -72,7 +67,7 @@ public class KNSPersistableBusinessObjectClassExposer implements
 		knsBOs.add(org.kuali.rice.kns.bo.CountyImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.StateImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PostalCodeImpl.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.SessionDocument.class.getName());
+		knsBOs.add(org.kuali.rice.kns.bo.SessionDocument.class.getName()); */
 		return knsBOs;
 	}
 

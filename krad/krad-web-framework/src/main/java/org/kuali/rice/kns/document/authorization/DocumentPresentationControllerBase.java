@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.ClientParameterService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class DocumentPresentationControllerBase implements DocumentPresentationController {
@@ -287,7 +287,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
 
 	protected ClientParameterService getParameterService() {
 		if ( parameterService == null ) {
-			parameterService = KNSServiceLocator.getClientParameterService();
+			parameterService = CoreFrameworkServiceLocator.getClientParameterService();
 		}
 		return parameterService;
 	}

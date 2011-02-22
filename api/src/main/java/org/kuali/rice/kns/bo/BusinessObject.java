@@ -27,7 +27,4 @@ public interface BusinessObject extends ModelObjectBasic {
      * 
      */
     public abstract void refresh();
-
-    
-    public void prepareForWorkflow();
 }

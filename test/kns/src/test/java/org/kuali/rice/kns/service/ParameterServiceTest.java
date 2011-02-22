@@ -17,6 +17,7 @@ package org.kuali.rice.kns.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
@@ -44,7 +45,7 @@ public class ParameterServiceTest extends KNSTestCase {
     	String parameterName = "RESULTS_LIMIT";
     	String parameterValue = "200";
     	
-    	Parameter resultsLimitParam = KNSServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
+    	Parameter resultsLimitParam = CoreFrameworkServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
     	assertNotNull("RESULTS_LIMIT should be non-null", resultsLimitParam);
     	assertEquals(parameterValue, resultsLimitParam.getValue());
     	
@@ -60,7 +61,7 @@ public class ParameterServiceTest extends KNSTestCase {
     	String parameterName = "PREFIXES";
     	String parameterValue = "Ms;Mrs;Mr;Dr";
     	
-    	Parameter parameter = KNSServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
+    	Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
     	assertNotNull("Parameter should be non-null", parameter);
     	assertEquals(parameterValue, parameter.getValue());
     	

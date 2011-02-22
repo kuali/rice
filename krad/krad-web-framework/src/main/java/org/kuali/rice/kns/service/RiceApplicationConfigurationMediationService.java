@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.List;
-
-import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+
+import java.util.List;
 
 /**
  * This service handles mediation between all RiceApplicationConfiguration services that are
@@ -36,7 +36,7 @@ public interface RiceApplicationConfigurationMediationService {
 	 * The namespaceCode is used to determine which RiceApplicationConfigurationService to
 	 * call by looking up the applicationNamespaceCode associated with it's namespace.
 	 * 
-	 * @param namespace
+	 * @param namespaceCode
 	 * @param parameterName
 	 * @return
 	 */
@@ -45,7 +45,7 @@ public interface RiceApplicationConfigurationMediationService {
 	/**
 	 * Returns the non-database components that have been published by all Rice client applications.
 	 */
-	List<ComponentBo> getNonDatabaseComponents();
+	List<Component> getNonDatabaseComponents();
     
     /**
 	 * This method will return the attribute definition from the local data dictionary of the

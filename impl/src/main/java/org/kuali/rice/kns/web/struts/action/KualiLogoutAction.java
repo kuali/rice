@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class handles the logout. After logout it will do an external redirect to an url
@@ -46,7 +46,7 @@ public class KualiLogoutAction extends Action {
         // can't check for the existence of a simple parameter, so catch exception and
         // defualt to config parameter
         try {
-            redirectString = KNSServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
+            redirectString = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
         }
         catch(IllegalArgumentException ex) {
             redirectString = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.LOGOFF_REDIRECT_URL_PROPERTY);

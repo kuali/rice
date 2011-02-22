@@ -15,6 +15,28 @@
  */
 package org.kuali.rice.core.api.namespace;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+@WebService(name = "namespaceServiceSoap", targetNamespace = "http://rice.kuali.org/core/api/namespace")
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface NamespaceService {
-	Namespace getNamespace(String namespaceCode);
+
+    /**
+     * Gets a {@link Namespace} from a namespace code.
+     *
+     * <p>
+     *   This method will return null if the namespace does not exist.
+     * </p>
+     *
+     * @param code the code to retrieve the namespace by. cannot be blank.
+     * @return a {@link Namespace} or null
+     * @throws IllegalArgumentException if the code is blank
+     */
+    @WebMethod(operationName="getNamespace")
+    @WebResult(name = "namespace")
+	Namespace getNamespace(@WebParam(name = "code") String code);
 }

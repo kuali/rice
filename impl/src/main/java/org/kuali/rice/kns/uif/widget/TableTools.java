@@ -29,7 +29,7 @@ public class TableTools extends WidgetBase {
 	private static final long serialVersionUID = 4671589690877390070L;
 
 	public TableTools() {
-
+		super();
 	}
 
 }

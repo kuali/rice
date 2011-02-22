@@ -41,8 +41,6 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	private String style;
 	private String styleClass;
 
-	private String labelPlacement;
-
 	public LayoutManagerBase() {
 
 	}
@@ -100,44 +98,60 @@ public abstract class LayoutManagerBase implements LayoutManager {
 		return new ArrayList<Component>();
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getId()
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#setId(java.lang.String)
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getTemplate()
+	 */
 	public String getTemplate() {
 		return this.template;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#setTemplate(java.lang.String)
+	 */
 	public void setTemplate(String template) {
 		this.template = template;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getStyle()
+	 */
 	public String getStyle() {
 		return this.style;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#setStyle(java.lang.String)
+	 */
 	public void setStyle(String style) {
 		this.style = style;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getStyleClass()
+	 */
 	public String getStyleClass() {
 		return this.styleClass;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#setStyleClass(java.lang.String)
+	 */
 	public void setStyleClass(String styleClass) {
 		this.styleClass = styleClass;
-	}
-
-	public String getLabelPlacement() {
-		return this.labelPlacement;
-	}
-
-	public void setLabelPlacement(String labelPlacement) {
-		this.labelPlacement = labelPlacement;
 	}
 
 }

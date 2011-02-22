@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.uif.field;
 
 /**
- * Encloses an iframe element within the field
+ * Field that encloses an iframe element
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

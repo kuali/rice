@@ -62,18 +62,45 @@ public class MessageField extends FieldBase {
 		this.messageType = messageType;
 	}
 
+	/**
+	 * Text that makes up the message that will be displayed
+	 * 
+	 * @return String message text
+	 */
 	public String getMessageText() {
 		return this.messageText;
 	}
 
+	/**
+	 * Setter for the message text
+	 * 
+	 * @param messageText
+	 */
 	public void setMessageText(String messageText) {
 		this.messageText = messageText;
 	}
 
+	/**
+	 * Type of the field's message, used to suffix the message fields id
+	 * 
+	 * <p>
+	 * Messages that have similar intent can be grouped by this type string. For
+	 * messages of the same type, their id will contain the same suffix which
+	 * can be used for scripting to apply additional styling or behavior to that
+	 * groups of messages (for example show/hide)
+	 * </p>
+	 * 
+	 * @return String message type
+	 */
 	public String getMessageType() {
 		return this.messageType;
 	}
 
+	/**
+	 * Setter for the message's type
+	 * 
+	 * @param messageType
+	 */
 	public void setMessageType(String messageType) {
 		this.messageType = messageType;
 	}

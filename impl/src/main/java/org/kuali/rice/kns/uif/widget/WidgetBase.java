@@ -23,11 +23,16 @@ import org.kuali.rice.kns.uif.ComponentBase;
 /**
  * Base class for Widgets
  * 
+ * <p>
+ * Sets the component type name for all widget components, and provides some
+ * convenience methods for widget templates
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WidgetBase extends ComponentBase implements Widget {
 	private static final long serialVersionUID = -917582902829056830L;
-	
+
 	private Map<String, String> widgetOptions;
 
 	public WidgetBase() {
@@ -43,16 +48,15 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
 	}
 
 	/**
-	 * Options that are passed through to the Widget renderer. The Map key is
-	 * the option name, with the Map value as the option value. See
-	 * documentation on the particular widget render for available options.
-	 * 
-	 * @return Map<String, String>
+	 * @see org.kuali.rice.kns.uif.widget.Widget#getWidgetOptions()
 	 */
 	public Map<String, String> getWidgetOptions() {
 		return this.widgetOptions;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.widget.Widget#setWidgetOptions(java.util.Map)
+	 */
 	public void setWidgetOptions(Map<String, String> widgetOptions) {
 		this.widgetOptions = widgetOptions;
 	}

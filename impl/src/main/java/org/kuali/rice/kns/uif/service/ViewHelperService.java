@@ -57,6 +57,11 @@ public interface ViewHelperService {
 	 * configuration and request options.
 	 * 
 	 * <p>
+	 * The initialize phase is only called once per <code>View</code> lifecycle
+	 * (when first requested)
+	 * </p>
+	 * 
+	 * <p>
 	 * Note the <code>View</code> instance also contains the context Map that
 	 * was created based on the parameters sent to the view service
 	 * </p>
@@ -81,6 +86,11 @@ public interface ViewHelperService {
 	 * </ul>
 	 * </p>
 	 * 
+	 * <p>
+	 * The update phase can be called multiple times for the view's lifecycle
+	 * (typically only once per request)
+	 * </p>
+	 * 
 	 * @param view
 	 *            - View instance that the model should be applied to
 	 * @param model
@@ -92,6 +102,12 @@ public interface ViewHelperService {
 	/**
 	 * The last phase before the view is rendered. Here final preparations can
 	 * be made based on the updated view state
+	 * 
+	 * <p>
+	 * The finalize phase runs after the apply model phase and can be called
+	 * multiple times for the view's lifecylce (however typically only once per
+	 * request)
+	 * </p>
 	 * 
 	 * 
 	 * @param view

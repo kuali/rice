@@ -32,6 +32,51 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
 public interface LayoutManager extends Serializable {
 
 	/**
+	 * The unique id (within a given tree) for the layout manager instance
+	 * 
+	 * <p>
+	 * The id is used to identify a <code>LayoutManager</code> instance within
+	 * the tree and can be used by renderers
+	 * </p>
+	 * 
+	 * @return String id
+	 */
+	public String getId();
+
+	/**
+	 * Sets the unique id (within a given tree) for the layout manager
+	 * 
+	 * @param id
+	 *            - string to set as the layout manager id
+	 */
+	public void setId(String id);
+
+	/**
+	 * The path to the JSP file that should be called to invoke the layout
+	 * manager
+	 * 
+	 * <p>
+	 * The path should be relative to the web root. All layout manager templates
+	 * receive the list of items of be placed, the configured layout manager,
+	 * and the container to which the layout manager applies
+	 * </p>
+	 * 
+	 * <p>
+	 * e.g. '/krad/WEB-INF/jsp/tiles/boxLayout.jsp'
+	 * </p>
+	 * 
+	 * @return String representing the template path
+	 */
+	public String getTemplate();
+
+	/**
+	 * Setter for the layout managers template
+	 * 
+	 * @param template
+	 */
+	public void setTemplate(String template);
+
+	/**
 	 * Should be called to initialize the layout manager
 	 * <p>
 	 * This is where layout managers can set defaults and setup other necessary
@@ -104,5 +149,73 @@ public interface LayoutManager extends Serializable {
 	 * @return List<Component> child components
 	 */
 	public List<Component> getNestedComponents();
+
+	/**
+	 * CSS style string to be applied to the area (div) the layout manager
+	 * generates for the items
+	 * 
+	 * <p>
+	 * Note the styleClass/style configured on the <code>Container</code>
+	 * applies to all the container content (header, body, footer), while the
+	 * styleClass/style configured on the <code>LayoutManager</code> only
+	 * applies to the div surrounding the items placed by the manager (the
+	 * container's body)
+	 * </p>
+	 * 
+	 * <p>
+	 * Any style override or additions can be specified with this attribute.
+	 * This is used by the renderer to set the style attribute on the
+	 * corresponding element.
+	 * </p>
+	 * 
+	 * <p>
+	 * e.g. 'color: #000000;text-decoration: underline;'
+	 * </p>
+	 * 
+	 * @return String css style string
+	 */
+	public String getStyle();
+
+	/**
+	 * Setter for the layout manager div style
+	 * 
+	 * @param style
+	 */
+	public void setStyle(String style);
+
+	/**
+	 * CSS style class(s) to be applied to the area (div) the layout manager
+	 * generates for the items
+	 * 
+	 * <p>
+	 * Note the styleClass/style configured on the <code>Container</code>
+	 * applies to all the container content (header, body, footer), while the
+	 * styleClass/style configured on the <code>LayoutManager</code> only
+	 * applies to the div surrounding the items placed by the manager (the
+	 * container's body)
+	 * </p>
+	 * 
+	 * <p>
+	 * Declares additional style classes for the div. Multiple classes are
+	 * specified with a space delimiter. This is used by the renderer to set the
+	 * class attribute on the corresponding element. The class(s) declared must
+	 * be available in the common style sheets or the style sheets specified for
+	 * the view
+	 * </p>
+	 * 
+	 * <p>
+	 * e.g. 'header left'
+	 * </p>
+	 * 
+	 * @return String css style class
+	 */
+	public String getStyleClass();
+
+	/**
+	 * Setter for the layout manager div style class
+	 * 
+	 * @param styleClass
+	 */
+	public void setStyleClass(String styleClass);
 
 }

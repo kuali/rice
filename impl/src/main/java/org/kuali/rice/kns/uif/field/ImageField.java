@@ -16,12 +16,15 @@
 package org.kuali.rice.kns.uif.field;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * Field that encloses an image element
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class ImageField extends FieldBase {
 	private static final long serialVersionUID = -7994212503770623408L;
+	
+	public ImageField() {
+		super();
+	}
 
 }

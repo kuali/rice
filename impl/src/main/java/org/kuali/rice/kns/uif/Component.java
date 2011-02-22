@@ -50,6 +50,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * The unique id (within a given tree) for the component
+	 * 
 	 * <p>
 	 * The id will be used by renderers to set the HTML element id. This gives a
 	 * way to find various elements for scripting. If the id is not given, a
@@ -70,6 +71,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * The name for the component type
+	 * 
 	 * <p>
 	 * This is used within the rendering layer to pass the component instance
 	 * into the template. The component instance is exported under the name
@@ -82,6 +84,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * The path to the JSP file that should be called to render the component
+	 * 
 	 * <p>
 	 * The path should be relative to the web root. An attribute will be
 	 * available to the component to use under the name given by the method
@@ -89,6 +92,7 @@ public interface Component extends Serializable {
 	 * additional attributes could be available for use. See the component
 	 * documentation for more information on such attributes.
 	 * </p>
+	 * 
 	 * <p>
 	 * e.g. '/krad/WEB-INF/jsp/tiles/component.jsp'
 	 * </p>
@@ -123,6 +127,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * Should be called to initialize the component
+	 * 
 	 * <p>
 	 * Where components can set defaults and setup other necessary state. The
 	 * initialize method should only be called once per component lifecycle and
@@ -138,6 +143,7 @@ public interface Component extends Serializable {
 	/**
 	 * Called after the initialize phase to perform conditional logic based on
 	 * the model data
+	 * 
 	 * <p>
 	 * Where components can perform conditional logic such as dynamically
 	 * generating new fields or setting field state based on the given data
@@ -165,6 +171,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * List of components that are contained within the component
+	 * 
 	 * <p>
 	 * Used by <code>ViewHelperService</code> for the various lifecycle
 	 * callbacks
@@ -177,6 +184,7 @@ public interface Component extends Serializable {
 	/**
 	 * <code>ComponentInitializer</code> instances that should be invoked to
 	 * initialize the component
+	 * 
 	 * <p>
 	 * These provide dynamic initialization behavior for the component and are
 	 * configured through the components definition. Each initializer will get
@@ -198,6 +206,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * Indicates whether the component should be rendered in the UI
+	 * 
 	 * <p>
 	 * If set to false, the corresponding component template will not be invoked
 	 * (therefore nothing will be rendered to the UI).
@@ -217,12 +226,14 @@ public interface Component extends Serializable {
 
 	/**
 	 * Indicates whether the component should be hidden in the UI
+	 * 
 	 * <p>
 	 * How the hidden data is maintained depends on the views persistence mode.
 	 * If the mode is request, the corresponding data will be rendered to the UI
 	 * but not visible. If the mode is session, the data will not be rendered to
 	 * the UI but maintained server side.
 	 * </p>
+	 * 
 	 * <p>
 	 * For a <code>Container</code> component, the hidden setting will apply to
 	 * all contained components (making a section hidden makes all fields within
@@ -243,14 +254,19 @@ public interface Component extends Serializable {
 
 	/**
 	 * Indicates whether the component can be edited
+	 * 
 	 * <p>
 	 * When readOnly the controls and widgets of <code>Field</code> components
 	 * will not be rendered. If the Field has an underlying value it will be
 	 * displayed readOnly to the user.
 	 * </p>
+	 * 
+	 * <p>
 	 * For a <code>Container</code> component, the readOnly setting will apply
 	 * to all contained components (making a section readOnly makes all fields
-	 * within the section readOnly) </p>
+	 * within the section readOnly)
+	 * </p>
+	 * </p>
 	 * 
 	 * @return boolean true if the component should be readOnly, false if is
 	 *         allows editing
@@ -266,6 +282,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * Indicates whether the component is required
+	 * 
 	 * <p>
 	 * At the general component level required means there is some action the
 	 * user needs to take within the component. For example, within a section it
@@ -288,11 +305,13 @@ public interface Component extends Serializable {
 
 	/**
 	 * CSS style string to be applied to the component
+	 * 
 	 * <p>
 	 * Any style override or additions can be specified with this attribute.
 	 * This is used by the renderer to set the style attribute on the
 	 * corresponding element.
 	 * </p>
+	 * 
 	 * <p>
 	 * e.g. 'color: #000000;text-decoration: underline;'
 	 * </p>
@@ -310,6 +329,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * CSS style class(s) to be applied to the component
+	 * 
 	 * <p>
 	 * Declares additional style classes for the component. Multiple classes are
 	 * specified with a space delimiter. This is used by the renderer to set the
@@ -317,6 +337,7 @@ public interface Component extends Serializable {
 	 * be available in the common style sheets or the style sheets specified for
 	 * the view
 	 * </p>
+	 * 
 	 * <p>
 	 * e.g. 'header left'
 	 * </p>
@@ -335,6 +356,7 @@ public interface Component extends Serializable {
 	/**
 	 * Number of places the component should take up horizontally in the
 	 * container
+	 * 
 	 * <p>
 	 * All components belong to a <code>Container</code> and are placed using a
 	 * <code>LayoutManager</code>. This property specifies how many places
@@ -355,6 +377,7 @@ public interface Component extends Serializable {
 
 	/**
 	 * Number of places the component should take up vertically in the container
+	 * 
 	 * <p>
 	 * All components belong to a <code>Container</code> and are placed using a
 	 * <code>LayoutManager</code>. This property specifies how many places

@@ -25,7 +25,8 @@ import org.kuali.rice.kns.uif.Component;
  * <p>
  * The <code>LabelField</code> exists so that the label can be placed separate
  * from the component in a layout manager such as the
- * <code>GridLayoutManager</code>
+ * <code>GridLayoutManager</code>. It addition it can be used to style the label
+ * (from the inherited styleClass and style properties)
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -56,34 +57,90 @@ public class LabelField extends FieldBase {
 		return components;
 	}
 
+	/**
+	 * Indicates the id for the component the label applies to
+	 * 
+	 * <p>
+	 * Used for setting the labelFor attribute of the corresponding HTML
+	 * element. Note this gets set automatically by the framework during the
+	 * initialize phase
+	 * </p>
+	 * 
+	 * @return String component id
+	 */
 	public String getLabelForComponentId() {
 		return this.labelForComponentId;
 	}
 
+	/**
+	 * Setter for the component id the label applies to
+	 * 
+	 * @param labelForComponentId
+	 */
 	public void setLabelForComponentId(String labelForComponentId) {
 		this.labelForComponentId = labelForComponentId;
 	}
 
+	/**
+	 * Text that will display as the label
+	 * 
+	 * @return String label text
+	 */
 	public String getLabelText() {
 		return this.labelText;
 	}
 
+	/**
+	 * Setter for the label text
+	 * 
+	 * @param labelText
+	 */
 	public void setLabelText(String labelText) {
 		this.labelText = labelText;
 	}
 
+	/**
+	 * Indicates whether a colon should be rendered after the label text,
+	 * generally used when the label appears to the left of the field's control
+	 * or value
+	 * 
+	 * @return boolean true if a colon should be rendered, false if it should
+	 *         not be
+	 */
 	public boolean isRenderColon() {
 		return this.renderColon;
 	}
 
+	/**
+	 * Setter for the render colon indicator
+	 * 
+	 * @param renderColon
+	 */
 	public void setRenderColon(boolean renderColon) {
 		this.renderColon = renderColon;
 	}
 
+	/**
+	 * <code>MessageField</code> instance that will display a required indicator
+	 * 
+	 * <p>
+	 * To indicate a field must have a value (required input) the required
+	 * message field can be set to display an indicator or message along with
+	 * the label. The message field also dictates the styling of the required
+	 * message
+	 * </p>
+	 * 
+	 * @return MessageField instance
+	 */
 	public MessageField getRequiredMessageField() {
 		return this.requiredMessageField;
 	}
 
+	/**
+	 * Setter for the required message field
+	 * 
+	 * @param requiredMessageField
+	 */
 	public void setRequiredMessageField(MessageField requiredMessageField) {
 		this.requiredMessageField = requiredMessageField;
 	}

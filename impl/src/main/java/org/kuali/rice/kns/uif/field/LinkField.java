@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
- * Field that contains a link element
+ * Field that encloses a link element
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

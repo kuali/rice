@@ -25,7 +25,7 @@ public class DatePicker extends WidgetBase {
 	private static final long serialVersionUID = -659830874214415990L;
 
 	public DatePicker() {
-
+		super();
 	}
 
 }

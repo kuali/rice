@@ -26,6 +26,15 @@ import org.kuali.rice.kns.uif.container.View;
  * Layout manager that organizes components in a single row (horizontal) or
  * column (vertical)
  * 
+ * <p>
+ * Although a table based template could be used, setup is done to also support
+ * a CSS based template. The items in the <code>Container</code> instance are
+ * rendered sequentially wrapping each one with a span element. The padding
+ * property can be configured to space the elements as needed. To achieve a
+ * vertical orientation, the span style is set to block. Aditional styling can
+ * be set for the items by using the itemSpanStyle property.
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BoxLayoutManager extends LayoutManagerBase {
@@ -37,6 +46,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	private String itemSpanStyle;
 
 	public BoxLayoutManager() {
+		super();
+
 		orientation = Orientation.HORIZONTAL;
 		padding = "1px";
 	}

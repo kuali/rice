@@ -691,7 +691,7 @@
 		</property>
 	</bean>
 
-	<bean id="countryService" class="org.kuali.rice.kns.service.impl.CountryServiceImpl">
+	<bean id="countryService" class="org.kuali.rice.shareddata.impl.country.CountryServiceImpl">
 		<property name="kualiModuleService">
 			<ref bean="kualiModuleService" />
 		</property>

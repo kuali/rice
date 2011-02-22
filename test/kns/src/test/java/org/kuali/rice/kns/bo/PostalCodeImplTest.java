@@ -19,6 +19,7 @@ package org.kuali.rice.kns.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.test.KNSTestCase;
 
 import static org.junit.Assert.assertEquals;
@@ -78,10 +79,10 @@ public class PostalCodeImplTest extends KNSTestCase {
 	
 	@Test
 	public void testCountry(){
-		Country dummyCountry = new CountryImpl();
-		
-		dummyPCI.setCountry(dummyCountry);
-		assertEquals("Testing Country in PostalCodeImpl", dummyCountry, dummyPCI.getCountry());
+        Country country = Country.Builder.create("US","USA","United States",false,true).build();
+
+		dummyPCI.setCountry(country);
+		assertEquals("Testing Country in PostalCodeImpl", country, dummyPCI.getCountry());
 	}
 	
 	@Test

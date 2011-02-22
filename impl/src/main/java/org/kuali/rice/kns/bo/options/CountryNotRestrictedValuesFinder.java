@@ -17,8 +17,9 @@ package org.kuali.rice.kns.bo.options;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.shareddata.api.country.Country;
+import org.kuali.rice.shareddata.api.country.CountryService;
 
 /**
  * This class returns list of active and non-restricted country value pairs.
@@ -31,6 +32,7 @@ public class CountryNotRestrictedValuesFinder extends AbstractCountryValuesFinde
 	 */
 	@Override
 	protected List<Country> retrieveCountriesForValuesFinder() {
-		return KNSServiceLocatorInternal.getCountryService().findAllCountriesNotRestricted();
+        CountryService countryService = KNSServiceLocatorInternal.getCountryService();
+		return countryService.findAllCountriesNotRestricted();
 	}
 }

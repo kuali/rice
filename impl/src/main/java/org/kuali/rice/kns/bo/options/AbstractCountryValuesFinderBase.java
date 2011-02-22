@@ -23,9 +23,10 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.shareddata.api.country.Country;
+import org.kuali.rice.shareddata.impl.country.CountryBo;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 

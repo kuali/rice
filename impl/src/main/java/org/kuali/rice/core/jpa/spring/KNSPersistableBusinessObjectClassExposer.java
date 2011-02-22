@@ -63,7 +63,7 @@ public class KNSPersistableBusinessObjectClassExposer implements
 		knsBOs.add(org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.document.authorization.PessimisticLock.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.SelectedObjectIds.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.CountryImpl.class.getName());
+		knsBOs.add(org.kuali.rice.shareddata.impl.country.CountryBo.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.CountyImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.StateImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PostalCodeImpl.class.getName());

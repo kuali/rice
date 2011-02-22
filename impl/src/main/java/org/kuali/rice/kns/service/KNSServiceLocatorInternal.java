@@ -23,6 +23,7 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
+import org.kuali.rice.shareddata.api.country.CountryService;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 

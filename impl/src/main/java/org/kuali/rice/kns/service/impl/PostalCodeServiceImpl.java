@@ -21,10 +21,10 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.PostalCode;
-import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.PostalCodeService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.shareddata.api.country.CountryService;
 
 public class PostalCodeServiceImpl implements PostalCodeService {
     private static Logger LOG = Logger.getLogger(PostalCodeServiceImpl.class);

@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.bo;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.shareddata.api.country.Country;
 
 import javax.persistence.*;
 
@@ -40,9 +41,9 @@ public class CountyImpl extends PersistableBusinessObjectBase implements Inactiv
 	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="STATE_CD",referencedColumnName="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
-    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.EAGER)
+    @ManyToOne(targetEntity=Country.class,fetch=FetchType.EAGER) //TODO: Make CountryBo once StateImpl is converted to StateBo and exists in shareddata)
 	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
-    private Country country;
+    private Country country; //TODO: Make CountryBo once StateImpl is converted to StateBo and exists in shareddata
 
     public State getState() {
         return state;

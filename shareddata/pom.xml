@@ -15,6 +15,7 @@
   </modules>
      <dependencies>
         <!-- Rice Deps -->
+         <!--
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rice-api</artifactId>
@@ -25,6 +26,7 @@
             <artifactId>rice-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        -->
 
         <!-- Third Party Deps -->
         <dependency>

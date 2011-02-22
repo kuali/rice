@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.bo;
 
 import org.junit.Test;
+import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.test.KNSTestCase;
 
 import static org.junit.Assert.assertEquals;
@@ -76,8 +77,8 @@ public class StateImplTest extends KNSTestCase{
 	
 	@Test
 	public void testCountry(){
-		Country dummyCountry = new CountryImpl();
-		dummyState.setCountry(dummyCountry);
-		assertEquals("Testing Country in StateImpl",dummyCountry,dummyState.getCountry());
+        Country country = Country.Builder.create("US","USA","United States",false,true).build();
+		dummyState.setCountry(country);
+		assertEquals("Testing Country in StateImpl",country,dummyState.getCountry());
 	}
 }

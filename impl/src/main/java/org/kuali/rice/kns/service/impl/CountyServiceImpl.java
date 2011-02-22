@@ -21,10 +21,10 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.County;
-import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.service.CountyService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.shareddata.api.country.CountryService;
 
 /**
  * This class...

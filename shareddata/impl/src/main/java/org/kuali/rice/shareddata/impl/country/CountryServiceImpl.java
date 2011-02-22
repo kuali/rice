@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service.impl;
+package org.kuali.rice.shareddata.impl.country;
+
+
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kns.bo.Country;
-import org.kuali.rice.kns.service.CountryService;
+import org.kuali.rice.shareddata.api.country.Country;
+import org.kuali.rice.shareddata.api.country.CountryService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +38,7 @@ public class CountryServiceImpl implements CountryService {
 
     private KualiModuleService kualiModuleService;
 
-    /**
-     * @see org.kuali.kfs.sys.service.CountryService#getByPrimaryId(java.lang.String)
-     */
+    @Override
     public Country getByPrimaryId(String postalCountryCode) {
         if (StringUtils.isBlank(postalCountryCode)) {
             LOG.debug("The postalCountryCode cannot be empty String.");
@@ -46,9 +48,13 @@ public class CountryServiceImpl implements CountryService {
         Map<String, Object> postalCountryMap = new HashMap<String, Object>();
         postalCountryMap.put(KNSPropertyConstants.POSTAL_COUNTRY_CODE, postalCountryCode);
 
-        return kualiModuleService.getResponsibleModuleService(Country.class).getExternalizableBusinessObject(Country.class, postalCountryMap);
+        CountryBo countryBo =  kualiModuleService.getResponsibleModuleService(CountryBo.class)
+                .getExternalizableBusinessObject(CountryBo.class, postalCountryMap);
+
+        return CountryBo.to(countryBo);
     }
 
+    @Override
     public Country getByPrimaryIdIfNecessary(String postalCountryCode, Country existingCountry) {
         if (existingCountry != null) {
             if (StringUtils.equals(postalCountryCode, existingCountry.getPostalCountryCode())) {
@@ -60,8 +66,9 @@ public class CountryServiceImpl implements CountryService {
     }
 
 	/**
-	 * @see org.kuali.rice.kns.service.CountryService#getByAlternatePostalCountryCode(java.lang.String)
+	 * @see org.kuali.rice.shareddata.api.country.CountryService#getByAlternatePostalCountryCode(java.lang.String)
 	 */
+    @Override
 	public Country getByAlternatePostalCountryCode(String alternatePostalCountryCode) {
         if (StringUtils.isBlank(alternatePostalCountryCode)) {
             LOG.debug("The alternatePostalCountryCode cannot be empty String.");
@@ -71,19 +78,17 @@ public class CountryServiceImpl implements CountryService {
         Map<String, Object> postalCountryMap = new HashMap<String, Object>();
         postalCountryMap.put(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternatePostalCountryCode);
 
-        List<Country> countryList = kualiModuleService.getResponsibleModuleService(Country.class).getExternalizableBusinessObjectsList(Country.class, postalCountryMap);
+        List<CountryBo> countryList = kualiModuleService.getResponsibleModuleService(CountryBo.class).getExternalizableBusinessObjectsList(CountryBo.class, postalCountryMap);
         if (countryList == null || countryList.isEmpty()) {
         	return null;
         }
         else if (countryList.size() == 1) {
-        	return countryList.get(0);
+            return CountryBo.to(countryList.get(1));
         }
         else throw new IllegalStateException("Multiple countries found with same alternatePostalCountryCode");
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.service.CountryService#getByAlternatePostalCountryCodeIfNecessary(java.lang.String, org.kuali.rice.kns.bo.Country)
-	 */
+    @Override
 	public Country getByAlternatePostalCountryCodeIfNecessary(String alternatePostalCountryCode, Country existingCountry) {
 		if (existingCountry != null) {
 			if (StringUtils.equals(alternatePostalCountryCode, existingCountry.getAlternatePostalCountryCode())) {
@@ -93,13 +98,15 @@ public class CountryServiceImpl implements CountryService {
 		
 		return this.getByAlternatePostalCountryCode(alternatePostalCountryCode);
 	}
-
+    
+    @Override
     public Country getDefaultCountry() {
         String postalCountryCode = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE,
                 KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
         return this.getByPrimaryId(postalCountryCode);
     }
-
+    
+    @Override
     public List<Country> findAllCountriesNotRestricted() {
         List<String> criteriaValues = new ArrayList<String>();
         criteriaValues.add(null);
@@ -108,15 +115,18 @@ public class CountryServiceImpl implements CountryService {
         Map<String, Object> postalCountryMap = new HashMap<String, Object>();
         postalCountryMap.put(KNSPropertyConstants.POSTAL_COUNTRY_RESTRICTED_INDICATOR, criteriaValues);
         
-        return kualiModuleService.getResponsibleModuleService(Country.class).getExternalizableBusinessObjectsList(Country.class, postalCountryMap);
+        List<CountryBo> countryBos = kualiModuleService.getResponsibleModuleService(CountryBo.class)
+                .getExternalizableBusinessObjectsList(CountryBo.class, postalCountryMap);
+
+        return convertListOfBosToImmutables(countryBos);
     }
 
-    /**
-     * @see org.kuali.kfs.sys.service.CountryService#findAllCountries()
-     */
+    @Override
     public List<Country> findAllCountries() {
         Map<String, Object> postalCountryMap = new HashMap<String, Object>();
-        return kualiModuleService.getResponsibleModuleService(Country.class).getExternalizableBusinessObjectsList(Country.class, postalCountryMap);
+        List<CountryBo> countryBos = kualiModuleService.getResponsibleModuleService(CountryBo.class).
+                getExternalizableBusinessObjectsList(CountryBo.class, postalCountryMap);
+        return convertListOfBosToImmutables(countryBos);
     }
 
     /**
@@ -128,4 +138,12 @@ public class CountryServiceImpl implements CountryService {
         this.kualiModuleService = kualiModuleService;
     }
 
+    List<Country> convertListOfBosToImmutables(List<CountryBo> countryBos) {
+        ArrayList<Country> countries = new ArrayList<Country>();
+        for (CountryBo bo : countryBos) {
+            Country country = CountryBo.to(bo);
+            countries.add(country) ;
+        }
+        return Collections.unmodifiableList(countries);
+    }
 }

@@ -22,11 +22,11 @@ import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.impl.parameter.ParameterId;
 import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.kns.bo.CountryImpl;
 import org.kuali.rice.kns.bo.StateImpl;
 import org.kuali.rice.kns.bo.StateImplId;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
+import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.test.KNSTestCase;
 
 import java.util.HashMap;
@@ -47,18 +47,18 @@ public class MetadataManagerTest extends KNSTestCase {
 	@Test
 	public void testPKMapToObject() {
 		Map<String, Object> pkMap = new HashMap<String, Object>();
-		Object pkValue = MetadataManager.convertPrimaryKeyMapToObject(CountryImpl.class, pkMap);
+		Object pkValue = MetadataManager.convertPrimaryKeyMapToObject(Country.class, pkMap);
 		assertNull("An empty map should return a null key", pkValue);
 		
 		pkMap.put("postalCountryCode", "AN");
-		pkValue = MetadataManager.convertPrimaryKeyMapToObject(CountryImpl.class, pkMap);
+		pkValue = MetadataManager.convertPrimaryKeyMapToObject(Country.class, pkMap);
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"AN\"", "AN", pkValue);
 		
 		pkMap.put("postalCountryName", "ANDORRA");
 		boolean exceptionThrown = false;
 		try {
-			pkValue = MetadataManager.convertPrimaryKeyMapToObject(CountryImpl.class, pkMap);
+			pkValue = MetadataManager.convertPrimaryKeyMapToObject(Country.class, pkMap);
 		} catch (IllegalArgumentException iae) {
 			exceptionThrown = true;
 		}

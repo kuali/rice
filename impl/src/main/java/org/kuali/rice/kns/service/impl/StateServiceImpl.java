@@ -22,10 +22,10 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.State;
-import org.kuali.rice.kns.service.CountryService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.StateService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.shareddata.api.country.CountryService;
 
 public class StateServiceImpl implements StateService {
     private static Logger LOG = Logger.getLogger(StateServiceImpl.class);

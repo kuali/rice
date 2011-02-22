@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.bo;
 
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import org.kuali.rice.shareddata.api.country.Country;
 
 
 public interface State extends ExternalizableBusinessObject{

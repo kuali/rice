@@ -17,6 +17,7 @@
 package org.kuali.rice.kns.bo;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.shareddata.api.country.Country;
 
 import javax.persistence.*;
 
@@ -50,9 +51,9 @@ public class PostalCodeImpl extends PersistableBusinessObjectBase implements Ina
 	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
-    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.LAZY)
+    @ManyToOne(targetEntity=Country.class,fetch=FetchType.LAZY)  //TODO: Make CountryBo once StateImpl is converted to StateBo and exists in shareddata
 	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
-    private Country country;
+    private Country country; //TODO: Make CountryBo once StateImpl is converted to StateBo and exists in shareddata)
     
     @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountyImpl.class,fetch=FetchType.LAZY)
 	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",insertable=false,updatable=false),@JoinColumn(name="COUNTY_CD",insertable=false,updatable=false)})

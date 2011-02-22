@@ -10,6 +10,7 @@
     </parent>
     <artifactId>rice-shareddata-impl</artifactId>
     <name>rice-shareddata-impl</name>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -17,8 +18,18 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+           <groupId>${project.groupId}</groupId>
             <artifactId>krad-app-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>krad-web-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>rice-core-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

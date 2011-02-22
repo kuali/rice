@@ -16,17 +16,17 @@ class ParameterTypeTest {
 
     private static final String PARAMETER_TYPE_CODE = "PC"
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
         ParameterType.Builder.create((String) null);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
         ParameterType.Builder.create("");
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
         ParameterType.Builder.create("  ");
     }

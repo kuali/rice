@@ -21,52 +21,52 @@ class ComponentTest {
     private static final boolean VIRTUAL = false
     private static final boolean ACTIVE = true
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
         Component.Builder.create(null, null, null, false);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
         Component.Builder.create(null, CODE, NAME, VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
         Component.Builder.create("", CODE, NAME, VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
         Component.Builder.create("  ", CODE, NAME, VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
         Component.Builder.create(NAMESPACE_CODE, null, NAME, VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
         Component.Builder.create(NAMESPACE_CODE, "", NAME, VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
         Component.Builder.create(NAMESPACE_CODE, " ", NAME, VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_null() {
         Component.Builder.create(NAMESPACE_CODE, CODE, null, VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_empty() {
         Component.Builder.create(NAMESPACE_CODE, CODE, "", VIRTUAL);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_whitespace() {
         Component.Builder.create(NAMESPACE_CODE, CODE, "  ", VIRTUAL);
     }

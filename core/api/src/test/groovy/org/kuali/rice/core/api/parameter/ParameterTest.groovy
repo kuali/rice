@@ -30,72 +30,72 @@ public class ParameterTest {
 	private static final String NAME = "SHIELDS_ON";
 	private static final String PARAMETER_TYPE_CODE = "PC"
 
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
         Parameter.Builder.create(null, null, null, null, null);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
         Parameter.Builder.create(null, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
         Parameter.Builder.create("", NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
         Parameter.Builder.create("  ", NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
         Parameter.Builder.create(APPLICATION_CODE, null, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
         Parameter.Builder.create(APPLICATION_CODE, "", COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
         Parameter.Builder.create(APPLICATION_CODE, " ", COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_null() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, null, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_empty() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, "", NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_whitespace() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, " ", NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_null() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, null, ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_empty() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, "", ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_whitespace() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, " ", ParameterType.Builder.create(PARAMETER_TYPE_CODE));
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fifth_whitespace() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, null);
     }

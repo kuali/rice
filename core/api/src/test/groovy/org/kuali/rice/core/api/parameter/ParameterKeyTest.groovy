@@ -19,67 +19,67 @@ class ParameterKeyTest {
     private static final String COMPONENT_CODE = "CC"
     private static final String NAME = "N"
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_all_null() {
         ParameterKey.create(null, null, null, null);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_first_null() {
         ParameterKey.create(null, NAMESPACE_CODE, COMPONENT_CODE, NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_first_empty() {
         ParameterKey.create("", NAMESPACE_CODE, COMPONENT_CODE, NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_first_whitespace() {
         ParameterKey.create(" ", NAMESPACE_CODE, COMPONENT_CODE, NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_second_null() {
         ParameterKey.create(APPLICATION_CODE, null, COMPONENT_CODE, NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_second_empty() {
         ParameterKey.create(APPLICATION_CODE, "", COMPONENT_CODE, NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_second_whitespace() {
         ParameterKey.create(APPLICATION_CODE, " ", COMPONENT_CODE, NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_third_null() {
         ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, null, NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_third_empty() {
         ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, "", NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_third_whitespace() {
         ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, " ", NAME);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_fourth_null() {
         ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, null);
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_fourth_empty() {
         ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, "");
     }
 
-    @Test(expected=IllegalArgumentException)
+    @Test(expected=IllegalArgumentException.class)
     void test_Key_fail_fourth_whitespace() {
         ParameterKey.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, " ");
     }

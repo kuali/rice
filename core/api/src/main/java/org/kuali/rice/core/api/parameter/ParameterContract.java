@@ -1,7 +1,5 @@
 package org.kuali.rice.core.api.parameter;
 
-import org.kuali.rice.core.api.component.ComponentContract;
-
 /**
  * This is the contract for a Parameter.  The concept of a parameter is a key=value pair that is associated
  * with a rice enabled application.
@@ -60,7 +58,7 @@ public interface ParameterContract {
 	String getDescription();
 
     /**
-     * This is the evaluation operator for the parameter.  This can be null but will never be a blank or empty string.
+     * This is the evaluation operator for the parameter.  This can be null.
      *
      * <p>
      * This allows parameters to be used as primitive business rules.

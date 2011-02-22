@@ -1,21 +1,15 @@
 package org.kuali.rice.core.api.namespace;
 
-import java.io.Serializable;
-import java.util.Collection;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
+
+import javax.xml.bind.annotation.*;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * An immutable representation of a Namespace.
@@ -30,7 +24,8 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
     Namespace.Elements.CODE,
     Namespace.Elements.APPLICATION_CODE,
     Namespace.Elements.NAME,
-    Namespace.Elements.ACTIVE
+    Namespace.Elements.ACTIVE,
+    "_elements"
     })
 public final class Namespace implements NamespaceContract, ModelObjectComplete {
 	

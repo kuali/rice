@@ -94,12 +94,7 @@ public class KNSServiceLocatorInternal {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
     }
 
-    public static final String COUNTRY_SERVICE = "countryService";
 
-    public static CountryService getCountryService() {
-	return (CountryService) getService(COUNTRY_SERVICE);
-    }
-    
     public static final String STATE_SERVICE = "stateService";
 
     public static StateService getStateService() {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.bo.options;
+package org.kuali.rice.shareddata.framework.country;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,9 +24,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.shareddata.api.country.Country;
-import org.kuali.rice.shareddata.impl.country.CountryBo;
+import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -35,7 +34,8 @@ import org.kuali.rice.shareddata.impl.country.CountryBo;
  *
  */
 public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
-	/**
+
+    /**
 	 * Returns a list of countries that will be added to the result of {@link #getKeyValues()}.  Note that the result may
 	 * be filtered by active status
 	 * 
@@ -46,7 +46,7 @@ public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
 		List<Country> boList = retrieveCountriesForValuesFinder();
-		final Country defaultCountry = KNSServiceLocatorInternal.getCountryService().getDefaultCountry();
+		final Country defaultCountry = SharedDataApiServiceLocator.getCountryService().getDefaultCountry();
 		List<KeyValue> labels = new ArrayList<KeyValue>( boList.size() + 1 );
 		
         labels.add(new ConcreteKeyValue("", ""));

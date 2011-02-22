@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.bo.options;
+package org.kuali.rice.shareddata.framework.country;
 
 import java.util.List;
 
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.rice.shareddata.api.country.CountryService;
+import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
 
 /**
  * This class returns list of active and non-restricted country value pairs.
  */
+@SuppressWarnings("unused")
 public class CountryNotRestrictedValuesFinder extends AbstractCountryValuesFinderBase {
 	/**
 	 * Returns all non-restricted countries, regardless of active status
-	 * 
-	 * @see org.kuali.rice.kns.bo.options.AbstractCountryValuesFinderBase#retrieveCountriesForValuesFinder()
 	 */
 	@Override
 	protected List<Country> retrieveCountriesForValuesFinder() {
-        CountryService countryService = KNSServiceLocatorInternal.getCountryService();
+        CountryService countryService = SharedDataApiServiceLocator.getCountryService();
 		return countryService.findAllCountriesNotRestricted();
 	}
 }

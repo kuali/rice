@@ -91,7 +91,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     }
     
     protected void setupMaintenance(MaintenanceForm form, HttpServletRequest request, String maintenanceAction) throws Exception {
-        MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+        MaintenanceDocument document = form.getDocument();
         
         // create a new document object, if required (on NEW object, or other reasons)
         if (document == null) {

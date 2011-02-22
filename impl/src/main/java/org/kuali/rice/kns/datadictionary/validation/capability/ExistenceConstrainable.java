@@ -17,13 +17,14 @@ package org.kuali.rice.kns.datadictionary.validation.capability;
 
 import org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint;
 
-
 /**
+ * Validation capability to constrain a value to be required or not required to be non-empty. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public interface ExistenceConstrainable extends Constrainable, ExistenceConstraint {
 
-	// Empty
+	// To match up with legacy code for AttributeDefinition, the existence constraint isRequired() member is a field
+	// on the definition, making the capability a sub-interface of the constraint
 	
 }

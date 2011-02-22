@@ -15,13 +15,24 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.constraint;
 
-import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
 
 /**
- * This is just a marker interface for constraints. It's necessary for the generics to work in the {@link ConstraintProcessor}. 
+ * This is the marker interface for constraints. Constraints are a central concept in the Rice data dictionary validation, and are the
+ * primary mechanism by which the validation of an object or one of its attributes takes place. For example, by imposing a length constraint
+ * on an attribute of a business object, it's possible to indicate that only values shorter (or longer) than a specific number of characters
+ * are valid for that attribute. 
+ * 
+ * Any interface that extends Constraint is by definition a constraint, and may have one of the following defined:
+ * 
+ * - A sub-interface for {@see Constrainable} that advises on how a constraint maps to data dictionary metadata
+ * - A {@see ConstraintProvider} that looks up constraints for a specific constrainable definition
+ * - A {@see ConstraintProcessor} that processes the constraint against some object value to determine if it is valid
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @since 1.1
  */
 public interface Constraint {
-	// Empty
+	
+	// Empty - since this is a marker interface, all of the interesting stuff is in interfaces or classes that extend this interface
+	
 }

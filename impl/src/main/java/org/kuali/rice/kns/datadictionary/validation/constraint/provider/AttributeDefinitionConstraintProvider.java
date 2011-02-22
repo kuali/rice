@@ -15,72 +15,47 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.constraint.provider;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.CaseConstraintResolver;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.ConstraintResolver;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.MustOccurConstraintsResolver;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.PrerequisiteConstraintsResolver;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.ValidCharactersConstraintResolver;
 
 /**
+ * An object that looks up constraints for attribute definitions by constraint type. This can either by instantiated by dependency
+ * injection, in which case a map of class names to constraint resolvers can be injected, or the default map can be constructed by
+ * calling the init() method immediately after instantiation. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeDefinitionConstraintProvider extends BaseConstraintProvider<AttributeDefinition> {
 
-	private ConstraintResolver<AttributeDefinition> CASE_CONSTRAINT_RESOLVER = new ConstraintResolver<AttributeDefinition>() {
-		@Override
-		public <C extends Constraint> List<C> resolve(AttributeDefinition definition) {
-			@SuppressWarnings("unchecked")
-			C caseConstraint = (C)definition.getCaseConstraint();
-			return Collections.singletonList(caseConstraint);
-		}
-	};
-	
-	// In many cases AttributeDefinition is both a Constrainable object and a Constraint -- that is, it has constraint members
-	private ConstraintResolver<AttributeDefinition> DEFINITION_CONSTRAINT_RESOLVER = new ConstraintResolver<AttributeDefinition>() {
-		@Override
-		public <C extends Constraint> List<C> resolve(AttributeDefinition definition) {
-			@SuppressWarnings("unchecked")
-			C constraint = (C)definition;
-			return Collections.singletonList(constraint);
-		}
-	};
-	
-	private ConstraintResolver<AttributeDefinition> MUST_OCCUR_CONSTRAINT_RESOLVER = new ConstraintResolver<AttributeDefinition>() {
-		@SuppressWarnings("unchecked")
-		@Override
-		public <C extends Constraint> List<C> resolve(AttributeDefinition definition) {
-			return (List<C>) definition.getMustOccurConstraints();
-		}
-	};
-	
-	private ConstraintResolver<AttributeDefinition> PREREQUISITE_CONSTRAINT_RESOLVER = new ConstraintResolver<AttributeDefinition>() {
-		@SuppressWarnings("unchecked")
-		@Override
-		public <C extends Constraint> List<C> resolve(AttributeDefinition definition) {
-			return (List<C>) definition.getPrerequisiteConstraints();
-		}
-	};
-	
-	private ConstraintResolver<AttributeDefinition> VALID_CHARACTERS_CONSTRAINT_RESOLVER = new ConstraintResolver<AttributeDefinition>() {
-		@Override
-		public <C extends Constraint> List<C> resolve(AttributeDefinition definition) {
-			@SuppressWarnings("unchecked")
-			C caseConstraint = (C)definition.getValidCharactersConstraint();
-			return Collections.singletonList(caseConstraint);
-		}
-	};
-	
+	@Override
+	public void init() {
+		resolverMap = new HashMap<String, ConstraintResolver<AttributeDefinition>>();
+		resolverMap.put(CaseConstraint.class.getName(), new CaseConstraintResolver<AttributeDefinition>());
+		resolverMap.put(ExistenceConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
+		resolverMap.put(DataTypeConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
+		resolverMap.put(LengthConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
+		resolverMap.put(ValidCharactersConstraint.class.getName(), new ValidCharactersConstraintResolver<AttributeDefinition>());
+		resolverMap.put(PrerequisiteConstraint.class.getName(), new PrerequisiteConstraintsResolver<AttributeDefinition>());
+		resolverMap.put(MustOccurConstraint.class.getName(), new MustOccurConstraintsResolver<AttributeDefinition>());
+		resolverMap.put(CollectionSizeConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
+	}
+
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider#isSupported(org.kuali.rice.kns.datadictionary.validation.capability.Constrainable)
 	 */
@@ -91,21 +66,6 @@ public class AttributeDefinitionConstraintProvider extends BaseConstraintProvide
 			return true;
 		
 		return false;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.provider.BaseConstraintProvider#initializeResolverMap(java.util.Map)
-	 */
-	@Override
-	protected void initializeResolverMap(Map<Class<? extends Constraint>, ConstraintResolver<AttributeDefinition>> resolverMap) {
-		resolverMap.put(CaseConstraint.class, CASE_CONSTRAINT_RESOLVER);
-		resolverMap.put(ExistenceConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
-		resolverMap.put(DataTypeConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
-		resolverMap.put(LengthConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
-		resolverMap.put(ValidCharactersConstraint.class, VALID_CHARACTERS_CONSTRAINT_RESOLVER);
-		resolverMap.put(PrerequisiteConstraint.class, PREREQUISITE_CONSTRAINT_RESOLVER);
-		resolverMap.put(MustOccurConstraint.class, MUST_OCCUR_CONSTRAINT_RESOLVER);
-		resolverMap.put(CollectionSizeConstraint.class, DEFINITION_CONSTRAINT_RESOLVER);
 	}
 
 }

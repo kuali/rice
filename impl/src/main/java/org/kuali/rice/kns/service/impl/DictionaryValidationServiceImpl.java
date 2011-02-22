@@ -46,39 +46,20 @@ import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MaintenanceDocumentAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.SingleAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrainable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.RangeConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider;
 import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider;
-import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider;
-import org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.LengthConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.PrerequisiteConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.RangeConstraintProcessor;
-import org.kuali.rice.kns.datadictionary.validation.processor.ValidCharactersConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
@@ -125,13 +106,36 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     private PersistenceStructureService persistenceStructureService;
     
-    
+    @SuppressWarnings("rawtypes")
+	private List<CollectionConstraintProcessor> collectionConstraintProcessors;
+    @SuppressWarnings("rawtypes")
+    private List<ConstraintProvider> constraintProviders;
+	@SuppressWarnings("rawtypes")
+	private List<ConstraintProcessor> elementConstraintProcessors;
+	
+	
     /** 
      * creates a new IdentitySet.
      * @return a new Set
      */
     private static Set<BusinessObject> newIdentitySet() {
     	return java.util.Collections.newSetFromMap(new IdentityHashMap<BusinessObject, Boolean>());
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object)
+     */
+    @Override
+	public DictionaryValidationResult validate(Object object) {
+    	return validate(object, object.getClass().getName(), true);
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, boolean)
+     */
+    @Override
+	public DictionaryValidationResult validate(Object object, boolean doOptionalProcessing) {
+    	return validate(object, object.getClass().getName(), doOptionalProcessing);
     }
     
     /**
@@ -175,10 +179,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	return validate(attributeValueReader, doOptionalProcessing);
     }
     
+    @Override
     public void validate(String entryName, String attributeName, Object attributeValue) {
     	validate(entryName, attributeName, attributeValue, true);
     }
     
+    @Override
     public void validate(String entryName, String attributeName, Object attributeValue, boolean doOptionalProcessing) {
        	AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(entryName, attributeName);
     	
@@ -381,19 +387,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	 * @deprecated since 1.1
 	 */
 	@Deprecated public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
-		
-		
+
 		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
-		// FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
 		validate(new MaintenanceDocumentAttributeValueReader(businessObject, docTypeName, entry, persistenceStructureService), true);
-		
-//		// JLR : uses KS style validator instead
-//		validator.validateBusinessObjectOnMaintenanceDocument(businessObject, docTypeName);
-//		
-		/*MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
-		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
-	    	validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
-		}*/
 	}
 	
 //	protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject, List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
@@ -750,43 +746,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     @Deprecated public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
     	
     	// validate the primitive attributes if defined in the dictionary
-        if (null != propertyDescriptor) { // && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
+        if (null != propertyDescriptor) { 
         	validate(object, entryName, propertyDescriptor.getName(), validateRequired);
-        	
-//            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
-//            Class propertyType = propertyDescriptor.getPropertyType();
-
-//            DataType dataType = null;
-//            
-//            if (TypeUtils.isStringClass(propertyType)) 
-//            	dataType = DataType.STRING;
-//            else if (TypeUtils.isIntegralClass(propertyType))
-//            	dataType = DataType.INTEGER;
-//            else if (TypeUtils.isDecimalClass(propertyType)) 
-//            	dataType = DataType.DOUBLE;
-//            else if (TypeUtils.isTemporalClass(propertyType))
-//            	dataType = DataType.DATE;
-            
-            
-//            if (dataType != null) {
-//            	validator.validateAttributeField(entryName, propertyDescriptor.getName(), object);
-//            }
-            
-            
-//            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-//
-//                // check value format against dictionary
-//                if (value != null && StringUtils.isNotBlank(value.toString())) {
-//                    if (!TypeUtils.isTemporalClass(propertyType)) {
-//                       //validateAttributeFormat(entryName, propertyDescriptor.getName(), value.toString(), errorPrefix + propertyDescriptor.getName());
-//                    // validate(String entryName, String fieldName, AttributeValueReader valueReader, boolean checkIfRequired)	
-//                    	validator.validateAttributeField(entryName, propertyDescriptor.getName(), object, value.toString(), dataType);
-//                    }
-//                }
-//                else if (validateRequired) {
-//                    validateAttributeRequired(entryName, propertyDescriptor.getName(), value, Boolean.FALSE, errorPrefix + propertyDescriptor.getName());
-//                }
-//            }
         }
     }
 
@@ -1152,69 +1113,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
         return success;
     }
-    
-    
-    /*
-     * 1.1 validation members
-     */
-    
-    @SuppressWarnings("rawtypes")
-	private static final Class[] DEFAULT_ELEMENT_CONSTRAINT_TYPES = 
-    {
-    	CaseConstraint.class,
-    	ExistenceConstraint.class,
-    	DataTypeConstraint.class,
-    	RangeConstraint.class,
-    	LengthConstraint.class,
-    	ValidCharactersConstraint.class,
-    	PrerequisiteConstraint.class,
-    	MustOccurConstraint.class
-    };
-    
-    @SuppressWarnings("rawtypes")
-	private static final Class[] DEFAULT_COLLECTION_CONSTRAINT_TYPES = 
-    {
-    	CollectionSizeConstraint.class
-    };
-    
-    @SuppressWarnings("rawtypes")
-	private static final ConstraintProvider[] DEFAULT_CONSTRAINT_PROVIDERS = 
-    {
-    	new AttributeDefinitionConstraintProvider(),
-    	new ObjectDictionaryEntryConstraintProvider()
-    };
-
-	@SuppressWarnings("rawtypes")
-	private static final List<ConstraintProcessor> DEFAULT_ELEMENT_PROCESSORS = 
-		Arrays.asList((ConstraintProcessor)new CaseConstraintProcessor(), 
-				(ConstraintProcessor)new ExistenceConstraintProcessor(),
-				(ConstraintProcessor)new DataTypeConstraintProcessor(), 
-				(ConstraintProcessor)new RangeConstraintProcessor(),
-				(ConstraintProcessor)new LengthConstraintProcessor(),
-				(ConstraintProcessor)new ValidCharactersConstraintProcessor(),
-				(ConstraintProcessor)new PrerequisiteConstraintProcessor(),
-				(ConstraintProcessor)new MustOccurConstraintProcessor());
-	
-	@SuppressWarnings("rawtypes")
-	private static final List<CollectionConstraintProcessor> DEFAULT_COLLECTION_PROCESSORS = 
-		Arrays.asList((CollectionConstraintProcessor)new CollectionSizeConstraintProcessor());
-	
-	
-    private List<ConstraintProvider> constraintProviders = Arrays.asList(DEFAULT_CONSTRAINT_PROVIDERS);
-	
-    @SuppressWarnings("rawtypes")
-    private List<Class> elementConstraintTypes = Arrays.asList(DEFAULT_ELEMENT_CONSTRAINT_TYPES);
-    
-    @SuppressWarnings("rawtypes")
-    private List<Class> collectionConstraintTypes = Arrays.asList(DEFAULT_COLLECTION_CONSTRAINT_TYPES);
-    
-	@SuppressWarnings("rawtypes")
-	private List<ConstraintProcessor> elementProcessors = DEFAULT_ELEMENT_PROCESSORS;
-	
-	@SuppressWarnings("rawtypes")
-	private List<CollectionConstraintProcessor> collectionProcessors = DEFAULT_COLLECTION_PROCESSORS;
-	
-    
+     
     /*
      * 1.1 validation methods 
      */
@@ -1271,15 +1170,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 	
     private void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-    	processConstraints(result, elementProcessors, elementConstraintTypes, value, definition, attributeValueReader, elementStack, doOptionalProcessing);
+    	processConstraints(result, elementConstraintProcessors, value, definition, attributeValueReader, elementStack, doOptionalProcessing);
     }
     
     private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-    	processConstraints(result, collectionProcessors, collectionConstraintTypes, collection, definition, attributeValueReader, elementStack, doOptionalProcessing);
+    	processConstraints(result, collectionConstraintProcessors, collection, definition, attributeValueReader, elementStack, doOptionalProcessing);
     }
     
     @SuppressWarnings("rawtypes")
-	private void processConstraints(DictionaryValidationResult result, List<? extends ConstraintProcessor> constraintProcessors, List<Class> constraintTypes, Object object, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
+	private void processConstraints(DictionaryValidationResult result, List<? extends ConstraintProcessor> constraintProcessors, Object object, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
 		if (constraintProcessors != null) {
 			Constrainable selectedDefinition = definition;
 			AttributeValueReader selectedAttributeValueReader = attributeValueReader;
@@ -1407,7 +1306,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	DataType dataType = definition instanceof DataTypeConstraint ? ((DataTypeConstraint)definition).getDataType() : null;
     	boolean isComplex = dataType != null && dataType.equals(DataType.COMPLEX);
     	
-    	if (ValidatorUtils.isNullOrEmpty(value)) { 
+    	if (ValidationUtils.isNullOrEmpty(value)) { 
     		processElementConstraints(result, value, definition, attributeValueReader, elementStack, checkIfRequired);
     	}
     	
@@ -1526,18 +1425,56 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	return workflowAttributePropertyResolutionService;
     }
 
-
 	/**
-	 * @return the processors
+	 * @return the collectionConstraintProcessors
 	 */
-	public List<ConstraintProcessor> getProcessors() {
-		return this.elementProcessors;
+    @SuppressWarnings("rawtypes")
+	public List<CollectionConstraintProcessor> getCollectionConstraintProcessors() {
+		return this.collectionConstraintProcessors;
 	}
 
 	/**
-	 * @param processors the processors to set
+	 * @param collectionConstraintProcessors the collectionConstraintProcessors to set
 	 */
-	public void setProcessors(List<ConstraintProcessor> processors) {
-		this.elementProcessors = processors;
+	@SuppressWarnings("rawtypes")
+	public void setCollectionConstraintProcessors(
+			List<CollectionConstraintProcessor> collectionConstraintProcessors) {
+		this.collectionConstraintProcessors = collectionConstraintProcessors;
 	}
+
+	/**
+	 * @return the constraintProviders
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<ConstraintProvider> getConstraintProviders() {
+		return this.constraintProviders;
+	}
+
+	/**
+	 * @param constraintProviders the constraintProviders to set
+	 */
+	@SuppressWarnings("rawtypes")
+	public void setConstraintProviders(List<ConstraintProvider> constraintProviders) {
+		this.constraintProviders = constraintProviders;
+	}
+
+	/**
+	 * @return the elementConstraintProcessors
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<ConstraintProcessor> getElementConstraintProcessors() {
+		return this.elementConstraintProcessors;
+	}
+
+	/**
+	 * @param elementConstraintProcessors the elementConstraintProcessors to set
+	 */
+	@SuppressWarnings("rawtypes")
+	public void setElementConstraintProcessors(
+			List<ConstraintProcessor> elementConstraintProcessors) {
+		this.elementConstraintProcessors = elementConstraintProcessors;
+	}
+
+
+
 }

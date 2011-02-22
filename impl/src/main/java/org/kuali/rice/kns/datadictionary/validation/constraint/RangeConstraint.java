@@ -16,8 +16,10 @@
 package org.kuali.rice.kns.datadictionary.validation.constraint;
 
 /**
+ * A range constraint is one that restricts a value to a specified range. This value can be numeric or it can be a date. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 1.1
  */
 public interface RangeConstraint extends DataTypeConstraint {
 

@@ -18,8 +18,10 @@ package org.kuali.rice.kns.datadictionary.validation.capability;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 
 /**
+ * Validation capability that tests a value against some regular expression or set of valid characters. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @since 1.1
  */
 public interface ValidCharactersConstrainable extends Constrainable {
 	

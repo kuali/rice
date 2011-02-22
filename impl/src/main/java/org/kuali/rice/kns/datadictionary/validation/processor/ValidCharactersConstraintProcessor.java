@@ -23,8 +23,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.LogicalOperators;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.Formatable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
@@ -32,7 +32,6 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersCo
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
-import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -53,10 +52,8 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
     
 	private static final String CONSTRAINT_NAME = "valid characters constraint";
 	
-	private DataDictionaryService dataDictionaryService;
-	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, ValidCharactersConstraint constraint, AttributeValueReader attributeValueReader)	throws AttributeValidationException {
@@ -83,7 +80,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 		if (constraint == null) 
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
 		
-		if (ValidatorUtils.isNullOrEmpty(value))
+		if (ValidationUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 		
 		// This mix-in interface is here to allow some definitions to avoid the extra processing that goes on in KNS
@@ -136,7 +133,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 						// Use the Boolean value being null to ensure we only do this once
 						if (doValidateDateRangeOrder == null) {
 							// We only want to validate a date range if we're dealing with something that has a date formatter on it and that looks like an actual range (is made up of 2 values with a between operator between them)
-    						doValidateDateRangeOrder = Boolean.valueOf(DateFormatter.class.isAssignableFrom(formatterClass) && StringUtils.contains(ValidatorUtils.getString(value), LogicalOperators.BETWEEN_OPERATOR)); 
+    						doValidateDateRangeOrder = Boolean.valueOf(DateFormatter.class.isAssignableFrom(formatterClass) && StringUtils.contains(ValidationUtils.getString(value), LogicalOperators.BETWEEN_OPERATOR)); 
 						}
 						
 						constraintValidationResult = processFormatterValidation(result, formatterClass, entryName, attributeName, parsedAttributeValue, DATE_RANGE_ERROR_PREFIXES[i]);
@@ -172,7 +169,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
         StringBuilder fieldValue = new StringBuilder();
         String validChars = validCharsConstraint.getValue();
 
-        fieldValue.append(ValidatorUtils.getString(value));
+        fieldValue.append(ValidationUtils.getString(value));
 
         int typIdx = validChars.indexOf(":");
         String processorType = "regex";
@@ -261,22 +258,6 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 		}
 		
 		return null;
-	}
-
-	/**
-	 * @return the dataDictionaryService
-	 */
-	public DataDictionaryService getDataDictionaryService() {
-		if (dataDictionaryService == null)
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
-		return this.dataDictionaryService;
-	}
-
-	/**
-	 * @param dataDictionaryService the dataDictionaryService to set
-	 */
-	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
 	}
     
 }

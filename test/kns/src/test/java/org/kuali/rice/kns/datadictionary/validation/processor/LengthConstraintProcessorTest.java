@@ -22,11 +22,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MockCompany;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 

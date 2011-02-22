@@ -18,8 +18,10 @@ package org.kuali.rice.kns.datadictionary.validation.capability;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 
 /**
+ * Validation capability to constrain a particular value under specific conditions. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @since 1.1
  */
 public interface CaseConstrainable extends Constrainable {
 

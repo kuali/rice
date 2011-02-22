@@ -19,10 +19,11 @@ import java.util.List;
 
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
 import org.kuali.rice.kns.util.DataTypeUtil;
 
 /**
+ * A class that implements the required accessors and legacy processing for an attribute value reader. This provides a convenient base class
+ * from which other attribute value readers can be derived. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */

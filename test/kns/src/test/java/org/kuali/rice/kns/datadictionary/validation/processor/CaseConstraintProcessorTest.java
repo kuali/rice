@@ -19,8 +19,8 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
@@ -32,10 +32,9 @@ import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest {
+public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest<CaseConstraintProcessor> {
 
 	private MockAddress londonAddress = new MockAddress("812 Maiden Lane", "", "London", "", "", "UK", null);
-	private MockAddress noPostalCodeAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "", "USA", null);
 	private MockAddress noStateAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
 	
 	
@@ -45,21 +44,13 @@ public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest {
 		ConstraintValidationResult result = processorResult.getFirstConstraintValidationResult();
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
-		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
+		Assert.assertEquals(ErrorLevel.INAPPLICABLE, result.getStatus());
 		Assert.assertEquals(new CaseConstraintProcessor().getName(), result.getConstraintName());
 		
 		List<Constraint> constraints = processorResult.getConstraints();
 		
 		Assert.assertNotNull(constraints);
-		Assert.assertEquals(1, constraints.size());
-		
-		Constraint constraint = constraints.get(0);
-		
-		Assert.assertTrue(constraint instanceof PrerequisiteConstraint);
-		
-		PrerequisiteConstraint prerequisiteConstraint = (PrerequisiteConstraint)constraint;
-		
-		Assert.assertEquals("state", prerequisiteConstraint.getAttributePath());
+		Assert.assertEquals(0, constraints.size());
 	}
 	
 	@Test

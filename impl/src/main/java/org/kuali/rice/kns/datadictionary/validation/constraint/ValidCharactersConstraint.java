@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlElement;
  * Alternative processors can be specified, though the current implementation (1.1) does not handle any processor but regex. 
  * 
  * @author Kuali Student Team
+ * @since 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ValidCharactersConstraint extends BaseConstraint {

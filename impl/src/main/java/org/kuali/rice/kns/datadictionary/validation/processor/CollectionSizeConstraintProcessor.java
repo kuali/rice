@@ -18,11 +18,9 @@ package org.kuali.rice.kns.datadictionary.validation.processor;
 import java.util.Collection;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrainable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils.Result;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
@@ -40,7 +38,7 @@ public class CollectionSizeConstraintProcessor implements CollectionConstraintPr
 	private static final String CONSTRAINT_NAME = "collection size constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
@@ -78,8 +76,8 @@ public class CollectionSizeConstraintProcessor implements CollectionConstraintPr
 		Integer maxOccurances = constraint.getMaximumNumberOfElements();
 		Integer minOccurances = constraint.getMinimumNumberOfElements();
 		
-		Result lessThanMax = ValidatorUtils.isLessThanOrEqual(sizeOfCollection, maxOccurances);
-		Result greaterThanMin = ValidatorUtils.isGreaterThanOrEqual(sizeOfCollection, minOccurances);
+		Result lessThanMax = ValidationUtils.isLessThanOrEqual(sizeOfCollection, maxOccurances);
+		Result greaterThanMin = ValidationUtils.isGreaterThanOrEqual(sizeOfCollection, minOccurances);
 
 		// It's okay for one end of the range to be undefined - that's not an error. It's only an error if one of them is invalid 
         if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) { 

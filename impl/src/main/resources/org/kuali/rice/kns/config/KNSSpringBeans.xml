@@ -567,6 +567,32 @@
         <property name="dbPlatform" ref="dbPlatform" />    
     </bean>
 
+	<bean id="dictionaryValidationDefinitionConstraintResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver"/>
+	
+	<bean id="dictionaryValidationCaseConstraintResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.CaseConstraintResolver"/>
+	
+	<bean id="dictionaryValidationValidCharactersConstraintResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.ValidCharactersConstraintResolver"/>
+
+	<bean id="dictionaryValidationPrerequisiteConstraintsResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.PrerequisiteConstraintsResolver"/>
+		
+	<bean id="dictionaryValidationMustOccurConstraintsResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.MustOccurConstraintsResolver"/>
+
+	<bean id="mandatoryElementConstraintProcessor"
+		class="org.kuali.rice.kns.datadictionary.validation.processor.MandatoryElementConstraintProcessor"
+		abstract="true">
+		<property name="dataDictionaryService">
+			<ref bean="dataDictionaryService" />
+		</property>
+		<property name="dateTimeService">
+		 	<ref bean="dateTimeService" />
+		</property>
+	</bean>
+
 	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
@@ -585,6 +611,84 @@
 		</property>
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService"/>
+		</property>
+		<!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint --> 
+		<property name="collectionConstraintProcessors">
+			<list>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/>
+			</list>
+		</property>
+		<!-- Element constraint processors are classes that determine if a passed value is valid for a specific constraint at the individual object or object attribute level -->
+		<property name="elementConstraintProcessors">
+			<list>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor" 
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.RangeConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.LengthConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.ValidCharactersConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.PrerequisiteConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+			</list>
+		</property>
+		<!-- Constraint providers are classes that map specific constraint types to a constraint resolver, which takes a constrainable definition -->
+		<property name="constraintProviders">
+			<list>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider">
+					<!-- 
+						individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
+						resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above
+					-->
+					<property name="resolverMap">
+						<map>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+								<ref bean="dictionaryValidationCaseConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
+								<ref bean="dictionaryValidationValidCharactersConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
+								<ref bean="dictionaryValidationPrerequisiteConstraintsResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+								<ref bean="dictionaryValidationMustOccurConstraintsResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+						</map>
+					</property>
+				</bean>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider">
+					<!-- 
+						individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
+						resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above
+					-->
+					<property name="resolverMap">
+						<map>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+								<ref bean="dictionaryValidationMustOccurConstraintsResolver"/>
+							</entry>
+						</map>
+					</property>
+				</bean>
+			</list>
 		</property>
 	</bean>
 

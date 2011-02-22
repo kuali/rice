@@ -18,19 +18,19 @@ package org.kuali.rice.kns.datadictionary.validation.processor;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.DateParser;
-import org.kuali.rice.kns.datadictionary.validation.ServerDateParser;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils.Result;
 import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.RangeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -43,11 +43,9 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 public class RangeConstraintProcessor extends MandatoryElementConstraintProcessor<RangeConstraint> {
 
 	private static final String CONSTRAINT_NAME = "range constraint";
-	
-	private DateParser parser;
-	
+
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
@@ -71,7 +69,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 	
 	protected ConstraintValidationResult processSingleRangeConstraint(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
-		if (ValidatorUtils.isNullOrEmpty(value))
+		if (ValidationUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 		
 	
@@ -80,7 +78,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 		Object typedValue = value;
 
 		if (dataType != null) {
-			typedValue = ValidatorUtils.convertToDataType(value, dataType);
+			typedValue = ValidationUtils.convertToDataType(value, dataType, dateTimeService);
 		}	
 
 		// TODO: decide if there is any reason why the following would be insufficient - i.e. if something numeric could still be cast to String at this point
@@ -93,15 +91,14 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 	}
 	
 	protected ConstraintValidationResult validateRange(DictionaryValidationResult result, Date value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws IllegalArgumentException {	
-		DateParser dateParser = getDateParser();
-		
-		Date date = value != null ? ValidatorUtils.getDate(value, dateParser) : null;
+
+		Date date = value != null ? ValidationUtils.getDate(value, dateTimeService) : null;
 
         String inclusiveMaxText = constraint.getInclusiveMax();
         String exclusiveMinText = constraint.getExclusiveMin();
 
-        Date inclusiveMax = inclusiveMaxText != null ? ValidatorUtils.getDate(inclusiveMaxText, dateParser) : null;
-        Date exclusiveMin = exclusiveMinText != null ? ValidatorUtils.getDate(exclusiveMinText, dateParser) : null;
+        Date inclusiveMax = inclusiveMaxText != null ? ValidationUtils.getDate(inclusiveMaxText, dateTimeService) : null;
+        Date exclusiveMin = exclusiveMinText != null ? ValidationUtils.getDate(exclusiveMinText, dateTimeService) : null;
         
 		return isInRange(result, date, inclusiveMax, inclusiveMaxText, exclusiveMin, exclusiveMinText, attributeValueReader);
 	}
@@ -120,19 +117,12 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
         
 		return isInRange(result, number, inclusiveMax, inclusiveMaxText, exclusiveMin, exclusiveMinText, attributeValueReader);
 	}
-	
-	private DateParser getDateParser() {
-		if (parser == null)
-			parser = new ServerDateParser();
-		
-		return parser;
-	}
 
 	private <T> ConstraintValidationResult isInRange(DictionaryValidationResult result, T value, Comparable<T> inclusiveMax, String inclusiveMaxText, Comparable<T> exclusiveMin, String exclusiveMinText, AttributeValueReader attributeValueReader) {
         // What we want to know is that the maximum value is greater than or equal to the number passed (the number can be equal to the max, i.e. it's 'inclusive')
-        Result lessThanMax = ValidatorUtils.isLessThanOrEqual(value, inclusiveMax); 
+        Result lessThanMax = ValidationUtils.isLessThanOrEqual(value, inclusiveMax); 
         // On the other hand, since the minimum is exclusive, we just want to make sure it's less than the number (the number can't be equal to the min, i.e. it's 'exclusive')
-        Result greaterThanMin = ValidatorUtils.isGreaterThan(value, exclusiveMin); 
+        Result greaterThanMin = ValidationUtils.isGreaterThan(value, exclusiveMin); 
           
         // It's okay for one end of the range to be undefined - that's not an error. It's only an error if one of them is actually invalid. 
         if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) { 
@@ -154,4 +144,5 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
         else 
         	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, exclusiveMinText);
 	}
+	
 }

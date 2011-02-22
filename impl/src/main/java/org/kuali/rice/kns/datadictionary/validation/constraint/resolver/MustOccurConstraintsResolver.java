@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.datadictionary.validation.constraint.provider;
+package org.kuali.rice.kns.datadictionary.validation.constraint.resolver;
 
 import java.util.List;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 
-public interface ConstraintResolver<T extends Constrainable> {
-	
-	public <C extends Constraint> List<C> resolve(T definition);
+/**
+ * An object that returns the list of must occur constraints for a definition implementing the capability {@link MustOccurConstrainable}. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class MustOccurConstraintsResolver<T extends MustOccurConstrainable> implements ConstraintResolver<T> {
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <C extends Constraint> List<C> resolve(T definition) {
+		return (List<C>) definition.getMustOccurConstraints();
+	}
 	
 }

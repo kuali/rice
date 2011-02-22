@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.constraint;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
 
 /**
+ * A data type constraint is one that enforces a specific data type for an object.  
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 1.1
  */
 public interface DataTypeConstraint extends Constraint {
 

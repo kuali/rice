@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
@@ -36,7 +36,7 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 	private static final String CONSTRAINT_NAME = "data type constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Constrainable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Constrainable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, DataTypeConstraint constraint, AttributeValueReader attributeValueReader)
@@ -64,11 +64,11 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 		if (dataType == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
 		
-		if (ValidatorUtils.isNullOrEmpty(value))
+		if (ValidationUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 		
 		try {
-			ValidatorUtils.convertToDataType(value, dataType);
+			ValidationUtils.convertToDataType(value, dataType, dateTimeService);
 		} catch (Exception e) {		
 			switch (dataType) {
 			case BOOLEAN:

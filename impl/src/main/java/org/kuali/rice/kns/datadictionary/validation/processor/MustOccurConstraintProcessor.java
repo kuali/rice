@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
-import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
@@ -41,14 +38,14 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 	private static final String CONSTRAINT_NAME = "must occur constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Constrainable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Constrainable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result,
 			Object value, MustOccurConstraint constraint, AttributeValueReader attributeValueReader)
 			throws AttributeValidationException {
 
-		if (ValidatorUtils.isNullOrEmpty(value))
+		if (ValidationUtils.isNullOrEmpty(value))
 			return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
 		
 

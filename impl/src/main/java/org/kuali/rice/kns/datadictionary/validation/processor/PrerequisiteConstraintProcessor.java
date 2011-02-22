@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
@@ -34,12 +34,12 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
 
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, PrerequisiteConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 
-		if (ValidatorUtils.isNullOrEmpty(value))
+		if (ValidationUtils.isNullOrEmpty(value))
 			return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
 		
 

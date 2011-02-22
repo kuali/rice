@@ -16,18 +16,22 @@
 package org.kuali.rice.kns.datadictionary.validation;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 
+/**
+ * Inherited from Kuali Student and adapted extensively, this class provides static utility methods for validation processing. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class ValidationUtils {
 
-public class ValidatorUtils {
-
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ValidatorUtils.class);
-	
 	public static String buildPath(String attributePath, String attributeName) {
 		if (StringUtils.isNotBlank(attributeName)) {
 			if (StringUtils.isNotBlank(attributePath)) 
@@ -39,7 +43,7 @@ public class ValidatorUtils {
 	}
 	
 	public static boolean compareValues(Object value1, Object value2,
-			DataType dataType, String operator, boolean isCaseSensitive, DateParser dateParser) {
+			DataType dataType, String operator, boolean isCaseSensitive, DateTimeService dateTimeService) {
 
 		boolean result = false;
 		Integer compareResult = null;
@@ -77,8 +81,8 @@ public class ValidatorUtils {
 				Boolean v2 = getBoolean(value2);
 				compareResult = v1.compareTo(v2);
 			} else if (DataType.DATE.equals(dataType)) {
-				Date v1 = getDate(value1, dateParser);
-				Date v2 = getDate(value2, dateParser);
+				Date v1 = getDate(value1, dateTimeService);
+				Date v2 = getDate(value2, dateTimeService);
 				compareResult = v1.compareTo(v2);
 			}
 		}
@@ -167,7 +171,7 @@ public class ValidatorUtils {
 		return result;
 	}
 
-	public static Date getDate(Object o, DateParser dateParser) throws IllegalArgumentException {
+	public static Date getDate(Object o, DateTimeService dateTimeService) throws IllegalArgumentException {
 		Date result = null;
 		if (o instanceof Date)
 			return (Date) o;
@@ -175,7 +179,11 @@ public class ValidatorUtils {
 			return null;
 		String s = o.toString();
 		if (s != null && s.trim().length() > 0) {
-			result = dateParser.parseDate(s.trim());
+			try {
+				result = dateTimeService.convertToDate(s.trim());
+			} catch (ParseException e) {
+				throw new IllegalArgumentException(e);
+			} 
 		}
 		return result;
 	}
@@ -226,7 +234,7 @@ public class ValidatorUtils {
 	
 	public static enum Result { VALID, INVALID, UNDEFINED };
 	
-	public static Object convertToDataType(Object value, DataType dataType) throws AttributeValidationException {
+	public static Object convertToDataType(Object value, DataType dataType, DateTimeService dateTimeService) throws AttributeValidationException {
 		Object returnValue = value;
 		
 		if (null == value)
@@ -273,8 +281,11 @@ public class ValidatorUtils {
 		case TRUNCATED_DATE:
 		case DATE:
 			if (! (value instanceof Date)) {
-				DateParser dateParser = new ServerDateParser();
-				returnValue = dateParser.parseDate(value.toString());
+				try {
+					returnValue = dateTimeService.convertToDate(value.toString());
+				} catch (ParseException pe) {
+					throw new AttributeValidationException("Value " + value.toString() + " is not a date!");
+				}
 			}
 			break;
 		case STRING:

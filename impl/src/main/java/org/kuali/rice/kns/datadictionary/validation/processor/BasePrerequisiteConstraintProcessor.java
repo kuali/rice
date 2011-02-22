@@ -18,9 +18,9 @@ package org.kuali.rice.kns.datadictionary.validation.processor;
 import java.util.Collection;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
@@ -45,7 +45,7 @@ public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> 
     	// TODO: Does this code need to be able to look at more than just the other immediate members of the object? 
         String attributeName = constraint.getAttributePath();
         
-        if (ValidatorUtils.isNullOrEmpty(attributeName)) {
+        if (ValidationUtils.isNullOrEmpty(attributeName)) {
         	throw new AttributeValidationException("Prerequisite constraints must include the name of the attribute that is required");
         }
         
@@ -54,7 +54,7 @@ public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> 
         boolean isSuccessful = true;
 
         if (value instanceof java.lang.String) {
-        	isSuccessful = ValidatorUtils.hasText((String) value);
+        	isSuccessful = ValidationUtils.hasText((String) value);
         } else if (value instanceof Collection) {
         	isSuccessful = (((Collection<?>) value).size() > 0);
         } else {

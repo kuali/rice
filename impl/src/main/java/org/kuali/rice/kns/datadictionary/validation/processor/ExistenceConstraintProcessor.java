@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.ExistenceConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
@@ -36,7 +36,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 	private static final String CONSTRAINT_NAME = "existence constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, ExistenceConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
@@ -67,7 +67,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 		
 		if (constraint.isRequired().booleanValue()) {
 			// If this attribute is required and the value is null then 
-			if (ValidatorUtils.isNullOrEmpty(value)) 
+			if (ValidationUtils.isNullOrEmpty(value)) 
 				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED);
 			
 			return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);

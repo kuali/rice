@@ -16,11 +16,10 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils;
-import org.kuali.rice.kns.datadictionary.validation.ValidatorUtils.Result;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
+import org.kuali.rice.kns.datadictionary.validation.ValidationUtils.Result;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
@@ -37,7 +36,7 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 	private static final String CONSTRAINT_NAME = "length constraint";
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader)
+	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.kns.datadictionary.validation.capability.Validatable, org.kuali.rice.kns.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, LengthConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
@@ -63,14 +62,14 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 	
 	protected ConstraintValidationResult processSingleLengthConstraint(DictionaryValidationResult result, Object value, LengthConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
-		if (ValidatorUtils.isNullOrEmpty(value))
+		if (ValidationUtils.isNullOrEmpty(value))
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 
 		DataType dataType = constraint.getDataType();
 		Object typedValue = value;
 
 		if (dataType != null) {
-			typedValue = ValidatorUtils.convertToDataType(value, dataType);
+			typedValue = ValidationUtils.convertToDataType(value, dataType, dateTimeService);
 		}	
 
 		// The only thing that can have a length constraint currently is a string. 
@@ -88,8 +87,8 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
 		Integer maxLength = constraint.getMaxLength();
 		Integer minLength = constraint.getMinLength();
 		
-		Result lessThanMax = ValidatorUtils.isLessThanOrEqual(valueLength, maxLength);
-		Result greaterThanMin = ValidatorUtils.isGreaterThanOrEqual(valueLength, minLength);
+		Result lessThanMax = ValidationUtils.isLessThanOrEqual(valueLength, maxLength);
+		Result greaterThanMin = ValidationUtils.isGreaterThanOrEqual(valueLength, minLength);
 		
         // It's okay for one end of the range to be undefined - that's not an error. It's only an error if one of them is invalid 
         if (lessThanMax != Result.INVALID && greaterThanMin != Result.INVALID) { 

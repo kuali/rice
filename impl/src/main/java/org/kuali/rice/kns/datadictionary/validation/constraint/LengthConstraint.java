@@ -16,8 +16,10 @@
 package org.kuali.rice.kns.datadictionary.validation.constraint;
 
 /**
+ * A length constraint is one that restricts the length of a string to some predefined maximum (and/or minimum). 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 1.1
  */
 public interface LengthConstraint extends DataTypeConstraint {
 

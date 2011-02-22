@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 

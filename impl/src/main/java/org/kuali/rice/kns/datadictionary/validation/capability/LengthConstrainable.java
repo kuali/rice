@@ -24,6 +24,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint;
  */
 public interface LengthConstrainable extends Constrainable, LengthConstraint {
 
-	// Empty
+	// To match up with legacy code for AttributeDefinition, length constraint members are fields
+	// on the definition, making the capability a sub-interface of the constraint
 	
 }

@@ -21,10 +21,22 @@ import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 
 /**
- * A constraint provider is a class that is able to extract a list of constraints from
- * a constrainable definition for an attribute in the data dictionary. 
+ * An object that determines a list of constraints for a given Constrainable definition for an attribute 
+ * in the data dictionary. The ConstraintProvider interface must be implemented by any class that contributes
+ * Constraints to the DictionaryValidationService. Multiple ConstraintProviders can be registered simultaneously,
+ * and each can contribute constraints for any number of constraint types. 
+ * 
+ * These constraints can be looked up in a variety of ways. They may be:
+ * 
+ * (1) member variables of the Constrainable definition itself {@see CaseConstrainable.class}
+ * (2) the Constrainable definition itself may extend Constraint {@see LengthConstrainable.class}
+ * (3) provided from some external source, or generated on the fly
+ * 
+ * The goal here is to provide a mechanism that enables implementing institutions to inject new Constraints and ConstraintProcessor
+ * classes into the DictionaryValidationService implementation via dependency injection. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 1.1
  */
 public interface ConstraintProvider<T extends Constrainable> {
 

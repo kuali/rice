@@ -49,8 +49,7 @@ public interface DictionaryValidationService {
      * 
      * @deprecated Use {@link #validateDocumentAndUpdatableReferencesRecursively(Document, int, boolean)}
      */
-    @Deprecated
-    public void validateDocumentRecursively(Document document, int depth);
+    @Deprecated public void validateDocumentRecursively(Document document, int depth);
 
     /**
      * Validates the contents of a document and recursively validates any of its updatable references
@@ -87,8 +86,9 @@ public interface DictionaryValidationService {
      * encountered.
      * 
      * @param businessObject - business object to validate
+     * @deprecated since 1.1 - use validate(Object.class) instead
      */
-    public void validateBusinessObject(BusinessObject businessObject);
+    @Deprecated public void validateBusinessObject(BusinessObject businessObject);
 
     /**
      * Validates the business object primitive attributes against the data dictionary. Adds errors to the map as they are
@@ -96,10 +96,11 @@ public interface DictionaryValidationService {
      * 
      * @param businessObject - business object to validate
      * @param validateRequired - whether to execute required field checks
+     * @deprecated since 1.1 - use validate(Object.class) instead
      */
-    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired);
+    @Deprecated public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired);
     
-    public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName);
+    @Deprecated public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName);
     
     /**
      * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to check the 
@@ -128,11 +129,28 @@ public interface DictionaryValidationService {
 
     
     /**
+     * Validates an object using its class name as the entry name to look up its metadata in the dictionary.
+     * 
+     * @param object - an object to validate
+     * @return the dictionary validation result object associated with this validation
+     */
+    public DictionaryValidationResult validate(Object object);
+    
+    /**
+     * Validates an object using its class name as the entry name to look up its metadata in the dictionary.
+     * 
+     * @param object - an object to validate
+     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
+     * @return the dictionary validation result object associated with this validation
+     */
+    public DictionaryValidationResult validate(Object object, boolean doOptionalProcessing);
+    
+    /**
      * Validates an object using the passed entry name to look up metadata in the dictionary
      * 
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
-     * @return TODO
+     * @return the dictionary validation result object associated with this validation
      * 
      * @since 1.1
      */
@@ -146,7 +164,7 @@ public interface DictionaryValidationService {
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
      * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
-     * @return TODO
+     * @return the dictionary validation result object associated with this validation
      * 
      * @since 1.1
      */
@@ -160,7 +178,7 @@ public interface DictionaryValidationService {
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
      * @param attributeName - the name of the attribute (field) on the object that should be validated
-     * @return TODO
+     * @return the dictionary validation result object associated with this validation
      * 
      * @since 1.1
      */
@@ -175,7 +193,7 @@ public interface DictionaryValidationService {
      * @param entryName - the dictionary entry name to look up the metadata associated with this object
      * @param attributeName - the name of the attribute (field) on the object that should be validated
      * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
-     * @return TODO
+     * @return the dictionary validation result object associated with this validation
      * 
      * @since 1.1
      */
@@ -183,16 +201,41 @@ public interface DictionaryValidationService {
    
     
     /**
-     * This method ...
+     * Same as {@link DictionaryValidationService#validate(Object, String, boolean) except that it provides an explicit data dictionary
+     * entry to use for the purpose of validation. 
      * 
-     * @param object
-     * @param entryName
-     * @param entry
-     * @param doOptionalProcessing
-     * @return
+     * @param object - an object to validate
+     * @param entryName - the dictionary entry name to use in association with error look ups
+     * @param entry - the dictionary entry to use for validation 
+     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
+     * @return the dictionary validation result object associated with this validation
+     * 
+     * @since 1.1
      */
     public DictionaryValidationResult validate(Object object, String entryName, DataDictionaryEntry entry, boolean doOptionalProcessing);
     
+    
+    /**
+     * Instead of validating an object with dictionary metadata, or validating a specific member of an object by name, validates a 
+     * specific attribute of an object by passing in the attribute value itself. This limits the amount of validation that can be done
+     * to constraints that directly affect this attribute. 
+     * 
+     * @param entryName - the dictionary entry name to use in association with error look ups
+     * @param attributeName - the dictionary entry attribute name to use in association with error look ups
+     * @param attributeValue - the value of the attribute being validated
+     */
+    public void validate(String entryName, String attributeName, Object attributeValue);
+    
+    /**
+     * Same as {@link #validate(String, String, Object)} except that it provides a boolean parameter for the 
+     * calling method to choose whether to do optional processing (generally to check if blank/empty values are required or not). 
+     * 
+     * @param entryName - the dictionary entry name to use in association with error look ups
+     * @param attributeName - the dictionary entry attribute name to use in association with error look ups
+     * @param attributeValue - the value of the attribute being validated
+     * @param doOptionalProcessing - true if the validation should do optional validation (e.g. to check if empty values are required or not), false otherwise
+     */
+    public void validate(String entryName, String attributeName, Object attributeValue, boolean doOptionalProcessing);
     
     /**
      * Validates the business object against the dictionary, uses reflection to get any child business objects, and recursively
@@ -213,7 +256,7 @@ public interface DictionaryValidationService {
      * @param attributeValue - current value to validate
      * @param errorKey - key to place the errors under
      * 
-     * @deprecated since 1.1
+     * @deprecated since 1.1 - use {@link #validate(String, String, Object)} instead
      */
     @Deprecated public void validateAttributeFormat(String entryName, String attributeName, String attributeValue, String errorKey);
 

@@ -16,15 +16,18 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.impl.DateTimeServiceImpl;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.SingleAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
@@ -72,9 +75,18 @@ public class DataTypeConstraintProcessorTest {
 	
 	private DictionaryValidationResult dictionaryValidationResult;
 	
+	private String[] testStringToDateFormats = {"yyyy-MM-dd'T'HH:mm:ss.SSSZ", "yyyy-MM-dd", "yyyy-MMM-dd", "dd-MM-yyyy", "dd-MMM-yyyy"};
+	
 	@Before
 	public void setUp() throws Exception {
+		DateTimeServiceImpl dateTimeService = new DateTimeServiceImpl() {
+			public Date convertToDate(String dateString) throws ParseException {
+				return parseAgainstFormatArray(dateString, testStringToDateFormats);
+			}
+		};
+		
 		processor = new DataTypeConstraintProcessor();
+		processor.setDateTimeService(dateTimeService);
 		booleanConstraint = new SimpleDataTypeConstraint(DataType.BOOLEAN);
 		dateConstraint = new SimpleDataTypeConstraint(DataType.DATE);
 		doubleConstraint = new SimpleDataTypeConstraint(DataType.DOUBLE); 

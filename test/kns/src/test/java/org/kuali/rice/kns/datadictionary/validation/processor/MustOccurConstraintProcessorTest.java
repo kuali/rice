@@ -18,8 +18,8 @@ package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 
 /**

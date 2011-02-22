@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -25,17 +26,29 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider;
+import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider;
+import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider;
+import org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.CollectionConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.LengthConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.PrerequisiteConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.RangeConstraintProcessor;
+import org.kuali.rice.kns.datadictionary.validation.processor.ValidCharactersConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
-import org.kuali.rice.kns.service.DictionaryValidationService;
 
 
 /**
@@ -44,7 +57,7 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
  */
 public class DictionaryValidationServiceImplTest {
 
-	private DictionaryValidationService service;
+	private DictionaryValidationServiceImpl service;
 	
 	protected AttributeDefinition street1Definition;
 	protected AttributeDefinition street2Definition;
@@ -62,10 +75,37 @@ public class DictionaryValidationServiceImplTest {
 	private MockAddress noStateUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
 	private MockAddress noZipNoCityUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "DC", "", "USA", null);
 	
+    @SuppressWarnings("rawtypes")
+	private static final ConstraintProvider[] DEFAULT_CONSTRAINT_PROVIDERS = 
+    {
+    	new AttributeDefinitionConstraintProvider(),
+    	new ObjectDictionaryEntryConstraintProvider()
+    };
+    
+	@SuppressWarnings("rawtypes")
+	private static final List<ConstraintProcessor> DEFAULT_ELEMENT_PROCESSORS = 
+		Arrays.asList((ConstraintProcessor)new CaseConstraintProcessor(), 
+				(ConstraintProcessor)new ExistenceConstraintProcessor(),
+				(ConstraintProcessor)new DataTypeConstraintProcessor(), 
+				(ConstraintProcessor)new RangeConstraintProcessor(),
+				(ConstraintProcessor)new LengthConstraintProcessor(),
+				(ConstraintProcessor)new ValidCharactersConstraintProcessor(),
+				(ConstraintProcessor)new PrerequisiteConstraintProcessor(),
+				(ConstraintProcessor)new MustOccurConstraintProcessor());
+	
+	@SuppressWarnings("rawtypes")
+	private static final List<CollectionConstraintProcessor> DEFAULT_COLLECTION_PROCESSORS = 
+		Arrays.asList((CollectionConstraintProcessor)new CollectionSizeConstraintProcessor());
+	
 	
 	@Before
 	public void setUp() throws Exception {
 		service = new DictionaryValidationServiceImpl();
+		
+		service.setCollectionConstraintProcessors(DEFAULT_COLLECTION_PROCESSORS);
+		service.setElementConstraintProcessors(DEFAULT_ELEMENT_PROCESSORS);
+		service.setConstraintProviders(Arrays.asList(DEFAULT_CONSTRAINT_PROVIDERS));
+	
 		
 		addressEntry = new BusinessObjectEntry();
 		

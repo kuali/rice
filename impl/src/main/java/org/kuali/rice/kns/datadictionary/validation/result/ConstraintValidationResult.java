@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary.validation.result;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.ErrorLevel;
+import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
 

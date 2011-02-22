@@ -15,28 +15,30 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.constraint.provider;
 
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 
 import org.kuali.rice.kns.datadictionary.ObjectDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
-import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.ConstraintResolver;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.MustOccurConstraintsResolver;
 
 /**
+ * An object that looks up constraints for an object dictionary entry by constraint type. This can either by instantiated by dependency
+ * injection, in which case a map of class names to constraint resolvers can be injected, or the default map can be constructed by
+ * calling the init() method immediately after instantiation. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ObjectDictionaryEntryConstraintProvider extends BaseConstraintProvider<ObjectDictionaryEntry> {
 
-	private ConstraintResolver<ObjectDictionaryEntry> MUST_OCCUR_CONSTRAINT_RESOLVER = new ConstraintResolver<ObjectDictionaryEntry>() {
-		@SuppressWarnings("unchecked")
-		@Override
-		public <C extends Constraint> List<C> resolve(ObjectDictionaryEntry definition) {
-			return (List<C>) definition.getMustOccurConstraints();
-		}
-	};
 
+	@Override
+	public void init() {
+		resolverMap = new HashMap<String, ConstraintResolver<ObjectDictionaryEntry>>();
+		resolverMap.put(MustOccurConstraint.class.getName(), new MustOccurConstraintsResolver<ObjectDictionaryEntry>());
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider#isSupported(org.kuali.rice.kns.datadictionary.validation.capability.Constrainable)
 	 */
@@ -47,14 +49,6 @@ public class ObjectDictionaryEntryConstraintProvider extends BaseConstraintProvi
 			return true;
 		
 		return false;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.provider.BaseConstraintProvider#initializeResolverMap(java.util.Map)
-	 */
-	@Override
-	protected void initializeResolverMap(Map<Class<? extends Constraint>, ConstraintResolver<ObjectDictionaryEntry>> resolverMap) {
-		resolverMap.put(MustOccurConstraint.class, MUST_OCCUR_CONSTRAINT_RESOLVER);
 	}
 
 }

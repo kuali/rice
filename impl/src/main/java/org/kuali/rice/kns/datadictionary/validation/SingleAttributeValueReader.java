@@ -57,7 +57,7 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getEntry()
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getEntry()
 	 */
 	@Override
 	public Constrainable getEntry() {

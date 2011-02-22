@@ -21,19 +21,24 @@ import java.util.Map;
 
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.ConstraintResolver;
 
 /**
+ * A class that implements a simple in memory storage map of constraint resolvers. This provides a convenient base class
+ * from which other constraint providers can be derived. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 1.1
  */
 public abstract class BaseConstraintProvider<T extends Constrainable> implements ConstraintProvider<T> {
 	
 	
-	private Map<Class<? extends Constraint>, ConstraintResolver<T>> resolverMap;
+	protected Map<String, ConstraintResolver<T>> resolverMap;
 	
 	public void init() {
-		resolverMap = new HashMap<Class<? extends Constraint>, ConstraintResolver<T>>();
-		initializeResolverMap(resolverMap);
+		if (resolverMap == null)
+			resolverMap = new HashMap<String, ConstraintResolver<T>>();
+
 	}
 	
 	/**
@@ -44,7 +49,7 @@ public abstract class BaseConstraintProvider<T extends Constrainable> implements
 		if (resolverMap == null)
 			init();
 		
-		ConstraintResolver<T> resolver = resolverMap.get(constraintType);
+		ConstraintResolver<T> resolver = resolverMap.get(constraintType.getName());
 
 		if (resolver == null)
 			return null;
@@ -52,6 +57,18 @@ public abstract class BaseConstraintProvider<T extends Constrainable> implements
 		return resolver.resolve(definition);
 	}
 
-	protected abstract void initializeResolverMap(Map<Class<? extends Constraint>, ConstraintResolver<T>> resolverMap);
+	/**
+	 * @return the resolverMap
+	 */
+	public Map<String, ConstraintResolver<T>> getResolverMap() {
+		return this.resolverMap;
+	}
+
+	/**
+	 * @param resolverMap the resolverMap to set
+	 */
+	public void setResolverMap(Map<String, ConstraintResolver<T>> resolverMap) {
+		this.resolverMap = resolverMap;
+	}
 	
 }

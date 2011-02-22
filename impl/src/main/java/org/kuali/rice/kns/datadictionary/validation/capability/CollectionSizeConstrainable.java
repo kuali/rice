@@ -18,11 +18,15 @@ package org.kuali.rice.kns.datadictionary.validation.capability;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint;
 
 /**
+ * Validation capability to constrain a value of type collection to a specific minimum and maximum
+ * number of elements. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
+ * @since 1.1
  */
 public interface CollectionSizeConstrainable extends Constrainable, CollectionSizeConstraint {
 
-	// Empty
+	// To match up with legacy code for length and range constraints, collection size constraints are themselves imposed
+	// on the definition, making the capability a sub-interface of the constraint
 	
 }

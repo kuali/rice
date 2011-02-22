@@ -106,7 +106,7 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	
 	@Override
 	public String getPath() {
-		String path = ValidatorUtils.buildPath(attributePath, attributeName);
+		String path = ValidationUtils.buildPath(attributePath, attributeName);
 		return path != null ? path : "";
 	}
 

@@ -60,6 +60,22 @@
 
 <!-- Attribute Definitions -->
 
+  	<bean id="validationCaseConstraint"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint"
+		abstract="true"/>
+		
+	<bean id="mustOccurConstraint"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"
+		abstract="true"/>
+		
+	<bean id="validationPrequisiteConstraint"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
+		abstract="true"/>
+		
+	<bean id="validationWhenConstraint"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint"
+		abstract="true"/>
+
 
   <bean id="TravelRequest-traveler" parent="TravelRequest-traveler-parentBean"/>
 
@@ -123,12 +139,12 @@
 		</list>
 	</property-->
 	<property name="caseConstraint">
-		<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+		<bean parent="validationCaseConstraint">
 			<property name="whenConstraint">
-				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+				<bean parent="validationWhenConstraint">
 					<property name="value" value="USA"/>
 					<property name="constraint">
-						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
+						<bean parent="validationPrequisiteConstraint">
 							<property name="attributePath" value="origin"/>
 						</bean>
 					</property>

@@ -6,8 +6,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+/**
+ * A case constraint is a constraint that is imposed only when a certain condition is met, for example, if the country attribute value is "USA",
+ * then a prerequisite constraint may be imposed that the 'State' attribute is non-null. 
+ * 
+ * This class is a direct copy of one that was in Kuali Student. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 1.1
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CaseConstraint implements Constraint {
+public class CaseConstraint extends BaseConstraint {
 	@XmlElement
     protected List<WhenConstraint> whenConstraint;
 	@XmlElement

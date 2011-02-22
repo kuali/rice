@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This abstract class can be extended by constraint processor classes that
@@ -25,6 +28,10 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
  */
 public abstract class MandatoryElementConstraintProcessor<C extends Constraint> implements ConstraintProcessor<Object, C> {
 
+	protected DataDictionaryService dataDictionaryService;
+	protected DateTimeService dateTimeService;
+	
+	
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor#isOptional()
 	 */
@@ -33,4 +40,37 @@ public abstract class MandatoryElementConstraintProcessor<C extends Constraint> 
 		return false;
 	}
 
+	/**
+	 * @return the dataDictionaryService
+	 */
+	public DataDictionaryService getDataDictionaryService() {
+		if (dataDictionaryService == null)
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		return this.dataDictionaryService;
+	}
+
+	/**
+	 * @param dataDictionaryService the dataDictionaryService to set
+	 */
+	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+		this.dataDictionaryService = dataDictionaryService;
+	}
+	
+	/**
+	 * @return the dateTimeService
+	 */
+	public DateTimeService getDateTimeService() {
+		if (dateTimeService == null)
+			dateTimeService = KNSServiceLocator.getDateTimeService();
+		
+		return this.dateTimeService;
+	}
+
+	/**
+	 * @param dateTimeService the dateTimeService to set
+	 */
+	public void setDateTimeService(DateTimeService dateTimeService) {
+		this.dateTimeService = dateTimeService;
+	}
+	
 }

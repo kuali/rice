@@ -17,14 +17,13 @@ package org.kuali.rice.kns.datadictionary.validation.processor;
 
 
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
 
 /**
- * This interface defines the signature for constraint processors, which abstract the core functionality of validation in the
+ * This interface must be implemented by constraint processors, which validate individual constraints in the
  * data dictionary. The idea is that each constraint has its own processor, and that the validation service can be configured
  * via dependency injection with a list of processors. This gives institutions the ability to easily modify how validation
  * should be handled and to add arbitrary new constraints and constraint processors. An alternative might have been to put

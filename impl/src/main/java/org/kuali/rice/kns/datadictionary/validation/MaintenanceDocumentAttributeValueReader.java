@@ -38,6 +38,7 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
+ * This class provides legacy processing for maintenance documents in the dictionary validation service implementation. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
@@ -98,7 +99,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getDefinition(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getDefinition(java.lang.String)
 	 */
 	@Override
 	public Constrainable getDefinition(String attributeName) {
@@ -106,7 +107,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getDefinitions()
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getDefinitions()
 	 */
 	@Override
 	public List<Constrainable> getDefinitions() {
@@ -120,7 +121,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getType(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getType(java.lang.String)
 	 */
 	@Override
 	public Class<?> getType(String attributeName) {
@@ -128,7 +129,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.capability.AttributeValueReader#getValue(java.lang.String)
+	 * @see org.kuali.rice.kns.datadictionary.validation.AttributeValueReader#getValue(java.lang.String)
 	 */
 	@Override
 	public <X> X getValue(String attributeName) throws AttributeValidationException {

@@ -3,11 +3,15 @@ package org.kuali.rice.kns.datadictionary.validation.constraint;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.kuali.rice.kns.datadictionary.validation.capability.DataType;
+import org.kuali.rice.kns.datadictionary.validation.DataType;
 
 
-
-
+/**
+ * This class is a direct copy of one that was in Kuali Student. Look up constraints are currently not implemented. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 1.1
+ */
 public class CommonLookupParam  implements Serializable {
 
 

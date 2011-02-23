@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.lookup.keyvalues;
+package org.kuali.rice.shareddata.framework.campus;
 
 import java.util.Comparator;
 
-import org.kuali.rice.kns.bo.CampusType;
+import org.kuali.rice.shareddata.api.campus.CampusType;
 
 public class CampusTypeComparator implements Comparator<CampusType> {
 
@@ -32,7 +32,7 @@ public class CampusTypeComparator implements Comparator<CampusType> {
         CampusType obj1 = o1;
         CampusType obj2 = o2;
 
-        return obj1.getCampusTypeCode().compareTo(obj2.getCampusTypeCode());
+        return obj1.getCode().compareTo(obj2.getCode());
     }
 
 }

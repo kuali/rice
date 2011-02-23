@@ -18,7 +18,7 @@
   <bean id="Country" parent="Country-parentBean"/>
 
   <bean id="Country-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CountryImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.shareddata.impl.country.CountryBo"/>
     <property name="inquiryDefinition">
       <ref bean="Country-inquiryDefinition"/>
     </property>
@@ -32,7 +32,7 @@
         <ref bean="Country-postalCountryCode"/>
         <ref bean="Country-postalCountryName"/>
         <ref bean="Country-alternatePostalCountryCode"/>
-        <ref bean="Country-postalCountryRestrictedIndicator"/>
+        <!-- <ref bean="Country-postalCountryRestrictedIndicator"/>-->
         <ref bean="Country-active"/>
       </list>
     </property>
@@ -93,7 +93,7 @@
     <property name="summary" value="Postal Country Name"/>
     <property name="description" value="Postal Country Name..."/>
   </bean>
-  <bean id="Country-postalCountryRestrictedIndicator" parent="Country-postalCountryRestrictedIndicator-parentBean"/>
+  <!-- <bean id="Country-postalCountryRestrictedIndicator" parent="Country-postalCountryRestrictedIndicator-parentBean"/>
 
   <bean id="Country-postalCountryRestrictedIndicator-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="postalCountryRestrictedIndicator"/>
@@ -102,6 +102,7 @@
     <property name="summary" value="Indicator for whether this is a postal country restricted."/>
     <property name="description" value="This is the indicator for whether this country is a postal country restricted."/>
   </bean>
+  -->
   <bean id="Country-active" parent="Country-active-parentBean"/>
 
   <bean id="Country-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
@@ -126,8 +127,8 @@
               <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
               <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
               <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
-              <bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
-              <bean parent="FieldDefinition" p:attributeName="active"/>
+              <!--<bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
+              --><bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
         </bean>
@@ -157,8 +158,8 @@
         <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
         <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
         <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
-        <bean parent="FieldDefinition" p:defaultValue="N" p:attributeName="postalCountryRestrictedIndicator"/>
-        <bean parent="FieldDefinition" p:attributeName="active"/>
+        <!--<bean parent="FieldDefinition" p:defaultValue="N" p:attributeName="postalCountryRestrictedIndicator"/>
+        --><bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
     <property name="resultFields">
@@ -166,8 +167,8 @@
         <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
         <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
         <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
-        <bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
-        <bean parent="FieldDefinition" p:attributeName="active"/>
+        <!--<bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
+        --><bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
   </bean>

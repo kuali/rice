@@ -149,7 +149,7 @@ public class XPathTest extends BaseRiceTestCase {
         assertEquals(expected, valueOfTextTag);
     }
     
-    @Test public void testBooleanTranslation() throws Exception {
+/*    @Test public void testBooleanTranslation() throws Exception {
         String KUALI_CAMPUS_TYPE_ACTIVE_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "campus/campusType/dataObjectMaintenanceCodeActiveIndicator" + XSTREAM_SAFE_SUFFIX;
         String KUALI_INITIATOR_UNIVERSAL_USER_STUDENT_INDICATOR_XSTREAMSAFE = XSTREAM_SAFE_PREFIX + XSTREAM_MATCH_ANYWHERE_PREFIX + "kualiTransactionalDocumentInformation/documentInitiator/person/student" + XSTREAM_SAFE_SUFFIX;
         DocumentContent docContent = new StandardDocumentContent(
@@ -210,7 +210,7 @@ public class XPathTest extends BaseRiceTestCase {
         xpathExpression = constructXpathExpression(valueForTrue, valueForFalse, xpathConditionStatement);
         xpathResult = (String) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.STRING);
         assertEquals("Using translated xpath expression '" + xpathExpression + "'", valueForFalse, xpathResult);
-    }
+    }*/
 
     private String constructXpathExpression(String valueForTrue, String valueForFalse, String booleanXPathExpression) {
         String[] xpathElementsToInsert = new String[3];

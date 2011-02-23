@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.lookup.keyvalues;
+package org.kuali.rice.shareddata.framework.campus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,40 +21,30 @@ import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kns.bo.CampusType;
-import org.kuali.rice.kns.bo.CampusTypeImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KeyValuesService;
+import org.kuali.rice.shareddata.api.campus.CampusService;
+import org.kuali.rice.shareddata.api.campus.CampusType;
+import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
-/**
- * This class...
- * 
- * 
- */
 public class CampusTypeValuesFinder extends KeyValuesBase {
 
     @Override
 	public List<KeyValue> getKeyValues() {
 
         // get a list of all CampusTypes
-        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-        List<CampusType> campusTypes = (List) boService.findAll(CampusTypeImpl.class);
-        // copy the list of codes before sorting, since we can't modify the results from this method
-        if ( campusTypes == null ) {
-        	campusTypes = new ArrayList<CampusType>(0);
-        } else {
-        	campusTypes = new ArrayList<CampusType>( campusTypes );
-        }
+    	CampusService campusService = SharedDataApiServiceLocator.getCampusService();
+    	List<CampusType> campusTypes = campusService.findAllCampusTypes();
        
-
+    	//copy list for sorting (list from service is unmodifiable
+    	List<CampusType> campusTypeSort = new ArrayList<CampusType>(campusTypes);
         // sort using comparator.
-        Collections.sort(campusTypes, CampusTypeComparator.INSTANCE);
+        Collections.sort(campusTypeSort, CampusTypeComparator.INSTANCE);
 
         // create a new list (code, descriptive-name)
         List<KeyValue> labels = new ArrayList<KeyValue>();
 
-        for (CampusType campusType : campusTypes) {
-            labels.add(new ConcreteKeyValue(campusType.getCampusTypeCode(), campusType.getCampusTypeCode() + " - " + campusType.getCampusTypeName()));
+        for (CampusType campusType : campusTypeSort) {
+            labels.add(new ConcreteKeyValue(campusType.getCode(), campusType.getCode() + " - " + campusType.getName()));
         }
 
         return labels;

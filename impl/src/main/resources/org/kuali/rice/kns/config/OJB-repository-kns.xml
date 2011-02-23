@@ -259,27 +259,25 @@
 		<field-descriptor name="selectedObjectIds" column="SEL_OBJ_IDS" jdbc-type="CLOB" />
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.CampusImpl" table="KRNS_CAMPUS_T">
-		<field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
-		<field-descriptor name="campusName" column="CAMPUS_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="campusShortName" column="CAMPUS_SHRT_NM" jdbc-type="VARCHAR" />
+	<class-descriptor class="org.kuali.rice.shareddata.impl.campus.CampusBo" table="KRNS_CAMPUS_T">
+		<field-descriptor name="code" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+		<field-descriptor name="name" column="CAMPUS_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="shortName" column="CAMPUS_SHRT_NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="campusTypeCode" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 
-		<reference-descriptor name="campusType" class-ref="org.kuali.rice.kns.bo.CampusTypeImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
-			<foreignkey field-ref="campusTypeCode" />
+		<reference-descriptor name="campusType" class-ref="org.kuali.rice.shareddata.impl.campus.CampusTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="campusTypeCode" target-field-ref="code"/>
 		</reference-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.kns.bo.CampusTypeImpl" table="KRNS_CMP_TYP_T">
-		<field-descriptor name="campusTypeCode" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+	<class-descriptor class="org.kuali.rice.shareddata.impl.campus.CampusTypeBo" table="KRNS_CMP_TYP_T">
+		<field-descriptor name="code" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="dataObjectMaintenanceCodeActiveIndicator" column="DOBJ_MAINT_CD_ACTV_IND" jdbc-type="VARCHAR"
-			conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="campusTypeName" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="name" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
 	    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
 	</class-descriptor>
 
@@ -293,13 +291,13 @@
         <field-descriptor name="encrypted" column="CONTENT_ENCRYPTED_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kns.bo.CountryImpl" table="KR_COUNTRY_T">
+  <class-descriptor class="org.kuali.rice.shareddata.impl.country.CountryBo" table="KR_COUNTRY_T">
 	    <field-descriptor name="postalCountryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
 	    <field-descriptor name="alternatePostalCountryCode" column="ALT_POSTAL_CNTRY_CD" jdbc-type="VARCHAR" />
     	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     	<field-descriptor name="postalCountryName" column="POSTAL_CNTRY_NM" jdbc-type="VARCHAR" />
-    	<field-descriptor name="postalCountryRestrictedIndicator" column="PSTL_CNTRY_RSTRC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+    	<!-- <field-descriptor name="postalCountryRestrictedIndicator" column="PSTL_CNTRY_RSTRC_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />-->
 		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
   </class-descriptor>
 
@@ -311,7 +309,7 @@
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 
-		<reference-descriptor name="country" class-ref="org.kuali.rice.kns.bo.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
+		<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none">
         	<foreignkey field-ref="postalCountryCode" />
     	</reference-descriptor>
   </class-descriptor>
@@ -326,7 +324,7 @@
 	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 	<field-descriptor name="countyCode" column="COUNTY_CD" jdbc-type="VARCHAR" />
 
-	<reference-descriptor name="country" class-ref="org.kuali.rice.kns.bo.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
+	<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
         <foreignkey field-ref="postalCountryCode" />
     </reference-descriptor>
 
@@ -353,7 +351,7 @@
 	<field-descriptor name="countyName" column="COUNTY_NM" jdbc-type="VARCHAR" />
 	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
 
-	<reference-descriptor name="country" class-ref="org.kuali.rice.kns.bo.CountryImpl" auto-retrieve="true" auto-update="none" auto-delete="none">
+	<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none">
         <foreignkey field-ref="postalCountryCode" />
     </reference-descriptor>
 

@@ -9,12 +9,14 @@ import javax.persistence.OneToOne
 import javax.persistence.Table
 
 import org.hibernate.annotations.Type
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject
+import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.campus.CampusContract
 
 @Entity
 @Table(name="KRNS_CAMPUS_T")
-public class CampusBo extends PersistableBusinessObjectBase implements CampusContract {
+public class CampusBo extends PersistableBusinessObjectBase implements Inactivateable, CampusContract {
 	private static final long serialVersionUID = 787567094298971223L;
 	@Id
 	@Column(name="CAMPUS_CD")

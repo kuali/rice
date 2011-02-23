@@ -18,7 +18,7 @@
   <bean id="CampusTypeMaintenanceDocument" parent="CampusTypeMaintenanceDocument-parentBean"/>
 
   <bean id="CampusTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CampusTypeImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.shareddata.impl.campus.CampusTypeBo"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
@@ -27,7 +27,7 @@
     </property>
     <property name="lockingKeys">
       <list>
-        <value>campusTypeCode</value>
+        <value>code</value>
       </list>
     </property>
 
@@ -46,9 +46,9 @@
   <bean id="CampusTypeMaintenanceDocument-EditCampusType-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusTypeCode"/>
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="campusTypeName"/>
-        <bean parent="MaintainableFieldDefinition" p:name="dataObjectMaintenanceCodeActiveIndicator"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="code"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
+        <!-- <bean parent="MaintainableFieldDefinition" p:name="dataObjectMaintenanceCodeActiveIndicator"/>-->
         <bean parent="MaintainableFieldDefinition" p:name="versionNumber"/>
       </list>
     </property>

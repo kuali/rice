@@ -21,7 +21,7 @@
       <bean parent="AlphaNumericValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kns.bo.CountryImpl" p:valuesFinderClass="org.kuali.rice.shareddata.framework.country.CountryValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="postalCountryCode" p:labelAttribute="postalCountryName"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.shareddata.impl.country.CountryBo" p:valuesFinderClass="org.kuali.rice.shareddata.framework.country.CountryValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="postalCountryCode" p:labelAttribute="postalCountryName"/>
     </property>
   </bean>
 

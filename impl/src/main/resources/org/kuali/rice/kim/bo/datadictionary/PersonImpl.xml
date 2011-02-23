@@ -41,14 +41,16 @@
     </property>
     <property name="relationships">
         <list>
+        <!-- 
             <bean parent="RelationshipDefinition">
               <property name="objectAttributeName" value="campus"/>
               <property name="primitiveAttributes">
                 <list>
-                  <bean parent="PrimitiveAttributeDefinition" p:sourceName="campusCode" p:targetName="campusCode"/>
+                  <bean parent="PrimitiveAttributeDefinition" p:sourceName="campusCode" p:targetName="code"/>
                 </list>
               </property>
             </bean>
+          -->  
             <bean parent="RelationshipDefinition">
               <property name="objectAttributeName" value="employeeStatus"/>
               <property name="primitiveAttributes">
@@ -71,7 +73,7 @@
 
   <!-- TODO: use campus parent bean once imported into Rice -->
   <bean id="PersonImpl-campusCode" parent="PersonImpl-campusCode-parentBean"/>
-  <bean id="PersonImpl-campusCode-parentBean" parent="Campus-campusCode" abstract="true" p:name="campusCode" p:required="false">
+  <bean id="PersonImpl-campusCode-parentBean" parent="Campus-code" abstract="true" p:name="campusCode" p:required="false">
   </bean>
 
   <bean id="PersonImpl-emailAddress" parent="PersonImpl-emailAddress-parentBean"/>

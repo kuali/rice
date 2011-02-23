@@ -1,5 +1,5 @@
 @javax.xml.bind.annotation.XmlSchema(
-                namespace = SharedDataConstants.Namespaces.CAMPUS_NAMESPACE,
+                namespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE,
                 elementFormDefault=XmlNsForm.QUALIFIED)
 package org.kuali.rice.shareddata.api.campus;
 import javax.xml.bind.annotation.XmlNsForm;

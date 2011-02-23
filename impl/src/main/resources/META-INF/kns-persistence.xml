@@ -36,8 +36,8 @@
     <class>org.kuali.rice.kns.bo.AdHocRouteWorkgroup</class>
     <class>org.kuali.rice.kns.bo.LookupResults</class>
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
-    <class>org.kuali.rice.kns.bo.CampusImpl</class>
-    <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
+    <class>org.kuali.rice.shareddata.impl.campus.CampusBo</class>
+    <class>org.kuali.rice.shareddata.impl.campus.CampusTypeBo</class>
      
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
@@ -62,8 +62,8 @@
     <class>org.kuali.rice.kns.bo.AdHocRouteWorkgroup</class>
     <class>org.kuali.rice.kns.bo.LookupResults</class>
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
-    <class>org.kuali.rice.kns.bo.CampusImpl</class>
-    <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
+    <class>org.kuali.rice.shareddata.impl.campus.CampusBo</class>
+    <class>org.kuali.rice.shareddata.impl.campus.CampusTypeBo</class>
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

@@ -30,7 +30,7 @@ public class NamespaceServiceImpl implements NamespaceService {
 	public Namespace getNamespace(String code) {
         if (StringUtils.isBlank(code)) {
             throw new IllegalArgumentException("the code is blank");
-        }
+        } 
 
         return NamespaceBo.to(boService.findByPrimaryKey(NamespaceBo.class, singletonMap("code", code)));
 	}

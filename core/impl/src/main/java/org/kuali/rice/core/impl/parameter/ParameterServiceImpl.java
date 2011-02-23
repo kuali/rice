@@ -12,7 +12,7 @@ import java.util.*;
 public class ParameterServiceImpl implements ParameterService {
     private BusinessObjectService businessObjectService;
 
-    @Override
+    @Override 
     public void createParameter(Parameter parameter) {
         if (parameter == null) {
             throw new IllegalArgumentException("parameter is null");
@@ -25,7 +25,7 @@ public class ParameterServiceImpl implements ParameterService {
         }
 
         businessObjectService.save(ParameterBo.from(parameter));
-    }
+    } 
 
     @Override
     public void updateParameter(Parameter parameter) {

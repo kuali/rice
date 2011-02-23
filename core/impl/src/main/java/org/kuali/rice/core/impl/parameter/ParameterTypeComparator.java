@@ -21,10 +21,10 @@ public class ParameterTypeComparator implements Comparator<ParameterTypeBo> {
 
    public static final Comparator<ParameterTypeBo> INSTANCE = new ParameterTypeComparator();
 
-    private ParameterTypeComparator() {
+    private ParameterTypeComparator() { 
 
     }
-
+ 
     public int compare(ParameterTypeBo o1, ParameterTypeBo o2) {
 
         return o1.getCode().compareTo( o2.getCode() );

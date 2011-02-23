@@ -18,7 +18,7 @@
   <bean id="CampusType" parent="CampusType-parentBean"/>
 
   <bean id="CampusType-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CampusTypeImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.shareddata.impl.campus.CampusTypeBo"/>
     <property name="inquiryDefinition">
       <ref bean="CampusType-inquiryDefinition"/>
     </property>
@@ -28,21 +28,20 @@
     <property name="objectLabel" value="Campus Type"/>
     <property name="attributes">
       <list>
-        <ref bean="CampusType-campusTypeCode"/>
-        <ref bean="CampusType-campusTypeName"/>
-        <ref bean="CampusType-dataObjectMaintenanceCodeActiveIndicator"/>
+        <ref bean="CampusType-code"/>
+        <ref bean="CampusType-name"/>
         <ref bean="CampusType-versionNumber"/>
       </list>
     </property>
-    <property name="titleAttribute" value="campusTypeCode"/>
+    <property name="titleAttribute" value="code"/>
   </bean>
 
 <!-- Attribute Definitions -->
 
 
-  <bean id="CampusType-campusTypeCode" parent="CampusType-campusTypeCode-parentBean"/>
+  <bean id="CampusType-code" parent="CampusType-code-parentBean"/>
 
-  <bean id="CampusType-campusTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="CampusType-code-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>
     <property name="shortLabel" value="Code"/>
     <property name="maxLength" value="1"/>
@@ -53,13 +52,13 @@
       <bean parent="TextControlDefinition" p:size="3"/>
     </property>
     <property name="summary" value="campusTypeCode"/>
-    <property name="name" value="campusTypeCode"/>
+    <property name="name" value="code"/>
     <property name="label" value="Campus Type Code"/>
     <property name="description" value="campusTypeCode description..."/>
   </bean>
-  <bean id="CampusType-campusTypeName" parent="CampusType-campusTypeName-parentBean"/>
+  <bean id="CampusType-name" parent="CampusType-name-parentBean"/>
 
-  <bean id="CampusType-campusTypeName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="CampusType-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>
     <property name="shortLabel" value="Name"/>
     <property name="maxLength" value="40"/>
@@ -70,10 +69,11 @@
       <bean parent="TextControlDefinition" p:size="42"/>
     </property>
     <property name="summary" value="campusTypeName"/>
-    <property name="name" value="campusTypeName"/>
+    <property name="name" value="name"/>
     <property name="label" value="Campus Type Name"/>
     <property name="description" value="campusTypeName description..."/>
   </bean>
+  <!-- 
   <bean id="CampusType-dataObjectMaintenanceCodeActiveIndicator" parent="CampusType-dataObjectMaintenanceCodeActiveIndicator-parentBean"/>
 
   <bean id="CampusType-dataObjectMaintenanceCodeActiveIndicator-parentBean" abstract="true" parent="AttributeDefinition">
@@ -88,6 +88,7 @@
     <property name="label" value="Active Indicator"/>
     <property name="description" value="dataObjectMaintenanceCodeActiveIndicator description..."/>
   </bean>
+  -->
   <bean id="CampusType-versionNumber" parent="CampusType-versionNumber-parentBean"/>
 
   <bean id="CampusType-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
@@ -105,9 +106,8 @@
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
-              <bean parent="FieldDefinition" p:attributeName="campusTypeName"/>
-              <bean parent="FieldDefinition" p:attributeName="dataObjectMaintenanceCodeActiveIndicator"/>
+              <bean parent="FieldDefinition" p:attributeName="code"/>
+              <bean parent="FieldDefinition" p:attributeName="name"/>
             </list>
           </property>
           <property name="title" value=""/>
@@ -130,16 +130,14 @@
     </property>
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
-        <bean parent="FieldDefinition" p:attributeName="campusTypeName"/>
-        <bean parent="FieldDefinition" p:attributeName="dataObjectMaintenanceCodeActiveIndicator"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
-        <bean parent="FieldDefinition" p:attributeName="campusTypeName"/>
-        <bean parent="FieldDefinition" p:attributeName="dataObjectMaintenanceCodeActiveIndicator"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
       </list>
     </property>
     <property name="title" value="Campus Type Lookup"/>

@@ -21,7 +21,7 @@
       <bean parent="AlphaNumericValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kns.bo.Campus" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.CampusValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="campusCode" p:labelAttribute="campusName"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.shareddata.impl.campus.CampusBo" p:valuesFinderClass="org.kuali.rice.shareddata.framework.campus.CampusValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="campusCode" p:labelAttribute="campusName"/>
     </property>
   </bean>
 

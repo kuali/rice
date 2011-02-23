@@ -15,9 +15,21 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.*;
+import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
+import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
+import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
+import org.kuali.rice.kim.bo.entity.KimEntityName;
+import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
@@ -28,13 +40,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+//import org.kuali.rice.shareddata.api.campus.Campus;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -85,7 +92,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected List<? extends KimEntityAffiliation> affiliations;
 	
 	protected String campusCode = "";
-	protected Campus campus;
+	//protected Campus campus;
 	// external identifier data
 	protected Map<String,String> externalIdentifiers = null;
 	// employment data
@@ -643,9 +650,9 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		this.name = name;
 	}
 
-	public Campus getCampus() {
-		return this.campus;
-	}
+	//public Campus getCampus() {
+	//	return this.campus;
+	//}
 
 	public EmploymentStatusImpl getEmployeeStatus() {
 		return this.employeeStatus;

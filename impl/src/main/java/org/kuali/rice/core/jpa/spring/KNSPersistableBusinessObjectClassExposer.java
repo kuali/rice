@@ -44,8 +44,8 @@ public class KNSPersistableBusinessObjectClassExposer implements
 		knsBOs.add(org.kuali.rice.kns.bo.AdHocRouteRecipient.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.AdHocRouteWorkgroup.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.Attachment.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.CampusImpl.class.getName());
-		knsBOs.add(org.kuali.rice.kns.bo.CampusTypeImpl.class.getName());
+		//knsBOs.add(org.kuali.rice.kns.bo.CampusImpl.class.getName());
+		//knsBOs.add(org.kuali.rice.kns.bo.CampusTypeImpl.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.DocumentAttachment.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.DocumentHeader.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.GlobalBusinessObjectDetailBase.class.getName());
@@ -58,6 +58,8 @@ public class KNSPersistableBusinessObjectClassExposer implements
 		knsBOs.add(ParameterBo.class.getName());
 		knsBOs.add(ComponentBo.class.getName());
 		knsBOs.add(ParameterTypeBo.class.getName());
+		knsBOs.add(CampusBo.class.getName());
+		knsBOs.add(CampusTypeBo.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PersistableAttachmentBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PersistableBusinessObjectBase.class.getName());
 		knsBOs.add(org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase.class.getName());

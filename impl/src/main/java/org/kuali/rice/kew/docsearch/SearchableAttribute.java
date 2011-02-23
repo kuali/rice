@@ -13,14 +13,13 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.ui.Row;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**

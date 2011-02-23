@@ -92,7 +92,7 @@
   <bean id="DocAddress-countryCode" parent="DocAddress-countryCode-parentBean"/>
   <bean id="DocAddress-countryCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="countryCode" p:forceUppercase="true" p:label="Country" p:shortLabel="Country" p:maxLength="2" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kns.bo.CountryImpl" p:valuesFinderClass="org.kuali.rice.shareddata.framework.country.CountryValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="postalCountryCode" p:labelAttribute="postalCountryName"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.shareddata.impl.country.CountryBo" p:valuesFinderClass="org.kuali.rice.shareddata.framework.country.CountryValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="postalCountryCode" p:labelAttribute="postalCountryName"/>
     </property>
   </bean>
  

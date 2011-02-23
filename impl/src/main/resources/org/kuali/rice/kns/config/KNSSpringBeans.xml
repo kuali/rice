@@ -255,12 +255,12 @@
         </property>
         <property name="externalizableBusinessObjectImplementations">
             <map>
-	           <entry key="org.kuali.rice.kns.bo.Country" value="org.kuali.rice.kns.bo.CountryImpl" />
+	           <entry key="org.kuali.rice.shareddata.api.country.CountryContract" value="org.kuali.rice.shareddata.impl.country.CountryBo" />
 			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
 			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
-			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />			   
-			   <entry key="org.kuali.rice.kns.bo.CampusType" value="org.kuali.rice.kns.bo.CampusTypeImpl" />
+			   <entry key="org.kuali.rice.shareddata.api.campus.CampusContract" value="org.kuali.rice.shareddata.framework.campus.CampusEbo" />			   
+			   <entry key="org.kuali.rice.shareddata.api.campus.CampusTypeContract" value="org.kuali.rice.shareddata.framework.campus.CampusTypeEbo" />
 
                <entry key="org.kuali.rice.core.api.component.ComponentContract" value="org.kuali.rice.core.framework.component.ComponentEbo" />
                <entry key="org.kuali.rice.core.api.namespace.NamespaceContract" value="org.kuali.rice.core.framework.namespace.NamespaceEbo" />
@@ -696,6 +696,13 @@
 			<ref bean="kualiModuleService" />
 		</property>
 	</bean>
+	
+	<bean id="campusService" class="org.kuali.rice.shareddata.impl.campus.CampusServiceImpl">
+		<property name="businessObjectService" ref="businessObjectService" />
+		<!-- <property name="kualiModuleService">
+			<ref bean="kualiModuleService" />
+		</property>-->
+	</bean>
 
 
   <bean id="persistedLookupMetadataDao" class="org.kuali.rice.kns.dao.proxy.PersistedLookupMetadataDaoProxy">
@@ -1051,6 +1058,8 @@
 				<value>org.kuali.rice.core.impl.parameter.ParameterTypeBo</value>
 				<value>org.kuali.rice.core.impl.component.ComponentBo</value>
 				<value>org.kuali.rice.core.impl.parameter.ParameterBo</value>
+				<value>org.kuali.rice.shareddata.impl.campus.CampusBo</value>
+				<value>org.kuali.rice.shareddata.impl.campus.CampusTypeBo</value>
             </list>
         </property>
     </bean>

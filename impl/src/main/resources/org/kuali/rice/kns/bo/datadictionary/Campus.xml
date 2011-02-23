@@ -18,7 +18,7 @@
   <bean id="Campus" parent="Campus-parentBean"/>
 
   <bean id="Campus-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CampusImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.shareddata.impl.campus.CampusBo"/>
     <property name="inquiryDefinition">
       <ref bean="Campus-inquiryDefinition"/>
     </property>
@@ -29,22 +29,36 @@
     <property name="objectLabel" value="Campus"/>
     <property name="attributes">
       <list>
-        <ref bean="Campus-campusCode"/>
-        <ref bean="Campus-campusName"/>
-        <ref bean="Campus-campusShortName"/>
+        <ref bean="Campus-code"/>
+        <ref bean="Campus-name"/>
+        <ref bean="Campus-shortName"/>
         <ref bean="Campus-campusTypeCode"/>
         <ref bean="Campus-versionNumber"/>
         <ref bean="Campus-active"/>
       </list>
     </property>
+    <property name="relationships">
+			<list>
+				<bean parent="RelationshipDefinition">
+					<property name="objectAttributeName" value="campusType" />
+                    <property name="sourceClass" value="org.kuali.rice.shareddata.impl.campus.CampusBo" />
+                    <property name="targetClass" value="org.kuali.rice.shareddata.impl.campus.CampusTypeBo" />
+					<property name="primitiveAttributes">
+						<list>
+							<bean parent="PrimitiveAttributeDefinition" p:sourceName="campusTypeCode" p:targetName="code" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>    
   </bean>
 
 <!-- Attribute Definitions -->
 
 
-  <bean id="Campus-campusCode" parent="Campus-campusCode-parentBean"/>
+  <bean id="Campus-code" parent="Campus-code-parentBean"/>
 
-  <bean id="Campus-campusCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Campus-code-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>
     <property name="shortLabel" value="Campus Code"/>
     <property name="maxLength" value="2"/>
@@ -56,13 +70,13 @@
       <bean parent="TextControlDefinition" p:size="2"/>
     </property>
     <property name="summary" value="Campus Code"/>
-    <property name="name" value="campusCode"/>
+    <property name="name" value="code"/>
     <property name="label" value="Campus Code"/>
     <property name="description" value="The code uniquely identifying a particular campus."/>
   </bean>
-  <bean id="Campus-campusName" parent="Campus-campusName-parentBean"/>
+  <bean id="Campus-name" parent="Campus-name-parentBean"/>
 
-  <bean id="Campus-campusName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Campus-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Name"/>
     <property name="maxLength" value="40"/>
     <property name="required" value="true"/>
@@ -70,13 +84,13 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="summary" value="Campus Name"/>
-    <property name="name" value="campusName"/>
+    <property name="name" value="name"/>
     <property name="label" value="Campus Name"/>
     <property name="description" value="Campus Name..."/>
   </bean>
-  <bean id="Campus-campusShortName" parent="Campus-campusShortName-parentBean"/>
+  <bean id="Campus-shortName" parent="Campus-shortName-parentBean"/>
 
-  <bean id="Campus-campusShortName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Campus-shortName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Short Name"/>
     <property name="maxLength" value="12"/>
     <property name="required" value="true"/>
@@ -84,10 +98,11 @@
       <bean parent="TextControlDefinition" p:size="12"/>
     </property>
     <property name="summary" value="Campus Short Name"/>
-    <property name="name" value="campusShortName"/>
+    <property name="name" value="shortName"/>
     <property name="label" value="Campus Short Name"/>
     <property name="description" value="Short Name..."/>
   </bean>
+  
   <bean id="Campus-campusTypeCode" parent="Campus-campusTypeCode-parentBean"/>
 
   <bean id="Campus-campusTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
@@ -99,7 +114,7 @@
     </property>
     <property name="required" value="true"/>
     <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.CampusTypeValuesFinder" p:includeKeyInLabel="false"/>
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.shareddata.framework.campus.CampusTypeValuesFinder" p:includeKeyInLabel="false"/>
     </property>
     <property name="summary" value="Campus Type Code"/>
     <property name="name" value="campusTypeCode"/>
@@ -130,9 +145,9 @@
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="campusCode"/>
-              <bean parent="FieldDefinition" p:attributeName="campusName"/>
-              <bean parent="FieldDefinition" p:attributeName="campusShortName"/>
+              <bean parent="FieldDefinition" p:attributeName="code"/>
+              <bean parent="FieldDefinition" p:attributeName="name"/>
+              <bean parent="FieldDefinition" p:attributeName="shortName"/>
               <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
               <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
@@ -155,25 +170,25 @@
       <bean parent="SortDefinition">
         <property name="attributeNames">
           <list>
-            <value>campusCode</value>
+            <value>code</value>
           </list>
         </property>
       </bean>
     </property>
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="campusCode"/>
-        <bean parent="FieldDefinition" p:attributeName="campusName"/>
-        <bean parent="FieldDefinition" p:attributeName="campusShortName"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="shortName"/>
         <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="campusCode" p:forceInquiry="true"/>
-        <bean parent="FieldDefinition" p:attributeName="campusName"/>
-        <bean parent="FieldDefinition" p:attributeName="campusShortName"/>
+        <bean parent="FieldDefinition" p:attributeName="code" p:forceInquiry="true"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="shortName"/>
         <bean parent="FieldDefinition" p:attributeName="campusTypeCode"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>

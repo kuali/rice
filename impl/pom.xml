@@ -39,11 +39,16 @@
 			<artifactId>krad-web-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>rice-shareddata-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-shareddata-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-shareddata-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		
 	    <dependency>
         	<groupId>org.slf4j</groupId>

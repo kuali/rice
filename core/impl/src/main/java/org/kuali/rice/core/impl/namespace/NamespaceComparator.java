@@ -16,13 +16,13 @@
 package org.kuali.rice.core.impl.namespace;
 
 import java.util.Comparator;
-
+ 
 public class NamespaceComparator implements Comparator<NamespaceBo> {
 
     public static final Comparator<NamespaceBo> INSTANCE = new NamespaceComparator();
 
     private NamespaceComparator() {
-
+ 
     }
 
     public int compare(NamespaceBo o1, NamespaceBo o2) {

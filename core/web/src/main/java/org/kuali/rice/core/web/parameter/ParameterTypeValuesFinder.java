@@ -37,7 +37,7 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
 
-        // get a list of all CampusTypes
+        // get a list of all ParameterTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
         List<ParameterTypeBo> bos = (List) boService.findAll(ParameterTypeBo.class);
         // copy the list of codes before sorting, since we can't modify the results from this method

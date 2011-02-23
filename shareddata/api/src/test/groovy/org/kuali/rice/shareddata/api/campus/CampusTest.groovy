@@ -8,7 +8,7 @@ import junit.framework.Assert
 
 class CampusTest {
 	def static final String BASE_XML = """
-	  <campus xmlns="http://rice.kuali.org/shareddata/campus/v1_1">
+	  <campus xmlns="http://rice.kuali.org/shareddata/v1_1">
 		<code>AMES</code>
 		<name>Iowa State University - Ames</name>
 		<shortName>ISU - Ames</shortName>

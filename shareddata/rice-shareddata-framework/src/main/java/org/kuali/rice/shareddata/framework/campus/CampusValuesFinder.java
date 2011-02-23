@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.lookup.keyvalues;
+package org.kuali.rice.shareddata.framework.campus;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +21,11 @@ import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.bo.Campus;
+import org.kuali.rice.shareddata.api.campus.Campus;
+import org.kuali.rice.shareddata.api.campus.CampusService;
+import org.kuali.rice.shareddata.api.country.CountryService;
+import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
 
@@ -42,12 +46,12 @@ public class CampusValuesFinder extends KeyValuesBase {
     	if ( campusCache == null ) {
     		synchronized ( this.getClass() ) {
 				
-		        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-		        Collection<Campus> codes = boService.findAll(Campus.class);
+    			CampusService campusService = SharedDataApiServiceLocator.getCampusService();
+		        List<Campus> campuses = campusService.findAllCampuses();
 		        List<KeyValue> labels = new ArrayList<KeyValue>();
-		        labels.add(new ConcreteKeyValue("", ""));
-		        for ( Campus campus : codes ) {
-		            labels.add(new ConcreteKeyValue(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
+ 		        labels.add(new ConcreteKeyValue("", ""));
+		        for ( Campus campus : campuses ) {
+		            labels.add(new ConcreteKeyValue(campus.getCode(), campus.getCode() + " - " + campus.getName()));
 		        }
 		
 		        campusCache = labels;

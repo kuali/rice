@@ -19,8 +19,8 @@ import org.kuali.rice.core.framework.component.ComponentEbo;
 import org.kuali.rice.core.framework.namespace.NamespaceEbo;
 import org.kuali.rice.core.framework.parameter.ParameterEbo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+import org.kuali.rice.shareddata.impl.campus.CampusBo;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,7 +57,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String kimTypeId;
 	protected String qualifierResolverProvidedIdentifier;
 	
-	protected Campus campus;
+	protected CampusBo campus;
 	protected NamespaceEbo namespace;
 	protected ComponentEbo component;
 	protected ParameterEbo parameter;
@@ -411,13 +411,13 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
 	public void setSectionId(String sectionId) {
 		this.sectionId = sectionId;
-	}
+	} 
 
-	public Campus getCampus() {
+	public CampusBo getCampus() {
 		return this.campus;
 	}
 
-	public void setCampus(Campus campus) {
+	public void setCampus(CampusBo campus) {
 		this.campus = campus;
 	}
 

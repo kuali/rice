@@ -37,7 +37,7 @@ public class NamespaceValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
 
-        // get a list of all CampusTypes
+        // get a list of all Namespaces
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
         List<NamespaceBo> bos = (List) boService.findAll(NamespaceBo.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
@@ -48,7 +48,7 @@ public class NamespaceValuesFinder extends KeyValuesBase {
         }
 
         // sort using comparator.
-        Collections.sort(bos, NamespaceComparator.INSTANCE);
+        Collections.sort(bos, NamespaceComparator.INSTANCE); 
 
         // create a new list (code, descriptive-name)
         List<KeyValue> labels = new ArrayList<KeyValue>( bos.size() );

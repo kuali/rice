@@ -172,7 +172,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="fieldBindingObjectPath" value="document.documentHeader"/>
   </bean>  
   
-  <bean id="Group_DocumentNotes" parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="4">
+  <bean id="Group_DocumentNotes" parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="3">
       <property name="id" value="group_docnotes"/>
       <property name="title" value="Notes and Attachments"/>
       <property name="propertyName" value="documentHeader.boNotes"/>
@@ -182,7 +182,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager.tableTools.render" value="false"/>
       <property name="items">
          <list> 
-           <bean parent="AttributeField_NotePostedTimestamp"/>
+           <!-- <bean parent="AttributeField_NotePostedTimestamp"/>-->
            <bean parent="AttributeField_AuthorUniversalIdentifier"/>
            <bean parent="AttributeField_NoteText"/>
            <bean parent="AttributeField_Attachment"/>           

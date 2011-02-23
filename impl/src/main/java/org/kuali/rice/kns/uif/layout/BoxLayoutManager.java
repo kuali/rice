@@ -80,18 +80,46 @@ public class BoxLayoutManager extends LayoutManagerBase {
 		}
 	}
 
+	/**
+	 * Indicates whether the components should be rendered in a horizontal or
+	 * vertical column
+	 * 
+	 * @return String orientation
+	 * @see org.kuali.rice.kns.uif.UifConstants.Orientation
+	 */
 	public String getOrientation() {
 		return this.orientation;
 	}
 
+	/**
+	 * Setter for the orientation
+	 * 
+	 * @param orientation
+	 */
 	public void setOrientation(String orientation) {
 		this.orientation = orientation;
 	}
 
+	/**
+	 * Amount of separation between each item
+	 * 
+	 * <p>
+	 * For horizontal orientation, this will be the right padding for each item.
+	 * For vertical, it will be the bottom padding for each item. The value can
+	 * be a fixed length (like px) or percentage
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public String getPadding() {
 		return this.padding;
 	}
 
+	/**
+	 * Setter for the item padding
+	 * 
+	 * @param padding
+	 */
 	public void setPadding(String padding) {
 		this.padding = padding;
 	}

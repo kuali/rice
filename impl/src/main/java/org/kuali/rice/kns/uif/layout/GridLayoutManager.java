@@ -27,6 +27,16 @@ import org.kuali.rice.kns.uif.field.Field;
 /**
  * Layout manager that organizes its components in a table based grid
  * 
+ * <p>
+ * Items are laid out from left to right (with each item taking up one column)
+ * until the configured number of columns is reached. If the item count is
+ * greater than the number of columns, a new row will be created to render the
+ * remaining items (and so on until all items are placed). Labels for the fields
+ * can be pulled out (default) and rendered as a separate column. The manager
+ * also supports the column span and row span options for the field items. If
+ * not specified the default is 1.
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GridLayoutManager extends LayoutManagerBase {
@@ -112,36 +122,88 @@ public class GridLayoutManager extends LayoutManagerBase {
 		return Group.class;
 	}
 
+	/**
+	 * Indicates the number of columns that should make up one row of data
+	 * 
+	 * <p>
+	 * If the item count is greater than the number of columns, a new row will
+	 * be created to render the remaining items (and so on until all items are
+	 * placed).
+	 * </p>
+	 * 
+	 * <p>
+	 * Note this does not include any generated columns by the layout manager,
+	 * so the final column count could be greater (if label fields are
+	 * separate).
+	 * </p>
+	 * 
+	 * @return
+	 */
 	public int getNumberOfColumns() {
 		return this.numberOfColumns;
 	}
 
+	/**
+	 * Setter for the number of columns (each row)
+	 * 
+	 * @param numberOfColumns
+	 */
 	public void setNumberOfColumns(int numberOfColumns) {
 		this.numberOfColumns = numberOfColumns;
 	}
 
+	/**
+	 * Indicates whether the labels for the items should be rendered as a
+	 * separate column
+	 * 
+	 * @return boolean true if label should be separate, false if they should be
+	 *         with the field
+	 */
 	public boolean isRenderLabelFieldsSeparately() {
 		return this.renderLabelFieldsSeparately;
 	}
 
+	/**
+	 * Setter for the render label field separate indicator
+	 * 
+	 * @param renderLabelFieldsSeparately
+	 */
 	public void setRenderLabelFieldsSeparately(boolean renderLabelFieldsSeparately) {
 		this.renderLabelFieldsSeparately = renderLabelFieldsSeparately;
 	}
 
+	/**
+	 * Indicates whether alternating row styles should be applied
+	 * 
+	 * <p>
+	 * Indicator to layout manager templates to apply alternating row styles.
+	 * See the configured template for the actual style classes used
+	 * </p>
+	 * 
+	 * @return boolean true if alternating styles should be applied, false if
+	 *         all rows should have the same style
+	 */
 	public boolean isApplyAlternatingRowStyles() {
 		return this.applyAlternatingRowStyles;
 	}
 
+	/**
+	 * Setter for the alternating row styles indicator
+	 * 
+	 * @param applyAlternatingRowStyles
+	 */
 	public void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles) {
 		this.applyAlternatingRowStyles = applyAlternatingRowStyles;
 	}
 
+	/**
+	 * List of components that will be placed by the layout manager. This
+	 * includes the generated fields by the layout manager
+	 * 
+	 * @return List<Component> fields
+	 */
 	public List<Component> getGridFields() {
 		return this.gridFields;
-	}
-
-	public void setGridFields(List<Component> gridFields) {
-		this.gridFields = gridFields;
 	}
 
 }

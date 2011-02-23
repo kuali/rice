@@ -111,7 +111,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="FooterDocument" parent="Footer">
       <property name="items">
         <list> 
-          <bean parent="ActionField" p:methodToCall="submit" p:actionLabel="submit"/>
+          <bean parent="ActionField" p:methodToCall="route" p:actionLabel="submit"/>
           <bean parent="ActionField" p:methodToCall="save" p:actionLabel="save"/>
           <bean parent="ActionField" p:methodToCall="blanketApprove" p:actionLabel="blanket approve"/>
           <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="close"/>

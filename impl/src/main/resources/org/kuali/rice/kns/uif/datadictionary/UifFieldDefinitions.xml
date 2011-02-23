@@ -130,7 +130,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField_NoteTopicText" parent="AttributeField" p:propertyName="noteTopicText" 
         p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
         
-  <bean id="AttributeField_Attachment" parent="AttributeField" p:propertyName="attachment" 
+  <bean id="AttributeField_Attachment" parent="AttributeField" p:propertyName="attachmentIdentifier" 
         p:dictionaryObjectEntry="org.kuali.rice.kns.bo.Note"/>    
         
   <bean id="AttributeField_NoteText" parent="AttributeField" p:propertyName="noteText" 

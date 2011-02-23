@@ -12,7 +12,7 @@
   <modules>
     <module>api</module>
     <module>impl</module>
-    <module>rice-shareddata-framework</module>
+    <module>framework</module>
   </modules>
      <dependencies>
         <!-- Rice Deps -->

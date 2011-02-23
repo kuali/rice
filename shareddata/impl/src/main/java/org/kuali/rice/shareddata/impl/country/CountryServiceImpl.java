@@ -33,13 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CountryServiceImpl implements CountryService {
-    private static Logger LOG = Logger.getLogger(CountryServiceImpl.class);
+public final class CountryServiceImpl implements CountryService {
+    private final static Logger LOG = Logger.getLogger(CountryServiceImpl.class);
 
     private KualiModuleService kualiModuleService;
 
     @Override
-    public Country getByPrimaryId(String postalCountryCode) {
+    public Country getByPrimaryId(final String postalCountryCode) {
         if (StringUtils.isBlank(postalCountryCode)) {
             LOG.debug("The postalCountryCode cannot be empty String.");
             return null;
@@ -55,7 +55,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public Country getByPrimaryIdIfNecessary(String postalCountryCode, Country existingCountry) {
+    public Country getByPrimaryIdIfNecessary(final String postalCountryCode, final Country existingCountry) {
         if (existingCountry != null) {
             if (StringUtils.equals(postalCountryCode, existingCountry.getPostalCountryCode())) {
                 return existingCountry;
@@ -69,7 +69,7 @@ public class CountryServiceImpl implements CountryService {
 	 * @see org.kuali.rice.shareddata.api.country.CountryService#getByAlternatePostalCountryCode(java.lang.String)
 	 */
     @Override
-	public Country getByAlternatePostalCountryCode(String alternatePostalCountryCode) {
+	public Country getByAlternatePostalCountryCode(final String alternatePostalCountryCode) {
         if (StringUtils.isBlank(alternatePostalCountryCode)) {
             LOG.debug("The alternatePostalCountryCode cannot be empty String.");
             return null;
@@ -83,13 +83,14 @@ public class CountryServiceImpl implements CountryService {
         	return null;
         }
         else if (countryList.size() == 1) {
-            return CountryBo.to(countryList.get(1));
+            return CountryBo.to(countryList.get(0));
         }
         else throw new IllegalStateException("Multiple countries found with same alternatePostalCountryCode");
 	}
 
     @Override
-	public Country getByAlternatePostalCountryCodeIfNecessary(String alternatePostalCountryCode, Country existingCountry) {
+	public Country getByAlternatePostalCountryCodeIfNecessary(final String alternatePostalCountryCode,
+                                                              final Country existingCountry) {
 		if (existingCountry != null) {
 			if (StringUtils.equals(alternatePostalCountryCode, existingCountry.getAlternatePostalCountryCode())) {
 				return existingCountry;
@@ -134,11 +135,16 @@ public class CountryServiceImpl implements CountryService {
      * 
      * @param kualiModuleService The kualiModuleService to set.
      */
-    public void setKualiModuleService(KualiModuleService kualiModuleService) {
+    public void setKualiModuleService(final KualiModuleService kualiModuleService) {
         this.kualiModuleService = kualiModuleService;
     }
 
-    List<Country> convertListOfBosToImmutables(List<CountryBo> countryBos) {
+    /**
+     * Converts a List<CountryBo> to an Unmodifiable List<Country>
+     * @param countryBos a mutable List<CountryBo> to made completely immutable.
+     * @return An unmodifiable List<Country>
+     */
+    List<Country> convertListOfBosToImmutables(final List<CountryBo> countryBos) {
         ArrayList<Country> countries = new ArrayList<Country>();
         for (CountryBo bo : countryBos) {
             Country country = CountryBo.to(bo);

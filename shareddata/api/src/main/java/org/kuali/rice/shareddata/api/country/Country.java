@@ -120,7 +120,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(4, 55)
+        return new HashCodeBuilder(9, 55)
                 .append(this.active)
                 .append(this.postalCountryRestricted)
                 .append(this.alternatePostalCountryCode)

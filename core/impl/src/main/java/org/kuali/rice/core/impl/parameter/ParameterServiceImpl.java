@@ -120,7 +120,7 @@ public final class ParameterServiceImpl implements ParameterService {
     private String getSubParameter(Collection<String> values, String subParameterName) {
         for (String value : values) {
             if (subParameterName.equals(StringUtils.substringBefore(value, "="))) {
-                return StringUtils.substringAfter(value, "=");
+                return StringUtils.trimToNull(StringUtils.substringAfter(value, "="));
             }
         }
         return null;

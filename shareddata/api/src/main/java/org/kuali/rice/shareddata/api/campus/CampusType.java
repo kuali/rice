@@ -111,6 +111,9 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(CampusTypeContract contract) {
+        	if (contract == null) {
+                throw new IllegalArgumentException("contract is null");
+            }
             Builder builder =  new Builder(contract.getCode());
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());

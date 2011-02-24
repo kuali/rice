@@ -34,9 +34,9 @@ public class CampusServiceImpl implements CampusService {
 
 	@Override
 	public List<Campus> findAllCampuses() {
-		List<CampusBo> campusBos = (List<CampusBo>)boService.findAll(CampusBo.class);
+		List<CampusBo> campusBos = (List<CampusBo>)boService.findMatching(CampusBo.class, singletonMap("active", "true"));
         //List<CampusBo> campusBos =  kualiModuleService.getResponsibleModuleService(CampusBo.class)
-        //        .getExternalizableBusinessObjectsList(CampusBo.class, new HashMap<String, Object>());
+        //        .getExternalizableBusinessObjectsList(CampusBo.class, singletonMap("active", "true"));
 
         return this.convertListOfCampusBosToImmutables(campusBos);
 	}
@@ -57,9 +57,9 @@ public class CampusServiceImpl implements CampusService {
 
 	@Override
 	public List<CampusType> findAllCampusTypes() {
-		List<CampusTypeBo> campusTypeBos = (List<CampusTypeBo>)boService.findAll(CampusTypeBo.class);
+		List<CampusTypeBo> campusTypeBos = (List<CampusTypeBo>)boService.findMatching(CampusTypeBo.class, singletonMap("active", "true"));
 		//List<CampusTypeBo> campusTypeBos =  kualiModuleService.getResponsibleModuleService(CampusTypeBo.class)
-        //	.getExternalizableBusinessObjectsList(CampusTypeBo.class, new HashMap<String, Object>());
+        //	.getExternalizableBusinessObjectsList(CampusTypeBo.class, singletonMap("active", "true"));
 
 		return this.convertListOfCampusTypesBosToImmutables(campusTypeBos);
 	}

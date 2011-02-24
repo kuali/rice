@@ -155,7 +155,9 @@ public final class Campus implements CampusContract, ModelObjectComplete {
             Builder builder =  new Builder(contract.getCode());
             builder.setName(contract.getName());
             builder.setShortName(contract.getShortName());
-            builder.setCampusType(CampusType.Builder.create(contract.getCampusType()));
+            if (contract.getCampusType() != null) {
+            	builder.setCampusType(CampusType.Builder.create(contract.getCampusType()));
+            }
             builder.setActive(contract.isActive());
             return builder;
         }

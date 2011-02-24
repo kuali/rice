@@ -45,10 +45,7 @@ public class CampusBo extends PersistableBusinessObjectBase implements Inactivat
 	* @return the immutable object
 	*/
    static org.kuali.rice.shareddata.api.campus.Campus to(CampusBo bo) {
-	   if (bo == null) {
-		   return null
-	   }
-
+	   if (bo == null) { return null }
 	   return org.kuali.rice.shareddata.api.campus.Campus.Builder.create(bo).build();
    }
 
@@ -58,17 +55,16 @@ public class CampusBo extends PersistableBusinessObjectBase implements Inactivat
 	* @return the mutable bo
 	*/
    static CampusBo from(org.kuali.rice.shareddata.api.campus.Campus im) {
-	   if (im == null) {
-		   return null
-	   }
+	   if (im == null) { return null }
 
 	   CampusBo bo = new CampusBo()
 	   bo.code = im.code
 	   bo.name = im.name
 	   bo.shortName = im.shortName
 	   bo.active = im.active
-	   bo.campusTypeCode = im.campusType.code
- 
+	   if (im.campusType != null) {
+		   bo.campusTypeCode = im.campusType.code
+	   }
 	   bo.campusType = CampusTypeBo.from(im.campusType)
 
 

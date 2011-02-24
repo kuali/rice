@@ -105,9 +105,6 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
 
         bo.parameterType = ParameterTypeBo.from(im.parameterType)
 
-        bo.refreshReferenceObject("namespace")
-        bo.refreshReferenceObject("component")
-
         return bo
     }
 

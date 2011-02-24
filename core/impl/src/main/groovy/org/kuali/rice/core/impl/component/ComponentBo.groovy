@@ -83,8 +83,6 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
         bo.namespaceCode = im.namespaceCode
         bo.virtual = im.virtual
 
-        bo.refreshReferenceObject("namespace")
-
         return bo;
     }
 }

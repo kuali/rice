@@ -9,7 +9,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 
 import java.util.*;
 
-public class ParameterServiceImpl implements ParameterService {
+public final class ParameterServiceImpl implements ParameterService {
     private BusinessObjectService businessObjectService;
 
     @Override 

@@ -7,12 +7,7 @@ import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -21,9 +16,9 @@ import java.util.Collection;
  *
  * @see CountryContract
  */
-@XmlRootElement(name = Country.Elements.ROOT_ELEMENT_NAME, namespace = Country.Elements.NAMESPACE)
+@XmlRootElement(name = Country.Constants.ROOT_ELEMENT_NAME, namespace = Country.Constants.NAMESPACE)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Country.Elements.COUNTRY_TYPE_NAME, propOrder = {
+@XmlType(name = Country.Constants.TYPE_NAME, propOrder = {
         Country.Elements.POSTAL_COUNTRY_CODE,
         Country.Elements.ALTERNATE_POSTAL_COUNTRY_CODE,
         Country.Elements.POSTAL_COUNTRY_NAME,
@@ -34,19 +29,19 @@ import java.util.Collection;
 public final class Country implements CountryContract, ModelObjectComplete {
     private static final long serialVersionUID = -8975392777320033940L;
 
-    @XmlElement(name = Elements.POSTAL_COUNTRY_CODE, required = true, namespace = Country.Elements.NAMESPACE)
+    @XmlElement(name = Elements.POSTAL_COUNTRY_CODE, required = true, namespace = Country.Constants.NAMESPACE)
     private final String postalCountryCode;
 
-    @XmlElement(name = Elements.ALTERNATE_POSTAL_COUNTRY_CODE, required = false, namespace = Country.Elements.NAMESPACE)
+    @XmlElement(name = Elements.ALTERNATE_POSTAL_COUNTRY_CODE, required = false, namespace = Country.Constants.NAMESPACE)
     private final String alternatePostalCountryCode;
 
-    @XmlElement(name = Elements.POSTAL_COUNTRY_NAME, required = false, namespace = Country.Elements.NAMESPACE)
+    @XmlElement(name = Elements.POSTAL_COUNTRY_NAME, required = false, namespace = Country.Constants.NAMESPACE)
     private final String postalCountryName;
 
-    @XmlElement(name = Elements.POSTAL_COUNTRY_RESTRICTED, required = true, namespace = Country.Elements.NAMESPACE)
+    @XmlElement(name = Elements.POSTAL_COUNTRY_RESTRICTED, required = true, namespace = Country.Constants.NAMESPACE)
     private final boolean postalCountryRestricted;
 
-    @XmlElement(name = Elements.ACTIVE, required = true, namespace = Country.Elements.NAMESPACE)
+    @XmlElement(name = Elements.ACTIVE, required = true, namespace = Country.Constants.NAMESPACE)
     private final boolean active;
 
     @SuppressWarnings("unused")
@@ -98,36 +93,15 @@ public final class Country implements CountryContract, ModelObjectComplete {
         return this.postalCountryRestricted;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof CountryContract)) {
-            return false;
-        }
-        CountryContract other = (CountryContract) o;
-        return new EqualsBuilder().append(this.active, other.isActive())
-                .append(this.postalCountryRestricted, other.isPostalCountryRestricted())
-                .append(this.alternatePostalCountryCode, other.getAlternatePostalCountryCode())
-                .append(this.postalCountryCode, other.getPostalCountryCode())
-                .append(this.postalCountryName, other.getPostalCountryName())
-                .isEquals();
-    }
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(9, 55)
-                .append(this.active)
-                .append(this.postalCountryRestricted)
-                .append(this.alternatePostalCountryCode)
-                .append(this.postalCountryCode)
-                .append(this.postalCountryName)
-                .toHashCode();
-    }
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+	}
 
     /**
      * Builder for immutable Country objects.
@@ -244,14 +218,20 @@ public final class Country implements CountryContract, ModelObjectComplete {
      * when this object is marshalled to XML.
      */
     static class Elements {
-        final static String NAMESPACE = "http://rice.kuali.org/schema/shareddata";
-        final static String ROOT_ELEMENT_NAME = "country";
-        final static String COUNTRY_TYPE_NAME = "CountryType";
-
         final static String POSTAL_COUNTRY_CODE = "postalCountryCode";
         final static String ALTERNATE_POSTAL_COUNTRY_CODE = "alternatePostalCountryCode";
         final static String POSTAL_COUNTRY_NAME = "postalCountryName";
         final static String POSTAL_COUNTRY_RESTRICTED = "postalCountryRestricted";
         final static String ACTIVE = "active";
     }
+
+    /**
+	 * Defines some internal constants used on this class.
+	 */
+	static class Constants {
+		final static String NAMESPACE = "http://rice.kuali.org/schema/shareddata";
+        final static String ROOT_ELEMENT_NAME = "country";
+		final static String TYPE_NAME = "CountryType";
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+	}
 }

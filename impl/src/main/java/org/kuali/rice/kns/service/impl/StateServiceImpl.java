@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.State;
@@ -27,23 +23,16 @@ import org.kuali.rice.kns.service.StateService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.shareddata.api.country.CountryService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class StateServiceImpl implements StateService {
     private static Logger LOG = Logger.getLogger(StateServiceImpl.class);
 
     private KualiModuleService kualiModuleService;
     private CountryService countryService;
 
-    /**
-     * @see org.kuali.kfs.sys.service.StateService#getByPrimaryId(java.lang.String)
-     */
-    public State getByPrimaryId(String postalStateCode) {
-        String postalCountryCode = countryService.getDefaultCountry().getPostalCountryCode();
-        return this.getByPrimaryId(postalCountryCode, postalStateCode);
-    }
-
-    /**
-     * @see org.kuali.kfs.sys.service.StateService#getByPrimaryId(java.lang.String, java.lang.String)
-     */
     public State getByPrimaryId(String postalCountryCode, String postalStateCode) {
         if (StringUtils.isBlank(postalCountryCode) || StringUtils.isBlank(postalStateCode)) {
             LOG.debug("neither postalCountryCode nor postalStateCode can be empty String.");

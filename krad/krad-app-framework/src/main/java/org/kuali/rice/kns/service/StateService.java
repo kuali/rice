@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.List;
-
 import org.kuali.rice.kns.bo.State;
 
-public interface StateService {
+import java.util.List;
 
-    /**
-     * get a state object based on the given state code and default country code. The default country code is set up in the system.
-     * 
-     * @param postalStateCode the given state code
-     * @return a state object based on the given state code and default country code
-     */
-    public State getByPrimaryId(String postalStateCode);
+public interface StateService {
 
     /**
      * get a state object based on the given state code and country code

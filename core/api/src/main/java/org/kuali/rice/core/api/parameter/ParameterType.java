@@ -96,7 +96,6 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 		 */
         private Builder(String code) {
             setCode(code);
-			setActive(true);
         }
 
         /**
@@ -107,7 +106,9 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
          * @throws IllegalArgumentException if the code is null or blank
          */
         public static Builder create(String code) {
-            return new Builder(code);
+            Builder builder = new Builder(code);
+            builder.setActive(true);
+            return builder;
         }
 
         /**

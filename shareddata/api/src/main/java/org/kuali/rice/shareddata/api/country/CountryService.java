@@ -23,7 +23,7 @@ import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 
-@WebService(name = "CountryService", targetNamespace = Country.Elements.NAMESPACE)
+@WebService(name = "CountryService", targetNamespace = Country.Constants.NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CountryService {
 

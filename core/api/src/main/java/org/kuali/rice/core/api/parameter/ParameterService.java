@@ -7,6 +7,9 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.Collection;
 
+/**
+ * Service for interacting with {@link Parameter Parameters}.
+ */
 @WebService(name = "parameterServiceSoap", targetNamespace = "http://rice.kuali.org/core/api/parameter")
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ParameterService {
@@ -135,7 +138,7 @@ public interface ParameterService {
      * </p>
      *
      * @param key the key to retrieve the parameter by. cannot be null.
-     * @return a string value or null
+     * @return an immutable collection of strings
      * @throws IllegalArgumentException if the key is null
      */
     @WebMethod(operationName="getParameterValuesAsString")
@@ -165,12 +168,13 @@ public interface ParameterService {
      * </p>
      *
      * <p>
-     *   This method will return null if the parameter or sub parameter does not exist.
+     *   This method will always return an <b>immutable</b> Collection
+     *   even when no values exist.
      * </p>
      *
      * @param key the key to retrieve the parameter by. cannot be null.
      * @param subParameterName the sub parameter to search for
-     * @return an immutable collection of strings
+     * @return a string value or null
      * @throws IllegalArgumentException if the key is null or if the subParameterName is blank
      */
     @WebMethod(operationName="getSubParameterValueAsString")
@@ -201,7 +205,8 @@ public interface ParameterService {
      * </p>
      *
      * <p>
-     *   This method will return null if the parameter or sub parameter does not exist.
+     *   This method will always return an <b>immutable</b> Collection
+     *   even when no values exist.
      * </p>
      *
      * @param key the key to retrieve the parameter by. cannot be null.

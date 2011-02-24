@@ -25,50 +25,45 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.shareddata.api.country.Country;
-import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
 
 /**
- * This is a description of what this class does - wliang don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * This is a description of what this class does - wliang don't forget to fill this in.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
 
     /**
-	 * Returns a list of countries that will be added to the result of {@link #getKeyValues()}.  Note that the result may
-	 * be filtered by active status
-	 * 
-	 * @return
-	 */
-	protected abstract List<Country> retrieveCountriesForValuesFinder();
-	
+     * Returns a list of countries that will be added to the result of {@link #getKeyValues()}.  Note that the result may
+     * be filtered by active status
+     *
+     * @return
+     */
+    protected abstract List<Country> retrieveCountriesForValuesFinder();
+
     @Override
-	public List<KeyValue> getKeyValues() {
-		List<Country> boList = retrieveCountriesForValuesFinder();
-		final Country defaultCountry = SharedDataApiServiceLocator.getCountryService().getDefaultCountry();
-		List<KeyValue> labels = new ArrayList<KeyValue>( boList.size() + 1 );
-		
+    public List<KeyValue> getKeyValues() {
+        List<Country> boList = retrieveCountriesForValuesFinder();
+        List<KeyValue> labels = new ArrayList<KeyValue>(boList.size() + 1);
+
         labels.add(new ConcreteKeyValue("", ""));
-       	labels.add(new ConcreteKeyValue(defaultCountry.getPostalCountryCode(), defaultCountry.getPostalCountryName()));
-        	
+
         Collections.sort(boList, new Comparator<Country>() {
-			@Override
-			public int compare(Country o1, Country o2) {
-				// some institutions may prefix the country name with an asterisk if the country no longer exists
-				// the country names will be compared without the asterisk
-				String sortValue1 = StringUtils.trim(StringUtils.removeStart(o1.getPostalCountryName(), "*"));
-				String sortValue2 = StringUtils.trim(StringUtils.removeStart(o2.getPostalCountryName(), "*"));
-				return sortValue1.compareToIgnoreCase(sortValue2);
-			}
-        	
+            @Override
+            public int compare(Country o1, Country o2) {
+                // some institutions may prefix the country name with an asterisk if the country no longer exists
+                // the country names will be compared without the asterisk
+                String sortValue1 = StringUtils.trim(StringUtils.removeStart(o1.getPostalCountryName(), "*"));
+                String sortValue2 = StringUtils.trim(StringUtils.removeStart(o2.getPostalCountryName(), "*"));
+                return sortValue1.compareToIgnoreCase(sortValue2);
+            }
+
         });
-        
-        // the default country may show up twice, but that's fine
+
         for (Country country : boList) {
-        	if (country.isActive()) {
-        		labels.add(new ConcreteKeyValue(country.getPostalCountryCode(), country.getPostalCountryName()));
-        	}
+            if (country.isActive()) {
+                labels.add(new ConcreteKeyValue(country.getPostalCountryCode(), country.getPostalCountryName()));
+            }
         }
         return labels;
     }

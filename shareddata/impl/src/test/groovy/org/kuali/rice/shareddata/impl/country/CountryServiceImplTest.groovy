@@ -54,7 +54,7 @@ class CountryServiceImplTest {
     CountryService service = new CountryServiceImpl()
     service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
     Country country = service.getByPrimaryId("US")
-    Assert.assertEquals(country, sampleCountries.get("US"))
+    Assert.assertEquals(CountryBo.to(sampleCountries.get("US")),country)
   }
 
   @Test
@@ -84,7 +84,7 @@ class CountryServiceImplTest {
     CountryService service = new CountryServiceImpl()
     service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
     Country country = service.getByAlternatePostalCountryCode("USA")
-    Assert.assertEquals(country, sampleCountriesKeyedByAltCode.get("USA"))
+    Assert.assertEquals(CountryBo.to(sampleCountriesKeyedByAltCode.get("USA")),country)
   }
 
   @Test

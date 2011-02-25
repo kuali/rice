@@ -23,7 +23,6 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
-import org.kuali.rice.shareddata.api.country.CountryService;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -94,12 +93,6 @@ public class KNSServiceLocatorInternal {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
     }
 
-
-    public static final String STATE_SERVICE = "stateService";
-
-    public static StateService getStateService() {
-	return (StateService) getService(STATE_SERVICE);
-    }
     
     public static final String DOCUMENT_DAO = "documentDao";
     

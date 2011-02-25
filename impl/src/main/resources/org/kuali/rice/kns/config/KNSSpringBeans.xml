@@ -255,10 +255,10 @@
         </property>
         <property name="externalizableBusinessObjectImplementations">
             <map>
-	           <entry key="org.kuali.rice.shareddata.api.country.CountryContract" value="org.kuali.rice.shareddata.impl.country.CountryBo" />
-			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
-			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
-			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
+	           <entry key="org.kuali.rice.shareddata.api.country.CountryContract" value="org.kuali.rice.shareddata.framework.country.CountryEbo" />
+			   <entry key="org.kuali.rice.shareddata.api.state.StateContract" value="org.kuali.rice.shareddata.framework.state.StateEbo" />
+			   <entry key="org.kuali.rice.shareddata.api.postalcode.PostalCodeContract" value="org.kuali.rice.shareddata.framework.postalcode.PostalCodeEbo" />
+			   <entry key="org.kuali.rice.shareddata.api.county.CountyContract" value="org.kuali.rice.shareddata.framework.county.CountyEbo" />
 			   <entry key="org.kuali.rice.shareddata.api.campus.CampusContract" value="org.kuali.rice.shareddata.framework.campus.CampusEbo" />			   
 			   <entry key="org.kuali.rice.shareddata.api.campus.CampusTypeContract" value="org.kuali.rice.shareddata.framework.campus.CampusTypeEbo" />
 
@@ -664,31 +664,16 @@
 		</property>
 	</bean>
 
-	<bean id="postalCodeService" class="org.kuali.rice.kns.service.impl.PostalCodeServiceImpl">
-		<property name="kualiModuleService">
-			<ref bean="kualiModuleService" />
-		</property>
-		<property name="countryService">
-			<ref bean="countryService" />
-		</property>
+	<bean id="postalCodeService" class="org.kuali.rice.shareddata.impl.postalcode.PostalCodeServiceImpl">
+        <property name="businessObjectService" ref="businessObjectService" />
 	</bean>
 
-	<bean id="countyService" class="org.kuali.rice.kns.service.impl.CountyServiceImpl">
-		<property name="kualiModuleService">
-			<ref bean="kualiModuleService" />
-		</property>
-		<property name="countryService">
-			<ref bean="countryService" />
-		</property>
+	<bean id="countyService" class="org.kuali.rice.shareddata.impl.county.CountyServiceImpl">
+        <property name="businessObjectService" ref="businessObjectService" />
 	</bean>
 
-	<bean id="stateService" class="org.kuali.rice.kns.service.impl.StateServiceImpl">
-		<property name="kualiModuleService">
-			<ref bean="kualiModuleService" />
-		</property>
-		<property name="countryService">
-			<ref bean="countryService" />
-		</property>
+	<bean id="stateService" class="org.kuali.rice.shareddata.impl.state.StateServiceImpl">
+        <property name="businessObjectService" ref="businessObjectService" />
 	</bean>
 
 	<bean id="countryService" class="org.kuali.rice.shareddata.impl.country.CountryServiceImpl">
@@ -699,9 +684,6 @@
 	
 	<bean id="campusService" class="org.kuali.rice.shareddata.impl.campus.CampusServiceImpl">
 		<property name="businessObjectService" ref="businessObjectService" />
-		<!-- <property name="kualiModuleService">
-			<ref bean="kualiModuleService" />
-		</property>-->
 	</bean>
 
 

@@ -25,7 +25,7 @@
     <property name="lookupDefinition">
       <ref bean="Country-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="postalCountryCode"/>
+    <property name="titleAttribute" value="countryCode"/>
     <property name="objectLabel" value="Country"/>
     <property name="attributes">
       <list>

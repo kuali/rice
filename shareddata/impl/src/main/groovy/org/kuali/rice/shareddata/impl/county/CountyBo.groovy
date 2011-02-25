@@ -1,0 +1,76 @@
+package org.kuali.rice.shareddata.impl.county
+
+import org.hibernate.annotations.Type
+import org.kuali.rice.kns.bo.Inactivateable
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.shareddata.api.county.County
+import org.kuali.rice.shareddata.api.county.CountyContract
+import org.kuali.rice.shareddata.impl.country.CountryBo
+import org.kuali.rice.shareddata.impl.state.StateBo
+import javax.persistence.*
+
+@IdClass(CountyId.class)
+@Entity
+@Table(name = "KR_COUNTY_T")
+class CountyBo extends PersistableBusinessObjectBase implements CountyContract, Inactivateable {
+
+    @Id
+    @Column(name = "COUNTY_CD")
+    def String code
+
+    @Id
+    @Column(name = "POSTAL_CNTRY_CD")
+    def String countryCode
+
+    @Id
+    @Column(name = "STATE_CD")
+    def String stateCode
+
+    @Column(name = "COUNTY_NM")
+    def String name
+
+    @Type(type = "yes_no")
+    @Column(name = "ACTV_IND")
+    def boolean active
+
+    @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "POSTAL_CNTRY_CD", insertable = false, updatable = false)
+    def CountryBo country;
+
+    @ManyToOne(targetEntity = StateBo.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "STATE_CD", insertable = false, updatable = false)
+    def StateBo state;
+
+    /**
+     * Converts a mutable bo to it's immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    static County to(CountyBo bo) {
+        if (bo == null) {
+            return null
+        }
+
+        return County.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to it's mutable bo counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    static CountyBo from(County im) {
+        if (im == null) {
+            return null
+        }
+
+        CountyBo bo = new CountyBo()
+        bo.code = im.code
+        bo.name = im.name
+        bo.countryCode = im.countryCode
+        bo.stateCode = im.stateCode
+        bo.active = im.active
+
+        return bo
+    }
+}

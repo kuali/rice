@@ -1,4 +1,5 @@
-package org.kuali.rice.shareddata.api.state;
+package org.kuali.rice.shareddata.api.postalcode;
+
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -12,27 +13,35 @@ import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Collection;
 
-@XmlRootElement(name = State.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = PostalCode.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = State.Constants.TYPE_NAME, propOrder = {
-        State.Elements.CODE,
-        State.Elements.NAME,
-        State.Elements.COUNTRY_CODE,
-        State.Elements.ACTIVE,
+@XmlType(name = PostalCode.Constants.TYPE_NAME, propOrder = {
+        PostalCode.Elements.CODE,
+        PostalCode.Elements.CITY_NAME,
+        PostalCode.Elements.COUNTRY_CODE,
+        PostalCode.Elements.STATE_CODE,
+        PostalCode.Elements.ACTIVE,
+        PostalCode.Elements.COUNTY_CODE,
         "_elements"
 })
-public final class State implements StateContract, ModelObjectComplete {
+public final class PostalCode implements PostalCodeContract, ModelObjectComplete {
 
     private static final long serialVersionUID = 6097498602725305353L;
 
     @XmlElement(name = Elements.CODE, required = true)
     private final String code;
 
-    @XmlElement(name = Elements.NAME, required = true)
-    private final String name;
+    @XmlElement(name = Elements.CITY_NAME, required = false)
+    private final String cityName;
 
     @XmlElement(name = Elements.COUNTRY_CODE, required = true)
     private final String countryCode;
+
+    @XmlElement(name = Elements.STATE_CODE, required = false)
+    private final String stateCode;
+
+    @XmlElement(name = Elements.COUNTY_CODE, required = false)
+    private final String countyCode;
 
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
@@ -44,17 +53,21 @@ public final class State implements StateContract, ModelObjectComplete {
     /**
      * This constructor should never be called except during JAXB unmarshalling.
      */
-    private State() {
+    private PostalCode() {
         this.code = null;
-        this.name = null;
+        this.cityName = null;
         this.countryCode = null;
+        this.stateCode = null;
+        countyCode = null;
         this.active = false;
     }
 
-    private State(Builder builder) {
+    private PostalCode(Builder builder) {
         code = builder.getCode();
-        name = builder.getName();
+        cityName = builder.getCityName();
         countryCode = builder.getCountryCode();
+        stateCode = builder.getStateCode();
+        countyCode = builder.getCountyCode();
         active = builder.isActive();
     }
 
@@ -64,8 +77,8 @@ public final class State implements StateContract, ModelObjectComplete {
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getCityName() {
+        return cityName;
     }
 
     @Override
@@ -74,46 +87,57 @@ public final class State implements StateContract, ModelObjectComplete {
     }
 
     @Override
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    @Override
+    public String getCountyCode() {
+        return countyCode;
+    }
+
+    @Override
     public boolean isActive() {
         return active;
     }
 
     /**
-     * This builder constructs an Parameter enforcing the constraints of the {@link StateContract}.
+     * This builder constructs an Parameter enforcing the constraints of the {@link PostalCodeContract}.
      */
-    public static class Builder implements StateContract, ModelBuilder, Serializable {
+    public static class Builder implements PostalCodeContract, ModelBuilder, Serializable {
 
         private static final long serialVersionUID = 7077484401017765844L;
 
         private String code;
-
-        private String name;
-
+        private String cityName;
         private String countryCode;
-
+        private String stateCode;
+        private String countyCode;
         private boolean active;
 
-        private Builder(String code, String name, String countryCode) {
+        private Builder(String code, String countryCode) {
             setCode(code);
-            setName(name);
             setCountryCode(countryCode);
         }
 
         /**
          * creates a State with the required fields.
          */
-        public static Builder create(String code, String postalName, String countryCode) {
-            final Builder builder = new Builder(code, postalName, countryCode);
+        public static Builder create(String code, String countryCode) {
+            final Builder builder = new Builder(code, countryCode);
             builder.setActive(true);
             return builder;
         }
 
         /**
-         * creates a Parameter from an existing {@link StateContract}.
+         * creates a Parameter from an existing {@link PostalCodeContract}.
          */
-        public static Builder create(StateContract contract) {
-            final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode());
+        public static Builder create(PostalCodeContract contract) {
+            final Builder builder = new Builder(contract.getCode(), contract.getCountryCode());
             builder.setActive(contract.isActive());
+            builder.setCountyCode(contract.getCountyCode());
+            builder.setCityName(contract.getCityName());
+            builder.setStateCode(contract.getStateCode());
             return builder;
         }
 
@@ -131,16 +155,16 @@ public final class State implements StateContract, ModelObjectComplete {
         }
 
         @Override
-        public String getName() {
-            return name;
+        public String getCityName() {
+            return cityName;
         }
 
-        public void setName(String name) {
-            if (StringUtils.isBlank(name)) {
-                throw new IllegalArgumentException("name is blank");
+        public void setCityName(String cityName) {
+            if (StringUtils.isBlank(cityName)) {
+                throw new IllegalArgumentException("cityName is blank");
             }
 
-            this.name = name;
+            this.cityName = cityName;
         }
 
         @Override
@@ -157,6 +181,32 @@ public final class State implements StateContract, ModelObjectComplete {
         }
 
         @Override
+        public String getStateCode() {
+            return stateCode;
+        }
+
+        public void setStateCode(String stateCode) {
+            if (StringUtils.isBlank(stateCode)) {
+                throw new IllegalArgumentException("stateCode is blank");
+            }
+
+            this.stateCode = stateCode;
+        }
+
+        @Override
+        public String getCountyCode() {
+            return countyCode;
+        }
+
+        public void setCountyCode(String countyCode) {
+            if (StringUtils.isBlank(countyCode)) {
+                throw new IllegalArgumentException("countyCode is blank");
+            }
+
+            this.countyCode = countyCode;
+        }
+
+        @Override
         public boolean isActive() {
             return active;
         }
@@ -166,8 +216,8 @@ public final class State implements StateContract, ModelObjectComplete {
         }
 
         @Override
-        public State build() {
-            return new State(this);
+        public PostalCode build() {
+            return new PostalCode(this);
         }
     }
 
@@ -190,8 +240,8 @@ public final class State implements StateContract, ModelObjectComplete {
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "state";
-        final static String TYPE_NAME = "StateType";
+        final static String ROOT_ELEMENT_NAME = "county";
+        final static String TYPE_NAME = "CountyType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = {"_elements"};
     }
 
@@ -201,9 +251,10 @@ public final class State implements StateContract, ModelObjectComplete {
      */
     static class Elements {
         final static String CODE = "code";
-        final static String NAME = "name";
+        final static String CITY_NAME = "cityName";
         final static String COUNTRY_CODE = "countryCode";
+        final static String STATE_CODE = "stateCode";
+        final static String COUNTY_CODE = "countyCode";
         final static String ACTIVE = "active";
     }
-
 }

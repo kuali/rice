@@ -14,12 +14,16 @@ public interface StateService {
      *   This method will return null if the state does not exist.
      * </p>
      *
-     * @param postalCountryCode country code. cannot be blank.
-     * @param postalStateCode state code. cannot be blank.
+     * <p>
+     *     This method will return active or inactive states.
+     * </p>
+     *
+     * @param countryCode country code. cannot be blank.
+     * @param code state code. cannot be blank.
      * @return a {@link State} or null
      * @throws IllegalArgumentException country code or state code is blank
      */
-    State getState(String postalCountryCode, String postalStateCode);
+    State getState(String countryCode, String code);
 
     /**
      * Gets all the {@link State States} for postal country code.
@@ -29,10 +33,13 @@ public interface StateService {
      *   even when no values exist.
      * </p>
      *
-     * @param postalCountryCode country code. cannot be blank.
-     * @param postalCountryCode state code. cannot be blank.
+     * <p>
+     *     This method will only return active states.
+     * </p>
+     *
+     * @param countryCode state code. cannot be blank.
      * @return an immutable collection of states
      * @throws IllegalArgumentException country code is blank
      */
-    List<State> getAllStates(String postalCountryCode);
+    List<State> getAllStates(String countryCode);
 }

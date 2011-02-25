@@ -22,11 +22,11 @@ import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.impl.parameter.ParameterId;
 import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.kns.bo.StateImpl;
-import org.kuali.rice.kns.bo.StateImplId;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
 import org.kuali.rice.shareddata.api.country.Country;
+import org.kuali.rice.shareddata.impl.state.StateBo;
+import org.kuali.rice.shareddata.impl.state.StateId;
 import org.kuali.test.KNSTestCase;
 
 import java.util.HashMap;
@@ -68,16 +68,16 @@ public class MetadataManagerTest extends KNSTestCase {
 		
 		pkMap.put("postalCountryCode", "US");
 		pkMap.put("postalStateCode", "WV");
-		pkValue = MetadataManager.convertPrimaryKeyMapToObject(StateImpl.class, pkMap);
-		org.junit.Assert.assertEquals("Composite pkValue for State should have class of StateId", StateImplId.class, pkValue.getClass());
-		StateImplId stateId = (StateImplId)pkValue;
-		assertEquals("postalCountryCode was not correctly set", "US", stateId.getPostalCountryCode());
-		assertEquals("postalStateCode was not correctly set", "WV", stateId.getPostalStateCode());
+		pkValue = MetadataManager.convertPrimaryKeyMapToObject(StateBo.class, pkMap);
+		org.junit.Assert.assertEquals("Composite pkValue for State should have class of StateId", StateId.class, pkValue.getClass());
+		StateId stateId = (StateId)pkValue;
+		assertEquals("postalCountryCode was not correctly set", "US", stateId.getCountryCode());
+		assertEquals("postalStateCode was not correctly set", "WV", stateId.getCode());
 		
 		pkMap.put("postalStateName", "WEST VIRGINIA");
 		exceptionThrown = false;
 		try {
-			pkValue = MetadataManager.convertPrimaryKeyMapToObject(StateImpl.class, pkMap);
+			pkValue = MetadataManager.convertPrimaryKeyMapToObject(StateBo.class, pkMap);
 		} catch (Exception e) {
 			exceptionThrown = true;
 		}

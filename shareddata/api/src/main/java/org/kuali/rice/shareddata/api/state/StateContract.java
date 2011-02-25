@@ -6,25 +6,25 @@ package org.kuali.rice.shareddata.api.state;
 public interface StateContract {
 
 	/**
-     * This the postal code for the State.  This cannot be null or a blank string.
+     * This the postal state code for the State.  This cannot be null or a blank string.
      *
-     * @return postal code
+     * @return postal state code
      */
-    String getPostalCode();
+    String getCode();
 
     /**
      * This the postal name for the State.  This cannot be null or a blank string.
      *
-     * @return postal code
+     * @return postal name
      */
-    String getPostalName();
+    String getName();
 
     /**
      * This the postal country code for the State.  This cannot be null or a blank string.
      *
-     * @return postal code
+     * @return postal country code
      */
-    String getPostalCountryCode();
+    String getCountryCode();
 
     /**
      * This the active flag for the State.

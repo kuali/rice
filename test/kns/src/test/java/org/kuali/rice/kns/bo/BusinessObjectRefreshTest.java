@@ -21,6 +21,10 @@ import org.junit.Test;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
+import org.kuali.rice.shareddata.impl.county.CountyBo;
+import org.kuali.rice.shareddata.impl.county.CountyId;
+import org.kuali.rice.shareddata.impl.state.StateBo;
+import org.kuali.rice.shareddata.impl.state.StateId;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
@@ -83,23 +87,23 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 	
 	@Test
 	public void testEagerRefreshField() {
-		final CountyImplId countyId = new CountyImplId("US", "COCONINO", "AZ");
-		County county = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(CountyImpl.class, countyId);
+		final CountyId countyId = new CountyId("US", "COCONINO", "AZ");
+		CountyBo county = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(CountyBo.class, countyId);
 		
-		final StateImplId arizonaStateId = new StateImplId("US", "AZ");
-		final State arizonaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, arizonaStateId);
+		final StateId arizonaStateId = new StateId("US", "AZ");
+		final StateBo arizonaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateBo.class, arizonaStateId);
 		
-		Assert.assertEquals("On retrieval from database, state code should be AZ", arizonaState.getPostalStateCode(), county.getState().getPostalStateCode());
-		Assert.assertEquals("On retrieval from database, state name should be ARIZONA", arizonaState.getPostalStateName(), county.getState().getPostalStateName());
+		Assert.assertEquals("On retrieval from database, state code should be AZ", arizonaState.getCode(), county.getState().getCode());
+		Assert.assertEquals("On retrieval from database, state name should be ARIZONA", arizonaState.getName(), county.getState().getName());
 		
 		county.setStateCode("CA");
-		county.setCountyCode("VENTURA");
+		county.setCode("VENTURA");
 		county.refresh();
 		
-		final StateImplId californiaStateId = new StateImplId("US", "CA");
-		final State californiaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, californiaStateId);
+		final StateId californiaStateId = new StateId("US", "CA");
+		final StateBo californiaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateBo.class, californiaStateId);
 		
-		Assert.assertEquals("Does eager fetching automatically refresh?", californiaState.getPostalStateCode(), county.getState().getPostalStateCode());
-		Assert.assertEquals("On refresh, state name should be CALIFORNIA", californiaState.getPostalStateName(), county.getState().getPostalStateName());
+		Assert.assertEquals("Does eager fetching automatically refresh?", californiaState.getCode(), county.getState().getCode());
+		Assert.assertEquals("On refresh, state name should be CALIFORNIA", californiaState.getName(), county.getState().getName());
 	}
 }

@@ -18,7 +18,7 @@
   <bean id="CountyMaintenanceDocument" parent="CountyMaintenanceDocument-parentBean"/>
 
   <bean id="CountyMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.CountyImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.shareddata.impl.county.CountyBo"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
@@ -27,13 +27,13 @@
     </property>
     <property name="defaultExistenceChecks">
       <list>
-        <bean parent="ReferenceDefinition" p:attributeName="country" p:attributeToHighlightOnFail="postalCountryCode"/>
+        <bean parent="ReferenceDefinition" p:attributeName="country" p:attributeToHighlightOnFail="countryCode"/>
       </list>
     </property>    
     <property name="lockingKeys">
       <list>
-      	<value>postalCountryCode</value>
-        <value>countyCode</value>
+      	<value>countryCode</value>
+        <value>code</value>
         <value>stateCode</value>
       </list>
     </property>
@@ -56,10 +56,10 @@
     <property name="title" value="Edit Counties"/>
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:name="postalCountryCode" p:required="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="countyCode" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="countryCode" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="code" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="stateCode" p:required="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="countyName" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="name" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="active"/>
       </list>
     </property>

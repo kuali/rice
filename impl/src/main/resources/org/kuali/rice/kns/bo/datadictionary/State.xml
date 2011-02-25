@@ -18,33 +18,34 @@
   <bean id="State" parent="State-parentBean"/>
 
   <bean id="State-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.StateImpl"/>
+    <property name="businessObjectClass" value="org.kuali.rice.shareddata.impl.state.StateBo"/>
     <property name="inquiryDefinition">
       <ref bean="State-inquiryDefinition"/>
     </property>
     <property name="lookupDefinition">
       <ref bean="State-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="postalStateCode"/>
+    <property name="titleAttribute" value="stateCode"/>
     <property name="objectLabel" value="State"/>
     <property name="attributes">
       <list>
-        <ref bean="State-postalCountryCode"/>
-        <ref bean="State-postalStateCode"/>
-        <ref bean="State-postalStateName"/>
-        <ref bean="State-codeAndDescription"/>
+        <ref bean="State-countryCode"/>
+        <ref bean="State-code"/>
+        <ref bean="State-name"/>
         <ref bean="State-active"/>
       </list>
     </property>
   </bean>
 
 <!-- Attribute Definitions -->
-  <bean id="State-postalCountryCode" parent="Country-postalCountryCode-parentBean"/>
+  <bean id="State-countryCode" parent="Country-postalCountryCode-parentBean">
+      <property name="name" value="countryCode"/>
+  </bean>
 
-  <bean id="State-postalStateCode" parent="State-postalStateCode-parentBean"/>
+  <bean id="State-code" parent="State-code-parentBean"/>
 
-  <bean id="State-postalStateCode-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="postalStateCode"/>
+  <bean id="State-code-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="code"/>
     <property name="forceUppercase" value="true"/>
     <property name="label" value="State Abbreviation"/>
     <property name="shortLabel" value="State Abbr."/>
@@ -59,10 +60,10 @@
     <property name="summary" value="State Abbreviation"/>
     <property name="description" value="The two digit code for a state"/>
   </bean>
-  <bean id="State-postalStateName" parent="State-postalStateName-parentBean"/>
+  <bean id="State-name" parent="State-name-parentBean"/>
 
-  <bean id="State-postalStateName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="postalStateName"/>
+  <bean id="State-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="name"/>
     <property name="forceUppercase" value="true"/>
     <property name="label" value="State Name"/>
     <property name="shortLabel" value="State Name"/>
@@ -77,20 +78,7 @@
     <property name="summary" value="State Name"/>
     <property name="description" value="The name assigned to this state."/>
   </bean>
-  <bean id="State-codeAndDescription" parent="State-codeAndDescription-parentBean"/>
 
-  <bean id="State-codeAndDescription-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="codeAndDescription"/>
-    <property name="forceUppercase" value="false"/>
-    <property name="label" value="State Code"/>
-    <property name="shortLabel" value="State Code"/>
-    <property name="maxLength" value="45"/>
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="45"/>
-    </property>
-    <property name="summary" value="State Code"/>
-    <property name="description" value="State Code"/>
-  </bean>
   <bean id="State-active" parent="State-active-parentBean"/>
 
   <bean id="State-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
@@ -112,9 +100,9 @@
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
-              <bean parent="FieldDefinition" p:attributeName="postalStateCode"/>
-              <bean parent="FieldDefinition" p:attributeName="postalStateName"/>
+              <bean parent="FieldDefinition" p:attributeName="countryCode"/>
+              <bean parent="FieldDefinition" p:attributeName="code"/>
+              <bean parent="FieldDefinition" p:attributeName="name"/>
               <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
@@ -135,24 +123,24 @@
       <bean parent="SortDefinition">
         <property name="attributeNames">
           <list>
-            <value>postalStateCode</value>
+            <value>code</value>
           </list>
         </property>
       </bean>
     </property>
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
-        <bean parent="FieldDefinition" p:attributeName="postalStateCode"/>
-        <bean parent="FieldDefinition" p:attributeName="postalStateName"/>
+        <bean parent="FieldDefinition" p:attributeName="countryCode"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
-        <bean parent="FieldDefinition" p:attributeName="postalStateCode"/>
-        <bean parent="FieldDefinition" p:attributeName="postalStateName"/>
+        <bean parent="FieldDefinition" p:attributeName="countryCode"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>

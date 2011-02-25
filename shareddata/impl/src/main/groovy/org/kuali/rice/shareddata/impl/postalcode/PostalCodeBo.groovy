@@ -1,0 +1,85 @@
+package org.kuali.rice.shareddata.impl.postalcode
+
+import org.hibernate.annotations.Type
+import org.kuali.rice.kns.bo.Inactivateable
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.shareddata.api.postalcode.PostalCode
+import org.kuali.rice.shareddata.api.postalcode.PostalCodeContract
+import org.kuali.rice.shareddata.impl.country.CountryBo
+import org.kuali.rice.shareddata.impl.county.CountyBo
+import org.kuali.rice.shareddata.impl.state.StateBo
+import javax.persistence.*
+
+@IdClass(PostalCodeId.class)
+@Entity
+@Table(name = "KR_STATE_T")
+class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeContract, Inactivateable {
+
+    @Id
+    @Column(name = "POSTAL_CD")
+    def String code;
+
+    @Id
+    @Column(name = "POSTAL_CNTRY_CD")
+    def String countryCode;
+
+    @Column(name = "POSTAL_CITY_NM")
+    def String cityName;
+
+    @Column(name = "POSTAL_STATE_NM")
+    def String stateCode;
+
+    @Column(name = "COUNTY_NM")
+    def String countyCode;
+
+    @Type(type = "yes_no")
+    @Column(name = "ACTV_IND")
+    def boolean active;
+
+    @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "POSTAL_CNTRY_CD", insertable = false, updatable = false)
+    def CountryBo country;
+
+    @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "POSTAL_STATE_NM", insertable = false, updatable = false)
+    def StateBo state;
+
+
+    @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "COUNTY_NM", insertable = false, updatable = false)
+    def CountyBo county;
+
+    /**
+     * Converts a mutable bo to it's immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    static PostalCode to(PostalCodeBo bo) {
+        if (bo == null) {
+            return null
+        }
+
+        return PostalCode.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to it's mutable bo counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    static PostalCodeBo from(PostalCode im) {
+        if (im == null) {
+            return null
+        }
+
+        PostalCodeBo bo = new PostalCodeBo()
+        bo.code = im.code
+        bo.countryCode = im.countryCode
+        bo.cityName = im.cityName
+        bo.active = im.active
+        bo.stateCode = im.stateCode
+        bo.cityName = im.cityName
+
+        return bo
+    }
+}

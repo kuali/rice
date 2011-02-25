@@ -18,6 +18,9 @@ public class CampusServiceImpl implements CampusService {
 	//private KualiModuleService kualiModuleService;
 	private BusinessObjectService boService;
 	
+	/**
+     * @see org.kuali.rice.shareddata.api.campus.CampusService#getCampus(String code)
+     */
 	@Override
 	public Campus getCampus(String code) {
 		if (StringUtils.isBlank(code)) {
@@ -32,6 +35,9 @@ public class CampusServiceImpl implements CampusService {
         return CampusBo.to(campusBo);
 	}
 
+	/**
+     * @see org.kuali.rice.shareddata.api.campus.CampusService#findAllCampuses
+     */
 	@Override
 	public List<Campus> findAllCampuses() {
 		List<CampusBo> campusBos = (List<CampusBo>)boService.findMatching(CampusBo.class, singletonMap("active", "true"));
@@ -41,6 +47,9 @@ public class CampusServiceImpl implements CampusService {
         return this.convertListOfCampusBosToImmutables(campusBos);
 	}
 
+	/**
+     * @see org.kuali.rice.shareddata.api.campus.CampusService#getCampusType(String code)
+     */
 	@Override
 	public CampusType getCampusType(String code) {
 		if (StringUtils.isBlank(code)) {
@@ -55,6 +64,9 @@ public class CampusServiceImpl implements CampusService {
         return CampusTypeBo.to(campusTypeBo);
 	}
 
+	/**
+     * @see org.kuali.rice.shareddata.api.campus.CampusService#findAllCampusTypes
+     */
 	@Override
 	public List<CampusType> findAllCampusTypes() {
 		List<CampusTypeBo> campusTypeBos = (List<CampusTypeBo>)boService.findMatching(CampusTypeBo.class, singletonMap("active", "true"));

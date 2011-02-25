@@ -34,10 +34,10 @@ class CampusServiceImplTest {
 	}
 	
 	@Before
-    void setupBoServiceMockContext() {
-        mockBoService = new MockFor(BusinessObjectService)
-        campusService = new CampusServiceImpl()
-    }
+        void setupBoServiceMockContext() {
+            mockBoService = new MockFor(BusinessObjectService)
+            campusService = new CampusServiceImpl()
+        }
 	
 	@Test
 	public void testGetCampusEmptyCode() {
@@ -65,19 +65,32 @@ class CampusServiceImplTest {
 	
 	@Test
 	public void testGetCampus() {
-		mockBoService.demand.findByPrimaryKey (1..2) {
-			Class clazz, Map map -> return sampleCampuses.get(map.get("code"))
-		}
-        def boService = mockBoService.proxyDelegateInstance()
-        campusService.setBusinessObjectService(boService);
-		for (CampusBo campusBo in sampleCampuses.values()) {
-        	Assert.assertEquals (CampusBo.to(campusBo), campusService.getCampus(campusBo.code))
-		}   
+            mockBoService.demand.findByPrimaryKey (1..sampleCampuses.size()) {
+                    Class clazz, Map map -> return sampleCampuses.get(map.get("code"))
+            }
+            def boService = mockBoService.proxyDelegateInstance()
+            campusService.setBusinessObjectService(boService);
+            for (CampusBo campusBo in sampleCampuses.values()) {
+                Assert.assertEquals (CampusBo.to(campusBo), campusService.getCampus(campusBo.code))
+            }
+            mockBoService.verify(boService)
+	}
+
+    @Test
+	public void testGetCampusInvalidCode() {
+            mockBoService.demand.findByPrimaryKey (1..1) {
+                Class clazz, Map map -> return null
+            }
+            def boService = mockBoService.proxyDelegateInstance()
+            campusService.setBusinessObjectService(boService);
+
+            Assert.assertNull (campusService.getCampus("badcode"))
+            mockBoService.verify(boService)
 	}
 	
 	@Test
 	public void testGetCampusType() {
-		mockBoService.demand.findByPrimaryKey (1..2) {
+            mockBoService.demand.findByPrimaryKey (1..sampleCampusTypes.size()) {
 			Class clazz, Map map -> return sampleCampusTypes.get(map.get("code"))
 		}
 		def boService = mockBoService.proxyDelegateInstance()
@@ -85,6 +98,19 @@ class CampusServiceImplTest {
 		for (CampusTypeBo campusTypeBo in sampleCampusTypes.values()) {
 			Assert.assertEquals (CampusTypeBo.to(campusTypeBo), campusService.getCampusType(campusTypeBo.code))
 		}
+                mockBoService.verify(boService)
+	}
+
+        @Test
+	public void testGetCampusTypeInvalidCode() {
+            mockBoService.demand.findByPrimaryKey (1..1) {
+                Class clazz, Map map -> return null
+            }
+            def boService = mockBoService.proxyDelegateInstance()
+            campusService.setBusinessObjectService(boService);
+
+            Assert.assertNull (campusService.getCampusType("badcode"))
+            mockBoService.verify(boService)
 	}
 	
 	@Test
@@ -109,6 +135,7 @@ class CampusServiceImplTest {
 		for (Campus campus in campusList) {
 			Assert.assertTrue(returnedCampuses.contains(campus))
 		}
+                mockBoService.verify(boService)
 	}
 
 	public void testGetAllCampusTypes() {
@@ -132,5 +159,6 @@ class CampusServiceImplTest {
 		for (CampusType campusType in campusTypeList) {
 			Assert.assertTrue(returnedCampusTypes.contains(campusType))
 		}
+                mockBoService.verify(boService)
 	}
 }

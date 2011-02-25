@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="rice-standalone:war">
+    <output-path>$PROJECT_DIR$/../../../standalone/target</output-path>
+    <root id="archive" name="rice-standalone-1.1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="rice-standalone:war exploded" />
+    </root>
+  </artifact>
+</component>

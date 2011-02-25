@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ksb-test-client1:war">
+    <output-path>$PROJECT_DIR$/../../../test/test-clients/ksb-test-client1/target</output-path>
+    <root id="archive" name="ksb-test-client1-1.1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ksb-test-client1:war exploded" />
+    </root>
+  </artifact>
+</component>

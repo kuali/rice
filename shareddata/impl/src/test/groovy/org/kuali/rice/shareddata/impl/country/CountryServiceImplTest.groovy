@@ -43,18 +43,21 @@ class CountryServiceImplTest {
 
   @Test
   public void testGetByPrimaryId() {
-    mockModuleService.demand.getExternalizableBusinessObject() {
+    mockModuleService.demand.getExternalizableBusinessObject(1..1) {
       Class clazz, Map map -> return sampleCountries.get(map.get(KNSPropertyConstants.POSTAL_COUNTRY_CODE))
     }
+    ModuleService ms = mockModuleService.proxyDelegateInstance()
 
-    mockKualiModuleService.demand.getResponsibleModuleService() {
-      Class clazz -> mockModuleService.proxyDelegateInstance()
-    }
+    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
+    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
+    service.setKualiModuleService(kms)
     Country country = service.getByPrimaryId("US")
-    Assert.assertEquals(CountryBo.to(sampleCountries.get("US")),country)
+
+    Assert.assertEquals(CountryBo.to(sampleCountries.get("US")), country)
+    mockModuleService.verify(ms)
+    mockKualiModuleService.verify(kms)
   }
 
   @Test
@@ -71,47 +74,59 @@ class CountryServiceImplTest {
 
   @Test
   public void testGetByAlternatePostalCountryCode() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList() {
+    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
       Class clazz, Map map ->
       [sampleCountriesKeyedByAltCode.get(
               map.get(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
     }
+    ModuleService ms = mockModuleService.proxyDelegateInstance()
 
-    mockKualiModuleService.demand.getResponsibleModuleService() {
-      Class clazz -> mockModuleService.proxyDelegateInstance()
-    }
+    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
+    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
+    service.setKualiModuleService(kms)
     Country country = service.getByAlternatePostalCountryCode("USA")
-    Assert.assertEquals(CountryBo.to(sampleCountriesKeyedByAltCode.get("USA")),country)
+
+    Assert.assertEquals(CountryBo.to(sampleCountriesKeyedByAltCode.get("USA")), country)
+    mockModuleService.verify(ms)
+    mockKualiModuleService.verify(kms)
   }
 
   @Test
   public void testGetByAlternatePostalCountryCodeWhenNoneFound() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList() {Class clazz, Map map -> []}
-    mockKualiModuleService.demand.getResponsibleModuleService() {
-      Class clazz -> mockModuleService.proxyDelegateInstance()
-    }
+    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {Class clazz, Map map -> []}
+    ModuleService ms = mockModuleService.proxyDelegateInstance()
+
+    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
+    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
+    service.setKualiModuleService(kms)
     Country country = service.getByAlternatePostalCountryCode("ZZ")
+
     Assert.assertNull(country)
+    mockModuleService.verify(ms)
+    mockKualiModuleService.verify(kms)
+
   }
 
   @Test(expected = IllegalStateException.class)
   public void testGetByAlternatePostalCountryCodeWhenMultipleFound() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList() {
+    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
     }
-    mockKualiModuleService.demand.getResponsibleModuleService() {
-      Class clazz -> mockModuleService.proxyDelegateInstance()
-    }
+    ModuleService ms = mockModuleService.proxyDelegateInstance()
+
+    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
+    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
     service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
     service.getByAlternatePostalCountryCode("US")
+
+    mockModuleService.verify(ms)
+    mockKualiModuleService.verify(kms)
   }
 
   @Test
@@ -128,27 +143,37 @@ class CountryServiceImplTest {
 
   @Test
   public void findAllCountriesNotRestricted() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList() {
+    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
     }
-    mockKualiModuleService.demand.getResponsibleModuleService() {
-      Class clazz -> mockModuleService.proxyDelegateInstance()
-    }
+    ModuleService ms = mockModuleService.proxyDelegateInstance()
+
+    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
+    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
+
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
+    service.setKualiModuleService(kms)
     service.findAllCountriesNotRestricted()
+
+    mockModuleService.verify(ms)
+    mockKualiModuleService.verify(kms)
   }
 
   @Test
   public void testFindAllCountries() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList() {
-      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"),sampleCountries.get("ZZ")]
+    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
+      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
     }
-    mockKualiModuleService.demand.getResponsibleModuleService() {
-      Class clazz -> mockModuleService.proxyDelegateInstance()
-    }
+    ModuleService ms = mockModuleService.proxyDelegateInstance()
+
+    mockKualiModuleService.demand.getResponsibleModuleService(1..1) { Class clazz -> ms}
+    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
+
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
+    service.setKualiModuleService(kms)
     service.findAllCountriesNotRestricted()
+
+    mockModuleService.verify(ms)
+    mockKualiModuleService.verify(kms)
   }
 }

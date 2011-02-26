@@ -1,21 +1,35 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.shareddata.impl.campus;
 
-import static java.util.Collections.singletonMap;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.shareddata.api.campus.Campus;
 import org.kuali.rice.shareddata.api.campus.CampusService;
 import org.kuali.rice.shareddata.api.campus.CampusType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Collections.singletonMap;
+
 public class CampusServiceImpl implements CampusService {
-	private static Logger LOG = Logger.getLogger(CampusServiceImpl.class);
-	//private KualiModuleService kualiModuleService;
+
 	private BusinessObjectService boService;
 	
 	/**
@@ -24,13 +38,10 @@ public class CampusServiceImpl implements CampusService {
 	@Override
 	public Campus getCampus(String code) {
 		if (StringUtils.isBlank(code)) {
-            LOG.debug("The campus code cannot be empty String.");
-            return null;
+            throw new IllegalArgumentException("code is blank");
         }
 
         CampusBo campusBo = boService.findByPrimaryKey(CampusBo.class, singletonMap("code", code));
-        //CampusBo campusBo =  kualiModuleService.getResponsibleModuleService(CampusBo.class)
-        //        .getExternalizableBusinessObject(CampusBo.class, campusMap);
 
         return CampusBo.to(campusBo);
 	}
@@ -40,9 +51,7 @@ public class CampusServiceImpl implements CampusService {
      */
 	@Override
 	public List<Campus> findAllCampuses() {
-		List<CampusBo> campusBos = (List<CampusBo>)boService.findMatching(CampusBo.class, singletonMap("active", "true"));
-        //List<CampusBo> campusBos =  kualiModuleService.getResponsibleModuleService(CampusBo.class)
-        //        .getExternalizableBusinessObjectsList(CampusBo.class, singletonMap("active", "true"));
+		List<CampusBo> campusBos = (List<CampusBo>) boService.findMatching(CampusBo.class, singletonMap("active", "true"));
 
         return this.convertListOfCampusBosToImmutables(campusBos);
 	}
@@ -53,13 +62,10 @@ public class CampusServiceImpl implements CampusService {
 	@Override
 	public CampusType getCampusType(String code) {
 		if (StringUtils.isBlank(code)) {
-            LOG.debug("The campus type code cannot be empty String.");
-            return null;
+            throw new IllegalArgumentException("code is blank");
         }
 
 		CampusTypeBo campusTypeBo = boService.findByPrimaryKey(CampusTypeBo.class, singletonMap("code", code));
-        //CampusTypeBo campusTypeBo =  kualiModuleService.getResponsibleModuleService(CampusTypeBo.class)
-        //        .getExternalizableBusinessObject(CampusTypeBo.class, campusTypeMap);
 
         return CampusTypeBo.to(campusTypeBo);
 	}
@@ -70,20 +76,8 @@ public class CampusServiceImpl implements CampusService {
 	@Override
 	public List<CampusType> findAllCampusTypes() {
 		List<CampusTypeBo> campusTypeBos = (List<CampusTypeBo>)boService.findMatching(CampusTypeBo.class, singletonMap("active", "true"));
-		//List<CampusTypeBo> campusTypeBos =  kualiModuleService.getResponsibleModuleService(CampusTypeBo.class)
-        //	.getExternalizableBusinessObjectsList(CampusTypeBo.class, singletonMap("active", "true"));
-
 		return this.convertListOfCampusTypesBosToImmutables(campusTypeBos);
 	}
-
-	/**
-     * Sets the kualiModuleService attribute value.
-     * 
-     * @param kualiModuleService The kualiModuleService to set.
-     */
-    /*public void setKualiModuleService(KualiModuleService kualiModuleService) {
-        this.kualiModuleService = kualiModuleService;
-    }*/
     
     public void setBusinessObjectService(BusinessObjectService boService) {
         this.boService = boService;

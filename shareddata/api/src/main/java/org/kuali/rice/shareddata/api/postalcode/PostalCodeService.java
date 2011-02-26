@@ -1,10 +1,35 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.shareddata.api.postalcode;
 
+import org.kuali.rice.shareddata.api.SharedDataConstants;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**
  * Service for interacting with {@link PostalCode PostalCodes}.
  */
+@WebService(name = "postalCodeServiceSoap", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PostalCodeService {
 
     /**
@@ -23,7 +48,9 @@ public interface PostalCodeService {
      * @return a {@link PostalCode} or null
      * @throws IllegalArgumentException country code or postal code value is blank
      */
-    PostalCode getPostalCode(String countryCode, String code);
+    @WebMethod(operationName="getPostalCode")
+    @WebResult(name = "postalCode")
+    PostalCode getPostalCode(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code);
 
     /**
      * Gets all the {@link PostalCode PostalCode} for postal country code.
@@ -41,5 +68,7 @@ public interface PostalCodeService {
      * @return an immutable collection of states
      * @throws IllegalArgumentException country code is blank
      */
-    List<PostalCode> getAllPostalCodes(String countryCode);
+    @WebMethod(operationName="getAllPostalCodes")
+    @WebResult(name = "postalCodes")
+    List<PostalCode> getAllPostalCodes(@WebParam(name = "countryCode") String countryCode);
 }

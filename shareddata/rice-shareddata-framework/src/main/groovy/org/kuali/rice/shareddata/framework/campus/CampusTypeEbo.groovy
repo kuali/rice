@@ -18,11 +18,10 @@ package org.kuali.rice.shareddata.framework.campus
 
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.campus.CampusType
 import org.kuali.rice.shareddata.api.campus.CampusTypeContract
 
-public class CampusTypeEbo extends PersistableBusinessObjectBase implements Inactivateable, CampusTypeContract, ExternalizableBusinessObject {
+public class CampusTypeEbo implements Inactivateable, CampusTypeContract, ExternalizableBusinessObject {
 
 	def String code;
 	def String name;
@@ -53,4 +52,7 @@ public class CampusTypeEbo extends PersistableBusinessObjectBase implements Inac
  
 	 return bo;
    }
+
+    void refresh() {
+    }
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright 2006-2011 The Kuali Foundation
   ~
@@ -1038,6 +1039,11 @@
 				<value>org.kuali.rice.core.impl.parameter.ParameterTypeBo</value>
 				<value>org.kuali.rice.core.impl.component.ComponentBo</value>
 				<value>org.kuali.rice.core.impl.parameter.ParameterBo</value>
+
+				<value>org.kuali.rice.shareddata.impl.state.StateBo</value>
+				<value>org.kuali.rice.shareddata.impl.county.CountyBo</value>
+                <value>org.kuali.rice.shareddata.impl.postalcode.PostalCodeBo</value>
+                <value>org.kuali.rice.shareddata.impl.country.CountryBo</value>
 				<value>org.kuali.rice.shareddata.impl.campus.CampusBo</value>
 				<value>org.kuali.rice.shareddata.impl.campus.CampusTypeBo</value>
             </list>

@@ -25,11 +25,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
+import org.kuali.rice.kns.datadictionary.ObjectDictionaryEntry;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -59,7 +61,7 @@ public class InquiryForm extends UifFormBase {
 
 	private Map<String, String> inquiryDecryptedPrimaryKeys;
 
-	private BusinessObject bo;
+	private Object bo;
 	private Inquirable inquirable;
 	
 	public InquiryForm() {
@@ -100,30 +102,37 @@ public class InquiryForm extends UifFormBase {
 			this.inquiryPrimaryKeys = new HashMap<String, String>();
 			this.inquiryDecryptedPrimaryKeys = new HashMap<String, String>();
 
-			populatePKFieldValues(request, getObjectClassName(), passedFromPreviousInquiry);
 
-			// populateInactiveRecordsInIntoInquirable(inquirable, request);
-			populateExportCapabilities(getObjectClassName());
+			
+			if (inquirable instanceof KualiInquirableImpl){
+				populateBusinessObjectPKFieldValues(request, getObjectClassName(), passedFromPreviousInquiry);
+				// populateInactiveRecordsInIntoInquirable(inquirable, request);
+				populateExportCapabilities(getObjectClassName());
+			} else {
+				populateObjectPKFieldValues(request, getObjectClassName(), passedFromPreviousInquiry);
+			}
 		}
 	}
 
-	protected void populatePKFieldValues(HttpServletRequest request, String boClassName,
+	protected void populateBusinessObjectPKFieldValues(HttpServletRequest request, String boClassName,
 			boolean passedFromPreviousInquiry) {
 		try {
 			EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
 			DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 			BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator
-					.getBusinessObjectAuthorizationService();
-			BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator
-					.getBusinessObjectMetaDataService();
+			.getBusinessObjectAuthorizationService();
+
 
 			@SuppressWarnings("unchecked")
-			Class<? extends BusinessObject> businessObjectClass = (Class<? extends BusinessObject>) Class
-					.forName(boClassName);
+			Class businessObjectClass =  Class.forName(boClassName);
+			
+			BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator
+			.getBusinessObjectMetaDataService();
 
 			// build list of key values from request, if all keys not given
 			// throw error
-			List<String> boPKeys = businessObjectMetaDataService.listPrimaryKeyFieldNames(businessObjectClass);
+			List<String> boPKeys  = businessObjectMetaDataService.listPrimaryKeyFieldNames(businessObjectClass);
+			
 			final List<List<String>> altKeys = this.getAltkeys(businessObjectClass);
 
 			altKeys.add(boPKeys);
@@ -198,7 +207,78 @@ public class InquiryForm extends UifFormBase {
 			throw new RuntimeException("Can't decrypt value");
 		}
 	}
+	
+	protected void populateObjectPKFieldValues(HttpServletRequest request, String boClassName,
+			boolean passedFromPreviousInquiry) {
+		try {
+			DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 
+			DataDictionaryEntry dictionaryObjectEntry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(boClassName);
+			
+			@SuppressWarnings("unchecked")
+			Class inquiryObjectClass =  Class.forName(boClassName);
+
+			List<String> primaryKeys = ((ObjectDictionaryEntry)dictionaryObjectEntry).getPrimaryKeys();			
+						
+			final List<List<String>> altKeys = this.getAltkeys(inquiryObjectClass);
+
+			altKeys.add(primaryKeys);
+			boolean bFound = false;
+			for (List<String> boKeys : altKeys) {
+				if (bFound)
+					break;
+				int keyCount = boKeys.size();
+				int foundCount = 0;
+				for (String boKey : boKeys) {
+					String pkParamName = boKey;
+					if (passedFromPreviousInquiry) {
+						pkParamName = KNSConstants.INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX + pkParamName;
+					}
+
+					if (request.getParameter(pkParamName) != null) {
+						foundCount++;
+						String parameter = request.getParameter(pkParamName);
+
+						Boolean forceUppercase = Boolean.FALSE;
+						try {
+							forceUppercase = dataDictionaryService.getAttributeForceUppercase(inquiryObjectClass,
+									boKey);
+						}
+						catch (UnknownBusinessClassAttributeException ex) {
+							// swallowing exception because this check for
+							// ForceUppercase would
+							// require a DD entry for the attribute. it is only
+							// checking keys
+							// so most likely there should be an entry.
+							LOG.warn("BO class " + objectClassName + " property " + boKey
+									+ " should probably have a DD definition.", ex);
+						}
+
+						if (forceUppercase.booleanValue()) {
+							parameter = parameter.toUpperCase();
+						}
+
+						inquiryPrimaryKeys.put(boKey, parameter);
+						inquiryDecryptedPrimaryKeys.put(boKey, parameter);
+					}
+				}
+				if (foundCount == keyCount) {
+					bFound = true;
+				}
+			}
+			if (!bFound) {
+				LOG.error("All keys not given to lookup for bo class name " + inquiryObjectClass.getName());
+				throw new RuntimeException("All keys not given to lookup for bo class name "
+						+ inquiryObjectClass.getName());
+			}
+		}
+		catch (ClassNotFoundException e) {
+			LOG.error("Can't instantiate class: " + boClassName, e);
+			throw new RuntimeException("Can't instantiate class: " + boClassName);
+		}
+	}
+
+	
 	/**
 	 * Examines the BusinessObject's data dictionary entry to determine if it
 	 * supports XML export or not and set's canExport appropriately.
@@ -251,11 +331,11 @@ public class InquiryForm extends UifFormBase {
 		this.objectClassName = objectClassName;
 	}
 
-	public BusinessObject getBo() {
+	public Object getBo() {
 		return this.bo;
 	}
 
-	public void setBo(BusinessObject bo) {
+	public void setBo(Object bo) {
 		this.bo = bo;
 	}
 

@@ -99,6 +99,10 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		if ( entry == null ) {
 		    entry = getBusinessObjectEntry(ddIndex, className);
 		}
+		// check the Object list
+		if (entry == null){
+			entry = ddIndex.getObjectEntries().get(className);
+		}
 		// check the document list
 		if ( entry == null ) {
 		    entry = getDocumentEntry(ddIndex, className);

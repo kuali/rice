@@ -18,7 +18,6 @@ package org.kuali.rice.kns.web.spring.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -59,7 +58,7 @@ public class InquiryController extends UifControllerBase {
 	public ModelAndView continueWithInquiry(@ModelAttribute("KualiForm") InquiryForm inquiryForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+		Object bo = retrieveBOFromInquirable(inquiryForm);
 		checkBO(bo);
 
 		inquiryForm.setBo(bo);
@@ -75,21 +74,23 @@ public class InquiryController extends UifControllerBase {
 	 * @throws UnsupportedOperationException
 	 *             if BO is null & no messages have been generated.
 	 */
-	private void checkBO(BusinessObject bo) {
+	private void checkBO(Object bo) {
 		if (bo == null && GlobalVariables.getMessageMap().hasNoMessages()) {
 			throw new UnsupportedOperationException("The record you have inquired on does not exist.");
 		}
 	}
 
-	protected BusinessObject retrieveBOFromInquirable(InquiryForm inquiryForm) {
+	protected Object retrieveBOFromInquirable(InquiryForm inquiryForm) {
 		Inquirable kualiInquirable = inquiryForm.getInquirable();
+
 		// retrieve the business object
-		BusinessObject bo = kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
-		if (bo == null) {
+		Object  inquiryObject = kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
+		if (inquiryObject == null) {
 			LOG.error("No records found in inquiry action.");
 			GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
 		}
-		return bo;
+
+		return inquiryObject;
 	}
 
 }

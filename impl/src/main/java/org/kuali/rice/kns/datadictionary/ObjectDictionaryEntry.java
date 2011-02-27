@@ -28,10 +28,21 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstrai
  */
 public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements MustOccurConstrainable {
 
-	private String name;
-	private Class<?> objectClass;
-	private List<MustOccurConstraint> mustOccurConstraints;
+	protected String name;
+	protected Class<?> objectClass;
+
+    protected String titleAttribute;
+	protected String objectLabel;
+    protected String objectDescription;
+
+    protected List<String> primaryKeys;
+    
+	protected List<MustOccurConstraint> mustOccurConstraints;
 	
+    protected InquiryDefinition inquiryDefinition;
+    protected LookupDefinition lookupDefinition;
+    protected HelpDefinition helpDefinition;
+	       
 	/**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getJstlKey()
      */
@@ -84,6 +95,141 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements Mu
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+    /**
+     * @return Returns the objectLabel.
+     */
+    public String getObjectLabel() {
+        return objectLabel;
+    }
+
+    /**
+           The objectLabel provides a short name of the business
+           object for use on help screens.
+     *
+     * @param objectLabel The objectLabel to set.
+     */
+    public void setObjectLabel(String objectLabel) {
+        this.objectLabel = objectLabel;
+    }
+
+    /**
+     * @return Returns the description.
+     */
+    public String getObjectDescription() {
+        return objectDescription;
+    }
+
+    /**
+           The objectDescription provides a brief description
+           of the business object for use on help screens.
+     *
+     * @param description The description to set.
+     */
+    public void setObjectDescription(String objectDescription) {
+        this.objectDescription = objectDescription;
+    }
+	
+    /**
+     * @return true if this instance has an inquiryDefinition
+     */
+    public boolean hasInquiryDefinition() {
+        return (inquiryDefinition != null);
+    }
+
+    /**
+     * @return current inquiryDefinition for this BusinessObjectEntry, or null if there is none
+     */
+    public InquiryDefinition getInquiryDefinition() {
+        return inquiryDefinition;
+    }
+
+    /**
+           The inquiry element is used to specify the fields that will be displayed on the
+            inquiry screen for this business object and the order in which they will appear.
+
+            DD: See InquiryDefinition.java
+
+            JSTL: The inquiry element is a Map which is accessed using
+            a key of "inquiry".  This map contains the following keys:
+                * title (String)
+                * inquiryFields (Map)
+
+            See InquiryMapBuilder.java
+     */
+    public void setInquiryDefinition(InquiryDefinition inquiryDefinition) {
+        this.inquiryDefinition = inquiryDefinition;
+    }
+
+    /**
+     * @return true if this instance has a lookupDefinition
+     */
+    public boolean hasLookupDefinition() {
+        return (lookupDefinition != null);
+    }
+
+    /**
+     * @return current lookupDefinition for this BusinessObjectEntry, or null if there is none
+     */
+    public LookupDefinition getLookupDefinition() {
+        return lookupDefinition;
+    }
+
+    /**
+            The lookup element is used to specify the rules for "looking up"
+            a business object.  These specifications define the following:
+            * How to specify the search criteria used to locate a set of business objects
+            * How to display the search results
+
+            DD: See LookupDefinition.java
+
+            JSTL: The lookup element is a Map which is accessed using
+            a key of "lookup".  This map contains the following keys:
+            * lookupableID (String, optional)
+            * title (String)
+            * menubar (String, optional)
+            * defaultSort (Map, optional)
+            * lookupFields (Map)
+            * resultFields (Map)
+            * resultSetLimit (String, optional)
+
+            See LookupMapBuilder.java
+     */
+    public void setLookupDefinition(LookupDefinition lookupDefinition) {
+        this.lookupDefinition = lookupDefinition;
+    }
+	
+    /**
+     * Gets the helpDefinition attribute.
+     *
+     * @return Returns the helpDefinition.
+     */
+    public HelpDefinition getHelpDefinition() {
+        return helpDefinition;
+    }
+
+    /**
+     * Sets the helpDefinition attribute value.
+     *
+           The objectHelp element provides the keys to
+           obtain a help description from the system parameters table.
+
+           parameterNamespace the namespace of the parameter containing help information
+           parameterName the name of the parameter containing help information
+           parameterDetailType the detail type of the parameter containing help information
+     *
+     * @param helpDefinition The helpDefinition to set.
+     */
+    public void setHelpDefinition(HelpDefinition helpDefinition) {
+        this.helpDefinition = helpDefinition;
+    }    
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return "ObjectDictionaryEntry for " + getObjectClass();
+    }
 
 	/**
 	 * @return the mustOccurConstraints
@@ -100,4 +246,37 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements Mu
 		this.mustOccurConstraints = mustOccurConstraints;
 	}
 
+    /**
+	 * @return the titleAttribute
+	 */
+	public String getTitleAttribute() {
+		return this.titleAttribute;
+	}
+
+    /**
+	The titleAttribute element is the name of the attribute that
+     will be used as an inquiry field when the lookup search results
+     fields are displayed.
+
+     For some business objects, there is no obvious field to serve
+     as the inquiry field. in that case a special field may be required
+     for inquiry purposes.
+     */
+	public void setTitleAttribute(String titleAttribute) {
+		this.titleAttribute = titleAttribute;
+	}
+
+    /**
+	 * @return the primaryKeys
+	 */
+	public List<String> getPrimaryKeys() {
+		return this.primaryKeys;
+	}
+
+	/**
+	 * @param primaryKeys the primaryKeys to set
+	 */
+	public void setPrimaryKeys(List<String> primaryKeys) {
+		this.primaryKeys = primaryKeys;
+	}	
 }

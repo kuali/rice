@@ -38,6 +38,8 @@ public class DataDictionaryIndex implements Runnable {
 	
 	// keyed by BusinessObject class
 	private Map<String, BusinessObjectEntry> businessObjectEntries;
+	private Map<String, ObjectDictionaryEntry> objectEntries;
+	
 	// keyed by documentTypeName
 	private Map<String, DocumentEntry> documentEntries;
 	// keyed by other things
@@ -54,6 +56,10 @@ public class DataDictionaryIndex implements Runnable {
 
 	public Map<String, BusinessObjectEntry> getBusinessObjectEntries() {
 		return this.businessObjectEntries;
+	}
+
+	public Map<String, ObjectDictionaryEntry> getObjectEntries() {
+		return this.objectEntries;
 	}
 
 	public Map<String, DocumentEntry> getDocumentEntries() {
@@ -79,6 +85,7 @@ public class DataDictionaryIndex implements Runnable {
 	private void buildDDIndicies() {
         // primary indices
         businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
+        objectEntries = new HashMap<String, ObjectDictionaryEntry>();
         documentEntries = new HashMap<String, DocumentEntry>();
 
         // alternate indices
@@ -87,23 +94,37 @@ public class DataDictionaryIndex implements Runnable {
         entriesByJstlKey = new HashMap<String, DataDictionaryEntry>();
         
         // loop over all beans in the context
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
-            //String entryName = (entry.getBaseBusinessObjectClass() != null) ? entry.getBaseBusinessObjectClass().getName() : entry.getBusinessObjectClass().getName();
-            if ((businessObjectEntries.get(entry.getJstlKey()) != null) 
-                    && !((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass().equals(entry.getBusinessObjectClass())) {
-                throw new DataDictionaryException(new StringBuffer("Two business object classes may not share the same jstl key: this=").append(entry.getBusinessObjectClass()).append(" / existing=").append(((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass()).toString());
+        Map<String, ObjectDictionaryEntry> boBeans = ddBeans.getBeansOfType(ObjectDictionaryEntry.class);
+        for ( ObjectDictionaryEntry entry : boBeans.values() ) {
+        	
+            ObjectDictionaryEntry indexedEntry = objectEntries.get(entry.getJstlKey());
+            if (indexedEntry == null){
+            	indexedEntry = businessObjectEntries.get(entry.getJstlKey());
+            }
+        	if ( (indexedEntry != null) 
+                    && !(indexedEntry.getObjectClass().equals(entry.getObjectClass()))) {
+                throw new DataDictionaryException(new StringBuffer("Two object classes may not share the same jstl key: this=").append(entry.getObjectClass()).append(" / existing=").append(indexedEntry.getObjectClass()).toString());
             }
 
-            businessObjectEntries.put(entry.getBusinessObjectClass().getName(), entry);
-            businessObjectEntries.put(entry.getBusinessObjectClass().getSimpleName(), entry);
-            // If a "base" class is defined for the entry, index the entry by that class as well.
-            if (entry.getBaseBusinessObjectClass() != null) {
-                businessObjectEntries.put(entry.getBaseBusinessObjectClass().getName(), entry);
-                businessObjectEntries.put(entry.getBaseBusinessObjectClass().getSimpleName(), entry);
-            }
-            entriesByJstlKey.put(entry.getJstlKey(), entry);
+        	if (entry instanceof BusinessObjectEntry){
+        		BusinessObjectEntry boEntry = (BusinessObjectEntry)entry; 
+		
+	            businessObjectEntries.put(boEntry.getBusinessObjectClass().getName(), boEntry);
+	            businessObjectEntries.put(boEntry.getBusinessObjectClass().getSimpleName(), boEntry);
+	            // If a "base" class is defined for the entry, index the entry by that class as well.
+	            if (boEntry.getBaseBusinessObjectClass() != null) {
+	                businessObjectEntries.put(boEntry.getBaseBusinessObjectClass().getName(), boEntry);
+	                businessObjectEntries.put(boEntry.getBaseBusinessObjectClass().getSimpleName(), boEntry);
+	            }
+        	} else {
+	            objectEntries.put(entry.getObjectClass().getName(), entry);
+	            objectEntries.put(entry.getObjectClass().getSimpleName(), entry);       		
+        	}
+            
+        	entriesByJstlKey.put(entry.getJstlKey(), entry);
         }
+        
+        //Build Document Entry Index
         Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
         for ( DocumentEntry entry : docBeans.values() ) {
             String entryName = entry.getDocumentTypeName();

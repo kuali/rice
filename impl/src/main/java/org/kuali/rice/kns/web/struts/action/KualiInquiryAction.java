@@ -386,7 +386,7 @@ public class KualiInquiryAction extends KualiAction {
     protected BusinessObject retrieveBOFromInquirable(InquiryForm inquiryForm) {
     	Inquirable kualiInquirable = inquiryForm.getInquirable();
         // retrieve the business object
-        BusinessObject bo = kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
+        BusinessObject bo = (BusinessObject)kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
         if (bo == null) {
             LOG.error("No records found in inquiry action.");
             GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);

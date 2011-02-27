@@ -24,8 +24,29 @@ package org.kuali.rice.kns.uif.control;
 public class RadioGroupControl extends MultiValueControlBase {
 	private static final long serialVersionUID = 8800478332086081970L;
 
-	public RadioGroupControl() {
+	private String delimiter;
 
+	public RadioGroupControl() {
+		super();
+	}
+
+	/**
+	 * Delimiter string to be rendered between the radio group options, defaults
+	 * to none
+	 * 
+	 * @return String delimiter string
+	 */
+	public String getDelimiter() {
+		return this.delimiter;
+	}
+
+	/**
+	 * Setter for the string delimiter for each radio option
+	 * 
+	 * @param delimiter
+	 */
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
 	}
 
 }

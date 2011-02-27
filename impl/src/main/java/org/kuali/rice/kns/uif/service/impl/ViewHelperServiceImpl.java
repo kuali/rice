@@ -26,10 +26,11 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
-import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
+import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.ModelUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
@@ -43,7 +44,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
-	private DataDictionaryService dataDictionaryService;
+	private transient DataDictionaryService dataDictionaryService;
 
 	/**
 	 * Default implementation consults the <code>View</code> instance for the
@@ -89,7 +90,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 * <li>Invoke the initialize method on the component. Here the component can
 	 * setup defaults and do other initialization that is specific to that
 	 * component.</li>
-	 * <li>Invoke any configured <code>ComponentInitializer</code> instances for
+	 * <li>Invoke any configured <code>ComponentModifier</code> instances for
 	 * the component.</li>
 	 * <li>Call the component to get the List of components that are nested
 	 * within and recursively call this method to initialize those components.</li>
@@ -111,6 +112,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			return;
 		}
 
+		LOG.debug("Initializing component: " + component.getId() + " with type: " + component.getClass());
+
 		// invoke component to initialize itself after properties have been set
 		component.performInitialization(view);
 
@@ -130,9 +133,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			view.getViewIndex().addCollection((CollectionGroup) component);
 		}
 
-		// invoke component initializers
-		for (ComponentInitializer initializer : component.getComponentInitializers()) {
-			initializer.performInitialization(view, component);
+		// invoke component initializers setup to run in the initialize phase
+		for (ComponentModifier initializer : component.getComponentInitializers()) {
+			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.INITIALIZE)) {
+				initializer.performModification(view, component);
+			}
 		}
 
 		// initialize nested components
@@ -228,6 +233,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 		// invoke service override hook
 		performCustomApplyModel(view, component, model);
+		
+		// invoke component initializers setup to run in the apply model phase
+		for (ComponentModifier initializer : component.getComponentInitializers()) {
+			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.APPLY_MODEL)) {
+				initializer.performModification(view, component);
+			}
+		}
 
 		// get components children and recursively call perform conditional
 		// logic
@@ -266,6 +278,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 		// invoke service override hook
 		performCustomUpdateState(view, component, model);
+		
+		// invoke component initializers setup to run in the finalize phase
+		for (ComponentModifier initializer : component.getComponentInitializers()) {
+			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.FINALIZE)) {
+				initializer.performModification(view, component);
+			}
+		}
 
 		// get components children and recursively update state
 		for (Component nestedComponent : component.getNestedComponents()) {
@@ -298,10 +317,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			logAndThrowRuntime("Add line instance not found for path: " + addLinePath);
 		}
 
-		processBeforeAddLine(view, collectionGroup, addLine);
+		processBeforeAddLine(view, collectionGroup, model, addLine);
 
 		// validate the line to make sure it is ok to add
-		boolean isValidLine = performAddLineValidation(view, collectionGroup, addLine);
+		boolean isValidLine = performAddLineValidation(view, collectionGroup, model, addLine);
 		if (isValidLine) {
 			// TODO: should check to see if there is an add line method on the
 			// collection parent and if so call that instead of just adding to
@@ -311,6 +330,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			// make a new instance for the add line
 			collectionGroup.initNewCollectionLine(model, true);
 		}
+
+		processAfterAddLine(view, collectionGroup, model, addLine);
 	}
 
 	/**
@@ -323,11 +344,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 *            - collection group component for the collection
 	 * @param addLine
 	 *            - new line instance to validate
+	 * @param model
+	 *            - object instance that contain's the views data
 	 * @return boolean true if the line is valid and it should be added to the
 	 *         collection, false if it was not valid and should not be added to
 	 *         the collection
 	 */
-	protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object addLine) {
+	protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
 		boolean isValid = true;
 
 		// TODO: this should invoke rules, sublclasses like the document view
@@ -444,10 +467,31 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 * @param collectionGroup
 	 *            - collection group component for the collection the line will
 	 *            be added to
+	 * @param model
+	 *            - object instance that contain's the views data
 	 * @param addLine
 	 *            - the new line instance to be processed
 	 */
-	protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object addLine) {
+	protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+
+	}
+
+	/**
+	 * Hook for service overrides to process the new collection line after it
+	 * has been added to the collection
+	 * 
+	 * @param view
+	 *            - view instance that is being presented (the action was taken
+	 *            on)
+	 * @param collectionGroup
+	 *            - collection group component for the collection the line that
+	 *            was added
+	 * @param model
+	 *            - object instance that contain's the views data
+	 * @param addLine
+	 *            - the new line that was added
+	 */
+	protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
 
 	}
 

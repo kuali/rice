@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,11 +35,14 @@ import org.kuali.rice.kns.uif.service.ViewService;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifFormBase {
+public class UifFormBase implements Serializable {
+	private static final long serialVersionUID = 8432543267099454434L;
+
 	protected String viewId;
 	protected String viewName;
 	protected String viewTypeName;
 	protected String methodToCall;
+	protected String formKey;
 
 	protected String selectedCollectionPath;
 	protected int selectedLineIndex;
@@ -53,17 +57,17 @@ public class UifFormBase {
 	}
 
 	/**
-	 * This method is called after Spring binds the request to the form and
-	 * before the controller method is invoked.
+	 * Called after Spring binds the request to the form and before the
+	 * controller method is invoked.
 	 * 
 	 * @param request
 	 *            - request object containing the query parameters
 	 */
 	public void postBind(HttpServletRequest request) {
-	    // do nothing
+		// do nothing
 	}
 
-   	/**
+	/**
 	 * Unique Id for the <code>View</code> instance. This is specified for a
 	 * view in its definition by setting the 'id' property.
 	 * 
@@ -200,6 +204,30 @@ public class UifFormBase {
 	 */
 	public void setSelectedLineIndex(int selectedLineIndex) {
 		this.selectedLineIndex = selectedLineIndex;
+	}
+
+	/**
+	 * Key string that identifies the form instance in session storage
+	 * 
+	 * <p>
+	 * When the view is posted, the previous form instance is retrieved and then
+	 * populated from the request parameters. This key string is retrieve the
+	 * session form from the session service
+	 * </p>
+	 * 
+	 * @return String form session key
+	 */
+	public String getFormKey() {
+		return this.formKey;
+	}
+
+	/**
+	 * Setter for the form's session key
+	 * 
+	 * @param formKey
+	 */
+	public void setFormKey(String formKey) {
+		this.formKey = formKey;
 	}
 
 	/**

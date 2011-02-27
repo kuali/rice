@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -49,7 +50,9 @@ import org.apache.struts.upload.CommonsMultipartRequestHandler;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -826,5 +829,51 @@ public class WebUtils {
 		}
 
 		return parameters;
+	}
+
+	/**
+	 * Retrieves parameter values from the request that match the requested
+	 * names. In addition, based on the object class an authorization check is
+	 * performed to determine if the values are secure and should be decrypted.
+	 * If true, the value is decrypted before returning
+	 * 
+	 * @param parameterNames
+	 *            - names of the parameters whose values should be retrieved
+	 *            from the request
+	 * @param parentObjectClass
+	 *            - object class that contains the parameter names as properties
+	 *            and should be consulted for security checks
+	 * @param requestParameters
+	 *            - all request parameters to pull from
+	 * @return Map<String, String> populated with parameter name/value pairs
+	 *         pulled from the request
+	 */
+	public static Map<String, String> getParametersFromRequest(List<String> parameterNames,
+			Class<? extends BusinessObject> parentObjectClass, Map<String, String> requestParameters) {
+		Map<String, String> parameterValues = new HashMap<String, String>();
+		
+		for (Iterator<String> iter = parameterNames.iterator(); iter.hasNext();) {
+			String keyPropertyName = iter.next();
+
+			if (requestParameters.get(keyPropertyName) != null) {
+				String keyValue = requestParameters.get(keyPropertyName);
+
+				// Check if this element was encrypted, if it was decrypt it
+				if (KNSServiceLocator.getBusinessObjectAuthorizationService()
+						.attributeValueNeedsToBeEncryptedOnFormsAndLinks(parentObjectClass, keyPropertyName)) {
+					try {
+						keyValue = StringUtils.removeEnd(keyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+						keyValue = KNSServiceLocator.getEncryptionService().decrypt(keyValue);
+					}
+					catch (GeneralSecurityException e) {
+						throw new RuntimeException(e);
+					}
+				}
+
+				parameterValues.put(keyPropertyName, keyValue);
+			}
+		}
+
+		return parameterValues;
 	}
 }

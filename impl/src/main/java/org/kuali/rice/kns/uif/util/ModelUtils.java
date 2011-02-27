@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.uif.util;
 
+import java.util.Map;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -52,6 +54,22 @@ public class ModelUtils {
 
 	public static Class<?> getPropertyType(Class<?> model, String propertyPath) {
 		return new BeanWrapperImpl(model).getPropertyType(propertyPath);
+	}
+
+	public static void initializeProperty(Object model, String propertyPath) {
+		Class<?> propertyType = getPropertyType(model, propertyPath);
+		try {
+			setPropertyValue(model, propertyPath, propertyType.newInstance());
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Unable to set new instance for property: " + propertyPath, e);
+		}
+	}
+
+	public static void copyPropertiesToModel(Map<String, String> properties, Object model) {
+		for (Map.Entry<String, String> property : properties.entrySet()) {
+			setPropertyValue(model, property.getKey(), property.getValue());
+		}
 	}
 
 	public static BeanWrapper wrapModel(Object model) {

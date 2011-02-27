@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kns.uif.container;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.ComponentBase;
+import org.kuali.rice.kns.uif.Ordered;
 import org.kuali.rice.kns.uif.field.ErrorsField;
 import org.kuali.rice.kns.uif.field.HeaderField;
 import org.kuali.rice.kns.uif.field.MessageField;
 import org.kuali.rice.kns.uif.layout.LayoutManager;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.widget.Help;
-import org.springframework.core.OrderComparator;
 
 /**
  * Base <code>Container</code> implementation which container implementations
@@ -44,7 +44,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private static final long serialVersionUID = -4182226230601746657L;
 
 	private int itemOrderingSequence;
-	
+
 	private String additionalMessageKeys;
 	private ErrorsField errorsField;
 
@@ -70,13 +70,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <ul>
 	 * <li>Sets the headerText of the header Group if it is blank</li>
 	 * <li>Set the messageText of the summary MessageField if it is blank</li>
-	 * <li>Sets the order on any components in the containers items list that do
-	 * not have an order set, then sorts the list</li>
-	 * <li>Initialize LayoutManager</li>
+	 * <li>Sorts the containers list of components</li>
+	 * <li>Initializes LayoutManager</li>
 	 * </ul>
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void performInitialization(View view) {
 		super.performInitialization(view);
@@ -91,16 +91,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 			summaryMessageField.setMessageText(summary);
 		}
 
-		// set order for any components with an order not set
-		for (Component component : getItems()) {
-			if (component.getOrder() == 0) {
-				component.setOrder(itemOrderingSequence);
-				itemOrderingSequence++;
-			}
-		}
-
-		// sort the items list
-		Collections.sort(getItems(), new OrderComparator());
+		// sort items list by the order property
+		List<Component> sortedItems = (List<Component>) ComponentUtils.sort((List<Ordered>) getItems(),
+				itemOrderingSequence);
+		setItems(sortedItems);
 
 		if (layoutManager != null) {
 			layoutManager.performInitialization(view, this);
@@ -223,6 +217,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.kns.uif.container.Container#getItems()
 	 */
 	public abstract List<? extends Component> getItems();
+
+	/**
+	 * Setter for the containers list of components
+	 * 
+	 * @param items
+	 */
+	public abstract void setItems(List<? extends Component> items);
 
 	/**
 	 * For <code>Component</code> instances in the container's items list that

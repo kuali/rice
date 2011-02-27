@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Form class for <code>MaintenanceView</code> screens
@@ -24,15 +26,30 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceForm extends DocumentFormBase {
+	private static final long serialVersionUID = -5805825500852498048L;
+	
 	protected String objectClassName;
 	protected String maintenanceAction;
 
+	public MaintenanceForm() {
+		// TODO: remove once session is in place
+		try {
+			document = KNSServiceLocator.getDocumentService().getNewDocument("TravelAccountMaintenanceDocument");
+			newCollectionLines.put("document.documentHeader.boNotes", new Note());
+			//newCollectionLines.put("document.newMaintainableObject.businessObject.fiscalOfficer.accounts", new TravelAccount());
+		}
+		catch (WorkflowException e) {
+			throw new RuntimeException(e);
+		}
+		setDocTypeName("TravelAccountMaintenanceDocument");
+		setDocument(document);
+	}
 
 	@Override
-    public MaintenanceDocument getDocument() {
-        return (MaintenanceDocument) super.getDocument();
-    }
-	
+	public MaintenanceDocument getDocument() {
+		return (MaintenanceDocument) super.getDocument();
+	}
+
 	public String getObjectClassName() {
 		return this.objectClassName;
 	}

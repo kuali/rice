@@ -15,6 +15,7 @@
  */
 package edu.sampleu.travel.bo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -55,6 +56,10 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
 
 	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER, mappedBy="fiscalOfficer")
 	private List<TravelAccount> accounts;
+	
+	public FiscalOfficer() {
+		accounts = new ArrayList<TravelAccount>();
+	}
 
 	/**
 	 * @return the firstName

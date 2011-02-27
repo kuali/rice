@@ -1002,7 +1002,10 @@
         </property>
         <property name="documentHelperService">
             <ref bean="documentHelperService" />
-        </property>                         
+        </property>  
+        <property name="lookupService">
+            <ref bean="lookupService" />
+        </property>                                
     </bean>
 
 	<bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>

@@ -43,6 +43,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="RadioGroupControl" abstract="true" class="org.kuali.rice.kns.uif.control.RadioGroupControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/radioGroup.jsp"/>
+      <property name="delimiter">
+        <value><![CDATA[</br>]]></value>
+      </property>
   </bean>   
   
   <bean id="FileControl" abstract="true" class="org.kuali.rice.kns.uif.control.FileControl" scope="prototype">

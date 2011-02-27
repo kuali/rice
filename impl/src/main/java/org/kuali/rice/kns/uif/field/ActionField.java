@@ -51,6 +51,8 @@ public class ActionField extends FieldBase {
 	 * The following initialization is performed:
 	 * <ul>
 	 * <li>Set the actionLabel if blank to the Field label</li>
+	 * <li>Add methodToCall action parameter if set and setup event code for
+	 * client side method calls</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -63,18 +65,6 @@ public class ActionField extends FieldBase {
 		if (StringUtils.isBlank(actionLabel)) {
 			actionLabel = this.getLabel();
 		}
-	}
-
-	/**
-	 * Add methodToCall action parameter if set and setup event code for client
-	 * side method calls
-	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
-	 */
-	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
 
 		if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)
 				&& StringUtils.isNotBlank(methodToCall) && !clientSideCall) {

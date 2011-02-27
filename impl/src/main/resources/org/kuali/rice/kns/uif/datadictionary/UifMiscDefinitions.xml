@@ -57,8 +57,49 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
+  <!-- Initializers -->
+  
+  <bean id="CompareFieldCreateModifier" class="org.kuali.rice.kns.uif.modifier.CompareFieldCreateModifier" scope="prototype"/>
+  
+  <bean id="LabelFieldSeparateModifier" class="org.kuali.rice.kns.uif.modifier.LabelFieldSeparateModifier" scope="prototype"/>
+  
+  <bean id="ComponentConvertModifier" class="org.kuali.rice.kns.uif.modifier.ComponentConvertModifier" scope="prototype"/>
+  
+  <bean id="CheckboxToRadioConvertModifier" parent="ComponentConvertModifier">
+      <property name="componentTypeToReplace" value="org.kuali.rice.kns.uif.control.CheckboxControl"/>
+      <property name="componentReplacementPrototype">
+         <bean parent="RadioGroupControl">
+            <property name="options">
+              <list>
+                <bean parent="KeyLabelPair" p:key="Y" p:label="Yes"/>
+                <bean parent="KeyLabelPair" p:key="N" p:label="No"/>
+                <bean parent="KeyLabelPair" p:key="" p:label="Both"/>
+              </list>
+            </property>
+         </bean>
+      </property>
+  </bean>  
+  
   <!-- Other -->
   
   <bean id="BindingInfo" class="org.kuali.rice.kns.uif.BindingInfo" scope="prototype"/>
+  
+  <bean id="ComparableInfo" class="org.kuali.rice.kns.uif.modifier.ComparableInfo" scope="prototype"/>
+  
+  <bean id="MaintenanceCompareModifier" parent="CompareFieldCreateModifier">
+      <property name="headerFieldPrototype">
+         <bean parent="HeaderFour" p:colSpan="2" p:headerStyleClass="fill"/>
+      </property>
+      <property name="comparables">
+         <list>
+            <bean parent="ComparableInfo" p:readOnly="true" p:headerText="Old"
+                  p:bindingObjectPath="document.oldMaintainableObject.businessObject"/>
+            <bean parent="ComparableInfo" p:headerText="New"
+                  p:bindingObjectPath="document.newMaintainableObject.businessObject"/>                            
+         </list>
+      </property>
+  </bean>
+  
+  <bean id="KeyLabelPair" class="org.kuali.rice.core.util.KeyLabelPair" scope="prototype"/>
   
 </beans>

@@ -4,8 +4,9 @@
 /*RESET CSS BEGIN*/
 
 html {
-	color:#000;
-	background:#FFF;
+	background-color: #F6F6F6;
+	font-family: Helvetica, Arial, sans-serif;
+	margin: 0px;
 }
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
 	margin:0;
@@ -57,38 +58,56 @@ legend {
 	color:#000;
 }
 
-h3 {
-	font-weight: bold;
-	margin-top: 8px;
-	margin-bottom: 8px;
-	text-align: center
-}	
-
-
-/*RESET CSS END*/
-
-
-
-
-body {
-	background-color: #EDEDED;
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 13px;
-	margin: 0px;
-	padding: 0px;
-	background-image:url(../images/gradient.png);
-	background-position: center 80px;
-	background-repeat: no-repeat;
-	background-color: #f0f0f0;
+div.wrap {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	margin-top: 20px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
 }
 
+div.wrap h2 {
+	color:#900;
+	font-size: 1.2em;
+	padding-top: 0px;
+	padding-bottom: 6px;
+	margin-left: 12px;
+	margin-bottom: 6px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999;
+}
 
+div.wrap h3 {
+	color:#900;
+	font-size: 1em;
+	padding-top: 0px;
+    margin-left: 32px;
+    margin-right: 32px;
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #999;
+	margin-bottom: 6px;
+}
 
+div.wrap h4 {
+	font-size: .8em;
+	padding-top: 0px;
+	border-bottom-width: 1px;
+	margin-bottom: 6px;
+}
 
+div.fill {
+	background-color: #E9E9E8;
+	margin-left: 40px;
+    margin-right: 40px;
+}	
 
 /*EXPANDABLE HEADER BEGIN*/
 
-div.tab-new {
+div.grouping-header-expandable {
 	background-color:#900;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
@@ -100,14 +119,13 @@ div.tab-new {
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: 1.2em;
 }
-div.tab-new a {
+div.grouping-header-expandable a {
 	color:#FFF;
 	text-decoration: none;
 }
-div.tab-new img {
+div.grouping-header-expandable img {
 	margin-right:6px
 }
-
 /*EXPANDABLE HEADER END*/
 
 /*EXPANDABLE NESTED HEADER BEGIN*/
@@ -133,18 +151,19 @@ div.tab-newh3 img { margin-right:6px
 
 /*EXPANDABLE NESTED HEADER END*/
 
-
-
 .view_header {
-	height:80px;
-	background-color: #900;
+	height:40px;
+	background-color: #FFF;
+	color:#000;
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-left: 12px;
+	background-image: url(../images/toptexture.png);
 }
 
-.view_header h1{
-	color:#FFF;
-	font-size: 2.0em;
-	padding: 20px;	
-}
+.view_header h1 {
+	font-size: 2em;	
+}	
 
 .page_header {
 	padding-bottom: 60px;
@@ -163,7 +182,7 @@ div.tab-newh3 img { margin-right:6px
 	font-size: small;
 	font-style: italic;
 	margin-bottom: 5px;
-    padding-left: 10px;
+    padding-left: 15px;
 	display: inline-block;
 }
 
@@ -282,4 +301,84 @@ border-right-style:solid;
 border-bottom-color:#CCC;
 border-right-color:#CCC;
 padding:3px;
+}
+
+.ka-headers {
+	padding:8px;
+}	
+
+.ka-headers h2 {
+	color:#060;
+	font-size: 1.2em;
+	padding-top: 0px;
+	padding-bottom: 6px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999;	
+}
+
+.fg-button-large {
+	outline: 0;
+	margin:0 4px 0 0;
+	padding: .4em 1em;
+	text-decoration:none !important;
+	cursor:pointer;
+	position: relative;
+	text-align: center;
+	zoom: 1;
+	font-size: .8em;
+}
+
+td.addrow {
+	background-color:#999
+}
+div.greentab {
+	background-color:#333;
+	float:left;
+	-moz-border-radius-bottomleft: 8px;
+	border-bottom-left-radius: 8px;
+	-moz-border-radius-bottomright: 8px;
+	border-bottom-right-radius: 8px;
+	padding:4px;
+	color:#CCC;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-bottom-color: #333;
+	border-left-color: #333;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #666;
+	font-size: 0.8em;
+	width: 120px;
+	text-align:right;
+}
+div.green {
+ height:;
+	background-color:#000;
+	color:#fff;
+	padding:12px;
+	font-size:.8em;
+	-moz-border-radius-bottomleft: 8px;
+	border-bottom-left-radius: 8px;
+	opacity: .9;
+	filter: alpha(opacity=40);
+}
+div.green .label {
+	float:left;
+	padding:6px;
+	text-align:right;
+	width:45%;
+	padding-left:0px;
+	padding-right:1px;
+	color:#CCC
+}
+div.green .value {
+	float:right;
+	padding:6px;
+	width:50%;
+	padding-right:0px;
+	font-weight:bold;
+	
 }

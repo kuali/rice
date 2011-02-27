@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.document.Document;
@@ -30,23 +27,18 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentFormBase extends UifFormBase {
-	protected String docTypeName;
-	protected String annotation = "";
+	private static final long serialVersionUID = 2190268505427404480L;
+
+	private String annotation = "";
+	private String command;
+
+	private String docId;
+	private String docTypeName;
 
 	protected Document document;
 
-	protected List<String> additionalScriptFiles;
-
 	public DocumentFormBase() {
-		additionalScriptFiles = new ArrayList<String>();
-	}
-
-	public List<String> getAdditionalScriptFiles() {
-		return this.additionalScriptFiles;
-	}
-
-	public void setAdditionalScriptFiles(List<String> additionalScriptFiles) {
-		this.additionalScriptFiles = additionalScriptFiles;
+		super();
 	}
 
 	public String getAnnotation() {
@@ -71,6 +63,22 @@ public class DocumentFormBase extends UifFormBase {
 
 	public void setDocTypeName(String docTypeName) {
 		this.docTypeName = docTypeName;
+	}
+
+	public String getCommand() {
+		return this.command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
+	}
+
+	public String getDocId() {
+		return this.docId;
+	}
+
+	public void setDocId(String docId) {
+		this.docId = docId;
 	}
 
 	/**

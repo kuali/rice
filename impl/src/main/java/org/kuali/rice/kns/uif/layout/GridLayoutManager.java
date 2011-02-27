@@ -15,14 +15,9 @@
  */
 package org.kuali.rice.kns.uif.layout;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.field.Field;
 
 /**
  * Layout manager that organizes its components in a table based grid
@@ -43,21 +38,28 @@ public class GridLayoutManager extends LayoutManagerBase {
 	private static final long serialVersionUID = 1890011900375071128L;
 
 	private int numberOfColumns;
+	private boolean matchColumnsToFieldCount;
 
 	private boolean renderLabelFieldsSeparately;
 	private boolean applyAlternatingRowStyles;
 
-	private List<Component> gridFields;
-
 	public GridLayoutManager() {
+		super();
+		
 		numberOfColumns = 2;
 		renderLabelFieldsSeparately = true;
 		applyAlternatingRowStyles = false;
-
-		gridFields = new ArrayList<Component>();
+		matchColumnsToFieldCount = false;
 	}
 
 	/**
+	 * The following initialization is performed:
+	 * 
+	 * <ul>
+	 * <li>If match field count is true, sets the number of columns to the
+	 * container's items list size</li>
+	 * </ul>
+	 * 
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performInitialization(org.kuali.rice.kns.uif.container.View,
 	 *      org.kuali.rice.kns.uif.container.Container)
 	 */
@@ -65,53 +67,25 @@ public class GridLayoutManager extends LayoutManagerBase {
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
 
-		buildGridFieldList(view, container);
+		if (matchColumnsToFieldCount) {
+			numberOfColumns = container.getItems().size();
+		}
 	}
 
 	/**
-	 * Refreshes the grid field list from the container
+	 * The following finalization is performed:
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#refresh(org.kuali.rice.kns.uif.container.View,
-	 *      org.kuali.rice.kns.uif.container.Container)
+	 * <ul>
+	 * <li>Build the list of fields for the grid</li>
+	 * </ul>
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void refresh(View view, Container container) {
-		super.refresh(view, container);
+	public void performFinalize(View view, Object model, Container container) {
+		super.performFinalize(view, model, container);
 
-		buildGridFieldList(view, container);
-	}
-
-	/**
-	 * Sets the fields list that will be rendered based on the containers items.
-	 * If the item field has a LabelField and renderLabelFieldsSeparately is set
-	 * to true, it will be pulled out and added to the fields list separately.
-	 * The <code>LabelField</code> is placed immediately before the Field it was
-	 * pulled in the list.
-	 * 
-	 * @param view
-	 *            - View instance the container belongs to
-	 * @param container
-	 *            - container instance the manager applies to
-	 */
-	protected void buildGridFieldList(View view, Container container) {
-		gridFields = new ArrayList<Component>();
-
-		for (Component item : container.getItems()) {
-			if (item instanceof Field) {
-				Field fieldLabel = (Field) item;
-
-				if (renderLabelFieldsSeparately && fieldLabel.getLabelField() != null
-						&& fieldLabel.getLabelField().isRender()) {
-					gridFields.add(fieldLabel.getLabelField());
-
-					// set boolean to indicate label field should not be
-					// rendered with the attribute
-					fieldLabel.setLabelFieldRendered(true);
-				}
-			}
-
-			gridFields.add(item);
-		}
 	}
 
 	/**
@@ -150,6 +124,33 @@ public class GridLayoutManager extends LayoutManagerBase {
 	 */
 	public void setNumberOfColumns(int numberOfColumns) {
 		this.numberOfColumns = numberOfColumns;
+	}
+
+	/**
+	 * Indicates whether the number of columns for the table data should match
+	 * the number of fields given in the container's items list (so that each
+	 * field takes up one column without wrapping)
+	 * 
+	 * <p>
+	 * If set to true during the initialize phase the number of columns will be
+	 * set to the size of the container's field list, if false the configured
+	 * number of columns is used
+	 * </p>
+	 * 
+	 * @return boolean true if the column count should match the container's
+	 *         field count, false to use the configured number of columns
+	 */
+	public boolean isMatchColumnsToFieldCount() {
+		return this.matchColumnsToFieldCount;
+	}
+
+	/**
+	 * Setter for the match column count to field count indicator
+	 * 
+	 * @param matchColumnsToFieldCount
+	 */
+	public void setMatchColumnsToFieldCount(boolean matchColumnsToFieldCount) {
+		this.matchColumnsToFieldCount = matchColumnsToFieldCount;
 	}
 
 	/**
@@ -194,16 +195,6 @@ public class GridLayoutManager extends LayoutManagerBase {
 	 */
 	public void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles) {
 		this.applyAlternatingRowStyles = applyAlternatingRowStyles;
-	}
-
-	/**
-	 * List of components that will be placed by the layout manager. This
-	 * includes the generated fields by the layout manager
-	 * 
-	 * @return List<Component> fields
-	 */
-	public List<Component> getGridFields() {
-		return this.gridFields;
 	}
 
 }

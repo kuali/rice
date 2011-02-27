@@ -158,13 +158,13 @@ public interface Container extends Component {
 	 * @return MessageField instance or Null
 	 */
 	public MessageField getSummaryMessageField();
-	
+
 	/**
 	 * Setter for the containers summary message field
 	 * 
 	 * @param summaryMessageField
 	 */
-	public void setSummaryMessageField(MessageField summaryMessageField) ;
+	public void setSummaryMessageField(MessageField summaryMessageField);
 
 	/**
 	 * Field that contains the error messages for the container

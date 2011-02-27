@@ -48,6 +48,8 @@ public class MaintenanceView extends DocumentView {
 
 	private Class<?> objectClassName;
 
+	private String oldObjectBindingPath;
+
 	// TODO: figure out what this is used for
 	private boolean allowsRecordDeletion = false;
 
@@ -72,6 +74,7 @@ public class MaintenanceView extends DocumentView {
 		super.performInitialization(view);
 
 		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), objectClassName);
+		getAbstractTypeClasses().put(getOldObjectBindingPath(), objectClassName);
 	}
 
 	/**
@@ -91,12 +94,20 @@ public class MaintenanceView extends DocumentView {
 	}
 
 	/**
-	 * Setter for the object class name 
+	 * Setter for the object class name
 	 * 
 	 * @param objectClassName
 	 */
 	public void setObjectClassName(Class<?> objectClassName) {
 		this.objectClassName = objectClassName;
+	}
+
+	public String getOldObjectBindingPath() {
+		return this.oldObjectBindingPath;
+	}
+
+	public void setOldObjectBindingPath(String oldObjectBindingPath) {
+		this.oldObjectBindingPath = oldObjectBindingPath;
 	}
 
 	public boolean isAllowsRecordDeletion() {

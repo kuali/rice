@@ -72,7 +72,7 @@ public class ViewServiceImpl implements ViewService {
 		}
 
 		// Initialize Phase
-		LOG.debug("performing initialize phase for view: " + viewId);
+		LOG.info("performing initialize phase for view: " + viewId);
 		performInitialization(view, parameters);
 
 		return view;
@@ -104,6 +104,10 @@ public class ViewServiceImpl implements ViewService {
 
 		// invoke initialize phase on the views helper service
 		helperService.performInitialization(view);
+		
+		// do indexing
+		LOG.info("processing indexing for view: " + view.getId());
+		view.getViewIndex().index();
 
 		// update status on view
 		LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());

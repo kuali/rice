@@ -22,8 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
 import org.kuali.rice.kns.uif.decorator.DecoratorChain;
-import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
-import org.springframework.core.Ordered;
+import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 
 /**
  * Base implementation of <code>Component</code> which other component
@@ -86,12 +85,12 @@ public abstract class ComponentBase implements Component, Ordered, ScriptEventSu
 	private ComponentDecorator decorator;
 	private DecoratorChain decoratorChain;
 
-	private List<ComponentInitializer> componentInitializers;
+	private List<ComponentModifier> componentModifiers;
 
 	public ComponentBase() {
-		componentInitializers = new ArrayList<ComponentInitializer>();
+		componentModifiers = new ArrayList<ComponentModifier>();
 
-		order = 0;
+		order = Ordered.INITIAL_ORDER_VALUE;
 		colSpan = 1;
 		rowSpan = 1;
 
@@ -413,15 +412,15 @@ public abstract class ComponentBase implements Component, Ordered, ScriptEventSu
 	/**
 	 * @see org.kuali.rice.kns.uif.Component#getComponentInitializers()
 	 */
-	public List<ComponentInitializer> getComponentInitializers() {
-		return this.componentInitializers;
+	public List<ComponentModifier> getComponentInitializers() {
+		return this.componentModifiers;
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.uif.Component#setComponentInitializers(java.util.List)
 	 */
-	public void setComponentInitializers(List<ComponentInitializer> componentInitializers) {
-		this.componentInitializers = componentInitializers;
+	public void setComponentInitializers(List<ComponentModifier> componentModifiers) {
+		this.componentModifiers = componentModifiers;
 	}
 
 	/**

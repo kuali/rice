@@ -634,8 +634,10 @@ public class View extends ContainerBase {
 	 * 
 	 * @param items
 	 */
-	public void setItems(List<? extends Group> items) {
-		this.items = items;
+	@Override
+	public void setItems(List<? extends Component> items) {
+		// TODO: fix this generic issue
+		this.items = (List<? extends Group>) items;
 	}
 
 	/**

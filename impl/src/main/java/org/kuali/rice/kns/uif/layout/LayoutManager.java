@@ -122,17 +122,6 @@ public interface LayoutManager extends Serializable {
 	public void performFinalize(View view, Object model, Container container);
 
 	/**
-	 * Called to refresh any manager state when state has changed in the
-	 * container
-	 * 
-	 * @param view
-	 *            - view instance to which the layout manager belongs
-	 * @param container
-	 *            - Container the layout manager applies to
-	 */
-	public void refresh(View view, Container container);
-
-	/**
 	 * Determines what <code>Container</code> classes are supported by the
 	 * <code>LayoutManager</code>
 	 * 

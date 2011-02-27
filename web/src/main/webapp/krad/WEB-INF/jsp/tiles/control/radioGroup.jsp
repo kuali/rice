@@ -25,5 +25,5 @@
  
 <form:radiobuttons id="${field.id}" path="${field.bindingInfo.bindingPath}" 
                    items="${control.options}" itemValue="key" itemLabel="label"
-                   cssClass="${control.styleClass}" delimiter="</br>"
+                   cssClass="${control.styleClass}" delimiter="${control.delimiter}"
                    tabindex="${control.tabIndex}"/>

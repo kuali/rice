@@ -55,7 +55,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>  
   
   <bean id="Header_Accordion" abstract="true" parent="Header">
-      <property name="styleClass" value="tab-new"/>
+      <property name="styleClass" value="grouping-header-expandable"/>
   </bean>
 
   <!-- Common Headers --> 

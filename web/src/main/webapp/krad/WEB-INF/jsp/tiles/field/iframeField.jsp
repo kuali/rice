@@ -18,6 +18,6 @@
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.IframeField"/>
 
 <iframe id="${field.id}" src="${field.src}" 
-        height="${field.height}" hspace="${field.hspace}" vspace="${field.vspace}" 
+        width="${field.width}" height="${field.height}" hspace="${field.hspace}" vspace="${field.vspace}" 
         frameborder="${field.frameborder}" title="${field.title}">
 </iframe>

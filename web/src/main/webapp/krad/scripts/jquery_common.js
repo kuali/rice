@@ -55,7 +55,23 @@ $(document).ready(function() {
 	
 	// validate form
 	// $("form").validate();
+	
+	
+	// TMP for style stuff
+    $(document).ready(function() {
+        $(".green").slideUp(000);
+		
+        $(".showgreen").toggle(function() {
+            $(".green").slideDown(600);
+            
+            $(".showgreen").html(" close <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/cancel.png' width='16' height='16' alt='collapse'>");
+        }, function() {
+            $(".showgreen").html("#34683456  <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/down.png' width='16' height='16' alt='collapse'>");
+            $(".green").slideUp(600);
+     });
+    });    
 
+   // end tmp
 })
 
 $(document).unload(function() {

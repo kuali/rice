@@ -87,6 +87,12 @@ public class UifConstants extends JSTLConstants {
 		public static final String DIV = "_div";
 		public static final String LABEL = "_label";
 	}
+	
+	public static class ViewPhases {
+		public static final String INITIALIZE = "INITIALIZE";
+		public static final String APPLY_MODEL = "APPLY_MODEL";
+		public static final String FINALIZE = "FINALIZE";
+	}
 
 	public static class ViewStatus {
 		public static final String CREATED = "C";

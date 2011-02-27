@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Group" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="header">
-        <bean parent="HeaderTwo" p:styleClass="info"/>
+        <bean parent="HeaderTwo"/>
       </property> 
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
@@ -37,6 +37,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="GroupGridLayout" abstract="true" parent="Group">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
+      </property>
+      <property name="componentInitializers">
+         <list>
+            <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
+         </list>
       </property>
   </bean>
   
@@ -54,6 +59,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="GroupSection" abstract="true" parent="Group">
+      <property name="styleClass" value="wrap"/>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property> 
@@ -70,6 +76,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property> 
+      <property name="componentInitializers">
+         <list>
+            <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
+         </list>
+      </property>      
   </bean>    
   
   <bean id="CollectionGroup" abstract="true" class="org.kuali.rice.kns.uif.container.CollectionGroup" parent="Group">
@@ -145,9 +156,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="Group_DocumentHeader" parent="GroupBodyOnly" p:readOnly="true">
       <property name="id" value="group_docheader"/>
-      <property name="layoutManager">
-        <bean parent="GridLayoutManager" p:numberOfColumns="4"/>
-      </property> 
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/decorator/slider.jsp"/>
       <property name="items">
          <list> 
            <bean parent="AttributeField_DocumentNumber"/>

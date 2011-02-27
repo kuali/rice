@@ -58,6 +58,7 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	private String summaryTitle;
 	private List<String> summaryFields;
 
+	private Group addLineGroup;
 	private Group lineGroupPrototype;
 
 	private List<Group> stackedGroups;
@@ -69,6 +70,26 @@ public class StackedLayoutManager extends BoxLayoutManager {
 
 		summaryFields = new ArrayList<String>();
 		stackedGroups = new ArrayList<Group>();
+	}
+
+	/**
+	 * The following initialization is performed:
+	 * 
+	 * <ul>
+	 * <li>If add line group is not configured, set to new instance of line
+	 * prototype</li>
+	 * </ul>
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.kns.uif.container.View,
+	 *      org.kuali.rice.kns.uif.container.Container)
+	 */
+	@Override
+	public void performInitialization(View view, Container container) {
+		super.performInitialization(view, container);
+
+		if (addLineGroup == null) {
+			addLineGroup = ComponentUtils.copy(lineGroupPrototype);
+		}
 	}
 
 	/**
@@ -110,7 +131,7 @@ public class StackedLayoutManager extends BoxLayoutManager {
 				String idSuffix = "_" + index;
 
 				buildLine(view, collectionGroup, lineHeaderText, bindingPathPrefix, idSuffix,
-						collectionGroup.getLineActions(index), false);
+						collectionGroup.getLineActions(index), false, false);
 			}
 		}
 	}
@@ -150,7 +171,7 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		}
 
 		buildLine(view, collectionGroup, collectionGroup.getAddLineLabel(), addLineBindingPath, IdSuffixes.ADD_LINE,
-				collectionGroup.getAddLineActions(), bindAddLineToForm);
+				collectionGroup.getAddLineActions(), bindAddLineToForm, true);
 	}
 
 	/**
@@ -175,10 +196,20 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	 * @param bindToForm
 	 *            - whether the bindToForm property on the items bindingInfo
 	 *            should be set to true (needed for add line)
+	 * @param isAddLine
+	 *            - indicates whether the add line is being built in which case
+	 *            the addLineGroup will be set instead of a new instance of the
+	 *            line prototype
 	 */
 	protected void buildLine(View view, CollectionGroup collectionGroup, String headerText, String bindingPath,
-			String idSuffix, List<ActionField> actions, boolean bindToForm) {
-		Group lineGroup = ComponentUtils.copy(lineGroupPrototype);
+			String idSuffix, List<ActionField> actions, boolean bindToForm, boolean isAddLine) {
+		Group lineGroup = null;
+		if (isAddLine) {
+			lineGroup = getAddLineGroup();
+		}
+		else {
+			lineGroup = ComponentUtils.copy(lineGroupPrototype);
+		}
 
 		lineGroup.getHeader().setHeaderText(headerText);
 
@@ -196,10 +227,11 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		}
 
 		// refresh the group's layout manager
-		lineGroup.getLayoutManager().refresh(view, lineGroup);
+		// TODO: remove?
+		//lineGroup.getLayoutManager().refresh(view, lineGroup);
 
 		// suffix all the groups ids so they will be unique
-		ComponentUtils.updateIds(lineGroup, idSuffix);
+		ComponentUtils.updateIdsWithSuffix(lineGroup, idSuffix);
 
 		stackedGroups.add(lineGroup);
 	}
@@ -258,6 +290,7 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		List<Component> components = super.getNestedComponents();
 
 		components.add(lineGroupPrototype);
+		components.addAll(stackedGroups);
 
 		return components;
 	}
@@ -302,6 +335,32 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	 */
 	public void setSummaryFields(List<String> summaryFields) {
 		this.summaryFields = summaryFields;
+	}
+
+	/**
+	 * Group instance that will be used for the add line
+	 * 
+	 * <p>
+	 * Add line fields and actions configured on the
+	 * <code>CollectionGroup</code> will be set onto the add line group (if add
+	 * line is enabled). If the add line group is not configured, a new instance
+	 * of the line group prototype will be used for the add line.
+	 * </p>
+	 * 
+	 * @return Group add line group instance
+	 * @see #getAddLineGroup()
+	 */
+	public Group getAddLineGroup() {
+		return this.addLineGroup;
+	}
+
+	/**
+	 * Setter for the add line group
+	 * 
+	 * @param addLineGroup
+	 */
+	public void setAddLineGroup(Group addLineGroup) {
+		this.addLineGroup = addLineGroup;
 	}
 
 	/**

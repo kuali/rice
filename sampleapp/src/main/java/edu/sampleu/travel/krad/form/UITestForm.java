@@ -79,7 +79,6 @@ public class UITestForm extends UifFormBase {
 	@Override
 	public void postBind(HttpServletRequest request) {
 		super.postBind(request);
-		getViewService().updateView(view, this);
 	}
 
 	public String getField1() {

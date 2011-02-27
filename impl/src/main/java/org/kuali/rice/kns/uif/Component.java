@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
 import org.kuali.rice.kns.uif.decorator.DecoratorChain;
-import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
+import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
@@ -182,7 +182,7 @@ public interface Component extends Serializable {
 	public List<Component> getNestedComponents();
 
 	/**
-	 * <code>ComponentInitializer</code> instances that should be invoked to
+	 * <code>ComponentModifier</code> instances that should be invoked to
 	 * initialize the component
 	 * 
 	 * <p>
@@ -194,15 +194,15 @@ public interface Component extends Serializable {
 	 * @return List of component initializers
 	 * @see ViewHelperService#initializeComponent
 	 */
-	public List<ComponentInitializer> getComponentInitializers();
+	public List<ComponentModifier> getComponentInitializers();
 
 	/**
-	 * Setter for the components List of <code>ComponentInitializer</code>
+	 * Setter for the components List of <code>ComponentModifier</code>
 	 * instances
 	 * 
-	 * @param componentInitializers
+	 * @param componentModifiers
 	 */
-	public void setComponentInitializers(List<ComponentInitializer> componentInitializers);
+	public void setComponentInitializers(List<ComponentModifier> componentModifiers);
 
 	/**
 	 * Indicates whether the component should be rendered in the UI

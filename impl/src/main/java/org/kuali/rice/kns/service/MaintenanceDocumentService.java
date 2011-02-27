@@ -28,8 +28,19 @@ public interface MaintenanceDocumentService {
 
 	/**
 	 * 
-	 * This method attempts to find any other active documents that are pending
-	 * on the same maintenance record.
+	 * This method ...
+	 * 
+	 * @param objectClassName
+	 * @param docTypeName
+	 * @param maintenanceAction
+	 * @return
+	 */
+	public MaintenanceDocument setupNewMaintenanceDocument(String objectClassName, String docTypeName,
+			String maintenanceAction);
+
+	/**
+	 * Attempts to find any other active documents that are pending on the same
+	 * maintenance record.
 	 * 
 	 * If any are pending and locked, thereby blocking this document, then the
 	 * docHeaderId/documentNumber of the blocking locked document is returned.
@@ -45,8 +56,8 @@ public interface MaintenanceDocumentService {
 	public String getLockingDocumentId(MaintenanceDocument document);
 
 	/**
-	 * This method attempts to find any other active documents that are pending
-	 * on the same maintenance record.
+	 * Attempts to find any other active documents that are pending on the same
+	 * maintenance record.
 	 * 
 	 * If any are pending and locked, thereby blocking this document, then the
 	 * docHeaderId/documentNumber of the blocking locked document is returned.
@@ -63,8 +74,8 @@ public interface MaintenanceDocumentService {
 	public String getLockingDocumentId(Maintainable maintainable, String documentNumber);
 
 	/**
-	 * This method is here to call the same-named method in the Dao, since the
-	 * service has access to the Dao, but the caller doesn't.
+	 * Call the same-named method in the Dao, since the service has access to
+	 * the Dao, but the caller doesn't.
 	 * 
 	 * This method deletes the locks for the given document number. It is called
 	 * when the document is final, thus it can be unlocked, or when the locks
@@ -76,8 +87,8 @@ public interface MaintenanceDocumentService {
 	public void deleteLocks(String documentNumber);
 
 	/**
-	 * This method is here to call the same-named method in the Dao, since the
-	 * service has access to the Dao, but the caller doesn't.
+	 * Call the same-named method in the Dao, since the service has access to
+	 * the Dao, but the caller doesn't.
 	 * 
 	 * This method stores the given list of maintenance locks. Typically these
 	 * will all be for the same document.

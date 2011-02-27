@@ -42,6 +42,6 @@
 </c:if>
 
 <table id="${manager.id}" ${style} ${class}>
-   <krad:grid items="${manager.gridFields}" numberOfColumns="${manager.numberOfColumns}" 
+   <krad:grid items="${items}" numberOfColumns="${manager.numberOfColumns}" 
               applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"/>
 </table>

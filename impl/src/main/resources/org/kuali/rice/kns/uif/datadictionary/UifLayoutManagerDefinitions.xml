@@ -53,16 +53,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="StackedLayoutManager" abstract="true" class="org.kuali.rice.kns.uif.layout.StackedLayoutManager" parent="BoxLayoutManager">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/stacked.jsp"/>
+      <property name="addLineGroup">
+        <bean parent="StackedGroupPrototype"/>
+      </property>
       <property name="lineGroupPrototype">
-        <bean parent="GroupGridLayout">
-           <property name="header">
-             <bean parent="HeaderThree"/>
-           </property>
-           <property name="footer">
-             <bean parent="Footer"/>
-           </property>
-        </bean>
+        <bean parent="StackedGroupPrototype"/>
       </property> 
   </bean>  
+  
+  <bean id="StackedGroupPrototype" parent="GroupGridLayout" p:styleClass="wrap">
+      <property name="header">
+         <bean parent="HeaderThree"/>
+      </property>
+      <property name="footer">
+         <bean parent="Footer"/>
+      </property>
+  </bean>
   
 </beans>  

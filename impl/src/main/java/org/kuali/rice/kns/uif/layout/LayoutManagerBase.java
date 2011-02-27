@@ -73,14 +73,6 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#refresh(org.kuali.rice.kns.uif.container.View,
-	 *      org.kuali.rice.kns.uif.container.Container)
-	 */
-	public void refresh(View view, Container container) {
-
-	}
-
-	/**
 	 * Default Impl
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getSupportedContainer()

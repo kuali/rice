@@ -104,8 +104,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 		}
 
 		// TODO: remove later, this should be done within the service lifecycle
-		if (control != null && control instanceof MultiValueControlBase) {
-			((MultiValueControlBase) control).setOptions(optionsFinder.getKeyValues());
+		if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
+			MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
+			if ((multiValueControl.getOptions() == null) || multiValueControl.getOptions().isEmpty()) {
+				multiValueControl.setOptions(optionsFinder.getKeyValues());
+			}
 		}
 	}
 

@@ -21,8 +21,8 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
-import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.UifConstants.IdSuffixes;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
@@ -64,6 +64,7 @@ public class TableLayoutManager extends GridLayoutManager {
 
 	// internal counter for the data columns (not including sequence, action)
 	private int numberOfDataColumns;
+
 	private List<LabelField> headerFields;
 	private List<Field> dataFields;
 
@@ -79,6 +80,12 @@ public class TableLayoutManager extends GridLayoutManager {
 	}
 
 	/**
+	 * The following initialization is performed:
+	 * 
+	 * <ul>
+	 * <li>Sets internal count of columns to configured number</li>
+	 * </ul>
+	 * 
 	 * @see org.kuali.rice.kns.uif.layout.ContainerAware#initializeFromContainer(org.kuali.rice.kns.uif.container.Container,org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
@@ -344,7 +351,7 @@ public class TableLayoutManager extends GridLayoutManager {
 
 		// copy fields adding the collection line to their binding prefix
 		List<? extends Field> lineFields = ComponentUtils.copyFieldList(collectionGroup.getItems(), lineBindingPath);
-		ComponentUtils.updateIds(lineFields, idSuffix);
+		ComponentUtils.updateIdsWithSuffix(lineFields, idSuffix);
 
 		if (bindLineToForm) {
 			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
@@ -363,7 +370,7 @@ public class TableLayoutManager extends GridLayoutManager {
 					&& !collectionGroup.isReadOnly()) {
 				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
 				lineActionsField.setItems(actions);
-				ComponentUtils.updateIds(lineActionsField, idSuffix);
+				ComponentUtils.updateIdsWithSuffix(lineActionsField, idSuffix);
 
 				dataFields.add(lineActionsField);
 			}

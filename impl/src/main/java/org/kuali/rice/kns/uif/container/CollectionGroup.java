@@ -218,9 +218,11 @@ public class CollectionGroup extends Group implements DataBinding {
 	@Override
 	public List<Component> getNestedComponents() {
 		List<Component> components = super.getNestedComponents();
-
+		
+		components.add(addLineLabelField);
 		components.addAll(subCollections);
 		components.addAll(actionFields);
+		components.addAll(addLineActionFields);
 
 		return components;
 	}

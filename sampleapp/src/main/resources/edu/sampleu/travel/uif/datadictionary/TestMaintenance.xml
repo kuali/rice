@@ -25,7 +25,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="items">
        <list merge="true">
           <bean parent="GroupSectionGridLayout_Accordion">
-             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="layoutManager.numberOfColumns" value="4"/>
+             <property name="layoutManager.renderLabelFieldsSeparately" value="false"/>
              <property name="items">
                <list>
                 <bean parent="AttributeField" p:propertyName="number"/>
@@ -33,13 +34,48 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <bean parent="AttributeField" p:propertyName="extension.accountTypeCode"/>
                 <bean parent="AttributeField" p:propertyName="subAccount"/>
                 <bean parent="AttributeField" p:propertyName="subAccountName"/>
-                <bean parent="AttributeField" p:propertyName="createDate"/>
+                <!-- <bean parent="AttributeField" p:propertyName="createDate"/>-->
                 <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
                 <bean parent="AttributeField" p:propertyName="foId"/>
                </list>
              </property>
              <property name="title" value="Account Information"/>
+             <property name="componentInitializers">
+               <list merge="true">
+                 <ref bean="MaintenanceCompareModifier"/>
+               </list>
+             </property>
           </bean> 
+          <bean parent="CollectionGroup_Accordion">
+              <property name="title" value="Fiscal Officer Accounts"/>  
+              <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+              <property name="propertyName" value="fiscalOfficer.accounts"/>
+              <property name="items">
+                <list>
+                  <bean parent="AttributeField" p:propertyName="number"/>
+                  <bean parent="AttributeField" p:propertyName="name"/>
+                  <bean parent="AttributeField" p:propertyName="foId"/>
+                </list>
+              </property>   
+              <property name="layoutManager.lineGroupPrototype">   
+                <bean parent="StackedGroupPrototype">
+                   <property name="layoutManager.numberOfColumns" value="4"/>
+                   <property name="layoutManager.renderLabelFieldsSeparately" value="false"/>
+                   <property name="componentInitializers">
+                     <list>
+                       <bean parent="MaintenanceCompareModifier" p:runPhase="FINALIZE"/>
+                       <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
+                     </list>
+                   </property>
+                </bean>
+              </property>
+              <property name="layoutManager.summaryTitle" value="Travel Account"/> 
+              <property name="layoutManager.summaryFields">
+                <list>
+                  <value>number</value>
+                </list>
+              </property>
+           </bean>          
        </list>
      </property>
   </bean>    

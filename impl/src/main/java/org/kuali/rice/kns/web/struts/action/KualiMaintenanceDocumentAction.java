@@ -316,7 +316,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			Map<String, String> parameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
 			copyParametersToBO(parameters, newBO);
 			newBO.refresh();
-			document.getNewMaintainableObject().setupNewFromExisting( document, request.getParameterMap() );
+		//	document.getNewMaintainableObject().setupNewFromExisting( document, request.getParameterMap() );
 		}
 
 		// for new maintainble need to pick up default values

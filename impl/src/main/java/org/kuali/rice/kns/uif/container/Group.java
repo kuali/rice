@@ -199,6 +199,7 @@ public class Group extends ContainerBase {
 	 * 
 	 * @param items
 	 */
+	@Override
 	public void setItems(List<? extends Component> items) {
 		this.items = items;
 	}

@@ -1,0 +1,38 @@
+.tableborders table {
+	width:100%;
+	border-collapse:collapse;
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-left-style: solid;
+	border-top-color: #CCC;
+	border-right-color: #CCC;
+	border-bottom-color: #CCC;
+	border-left-color: #CCC;
+	font-size:1em;
+}
+.tableborders th {
+	background-color: #E5E5E5;
+	font-weight: bold;
+	padding: 3px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-bottom-color: #CCC;
+	border-right-color: #CCC;
+	border-bottom-color: #CCC;
+	border-right-color: #CCC;
+}
+.tableborders td {
+	padding: 3px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-bottom-style: solid;
+	border-right-style: solid;
+	border-bottom-color: #CCC;
+	border-right-color: #CCC;
+	border-bottom-color: #CCC;
+	border-right-color: #CCC;
+	background-color: #FFF;
+}

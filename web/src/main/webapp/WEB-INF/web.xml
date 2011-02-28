@@ -39,15 +39,6 @@
 		<filter-name>UserPreferencesFilter</filter-name>
 		<filter-class>org.kuali.rice.kew.web.UserPreferencesFilter</filter-class>
 	</filter>
-    
-    <filter>
-        <filter-name>JTidyFilter</filter-name>
-        <filter-class>org.w3c.tidy.servlet.filter.JTidyFilter</filter-class>
-        <init-param>
-            <param-name>config</param-name>
-            <param-value>wrap: 220;tidyMark: FALSE;smartIndent: TRUE;</param-value>
-        </init-param>
-    </filter>
 
 	<filter-mapping>
         <filter-name>HideWebInfFilter</filter-name>
@@ -124,11 +115,6 @@
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>krad</servlet-name>
     </filter-mapping>     
-    
-    <filter-mapping>
-        <filter-name>JTidyFilter</filter-name>
-        <servlet-name>krad</servlet-name>
-    </filter-mapping>
 
     <listener>
       <listener-class>org.kuali.rice.core.web.listener.StandaloneInitializeListener</listener-class>

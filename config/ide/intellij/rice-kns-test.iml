@@ -25,13 +25,12 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../test/kns/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../test/kns/target/test-classes" />
-    <exclude-output />
+    <output url="file://$MODULE_DIR$/../../../test/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../test/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/kns">
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/kns/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kns/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -63,7 +62,7 @@
     <orderEntry type="module" module-name="krad-app-framework" scope="TEST" />
     <orderEntry type="module" module-name="kim-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-api" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-core:3.6.0.Final" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-core:3.6.1.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.transaction:jta:1.1" level="project" />
@@ -142,7 +141,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jacorb:jacorb-idl:2.2.3-jonas-patch-20071018" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: logkit:logkit:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-entitymanager:3.6.0.Final" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-entitymanager:3.6.1.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.struts:struts-el:1.3.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.struts:struts-taglib:1.3.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.thoughtworks.xstream:xstream:1.3.1" level="project" />
@@ -161,17 +160,17 @@
     <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-internal-test-tools" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-xml:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-util:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-servlet:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-security:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-server:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-continuation:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-http:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-io:7.2.2.v20101205" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.2.2.v20101205" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-xml:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-util:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-servlet:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-security:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-server:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-continuation:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-http:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-io:7.3.0.v20110203" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.3.0.v20110203" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jsp-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jdt.core.compiler:ecj:3.5.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jsp-api-2.1-glassfish:2.1.v20100127" level="project" />

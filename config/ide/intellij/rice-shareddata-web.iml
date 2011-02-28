@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target/test-classes" />
-    <exclude-output />
+    <output url="file://$MODULE_DIR$/../../../shareddata/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../shareddata/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web">
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/src/test/java" isTestSource="true" />
@@ -12,7 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.1.Final" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />

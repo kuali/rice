@@ -16,6 +16,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.api.county
 
 import javax.xml.bind.JAXBContext
@@ -39,6 +41,71 @@ class CountyTest {
         <active>${ACTIVE}</active>
     </county>
     """
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_all_null() {
+        County.Builder.create(null, null, null, null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_null() {
+        County.Builder.create(null, NAME, COUNTRY_CODE, STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_empty() {
+        County.Builder.create("", NAME, COUNTRY_CODE, STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_whitespace() {
+        County.Builder.create(" ", NAME, COUNTRY_CODE, STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_null() {
+        County.Builder.create(CODE, null, COUNTRY_CODE, STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_empty() {
+        County.Builder.create(CODE, "", COUNTRY_CODE, STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_whitespace() {
+        County.Builder.create(CODE, "  ", COUNTRY_CODE, STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_third_null() {
+        County.Builder.create(CODE, NAME, null, STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_third_empty() {
+        County.Builder.create(CODE, NAME, "", STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_third_whitespace() {
+        County.Builder.create(CODE, NAME, "  ", STATE_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_fourth_null() {
+        County.Builder.create(CODE, NAME, COUNTRY_CODE, null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_fourth_empty() {
+        County.Builder.create(CODE, NAME, COUNTRY_CODE, "");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_fourth_whitespace() {
+        County.Builder.create(CODE, NAME, COUNTRY_CODE, "  ");
+    }
 
     @Test
     void happy_path() {

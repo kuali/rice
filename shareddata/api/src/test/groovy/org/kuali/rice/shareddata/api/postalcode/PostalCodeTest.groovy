@@ -16,6 +16,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.api.postalcode
 
 import javax.xml.bind.JAXBContext
@@ -40,6 +42,86 @@ class PostalCodeTest {
         <active>${ACTIVE}</active>
     </postalCode>
     """
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_all_null() {
+        PostalCode.Builder.create(null, null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_null() {
+        PostalCode.Builder.create(null, COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_empty() {
+        PostalCode.Builder.create("", COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_whitespace() {
+        PostalCode.Builder.create("  ", COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_null() {
+        PostalCode.Builder.create(CODE, null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_empty() {
+        PostalCode.Builder.create(CODE, "");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_whitespace() {
+        PostalCode.Builder.create(CODE, "  ");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_cityName_null() {
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCityName(null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_cityName_empty() {
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCityName("");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_cityName_whitespace() {
+        PostalCode.Builder.create(CODE,COUNTRY_CODE).setCityName("  ");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_stateCode_null() {
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setStateCode(null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_stateCode_empty() {
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setStateCode("");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_stateCode_whitespace() {
+        PostalCode.Builder.create(CODE,COUNTRY_CODE).setStateCode("  ");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_countyCode_null() {
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCountyCode(null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_countyCode_empty() {
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCountyCode("");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_countyCode_whitespace() {
+        PostalCode.Builder.create(CODE,COUNTRY_CODE).setCountyCode("  ");
+    }
 
     @Test
     void happy_path() {

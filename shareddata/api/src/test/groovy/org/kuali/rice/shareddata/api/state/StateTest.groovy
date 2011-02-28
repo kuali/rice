@@ -16,6 +16,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.api.state
 
 import javax.xml.bind.JAXBContext
@@ -37,6 +39,56 @@ class StateTest {
         <active>${ACTIVE}</active>
     </state>
     """
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_all_null() {
+        State.Builder.create(null, null, null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_null() {
+        State.Builder.create(null, NAME, COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_empty() {
+        State.Builder.create("", NAME, COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_first_whitespace() {
+        State.Builder.create("  ", NAME, COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_null() {
+        State.Builder.create(CODE, null, COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_empty() {
+        State.Builder.create(CODE, "", COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_second_whitespace() {
+        State.Builder.create(CODE, "  ", COUNTRY_CODE);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_third_null() {
+        State.Builder.create(CODE, NAME, null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_third_empty() {
+        State.Builder.create(CODE, NAME, "");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_Builder_fail_third_whitespace() {
+        State.Builder.create(CODE, NAME, "  ");
+    }
 
     @Test
     void happy_path() {

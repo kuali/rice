@@ -364,6 +364,10 @@ public interface Component extends Serializable {
 	 * only applicable for table based layout managers. Default is 1
 	 * </p>
 	 * 
+	 * TODO: this should not be on component interface since it only applies if
+	 * the layout manager supports it, need some sort of layoutOptions map for
+	 * field level options that depend on the manager
+	 * 
 	 * @return int number of columns to span
 	 */
 	public int getColSpan();
@@ -384,6 +388,10 @@ public interface Component extends Serializable {
 	 * vertically the component should take up within the container. This is
 	 * only applicable for table based layout managers. Default is 1
 	 * </p>
+	 * 
+	 * TODO: this should not be on component interface since it only applies if
+	 * the layout manager supports it, need some sort of layoutOptions map for
+	 * field level options that depend on the manager
 	 * 
 	 * @return int number of rows to span
 	 */

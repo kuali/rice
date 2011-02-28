@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.shareddata.impl.country;
 
 
@@ -29,28 +30,28 @@ public final class CountryServiceImpl implements CountryService {
     private BusinessObjectService businessObjectService;
 
     @Override
-    public Country getByPrimaryId(final String postalCountryCode) {
-        if (StringUtils.isBlank(postalCountryCode)) {
+    public Country getCountry(final String code) {
+        if (StringUtils.isBlank(code)) {
             throw new IllegalArgumentException("code is blank");
         }
 
-        CountryBo countryBo = businessObjectService.findByPrimaryKey(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.POSTAL_COUNTRY_CODE, postalCountryCode));
+        CountryBo countryBo = businessObjectService.findByPrimaryKey(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.POSTAL_COUNTRY_CODE, code));
 
         return CountryBo.to(countryBo);
     }
 
     @Override
-    public Country getByAlternatePostalCountryCode(final String alternatePostalCountryCode) {
-        if (StringUtils.isBlank(alternatePostalCountryCode)) {
+    public Country getCountryByAlternateCode(final String alternateCode) {
+        if (StringUtils.isBlank(alternateCode)) {
             throw new IllegalArgumentException("alt code is blank");
         }
 
-        Collection<CountryBo> countryList = businessObjectService.findMatching(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternatePostalCountryCode));
+        Collection<CountryBo> countryList = businessObjectService.findMatching(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode));
         if (countryList == null || countryList.isEmpty()) {
             return null;
         } else if (countryList.size() == 1) {
             return CountryBo.to(countryList.iterator().next());
-        } else throw new IllegalStateException("Multiple countries found with same alternatePostalCountryCode");
+        } else throw new IllegalStateException("Multiple countries found with same alternateCode");
     }
 
     @Override

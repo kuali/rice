@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+
+
+
+
+
+
 package org.kuali.rice.shareddata.framework.country
 
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
@@ -22,10 +28,10 @@ import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
 
 class CountryEbo implements Inactivateable, CountryContract, ExternalizableBusinessObject {
-  def String postalCountryCode;
-  def String alternatePostalCountryCode;
-  def String postalCountryName;
-  def boolean postalCountryRestricted;
+  def String code;
+  def String alternateCode;
+  def String name;
+  def boolean restricted;
   def boolean active;
 
   /**
@@ -47,10 +53,10 @@ class CountryEbo implements Inactivateable, CountryContract, ExternalizableBusin
     if (immutable == null) {return null}
 
     CountryEbo bo = new CountryEbo()
-    bo.postalCountryCode = immutable.postalCountryCode
-    bo.alternatePostalCountryCode = immutable.alternatePostalCountryCode
-    bo.postalCountryName = immutable.postalCountryName
-    bo.postalCountryRestricted = immutable.postalCountryRestricted
+    bo.code = immutable.code
+    bo.alternateCode = immutable.alternateCode
+    bo.name = immutable.name
+    bo.restricted = immutable.restricted
     bo.active = immutable.active
 
     return bo;

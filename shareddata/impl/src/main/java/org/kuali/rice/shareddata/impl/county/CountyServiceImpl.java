@@ -37,7 +37,7 @@ public class CountyServiceImpl implements CountyService {
     }
 
     @Override
-    public List<County> getAllPostalCodes(String countryCode, String stateCode) {
+    public List<County> getAllPostalCodesInCountryAndState(String countryCode, String stateCode) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("countryCode", countryCode);
         map.put("stateCode", stateCode);

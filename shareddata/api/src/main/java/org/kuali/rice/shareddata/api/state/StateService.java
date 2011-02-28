@@ -53,7 +53,7 @@ public interface StateService {
     State getState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code);
 
     /**
-     * Gets all the {@link State States} for postal country code.
+     * Finds all the {@link State States} for postal country code.
      *
      * <p>
      *   This method will always return an <b>immutable</b> Collection
@@ -68,7 +68,7 @@ public interface StateService {
      * @return an immutable collection of states
      * @throws IllegalArgumentException country code is blank
      */
-    @WebMethod(operationName="getAllStates")
+    @WebMethod(operationName="findAllStatesInCountry")
     @WebResult(name = "states")
-    List<State> getAllStates(@WebParam(name = "countryCode") String countryCode);
+    List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode);
 }

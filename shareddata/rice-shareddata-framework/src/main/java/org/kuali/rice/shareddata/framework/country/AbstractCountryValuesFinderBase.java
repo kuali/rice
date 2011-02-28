@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.shareddata.framework.country;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
+import org.kuali.rice.shareddata.api.country.Country;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.shareddata.api.country.Country;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in.
@@ -53,8 +54,8 @@ public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
             public int compare(Country o1, Country o2) {
                 // some institutions may prefix the country name with an asterisk if the country no longer exists
                 // the country names will be compared without the asterisk
-                String sortValue1 = StringUtils.trim(StringUtils.removeStart(o1.getPostalCountryName(), "*"));
-                String sortValue2 = StringUtils.trim(StringUtils.removeStart(o2.getPostalCountryName(), "*"));
+                String sortValue1 = StringUtils.trim(StringUtils.removeStart(o1.getName(), "*"));
+                String sortValue2 = StringUtils.trim(StringUtils.removeStart(o2.getName(), "*"));
                 return sortValue1.compareToIgnoreCase(sortValue2);
             }
 
@@ -62,7 +63,7 @@ public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
 
         for (Country country : boList) {
             if (country.isActive()) {
-                labels.add(new ConcreteKeyValue(country.getPostalCountryCode(), country.getPostalCountryName()));
+                labels.add(new ConcreteKeyValue(country.getCode(), country.getName()));
             }
         }
         return labels;

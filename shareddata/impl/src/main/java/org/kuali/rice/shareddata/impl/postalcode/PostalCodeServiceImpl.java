@@ -36,7 +36,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
     }
 
     @Override
-    public List<PostalCode> getAllPostalCodes(String countryCode) {
+    public List<PostalCode> findAllPostalCodesInCountry(String countryCode) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("countryCode", countryCode);
         map.put("active", Boolean.TRUE);

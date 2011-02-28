@@ -37,7 +37,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public List<State> getAllStates(String countryCode) {
+    public List<State> findAllStatesInCountry(String countryCode) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("countryCode", countryCode);
         map.put("active", Boolean.TRUE);

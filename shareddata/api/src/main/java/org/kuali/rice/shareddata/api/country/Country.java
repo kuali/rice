@@ -1,3 +1,19 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.shareddata.api.country;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,27 +35,27 @@ import java.util.Collection;
 @XmlRootElement(name = Country.Constants.ROOT_ELEMENT_NAME, namespace = Country.Constants.NAMESPACE)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Country.Constants.TYPE_NAME, propOrder = {
-        Country.Elements.POSTAL_COUNTRY_CODE,
-        Country.Elements.ALTERNATE_POSTAL_COUNTRY_CODE,
-        Country.Elements.POSTAL_COUNTRY_NAME,
-        Country.Elements.POSTAL_COUNTRY_RESTRICTED,
+        Country.Elements.CODE,
+        Country.Elements.ALTERNATE_CODE,
+        Country.Elements.NAME,
+        Country.Elements.RESTRICTED,
         Country.Elements.ACTIVE,
         "_elements"
 })
 public final class Country implements CountryContract, ModelObjectComplete {
     private static final long serialVersionUID = -8975392777320033940L;
 
-    @XmlElement(name = Elements.POSTAL_COUNTRY_CODE, required = true, namespace = Country.Constants.NAMESPACE)
-    private final String postalCountryCode;
+    @XmlElement(name = Elements.CODE, required = true, namespace = Country.Constants.NAMESPACE)
+    private final String code;
 
-    @XmlElement(name = Elements.ALTERNATE_POSTAL_COUNTRY_CODE, required = false, namespace = Country.Constants.NAMESPACE)
-    private final String alternatePostalCountryCode;
+    @XmlElement(name = Elements.ALTERNATE_CODE, required = false, namespace = Country.Constants.NAMESPACE)
+    private final String alternateCode;
 
-    @XmlElement(name = Elements.POSTAL_COUNTRY_NAME, required = false, namespace = Country.Constants.NAMESPACE)
-    private final String postalCountryName;
+    @XmlElement(name = Elements.NAME, required = false, namespace = Country.Constants.NAMESPACE)
+    private final String name;
 
-    @XmlElement(name = Elements.POSTAL_COUNTRY_RESTRICTED, required = true, namespace = Country.Constants.NAMESPACE)
-    private final boolean postalCountryRestricted;
+    @XmlElement(name = Elements.RESTRICTED, required = true, namespace = Country.Constants.NAMESPACE)
+    private final boolean restricted;
 
     @XmlElement(name = Elements.ACTIVE, required = true, namespace = Country.Constants.NAMESPACE)
     private final boolean active;
@@ -53,34 +69,34 @@ public final class Country implements CountryContract, ModelObjectComplete {
      */
     @SuppressWarnings("unused")
     private Country() {
-        this.postalCountryCode = null;
-        this.alternatePostalCountryCode = null;
-        this.postalCountryName = null;
-        this.postalCountryRestricted = false;
+        this.code = null;
+        this.alternateCode = null;
+        this.name = null;
+        this.restricted = false;
         this.active = false;
     }
 
     private Country(Builder builder) {
-        this.postalCountryCode = builder.getPostalCountryCode();
-        this.alternatePostalCountryCode = builder.getAlternatePostalCountryCode();
-        this.postalCountryName = builder.getPostalCountryName();
-        this.postalCountryRestricted = builder.isPostalCountryRestricted();
+        this.code = builder.getCode();
+        this.alternateCode = builder.getAlternateCode();
+        this.name = builder.getName();
+        this.restricted = builder.isRestricted();
         this.active = builder.isActive();
     }
 
     @Override
-    public String getPostalCountryCode() {
-        return this.postalCountryCode;
+    public String getCode() {
+        return this.code;
     }
 
     @Override
-    public String getAlternatePostalCountryCode() {
-        return this.alternatePostalCountryCode;
+    public String getAlternateCode() {
+        return this.alternateCode;
     }
 
     @Override
-    public String getPostalCountryName() {
-        return this.postalCountryName;
+    public String getName() {
+        return this.name;
     }
 
     @Override
@@ -89,8 +105,8 @@ public final class Country implements CountryContract, ModelObjectComplete {
     }
 
     @Override
-    public boolean isPostalCountryRestricted() {
-        return this.postalCountryRestricted;
+    public boolean isRestricted() {
+        return this.restricted;
     }
 
 	@Override
@@ -109,29 +125,29 @@ public final class Country implements CountryContract, ModelObjectComplete {
     public static class Builder implements CountryContract, ModelBuilder, Serializable {
         private static final long serialVersionUID = -4786917485397379322L;
 
-        private String postalCountryCode;
-        private String alternatePostalCountryCode;
-        private String postalCountryName;
-        private boolean postalCountryRestricted;
+        private String code;
+        private String alternateCode;
+        private String name;
+        private boolean restricted;
         private boolean active;
 
-        private Builder(String postalCountryCode, String alternatePostalCode, String postalCountryName,
-                        boolean postalCountryRestricted, boolean active) {
-            this.setPostalCountryCode(postalCountryCode);
+        private Builder(String code, String alternatePostalCode, String name,
+                        boolean restricted, boolean active) {
+            this.setPostalCountryCode(code);
             this.setAlternatePostalCode(alternatePostalCode);
-            this.setPostalCountryName(postalCountryName);
-            this.setPostalCountryRestricted(postalCountryRestricted);
+            this.setPostalCountryName(name);
+            this.setrestricted(restricted);
             this.setActive(active);
         }
 
-        public static Builder create(String postalCountryCode, String alternatePostalCode, String postalCountryName,
-                                     boolean postalCountryRestricted, boolean active) {
-            return new Builder(postalCountryCode, alternatePostalCode, postalCountryName, postalCountryRestricted, active);
+        public static Builder create(String code, String alternatePostalCode, String name,
+                                     boolean restricted, boolean active) {
+            return new Builder(code, alternatePostalCode, name, restricted, active);
         }
 
         public static Builder create(CountryContract cc) {
-            return new Builder(cc.getPostalCountryCode(), cc.getAlternatePostalCountryCode(),
-                    cc.getPostalCountryName(), cc.isPostalCountryRestricted(), cc.isActive());
+            return new Builder(cc.getCode(), cc.getAlternateCode(),
+                    cc.getName(), cc.isRestricted(), cc.isActive());
         }
 
         @Override
@@ -140,20 +156,20 @@ public final class Country implements CountryContract, ModelObjectComplete {
         }
 
         /**
-         * Sets postalCountryCode property.
+         * Sets code property.
          *
-         * @param postalCountryCode required to be not null and not empty.
+         * @param code required to be not null and not empty.
          */
-        public void setPostalCountryCode(String postalCountryCode) {
-            if (StringUtils.isBlank(postalCountryCode)) {
-                throw new IllegalArgumentException("postalCountryCode cannot be blank or null");
+        public void setPostalCountryCode(String code) {
+            if (StringUtils.isBlank(code)) {
+                throw new IllegalArgumentException("code cannot be blank or null");
             }
-            this.postalCountryCode = postalCountryCode;
+            this.code = code;
         }
 
         @Override
-        public String getPostalCountryCode() {
-            return this.postalCountryCode;
+        public String getCode() {
+            return this.code;
         }
 
         /**
@@ -162,26 +178,26 @@ public final class Country implements CountryContract, ModelObjectComplete {
          * @param alternatePostalCode
          */
         public void setAlternatePostalCode(String alternatePostalCode) {
-            this.alternatePostalCountryCode = alternatePostalCode;
+            this.alternateCode = alternatePostalCode;
         }
 
         @Override
-        public String getAlternatePostalCountryCode() {
-            return this.alternatePostalCountryCode;
+        public String getAlternateCode() {
+            return this.alternateCode;
         }
 
         /**
-         * Sets the optional postalCountryName property.
+         * Sets the optional name property.
          *
-         * @param postalCountryName
+         * @param name
          */
-        public void setPostalCountryName(String postalCountryName) {
-            this.postalCountryName = postalCountryName;
+        public void setPostalCountryName(String name) {
+            this.name = name;
         }
 
         @Override
-        public String getPostalCountryName() {
-            return this.postalCountryName;
+        public String getName() {
+            return this.name;
         }
 
         /**
@@ -199,17 +215,17 @@ public final class Country implements CountryContract, ModelObjectComplete {
         }
 
         /**
-         * Sets the postalCountryRestrictedProperty
+         * Sets the restrictedProperty
          *
-         * @param postalCountryRestricted
+         * @param restricted
          */
-        public void setPostalCountryRestricted(boolean postalCountryRestricted) {
-            this.postalCountryRestricted = postalCountryRestricted;
+        public void setrestricted(boolean restricted) {
+            this.restricted = restricted;
         }
 
         @Override
-        public boolean isPostalCountryRestricted() {
-            return this.postalCountryRestricted;
+        public boolean isRestricted() {
+            return this.restricted;
         }
     }
 
@@ -218,10 +234,10 @@ public final class Country implements CountryContract, ModelObjectComplete {
      * when this object is marshalled to XML.
      */
     static class Elements {
-        final static String POSTAL_COUNTRY_CODE = "postalCountryCode";
-        final static String ALTERNATE_POSTAL_COUNTRY_CODE = "alternatePostalCountryCode";
-        final static String POSTAL_COUNTRY_NAME = "postalCountryName";
-        final static String POSTAL_COUNTRY_RESTRICTED = "postalCountryRestricted";
+        final static String CODE = "code";
+        final static String ALTERNATE_CODE = "alternateCode";
+        final static String NAME = "name";
+        final static String RESTRICTED = "restricted";
         final static String ACTIVE = "active";
     }
 

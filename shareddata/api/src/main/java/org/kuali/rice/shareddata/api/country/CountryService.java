@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.shareddata.api.country;
 
 import javax.jws.WebMethod;
@@ -30,26 +31,26 @@ public interface CountryService {
     /**
      * Lookup a country object based on the given country code.
      *
-     * @param postalCountryCode the given country code
+     * @param code the given country code
      * @return a country object with the given country code.  A null reference is returned if an invalid or
-     *         non-existant postalCountryCode is supplied.
+     *         non-existant code is supplied.
      */
-    @WebMethod(operationName = "getByPrimaryId")
+    @WebMethod(operationName = "getCountry")
     @WebResult(name = "country")
-    Country getByPrimaryId(@WebParam(name = "postalCountryCode") String postalCountryCode);
+    Country getCountry(@WebParam(name = "code") String code);
 
     /**
      * Get a country object based on an alternate country code
      *
-     * @param alternatePostalCountryCode the given alternate country code
+     * @param alternateCode the given alternate country code
      * @return A country object with the given alternate country code if a country with that alternate country code
      *         exists.  Otherwise, null is returned.
-     * @throws IllegalStateException if multiple Countries exist with the same passed in alternatePostalCountryCode
+     * @throws IllegalStateException if multiple Countries exist with the same passed in alternateCode
      */
-    @WebMethod(operationName = "getByAlternatePostalCountryCode")
+    @WebMethod(operationName = "getCountryByAlternateCode")
     @WebResult(name = "country")
-    Country getByAlternatePostalCountryCode(
-            @WebParam(name = "alternatePostalCountryCode") String alternatePostalCountryCode);
+    Country getCountryByAlternateCode(
+            @WebParam(name = "alternateCode") String alternateCode);
 
    /**
      * Returns all Countries that are not restricted.

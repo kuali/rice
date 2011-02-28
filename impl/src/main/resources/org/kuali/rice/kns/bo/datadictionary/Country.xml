@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 <!--
  Copyright 2008-2009 The Kuali Foundation
  
@@ -29,9 +45,9 @@
     <property name="objectLabel" value="Country"/>
     <property name="attributes">
       <list>
-        <ref bean="Country-postalCountryCode"/>
-        <ref bean="Country-postalCountryName"/>
-        <ref bean="Country-alternatePostalCountryCode"/>
+        <ref bean="Country-code"/>
+        <ref bean="Country-name"/>
+        <ref bean="Country-alternateCode"/>
         <!-- <ref bean="Country-postalCountryRestrictedIndicator"/>-->
         <ref bean="Country-active"/>
       </list>
@@ -41,10 +57,10 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="Country-postalCountryCode" parent="Country-postalCountryCode-parentBean"/>
+  <bean id="Country-code" parent="Country-code-parentBean"/>
 
-  <bean id="Country-postalCountryCode-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="postalCountryCode"/>
+  <bean id="Country-code-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="code"/>
     <property name="forceUppercase" value="true"/>
     <property name="label" value="Country Code"/>
     <property name="shortLabel" value="Country Code"/>
@@ -60,10 +76,10 @@
     <property name="description" value="The code uniquely identify a country."/>
   </bean>
 
-  <bean id="Country-alternatePostalCountryCode" parent="Country-alternatePostalCountryCode-parentBean"/>
+  <bean id="Country-alternateCode" parent="Country-alternateCode-parentBean"/>
 
-  <bean id="Country-alternatePostalCountryCode-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="alternatePostalCountryCode"/>
+  <bean id="Country-alternateCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="alternateCode"/>
     <property name="forceUppercase" value="true"/>
     <property name="label" value="Alternate Country Code"/>
     <property name="shortLabel" value="Alt Country Code"/>
@@ -79,10 +95,10 @@
   </bean>
 
 
-  <bean id="Country-postalCountryName" parent="Country-postalCountryName-parentBean"/>
+  <bean id="Country-name" parent="Country-name-parentBean"/>
 
-  <bean id="Country-postalCountryName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="postalCountryName"/>
+  <bean id="Country-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="name"/>
     <property name="label" value="Country Name"/>
     <property name="shortLabel" value="Country Name"/>
     <property name="maxLength" value="50"/>
@@ -124,9 +140,9 @@
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
-              <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
-              <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
+              <bean parent="FieldDefinition" p:attributeName="code"/>
+              <bean parent="FieldDefinition" p:attributeName="name"/>
+              <bean parent="FieldDefinition" p:attributeName="alternateCode"/>
               <!--<bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
               --><bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
@@ -148,25 +164,25 @@
       <bean parent="SortDefinition">
         <property name="attributeNames">
           <list>
-            <value>postalCountryCode</value>
+            <value>code</value>
           </list>
         </property>
       </bean>
     </property>
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
-        <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
-        <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="alternateCode"/>
         <!--<bean parent="FieldDefinition" p:defaultValue="N" p:attributeName="postalCountryRestrictedIndicator"/>
         --><bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
-        <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
-        <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
+        <bean parent="FieldDefinition" p:attributeName="code"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="alternateCode"/>
         <!--<bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
         --><bean parent="FieldDefinition" p:attributeName="active"/>
       </list>

@@ -1,18 +1,19 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.lookup;
 
 import org.junit.Test;
@@ -56,7 +57,7 @@ public class KualiLookupableTest extends KNSTestCase {
     	lookupProps.put("name", "a1");
     	
     	Account account = (Account) KNSServiceLocatorWeb.getLookupService().findObjectBySearch(Account.class, lookupProps);
-//        ObjectCode objCode = getObjectCodeService().getByPrimaryId(TestConstants.Data1.UNIVERSITY_FISCAL_YEAR, TestConstants.Data1.CHART_OF_ACCOUNTS_CODE, TestConstants.Data1.OBJECT_CODE);
+//        ObjectCode objCode = getObjectCodeService().getCountry(TestConstants.Data1.UNIVERSITY_FISCAL_YEAR, TestConstants.Data1.CHART_OF_ACCOUNTS_CODE, TestConstants.Data1.OBJECT_CODE);
 
         Map fieldConversions = new HashMap();
         lookupableImpl.setDocFormKey("8888888");

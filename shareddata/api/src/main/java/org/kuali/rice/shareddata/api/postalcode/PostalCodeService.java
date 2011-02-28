@@ -68,7 +68,7 @@ public interface PostalCodeService {
      * @return an immutable collection of states
      * @throws IllegalArgumentException country code is blank
      */
-    @WebMethod(operationName="getAllPostalCodes")
+    @WebMethod(operationName="findAllPostalCodesInCountry")
     @WebResult(name = "postalCodes")
-    List<PostalCode> getAllPostalCodes(@WebParam(name = "countryCode") String countryCode);
+    List<PostalCode> findAllPostalCodesInCountry(@WebParam(name = "countryCode") String countryCode);
 }

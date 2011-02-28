@@ -23,20 +23,20 @@
 	<div class="tab-container" align="center">
 		<table cellpadding="0" cellspacing="0" summary=""> 
 	 		<tr>
-  				<th width="30%"><div align="right"><kul:htmlAttributeLabel attributeEntry="${docPrivacyAttributes.suppressName}"  /></div></th>
-		 		<td width="20%"><div align="center"><kul:htmlControlAttribute property="document.privacy.suppressName" attributeEntry="${docPrivacyAttributes.suppressName}" readOnly="${!canModifyPrivacyPreferences}" /></div></td>
-  				<th width="30%"><div align="right"><kul:htmlAttributeLabel attributeEntry="${docPrivacyAttributes.suppressAddress}"  /></div></th>
-		 		<td width="20%"><div align="center"><kul:htmlControlAttribute property="document.privacy.suppressAddress" attributeEntry="${docPrivacyAttributes.suppressAddress}" readOnly="${!canModifyPrivacyPreferences}" /></div></td>
+	 		    <kim:cell cellWidth="30%" inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${docPrivacyAttributes.suppressName}" /> 
+		 		<kim:cell inquiry="${inquiry}" cellWidth="20%" textAlign="center" property="document.privacy.suppressName" attributeEntry="${docPrivacyAttributes.suppressName}" readOnly="${!canModifyPrivacyPreferences}" />
+  				<kim:cell cellWidth="30%" inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${docPrivacyAttributes.suppressAddress}" /> 
+		 		<kim:cell inquiry="${inquiry}" cellWidth="20%" textAlign="center" property="document.privacy.suppressAddress" attributeEntry="${docPrivacyAttributes.suppressAddress}" readOnly="${!canModifyPrivacyPreferences}" />
 	 		</tr>
 	 		<tr>
-  				<th width="30%"><div align="right"><kul:htmlAttributeLabel attributeEntry="${docPrivacyAttributes.suppressPersonal}"  /></div></th>
-		 		<td width="20%"><div align="center"><kul:htmlControlAttribute property="document.privacy.suppressPersonal" attributeEntry="${docPrivacyAttributes.suppressPersonal}" readOnly="${!canModifyPrivacyPreferences}" /></div></td>
-  				<th width="30%"><div align="right"><kul:htmlAttributeLabel attributeEntry="${docPrivacyAttributes.suppressEmail}"  /></div></th>
-		 		<td width="20%"><div align="center"><kul:htmlControlAttribute property="document.privacy.suppressEmail" attributeEntry="${docPrivacyAttributes.suppressEmail}" readOnly="${!canModifyPrivacyPreferences}" /></div></td>
+	 		    <kim:cell cellWidth="30%" inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${docPrivacyAttributes.suppressPersonal}" />
+		 		<kim:cell inquiry="${inquiry}" cellWidth="20%" textAlign="center" property="document.privacy.suppressPersonal" attributeEntry="${docPrivacyAttributes.suppressPersonal}" readOnly="${!canModifyPrivacyPreferences}" />
+  				<kim:cell cellWidth="30%" inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${docPrivacyAttributes.suppressEmail}" />
+		 		<kim:cell inquiry="${inquiry}" cellWidth="20%" textAlign="center" property="document.privacy.suppressEmail" attributeEntry="${docPrivacyAttributes.suppressEmail}" readOnly="${!canModifyPrivacyPreferences}" />
 	 		</tr>
 	 		<tr>
-  				<th width="30%"><div align="right"><kul:htmlAttributeLabel attributeEntry="${docPrivacyAttributes.suppressPhone}"  /></div></th>
-		 		<td width="20%"><div align="center"><kul:htmlControlAttribute property="document.privacy.suppressPhone" attributeEntry="${docPrivacyAttributes.suppressPhone}" readOnly="${!canModifyPrivacyPreferences}" /></div></td>
+  				<kim:cell cellWidth="30%" inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${docPrivacyAttributes.suppressPhone}" />
+		 		<kim:cell inquiry="${inquiry}" cellWidth="20%" textAlign="center" property="document.privacy.suppressPhone" attributeEntry="${docPrivacyAttributes.suppressPhone}" readOnly="${!canModifyPrivacyPreferences}" />
 		 		<th></th>
 		 		<td></td>
 	 		</tr>

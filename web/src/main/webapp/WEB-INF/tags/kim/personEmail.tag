@@ -64,7 +64,8 @@
             </tr>         
         </c:if>        
         <c:forEach var="email" items="${KualiForm.document.emails}" varStatus="status">
-            <tr>
+            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(email.emailTypeCode, 'kim.hide.PersonDocumentEmail.type'))}"> 
+              <tr>
                 <th class="infoline">
                     <c:out value="${status.index+1}" />
                 </th>
@@ -102,7 +103,8 @@
                         </div>
                     </td>
                 </c:if>    
-            </tr>
+              </tr>
+            </c:if>  
         </c:forEach>                    
     </table>
 </kul:subtab>

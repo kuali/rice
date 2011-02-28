@@ -15,6 +15,10 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 <c:set var="KualiForm" value="${DocumentOperationForm}" scope="request"/>
+<kul:page headerTitle="Workflow Statistics" lookup="false"
+  headerMenuBar="" transactionalDocument="false" showDocumentInfo="false"
+  htmlFormAction="DocumentOperation" docTitle="Document Operation">
+  
 <html-el:html>
 <head>
 <link href="css/screen.css" rel="stylesheet" type="text/css">
@@ -138,3 +142,4 @@
 <jsp:include page="../BackdoorMessage.jsp" flush="true"/>
 </body>
 </html-el:html>
+</kul:page>

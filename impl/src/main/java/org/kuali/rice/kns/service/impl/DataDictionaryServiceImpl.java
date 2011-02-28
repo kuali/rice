@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,16 +63,16 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
  */
 public class DataDictionaryServiceImpl implements DataDictionaryService {
     private static final Logger LOG = Logger.getLogger( DataDictionaryServiceImpl.class );
-    
-    
+
+
     private DataDictionary dataDictionary;
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
     private KualiConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
-    private KualiWorkflowInfo workflowInfoService; 
+    private KualiWorkflowInfo workflowInfoService;
 
-    
+
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#setBaselinePackages(java.lang.String)
      */
@@ -83,6 +83,10 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * Default constructor.
      */
+    public DataDictionaryServiceImpl() {
+        this.dataDictionary = new DataDictionary();
+    }
+
     public DataDictionaryServiceImpl(DataDictionary dataDictionary) {
         this.dataDictionary = dataDictionary;
     }
@@ -255,7 +259,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return forceUppercase;
     }
-    
+
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayMask(java.lang.String, java.lang.String)
      */
@@ -855,7 +859,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             addDataDictionaryLocation(location);
         }
     }
-    
+
     public Map getDataDictionaryMap() {
         return dataDictionaryMap;
     }
@@ -878,7 +882,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     /**
      * Returns all of the inactivation blocks registered for a particular business object
-     * 
+     *
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAllInactivationBlockingDefinitions(java.lang.Class)
      */
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass) {

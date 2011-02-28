@@ -22,8 +22,8 @@ import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
+import java.util.LinkedHashMap;
 import java.util.List;
-
 
 /**
  * FiscalOfficer

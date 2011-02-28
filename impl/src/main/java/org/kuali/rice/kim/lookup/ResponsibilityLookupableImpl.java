@@ -17,7 +17,9 @@ package org.kuali.rice.kim.lookup;
 
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -40,11 +42,13 @@ public class ResponsibilityLookupableImpl extends KualiLookupableImpl {
 	public String getCreateNewUrl() {
         String url = "";
 
-        if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
+        if (getLookupableHelperService().allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_REVIEW_RESPONSIBILITY_DOCUMENT_TYPE_NAME)) {
             Properties parameters = new Properties();
             parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
             parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, ReviewResponsibility.class.getName());
-
+	        if (StringUtils.isNotBlank(getReturnLocation())) {
+	        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
+	        	}
             url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
             url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }

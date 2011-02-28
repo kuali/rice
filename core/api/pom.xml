@@ -26,9 +26,8 @@
     <artifactId>rice-core-api</artifactId>
     <dependencies>
         <dependency>
-            <groupId>ojb</groupId>
+            <groupId>org.kuali.db.ojb</groupId>
             <artifactId>db-ojb</artifactId>
-            <version>1.0.4-patch4</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>

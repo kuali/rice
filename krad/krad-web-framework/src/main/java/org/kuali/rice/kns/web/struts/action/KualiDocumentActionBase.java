@@ -892,11 +892,9 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // get note text max length from DD
         int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class,
-                KNSConstants.NOTE_TEXT_PROPERTY_NAME).intValue();
+                KNSConstants.NOTE_TEXT_PROPERTY_NAME);
 
         if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
-            // figure out exact number of characters that the user can enter
-            int reasonLimit = noteTextMaxLength - disapprovalNoteTextLength;
 
             if (reason == null) {
                 // prevent a NPE by setting the reason to a blank string
@@ -907,7 +905,7 @@ public class KualiDocumentActionBase extends KualiAction {
                     getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
                     KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "", reason,
                     RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED,
-                    KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, new Integer(reasonLimit).toString());
+                    KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(noteTextMaxLength));
         }
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
@@ -1608,12 +1606,16 @@ public class KualiDocumentActionBase extends KualiAction {
     }
 
     protected boolean exitingDocument() {
-        Boolean isMethodComplete = (Boolean) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY);
-        return isMethodComplete != null && isMethodComplete;
+    	String methodCalledViaDispatch = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
+        String methodCompleted = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY);
+        return StringUtils.isNotEmpty(methodCompleted) && StringUtils.isNotEmpty(methodCalledViaDispatch) && methodCompleted.startsWith(methodCalledViaDispatch);
     }
 
     protected void setupDocumentExit() {
-        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY, Boolean.TRUE);
+    	String methodCalledViaDispatch = (String) GlobalVariables.getUserSession().retrieveObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY);
+    	if(StringUtils.isNotEmpty(methodCalledViaDispatch)) {
+    		GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY, (Object) (methodCalledViaDispatch + DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_MARKER));
+    	}
     }
 
     /**

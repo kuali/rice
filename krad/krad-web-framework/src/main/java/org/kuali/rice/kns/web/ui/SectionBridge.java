@@ -218,25 +218,23 @@ public class SectionBridge {
         section.setHelpUrl(sd.getHelpUrl());
 
         // iterate through section maint items and contruct Field UI objects
-        Collection maintItems = sd.getMaintainableItems();
+        Collection<MaintainableItemDefinition> maintItems = sd.getMaintainableItems();
         List<Row> sectionRows = new ArrayList<Row>();
         List<Field> sectionFields = new ArrayList<Field>();
 
-        for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
-            MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
-            Field field = FieldBridge.toField(item, sd, o, maintainable, section, displayedFieldNames, conditionallyRequiredMaintenanceFields);
+        for (MaintainableItemDefinition maintItem : maintItems) {
+            Field field = FieldBridge.toField(maintItem, sd, o, maintainable, section, displayedFieldNames, conditionallyRequiredMaintenanceFields);
             boolean skipAdd = false;
 
             // if CollectionDefiniton, then have a many section
-            if (item instanceof MaintainableCollectionDefinition) {
-                MaintainableCollectionDefinition definition = (MaintainableCollectionDefinition) item;
-                section.getContainedCollectionNames().add(((MaintainableCollectionDefinition) item).getName());
+            if (maintItem instanceof MaintainableCollectionDefinition) {
+                MaintainableCollectionDefinition definition = (MaintainableCollectionDefinition) maintItem;
+                section.getContainedCollectionNames().add(maintItem.getName());
 
                 StringBuffer containerRowErrorKey = new StringBuffer();
                 sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, KNSConstants.DEFAULT_NUM_OF_COLUMNS, null);
-            }
-            else if (item instanceof MaintainableSubSectionHeaderDefinition) {
-                MaintainableSubSectionHeaderDefinition definition = (MaintainableSubSectionHeaderDefinition) item;
+            } else if (maintItem instanceof MaintainableSubSectionHeaderDefinition) {
+                MaintainableSubSectionHeaderDefinition definition = (MaintainableSubSectionHeaderDefinition) maintItem;
                 field = createMaintainableSubSectionHeader(definition);
             }
 
@@ -325,23 +323,22 @@ public class SectionBridge {
                 containerRows.add(new Row(newFormFields));
             }
         }
-        
-        Collection collections = collectionDefinition.getCollections();
-        for (Iterator iterator = collections.iterator(); iterator.hasNext();) {
-            CollectionDefinitionI subCollectionDefinition = (CollectionDefinitionI) iterator.next();
+
+        Collection<? extends CollectionDefinitionI> collections = collectionDefinition.getCollections();
+        for (CollectionDefinitionI collection : collections) {
             int subCollectionNumberOfColumn = numberOfColumns;
             if (collectionDefinition instanceof InquiryCollectionDefinition) {
-                InquiryCollectionDefinition icd = (InquiryCollectionDefinition) subCollectionDefinition;
+                InquiryCollectionDefinition icd = (InquiryCollectionDefinition) collection;
                 if (icd.getNumberOfColumns() != null) {
                     subCollectionNumberOfColumn = icd.getNumberOfColumns();
                 }
             }
             // no colNum for add rows
-            containerRows.addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn, inquirable));
+             containerRows.addAll(getContainerRows(s, collection, o, m, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn, inquirable));
         }
 
         // then we need to loop through the existing collection and add those fields
-        Collection collectionFields = collectionDefinition.getFields();
+        Collection<? extends FieldDefinitionI> collectionFields = collectionDefinition.getFields();
         // get label for collection
         String collectionLabel = getDataDictionaryService().getCollectionLabel(o.getClass(), collectionDefinition.getName());
         
@@ -410,17 +407,16 @@ public class SectionBridge {
                             }
                         }
                         
-                        for (Iterator iterator = collectionFields.iterator(); iterator.hasNext();) {
-                            FieldDefinitionI fieldDefinition = (FieldDefinitionI) iterator.next();
+                        for (FieldDefinitionI collectionField : collectionFields) {
 
                             // construct Field UI object from definition
-                            Field collField = FieldUtils.getPropertyField(collectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
+                            Field collField = FieldUtils.getPropertyField(collectionDefinition.getBusinessObjectClass(), collectionField.getName(), false);
                             
             				if (translateCodes) {
             					FieldUtils.setAdditionalDisplayPropertyForCodes(lineBusinessObject.getClass(), collField.getPropertyName(), collField);
             				}
                             
-                            FieldBridge.setupField(collField, fieldDefinition, conditionallyRequiredMaintenanceFields);
+                            FieldBridge.setupField(collField, collectionField, conditionallyRequiredMaintenanceFields);
                             setPrimaryKeyFieldsReadOnly(collectionDefinition.getBusinessObjectClass(), collField);
 
                             //If the duplicateIdentificationFields were specified in the maint. doc. DD, we'll need
@@ -429,7 +425,7 @@ public class SectionBridge {
                                 setDuplicateIdentificationFieldsReadOnly(collField, duplicateIdentificationFieldNames);
                             }
                             
-                            FieldUtils.setInquiryURL(collField, lineBusinessObject, fieldDefinition.getName());
+                            FieldUtils.setInquiryURL(collField, lineBusinessObject, collectionField.getName());
                             // save the simple property name
                             String name = collField.getPropertyName();
 
@@ -440,16 +436,15 @@ public class SectionBridge {
                             // subCollField.setContainerName(collectionDefinition.getName() + "["+i+"]" +"." +
                             // subCollectionDefinition.getName() + "[" + j + "]");
 
-                            if (fieldDefinition instanceof MaintainableFieldDefinition) {
-                                MaintenanceUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
-                                MaintenanceUtils.setFieldDirectInquiry(lineBusinessObject, name, (MaintainableFieldDefinition) fieldDefinition, collField, displayedFieldNames);
-                            }
-                            else {
+                            if (collectionField instanceof MaintainableFieldDefinition) {
+                                MaintenanceUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m, (MaintainableFieldDefinition) collectionField);
+                                MaintenanceUtils.setFieldDirectInquiry(lineBusinessObject, name, (MaintainableFieldDefinition) collectionField, collField, displayedFieldNames);
+                            } else {
                                 LookupUtils.setFieldQuickfinder(lineBusinessObject, collectionDefinition.getName(), false, i, name, collField, displayedFieldNames, m);
                                 LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, collField);
                             }
 
-                            String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject, fieldDefinition.getName());
+                            String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject, collectionField.getName());
                             collField.setPropertyValue(propertyValue);
                             
 							if (StringUtils.isNotBlank(collField.getAlternateDisplayPropertyName())) {
@@ -468,13 +463,13 @@ public class SectionBridge {
 							updateUserFields(collField, lineBusinessObject);
                                 
                             // the the field as read only (if appropriate)
-                            if (fieldDefinition.isReadOnlyAfterAdd()) {
+                            if (collectionField.isReadOnlyAfterAdd()) {
                                 collField.setReadOnly(true);
                             }
 
                             // check if this is a summary field
-                            if (collectionDefinition.hasSummaryField(fieldDefinition.getName())) {
-                                summaryFields.put(fieldDefinition.getName(), collField);
+                            if (collectionDefinition.hasSummaryField(collectionField.getName())) {
+                                summaryFields.put(collectionField.getName(), collField);
                             }
 
                             collFields.add(collField);
@@ -512,37 +507,36 @@ public class SectionBridge {
                         
                         
 
-                        Collection subCollections = collectionDefinition.getCollections();
+                        Collection<? extends CollectionDefinitionI> subCollections = collectionDefinition.getCollections();
                         List<Field> subCollFields = new ArrayList<Field>();
 
                         summaryFields = new HashMap();
                         // iterate over the subCollections directly on this collection
-                        for (Iterator iter = subCollections.iterator(); iter.hasNext();) {
-                            CollectionDefinitionI subCollectionDefinition = (CollectionDefinitionI) iter.next();
-                            Collection subCollectionFields = subCollectionDefinition.getFields();
+                        for (CollectionDefinitionI subCollection : subCollections) {
+                            Collection<? extends FieldDefinitionI> subCollectionFields = subCollection.getFields();
                             int subCollectionNumberOfColumns = numberOfColumns;
 
-                            if (!s.getContainedCollectionNames().contains(collectionDefinition.getName() + "." + subCollectionDefinition.getName())) {
-                                s.getContainedCollectionNames().add(collectionDefinition.getName() + "." + subCollectionDefinition.getName());
+                            if (!s.getContainedCollectionNames().contains(collectionDefinition.getName() + "." + subCollection.getName())) {
+                                s.getContainedCollectionNames().add(collectionDefinition.getName() + "." + subCollection.getName());
                             }
 
-                            if (subCollectionDefinition instanceof InquiryCollectionDefinition) {
-                                InquiryCollectionDefinition icd = (InquiryCollectionDefinition) subCollectionDefinition;
+                            if (subCollection instanceof InquiryCollectionDefinition) {
+                                InquiryCollectionDefinition icd = (InquiryCollectionDefinition) subCollection;
                                 if (icd.getNumberOfColumns() != null) {
                                     subCollectionNumberOfColumns = icd.getNumberOfColumns();
                                 }
                             }
                             // get label for collection
-                            String subCollectionLabel = getDataDictionaryService().getCollectionLabel(o.getClass(), subCollectionDefinition.getName());
+                            String subCollectionLabel = getDataDictionaryService().getCollectionLabel(o.getClass(), subCollection.getName());
 
                             // retrieve the summary label either from the override or from the DD
-                            String subCollectionElementLabel = subCollectionDefinition.getSummaryTitle();
+                            String subCollectionElementLabel = subCollection.getSummaryTitle();
                             if (StringUtils.isEmpty(subCollectionElementLabel)) {
-                                subCollectionElementLabel = getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), subCollectionDefinition.getName(), subCollectionDefinition.getBusinessObjectClass());
+                                subCollectionElementLabel = getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), subCollection.getName(), subCollection.getBusinessObjectClass());
                             }
                             // make sure it's really a collection (i.e. list)
 
-                            String subCollectionName = subCollectionDefinition.getName();
+                            String subCollectionName = subCollection.getName();
                             Object subObj = ObjectUtils.getPropertyValue(lineBusinessObject, subCollectionName);
                             
                             Object oldSubObj = null;
@@ -553,7 +547,7 @@ public class SectionBridge {
                             if (subObj instanceof List) {
                                 /* recursively call this method to get the add row and exisiting members of the subCollections subcollections containerRows.addAll(getContainerRows(subCollectionDefinition,
                                    displayedFieldNames,containerRowErrorKey, parents+collectionDefinition.getName()+"["+i+"]"+".","[0]",false, subCollectionNumberOfColumn)); */
-                                containerField.getContainerRows().addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns, inquirable));
+                                containerField.getContainerRows().addAll(getContainerRows(s, subCollection, o, m, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns, inquirable));
                              
                                 // iterate over the fields
                                 for (int j = 0; j < ((List) subObj).size(); j++) {
@@ -565,7 +559,7 @@ public class SectionBridge {
                                     
                                     // determine if sub collection line is inactive and should be hidden
                                     boolean setSubRowHidden = false;
-                                    if (lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive() ) {
+                                    if (lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive()) {
                                         if (oldSubObj != null) { 
                                             // get corresponding elements in both the new list and the old list
                                             BusinessObject oldLineSubBusinessObject = (BusinessObject) ((List) oldSubObj).get(j);
@@ -585,23 +579,21 @@ public class SectionBridge {
                                     }
 
                                     
-                                    
                                     subCollFields = new ArrayList<Field>();
                                     // construct field objects based on fields
-                                    for (Iterator iterator = subCollectionFields.iterator(); iterator.hasNext();) {
-                                        FieldDefinitionI fieldDefinition = (FieldDefinitionI) iterator.next();
+                                    for (FieldDefinitionI subCollectionField : subCollectionFields) {
 
                                         // construct Field UI object from definition
-                                        Field subCollField = FieldUtils.getPropertyField(subCollectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
+                                        Field subCollField = FieldUtils.getPropertyField(subCollection.getBusinessObjectClass(), subCollectionField.getName(), false);
 
-                                        String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName();
+                                        String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollection.getName();
                                         
                         				if (translateCodes) {
                         					FieldUtils.setAdditionalDisplayPropertyForCodes(lineSubBusinessObject.getClass(), subCollField.getPropertyName(), subCollField);
                         				}
 
-                                        FieldBridge.setupField(subCollField, fieldDefinition, conditionallyRequiredMaintenanceFields);
-                                        setPrimaryKeyFieldsReadOnly(subCollectionDefinition.getBusinessObjectClass(), subCollField);
+                                        FieldBridge.setupField(subCollField, subCollectionField, conditionallyRequiredMaintenanceFields);
+                                        setPrimaryKeyFieldsReadOnly(subCollection.getBusinessObjectClass(), subCollField);
                                        
                                         // save the simple property name
                                         String name = subCollField.getPropertyName();
@@ -610,16 +602,15 @@ public class SectionBridge {
                                         subCollField.setPropertyName(subCollectionFullName + "[" + j + "]." + subCollField.getPropertyName());
 
                                         // commenting out codes for sub-collections show/hide for now
-                                        if (fieldDefinition instanceof MaintainableFieldDefinition) {
-                                            MaintenanceUtils.setFieldQuickfinder(lineSubBusinessObject, subCollectionFullName, false, i, name, subCollField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
-                                            MaintenanceUtils.setFieldDirectInquiry(lineSubBusinessObject, subCollectionFullName, false, i, name, subCollField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);
-                                        }
-                                        else {
-                                            LookupUtils.setFieldQuickfinder(lineSubBusinessObject, subCollectionFullName, false, i, name, subCollField, displayedFieldNames);
+                                        if (subCollectionField instanceof MaintainableFieldDefinition) {
+                                            MaintenanceUtils.setFieldQuickfinder(lineSubBusinessObject, subCollectionFullName, false, j, name, subCollField, displayedFieldNames, m, (MaintainableFieldDefinition) subCollectionField);
+                                            MaintenanceUtils.setFieldDirectInquiry(lineSubBusinessObject, subCollectionFullName, false, j, name, subCollField, displayedFieldNames, m, (MaintainableFieldDefinition) subCollectionField);
+                                        } else {
+                                            LookupUtils.setFieldQuickfinder(lineSubBusinessObject, subCollectionFullName, false, j, name, subCollField, displayedFieldNames);
                                             LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, subCollField);
                                         }
 
-                                        String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject, fieldDefinition.getName());
+                                        String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject, subCollectionField.getName());
                                         subCollField.setPropertyValue(propertyValue);
                                         
             							if (StringUtils.isNotBlank(subCollField.getAlternateDisplayPropertyName())) {
@@ -635,15 +626,19 @@ public class SectionBridge {
             							}
                                      
                                         // check if this is a summary field
-                                        if (subCollectionDefinition.hasSummaryField(fieldDefinition.getName())) {
-                                            summaryFields.put(fieldDefinition.getName(), subCollField);
+                                        if (subCollection.hasSummaryField(subCollectionField.getName())) {
+                                            summaryFields.put(subCollectionField.getName(), subCollField);
+                                        }
+
+                                        if (subCollectionField.isReadOnlyAfterAdd()) {
+                                            subCollField.setReadOnly(true);
                                         }
 
                                         subCollFields.add(subCollField);
                                     }
 
                                     Field subContainerField = FieldUtils.constructContainerField(KNSConstants.EDIT_PREFIX + "[" + (new Integer(j)).toString() + "]", subCollectionLabel, subCollFields);
-                                    if (lineSubBusinessObject instanceof PersistableBusinessObject && (((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord() || subCollectionDefinition.isAlwaysAllowCollectionDeletion())) {
+                                    if (lineSubBusinessObject instanceof PersistableBusinessObject && (((PersistableBusinessObject) lineSubBusinessObject).isNewCollectionRecord() || subCollection.isAlwaysAllowCollectionDeletion())) {
                                         subContainerField.getContainerRows().add(new Row(getDeleteRowButtonField(parents + collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionName, (new Integer(j)).toString())));
                                     }
 
@@ -658,7 +653,7 @@ public class SectionBridge {
                                     subContainerField.setContainerName(collectionDefinition.getName() + "." + subCollectionName);
                                     if (!summaryFields.isEmpty()) {
                                         // reorder summaryFields to make sure they are in the order specified in the summary section
-                                        List orderedSummaryFields = getSummaryFields(summaryFields, subCollectionDefinition);
+                                        List orderedSummaryFields = getSummaryFields(summaryFields, subCollection);
                                         subContainerField.setContainerDisplayFields(orderedSummaryFields);
                                     }
                                     
@@ -849,10 +844,7 @@ public class SectionBridge {
      */
     protected static boolean isRowHiddenForMaintenanceDocument(BusinessObject lineBusinessObject, BusinessObject oldLineBusinessObject,
             Maintainable newMaintainable, String collectionName) {
-        if (isRowHideableForMaintenanceDocument(lineBusinessObject, oldLineBusinessObject)) {
-            return !newMaintainable.getShowInactiveRecords(collectionName);
-        }
-        return false;
+        return isRowHideableForMaintenanceDocument(lineBusinessObject, oldLineBusinessObject) && !newMaintainable.getShowInactiveRecords(collectionName);
     }
     
     /**
@@ -875,10 +867,7 @@ public class SectionBridge {
      * @return true if the business object is to be hidden; false otherwise
      */
     protected static boolean isRowHiddenForInquiry(BusinessObject lineBusinessObject, Inquirable inquirable, String collectionName) {
-        if (isRowHideableForInquiry(lineBusinessObject)) {
-            return !inquirable.getShowInactiveRecords(collectionName);
-        }
-        return false;
+        return isRowHideableForInquiry(lineBusinessObject) && !inquirable.getShowInactiveRecords(collectionName);
     }
     
 	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {

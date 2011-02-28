@@ -15,33 +15,21 @@
  */
 package org.kuali.rice.ksb.security.admin.service.impl;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.Security;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.Certificate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.Resource;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.Certificate;
+import java.util.*;
 
 /**
  * This is an implementation of the {@link JavaSecurityManagementService} interface used by the KSB module 
@@ -97,18 +85,30 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
         if (StringUtils.isEmpty(getModuleKeyStorePassword())) {
             throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_PASSWORD + "' could not be found.  Please ensure that the keystore is configured properly.");
         }
-        Resource keystore = RiceUtilities.getResource(getModuleKeyStoreLocation());
-        if (!keystore.exists()) {
-            throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_FILE + "' is invalid.  The file does not exist at the specified location, location was: '" + getModuleKeyStoreLocation() + "'");
+        File keystoreFile = new File(getModuleKeyStoreLocation());
+        if (!keystoreFile.exists()) {
+            throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_FILE + "' is invalid.  The file does not exist on the filesystem, location was: '" + getModuleKeyStoreLocation() + "'");
         }
-        if (!keystore.isReadable()) {
+        if (!keystoreFile.canRead()) {
             throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_FILE + "' is invalid.  The file exists but is not readable (please check permissions), location was: '" + getModuleKeyStoreLocation() + "'");
         }
     }
 
     protected KeyStore loadKeyStore() throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance(getModuleKeyStoreType());
-        keyStore.load(RiceUtilities.getResourceAsStream(getModuleKeyStoreLocation()), getModuleKeyStorePassword().toCharArray());
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream(getModuleKeyStoreLocation());
+            keyStore.load(stream, getModuleKeyStorePassword().toCharArray());
+            stream.close();
+        } catch (Exception e) {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (Exception ignored) {
+                }
+            }
+        }
         return keyStore;
     }
 

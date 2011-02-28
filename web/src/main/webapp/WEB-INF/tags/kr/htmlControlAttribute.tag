@@ -309,6 +309,9 @@
                            onblur="${onblur}" onchange="${onchange}" styleId="${property}" disabled="${disableField}"
                            styleClass="${styleClass}" />
     </c:when>
+    <c:otherwise>
+    	unknown control type: <control type>
+    </c:otherwise>
   </c:choose>
   <%-- error icon --%>
   <c:if test="${hasErrors}">

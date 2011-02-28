@@ -538,6 +538,19 @@ public class KualiRequestProcessor extends RequestProcessor {
 					GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
 				}
 
+				if (form instanceof PojoForm) {
+					if (((PojoForm)form).getEditableProperties() == null 
+							|| ((PojoForm)form).getEditableProperties().isEmpty()) {
+					    EditablePropertiesHistoryHolder holder = (EditablePropertiesHistoryHolder) GlobalVariables.getUserSession().getObjectMap().get(KNSConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME);
+				        if (holder == null) {
+				    	    holder = new EditablePropertiesHistoryHolder();
+				        }
+
+					    final String guid = holder.addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
+				        ((PojoForm)form).setActionEditablePropertiesGuid(guid);
+				        GlobalVariables.getUserSession().addObject(KNSConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME, holder);
+					}
+				}			
 				// display error messages and return to originating page
 				publishMessages(request);
 				return mapping.findForward(RiceConstants.MAPPING_BASIC);

@@ -200,9 +200,12 @@ public class LookupForm extends KualiForm {
                 setDocNum(getParameter(request, KNSConstants.DOC_NUM));
            }
 
-            if (getParameter(request, "returnLocation") != null) {
-                setBackLocation(getParameter(request, "returnLocation"));
+            String returnLocation = getParameter(request, "returnLocation");
+            if (StringUtils.isNotBlank(returnLocation)) {
+                setBackLocation(returnLocation);
+                localLookupable.getLookupableHelperService().setBackLocation(returnLocation);
             }
+
             if (getParameter(request, "conversionFields") != null) {
                 setConversionFields(getParameter(request, "conversionFields"));
             }

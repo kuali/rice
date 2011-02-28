@@ -18,28 +18,27 @@
 <c:set var="personAttributes" value="${DataDictionary.IdentityManagementPersonDocument.attributes}" />
 
 <kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${!KualiForm.hasWorkflowDocument}" tabErrorKey="document.pr*,document.univ*,document.active,document.affiliations*">
-
+    <c:set var="principalNameNote" value="" />
+    <c:if test="${not readOnlyEntity}">
+      <c:set var="principalNameNote" value="<br/><label class='fineprint'>(${personAttributes.principalName.label} must be lower case)</label>"/>
+    </c:if>  
 	<div class="tab-container" align="center">
 		<table cellpadding="0" cellspacing="0" summary="">
 		 	<tr>
-     			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.entityId}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.entityId" attributeEntry="${personAttributes.entityId}" readOnly="true" /></td>
-     			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.principalId}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.principalId" attributeEntry="${personAttributes.principalId}" readOnly="true" /></td>
+		 	    <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${personAttributes.entityId}" /> 
+		 		<kim:cell inquiry="${inquiry}" property="document.entityId" attributeEntry="${personAttributes.entityId}" readOnly="true" />
+				<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${personAttributes.principalId}" /> 
+		 		<kim:cell inquiry="${inquiry}" property="document.principalId" attributeEntry="${personAttributes.principalId}" readOnly="true" />
 		 	</tr>
 			<tr>
-     			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.principalName}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnlyEntity}" />		 			
-		 			<c:if test="${not readOnlyEntity}">
-		 				<br/>
-			 		    <label class="fineprint">(${personAttributes.principalName.label} must be lower case)</label>
-			 		</c:if>		 			
-		 		</td>
-		 		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.active}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" readOnly="${readOnlyEntity}" /></td>
+				<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${personAttributes.principalName}" /> 
+		 		<kim:cell inquiry="${inquiry}" property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnlyEntity}" 
+		 		          postText="${principalNameNote}" />
+				<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${personAttributes.active}" /> 
+		 		<kim:cell inquiry="${inquiry}" property="document.active" attributeEntry="${personAttributes.active}" readOnly="${readOnlyEntity}" />
 		 	</tr>
 		 	<tr>
-     			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.password}" /></div></th>
+		 		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${personAttributes.password}" /> 
 		 		<td>
 			 		<c:if test="${not readOnlyEntity}">
 			 		    <html:password property="document.password" />

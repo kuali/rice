@@ -276,6 +276,17 @@
 		<dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-ojb</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+				<exclusion>
+			        <!-- we moved our patch to groupId org.kuali.db.ojb -->
+			        <groupId>ojb</groupId>
+			        <artifactId>db-ojb</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -299,7 +310,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ojb</groupId>
+			<groupId>org.kuali.db.ojb</groupId>
 			<artifactId>db-ojb</artifactId>
 		</dependency>
 

@@ -20,7 +20,7 @@
 <kul:tab tabTitle="Responsibilities" defaultOpen="true" tabErrorKey="document.resp*">
 	<div class="tab-container" align="center">
     
-    <table cellpadding=0 cellspacing=0 summary="">
+    <table cellpadding="0" cellspacing="0" summary="">
           <c:if test="${!readOnly}">	
           	
              <tr>
@@ -49,7 +49,7 @@
 	       </tr>         
      </c:if>       
 	</table>
-	<table>
+	<table cellpadding="0" cellspacing="0" summary="">
         	<tr>
         		<th>&nbsp;</th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.namespaceCode}" noColon="true" /></div></th>

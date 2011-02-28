@@ -17,8 +17,8 @@
 				<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 		    	<kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
 			</c:forEach>
-			<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
-			<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
+			<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /> 
            <c:if test="${not inquiry}">	
  			 <kul:htmlAttributeHeaderCell literalLabel="Actions"/>
            </c:if>   			
@@ -105,16 +105,9 @@
 				        		</c:if>    
 				        	</c:forEach>
 						</c:forEach>									
-						<td>
-							<div align="center">
-				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnlyRole}" />
-			        		</div>
-		        		</td>
-		        		<td>
-			        		<div align="center">
-				            <kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnlyRole}" />
-			        		</div>
-		        		</td>
+						<kim:cell inquiry="${inquiry}" textAlign="center" property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}" datePicker="true" readOnly="${readOnlyRole}" />
+						<kim:cell inquiry="${inquiry}" textAlign="center" property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].activeToDate"  attributeEntry="${docRolePrncplAttributes.activeToDate}" datePicker="true" readOnly="${readOnlyRole}" />
+				
            				<c:if test="${not inquiry}">									
 								<td class="infoline">
 								<div align=center>

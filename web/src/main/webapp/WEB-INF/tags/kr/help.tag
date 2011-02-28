@@ -50,8 +50,8 @@
   c:when test="${! empty documentTypeName }"
     ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getDocumentHelpText&amp;documentTypeName=${documentTypeName}" tabindex="-1" target="helpWindow"  title="[Help]${altText}"></c:when
   ><
-  c:when test="${(! empty securityGroupName) && (! empty parameterName)}"
-    ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getStoredHelpUrl&amp;helpSecurityGroupName=${securityGroupName}&amp;helpParameterName=${parameterName}" tabindex="-1" target="helpWindow"></c:when
+  c:when test="${(! empty parameterNamespace) && (! empty parameterDetailType) && (! empty parameterName)}"
+    ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getHelpUrlByNamespace&amp;helpParameterNamespace=${parameterNamespace}&amp;helpParameterDetailType=${parameterDetailType}&amp;helpParameterName=${parameterName}" tabindex="-1" target="helpWindow"></c:when
 ><
   c:when test="${(!empty searchDocumentTypeName)}"
     ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getLookupHelpText&amp;searchDocumentTypeName=${searchDocumentTypeName}" tabindex="-1" target="helpWindow" title="[Help]${altText}"></c:when

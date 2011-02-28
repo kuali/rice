@@ -100,6 +100,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
         	roleDocumentForm.setRoleId(roleId);
         }
+        
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
 		// TODO: move this into the UI service - action should not be making ORM-layer calls
 		setKimType(kimTypeId, roleDocumentForm);
@@ -386,14 +387,42 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
-    	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(member==null){
-        	GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
-        			new String[] {newMember.getMemberId()});
-        	return false;
+    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){
+        	KimPrincipalInfo principalInfo = null;
+        	principalInfo = getIdentityManagementService().getPrincipal(newMember.getMemberId());
+        	if (principalInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(principalInfo.getPrincipalName());
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){
+        	GroupInfo groupInfo = null;
+        	groupInfo = getIdentityManagementService().getGroup(newMember.getMemberId());
+        	if (groupInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(groupInfo.getGroupName());
+                newMember.setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(newMember.getMemberId());   
+        	if (roleInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(roleInfo.getRoleName());
+                newMember.setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        	}
 		}
-        newMember.setMemberName(getUiDocumentService().getMemberName(newMember.getMemberTypeCode(), member));
-        newMember.setMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(newMember.getMemberTypeCode(), member));
         return true;
     }
 
@@ -564,5 +593,21 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		return activeDelegatesOfInactivatedRoleMembers;
 	}
 
+	/**
+	 * 
+	 * This method overrides validateRole() from IdentityManagementDocumentActionBase.
+	 * The difference with this method is that it allows derived roles.   
+	 * The base implementation returns false if the role is a derived role.
+	 * 
+	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#validateRole(java.lang.String, org.kuali.rice.kim.bo.Role, java.lang.String, java.lang.String)
+	 */
+    protected boolean validateRole( String roleId, Role role, String propertyName, String message){
+    	if ( role == null ) {
+        	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
+    		return false;
+    	}
+    	return true;
+    }
+ 
 
 }

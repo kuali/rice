@@ -41,21 +41,21 @@ public final class ArrayUtils {
         if (!type.isPrimitive())
             Array.set(array, index, value);
         else if (type.isAssignableFrom(Boolean.TYPE))
-            Array.setBoolean(array, index, ((Boolean) value).booleanValue());
+            Array.setBoolean(array, index, (Boolean) value);
         else if (type.isAssignableFrom(Character.TYPE))
-            Array.setChar(array, index, ((Character) value).charValue());
-        else if (type.isAssignableFrom(Character.TYPE))
-            Array.setByte(array, index, ((Byte) value).byteValue());
+            Array.setChar(array, index, (Character) value);
+        else if (type.isAssignableFrom(Byte.TYPE))
+            Array.setByte(array, index, (Byte) value);
         else if (type.isAssignableFrom(Integer.TYPE))
-            Array.setInt(array, index, ((Integer) value).intValue());
-        else if (type.isAssignableFrom(Character.TYPE))
-            Array.setShort(array, index, ((Short) value).shortValue());
-        else if (type.isAssignableFrom(Character.TYPE))
-            Array.setLong(array, index, ((Long) value).longValue());
+            Array.setInt(array, index, (Integer) value);
+        else if (type.isAssignableFrom(Short.TYPE))
+            Array.setShort(array, index, (Short) value);
+        else if (type.isAssignableFrom(Long.TYPE))
+            Array.setLong(array, index, (Long) value);
         else if (type.isAssignableFrom(Float.TYPE))
-            Array.setFloat(array, index, ((Float) value).floatValue());
-        else if (type.isAssignableFrom(Character.TYPE))
-            Array.setDouble(array, index, ((Double) value).doubleValue());
+            Array.setFloat(array, index, (Float) value);
+        else if (type.isAssignableFrom(Double.TYPE))
+            Array.setDouble(array, index, (Double) value);
     }
 
     public static Object toObject(Object value) {
@@ -67,6 +67,8 @@ public final class ArrayUtils {
             return null;
         if (!type.isPrimitive())
             return Array.get(value, 0);
+        if (boolean.class.isAssignableFrom(type))
+            return Array.getBoolean(value, 0);
         if (char.class.isAssignableFrom(type))
             return new Character(Array.getChar(value, 0));
         if (byte.class.isAssignableFrom(type))

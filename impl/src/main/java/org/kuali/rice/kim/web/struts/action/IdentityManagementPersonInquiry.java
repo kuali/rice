@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -35,6 +36,8 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -62,10 +65,16 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
         	}
         }
         if ( principalId != null ) {
-        	personDocumentForm.setPrincipalId(principalId);
-        	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
-            personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
-        	populateRoleInformation( personDocumentForm.getPersonDocument() );
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	if (principal != null) {
+	        	personDocumentForm.setPrincipalId(principalId);
+	        	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
+	            personDocumentForm.setCanOverrideEntityPrivacyPreferences(getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
+	        	populateRoleInformation( personDocumentForm.getPersonDocument() );
+        	} else {
+        		LOG.error("No records found for Person Inquiry.");
+                GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+        	}
         }
 	}
 

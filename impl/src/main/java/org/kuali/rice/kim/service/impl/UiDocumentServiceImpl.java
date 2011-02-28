@@ -15,51 +15,17 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimEntityAddress;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.bo.entity.KimEntityPhone;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.entity.*;
+import org.kuali.rice.kim.bo.entity.dto.*;
+import org.kuali.rice.kim.bo.entity.impl.*;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
@@ -68,51 +34,15 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.*;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
-import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
-import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
-import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
-import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
-import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
-import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
-import org.kuali.rice.kim.bo.ui.PersonDocumentName;
-import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
-import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
+import org.kuali.rice.kim.bo.ui.*;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.RoleManagementService;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -133,6 +63,10 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
+import javax.xml.namespace.QName;
+import java.sql.Timestamp;
+import java.util.*;
+
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
  *
@@ -141,7 +75,8 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 public class UiDocumentServiceImpl implements UiDocumentService {
 	private static final Logger LOG = Logger.getLogger(UiDocumentServiceImpl.class);
-
+	private static final String SHOW_BLANK_QUALIFIERS = "kim.show.blank.qualifiers";
+	
 	private RoleService roleService;
 	private RoleManagementService roleManagementService;
 	private BusinessObjectService businessObjectService;
@@ -269,9 +204,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	//				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
 	//						.getDataDictionaryAttributeDefinition();
 					ControlDefinition control = definition.getControl();
-					if (control.isSelect()) {
+					if (control.isSelect() 
+							|| control.isRadio()) {
 						Map<String,Object> controlMap = new HashMap<String,Object>();
-			            controlMap.put("select", "true");
+			            if (control.isSelect()) {
+			            	controlMap.put("select", "true");
+			            } else {
+			            	controlMap.put("radio", "true");
+			            }
 			            controlMap.put("valuesFinder", control.getValuesFinderClass());
 			            if (control.getBusinessObjectClass() != null) {
 			                controlMap.put("businessObject", control.getBusinessObjectClass());
@@ -286,7 +226,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			                controlMap.put("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
 			            }
 						attribute.put("control", controlMap);
-			        } else {
+					} else {
 			        	// FIXME: Huh!?!?, control is a Map in the above code but a ControlDefinition here?!?!?
 			        	// Maybe this should use the AttributesMapBuilder code to create this
 			        	attribute.put("control", definition.getControl());
@@ -408,8 +348,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(RoleDocumentDelegation delegation: identityManagementPersonDocument.getDelegations()){
 				if(CollectionUtils.isNotEmpty(delegation.getMembers())){
 					for(RoleDocumentDelegationMember member: delegation.getMembers()){
-						member.setDelegationTypeCode(delegation.getDelegationTypeCode());
-						identityManagementPersonDocument.getDelegationMembers().add(member);
+						if (StringUtils.equals(member.getMemberId(), identityManagementPersonDocument.getPrincipalId()))
+						{
+							member.setDelegationTypeCode(delegation.getDelegationTypeCode());
+							identityManagementPersonDocument.getDelegationMembers().add(member);
+						}
 					}
 				}
 			}
@@ -489,45 +432,51 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param identityManagementPersonDocument
 	 * @param groups
 	 */
-	protected void loadGroupToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, List<? extends Group> groups) {
-		List <PersonDocumentGroup> docGroups = new ArrayList <PersonDocumentGroup>();
-		if(ObjectUtils.isNotNull(groups)){
-			Collection<GroupMembershipInfo> groupMemberships;
-			for (Group group: groups) {
-				PersonDocumentGroup docGroup = new PersonDocumentGroup();
-				docGroup.setGroupId(group.getGroupId());
-				docGroup.setGroupName(group.getGroupName());
-				docGroup.setKimTypeId(group.getKimTypeId());
-				docGroup.setNamespaceCode(group.getNamespaceCode());
-				docGroup.setPrincipalId(identityManagementPersonDocument.getPrincipalId());
-				
-				List<String> groupIds = new ArrayList<String>();
-				groupIds.add(group.getGroupId());
-				groupMemberships = getGroupService().getGroupMembers(groupIds);
-				if(ObjectUtils.isNotNull(groupMemberships)){
-					for (GroupMembershipInfo groupMember: groupMemberships) {
-						if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
-							StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-							docGroup.setGroupMemberId(groupMember.getGroupMemberId());
-							if (groupMember.getActiveFromDate() != null) {
-								docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
-							}
-							if (groupMember.getActiveToDate() != null) {
-								docGroup.setActiveToDate(new Timestamp(groupMember.getActiveToDate().getTime()));
-							}
-							break;
-						}
-					}
-				}
-				docGroup.setEdit(true);
-				//docGroup.setGroupMemberId(((GroupImpl));
-				if(docGroup.isActive()) {
-					docGroups.add(docGroup);
-				}	
-			}	
-		}
-		identityManagementPersonDocument.setGroups(docGroups);
-	}
+    protected void loadGroupToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, List<? extends Group> groups) {
+        List <PersonDocumentGroup> docGroups = new ArrayList <PersonDocumentGroup>();
+        if(ObjectUtils.isNotNull(groups)){
+            List<String> directMemberPrincipalIds;
+            Collection<GroupMembershipInfo> groupMemberships;
+            for (Group group: groups) {
+                directMemberPrincipalIds = getGroupService().getDirectMemberPrincipalIds(group.getGroupId());
+                if(ObjectUtils.isNotNull(directMemberPrincipalIds)){
+                    directMemberPrincipalIds = new ArrayList<String>(new HashSet<String>(directMemberPrincipalIds));
+                    for (String memberId: directMemberPrincipalIds) {
+                        // other more direct methods for this ?
+                        // can't cast group to 'GroupImpl' because list is GroupInfo type
+                        if (StringUtils.equals(memberId, identityManagementPersonDocument.getPrincipalId())) {
+                            List<String> groupIds = new ArrayList<String>();
+                            groupIds.add(group.getGroupId());
+                            groupMemberships = getGroupService().getGroupMembers(groupIds);
+                            if(ObjectUtils.isNotNull(groupMemberships)){
+                                for (GroupMembershipInfo groupMember: groupMemberships) {
+                                    if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
+                                        StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+                                        // create one PersonDocumentGroup per GroupMembershipInfo **
+                                        PersonDocumentGroup docGroup = new PersonDocumentGroup();
+                                        docGroup.setGroupId(group.getGroupId());
+                                        docGroup.setGroupName(group.getGroupName());
+                                        docGroup.setNamespaceCode(group.getNamespaceCode());
+                                        docGroup.setPrincipalId(memberId);
+                                        docGroup.setGroupMemberId(groupMember.getGroupMemberId());
+                                        if (groupMember.getActiveFromDate() != null) {
+                                        	docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
+                                        }
+                                        if (groupMember.getActiveToDate() != null) {
+                                        	docGroup.setActiveToDate(new Timestamp(groupMember.getActiveToDate().getTime()));
+                                        }
+                                        docGroup.setEdit(true);
+                                        docGroups.add(docGroup);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        identityManagementPersonDocument.setGroups(docGroups);
+    }
 
 	protected void loadRoleToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		List <PersonDocumentRole> docRoles = new ArrayList <PersonDocumentRole>();
@@ -752,14 +701,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			// If all of the qualifiers are empty, return an empty list
 			// This is to prevent dynamic qualifiers from appearing in the
 			// person maintenance roles tab.  see KULRICE-3989 for more detail
-			int qualCount = 0;
-			for (KimDocumentRoleQualifier qual : docRoleQualifiers){
-				if (StringUtils.isEmpty(qual.getAttrVal())){
-					qualCount++;
+			if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(SHOW_BLANK_QUALIFIERS))) {
+				int qualCount = 0;
+				for (KimDocumentRoleQualifier qual : docRoleQualifiers){
+					if (StringUtils.isEmpty(qual.getAttrVal())){
+						qualCount++;
+					}
 				}
-			}
-			if (qualCount == docRoleQualifiers.size()){
-				return new ArrayList <KimDocumentRoleQualifier>();
+				if (qualCount == docRoleQualifiers.size()){
+					return new ArrayList <KimDocumentRoleQualifier>();
+				}
 			}
 		}
     	return docRoleQualifiers;
@@ -1675,12 +1626,27 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = KimPrincipalImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
+        	KimPrincipalInfo  principalInfo = null;
+	 	 	principalInfo = getIdentityManagementService().getPrincipal(memberId);
+	 	 	if (principalInfo != null) {
+	 	 		
+	 	 	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = GroupImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
+        	GroupInfo groupInfo = null;
+	 	 	groupInfo = getGroupService().getGroupInfo(memberId);
+	 	 	if (groupInfo != null) {
+	 	 		
+	 	 	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = RoleImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
+        	KimRoleInfo roleInfo = null;
+	 	 	roleInfo = getRoleService().getRole(memberId);
+	 	 	if (roleInfo != null) {
+	 	 		
+	 	 	}
         }
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put(roleMemberIdName, memberId);
@@ -1704,22 +1670,47 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	public String getMemberFullName(String memberTypeCode, String memberId){
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
-		BusinessObject member = getMember(memberTypeCode, memberId);
-		if (member == null) { //not a REAL principal, try to fake the name
-			String fakeName = "";
-			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
-			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
-				fakeName = kp.getPrincipalName();
-			}			
-			return fakeName;
-		}
-		return getFullMemberName(memberTypeCode, member);
+	   	String memberFullName = "";
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	KimPrincipalInfo principalInfo = null;
+        	principalInfo = getIdentityManagementService().getPrincipal(memberId);
+        	if (principalInfo != null) {
+        		String principalName = principalInfo.getPrincipalName();
+        		Person psn = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        		memberFullName = psn.getFirstName() + " " + psn.getLastName();
+        	}        	        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	GroupInfo groupInfo = null;
+        	groupInfo = getIdentityManagementService().getGroup(memberId);
+        	if (groupInfo != null) {
+        		memberFullName = groupInfo.getGroupName();
+        	}
+        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = getRoleService().getRole(memberId);        	
+        	memberFullName = roleInfo.getRoleName();
+        }
+        return memberFullName;
 	}
 
 	public String getMemberNamespaceCode(String memberTypeCode, String memberId){
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
-		BusinessObject member = getMember(memberTypeCode, memberId);
-		return getMemberNamespaceCode(memberTypeCode, member);
+    	String roleMemberNamespaceCode = "";
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	roleMemberNamespaceCode = "";
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	GroupInfo groupInfo = getIdentityManagementService().getGroup(memberId);
+        	if (groupInfo!= null) {
+        		roleMemberNamespaceCode = groupInfo.getNamespaceCode();
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	KimRoleInfo roleInfo = getRoleService().getRole(memberId);
+        	if (roleInfo != null) {
+        		roleMemberNamespaceCode = roleInfo.getNamespaceCode();
+        	}        	
+        }
+        return roleMemberNamespaceCode;
 	}
 
     public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName){
@@ -1750,6 +1741,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         return roleMemberName;
     }
 
+    /**
+     * @deprecated
+     * This method was called previously only by getMemberFullName(). The logic in this method has been moved there.
+     */
     public String getFullMemberName(String memberTypeCode, BusinessObject member){
     	String roleMemberName = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
@@ -2669,21 +2664,33 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     	RoleMemberImpl roleMemberImpl = matchingRoleMembers.get(0);
     	documentRoleMember.setRoleMemberId(roleMemberImpl.getRoleMemberId());
-    	BusinessObject member = getMember(memberTypeCode, memberId);
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-    		documentRoleMember.setMemberId(((KimPrincipalImpl)member).getPrincipalId());
-    		documentRoleMember.setMemberName(((KimPrincipalImpl)member).getPrincipalName());
-    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+    		KimPrincipalInfo principal = null;
+    		principal = getIdentityManagementService().getPrincipal(memberId);
+    		if (principal != null) {
+    			documentRoleMember.setMemberId(principal.getPrincipalId());
+        		documentRoleMember.setMemberName(principal.getPrincipalName());
+        		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+    		}    		
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	documentRoleMember.setMemberNamespaceCode(((GroupImpl)member).getNamespaceCode());
-    		documentRoleMember.setMemberId(((GroupImpl)member).getGroupId());
-    		documentRoleMember.setMemberName(((GroupImpl)member).getGroupName());
-    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+        	GroupInfo group = null;
+        	group = getGroupService().getGroupInfo(memberId);
+        	if (group != null) {
+        		documentRoleMember.setMemberNamespaceCode(group.getNamespaceCode());
+        		documentRoleMember.setMemberId(group.getGroupId());
+        		documentRoleMember.setMemberName(group.getGroupName());
+        		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);	
+        	}
+        	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	documentRoleMember.setMemberNamespaceCode(((RoleImpl)member).getNamespaceCode());
-    		documentRoleMember.setMemberId(((RoleImpl)member).getRoleId());
-    		documentRoleMember.setMemberName(((RoleImpl)member).getRoleName());
-    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+        	KimRoleInfo role = null;
+        	role = getRoleService().getRole(memberId);
+        	if (role != null) {
+        		documentRoleMember.setMemberNamespaceCode(role.getNamespaceCode());
+        		documentRoleMember.setMemberId(role.getRoleId());
+        		documentRoleMember.setMemberName(role.getRoleName());
+        		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+        	}        	
         }
     	return documentRoleMember;
     }

@@ -323,7 +323,7 @@
     <inspection_tool class="CssInvalidShorthandPropertyValue" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="CssNegativeValueInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="CssNoGenericFontName" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="CssOptimizeSimilarPropertiesInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="CssOptimizeSimilarPropertiesInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CssOverwrittenProperties" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CssRgbFunctionInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="CssUnitlessNumber" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -832,7 +832,7 @@
       <option name="FLAG_EXPLICIT_CONVERSION" value="true" />
       <option name="IGNORE_NODESET_TO_BOOLEAN_VIA_STRING" value="true" />
     </inspection_tool>
-    <inspection_tool class="ImplicitlyExposedWebServiceMethods" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="ImplicitlyExposedWebServiceMethods" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="IncompatibleMask" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="IncompatibleMaskJS" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InconsistentLanguageLevel" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -916,7 +916,7 @@
     <inspection_tool class="JNDIResource" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="insideTryAllowed" value="false" />
     </inspection_tool>
-    <inspection_tool class="JSDeprecatedSymbols" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSDeprecatedSymbols" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSDuplicatedDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSImplicitlyInternalDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSLastCommaInArrayLiteral" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -925,20 +925,20 @@
       <option name="queries" value="trace,write" />
       <option name="updates" value="pop,push,shift,splice,unshift" />
     </inspection_tool>
-    <inspection_tool class="JSSuspiciousNameCombinationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+    <inspection_tool class="JSSuspiciousNameCombinationInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <group names="x,width,left,right" />
       <group names="y,height,top,bottom" />
     </inspection_tool>
-    <inspection_tool class="JSUndeclaredVariable" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSUndeclaredVariable" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSUnnecessarySemicolon" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="JSUnresolvedFunction" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSUnresolvedFunction" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSUnresolvedLibraryURL" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="JSUnresolvedVariable" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSUnresolvedVariable" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSUntypedDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSUnusedGlobalSymbols" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSUnusedLocalSymbols" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSValidateJSON" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="JSValidateTypes" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSValidateTypes" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JUnit4AnnotatedMethodInJUnit3TestCase" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JUnitAbstractTestClassNamingConvention" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="m_regex" value="[A-Z][A-Za-z\d]*TestCase" />
@@ -1137,9 +1137,7 @@
       <option name="limit" value="100" />
     </inspection_tool>
     <inspection_tool class="MultipleBindingAnnotations" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="MultipleDeclaration" enabled="false" level="WARNING" enabled_by_default="false">
-      <option name="ignoreForLoopDeclarations" value="true" />
-    </inspection_tool>
+    <inspection_tool class="MultipleDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="MultipleExceptionsDeclaredOnTestMethod" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="MultipleInjectedConstructorsForClass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MultipleMethodDesignatorsInspection" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -1340,7 +1338,7 @@
       <option name="CHECK_NON_CONSTANT_VALUES" value="true" />
     </inspection_tool>
     <inspection_tool class="PhpAssignmentInConditionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="PhpDeprecationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpDeprecationInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpDynamicAsStaticMethodCallInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpIncludeInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpParamsInspection" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -1354,8 +1352,12 @@
     <inspection_tool class="PhpUndefinedVariableInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpUnimplementedMethodsInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="PhpUnreachableStatementInspection" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="PhpUnusedLocalVariableInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="PhpUnusedParameterInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpUnusedLocalVariableInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="DONT_REPORT_FOREACH_VALUE" value="false" />
+      <option name="DONT_REPORT_CATCH_EXCEPTION" value="true" />
+      <option name="DONT_REPORT_INSIDE_LIST" value="false" />
+    </inspection_tool>
+    <inspection_tool class="PhpUnusedParameterInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpUnusedPrivateFieldInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpWrongCatchClausesOrderInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpWrongForeachArgumentTypeInspection" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -1815,6 +1817,7 @@
       <option name="m_ignoreStaticAccessFromStaticContext" value="false" />
     </inspection_tool>
     <inspection_tool class="UnnecessarilyQualifiedStaticallyImportedElement" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnnecessaryAnnotationParentheses" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnnecessaryBlockStatement" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="ignoreSwitchBranches" value="false" />
     </inspection_tool>

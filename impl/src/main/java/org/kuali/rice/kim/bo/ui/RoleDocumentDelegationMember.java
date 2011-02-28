@@ -35,8 +35,12 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -237,10 +241,17 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	}
 
 	protected void populateDerivedValues() {
-    	BusinessObject member = KIMServiceLocatorInternal.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
-    	if ( member != null ) {
-	        setMemberNamespaceCode(KIMServiceLocatorInternal.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
-    	}
+		if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
+        	GroupInfo groupInfo = null;
+        	groupInfo = KIMServiceLocator.getIdentityManagementService().getGroup(getMemberId());
+        	if (groupInfo != null) {
+        		setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        	}        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(getMemberId());
+        	setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        }
 	}
 	
 	/**

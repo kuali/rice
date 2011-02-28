@@ -124,9 +124,6 @@
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kew/ria/bo/datadictionary/RIADocTypeMap.xml</value>
-                <value>classpath:org/kuali/rice/kew/ria/document/datadictionary/RIADocTypeMapMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kew/ria/document/datadictionary/RIADocument.xml</value>
                 
                 <!-- from KIM-->
                 

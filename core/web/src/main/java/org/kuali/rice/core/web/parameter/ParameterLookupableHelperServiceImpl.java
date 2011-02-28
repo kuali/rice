@@ -104,7 +104,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             // we're filtering in memory, so remove this criteria
             fieldValues.remove(COMPONENT_NAME);
             
-            results = super.getSearchResults(fieldValues);
+            results = super.getSearchResultsUnbounded(fieldValues);
             // attach the DD detail types to your results before we filter (else filtering won't work correctly)
             attachDataDictionaryDetailTypes(results, ddDetailTypes);
             // filter down to just results with matching parameter component (ParameterDetailType)
@@ -115,7 +115,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             });
         }
         else {
-            results = super.getSearchResults(fieldValues);
+            results = super.getSearchResultsUnbounded(fieldValues);
             attachDataDictionaryDetailTypes(results, ddDetailTypes);
         }
         return results;

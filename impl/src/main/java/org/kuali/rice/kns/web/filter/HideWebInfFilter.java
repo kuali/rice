@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.web.filter;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,6 +42,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HideWebInfFilter implements Filter {
 
+	private static final Pattern WEB_INF_PATTERN = Pattern.compile(".*WEB-INF.*");
+	
     /**
      * @see javax.servlet.Filter#destroy()
      */
@@ -56,7 +59,7 @@ public class HideWebInfFilter implements Filter {
 
             HttpServletRequest hsr = (HttpServletRequest) req;
     
-            if (hsr.getRequestURI().matches(".*/?WEB-INF/?.*")) {
+            if (WEB_INF_PATTERN.matcher(hsr.getRequestURI()).matches()) {
                 HttpServletResponse hsresp = (HttpServletResponse) res;
                 hsresp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;

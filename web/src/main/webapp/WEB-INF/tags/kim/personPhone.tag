@@ -78,7 +78,8 @@
             </tr>         
         </c:if>        
         <c:forEach var="phone" items="${KualiForm.document.phones}" varStatus="status">
-            <tr>
+            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(phone.phoneTypeCode, 'kim.hide.PersonDocumentPhone.type'))}"> 
+              <tr>
                 <th class="infoline">
                     <c:out value="${status.index+1}" />
                 </th>
@@ -122,7 +123,8 @@
                         </div>
                     </td>
                 </c:if>    
-            </tr>
+              </tr>
+            </c:if>  
         </c:forEach>
     </table>
 </kul:subtab>

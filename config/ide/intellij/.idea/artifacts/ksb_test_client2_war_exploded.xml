@@ -14,7 +14,7 @@
           <element id="archive" name="rice-core-api-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
           </element>
-          <element id="library" level="project" name="Maven: ojb:db-ojb:1.0.4-patch4" />
+          <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" />
           <element id="library" level="project" name="Maven: asm:asm:3.2" />
           <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.3" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
@@ -24,6 +24,7 @@
           <element id="library" level="project" name="Maven: commons-transaction:commons-transaction:1.1" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.4" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.16" />
+          <element id="library" level="project" name="Maven: hsqldb:hsqldb:1.8.0.1" />
           <element id="library" level="project" name="Maven: xerces:xercesImpl:2.9.1" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />

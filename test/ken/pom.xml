@@ -64,7 +64,7 @@
 	      <scope>test</scope>
 	    </dependency>
 	    <dependency>
-	      <groupId>ojb</groupId>
+	      <groupId>org.kuali.db.ojb</groupId>
 	      <artifactId>db-ojb</artifactId>
 	      <scope>test</scope>
 	    </dependency>

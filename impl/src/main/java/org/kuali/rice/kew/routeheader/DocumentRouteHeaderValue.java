@@ -286,12 +286,11 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     
     public List<String> getCurrentNodeNames() {
     	List<String> currentNodeNames = new ArrayList<String>();
-    	Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeaderId());
+    	Collection<RouteNodeInstance> nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeaderId());
         if (nodeInstances.isEmpty()) {
             nodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getRouteHeaderId());
         }
-        for (Iterator iterator = nodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance nodeInstance : nodeInstances) {
             currentNodeNames.add(nodeInstance.getRouteNode().getRouteNodeName());
         }
         return currentNodeNames;
@@ -542,11 +541,11 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     	if (appDocStatus != null && appDocStatus.length() > 0 && !appDocStatus.equalsIgnoreCase(this.appDocStatus)){    		
     		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(this.getDocumentTypeId());    	
     		if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
-    			Iterator iter = documentType.getValidApplicationStatuses().iterator();
+    			Iterator<ApplicationDocumentStatus> iter = documentType.getValidApplicationStatuses().iterator();
     			boolean statusValidated = false;
     			while (iter.hasNext())
     			{
-    				ApplicationDocumentStatus myAppDocStat = (ApplicationDocumentStatus) iter.next();
+    				ApplicationDocumentStatus myAppDocStat = iter.next();
     				if (appDocStatus.compareToIgnoreCase(myAppDocStat.getStatusName()) == 0)
     				{
     					statusValidated = true;
@@ -816,10 +815,10 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
     private BranchState findVariable(String name) {
         Branch rootBranch = getRootBranch();
         if (rootBranch != null) {
-            List branchState = rootBranch.getBranchState();
-            Iterator it = branchState.iterator();
+            List<BranchState> branchState = rootBranch.getBranchState();
+            Iterator<BranchState> it = branchState.iterator();
             while (it.hasNext()) {
-                BranchState state = (BranchState) it.next();
+                BranchState state = it.next();
                 if (ObjectUtils.equals(state.getKey(), BranchState.VARIABLE_PREFIX + name)) {
                     return state;
                 }
@@ -861,7 +860,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
         BranchState state = findVariable(name);
         Branch rootBranch = getRootBranch();
         if (rootBranch != null) {
-            List branchState = rootBranch.getBranchState();
+            List<BranchState> branchState = rootBranch.getBranchState();
             if (state == null) {
                 if (value == null) {
                     LOG.debug("set non existent variable '" + name + "' to null value");

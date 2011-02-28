@@ -201,7 +201,7 @@ public class InquiryForm extends KualiForm {
                             // so most likely there should be an entry.
                             LOG.warn("BO class " + businessObjectClassName + " property " + boKey + " should probably have a DD definition.", ex);
                         }
-                        
+                        String parameterCopy = parameter;
                         if (forceUppercase) {
 	                		parameter = parameter.toUpperCase();
 	                	}
@@ -209,7 +209,7 @@ public class InquiryForm extends KualiForm {
                         inquiryPrimaryKeys.put(boKey, parameter);
                         if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, boKey)) {
                             try {
-                                inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameter));
+                                inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameterCopy));
                             } catch (GeneralSecurityException e) {
                                 LOG.error("BO class " + businessObjectClassName + " property " + boKey + " should have been encrypted, but there was a problem decrypting it.");
                                 throw e;

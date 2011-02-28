@@ -19,8 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-//import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 

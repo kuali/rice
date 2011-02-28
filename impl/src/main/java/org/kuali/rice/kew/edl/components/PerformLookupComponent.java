@@ -119,8 +119,10 @@ public class PerformLookupComponent implements EDLModelComponent {
 			
 			XPath xPath = XPathFactory.newInstance().newXPath();
 			try {
-				String parameterValue = xPath.evaluate("//field[@name='" + parameterValuePropertyName + "']/value", currentVersion);
-				System.out.println(XmlJotter.jotNode(currentVersion, true));
+                String parameterValue = xPath.evaluate("//field[@name='" + parameterValuePropertyName + "']/value", currentVersion);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(XmlJotter.jotNode(currentVersion, true));
+                }
 				if (StringUtils.isNotBlank(parameterValue)) {
 					lookupParameters.put(parameterName, parameterValue);
 				}

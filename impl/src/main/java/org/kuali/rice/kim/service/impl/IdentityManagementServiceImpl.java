@@ -430,12 +430,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		isAuthorizedCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAgeSeconds, authorized ) );
 	}
 
-	// AUTHENTICATION SERVICE
-
-	public String getAuthenticatedPrincipalName(HttpServletRequest request) {
-		return getAuthenticationService().getPrincipalName(request);
-	}
-
     // AUTHORIZATION SERVICE
 
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
@@ -1016,15 +1010,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 
 	// OTHER METHODS
-
-
-
-	public AuthenticationService getAuthenticationService() {
-		if ( authenticationService == null ) {
-			authenticationService = KIMServiceLocatorInternal.getAuthenticationService();
-		}
-		return authenticationService;
-	}
 
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {

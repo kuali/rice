@@ -83,8 +83,8 @@
       } catch ( ex ) {
           // do nothing, we can't get to the container
       }
-      getPortlet().style.height = (height + getHorScrollBarHeight()) + 'px';
-      getPortlet().height = (height + getHorScrollBarHeight()) + 'px';
+      getPortlet().style.height = (parseFloat(height) + getHorScrollBarHeight()) + 'px';
+      getPortlet().height = (parseFloat(height) + getHorScrollBarHeight()) + 'px';
     }
     
     /** 

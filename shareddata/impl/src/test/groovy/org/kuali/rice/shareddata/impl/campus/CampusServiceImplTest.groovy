@@ -38,26 +38,25 @@ class CampusServiceImplTest {
             mockBoService = new MockFor(BusinessObjectService)
             campusService = new CampusServiceImpl()
         }
-	
-	@Test
+
+    @Test(expected=IllegalArgumentException.class)
 	public void testGetCampusEmptyCode() {
 	  Campus c = campusService.getCampus("")
-	  Assert.assertNull(c)
 	}
   
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testGetCampusNullCode() {
 	  Campus c = campusService.getCampus(null)
 	  Assert.assertNull(c)
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testGetCampusTypeEmptyCode() {
 	  CampusType ct = campusService.getCampusType("")
 	  Assert.assertNull(ct)
 	}
   
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testGetCampusTypeNullCode() {
 	  CampusType ct = campusService.getCampusType(null)
 	  Assert.assertNull(ct)

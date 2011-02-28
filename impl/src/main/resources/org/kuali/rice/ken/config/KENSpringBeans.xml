@@ -273,6 +273,8 @@
                 <property name="retryAttempts" value="1" />
             </bean>
         </property>
+        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <property name="forceRefresh" value="true"/>
     </bean>
     
     <bean parent="kenLocalServiceExporter">
@@ -287,6 +289,8 @@
                 <property name="retryAttempts" value="1" />
             </bean>
         </property>
+        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
+        <property name="forceRefresh" value="true"/>
     </bean>
     
     <!-- Export the KEN api service -->
@@ -303,6 +307,7 @@
                 <property name="retryAttempts" value="1" />
             </bean>
         </property>
+        <property name="forceRefresh" value="true"/>
     </bean>
     
     <!-- Quartz beans -->    

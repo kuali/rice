@@ -20,10 +20,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.framework.parameter.ClientParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -37,6 +39,7 @@ import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -93,8 +96,8 @@ public class UserLoginFilter implements Filter {
 	 */
 	private void establishUserSession(HttpServletRequest request) {
 		if (!isUserSessionEstablished(request)) {
-			String principalName = getIdentityManagementService().getAuthenticatedPrincipalName(request);
-			if (StringUtils.isBlank(principalName)) {
+			String principalName = ((AuthenticationService) GlobalResourceLoader.getResourceLoader().getService(new QName("kimAuthenticationService"))).getPrincipalName(request);
+            if (StringUtils.isBlank(principalName)) {
 				throw new AuthenticationException( "Blank User from AuthenticationService - This should never happen." );
 			}
 			

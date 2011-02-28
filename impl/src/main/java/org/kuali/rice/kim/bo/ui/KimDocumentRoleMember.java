@@ -15,29 +15,19 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -204,11 +194,26 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	}
 
 	protected void populateDerivedValues() {
-    	BusinessObject member = KIMServiceLocatorInternal.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
-    	if ( member != null ) {
-	        setMemberName(KIMServiceLocatorInternal.getUiDocumentService().getMemberName(getMemberTypeCode(), member));
-	        setMemberNamespaceCode(KIMServiceLocatorInternal.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
-    	}
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())){
+        	KimPrincipalInfo principalInfo = null;
+        	principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipal(getMemberId());
+        	if (principalInfo != null) {
+        		setMemberName(principalInfo.getPrincipalName());
+        	}        	        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
+        	GroupInfo groupInfo = null;
+        	groupInfo = KIMServiceLocator.getIdentityManagementService().getGroup(getMemberId());
+        	if (groupInfo != null) {
+        		setMemberName(groupInfo.getGroupName());
+        		setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        	}
+        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(getMemberId());        	
+        	setMemberName(roleInfo.getRoleName());
+        	setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        }
 	}
 	
 	public boolean isRole(){

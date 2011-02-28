@@ -177,12 +177,6 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 							KimResponsibilityImpl.class, responsibilitySearchCriteria, unbounded));	
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria, boolean unbounded){
-		return (List<RoleImpl>)getLookupService().findCollectionBySearchHelper(
-					RoleImpl.class, roleSearchCriteria, unbounded);
-	}
-	
 	private List<ResponsibilityImpl> getResponsibilitiesWithRoleSearchCriteria(Map<String, String> roleSearchCriteria, boolean unbounded){
 		List<RoleImpl> roleSearchResults = searchRoles(roleSearchCriteria, unbounded);
 		return getResponsibilitiesForRoleSearchResults(roleSearchResults, unbounded);

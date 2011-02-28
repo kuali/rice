@@ -1,6 +1,6 @@
 Acknowledgments:
 
-Copyright 2005-2010 The Kuali Foundation. All rights reserved. Kuali is
+Copyright 2005-2011 The Kuali Foundation. All rights reserved. Kuali is
 licensed for use pursuant to the Educational Community License, Version 2.0 
 <http://www.opensource.org/licenses/ecl2.php>. Portions of Kuali are 
 copyrighted by other parties, including the parties listed below, and you

@@ -159,6 +159,7 @@ public final class KimConstants {
 		public static final String KIM_ROLE_DOCUMENT_TYPE_NAME = "IdentityManagementRoleDocument";
 		public static final String KIM_GROUP_DOCUMENT_TYPE_NAME = "IdentityManagementGroupDocument";
 		public static final String KIM_PERSON_DOCUMENT_TYPE_NAME = "IdentityManagementPersonDocument";
+		public static final String KIM_PERMISSION_DOCUMENT_TYPE_NAME = "IdentityManagementGenericPermissionMaintenanceDocument";
 		public static final String KIM_REVIEW_RESPONSIBILITY_DOCUMENT_TYPE_NAME = "IdentityManagementReviewResponsibilityMaintenanceDocument";
 		public static final String KIM_ROLE_DOCUMENT_SHORT_KEY = "IMRD";
 		public static final String KIM_GROUP_DOCUMENT_SHORT_KEY = "IMGD";

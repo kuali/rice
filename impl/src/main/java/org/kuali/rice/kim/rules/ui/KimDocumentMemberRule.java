@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -31,6 +28,10 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -60,24 +61,15 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         
         Long newMemberFromTime = newMember.getActiveFromDate() == null ? 0L : newMember.getActiveFromDate().getTime();
         Long newMemberToTime = newMember.getActiveToDate() == null ? Long.MAX_VALUE : newMember.getActiveToDate().getTime();
-        for (KimDocumentRoleMember currentMember : document.getMembers()) {
-        	Long memberFromTime = currentMember.getActiveFromDate() == null ? 0L : currentMember.getActiveFromDate().getTime();
-            Long memberToTime = currentMember.getActiveToDate() == null ? Long.MAX_VALUE : currentMember.getActiveToDate().getTime();
-        	if (newMember.getMemberId().equals(currentMember.getMemberId())
-        			&& newMember.getMemberTypeCode().equals(currentMember.getMemberTypeCode())
-        			&& ((newMemberFromTime >= memberFromTime && newMemberFromTime < memberToTime) 
-        					|| (newMemberToTime >= memberFromTime && newMemberToTime <= memberToTime))) {
-	        	GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
-	            return false;
-        	}
-        }
-
-		boolean attributesUnique;
+        
+        boolean attributesUnique;
 		AttributeSet errorsAttributesAgainstExisting;
 	    int i = 0;
 	    AttributeSet newMemberQualifiers;
 	    AttributeSet oldMemberQualifiers;
 	    for (KimDocumentRoleMember member: document.getMembers()){
+	    	Long memberFromTime = member.getActiveFromDate() == null ? 0L : member.getActiveFromDate().getTime();
+            Long memberToTime = member.getActiveToDate() == null ? Long.MAX_VALUE : member.getActiveToDate().getTime();
 	    	newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers());
 	    	oldMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(member.getQualifiers());
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
@@ -88,7 +80,10 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
 	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
 	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
-	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
+	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))
+	    			&& ((newMemberFromTime >= memberFromTime && newMemberFromTime < memberToTime) 
+        					|| (newMemberToTime >= memberFromTime && newMemberToTime <= memberToTime))
+	    	){
 	            rulePassed = false;
 	            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	            break;

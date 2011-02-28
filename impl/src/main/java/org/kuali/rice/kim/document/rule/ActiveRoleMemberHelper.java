@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 
 /**
  * KULRICE-4153: This class is used to receive a set of Role Members and return a set of active Role Members. 
@@ -28,7 +29,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
  *
  */
 public class ActiveRoleMemberHelper {
-	private static final Logger LOG = Logger.getLogger(AttributeValidationHelper.class);
+	private static final Logger LOG = Logger.getLogger(ActiveRoleMemberHelper.class);
 
 	public List<KimDocumentRoleMember> getActiveRoleMembers (List<KimDocumentRoleMember> roleMembers){
 		List<KimDocumentRoleMember> activeRoleMembers = new ArrayList<KimDocumentRoleMember>();
@@ -41,5 +42,14 @@ public class ActiveRoleMemberHelper {
 		}		
 		return activeRoleMembers;		
 	}
-
+	    
+    public List<RoleDocumentDelegationMember> getActiveDelegationRoleMembers(List<RoleDocumentDelegationMember> roleMembers) {
+        List<RoleDocumentDelegationMember> activeRoleMembers = new ArrayList<RoleDocumentDelegationMember>();
+        for (RoleDocumentDelegationMember roleMember : roleMembers) {
+            if (roleMember.isActive()) {
+                activeRoleMembers.add(roleMember);
+            }
+        }
+        return activeRoleMembers;
+    }
 }

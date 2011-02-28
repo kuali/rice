@@ -242,6 +242,25 @@ if (maven) {
 		println "\nFailed to execute Maven!  See console output above for details."
 		System.exit(1)
 	}
+
+    println("\nAdjusting Classpath Entries...")
+    def facetXml = new File(PROJECT_PATH + '/.classpath')
+    def facets = new XmlParser().parse(facetXml)
+
+    facets.classpathentry.each {
+      // con here is part of the classpath entry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER found in the .classpath file
+      // at this time, it uniquely ids the classpath entry for the jre
+      if (it.'@kind' == 'con') {
+        def tempNode = it
+        facets.remove(it)
+        println('\nMoving ' + it.'@path' + 'to the top of the classpath...')
+        facets.children().add(0, tempNode)
+      }
+    }
+    println("\nBacking up the .classpath file... \n")
+    new File(PROJECT_PATH, '/.classpath.bkp').delete()
+    facetXml.renameTo(new File(PROJECT_PATH, '/.classpath.bkp'))
+    new XmlNodePrinter(new PrintWriter(new FileWriter(PROJECT_PATH + '/.classpath'))).print(facets)
 }
 
 new File(PROJECT_PATH + '/instructions.txt') << instructionstext()

@@ -68,7 +68,7 @@
 		<commons-validator.version>1.3.1</commons-validator.version>
 		<connector-api.version>1.5</connector-api.version>
 		<cxf.version>2.3.1</cxf.version>
-		<db-ojb.version>1.0.4-patch4</db-ojb.version>
+		<db-ojb.version>1.0.4-patch6</db-ojb.version>
 		<displaytag.version>1.2</displaytag.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<dwr.version>3.0.M1</dwr.version>
@@ -595,10 +595,10 @@
 
 		<extensions>
 			<extension>
-				<groupId>org.kuali.maven</groupId>
-				<artifactId>kuali-wagon-s3</artifactId>
-				<version>1.0.8</version>
-			</extension>
+                <groupId>org.kuali.maven.wagons</groupId>
+                <artifactId>maven-s3-wagon</artifactId>
+                <version>1.0.25</version>
+            </extension>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
@@ -627,6 +627,7 @@
         <module>krad</module>
         <module>client-contrib</module>
         <module>shareddata</module>
+        <module>doc</module>
   </modules>
 
 	<repositories>
@@ -934,7 +935,7 @@
 			</dependency>
 
 			<dependency>
-				<groupId>ojb</groupId>
+				<groupId>org.kuali.db.ojb</groupId>
 				<artifactId>db-ojb</artifactId>
 				<version>${db-ojb.version}</version>
 				<exclusions>
@@ -1551,6 +1552,11 @@
 						<groupId>org.springframework</groupId>
 						<artifactId>spring</artifactId>
 					</exclusion>
+                    <exclusion>
+                            <!-- we moved our patch to groupId org.kuali.db.ojb -->
+                            <groupId>ojb</groupId>
+                            <artifactId>db-ojb</artifactId>
+                    </exclusion>
 					<exclusion>
 						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>

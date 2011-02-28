@@ -28,12 +28,12 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../test/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../test/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../test/ksb/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../test/ksb/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/ksb">
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/ksb/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/ksb/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/ksb/src/test/resources" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/ksb/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/ksb/target" />
     </content>
     <orderEntry type="inheritedJdk" />

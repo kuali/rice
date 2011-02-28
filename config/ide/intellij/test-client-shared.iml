@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../test/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../test/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared">
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/src/test/resources" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/test-clients/test-client-shared/target" />
     </content>
     <orderEntry type="inheritedJdk" />

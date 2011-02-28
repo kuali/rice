@@ -16,13 +16,13 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../test/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../test/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1">
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/src/test/resources" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client1/target" />
     </content>
     <orderEntry type="inheritedJdk" />

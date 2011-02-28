@@ -24,6 +24,7 @@ public class UifPropertyPaths {
 	
 	public static final String BIND_OBJECT_PATH = "bindingInfo.bindingObjectPath";
 	public static final String BIND_TO_FORM = "bindingInfo.bindToForm";
+	public static final String CRITERIA_FIELDS = "criteriaFields";
 	public static final String NEW_COLLECTION_LINES = "newCollectionLines";
 	
 }

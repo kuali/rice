@@ -80,6 +80,11 @@ public class UifConstants extends JSTLConstants {
 		public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 		public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
 	}
+	
+	public static class LayoutComponentOptions {
+		public static final String COLUMN_SPAN = "colSpan";
+		public static final String ROW_SPAN = "rowSpan";
+	}
 
 	public static class IdSuffixes {
 		public static final String ADD_LINE = "_addLine";
@@ -100,7 +105,4 @@ public class UifConstants extends JSTLConstants {
 		public static final String FINAL = "F";
 	}
 
-	public static class LookupModelPropertyNames {
-		public static final String CRITERIA_FIELDS = "criteriaFields";
-	}
 }

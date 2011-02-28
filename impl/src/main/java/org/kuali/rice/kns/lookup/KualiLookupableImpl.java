@@ -26,6 +26,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.LookupView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
@@ -90,7 +91,7 @@ public class KualiLookupableImpl extends ViewHelperServiceImpl implements Lookup
     @Override
     protected void initializeAttributeFieldFromDataDictionary(View view, AttributeField field) {
 	    super.initializeAttributeFieldFromDataDictionary(view, field);
-    	if (StringUtils.equals(UifConstants.LookupModelPropertyNames.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
+    	if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
     	    field.getBindingInfo().setBindingPath(field.getBindingInfo().getBindingObjectPath() + "[" + field.getBindingInfo().getBindingName() + "]");
     	}
     }
@@ -108,7 +109,7 @@ public class KualiLookupableImpl extends ViewHelperServiceImpl implements Lookup
 	@Override
 	protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
     	// if the field binding object path matches the map name on the LookupForm model then use BO class rather than looking up dictionary model class
-    	if (StringUtils.equals(UifConstants.LookupModelPropertyNames.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
+    	if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
     		return getBusinessObjectClass();
     	}
 		return ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());

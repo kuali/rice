@@ -1,16 +1,34 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
+
+
 package org.kuali.rice.shareddata.impl.country
 
-import org.junit.Test
-import org.kuali.rice.shareddata.api.country.Country
-import org.junit.Assert
-import org.junit.BeforeClass
 import groovy.mock.interceptor.MockFor
-import org.kuali.rice.kns.service.KualiModuleService
-import org.kuali.rice.shareddata.api.country.CountryService
-import org.kuali.rice.kns.service.ModuleService
-import org.kuali.rice.kns.util.KNSPropertyConstants
+import org.junit.Assert
 import org.junit.Before
-
+import org.junit.BeforeClass
+import org.junit.Test
+import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.kns.util.KNSPropertyConstants
+import org.kuali.rice.shareddata.api.country.Country
+import org.kuali.rice.shareddata.api.country.CountryService
 
 class CountryServiceImplTest {
 
@@ -18,166 +36,144 @@ class CountryServiceImplTest {
 
   static Map<String, CountryBo> sampleCountries = new HashMap<String, CountryBo>()
   static Map<String, CountryBo> sampleCountriesKeyedByAltCode = new HashMap<String, CountryBo>()
-  def mockKualiModuleService
-  def mockModuleService
-
+  def mockBusinessObjectService
 
   @BeforeClass
   static void createSampleCountryBOs() {
-    CountryBo unitedStatesBo = new CountryBo(active: true, alternatePostalCountryCode: "USA", postalCountryCode: "US",
-            postalCountryName: "United States", postalCountryRestricted: false)
-    CountryBo australiaBo = new CountryBo(active: true, alternatePostalCountryCode: "AU", postalCountryCode: "AUS",
-            postalCountryName: "Australia", postalCountryRestricted: false)
-    CountryBo nowhereBo = new CountryBo(active: true, alternatePostalCountryCode: "ZZ", postalCountryCode: "ZZZ",
-            postalCountryName: "Australia", postalCountryRestricted: true)
+    CountryBo unitedStatesBo = new CountryBo(active: true, alternateCode: "USA", code: "US",
+            name: "United States", restricted: false)
+    CountryBo australiaBo = new CountryBo(active: true, alternateCode: "AU", code: "AUS",
+            name: "Australia", restricted: false)
+    CountryBo nowhereBo = new CountryBo(active: true, alternateCode: "ZZ", code: "ZZZ",
+            name: "Australia", restricted: true)
     for (bo in [unitedStatesBo, australiaBo, nowhereBo]) {
-      sampleCountries.put(bo.postalCountryCode, bo)
-      sampleCountriesKeyedByAltCode.put(bo.alternatePostalCountryCode, bo)
+      sampleCountries.put(bo.code, bo)
+      sampleCountriesKeyedByAltCode.put(bo.alternateCode, bo)
     }
   }
 
   @Before
   void setupBoServiceMockContext() {
-    mockKualiModuleService = new MockFor(KualiModuleService.class)
-    mockModuleService = new MockFor(ModuleService.class)
+    mockBusinessObjectService = new MockFor(BusinessObjectService.class)
   }
 
 
   @Test
-  public void testGetByPrimaryId() {
-    mockModuleService.demand.getExternalizableBusinessObject(1..1) {
+  public void test_getCountry() {
+    mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
       Class clazz, Map map -> return sampleCountries.get(map.get(KNSPropertyConstants.POSTAL_COUNTRY_CODE))
     }
-    ModuleService ms = mockModuleService.proxyDelegateInstance()
 
-    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
-    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(kms)
-    Country country = service.getByPrimaryId("US")
+    service.setBusinessObjectService(bos)
+    Country country = service.getCountry("US")
 
     Assert.assertEquals(CountryBo.to(sampleCountries.get("US")), country)
-    mockModuleService.verify(ms)
-    mockKualiModuleService.verify(kms)
+    mockBusinessObjectService.verify(bos)
   }
 
   @Test
   public void testGetByPrimaryIdEmptyCountryCode() {
-    Country c = new CountryServiceImpl().getByPrimaryId("")
-    Assert.assertNull(c)
+      shouldFail(IllegalArgumentException.class) {
+        new CountryServiceImpl().getCountry("")
+      }
   }
 
   @Test
   public void testGetByPrimaryIdNullCountryCode() {
-    Country c = new CountryServiceImpl().getByPrimaryId(null)
-    Assert.assertNull(c)
+      shouldFail(IllegalArgumentException.class) {
+        new CountryServiceImpl().getCountry(null)
+      }
   }
 
   @Test
   public void testGetByAlternatePostalCountryCode() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
+    mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map ->
       [sampleCountriesKeyedByAltCode.get(
               map.get(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
     }
-    ModuleService ms = mockModuleService.proxyDelegateInstance()
-
-    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
-    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(kms)
-    Country country = service.getByAlternatePostalCountryCode("USA")
+    service.setBusinessObjectService(bos)
+    Country country = service.getCountryByAlternateCode("USA")
 
     Assert.assertEquals(CountryBo.to(sampleCountriesKeyedByAltCode.get("USA")), country)
-    mockModuleService.verify(ms)
-    mockKualiModuleService.verify(kms)
+    mockBusinessObjectService.verify(bos)
   }
 
   @Test
   public void testGetByAlternatePostalCountryCodeWhenNoneFound() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {Class clazz, Map map -> []}
-    ModuleService ms = mockModuleService.proxyDelegateInstance()
-
-    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
-    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
+    mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> []}
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(kms)
-    Country country = service.getByAlternatePostalCountryCode("ZZ")
+    service.setBusinessObjectService(bos)
+    Country country = service.getCountryByAlternateCode("ZZ")
 
     Assert.assertNull(country)
-    mockModuleService.verify(ms)
-    mockKualiModuleService.verify(kms)
+    mockBusinessObjectService.verify(bos)
 
   }
 
+  @Test
   public void testGetByAlternatePostalCountryCodeWhenMultipleFound() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
+    mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
     }
-    ModuleService ms = mockModuleService.proxyDelegateInstance()
-
-    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
-    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
+    service.setBusinessObjectService(bos)
 
     shouldFail(IllegalStateException.class) {
-      service.getByAlternatePostalCountryCode("US")
+      service.getCountryByAlternateCode("US")
     }
 
-    mockModuleService.verify(ms)
-    mockKualiModuleService.verify(kms)
+    mockBusinessObjectService.verify(bos)
   }
 
   @Test
   public void testGetByAlternatePostalCountryCodeWithEmptyCode() {
-    Country country = new CountryServiceImpl().getByAlternatePostalCountryCode(" ")
-    Assert.assertNull(country)
+      shouldFail(IllegalArgumentException.class) {
+        new CountryServiceImpl().getCountryByAlternateCode(" ")
+      }
   }
 
   @Test
   public void testGetByAlternatePostalCountryCodeWithNullCode() {
-    Country country = new CountryServiceImpl().getByAlternatePostalCountryCode(null)
-    Assert.assertNull(country)
+      shouldFail(IllegalArgumentException.class) {
+        new CountryServiceImpl().getCountryByAlternateCode(null)
+      }
   }
 
   @Test
   public void findAllCountriesNotRestricted() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
+     mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
     }
-    ModuleService ms = mockModuleService.proxyDelegateInstance()
-
-    mockKualiModuleService.demand.getResponsibleModuleService(1..1) {Class clazz -> ms}
-    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
-
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(kms)
+    service.setBusinessObjectService(bos)
     service.findAllCountriesNotRestricted()
 
-    mockModuleService.verify(ms)
-    mockKualiModuleService.verify(kms)
+    mockBusinessObjectService.verify(bos)
   }
 
   @Test
   public void testFindAllCountries() {
-    mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
+    mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
     }
-    ModuleService ms = mockModuleService.proxyDelegateInstance()
-
-    mockKualiModuleService.demand.getResponsibleModuleService(1..1) { Class clazz -> ms}
-    KualiModuleService kms = mockKualiModuleService.proxyDelegateInstance()
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
     CountryService service = new CountryServiceImpl()
-    service.setKualiModuleService(kms)
+    service.setBusinessObjectService(bos)
     service.findAllCountriesNotRestricted()
 
-    mockModuleService.verify(ms)
-    mockKualiModuleService.verify(kms)
+    mockBusinessObjectService.verify(bos)
   }
 }

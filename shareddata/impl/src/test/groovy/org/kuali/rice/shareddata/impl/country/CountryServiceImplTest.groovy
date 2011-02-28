@@ -14,6 +14,8 @@ import org.junit.Before
 
 class CountryServiceImplTest {
 
+  private final shouldFail = new GroovyTestCase().&shouldFail
+
   static Map<String, CountryBo> sampleCountries = new HashMap<String, CountryBo>()
   static Map<String, CountryBo> sampleCountriesKeyedByAltCode = new HashMap<String, CountryBo>()
   def mockKualiModuleService
@@ -111,7 +113,6 @@ class CountryServiceImplTest {
 
   }
 
-  @Test(expected = IllegalStateException.class)
   public void testGetByAlternatePostalCountryCodeWhenMultipleFound() {
     mockModuleService.demand.getExternalizableBusinessObjectsList(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
@@ -123,7 +124,10 @@ class CountryServiceImplTest {
 
     CountryService service = new CountryServiceImpl()
     service.setKualiModuleService(mockKualiModuleService.proxyDelegateInstance())
-    service.getByAlternatePostalCountryCode("US")
+
+    shouldFail(IllegalStateException.class) {
+      service.getByAlternatePostalCountryCode("US")
+    }
 
     mockModuleService.verify(ms)
     mockKualiModuleService.verify(kms)

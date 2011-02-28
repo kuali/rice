@@ -11,6 +11,8 @@ import junit.framework.Assert
  */
 class CountryTest {
 
+  private final shouldFail = new GroovyTestCase().&shouldFail
+
   @Test
   public void testCountryBuilderPassedInParams() {
     //No assertions, just test whether the Builder gives us a Country object
@@ -22,21 +24,27 @@ class CountryTest {
     //No assertions, just test whether the Builder gives us a Country object
     Country country = Country.Builder.create(new CountryContract() {
       String getPostalCountryCode() {"US"}
+
       String getAlternatePostalCountryCode() { "USA" }
+
       String getPostalCountryName() { "United States" }
+
       boolean isActive() { true }
+
       boolean isPostalCountryRestricted() { false }
     }).build()
   }
 
-  @Test(expected=IllegalArgumentException.class)
   public void testCountryBuilderNullCountryCode() {
-    Country.Builder.create(null, null, "United States", false, true)
+    shouldFail(IllegalArgumentException.class) {
+      Country.Builder.create(null, null, "United States", false, true)
+    }
   }
 
-  @Test(expected=IllegalArgumentException.class)
   public void testCountryBuilderEmptyCountryCode() {
-    Country.Builder.create("  ", null, "United States", false, true)
+    shouldFail(IllegalArgumentException.class) {
+      Country.Builder.create("  ", null, "United States", false, true)
+    }
   }
 
   @Test
@@ -46,7 +54,7 @@ class CountryTest {
     StringWriter sw = new StringWriter()
 
     Country country = Country.Builder.create("US", null, "United States", false, true).build()
-    marshaller.marshal(country,sw)
+    marshaller.marshal(country, sw)
     String xml = sw.toString()
 
     String expectedCountryElementXml = """
@@ -61,7 +69,7 @@ class CountryTest {
     Unmarshaller unmarshaller = jc.createUnmarshaller();
     Object actual = unmarshaller.unmarshal(new StringReader(xml))
     Object expected = unmarshaller.unmarshal(new StringReader(expectedCountryElementXml))
-    Assert.assertEquals(expected,actual)
+    Assert.assertEquals(expected, actual)
   }
 
   @Test
@@ -77,9 +85,9 @@ class CountryTest {
     JAXBContext jc = JAXBContext.newInstance(Country.class)
     Unmarshaller unmarshaller = jc.createUnmarshaller();
     Country country = (Country) unmarshaller.unmarshal(new StringReader(rawXml))
-    Assert.assertEquals("AU",country.postalCountryCode)
-    Assert.assertEquals("AUS",country.alternatePostalCountryCode)
-    Assert.assertEquals("Australia",country.postalCountryName)
+    Assert.assertEquals("AU", country.postalCountryCode)
+    Assert.assertEquals("AUS", country.alternatePostalCountryCode)
+    Assert.assertEquals("Australia", country.postalCountryName)
 
   }
 }

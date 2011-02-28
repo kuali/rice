@@ -1,10 +1,28 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
 package org.kuali.rice.shareddata.api.country
 
-import org.junit.Test
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
+import org.junit.Test
 
 /**
  * Exercises the immutable Country class, including XML (un)marshalling
@@ -23,15 +41,15 @@ class CountryTest {
   public void testCountryBuilderPassedInCountryContract() {
     //No assertions, just test whether the Builder gives us a Country object
     Country country = Country.Builder.create(new CountryContract() {
-      String getPostalCountryCode() {"US"}
+      String getCode() {"US"}
 
-      String getAlternatePostalCountryCode() { "USA" }
+      String getAlternateCode() { "USA" }
 
-      String getPostalCountryName() { "United States" }
+      String getName() { "United States" }
 
       boolean isActive() { true }
 
-      boolean isPostalCountryRestricted() { false }
+      boolean isRestricted() { false }
     }).build()
   }
 
@@ -59,9 +77,9 @@ class CountryTest {
 
     String expectedCountryElementXml = """
     <country xmlns="http://rice.kuali.org/schema/shareddata">
-      <postalCountryCode>US</postalCountryCode>
-      <postalCountryName>United States</postalCountryName>
-      <postalCountryRestricted>false</postalCountryRestricted>
+      <code>US</code>
+      <name>United States</name>
+      <restricted>false</restricted>
       <active>true</active>
     </country>
     """
@@ -76,18 +94,18 @@ class CountryTest {
   public void testXmlUnmarshal() {
     String rawXml = """
     <country xmlns="http://rice.kuali.org/schema/shareddata">
-      <postalCountryCode>AU</postalCountryCode>
-      <alternatePostalCountryCode>AUS</alternatePostalCountryCode>
-      <postalCountryName>Australia</postalCountryName>
+      <code>AU</code>
+      <alternateCode>AUS</alternateCode>
+      <name>Australia</name>
     </country>
     """
 
     JAXBContext jc = JAXBContext.newInstance(Country.class)
     Unmarshaller unmarshaller = jc.createUnmarshaller();
     Country country = (Country) unmarshaller.unmarshal(new StringReader(rawXml))
-    Assert.assertEquals("AU", country.postalCountryCode)
-    Assert.assertEquals("AUS", country.alternatePostalCountryCode)
-    Assert.assertEquals("Australia", country.postalCountryName)
+    Assert.assertEquals("AU",country.code)
+    Assert.assertEquals("AUS",country.alternateCode)
+    Assert.assertEquals("Australia",country.name)
 
   }
 }

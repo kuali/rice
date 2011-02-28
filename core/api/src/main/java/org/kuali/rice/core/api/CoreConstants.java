@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,16 +35,11 @@ public final class CoreConstants {
     
     public final static class Namespaces {
     	public static final String ROOT_NAMESPACE_PREFIX = "http://rice.kuali.org";
-    	public static final String CORE_NAMESPACE_PREFIX = ROOT_NAMESPACE_PREFIX + "/core";
-    	public static final String PARAMETER_NAMESPACE_PREFIX = CORE_NAMESPACE_PREFIX + "/parameter";
-    	public static final String COMPONENT_NAMESPACE_PREFIX = CORE_NAMESPACE_PREFIX + "/component";
-    	public static final String NAMESPACE_NAMESPACE_PREFIX = CORE_NAMESPACE_PREFIX + "/namespace";
-    	
+    	public static final String CORE_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/core";
+
     	public static final String MAJOR_VERSION = "v1_1";
-    	
-    	public static final String PARAMETER_NAMESPACE = PARAMETER_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
-    	public static final String COMPONENT_NAMESPACE = COMPONENT_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
-    	public static final String NAMESPACE_NAMESPACE = NAMESPACE_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
+
+    	public static final String CORE_NAMESPACE = CORE_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
     }
 	
 	public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";

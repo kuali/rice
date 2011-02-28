@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+
 package org.kuali.rice.core.api.parameter;
 
 
@@ -35,7 +37,7 @@ public class ParameterTest {
     private static final String PARAMETER_TYPE_ACTIVE = "true"
 
     private static final String XML = """
-    <parameter xmlns="http://rice.kuali.org/core/parameter/v1_1">
+    <parameter xmlns="http://rice.kuali.org/core/v1_1">
         <applicationCode>${APPLICATION_CODE}</applicationCode>
         <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
         <componentCode>${COMPONENT_CODE}</componentCode>

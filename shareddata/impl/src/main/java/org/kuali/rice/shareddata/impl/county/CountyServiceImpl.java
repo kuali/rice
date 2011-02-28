@@ -16,6 +16,7 @@
 
 package org.kuali.rice.shareddata.impl.county;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.shareddata.api.county.County;
 import org.kuali.rice.shareddata.api.county.CountyService;
@@ -28,6 +29,18 @@ public class CountyServiceImpl implements CountyService {
 
     @Override
     public County getCounty(String countryCode, String stateCode, String code) {
+        if (StringUtils.isBlank(countryCode)) {
+            throw new IllegalArgumentException(("countryCode is null"));
+        }
+
+        if (StringUtils.isBlank(code)) {
+            throw new IllegalArgumentException(("code is null"));
+        }
+
+        if (StringUtils.isBlank(stateCode)) {
+            throw new IllegalArgumentException(("stateCode is null"));
+        }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("countryCode", countryCode);
         map.put("stateCode", stateCode);
@@ -38,6 +51,14 @@ public class CountyServiceImpl implements CountyService {
 
     @Override
     public List<County> getAllPostalCodesInCountryAndState(String countryCode, String stateCode) {
+        if (StringUtils.isBlank(countryCode)) {
+            throw new IllegalArgumentException(("countryCode is null"));
+        }
+
+        if (StringUtils.isBlank(stateCode)) {
+            throw new IllegalArgumentException(("stateCode is null"));
+        }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("countryCode", countryCode);
         map.put("stateCode", stateCode);

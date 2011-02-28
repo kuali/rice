@@ -17,6 +17,7 @@
 package org.kuali.rice.shareddata.impl.state;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.shareddata.api.state.State;
 import org.kuali.rice.shareddata.api.state.StateService;
@@ -29,6 +30,14 @@ public class StateServiceImpl implements StateService {
 
     @Override
     public State getState(String countryCode, String code) {
+        if (StringUtils.isBlank(countryCode)) {
+            throw new IllegalArgumentException(("countryCode is null"));
+        }
+
+        if (StringUtils.isBlank(code)) {
+            throw new IllegalArgumentException(("code is null"));
+        }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("countryCode", countryCode);
         map.put("code", code);
@@ -38,6 +47,10 @@ public class StateServiceImpl implements StateService {
 
     @Override
     public List<State> findAllStatesInCountry(String countryCode) {
+        if (StringUtils.isBlank(countryCode)) {
+            throw new IllegalArgumentException(("countryCode is null"));
+        }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("countryCode", countryCode);
         map.put("active", Boolean.TRUE);

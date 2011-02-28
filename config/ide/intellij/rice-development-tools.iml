@@ -137,8 +137,9 @@
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:1.4" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.14.0-GA" level="project" />
     <orderEntry type="module" module-name="rice-core-web" />
-    <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-framework" />
+    <orderEntry type="module" module-name="rice-shareddata-impl" />
+    <orderEntry type="module" module-name="rice-shareddata-web" />
   </component>
 </module>
 

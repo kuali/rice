@@ -157,8 +157,9 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.google.code.gson:gson:1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.javassist:javassist:3.14.0-GA" level="project" />
     <orderEntry type="module" module-name="rice-core-web" scope="TEST" />
-    <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-framework" scope="TEST" />
+    <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-shareddata-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-internal-test-tools" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.3.0.v20110203" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.3.0.v20110203" level="project" />

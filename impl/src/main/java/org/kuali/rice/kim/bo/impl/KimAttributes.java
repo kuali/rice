@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.kuali.rice.core.framework.namespace.NamespaceEbo;
 import org.kuali.rice.core.framework.parameter.ParameterEbo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
-import org.kuali.rice.shareddata.impl.campus.CampusBo;
+import org.kuali.rice.shareddata.framework.campus.CampusEbo;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,7 +57,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String kimTypeId;
 	protected String qualifierResolverProvidedIdentifier;
 	
-	protected CampusBo campus;
+	protected CampusEbo campus;
 	protected NamespaceEbo namespace;
 	protected ComponentEbo component;
 	protected ParameterEbo parameter;
@@ -413,11 +413,11 @@ public class KimAttributes extends TransientBusinessObjectBase {
 		this.sectionId = sectionId;
 	} 
 
-	public CampusBo getCampus() {
+	public CampusEbo getCampus() {
 		return this.campus;
 	}
 
-	public void setCampus(CampusBo campus) {
+	public void setCampus(CampusEbo campus) {
 		this.campus = campus;
 	}
 

@@ -151,9 +151,18 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         public static Builder create(PostalCodeContract contract) {
             final Builder builder = new Builder(contract.getCode(), contract.getCountryCode());
             builder.setActive(contract.isActive());
-            builder.setCountyCode(contract.getCountyCode());
-            builder.setCityName(contract.getCityName());
-            builder.setStateCode(contract.getStateCode());
+
+            if (StringUtils.isNotBlank(contract.getCountyCode())) {
+                builder.setCountyCode(contract.getCountyCode());
+            }
+
+            if (StringUtils.isNotBlank(contract.getCityName())) {
+                builder.setCityName(contract.getCityName());
+            }
+
+            if (StringUtils.isNotBlank(contract.getStateCode())) {
+                builder.setStateCode(contract.getStateCode());
+            }
             return builder;
         }
 

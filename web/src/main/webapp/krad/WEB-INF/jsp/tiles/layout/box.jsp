@@ -28,8 +28,8 @@
       span style. For vertical orientation, the span style is set to block.
  --%>
  
-<c:if test="${!empty manager.styleClass}">
-  <c:set var="class" value="class=\"${manager.styleClass}\""/>
+<c:if test="${!empty manager.styleClassesAsString}">
+  <c:set var="class" value="class=\"${manager.styleClassesAsString}\""/>
 </c:if>
 
 <c:if test="${!empty manager.style}">

@@ -22,7 +22,9 @@
     
  --%>
  
+ <krad:attributeBuilder component="${field}"/>
+ 
  <a id="${field.id}" href="#" onClick="handleActionLink('${field.methodToCall}','${field.navigateToPageId}');return false;" 
-     class="${field.styleClass}">${field.actionLabel}</a>
+     ${style} ${class}>${field.actionLabel}</a>
      
 <krad:actionParameters componentId="${field.id}" parameters="${field.actionParameters}"/>     

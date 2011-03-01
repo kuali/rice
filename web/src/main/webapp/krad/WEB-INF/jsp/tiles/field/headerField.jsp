@@ -20,8 +20,8 @@
 <c:set var="headerOpenTag" value="<${field.headerLevel}>"/>
 <c:set var="headerCloseTag" value="</${field.headerLevel}>"/>
 
-<c:if test="${!empty field.headerStyleClass}">
-  <c:set var="class" value="class=\"${field.headerStyleClass}\""/>
+<c:if test="${!empty field.headerStyleClasses}">
+  <c:set var="class" value="class=\"${field.headerStyleClasses}\""/>
 </c:if>
 
 <c:if test="${!empty field.headerStyle}">

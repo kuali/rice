@@ -64,6 +64,13 @@
       </c:if>
       <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
     </c:forEach>
+    
+    <!-- custom script for the view -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+        ${view.onLoadScript}
+      })
+    </script>    
   </head>
 
   <!----------------------------------- #BEGIN BODY --------------------------------------->

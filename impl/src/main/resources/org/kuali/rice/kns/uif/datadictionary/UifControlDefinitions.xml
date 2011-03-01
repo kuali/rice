@@ -21,38 +21,46 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Controls -->
   
-  <bean id="TextControl" abstract="true" class="org.kuali.rice.kns.uif.control.TextControl" scope="prototype">
+  <bean id="TextControl" parent="TextControl-parentBean"/>
+  <bean id="TextControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.TextControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/text.jsp"/>
   </bean>  
   
-  <bean id="CheckboxControl" abstract="true" class="org.kuali.rice.kns.uif.control.CheckboxControl" scope="prototype">
+  <bean id="CheckboxControl" parent="CheckboxControl-parentBean"/>
+  <bean id="CheckboxControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.CheckboxControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/checkbox.jsp"/>
   </bean> 
   
-  <bean id="HiddenControl" abstract="true" class="org.kuali.rice.kns.uif.control.HiddenControl" scope="prototype">
+  <bean id="HiddenControl" parent="HiddenControl-parentBean"/>
+  <bean id="HiddenControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.HiddenControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/hidden.jsp"/>
   </bean>  
   
-  <bean id="TextAreaControl" abstract="true" class="org.kuali.rice.kns.uif.control.TextAreaControl" scope="prototype">
+  <bean id="TextAreaControl" parent="TextAreaControl-parentBean"/>
+  <bean id="TextAreaControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.TextAreaControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/textArea.jsp"/>
   </bean> 
   
-  <bean id="SelectControl" abstract="true" class="org.kuali.rice.kns.uif.control.SelectControl" scope="prototype">
+  <bean id="SelectControl" parent="SelectControl-parentBean"/>
+  <bean id="SelectControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.SelectControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/select.jsp"/>
   </bean>     
-  
-  <bean id="RadioGroupControl" abstract="true" class="org.kuali.rice.kns.uif.control.RadioGroupControl" scope="prototype">
+ 
+  <bean id="RadioGroupControl" parent="RadioGroupControl-parentBean"/>
+  <bean id="RadioGroupControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.RadioGroupControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/radioGroup.jsp"/>
       <property name="delimiter">
         <value><![CDATA[</br>]]></value>
       </property>
   </bean>   
   
-  <bean id="FileControl" abstract="true" class="org.kuali.rice.kns.uif.control.FileControl" scope="prototype">
+  <bean id="FileControl" parent="FileControl-parentBean"/>
+  <bean id="FileControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.FileControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/file.jsp"/>
   </bean>  
   
-  <bean id="DateControl" abstract="true" parent="TextControl">
+  <bean id="DateControl" parent="DateControl-parentBean"/>
+  <bean id="DateControl-parentBean" abstract="true" parent="TextControl">
       <property name="size" value="10"/>
       <property name="datePicker">
         <ref bean="DatePicker"/>

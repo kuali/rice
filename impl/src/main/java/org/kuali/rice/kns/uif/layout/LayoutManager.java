@@ -196,15 +196,15 @@ public interface LayoutManager extends Serializable {
 	 * e.g. 'header left'
 	 * </p>
 	 * 
-	 * @return String css style class
+	 * @return List<String> css style classes to apply
 	 */
-	public String getStyleClass();
+	public List<String> getStyleClasses();
 
 	/**
 	 * Setter for the layout manager div style class
 	 * 
 	 * @param styleClass
 	 */
-	public void setStyleClass(String styleClass);
+	public void setStyleClasses(List<String> styleClasses);
 
 }

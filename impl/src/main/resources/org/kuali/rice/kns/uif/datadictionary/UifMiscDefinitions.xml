@@ -21,19 +21,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Decorators -->
   
-  <bean id="AccordionDecorator" class="org.kuali.rice.kns.uif.decorator.AccordionDecorator" scope="prototype">
+  <bean id="AccordionDecorator" parent="AccordionDecorator-parentBean"/>
+  <bean id="AccordionDecorator-parentBean" abstract="true" class="org.kuali.rice.kns.uif.decorator.AccordionDecorator" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/decorator/accordion.jsp"/>
       <property name="accordionHeader">
         <bean parent="Header_Accordion"/>
       </property>
-      <property name="styleClass" value="tab-container"/>
+      <property name="styleClasses" value="tab-container"/>
   </bean> 
   
   <!-- Widgets -->
   
-  <bean id="DatePicker" class="org.kuali.rice.kns.uif.widget.DatePicker" scope="prototype">
+  <bean id="DatePicker" parent="DatePicker-parentBean"/>
+  <bean id="DatePicker-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.DatePicker" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/datePicker.jsp"/>
-      <property name="styleClass" value="calendar"/>
+      <property name="styleClasses" value="calendar"/>
       <property name="widgetOptions">
           <map>
               <entry key="showOn" value="button"/>
@@ -48,7 +50,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean> 
   
-  <bean id="TableTools" class="org.kuali.rice.kns.uif.widget.TableTools" scope="prototype">
+  <bean id="TableTools" parent="TableTools-parentBean"/>
+  <bean id="TableTools-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.TableTools" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableTools.jsp"/>
       <property name="widgetOptions">
           <map>
@@ -57,15 +60,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
-  <!-- Initializers -->
+  <!-- Modifiers -->
   
-  <bean id="CompareFieldCreateModifier" class="org.kuali.rice.kns.uif.modifier.CompareFieldCreateModifier" scope="prototype"/>
+  <bean id="CompareFieldCreateModifier" parent="CompareFieldCreateModifier-parentBean"/>
+  <bean id="CompareFieldCreateModifier-parentBean" abstract="true" class="org.kuali.rice.kns.uif.modifier.CompareFieldCreateModifier" scope="prototype"/>
   
-  <bean id="LabelFieldSeparateModifier" class="org.kuali.rice.kns.uif.modifier.LabelFieldSeparateModifier" scope="prototype"/>
+  <bean id="LabelFieldSeparateModifier" parent="LabelFieldSeparateModifier-parentBean"/>
+  <bean id="LabelFieldSeparateModifier-parentBean" abstract="true" class="org.kuali.rice.kns.uif.modifier.LabelFieldSeparateModifier" scope="prototype"/>
   
-  <bean id="ComponentConvertModifier" class="org.kuali.rice.kns.uif.modifier.ComponentConvertModifier" scope="prototype"/>
+  <bean id="ComponentConvertModifier" parent="ComponentConvertModifier-parentBean"/>
+  <bean id="ComponentConvertModifier-parentBean" abstract="true" class="org.kuali.rice.kns.uif.modifier.ComponentConvertModifier" scope="prototype"/>
   
-  <bean id="CheckboxToRadioConvertModifier" parent="ComponentConvertModifier">
+  <bean id="CheckboxToRadioConvertModifier" parent="CheckboxToRadioConvertModifier-parentBean"/>
+  <bean id="CheckboxToRadioConvertModifier-parentBean" abstract="true" parent="ComponentConvertModifier">
       <property name="componentTypeToReplace" value="org.kuali.rice.kns.uif.control.CheckboxControl"/>
       <property name="componentReplacementPrototype">
          <bean parent="RadioGroupControl">
@@ -80,15 +87,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>  
   
-  <!-- Other -->
-  
-  <bean id="BindingInfo" class="org.kuali.rice.kns.uif.BindingInfo" scope="prototype"/>
-  
-  <bean id="ComparableInfo" class="org.kuali.rice.kns.uif.modifier.ComparableInfo" scope="prototype"/>
-  
-  <bean id="MaintenanceCompareModifier" parent="CompareFieldCreateModifier">
+  <bean id="MaintenanceCompareModifier" parent="MaintenanceCompareModifier-parentBean"/>
+  <bean id="MaintenanceCompareModifier-parentBean" abstract="true" parent="CompareFieldCreateModifier">
       <property name="headerFieldPrototype">
-         <bean parent="HeaderFour" p:colSpan="2" p:headerStyleClass="fill"/>
+         <bean parent="HeaderFour" p:colSpan="2" p:headerStyleClasses="fill"/>
       </property>
       <property name="comparables">
          <list>
@@ -99,6 +101,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          </list>
       </property>
   </bean>
+  
+  <!-- Other -->
+  
+  <bean id="BindingInfo" class="org.kuali.rice.kns.uif.BindingInfo" scope="prototype"/>
+  
+  <bean id="ComparableInfo" class="org.kuali.rice.kns.uif.modifier.ComparableInfo" scope="prototype"/>
   
   <bean id="KeyLabelPair" class="org.kuali.rice.core.util.KeyLabelPair" scope="prototype"/>
   

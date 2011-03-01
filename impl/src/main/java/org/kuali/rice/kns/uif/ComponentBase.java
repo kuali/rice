@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.uif;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -60,7 +61,7 @@ public abstract class ComponentBase implements Component, Ordered, ScriptEventSu
 	private int colSpan;
 	private int rowSpan;
 	private String style;
-	private String styleClass;
+	private List<String> styleClasses;
 
 	private int order;
 
@@ -88,13 +89,14 @@ public abstract class ComponentBase implements Component, Ordered, ScriptEventSu
 	private List<ComponentModifier> componentModifiers;
 
 	public ComponentBase() {
-		componentModifiers = new ArrayList<ComponentModifier>();
-
 		order = Ordered.INITIAL_ORDER_VALUE;
 		colSpan = 1;
 		rowSpan = 1;
 
 		render = true;
+
+		styleClasses = new ArrayList<String>();
+		componentModifiers = new ArrayList<ComponentModifier>();
 	}
 
 	/**
@@ -382,17 +384,44 @@ public abstract class ComponentBase implements Component, Ordered, ScriptEventSu
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getStyleClass()
+	 * @see org.kuali.rice.kns.uif.Component#getStyleClasses()
 	 */
-	public String getStyleClass() {
-		return this.styleClass;
+	public List<String> getStyleClasses() {
+		return this.styleClasses;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setStyleClass(java.lang.String)
+	 * @see org.kuali.rice.kns.uif.Component#setStyleClasses(java.util.List)
 	 */
-	public void setStyleClass(String styleClass) {
-		this.styleClass = styleClass;
+	public void setStyleClasses(List<String> styleClasses) {
+		this.styleClasses = styleClasses;
+	}
+
+	/**
+	 * Builds the HTML class attribute string by combining the styleClasses list
+	 * with a space delimiter
+	 * 
+	 * @return String class attribute string
+	 */
+	public String getStyleClassesAsString() {
+		if (styleClasses != null) {
+			return StringUtils.join(styleClasses, " ");
+		}
+
+		return "";
+	}
+
+	/**
+	 * Sets the styleClasses list from the given string that has the classes
+	 * delimited by space. This is a convenience for configuration. If a child
+	 * bean needs to inherit the classes from the parent, it should configure as
+	 * a list and use merge="true"
+	 * 
+	 * @param styleClasses
+	 */
+	public void setStyleClasses(String styleClasses) {
+		String[] classes = StringUtils.split(styleClasses);
+		this.styleClasses = Arrays.asList(classes);
 	}
 
 	/**

@@ -25,7 +25,7 @@
 
 <form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" 
                rows="${control.rows}" cols="${control.cols}" 
-               cssClass="${control.styleClass}" cssStyle="${control.style}"
+               cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
                tabindex="${control.tabIndex}"/>
                
 <c:if test="${(!empty control.watermarkText)}">

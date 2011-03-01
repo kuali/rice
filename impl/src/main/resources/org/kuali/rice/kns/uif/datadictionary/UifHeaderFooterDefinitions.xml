@@ -21,48 +21,57 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Base Headers -->
   
-  <bean id="Header" abstract="true" class="org.kuali.rice.kns.uif.field.HeaderField" scope="prototype">
+  <bean id="Header" parent="Header-parentBean"/>
+  <bean id="Header-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.HeaderField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/headerField.jsp"/>
       <property name="headerLevel" value="h1"/>
   </bean>
   
-  <bean id="HeaderTwo" abstract="true" parent="Header">
+  <bean id="HeaderTwo" parent="HeaderTwo-parentBean"/>
+  <bean id="HeaderTwo-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h2"/>
   </bean>
   
-  <bean id="HeaderThree" abstract="true" parent="Header">
+  <bean id="HeaderThree" parent="HeaderThree-parentBean"/>
+  <bean id="HeaderThree-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h3"/>
   </bean>
   
-  <bean id="HeaderFour" abstract="true" parent="Header">
+  <bean id="HeaderFour" parent="HeaderFour-parentBean"/>
+  <bean id="HeaderFour-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h4"/>
   </bean>
   
-  <bean id="HeaderFive" abstract="true" parent="Header">
+  <bean id="HeaderFive" parent="HeaderFive-parentBean"/>
+  <bean id="HeaderFive-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h5"/>
   </bean>
   
-  <bean id="HeaderSix" abstract="true" parent="Header">
+  <bean id="HeaderSix" parent="HeaderSix-parentBean"/>
+  <bean id="HeaderSix-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h6"/>
   </bean>      
   
-  <bean id="HeaderView" abstract="true" parent="Header">
-      <property name="styleClass" value="view_header"/>
+  <bean id="HeaderView" parent="HeaderView-parentBean"/>
+  <bean id="HeaderView-parentBean" abstract="true" parent="Header">
+      <property name="styleClasses" value="view_header"/>
   </bean>
   
-  <bean id="HeaderPage" abstract="true" parent="Header">
-      <property name="styleClass" value="page_header"/>
+  <bean id="HeaderPage" parent="HeaderPage-parentBean"/>
+  <bean id="HeaderPage-parentBean" abstract="true" parent="Header">
+      <property name="styleClasses" value="page_header"/>
   </bean>  
   
-  <bean id="Header_Accordion" abstract="true" parent="Header">
-      <property name="styleClass" value="grouping-header-expandable"/>
+  <bean id="Header_Accordion" parent="Header_Accordion-parentBean"/>
+  <bean id="Header_Accordion-parentBean" abstract="true" parent="Header">
+      <property name="styleClasses" value="grouping-header-expandable"/>
   </bean>
 
   <!-- Common Headers --> 
   <bean id="HeaderPage_NoActions" parent="HeaderPage">
     <property name="group">
       <bean parent="GroupBodyOnly">
-        <property name="styleClass" value="right"/>
+        <property name="styleClasses" value="right"/>
         <property name="layoutManager.orientation" value="HORIZONTAL"/> 
       </bean>
     </property>
@@ -81,21 +90,22 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="HeaderViewDocument" abstract="true" parent="HeaderView">
-     <property name="headerStyleClass" value="left"/>
+     <property name="headerStyleClasses" value="left"/>
      <property name="group">
-       <bean parent="Group_DocumentHeader" p:styleClass="group_docheader"/>
+       <bean parent="Group_DocumentHeader" p:styleClasses="group_docheader"/>
      </property>
   </bean>  
   
   <!-- Base Footers -->
-    
-  <bean id="Footer" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
+   
+  <bean id="Footer" parent="Footer-parentBean"/> 
+  <bean id="Footer-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="renderHeader" value="false"/>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
       </property> 
-      <property name="styleClass" value="globalbuttons"/>
+      <property name="styleClasses" value="globalbuttons"/>
   </bean>  
   
   <!-- Common Footers -->

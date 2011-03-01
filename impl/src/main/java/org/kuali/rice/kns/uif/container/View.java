@@ -726,13 +726,24 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * onSubmit script configured on the <code>View</code>, gets placed on the
+	 * onSubmit script configured on the <code>View</code> gets placed on the
 	 * form element
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnSubmit()
 	 */
 	@Override
 	public boolean getSupportsOnSubmit() {
+		return true;
+	}
+
+	/**
+	 * onLoad script configured on the <code>View</code> gets placed in a
+	 * document ready jQuery block
+	 * 
+	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
+	 */
+	@Override
+	public boolean getSupportsOnLoad() {
 		return true;
 	}
 

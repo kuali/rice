@@ -21,7 +21,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Base Groups -->
   
-  <bean id="Group" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
+  <bean id="Group" abstract="true" parent="Group-parentBean"/>
+  <bean id="Group-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="header">
         <bean parent="HeaderTwo"/>
@@ -30,11 +31,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>  
       <property name="summaryMessageField">
-        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClass="summary"/>
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
       </property>            
   </bean> 
   
-  <bean id="GroupGridLayout" abstract="true" parent="Group">
+  <bean id="GroupGridLayout" abstract="true" parent="GroupGridLayout-parentBean"/>
+  <bean id="GroupGridLayout-parentBean" abstract="true" parent="Group">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property>
@@ -45,34 +47,40 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
-  <bean id="GroupBodyOnly" abstract="true" parent="Group">
+  <bean id="GroupBodyOnly" abstract="true" parent="GroupBodyOnly-parentBean"/>
+  <bean id="GroupBodyOnly-parentBean" abstract="true" parent="Group">
       <property name="renderHeader" value="false"/>
       <property name="renderFooter" value="false"/>
   </bean>  
   
-  <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
+  <bean id="NavigationGroup" abstract="true" parent="NavigationGroup-parentBean"/>
+  <bean id="NavigationGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/navigationGroup.jsp"/>
   </bean>
   
-  <bean id="NavigationGroupMenu" abstract="true" parent="NavigationGroup">
+  <bean id="NavigationGroupMenu" abstract="true" parent="NavigationGroupMenu-parentBean"/>
+  <bean id="NavigationGroupMenu-parentBean" abstract="true" parent="NavigationGroup">
       <property name="navigationType" value="VERTICAL_MENU"/>
   </bean>
   
-  <bean id="GroupSection" abstract="true" parent="Group">
-      <property name="styleClass" value="wrap"/>
+  <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
+  <bean id="GroupSection-parentBean" abstract="true" parent="Group">
+      <property name="styleClasses" value="wrap"/>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property> 
   </bean>   
   
-  <bean id="GroupSection_Accordion" abstract="true" parent="GroupSection">
+  <bean id="GroupSection_Accordion" abstract="true" parent="GroupSection_Accordion-parentBean"/>
+  <bean id="GroupSection_Accordion-parentBean" abstract="true" parent="GroupSection">
       <property name="decorator">
         <bean parent="AccordionDecorator"/>
       </property>
       <property name="renderHeader" value="false"/>
   </bean> 
   
-  <bean id="GroupSectionGridLayout_Accordion" abstract="true" parent="GroupSection_Accordion">
+  <bean id="GroupSectionGridLayout_Accordion" abstract="true" parent="GroupSectionGridLayout_Accordion-parentBean"/>
+  <bean id="GroupSectionGridLayout_Accordion-parentBean" abstract="true" parent="GroupSection_Accordion">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property> 
@@ -83,7 +91,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>      
   </bean>    
   
-  <bean id="CollectionGroup" abstract="true" class="org.kuali.rice.kns.uif.container.CollectionGroup" parent="Group">
+  <bean id="CollectionGroup" abstract="true" parent="CollectionGroup-parentBean"/>
+  <bean id="CollectionGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.CollectionGroup" parent="Group">
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
@@ -109,20 +118,23 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
   </bean> 
   
-  <bean id="CollectionGroup_Accordion" abstract="true" parent="CollectionGroup">
+  <bean id="CollectionGroup_Accordion" abstract="true" parent="CollectionGroup_Accordion-parentBean"/>
+  <bean id="CollectionGroup_Accordion-parentBean" abstract="true" parent="CollectionGroup">
       <property name="decorator">
         <bean parent="AccordionDecorator"/>
       </property>
       <property name="renderHeader" value="false"/>
   </bean>
   
-  <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroup">
+  <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroupTableLayout-parentBean"/>
+  <bean id="CollectionGroupTableLayout-parentBean" abstract="true" parent="CollectionGroup">
       <property name="layoutManager">
         <bean parent="TableLayoutManager"/>
       </property> 
   </bean>   
   
-  <bean id="CollectionGroupTableLayout_Accordion" abstract="true" parent="CollectionGroupTableLayout">
+  <bean id="CollectionGroupTableLayout_Accordion" abstract="true" parent="CollectionGroupTableLayout_Accordion-parentBean"/>
+  <bean id="CollectionGroupTableLayout_Accordion-parentBean" abstract="true" parent="CollectionGroupTableLayout">
       <property name="decorator">
         <bean parent="AccordionDecorator"/>
       </property>  
@@ -132,7 +144,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <!-- Common Groups -->
   
   <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
-      <property name="styleClass" value="group_expandclose"/>
+      <property name="styleClasses" value="group_expandclose"/>
       <property name="items">
          <list> 
            <bean parent="ActionField_ExpandAccordions"/>
@@ -143,7 +155,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="Group_ExpandCloseActionsRequired" parent="GroupBodyOnly">
-      <property name="styleClass" value="group_expandclose"/>
+      <property name="styleClasses" value="group_expandclose"/>
       <property name="items">
          <list> 
            <bean parent="ActionField_ExpandAccordions"/>
@@ -185,7 +197,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="id" value="group_docnotes"/>
       <property name="title" value="Notes and Attachments"/>
       <property name="propertyName" value="documentHeader.boNotes"/>
-      <property name="styleClass" value="tableborders"/>
+      <property name="styleClasses" value="tableborders"/>
       <property name="collectionObjectClass" value="org.kuali.rice.kns.bo.Note"/>
       <property name="layoutManager.sequencePropertyName" value="notePostedTimestamp"/>
       <property name="layoutManager.tableTools.render" value="false"/>

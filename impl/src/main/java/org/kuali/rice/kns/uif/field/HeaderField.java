@@ -31,7 +31,7 @@ public class HeaderField extends GroupField {
 
 	private String headerText;
 	private String headerLevel;
-	private String headerStyleClass;
+	private String headerStyleClasses;
 	private String headerStyle;
 
 	public HeaderField() {
@@ -85,19 +85,19 @@ public class HeaderField extends GroupField {
 	 * </p>
 	 * 
 	 * @return String style class
-	 * @see org.kuali.rice.kns.uif.Component.getStyleClass()
+	 * @see org.kuali.rice.kns.uif.Component.getStyleClasses()
 	 */
-	public String getHeaderStyleClass() {
-		return this.headerStyleClass;
+	public String getHeaderStyleClasses() {
+		return this.headerStyleClasses;
 	}
 
 	/**
 	 * Setter for the header style class
 	 * 
-	 * @param headerStyleClass
+	 * @param headerStyleClasses
 	 */
-	public void setHeaderStyleClass(String headerStyleClass) {
-		this.headerStyleClass = headerStyleClass;
+	public void setHeaderStyleClasses(String headerStyleClasses) {
+		this.headerStyleClasses = headerStyleClasses;
 	}
 
 	/**

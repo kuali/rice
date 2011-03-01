@@ -24,7 +24,15 @@
       Works on a collection group to lay out the items as a table.
  --%>
  
-<table id="${manager.id}" style="${manager.style}" class="${manager.styleClass}">
+<c:if test="${!empty manager.styleClassesAsString}">
+  <c:set var="class" value="class=\"${manager.styleClassesAsString}\""/>
+</c:if>
+
+<c:if test="${!empty manager.style}">
+  <c:set var="style" value="style=\"${manager.style}\""/>
+</c:if> 
+ 
+<table id="${manager.id}" ${style} ${class}>
   <thead>
      <krad:grid items="${manager.headerFields}" numberOfColumns="${manager.numberOfColumns}" 
                 renderHeaderColumns="true"/>

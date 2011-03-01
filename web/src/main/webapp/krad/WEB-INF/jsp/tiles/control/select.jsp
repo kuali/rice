@@ -25,7 +25,7 @@
  
 <form:select id="${field.id}" path="${field.bindingInfo.bindingPath}" 
              size="${control.size}" multiple="${control.multiple}"
-             cssClass="${control.styleClass}" 
+             cssClass="${control.styleClassesAsString}" 
              tabindex="${control.tabIndex}">
              
   <c:forEach items="${control.options}" var="option" varStatus="optionVarStatus">

@@ -34,17 +34,19 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
  * <li>Java Class (the Component implementation</li>
  * <li>>JSP Template Renderer</li>
  * </ul>
+ * 
  * There are three basic types of components:
  * <ul>
- * <li>Simple Components: <code>Control</code>, widgets</li>
  * <li>Container Components: <code>View</code>, <code>Group</code></li>
- * <li>Complex Components: <code>Field</code></li>
+ * <li>Field Components: <code>Field</code></li>
+ * <li>Widget Components: <code>Widget</code></li>
  * </ul>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  * @see org.kuali.rice.kns.uif.container.Container
  * @see org.kuali.rice.kns.uif.field.Field
+ * @see org.kuali.rice.kns.uif.widget.Widget
  */
 public interface Component extends Serializable {
 
@@ -331,10 +333,10 @@ public interface Component extends Serializable {
 	 * CSS style class(s) to be applied to the component
 	 * 
 	 * <p>
-	 * Declares additional style classes for the component. Multiple classes are
-	 * specified with a space delimiter. This is used by the renderer to set the
-	 * class attribute on the corresponding element. The class(s) declared must
-	 * be available in the common style sheets or the style sheets specified for
+	 * Declares style classes for the component. Multiple classes are specified
+	 * with a space delimiter. This is used by the renderer to set the class
+	 * attribute on the corresponding element. The class(s) declared must be
+	 * available in the common style sheets or the style sheets specified for
 	 * the view
 	 * </p>
 	 * 
@@ -342,16 +344,16 @@ public interface Component extends Serializable {
 	 * e.g. 'header left'
 	 * </p>
 	 * 
-	 * @return String css style class
+	 * @return List<String> css style classes to apply
 	 */
-	public String getStyleClass();
+	public List<String> getStyleClasses();
 
 	/**
-	 * Setter for the components style class
+	 * Setter for the components style classes
 	 * 
 	 * @param styleClass
 	 */
-	public void setStyleClass(String styleClass);
+	public void setStyleClasses(List<String> styleClasses);
 
 	/**
 	 * Number of places the component should take up horizontally in the

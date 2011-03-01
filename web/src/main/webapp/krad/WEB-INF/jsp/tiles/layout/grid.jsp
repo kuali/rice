@@ -33,8 +33,8 @@
       The majority of logic is implemented in grid.tag
  --%>
 
-<c:if test="${!empty manager.styleClass}">
-  <c:set var="class" value="class=\"${manager.styleClass}\""/>
+<c:if test="${!empty manager.styleClassesAsString}">
+  <c:set var="class" value="class=\"${manager.styleClassesAsString}\""/>
 </c:if>
 
 <c:if test="${!empty manager.style}">

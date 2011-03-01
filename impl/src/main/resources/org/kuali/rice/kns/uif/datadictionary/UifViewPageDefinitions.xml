@@ -21,9 +21,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Base Views -->
   
-  <bean id="View" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
+  <bean id="View" abstract="true" parent="View-parentBean"/>
+  <bean id="View-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
       <property name="viewHelperServiceBeanId" value="ViewHelperService"/>
-      <property name="styleClass" value="workarea"/>
+      <property name="styleClasses" value="workarea"/>
       <property name="header">
         <bean parent="HeaderView"/>
       </property> 
@@ -37,7 +38,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
-  <bean id="FormView" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
+  <bean id="FormView" abstract="true" parent="FormView-parentBean"/>
+  <bean id="FormView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
       <property name="onSubmitScript" value="createLoading(true);return hasFormAlreadyBeenSubmitted();"/>
       <property name="footer">
@@ -47,7 +49,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Common Views -->
   
-  <bean id="InquiryView" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
+  <bean id="InquiryView" abstract="true" parent="InquiryView-parentBean"/>
+  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
@@ -63,7 +66,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      </property>     
   </bean>
   
-  <bean id="LookupView" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
+  <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
+  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiLookupable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
@@ -78,7 +82,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
-  <bean id="DocumentView" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="FormView">
+  <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>
+  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="FormView">
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.DocumentFormBase"/>
      <property name="defaultBindingObjectPath" value="document"/>
      <property name="footer">
@@ -86,7 +91,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      </property>     
   </bean>
   
-  <bean id="MaintenanceView" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
+  <bean id="MaintenanceView" abstract="true" parent="MaintenanceView-parentBean"/>
+  <bean id="MaintenanceView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
@@ -112,7 +118,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Base Pages -->
    
-  <bean id="Page" abstract="true" parent="Group">
+  <bean id="Page" parent="Page-parentBean"/>
+  <bean id="Page-parentBean" abstract="true" parent="Group">
       <property name="header">
         <bean parent="HeaderPage"/>
       </property>
@@ -123,19 +130,22 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    
   <!-- Common Pages --> 
   
-  <bean id="Page_Accordion" parent="Page">
+  <bean id="Page_Accordion" parent="Page_Accordion-parentBean"/>
+  <bean id="Page_Accordion-parentBean" abstract="true" parent="Page">
       <property name="header">
          <ref bean="HeaderPage_AccordionEdit"/>
       </property>
   </bean>
   
-  <bean id="PageInquiry" parent="Page">
+  <bean id="PageInquiry" parent="PageInquiry-parentBean"/>
+  <bean id="PageInquiry-parentBean" abstract="true" parent="Page">
       <property name="header">
          <ref bean="HeaderPage_AccordionReadOnly"/>
       </property>
   </bean>
-            
-  <bean id="PageLookup" parent="Page">
+     
+  <bean id="PageLookup" parent="PageLookup-parentBean"/>          
+  <bean id="PageLookup-parentBean" abstract="true" parent="Page">
     <property name="renderFooter" value="false"/>
       <property name="header">
         <ref bean="HeaderPage_NoActions"/>

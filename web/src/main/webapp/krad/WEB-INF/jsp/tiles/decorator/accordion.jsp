@@ -33,12 +33,12 @@
 
 <c:set var="isOpen" value="${decorator.defaultOpen}"/>
 
-<div id="${accordionHeader.id}" class="${accordionHeader.styleClass}">
+<div id="${accordionHeader.id}" class="${accordionHeader.styleClassesAsString}">
   <h2><a href="#" id="${accordionToggleLink}"></a></h2>
 </div>
 
 <%-- render next decorator or the decorated group --%>
-<div id="${accordionDiv}" class="${decorator.styleClass} accordion">
+<div id="${accordionDiv}" class="${decorator.styleClassesAsString} accordion">
   <krad:template component="${decoratorChain.decoratedComponent}" templateParameters="${templateParameters}"/>
 </div>
 

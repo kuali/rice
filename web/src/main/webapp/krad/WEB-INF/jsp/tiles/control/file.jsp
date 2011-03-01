@@ -24,4 +24,4 @@
  --%>
  
 <input type="file" id="${field.id}"
-       size="${control.size}" class="${control.styleClass}" tabIndex="${control.tabIndex}"/> 
+       size="${control.size}" class="${control.styleClassesAsString}" tabIndex="${control.tabIndex}"/> 

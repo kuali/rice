@@ -29,8 +29,8 @@ cleaner and actually prevents problems from having any empty attribute value in 
 for style. The attribute strings can be referenced by the calling template through the exported
 variables --%>  
 
-   <c:if test="${!empty component.styleClass}">
-      <c:set var="class" value="class=\"${component.styleClass}\""/>
+   <c:if test="${!empty component.styleClassesAsString}">
+      <c:set var="class" value="class=\"${component.styleClassesAsString}\""/>
    </c:if>
 
    <c:if test="${!empty component.style}">

@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +15,7 @@
  */
 package org.kuali.rice.kew.util;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
-import org.kuali.rice.core.api.parameter.Parameter;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -68,30 +64,6 @@ public final class Utilities {
      */
     public static String substituteConfigParameters(String string) {
         return SUBSTITUTOR.replace(string);
-    }
-    
-    public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
-        if (parameter == null) {
-            return null;
-        }
-        return parameter.getValue();
-    }
-
-    public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name) {
-    	return getKNSParameterBooleanValue(nameSpace, detailType, name, false);
-    }
-    
-    public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
-        Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(nameSpace, detailType, name);
-        if (parameter == null || StringUtils.isBlank(parameter.getValue())) {
-            return defaultValue;
-        }
-        if (parameter.getValue().trim().equals("Y")) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public static String parseGroupNamespaceCode(String namespaceAndNameCombo) {

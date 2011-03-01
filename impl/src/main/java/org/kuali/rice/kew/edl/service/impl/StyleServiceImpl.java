@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +19,7 @@ package org.kuali.rice.kew.edl.service.impl;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
@@ -32,7 +32,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.StyleXmlParser;
 import org.kuali.rice.kew.xml.export.StyleXmlExporter;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -170,7 +169,7 @@ public class StyleServiceImpl implements StyleService {
                 return null;
             }
 
-            boolean useXSLTC = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND);
+            boolean useXSLTC = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND);
             if (useXSLTC) {
                 LOG.info("using xsltc to compile stylesheet");
                 String key = "javax.xml.transform.TransformerFactory";
@@ -187,7 +186,7 @@ public class StyleServiceImpl implements StyleService {
             if (useXSLTC) {
                 factory.setAttribute("translet-name",name);
                 factory.setAttribute("generate-translet",Boolean.TRUE);
-                String debugTransform = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND);
+                String debugTransform = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND);
                 if (debugTransform.trim().equals("Y")) {
                     factory.setAttribute("debug", Boolean.TRUE);
                 }

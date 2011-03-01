@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +17,8 @@ package org.kuali.rice.kew.mail.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.mail.EmailBody;
-import org.kuali.rice.core.mail.EmailFrom;
-import org.kuali.rice.core.mail.EmailSubject;
-import org.kuali.rice.core.mail.EmailTo;
-import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.core.mail.*;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -30,7 +26,9 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.mail.*;
+import org.kuali.rice.kew.mail.CustomEmailAttribute;
+import org.kuali.rice.kew.mail.DailyEmailJob;
+import org.kuali.rice.kew.mail.WeeklyEmailJob;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -38,7 +36,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -93,7 +90,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public String getApplicationEmailAddress() {
 		// first check the configured value
-		String fromAddress = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+		String fromAddress = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
 		// if there's no value configured, use the default
 		if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
 			fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;
@@ -146,7 +143,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 						         false);
 			} else {
 				mailer.sendEmail(getEmailFrom(documentType),
-						         new EmailTo(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
+						         new EmailTo(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
 								 subject,
 								 body,
 								 false);
@@ -544,10 +541,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected boolean sendActionListEmailNotification() {
-        LOG.debug("actionlistsendconstant: " + Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+        LOG.debug("actionlistsendconstant: " + CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 
         return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
-		        .equals(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+		        .equals(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 	}
 
 	public void scheduleBatchEmailReminders() throws Exception {

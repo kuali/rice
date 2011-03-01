@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +15,10 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -55,6 +47,9 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -153,9 +148,9 @@ public class ActionRequestFactory {
     public List<ActionRequestValue> generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
             String notificationRequestCode, String actionTakenCode)
     {
-        String groupName =  Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE,
-		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
-		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
+        String groupName =  CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE,
+                KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
+                KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
         
         
         Group notifyExclusionWorkgroup = null;

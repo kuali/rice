@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +15,23 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.*;
 
 /**
  *
@@ -749,17 +742,17 @@ public class StandardDocumentSearchResultProcessor implements
 	}
 
 	public boolean isDocumentHandlerPopup() {
-	    return Utilities.getKNSParameterBooleanValue(
-	            KEWConstants.KEW_NAMESPACE,
-	            KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
-	            KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND);
+	    return CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+                KEWConstants.KEW_NAMESPACE,
+                KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
+                KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND);
 	}
 
 	public boolean isRouteLogPopup() {
-		return Utilities.getKNSParameterBooleanValue(
-				KEWConstants.KEW_NAMESPACE,
-				KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
-				KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND);
+		return CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+                KEWConstants.KEW_NAMESPACE,
+                KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
+                KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND);
 	}
 
 	public String getDocHandlerUrlPrefix(String routeHeaderId,

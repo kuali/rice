@@ -18,6 +18,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.impl.postalcode
 
 import groovy.mock.interceptor.MockFor
@@ -31,7 +33,7 @@ class PostalCodeServiceImplTest {
 
     private final shouldFail = new GroovyTestCase().&shouldFail
 
-    static samplePostalCodes = new HashMap<List<String, String>, PostalCodeBo>()
+    static samplePostalCodes = new HashMap<List<String>, PostalCodeBo>()
     static samplePostalCodesPerCountry = new HashMap<String, List<PostalCodeBo>>()
 
     private def MockFor mockBoService

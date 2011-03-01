@@ -24,7 +24,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="rice-core-api" />
-    <orderEntry type="library" name="Maven: ojb:db-ojb:1.0.4-patch4" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
@@ -34,6 +34,7 @@
     <orderEntry type="library" name="Maven: commons-transaction:commons-transaction:1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.4" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
+    <orderEntry type="library" name="Maven: hsqldb:hsqldb:1.8.0.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />

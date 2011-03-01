@@ -1137,7 +1137,9 @@
       <option name="limit" value="100" />
     </inspection_tool>
     <inspection_tool class="MultipleBindingAnnotations" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="MultipleDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="MultipleDeclaration" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="ignoreForLoopDeclarations" value="true" />
+    </inspection_tool>
     <inspection_tool class="MultipleExceptionsDeclaredOnTestMethod" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="MultipleInjectedConstructorsForClass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MultipleMethodDesignatorsInspection" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -1354,8 +1356,6 @@
     <inspection_tool class="PhpUnreachableStatementInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpUnusedLocalVariableInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="DONT_REPORT_FOREACH_VALUE" value="false" />
-      <option name="DONT_REPORT_CATCH_EXCEPTION" value="true" />
-      <option name="DONT_REPORT_INSIDE_LIST" value="false" />
     </inspection_tool>
     <inspection_tool class="PhpUnusedParameterInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpUnusedPrivateFieldInspection" enabled="true" level="WARNING" enabled_by_default="true" />

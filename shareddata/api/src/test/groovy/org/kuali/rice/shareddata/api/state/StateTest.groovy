@@ -16,10 +16,6 @@
 
 
 
-
-
-
-
 package org.kuali.rice.shareddata.api.state
 
 import javax.xml.bind.JAXBContext

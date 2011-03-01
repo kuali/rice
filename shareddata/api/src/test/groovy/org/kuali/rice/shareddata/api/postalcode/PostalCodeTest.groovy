@@ -18,6 +18,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.api.postalcode
 
 import javax.xml.bind.JAXBContext
@@ -121,6 +123,11 @@ class PostalCodeTest {
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_countyCode_whitespace() {
         PostalCode.Builder.create(CODE,COUNTRY_CODE).setCountyCode("  ");
+    }
+
+    @Test
+    void test_create_only_required() {
+        PostalCode.Builder.create(PostalCode.Builder.create(CODE, COUNTRY_CODE)).build();
     }
 
     @Test

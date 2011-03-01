@@ -16,6 +16,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.api.country
 
 import javax.xml.bind.JAXBContext
@@ -30,6 +32,11 @@ import org.junit.Test
 class CountryTest {
 
   private final shouldFail = new GroovyTestCase().&shouldFail
+
+    @Test
+    void test_create_only_required() {
+        Country.Builder.create(Country.Builder.create("US", null, "United States", false, true)).build();
+    }
 
   @Test
   public void testCountryBuilderPassedInParams() {

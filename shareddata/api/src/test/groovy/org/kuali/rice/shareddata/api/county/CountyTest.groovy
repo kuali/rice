@@ -18,6 +18,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.api.county
 
 import javax.xml.bind.JAXBContext
@@ -105,6 +107,11 @@ class CountyTest {
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_whitespace() {
         County.Builder.create(CODE, NAME, COUNTRY_CODE, "  ");
+    }
+
+    @Test
+    void test_create_only_required() {
+        County.Builder.create(County.Builder.create(CODE, NAME, COUNTRY_CODE, STATE_CODE)).build();
     }
 
     @Test

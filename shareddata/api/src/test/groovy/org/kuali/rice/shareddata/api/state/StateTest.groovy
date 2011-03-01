@@ -18,6 +18,8 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.api.state
 
 import javax.xml.bind.JAXBContext
@@ -88,6 +90,11 @@ class StateTest {
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_whitespace() {
         State.Builder.create(CODE, NAME, "  ");
+    }
+
+    @Test
+    void test_create_only_required() {
+        State.Builder.create(State.Builder.create(CODE, NAME, COUNTRY_CODE)).build();
     }
 
     @Test

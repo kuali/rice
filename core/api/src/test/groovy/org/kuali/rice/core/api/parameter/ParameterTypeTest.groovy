@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+
 package org.kuali.rice.core.api.parameter
 
 import javax.xml.bind.JAXBContext
@@ -47,7 +49,12 @@ class ParameterTypeTest {
         ParameterType.Builder.create("  ");
     }
 
-        @Test
+    @Test
+    void test_create_only_required() {
+        ParameterType.Builder.create(ParameterType.Builder.create(PARAMETER_TYPE_CODE)).build();
+    }
+
+    @Test
     void happy_path() {
         ParameterType.Builder.create(PARAMETER_TYPE_CODE);
     }

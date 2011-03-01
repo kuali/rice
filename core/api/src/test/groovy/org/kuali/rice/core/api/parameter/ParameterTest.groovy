@@ -16,6 +16,8 @@
 
 
 
+
+
 package org.kuali.rice.core.api.parameter;
 
 
@@ -121,6 +123,11 @@ public class ParameterTest {
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fifth_whitespace() {
         Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, null);
+    }
+
+    @Test
+    void test_create_only_required() {
+        Parameter.Builder.create(Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE))).build();
     }
 
     @Test

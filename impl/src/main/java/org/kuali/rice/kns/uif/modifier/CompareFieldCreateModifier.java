@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.jetty.util.log.Log;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.Group;
@@ -45,6 +45,8 @@ import org.kuali.rice.kns.uif.util.ComponentUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CompareFieldCreateModifier extends ComponentModifierBase {
+    private static final Logger LOG = Logger.getLogger(CompareFieldCreateModifier.class);
+            
 	private static final long serialVersionUID = -6285531580512330188L;
 
 	private int defaultOrderSequence;
@@ -89,7 +91,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 			return;
 		}
 
-		Log.info("Running compare field initializer on component: " + component.getId());
+		LOG.info("Running compare field initializer on component: " + component.getId());
 
 		// list to hold the generated compare items
 		List<Component> comparisonItems = new ArrayList<Component>();

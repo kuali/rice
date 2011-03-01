@@ -50,7 +50,7 @@ public class CountyServiceImpl implements CountyService {
     }
 
     @Override
-    public List<County> getAllPostalCodesInCountryAndState(String countryCode, String stateCode) {
+    public List<County> findAllCountiesInCountryAndState(String countryCode, String stateCode) {
         if (StringUtils.isBlank(countryCode)) {
             throw new IllegalArgumentException(("countryCode is null"));
         }

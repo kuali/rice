@@ -5,7 +5,10 @@
     <output-test url="file://$MODULE_DIR$/../../../api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../api">
       <sourceFolder url="file://$MODULE_DIR$/../../../api/src/main/java" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../api/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../api/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../api/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

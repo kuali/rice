@@ -11,7 +11,10 @@
     <content url="file://$MODULE_DIR$/../../../sampleapp">
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -68,41 +71,41 @@
     <orderEntry type="library" name="Maven: javax.jms:jms:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk16:1.45" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.3" level="project" />
     <orderEntry type="library" name="Maven: xml-resolver:xml-resolver:1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-api:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-common-utilities:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-api:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-common-utilities:2.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.commons.schema:XmlSchema:1.4.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.woodstox:woodstox-core-asl:4.0.8" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.woodstox:stax2-api:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.neethi:neethi:2.0.4" level="project" />
     <orderEntry type="library" name="Maven: wsdl4j:wsdl4j:1.6.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-common-schemas:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-core:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-tools-common:2.3.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-common-schemas:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-core:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-tools-common:2.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-common:2.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jettison:jettison:1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.5.10" level="project" />
     <orderEntry type="library" name="Maven: org.apache.santuario:xmlsec:1.4.4" level="project" />
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.acegisecurity:acegi-security:1.0.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.acegisecurity:acegi-security-cas:1.0.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: cas:cas-server:3.0.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: cas:cas:2.0.12" level="project" />
     <orderEntry type="library" name="Maven: cas:casclient:2.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" level="project" />
-    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: javax.mail:mail:1.4.4" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
@@ -111,7 +114,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: javax.resource:connector-api:1.5" level="project" />
     <orderEntry type="library" name="Maven: commons-httpclient:commons-httpclient:3.1" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:2.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.9" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />

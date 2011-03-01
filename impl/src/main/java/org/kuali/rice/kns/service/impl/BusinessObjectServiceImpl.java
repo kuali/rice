@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,31 +49,24 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     private PersonService personService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
 
-    private boolean illegalBusinessObjectsForSaveInitialized = false;
-    private Set<String> illegalBusinessObjectsForSave = new HashSet<String>();
+    private boolean illegalBusinessObjectsForSaveInitialized;
+    private final Set<String> illegalBusinessObjectsForSave = new HashSet<String>();
     
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#save(org.kuali.bo.BusinessObject)
-     */
+    @Override
     @Transactional
     public PersistableBusinessObject save(PersistableBusinessObject bo) {
     	validateBusinessObjectForSave(bo);
         return businessObjectDao.save(bo);
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#save(java.util.List)
-     */
+    @Override
     @Transactional
     public List<? extends PersistableBusinessObject> save(List<? extends PersistableBusinessObject> businessObjects) {
         validateBusinessObjectForSave(businessObjects);
         return businessObjectDao.save(businessObjects);
     }
 
-    /**
-     * 
-     * @see org.kuali.rice.kns.service.BusinessObjectService#linkAndSave(org.kuali.rice.kns.bo.BusinessObject)
-     */
+    @Override
     @Transactional
     public PersistableBusinessObject linkAndSave(PersistableBusinessObject bo) {
     	validateBusinessObjectForSave(bo);
@@ -81,22 +74,13 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         return businessObjectDao.save(bo);
     }
 
-    /**
-     * 
-     * @see org.kuali.rice.kns.service.BusinessObjectService#linkAndSave(java.util.List)
-     */
+    @Override
     @Transactional
     public List<? extends PersistableBusinessObject> linkAndSave(List<? extends PersistableBusinessObject> businessObjects) {
         validateBusinessObjectForSave(businessObjects);
         return businessObjectDao.save(businessObjects);
     }
 
-    /**
-     * Validates that the 
-     * This method ...
-     * 
-     * @param bo
-     */
     protected void validateBusinessObjectForSave(PersistableBusinessObject bo) {
     	if (bo == null) {
             throw new IllegalArgumentException("Object passed in is null");
@@ -130,7 +114,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     			boolean applyCheck = true;
     			String applyCheckValue = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.Config.APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK);
     			if (!StringUtils.isEmpty(applyCheckValue)) {
-    				applyCheck = new Boolean(applyCheckValue);
+    				applyCheck = Boolean.valueOf(applyCheckValue);
     			}
     			if (applyCheck) {
     				String illegalBos = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.Config.ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE);
@@ -147,110 +131,69 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     	return !illegalBusinessObjectsForSave.contains(bo.getClass().getName());
     }
     
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#findByPrimaryKey(java.lang.Class, java.lang.Object)
-     */
-    @SuppressWarnings("unchecked")
-	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
-		return (T)businessObjectDao.findBySinglePrimaryKey(clazz, primaryKey);
-	}
 
-	/**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#findByPrimaryKey(java.lang.Class, java.util.Map)
-     */
+    @Override
+	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
+		return businessObjectDao.findBySinglePrimaryKey(clazz, primaryKey);
+	}
+    @Override
     public <T extends BusinessObject> T findByPrimaryKey(Class<T> clazz, Map<String, ?> primaryKeys) {
         return businessObjectDao.findByPrimaryKey(clazz, primaryKeys);
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#retrieve(java.lang.Object)
-     */
+    @Override
     public PersistableBusinessObject retrieve(PersistableBusinessObject object) {
         return businessObjectDao.retrieve(object);
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#findAll(java.lang.Class)
-     */
+    @Override
     public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz) {
-        Collection coll = businessObjectDao.findAll(clazz);
-        return new ArrayList<T>(coll);
+        return businessObjectDao.findAll(clazz);
     }
-
+    @Override
     public <T extends BusinessObject> Collection<T> findAllOrderBy( Class<T> clazz, String sortField, boolean sortAscending ) {
     	final Map<String, ?> emptyParameters = Collections.emptyMap();
-    	return (Collection<T>)businessObjectDao.findMatchingOrderBy(clazz, emptyParameters, sortField, sortAscending );
+    	return businessObjectDao.findMatchingOrderBy(clazz, emptyParameters, sortField, sortAscending );
     }
     
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#findMatching(java.lang.Class, java.util.Map)
-     */
+    @Override
     public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
-        return new ArrayList(businessObjectDao.findMatching(clazz, fieldValues));
+        return businessObjectDao.findMatching(clazz, fieldValues);
     }
 
-    /**
-     * Defers to the businessObjectDao to do the query
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
-	 */
-	//public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
-	//	return businessObjectDao.findMatching(criteria);
-	//}
-
-	/**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#countMatching(java.lang.Class, java.util.Map)
-     */
+    @Override
     public int countMatching(Class clazz, Map<String, ?> fieldValues) {
         return businessObjectDao.countMatching(clazz, fieldValues);
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#countMatching(java.lang.Class, java.util.Map, java.util.Map)
-     */
+    @Override
     public int countMatching(Class clazz, Map<String, ?> positiveFieldValues, Map<String, ?> negativeFieldValues) {
         return businessObjectDao.countMatching(clazz, positiveFieldValues, negativeFieldValues);
     }
-    
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#findMatchingOrderBy(java.lang.Class, java.util.Map)
-     */
+    @Override
     public <T extends BusinessObject> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending) {
-        return new ArrayList(businessObjectDao.findMatchingOrderBy(clazz, fieldValues, sortField, sortAscending));
+        return businessObjectDao.findMatchingOrderBy(clazz, fieldValues, sortField, sortAscending);
     }
-
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#delete(org.kuali.bo.BusinessObject)
-     */
+    @Override
     @Transactional
     public void delete(PersistableBusinessObject bo) {
         businessObjectDao.delete(bo);
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#delete(java.util.List)
-     */
+    @Override
     @Transactional
     public void delete(List<? extends PersistableBusinessObject> boList) {
         businessObjectDao.delete(boList);
     }
 
-
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#deleteMatching(java.lang.Class, java.util.Map)
-     */
+    @Override
     @Transactional
     public void deleteMatching(Class clazz, Map<String, ?> fieldValues) {
         businessObjectDao.deleteMatching(clazz, fieldValues);
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.BusinessObjectService#getReferenceIfExists(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
-     */
+    @Override
     public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
-
-        BusinessObject referenceBo = null;
-        boolean allFkeysHaveValues = true;
-
         // if either argument is null, then we have nothing to do, complain and abort
         if (ObjectUtils.isNull(bo)) {
             throw new IllegalArgumentException("Passed in BusinessObject was null.  No processing can be done.");
@@ -283,8 +226,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         if (ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
             try {
             	BusinessObject referenceBoExternalizable = (BusinessObject) PropertyUtils.getProperty(bo, referenceName);
-            	if(referenceBoExternalizable!=null)
+            	if (referenceBoExternalizable!=null) {
             		return referenceBoExternalizable;
+                }
             } catch (Exception ex) {
                 //throw new RuntimeException("Unable to get property " + referenceName + " from a BO of class: " + bo.getClass().getName(),ex);
             	//Proceed further - get the BO relationship using responsible module service and proceed further
@@ -301,18 +245,14 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         // does not exist, or is not a reference-descriptor, an exception will
         // be thrown here.
         BusinessObjectRelationship boRel = businessObjectMetaDataService.getBusinessObjectRelationship( bo, referenceName );
-        Map<String,String> fkMap = null;
-        if ( boRel != null ) {
-        	fkMap = boRel.getParentToChildReferences();
-        } else {
-        	fkMap = Collections.EMPTY_MAP;
-        }
+        final Map<String,String> fkMap = boRel != null ? boRel.getParentToChildReferences() : Collections.<String, String>emptyMap();
 
+        boolean allFkeysHaveValues = true;
         // walk through the foreign keys, testing each one to see if it has a value
-        Map pkMap = new HashMap();
-        for (Iterator iter = fkMap.keySet().iterator(); iter.hasNext();) {
-            String fkFieldName = (String) iter.next();
-            String pkFieldName = (String) fkMap.get(fkFieldName);
+        Map<String,Object> pkMap = new HashMap<String,Object>();
+        for (Map.Entry<String, String> entry : fkMap.entrySet()) {
+            String fkFieldName = entry.getKey();
+            String pkFieldName = entry.getValue();
 
             // attempt to retrieve the value for the given field
             Object fkFieldValue;
@@ -344,25 +284,22 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             }
         }
 
+        BusinessObject referenceBo = null;
         // only do the retrieval if all Foreign Keys have values
         if (allFkeysHaveValues) {
         	if (ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
         		ModuleService responsibleModuleService = KNSServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(referenceClass);
 				if(responsibleModuleService!=null) {
-					return (BusinessObject)responsibleModuleService.getExternalizableBusinessObject(referenceClass, pkMap);
+					return responsibleModuleService.<ExternalizableBusinessObject>getExternalizableBusinessObject(referenceClass, pkMap);
 				}
         	} else
-        		referenceBo = findByPrimaryKey(referenceClass, pkMap);
+        		referenceBo = this.<BusinessObject>findByPrimaryKey(referenceClass, pkMap);
         }
 
         // return what we have, it'll be null if it was never retrieved
         return referenceBo;
     }
-
-    /**
-     * 
-     * @see org.kuali.rice.kns.service.BusinessObjectService#linkUserFields(org.kuali.rice.kns.bo.BusinessObject)
-     */
+    @Override
     public void linkUserFields(PersistableBusinessObject bo) {
         if (bo == null) {
             throw new IllegalArgumentException("bo passed in was null");
@@ -373,10 +310,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         linkUserFields( Collections.singletonList( bo ) );
     }
 
-    /**
-     * 
-     * @see org.kuali.rice.kns.service.BusinessObjectService#linkUserFields(java.util.List)
-     */
+    @Override
     public void linkUserFields(List<PersistableBusinessObject> bos) {
 
         // do nothing if there's nothing to process
@@ -387,8 +321,8 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             return;
         }
 
-        Person person = null;
 
+        Person person;
         for (PersistableBusinessObject bo : bos) {
             // get a list of the reference objects on the BO
             List<BusinessObjectRelationship> relationships = businessObjectMetaDataService.getBusinessObjectRelationships( bo );
@@ -398,7 +332,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
                     if (person != null) {
                         // find the universal user ID relationship and link the field
                         for ( Map.Entry<String,String> entry : rel.getParentToChildReferences().entrySet() ) {
-                            if ( entry.getValue().equals( "principalId" ) ) {
+                            if ( "principalId".equals(entry.getValue())) {
                                 linkUserReference(bo, person, rel.getParentAttributeName(), entry.getKey() );
                                 break;
                             }
@@ -408,15 +342,14 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
             }
             if ( persistenceStructureService.isPersistable(bo.getClass())) {
 	            Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(bo);
-	
+
 	            // walk through the ref objects, only doing work if they are Person objects
-	            for ( String refField : references.keySet() ) {
-	                Class<?> refClass = references.get(refField);
-	                if (Person.class.isAssignableFrom(refClass)) {
-	                    person = (Person) ObjectUtils.getPropertyValue(bo, refField);
+	            for ( Map.Entry<String, Class> entry : references.entrySet() ) {
+	                if (Person.class.isAssignableFrom(entry.getValue())) {
+	                    person = (Person) ObjectUtils.getPropertyValue(bo, entry.getKey());
 	                    if (person != null) {
-	                        String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), refField, "principalId");
-	                        linkUserReference(bo, person, refField, fkFieldName);
+	                        String fkFieldName = persistenceStructureService.getForeignKeyFieldName(bo.getClass(), entry.getKey(), "principalId");
+	                        linkUserReference(bo, person, entry.getKey(), fkFieldName);
 	                    }
 	                }
 	            }
@@ -429,8 +362,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * This method links a single UniveralUser back to the parent BO based on the authoritative principalName.
      * 
      * @param bo
-     * @param referenceFieldName
-     * @param referenceClass
+     * @param refFieldName
      */
     private void linkUserReference(PersistableBusinessObject bo, Person user, String refFieldName, String fkFieldName) {
 
@@ -458,9 +390,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         }
     }
 
-    /**
-	 * @see org.kuali.rice.kns.service.BusinessObjectService#manageReadOnly(org.kuali.rice.kns.bo.PersistableBusinessObject)
-	 */
+    @Override
 	public PersistableBusinessObject manageReadOnly(PersistableBusinessObject bo) {
 		return getBusinessObjectDao().manageReadOnly(bo);
 	}
@@ -495,12 +425,10 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * Sets the kualiUserService attribute value.
      */
-    @SuppressWarnings("unchecked")
 	public final void setPersonService(PersonService personService) {
         this.personService = personService;
     }
 
-    @SuppressWarnings("unchecked")
 	protected PersonService getPersonService() {
         return personService != null ? personService : (personService = KIMServiceLocator.getPersonService());
     }

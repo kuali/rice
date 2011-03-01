@@ -16,9 +16,12 @@
 
 
 
+
+
 package org.kuali.rice.shareddata.impl.state
 
 import groovy.mock.interceptor.MockFor
+import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -28,7 +31,8 @@ class StateServiceImplTest {
 
     private final shouldFail = new GroovyTestCase().&shouldFail
 
-    static Map<String, StateBo> sampleStates = new HashMap<String, StateBo>()
+    static sampleStates = new HashMap<List<String, String>, StateBo>()
+    static sampleStatesPerCountry = new HashMap<String, List<StateBo>>()
     private def MockFor mockBoService
     private StateServiceImpl sservice;
 
@@ -38,11 +42,13 @@ class StateServiceImplTest {
                 name: "Michigan")
         def illinoisBo = new StateBo(active: true, countryCode: "US", code: "IL",
                 name: "Illinois")
-        def nowhereBo = new StateBo(active: true, countryCode: "ZZ", code: "ZZZ",
-                name: "nowhere")
-        [michiganBo, illinoisBo, nowhereBo].each {
-            sampleStates.put(it.code, it)
+        def britishColumbiaBo = new StateBo(active: true, countryCode: "CA", code: "BC",
+                name: "British Columbia")
+        [michiganBo, illinoisBo, britishColumbiaBo].each {
+            sampleStates[[it.code, it.countryCode].asImmutable()] = it
         }
+        sampleStatesPerCountry["US"] = [michiganBo, illinoisBo]
+        sampleStatesPerCountry["CA"] = [britishColumbiaBo]
     }
 
     @Before
@@ -52,7 +58,7 @@ class StateServiceImplTest {
     }
 
     @Test
-    void test_getState_null_countryCode() {
+    void test_get_state_null_countryCode() {
         def boService = mockBoService.proxyDelegateInstance()
         sservice.setBusinessObjectService(boService);
 
@@ -63,7 +69,7 @@ class StateServiceImplTest {
     }
 
     @Test
-    void test_getState_null_code() {
+    void test_get_state_null_code() {
         def boService = mockBoService.proxyDelegateInstance()
         sservice.setBusinessObjectService(boService);
 
@@ -74,13 +80,62 @@ class StateServiceImplTest {
     }
 
     @Test
-    void test_findAllStatesInCountry_null_countryCode() {
+    void test_get_state_exists() {
+        mockBoService.demand.findByPrimaryKey (1..1) { clazz, map -> sampleStates[map["countryCode"], [map["code"]]] }
+        def boService = mockBoService.proxyDelegateInstance()
+        sservice.setBusinessObjectService(boService);
+        Assert.assertEquals (StateBo.to(sampleStates[["US", "MI"]]), sservice.getState("US", "MI"))
+        mockBoService.verify(boService)
+    }
+
+    @Test
+    void test_get_state_does_not_exist() {
+        mockBoService.demand.findByPrimaryKey (1..1) { clazz, map -> sampleStates[map["countryCode"], [map["code"]]] }
+        def boService = mockBoService.proxyDelegateInstance()
+        sservice.setBusinessObjectService(boService);
+        Assert.assertNull (sservice.getState("FOO", "BAR"))
+        mockBoService.verify(boService)
+    }
+
+    @Test
+    void test_find_all_states_in_country_null_countryCode() {
         def boService = mockBoService.proxyDelegateInstance()
         sservice.setBusinessObjectService(boService);
 
         shouldFail(IllegalArgumentException.class) {
             sservice.findAllStatesInCountry(null)
         }
+        mockBoService.verify(boService)
+    }
+
+    @Test
+    void test_find_all_states_in_country_exists() {
+        mockBoService.demand.findMatching (1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
+        def boService = mockBoService.proxyDelegateInstance()
+        sservice.setBusinessObjectService(boService);
+        def values = sservice.findAllStatesInCountry("US")
+        Assert.assertEquals (sampleStatesPerCountry["US"].collect { StateBo.to(it) }, values)
+
+        //is this unmodifiable?
+        shouldFail(UnsupportedOperationException.class) {
+            values.add(StateBo.to(sampleStates[["CA", "BC"]]))
+        }
+        mockBoService.verify(boService)
+    }
+
+    @Test
+    void test_find_all_states_in_country_does_not_exist() {
+        mockBoService.demand.findMatching (1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
+        def boService = mockBoService.proxyDelegateInstance()
+        sservice.setBusinessObjectService(boService);
+        def values = sservice.findAllStatesInCountry("FOO")
+        Assert.assertEquals ([], values)
+
+        //is this unmodifiable?
+        shouldFail(UnsupportedOperationException.class) {
+            values.add(StateBo.to(sampleStates[["CA", "BC"]]))
+        }
+
         mockBoService.verify(boService)
     }
 }

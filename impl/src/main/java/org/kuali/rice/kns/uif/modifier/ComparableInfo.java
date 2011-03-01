@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 import org.kuali.rice.kns.uif.Ordered;
 
+
 /**
  * Provides configuration for comparing an object with another object
  * 
@@ -36,7 +37,7 @@ import org.kuali.rice.kns.uif.Ordered;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.kns.uif.modifier.CompareFieldCreateModifier
  */
-public class ComparableInfo implements Ordered, Serializable {
+public class ComparableInfo implements Serializable, Ordered  {
 	private static final long serialVersionUID = -5926058412202550266L;
 
 	private String bindingObjectPath;

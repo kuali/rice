@@ -92,8 +92,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		}
 
 		// sort items list by the order property
-		List<Component> sortedItems = (List<Component>) ComponentUtils.sort((List<Ordered>) getItems(),
-				itemOrderingSequence);
+		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(
+				getItems(), itemOrderingSequence);
 		setItems(sortedItems);
 
 		if (layoutManager != null) {

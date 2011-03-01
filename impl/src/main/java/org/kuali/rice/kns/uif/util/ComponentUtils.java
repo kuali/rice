@@ -207,7 +207,7 @@ public class ComponentUtils {
 			int order = component.getOrder();
 
 			// if order not set just add to list
-			if (order == Ordered.INITIAL_ORDER_VALUE) {
+			if (order == 0) {
 				orderedItems.add(component);
 			}
 			// check if the order value has been used already
@@ -224,7 +224,7 @@ public class ComponentUtils {
 			int order = component.getOrder();
 
 			// if order property not set assign default
-			if (order == Ordered.INITIAL_ORDER_VALUE) {
+			if (order == 0) {
 				defaultOrderSequence++;
 				while (foundOrders.contains(new Integer(defaultOrderSequence))) {
 					defaultOrderSequence++;

@@ -43,7 +43,7 @@ import org.kuali.rice.kns.uif.modifier.ComponentModifier;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentBase implements Component, Ordered, ScriptEventSupport {
+public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private static final long serialVersionUID = -4449335748129894350L;
 
 	private String id;
@@ -89,7 +89,7 @@ public abstract class ComponentBase implements Component, Ordered, ScriptEventSu
 	private List<ComponentModifier> componentModifiers;
 
 	public ComponentBase() {
-		order = Ordered.INITIAL_ORDER_VALUE;
+		order = 0;
 		colSpan = 1;
 		rowSpan = 1;
 

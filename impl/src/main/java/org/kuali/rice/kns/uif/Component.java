@@ -48,7 +48,7 @@ import org.kuali.rice.kns.uif.service.ViewHelperService;
  * @see org.kuali.rice.kns.uif.field.Field
  * @see org.kuali.rice.kns.uif.widget.Widget
  */
-public interface Component extends Serializable {
+public interface Component extends Serializable, Ordered {
 
 	/**
 	 * The unique id (within a given tree) for the component

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.Ordered;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
@@ -45,7 +46,7 @@ import org.kuali.rice.kns.uif.container.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ComponentModifier extends Serializable {
+public interface ComponentModifier extends Serializable, Ordered {
 
 	/**
 	 * Invoked within the configured phase of the component lifecycle. This is

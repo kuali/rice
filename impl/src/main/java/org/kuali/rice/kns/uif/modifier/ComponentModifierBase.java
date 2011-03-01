@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.uif.modifier;
 
-import org.kuali.rice.kns.uif.Ordered;
 import org.kuali.rice.kns.uif.UifConstants;
 
 /**
@@ -29,7 +28,7 @@ import org.kuali.rice.kns.uif.UifConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentModifierBase implements ComponentModifier, Ordered {
+public abstract class ComponentModifierBase implements ComponentModifier {
 	private static final long serialVersionUID = -8284332412469942130L;
 
 	private String runPhase;
@@ -37,7 +36,7 @@ public abstract class ComponentModifierBase implements ComponentModifier, Ordere
 
 	public ComponentModifierBase() {
 		runPhase = UifConstants.ViewPhases.INITIALIZE;
-		order = Ordered.INITIAL_ORDER_VALUE;
+		order = 0;
 	}
 
 	/**

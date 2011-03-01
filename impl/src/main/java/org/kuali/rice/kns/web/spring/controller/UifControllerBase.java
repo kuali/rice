@@ -78,7 +78,17 @@ public abstract class UifControllerBase {
      */
     @ModelAttribute(value="KualiForm")
     public UifFormBase initForm(HttpServletRequest request) {
-        return createInitialForm(request);
+        UifFormBase form;
+        String formKeyParam = request.getParameter(KNSConstants.FORM_KEY);
+        
+        if(StringUtils.isNotBlank(formKeyParam)) {
+            form = (UifFormBase)request.getSession().getAttribute(formKeyParam);
+        }
+        else {
+            form = createInitialForm(request);
+        }
+        
+        return form;
     }
     
     /**

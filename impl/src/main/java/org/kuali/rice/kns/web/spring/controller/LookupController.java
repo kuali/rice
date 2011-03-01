@@ -51,7 +51,7 @@ public class LookupController extends UifControllerBase {
 	 * @see org.kuali.rice.kns.web.spring.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
-	protected UifFormBase createInitialForm(HttpServletRequest request) {
+	protected LookupForm createInitialForm(HttpServletRequest request) {
         return new LookupForm();
 	}
 
@@ -59,13 +59,14 @@ public class LookupController extends UifControllerBase {
      * @see org.kuali.rice.kns.web.spring.controller.UifControllerBase#checkAuthorization(org.kuali.rice.kns.web.spring.form.UifFormBase, java.lang.String)
      */
 	// TODO delyea - how to execute checkAuthorization method
+	// TODO sgibson - you know this method is called by the UifControllerHandlerInterceptor?
     @Override
 	public void checkAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
         if (!(form instanceof LookupForm)) {
             super.checkAuthorization(form, methodToCall);
         } else {
             try {
-                Class businessObjectClass = Class.forName(((LookupForm) form).getObjectClassName());
+                Class<?> businessObjectClass = Class.forName(((LookupForm) form).getObjectClassName());
                 if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
                     throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,

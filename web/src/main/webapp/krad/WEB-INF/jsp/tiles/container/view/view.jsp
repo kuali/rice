@@ -39,6 +39,10 @@
    <c:if test="${view.renderForm}">
        <form:hidden path="viewId"/>
    </c:if>
+   
+	
+      <form:hidden path="formKey"/>
+	
     
    <!----------------------------------- #VIEW FOOTER --------------------------------------->
    <div id="viewfooter_div">

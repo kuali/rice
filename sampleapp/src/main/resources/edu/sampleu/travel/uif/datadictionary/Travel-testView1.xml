@@ -271,16 +271,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
    </bean>   
    
-   <bean id="testSection2" parent="GroupSection_Accordion" p:layoutManager.styleClass="layout_center">
+   <bean id="testSection2" parent="GroupSection_Accordion" p:layoutManager.styleClasses="layout_center">
       <property name="id" value="testSection2"/>
       <property name="title" value="Test Section 2"/> 
       <property name="fieldBindingObjectPath" value="travelAccount3"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:propertyName="number" p:labelPlacement="TOP" 
-          p:labelField.styleClass="labelTop" p:labelField.renderColon="false"/>
+          p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
           <bean parent="AttributeField" p:propertyName="name" p:labelPlacement="TOP" 
-          p:labelField.styleClass="labelTop" p:labelField.renderColon="false"/>
+          p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
         </list>
       </property> 
       <property name="summary" value="Section without nested group, labels top"/> 

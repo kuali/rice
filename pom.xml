@@ -646,6 +646,7 @@
 		<module>test</module>
 		<module>edl</module>
         <module>krad</module>
+		<module>krms</module>
         <module>client-contrib</module>
         <module>shareddata</module>
         <module>doc</module>

@@ -96,7 +96,12 @@ public class ViewDictionaryIndex implements Runnable {
 
 		ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewTypeName);
 
-		return typeIndex.get(index);
+		String beanName = typeIndex.get(index);
+		if (StringUtils.isBlank(beanName)) {
+			throw new DataDictionaryException("Unable to find View with index: " + index);
+		}
+
+		return ddBeans.getBean(beanName, View.class);
 	}
 
 	/**
@@ -118,7 +123,7 @@ public class ViewDictionaryIndex implements Runnable {
 
 			viewEntriesById.put(view.getId(), beanName);
 
-			indexViewForType(view);
+			indexViewForType(view, beanName);
 		}
 	}
 
@@ -131,8 +136,10 @@ public class ViewDictionaryIndex implements Runnable {
 	 * 
 	 * @param view
 	 *            - view instance to index
+	 * @param beanName
+	 *            - name of the view's bean in Spring
 	 */
-	protected void indexViewForType(View view) {
+	protected void indexViewForType(View view, String beanName) {
 		String viewType = view.getViewTypeName();
 
 		ViewTypeService typeService = KNSServiceLocator.getViewService().getViewTypeService(viewType);
@@ -151,7 +158,7 @@ public class ViewDictionaryIndex implements Runnable {
 		// get the index for the type and add the view entry
 		ViewTypeDictionaryIndex typeIndex = getTypeIndex(viewType);
 
-		typeIndex.put(index, view);
+		typeIndex.put(index, beanName);
 	}
 
 	/**

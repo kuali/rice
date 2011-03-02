@@ -1,18 +1,18 @@
 <%--
- Copyright 2005-2009 The Kuali Foundation
- 
- Licensed under the Educational Community License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl2.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
---%>
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  --%>
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
 <div class="header2">
@@ -37,9 +37,8 @@
       </html:form>
     </c:when>
     <c:otherwise> 
-      <%-- JSTLConstants magic doesn't work for nested class KNSConstants.DetailTypes, hence the following uglyness: --%>
-      <c:set var="backdoorDetailType" value="<%=org.kuali.rice.kns.util.KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE%>"/>
-      <c:if test="${kfunc:getKNSParameterValue(KEWConstants.KEW_NAMESPACE, backdoorDetailType, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) == 'Y'}">
+      <c:set var="backboorEnabled" value="<%=org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(org.kuali.rice.kew.util.KEWConstants.KEW_NAMESPACE, org.kuali.rice.kns.util.KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, org.kuali.rice.kew.util.KEWConstants.SHOW_BACK_DOOR_LOGIN_IND)%>"/>
+      <c:if test="${backboorEnabled}">
         <html:form action="/backdoorlogin.do" method="post" style="margin:0; display:inline">
           <input name="backdoorId" type="text" class="searchbox" size="10" title="Enter your backdoor ID here.">
           <input name="imageField" type="submit" value="Login" class="go" title="Click to login.">

@@ -31,7 +31,6 @@ name and the parameter value as the input value --%>
     $("#" + "${componentId}").click(function() {
   	    <c:forEach items="${parameters}" var="parameter">
   	      writeHiddenToForm('${parameter.key}', '${parameter.value}');
-  	      alert("${parameter.value}");
     	</c:forEach>
 	  });
   </script>

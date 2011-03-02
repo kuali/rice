@@ -19,7 +19,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
@@ -34,18 +36,23 @@ import org.springframework.web.bind.ServletRequestDataBinder;
  *
  */
 public class UifServletRequestDataBinder extends ServletRequestDataBinder {
+
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifServletRequestDataBinder.class);
 
 	private UifBeanPropertyBindingResult bindingResult;
 	private ConversionService conversionService;
+	
+	protected ViewService viewService;
 
-	private String viewId;
-    
-    public UifServletRequestDataBinder(Object target, String objectName, String viewId) {
-        super(target, objectName);
-        this.viewId = viewId;
+
+	public UifServletRequestDataBinder(Object target) {
+        super(target);
     }
-
+	
+	public UifServletRequestDataBinder(Object target, String name) {
+        super(target, name);
+    }
+	
     /**
      * This overridden method allows for a custom binding result class.
      * 
@@ -55,7 +62,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 	public void initBeanPropertyAccess() {
 		Assert.state(this.bindingResult == null,
 				"DataBinder is already initialized - call initBeanPropertyAccess before other configuration methods");
-		this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths(), viewId);
+		this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths());
 		if (this.conversionService != null) {
 			this.bindingResult.initConversion(this.conversionService);
 		}
@@ -93,11 +100,35 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         
         // create initial view, should only happen if this is the first request
         if(form.getView() == null) {
-            ViewService viewService = KNSServiceLocator.getViewService();
-            form.setView(viewService.getView(viewId, request.getParameterMap()));
+            String viewId = request.getParameter(UifConstants.RequestParameterName.VIEW_ID);
+            if (viewId != null) {
+                form.setView(getViewService().getView(viewId, request.getParameterMap()));
+            }
+            else {
+                String viewTypeName = request.getParameter(UifConstants.RequestParameterName.VIEW_TYPE_NAME);
+                if(viewTypeName == null) {
+                    viewTypeName = form.getViewTypeName();
+                }
+                
+                form.setView(getViewService().getViewByType(viewTypeName,
+                        WebUtils.translateRequestParameterMap(request.getParameterMap())));
+            }
+            
+            form.setViewId(form.getView().getId());
         }
         
         form.postBind((HttpServletRequest)request);
+    }
+    
+    public ViewService getViewService() {
+        if(viewService == null) {
+            viewService = KNSServiceLocator.getViewService();
+        }
+        return this.viewService;
+    }
+
+    public void setViewService(ViewService viewService) {
+        this.viewService = viewService;
     }
 
 }

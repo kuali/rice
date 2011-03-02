@@ -39,7 +39,6 @@ public class DocumentFormBase extends UifFormBase {
 
 	public DocumentFormBase() {
 	    super();
-	    setStoreFormInSession(true);
 	}
 
 	public String getAnnotation() {

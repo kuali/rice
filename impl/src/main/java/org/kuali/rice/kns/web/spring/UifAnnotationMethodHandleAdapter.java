@@ -15,17 +15,10 @@
  */
 package org.kuali.rice.kns.web.spring;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.UifConstants;
-import org.kuali.rice.kns.uif.UifConstants.ViewType;
-import org.kuali.rice.kns.uif.UifConstants.ViewTypeParameterNames;
 import org.kuali.rice.kns.uif.service.ViewService;
-import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.kns.web.spring.form.InquiryForm;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
@@ -46,24 +39,8 @@ public class UifAnnotationMethodHandleAdapter extends AnnotationMethodHandlerAda
             // only override for UifFormBase models so that non KRAD spring MVC
             // can be used in same dispatcher servlet.
             if (target instanceof UifFormBase) {
-                String viewId = request.getParameter(UifConstants.RequestParameterName.VIEW_ID);
                 
-				if (viewId == null) {
-					String viewTypeName = request.getParameter(UifConstants.RequestParameterName.VIEW_TYPE_NAME);
-					
-					if(viewTypeName == null) {
-					    viewTypeName = ((UifFormBase)target).getViewTypeName();
-					}
-					
-					viewId = getViewService().getViewIdByType(viewTypeName,
-							WebUtils.translateRequestParameterMap(request.getParameterMap()));
-					
-					((UifFormBase)target).setViewId(viewId);
-				}
-                
-                // TODO what to do here if viewId is not set, are all urls going to have
-                // view id added or will we need other logic
-                return new UifServletRequestDataBinder(target, objectName, viewId);
+                return new UifServletRequestDataBinder(target, objectName);
             }
         }
         return super.createBinder(request, target, objectName);

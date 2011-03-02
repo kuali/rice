@@ -62,10 +62,8 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 form = (UifFormBase)model;
             }
             
-            // if document form, store in session
-            if(form.isStoreFormInSession()) {
-                request.getSession().setAttribute(form.getFormKey(), model);
-            }
+            // store form in session
+            request.getSession().setAttribute(form.getFormKey(), model);
             
             // currently methodToCall must be a regularly parseable request parameter, so just get from request
             String methodToCall = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);

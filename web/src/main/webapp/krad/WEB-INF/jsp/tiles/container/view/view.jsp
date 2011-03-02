@@ -40,8 +40,8 @@
        <form:hidden path="viewId"/>
    </c:if>
    
-	
-      <form:hidden path="formKey"/>
+   <%-- all forms will be stored in session, this is the conversation key --%>
+   <form:hidden path="formKey"/>
 	
     
    <!----------------------------------- #VIEW FOOTER --------------------------------------->

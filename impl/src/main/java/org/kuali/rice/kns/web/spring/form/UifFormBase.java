@@ -44,7 +44,6 @@ public class UifFormBase implements Serializable {
 	protected String viewTypeName;
 	protected String methodToCall;
 	protected String formKey;
-	protected boolean storeFormInSession;
 
 	protected String selectedCollectionPath;
 	protected int selectedLineIndex;
@@ -54,9 +53,9 @@ public class UifFormBase implements Serializable {
 	protected Map<String, Object> newCollectionLines;
 
 	public UifFormBase() {
-	    storeFormInSession = false;
 		selectedLineIndex = -1;
 		newCollectionLines = new HashMap<String, Object>();
+		formKey = generateFormKey();
 	}
 
 	/**
@@ -231,9 +230,6 @@ public class UifFormBase implements Serializable {
 	 * @return String form session key
 	 */
 	public String getFormKey() {
-	    if(formKey == null && storeFormInSession == true) {
-	        formKey = generateFormKey();
-	    }
 		return this.formKey;
 	}
 
@@ -263,14 +259,6 @@ public class UifFormBase implements Serializable {
 	public void setView(View view) {
 		this.view = view;
 	}
-
-    public boolean isStoreFormInSession() {
-        return this.storeFormInSession;
-    }
-
-    public void setStoreFormInSession(boolean storeFormInSession) {
-        this.storeFormInSession = storeFormInSession;
-    }
 
     /**
 	 * Instance of the <code>ViewService</code> that can be used to retrieve

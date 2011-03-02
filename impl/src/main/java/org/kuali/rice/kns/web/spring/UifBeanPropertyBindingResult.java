@@ -26,12 +26,9 @@ import org.springframework.validation.BeanPropertyBindingResult;
  *
  */
 public class UifBeanPropertyBindingResult extends BeanPropertyBindingResult {
-    
-    private String viewId;
-    
-    public UifBeanPropertyBindingResult(Object target, String objectName,  boolean autoGrowNestedPaths, String viewId) {
+        
+    public UifBeanPropertyBindingResult(Object target, String objectName,  boolean autoGrowNestedPaths) {
         super(target, objectName, autoGrowNestedPaths);
-        this.viewId = viewId;
     }
 
     /**
@@ -41,6 +38,6 @@ public class UifBeanPropertyBindingResult extends BeanPropertyBindingResult {
     @Override
     protected UifViewBeanWrapper createBeanWrapper() {
         Assert.state(super.getTarget() != null, "Cannot access properties on null bean instance '" + getObjectName() + "'!");
-        return new UifViewBeanWrapper(super.getTarget(), viewId);
+        return new UifViewBeanWrapper(super.getTarget());
     }
 }

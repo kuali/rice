@@ -36,7 +36,6 @@ import org.springframework.beans.PropertyValue;
 public class UifViewBeanWrapper extends BeanWrapperImpl {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifViewBeanWrapper.class);
     
-    private String viewId;
     
     // this is a handle to the target object so we don't
     // have to cast so often
@@ -47,14 +46,11 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     private Set<String> processedProperties;
     
     
-    public UifViewBeanWrapper(Object object, String viewId) {
+    public UifViewBeanWrapper(Object object) {
         super(object);
         
         form = (UifFormBase)object;
-        
         processedProperties = new HashSet<String>();
-        
-        this.viewId = viewId;
     }
     
     

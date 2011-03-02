@@ -1,13 +1,12 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
- * 
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -88,20 +87,12 @@ public class DocumentTypeDTO implements Serializable {
         return docTypeId;
     }
 
-    /**
-     * @deprecated Use getDocTypeLabel instead
-     * @return
-     */
-    public String getDocTypeName() {
-        return docTypeLabel;
-    }
-
     public String getName() {
         return name;
     }
 
     /**
-     * @deprectated No longer needed or used
+     * @deprecated No longer needed or used
      * @return
      */
     public Integer getDocTypeVersion() {
@@ -122,14 +113,6 @@ public class DocumentTypeDTO implements Serializable {
 
     public void setName(String docTypeShortname) {
         this.name = docTypeShortname;
-    }
-
-    /**
-     * @deprecated use setDocTypeLabel instead
-     * @param docTypeName
-     */
-    public void setDocTypeName(String docTypeName) {
-        this.docTypeLabel = docTypeName;
     }
 
     public void setDocTypeId(Long docTypeId) {

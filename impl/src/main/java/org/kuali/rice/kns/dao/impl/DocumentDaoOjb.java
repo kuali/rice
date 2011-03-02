@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,10 @@ import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentAdHocService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.OjbCollectionAware;
@@ -106,20 +104,6 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
         	documentAdHocService.addAdHocs(doc);
         }
         return tempList;
-    }
-
-    /**
-     *
-     * Deprecated method. Should use BusinessObjectService.linkAndSave() instead.
-     *
-     */
-    @Deprecated
-    public void saveMaintainableBusinessObject(PersistableBusinessObject businessObject) {
-        /*
-         * this call is to assure all the object fk values are in sync and the fk fields is set in the main object
-         */
-        KNSServiceLocator.getPersistenceService().linkObjects(businessObject);
-        this.getPersistenceBrokerTemplate().store(businessObject);
     }
 
     /**

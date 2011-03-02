@@ -1,37 +1,21 @@
 /*
- * Copyright 2004 Jonathan M. Lehr
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.opensource.org/licenses/ecl2.php
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- * 
- * MODIFIED BY THE KUALI FOUNDATION
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 // begin Kuali Foundation modification
 package org.kuali.rice.core.web.format;
 // end Kuali Foundation modification
-
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -40,6 +24,14 @@ import org.kuali.rice.core.util.type.AbstractKualiDecimal;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiInteger;
 import org.kuali.rice.core.util.type.KualiPercent;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 
@@ -571,12 +563,5 @@ public class Formatter implements Serializable {
             throw new FormatException("Can't cast " + target + " to String", e);
         }
         return stringValue == null ? null : stringValue.trim();
-    }
-
-    /**
-     * @deprecated in favor of {@link StringUtils#isEmptyString(String)}
-     */
-    protected boolean isBlank(String string) {
-        return string == null || string.trim().length() == 0;
     }
 }

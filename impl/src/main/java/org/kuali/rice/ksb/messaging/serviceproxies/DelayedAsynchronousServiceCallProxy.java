@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 	}
 	try {
 	    return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy
-		    .getInterfacesToProxyIncludeSpring(serviceDefs.get(0).getService()),
+		    .getInterfacesToProxy(serviceDefs.get(0).getService()),
 		    new DelayedAsynchronousServiceCallProxy(serviceDefs, context, value1, value2, delayMilliseconds));
 	} catch (Exception e) {
 	    throw new RiceRuntimeException(e);

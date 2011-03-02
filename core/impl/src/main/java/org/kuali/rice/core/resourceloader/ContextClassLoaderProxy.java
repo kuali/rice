@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +15,12 @@
  */
 package org.kuali.rice.core.resourceloader;
 
+import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
-import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
-import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
  * A Proxy that sets the thread Context ClassLoader before invocation of the
@@ -90,31 +89,6 @@ public class ContextClassLoaderProxy extends BaseTargetedInvocationHandler {
 
     public static Object wrap(Object proxiedObject) {
     	return wrap(proxiedObject, null, null, null);
-    }
-
-
-//    public static Class[] getInterfacesToProxy(Object proxiedObject) {
-//    	List interfaces = ClassUtils.getAllInterfaces(proxiedObject.getClass());
-//    	for (Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
-//			Class objectInterface = (Class) iterator.next();
-//			if (objectInterface.getName().startsWith("org.springframework")) {
-//				iterator.remove();
-//			}
-//		}
-//    	Class[] interfaceArray = new Class[interfaces.size()];
-//    	return (Class[]) interfaces.toArray(interfaceArray);
-//    }
-
-    public static Class[] getInterfacesToProxyIncludeSpring(Object proxiedObject) {
-	return getInterfacesToProxyIncludeSpring(null, proxiedObject);
-    }
-
-    /**
-     * @deprecated use getInterfacesToProxy instead.  Removed the filtering of Spring because it is no longer
-     * needed since the embedded plugin went away (we may have to revisit this at some point in the future).
-     */
-    public static Class[] getInterfacesToProxyIncludeSpring(ClassLoader proxyClassLoader, Object proxiedObject) {
-    	return getInterfacesToProxy(proxyClassLoader, proxiedObject);
     }
 
     public static Class[] getInterfacesToProxy(Object proxiedObject) {

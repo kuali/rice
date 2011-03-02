@@ -379,17 +379,11 @@
 		<property name="workflowDocumentService">
 			<ref bean="workflowDocumentService" />
 		</property>
-		<property name="kualiRuleService">
-			<ref bean="kualiRuleService" />
-		</property>
 		<property name="documentHeaderService">
 			<ref bean="documentHeaderService" />
 		</property>
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
-		</property>
-		<property name="maintenanceDocumentService">
-			<ref bean="maintenanceDocumentService" />
 		</property>
 		<property name="noteService">
 			<ref bean="noteService" />

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.DateTimeService;
@@ -35,27 +27,17 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.bo.AdHocRouteRecipient;
-import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
-import org.kuali.rice.kns.bo.DocumentHeader;
-import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.*;
 import org.kuali.rice.kns.dao.DocumentDao;
+import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
-import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
-import org.kuali.rice.kns.rule.event.BlanketApproveDocumentEvent;
-import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
-import org.kuali.rice.kns.rule.event.RouteDocumentEvent;
-import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
-import org.kuali.rice.kns.rule.event.SaveEvent;
+import org.kuali.rice.kns.rule.event.*;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -63,6 +45,14 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -890,35 +880,6 @@ public class DocumentServiceImpl implements DocumentService {
             this.dateTimeService = KNSServiceLocator.getDateTimeService();
         }
         return this.dateTimeService;
-    }
-
-    /**
-     * @param kualiRuleService The kualiRuleService to set.
-     * @deprecated nothing uses this field
-     */
-    @Deprecated
-	public void setKualiRuleService(KualiRuleService kualiRuleService) {
-        // nothing uses this field...
-    }
-
-    /**
-     * @param dictionaryValidationService The dictionaryValidationService to set.
-     * @deprecated nothing uses this field
-     */
-    @Deprecated
-	public void setDictionaryValidationService(DictionaryValidationService dictionaryValidationService) {
-        // nothing uses this field...
-    }
-
-    /**
-     * Sets the maintenanceDocumentService attribute value.
-     *
-     * @param maintenanceDocumentService The maintenanceDocumentService to set.
-     * @deprecated nothing uses this field
-     */
-    @Deprecated
-	public final void setMaintenanceDocumentService(MaintenanceDocumentService maintenanceDocumentService) {
-        // nothing uses this field...
     }
 
     /**

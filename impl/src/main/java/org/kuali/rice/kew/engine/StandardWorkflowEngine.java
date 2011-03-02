@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.engine;
 
 import org.apache.log4j.MDC;
@@ -727,4 +728,16 @@ public class StandardWorkflowEngine implements WorkflowEngine {
     protected ClientParameterService getClientParameterService() {
 		return clientParameterService;
 	}
+
+    public void setRouteNodeService(RouteNodeService routeNodeService) {
+        this.routeNodeService = routeNodeService;
+    }
+
+    public void setRouteHeaderService(RouteHeaderService routeHeaderService) {
+        this.routeHeaderService = routeHeaderService;
+    }
+
+    public void setClientParameterService(ClientParameterService clientParameterService) {
+        this.clientParameterService = clientParameterService;
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,17 +153,6 @@ public class LookupUtils {
             fieldValues.put(fieldName, LookupUtils.forceUppercase(boClass, fieldName, (String) fieldValues.get(fieldName)));
         }
         return fieldValues;
-    }
-
-
-    /**
-     * @deprecated use {@link #applySearchResultsLimit(Class, Criteria, DatabasePlatform)} instead
-     */
-    public static void applySearchResultsLimit(Criteria criteria, DatabasePlatform platform) {
-        Integer limit = getApplicationSearchResultsLimit();
-        if (limit != null) {
-            platform.applyLimit(limit, criteria);
-        }
     }
 
     /**

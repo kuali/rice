@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1733,24 +1733,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	String roleMemberName = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	roleMemberName = ((GroupImpl)member).getGroupName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	roleMemberName = ((RoleImpl)member).getRoleName();
-        }
-        return roleMemberName;
-    }
-
-    /**
-     * @deprecated
-     * This method was called previously only by getMemberFullName(). The logic in this method has been moved there.
-     */
-    public String getFullMemberName(String memberTypeCode, BusinessObject member){
-    	String roleMemberName = "";
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-        	String principalName = ((KimPrincipalImpl)member).getPrincipalName();
-        	Person psn = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-        	roleMemberName = psn.getFirstName() + " " + psn.getLastName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberName = ((GroupImpl)member).getGroupName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){

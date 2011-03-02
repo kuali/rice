@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.dao.impl;
 
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
@@ -97,16 +96,6 @@ public class DocumentDaoJpa implements DocumentDao {
 			entityManager.refresh(doc);
         }
 		return list;
-    }
-
-    /**
-     *
-     * Deprecated method. Should use BusinessObjectService.linkAndSave() instead.
-     *
-     */
-    @Deprecated
-    public void saveMaintainableBusinessObject(PersistableBusinessObject businessObject) {
-    	throw new UnsupportedOperationException("Don't use this depricated method.");
     }
 
     @Override

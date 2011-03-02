@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.InterruptedIOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.net.ConnectException;
-import java.net.NoRouteToHostException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
 import org.apache.commons.httpclient.NoHttpResponseException;
@@ -32,6 +23,15 @@ import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+
+import java.io.InterruptedIOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -66,7 +66,7 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 	}
 
 	public static Object wrap(Object target, ServiceInfo serviceInfo) {
-		return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy.getInterfacesToProxyIncludeSpring(target), new BusClientFailureProxy(target, serviceInfo));
+		return Proxy.newProxyInstance(ClassLoaderUtils.getDefaultClassLoader(), ContextClassLoaderProxy.getInterfacesToProxy(target), new BusClientFailureProxy(target, serviceInfo));
 	}
 
 	protected Object invokeInternal(Object proxyObject, Method method, Object[] params) throws Throwable {

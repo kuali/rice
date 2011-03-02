@@ -519,7 +519,7 @@
 				<plugin>
 					<groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
 					<artifactId>maven-svn-revision-number-plugin</artifactId>
-					<version>1.5</version>
+					<version>1.6</version>
 					<executions>
 						<execution>
 							<goals>
@@ -572,11 +572,6 @@
                     <groupId>org.codehaus.mojo</groupId>
 				    <artifactId>versions-maven-plugin</artifactId>
                     <version>1.2</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-                    <artifactId>maven-svn-revision-number-plugin</artifactId>
-                    <version>1.6</version>
                 </plugin>
 			</plugins>
 		</pluginManagement>

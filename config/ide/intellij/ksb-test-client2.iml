@@ -21,9 +21,14 @@
     <content url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2">
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/src/test/resources" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/test-clients/ksb-test-client2/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

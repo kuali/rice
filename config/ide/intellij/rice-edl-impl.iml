@@ -6,8 +6,10 @@
     <content url="file://$MODULE_DIR$/../../../edl/impl">
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -35,6 +35,10 @@
       <module fileurl="file://$PROJECT_DIR$/rice-kew-test.iml" filepath="$PROJECT_DIR$/rice-kew-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-test.iml" filepath="$PROJECT_DIR$/rice-kim-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kns-test.iml" filepath="$PROJECT_DIR$/rice-kns-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-api.iml" filepath="$PROJECT_DIR$/rice-krms-api.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-framework.iml" filepath="$PROJECT_DIR$/rice-krms-framework.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-impl.iml" filepath="$PROJECT_DIR$/rice-krms-impl.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ksb-test.iml" filepath="$PROJECT_DIR$/rice-ksb-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-sampleapp.iml" filepath="$PROJECT_DIR$/rice-sampleapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-sampleapp-test.iml" filepath="$PROJECT_DIR$/rice-sampleapp-test.iml" group="rice-test and modules" />

@@ -18,7 +18,13 @@
     <content url="file://$MODULE_DIR$/../../../standalone">
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/resources" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../standalone/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../standalone/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../standalone/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../standalone/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../standalone/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../standalone/target/rice-standalone-1.1.0-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../standalone/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

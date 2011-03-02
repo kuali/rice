@@ -11,6 +11,8 @@
     <content url="file://$MODULE_DIR$/../../../sampleapp">
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />

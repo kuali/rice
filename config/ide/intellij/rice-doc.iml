@@ -4,6 +4,8 @@
     <output url="file://$MODULE_DIR$/../../../doc/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../doc/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../doc">
+      <sourceFolder url="file://$MODULE_DIR$/../../../doc/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../doc/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../doc/target" />
     </content>
     <orderEntry type="inheritedJdk" />

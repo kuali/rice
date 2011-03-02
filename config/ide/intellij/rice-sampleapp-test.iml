@@ -4,10 +4,15 @@
     <output url="file://$MODULE_DIR$/../../../test/sampleapp/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../test/sampleapp/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/sampleapp">
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/src/test/resources" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

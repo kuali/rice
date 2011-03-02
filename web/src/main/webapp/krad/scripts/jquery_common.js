@@ -235,9 +235,9 @@ function substringBetween(parseString, matchString1, matchString2) {
  * @param navigationType -
  *          the navigation style to render
  */
-function createNavigation(listId, navigationType) {
+function createNavigation(listId, navigationType, options) {
 	if (navigationType == "VERTICAL_MENU") {
-		doVerticalMenu(listId);
+		createVerticalMenu(listId, options);
 	}
 }
 
@@ -247,9 +247,9 @@ function createNavigation(listId, navigationType) {
  * @param listId -
  *          unique id for the unordered list
  */
-function createVerticalMenu(listId) {
+function createVerticalMenu(listId, options) {
 	$(document).ready(function() {
-		$("#" + listId).sidebar();
+		$("#" + listId).navMenu(options);
 	});
 }
 

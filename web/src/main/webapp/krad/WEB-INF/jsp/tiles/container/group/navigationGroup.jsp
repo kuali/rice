@@ -21,7 +21,6 @@
 
 <!----------------------------------- #NAVIGATION --------------------------------------->
 <krad:div component="${group}">
-
   <%-- render items in list --%>
   <ul id="${group.id}">
     <c:forEach items="${group.items}" var="item" varStatus="itemVarStatus">
@@ -30,9 +29,8 @@
       </li>
     </c:forEach>
   </ul>
-
 </krad:div>
 
 <script type="text/javascript">
-  createNavigation("${group.id}", "${group.navigationType}");
+  createNavigation("${group.id}", "${group.navigationType}", ${group.componentOptionsJSString});
 </script>

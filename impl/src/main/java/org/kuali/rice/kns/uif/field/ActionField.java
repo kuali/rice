@@ -182,6 +182,8 @@ public class ActionField extends FieldBase {
 	 */
 	public void setNavigateToPageId(String navigateToPageId) {
 		this.navigateToPageId = navigateToPageId;
+		actionParameters.put("pageId", navigateToPageId);
+		this.methodToCall = "navigate";
 	}
 
 	/**
@@ -211,6 +213,10 @@ public class ActionField extends FieldBase {
 	 */
 	public void setActionParameters(Map<String, String> actionParameters) {
 		this.actionParameters = actionParameters;
+		if(actionParameters.containsKey("pageId")){
+			navigateToPageId = actionParameters.get("pageId");
+			this.methodToCall = "navigate";
+		}
 	}
 
 	/**
@@ -227,6 +233,10 @@ public class ActionField extends FieldBase {
 		}
 
 		this.actionParameters.put(parameterName, parameterValue);
+		if(actionParameters.containsKey("pageId")){
+			navigateToPageId = actionParameters.get("pageId");
+			this.methodToCall = "navigate";
+		}
 	}
 
 }

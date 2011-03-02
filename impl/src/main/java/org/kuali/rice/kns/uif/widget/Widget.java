@@ -33,20 +33,6 @@ import org.kuali.rice.kns.uif.Component;
  */
 public interface Widget extends Component {
 
-	/**
-	 * Options that are passed through to the Widget renderer. The Map key is
-	 * the option name, with the Map value as the option value. See
-	 * documentation on the particular widget render for available options.
-	 * 
-	 * @return Map<String, String> options
-	 */
-	public Map<String, String> getWidgetOptions();
 
-	/**
-	 * Setter for the widget's options
-	 * 
-	 * @param widgetOptions
-	 */
-	public void setWidgetOptions(Map<String, String> widgetOptions);
 
 }

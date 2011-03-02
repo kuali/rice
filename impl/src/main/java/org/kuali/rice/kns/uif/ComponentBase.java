@@ -17,7 +17,9 @@ package org.kuali.rice.kns.uif;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
@@ -87,8 +89,11 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private DecoratorChain decoratorChain;
 
 	private List<ComponentModifier> componentModifiers;
+	
+	private Map<String, String> componentOptions;
 
 	public ComponentBase() {
+		
 		order = 0;
 		colSpan = 1;
 		rowSpan = 1;
@@ -878,6 +883,54 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 */
 	public void setOnMouseMoveScript(String onMouseMoveScript) {
 		this.onMouseMoveScript = onMouseMoveScript;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.uif.widget.Widget#getWidgetOptions()
+	 */
+	public Map<String, String> getComponentOptions() {
+		if(componentOptions == null){
+			componentOptions = new HashMap<String, String>();
+		}
+		return this.componentOptions;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.widget.Widget#setWidgetOptions(java.util.Map)
+	 */
+	public void setComponentOptions(Map<String, String> componentOptions) {
+		this.componentOptions = componentOptions;
+	}
+
+	/**
+	 * Builds a string from the underlying <code>Map</code> of component options
+	 * that will export that options as a JavaScript Map for use in js and jQuery plugins
+	 * 
+	 * @return String of widget options formatted as JS Map
+	 */
+	public String getComponentOptionsJSString() {
+		if(componentOptions == null){
+			componentOptions = new HashMap<String, String>();
+		}
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("{");
+
+		for (String optionKey : componentOptions.keySet()) {
+			String optionValue = componentOptions.get(optionKey);
+
+			if (sb.length() > 1) {
+				sb.append(",");
+			}
+
+			sb.append(optionKey);
+			sb.append(":");
+			sb.append("\"" + optionValue + "\"");
+		}
+
+		sb.append("}");
+
+		return sb.toString();
 	}
 
 }

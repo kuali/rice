@@ -284,5 +284,10 @@ public abstract class UifControllerBase {
 	protected ViewService getViewService() {
 		return KNSServiceLocator.getViewService();
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
+	public void navigate(UifFormBase form){
+		getUIFModelAndView(form, form.getViewId(), form.getPageId());
+	}
 
 }

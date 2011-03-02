@@ -44,6 +44,8 @@ public class UifFormBase implements Serializable {
 	protected String viewTypeName;
 	protected String methodToCall;
 	protected String formKey;
+	protected String pageId;
+	protected String pageName;
 
 	protected String selectedCollectionPath;
 	protected int selectedLineIndex;
@@ -270,4 +272,33 @@ public class UifFormBase implements Serializable {
 		return KNSServiceLocator.getViewService();
 	}
 
+	/**
+	 * @return the pageId
+	 */
+	public String getPageId() {
+		return this.pageId;
+	}
+
+	/**
+	 * @param pageId the pageId to set
+	 */
+	public void setPageId(String pageId) {
+		this.pageId = pageId;
+	}
+
+	/**
+	 * @return the pageName
+	 */
+	public String getPageName() {
+		return this.pageName;
+	}
+
+	/**
+	 * @param pageName the pageName to set
+	 */
+	public void setPageName(String pageName) {
+		this.pageName = pageName;
+	}
+
+	
 }

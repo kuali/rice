@@ -22,7 +22,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="Travel-testView1" parent="FormView">
       <property name="id" value="Travel-testView1"/>
       <property name="title" value="Test View 1"/>
-      <property name="entryPageId" value="page1"/>   
+      <property name="entryPageId" value="page1"/>
+      <property name="navigation">
+      	<ref bean="testViewMenu" />
+      </property>
       <property name="items">
         <list>
           <bean parent="Page_Accordion" p:id="page1">
@@ -53,10 +56,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="testViewMenu" parent="NavigationGroupMenu">
       <property name="items">
         <list> 
-          <bean parent="ActionLinkField" p:methodToCall="navigateToPage1" p:actionLabel="Page 1"/>
-          <bean parent="ActionLinkField" p:methodToCall="navigateToPage2" p:actionLabel="Page 2"/>
+		  <bean parent="HeaderTwo" p:headerText="Navigation"/>
+          <bean parent="ActionLinkField" p:navigateToPageId="page1" p:actionLabel="Page 1"/>
+          <bean parent="ActionLinkField" p:navigateToPageId="page2" p:actionLabel="Page 2"/>
         </list>
-      </property>  
+      </property>
+	  <property name="componentOptions">
+		<map>
+			<entry key="animate" value="true"/>
+			<entry key="slideout" value="true"/>
+		</map>
+	  </property>
    </bean>   
    
    <bean id="testSection1" parent="GroupSection_Accordion">

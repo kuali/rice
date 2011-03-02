@@ -36,7 +36,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="DatePicker-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.DatePicker" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/datePicker.jsp"/>
       <property name="styleClasses" value="calendar"/>
-      <property name="widgetOptions">
+      <property name="componentOptions">
           <map>
               <entry key="showOn" value="button"/>
               <!-- TODO: fix me, this should use the ConfigProperties.krad.externalizable.images.url once EL expressions are working -->
@@ -53,7 +53,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="TableTools" parent="TableTools-parentBean"/>
   <bean id="TableTools-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.TableTools" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableTools.jsp"/>
-      <property name="widgetOptions">
+      <property name="componentOptions">
           <map>
               <entry key="sDom" value="T&lt;'clear'&gt;lfrtip"/>   
           </map>      

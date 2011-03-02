@@ -33,10 +33,10 @@ import org.kuali.rice.kns.uif.ComponentBase;
 public abstract class WidgetBase extends ComponentBase implements Widget {
 	private static final long serialVersionUID = -917582902829056830L;
 
-	private Map<String, String> widgetOptions;
+	
 
 	public WidgetBase() {
-		widgetOptions = new HashMap<String, String>();
+		
 	}
 
 	/**
@@ -45,48 +45,6 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
 	@Override
 	public String getComponentTypeName() {
 		return "widget";
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.widget.Widget#getWidgetOptions()
-	 */
-	public Map<String, String> getWidgetOptions() {
-		return this.widgetOptions;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.widget.Widget#setWidgetOptions(java.util.Map)
-	 */
-	public void setWidgetOptions(Map<String, String> widgetOptions) {
-		this.widgetOptions = widgetOptions;
-	}
-
-	/**
-	 * Builds a string from the underlying <code>Map</code> of widget options
-	 * that will export that options as a JavaScript Map
-	 * 
-	 * @return String of widget options formatted as JS Map
-	 */
-	public String getWidgetOptionsJSString() {
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("{");
-
-		for (String optionKey : widgetOptions.keySet()) {
-			String optionValue = widgetOptions.get(optionKey);
-
-			if (sb.length() > 1) {
-				sb.append(",");
-			}
-
-			sb.append(optionKey);
-			sb.append(":");
-			sb.append("\"" + optionValue + "\"");
-		}
-
-		sb.append("}");
-
-		return sb.toString();
 	}
 
 }

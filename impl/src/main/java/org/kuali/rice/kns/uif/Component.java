@@ -17,6 +17,7 @@ package org.kuali.rice.kns.uif;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
@@ -454,5 +455,21 @@ public interface Component extends Serializable, Ordered {
 	 * @param order
 	 */
 	public void setOrder(int order);
+	
+	/**
+	 * Options that are passed through to the Component renderer. The Map key is
+	 * the option name, with the Map value as the option value. See
+	 * documentation on the particular widget render for available options.
+	 * 
+	 * @return Map<String, String> options
+	 */
+	public Map<String, String> getComponentOptions();
+
+	/**
+	 * Setter for the widget's options
+	 * 
+	 * @param widgetOptions
+	 */
+	public void setComponentOptions(Map<String, String> componentOptions);
 
 }

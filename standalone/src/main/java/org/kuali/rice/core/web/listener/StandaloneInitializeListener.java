@@ -50,6 +50,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
     private static final String DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE = "${bootstrap.spring.file}";
     public static final String RICE_BASE = "rice.base";
     public static final String CATALINA_BASE = "catalina.base";
+    private static final String BOOTSTRAP_SPRING_FILE = "bootstrap.spring.file";
 
     private XmlWebApplicationContext context = null;
 
@@ -71,10 +72,10 @@ public class StandaloneInitializeListener implements ServletContextListener {
         }
 
         String bootstrapSpringBeans = DEFAULT_SPRING_BEANS;
-        if (!StringUtils.isBlank(System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE))) {
-            bootstrapSpringBeans = System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE);
-        } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE))) {
-            String bootstrapSpringInitParam = sce.getServletContext().getInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE);
+        if (!StringUtils.isBlank(System.getProperty(BOOTSTRAP_SPRING_FILE))) {
+            bootstrapSpringBeans = System.getProperty(BOOTSTRAP_SPRING_FILE);
+        } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(BOOTSTRAP_SPRING_FILE))) {
+            String bootstrapSpringInitParam = sce.getServletContext().getInitParameter(BOOTSTRAP_SPRING_FILE);
             // if the value comes through as ${bootstrap.spring.beans}, we ignore it
             if (!DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE.equals(bootstrapSpringInitParam)) {
             	bootstrapSpringBeans = bootstrapSpringInitParam;

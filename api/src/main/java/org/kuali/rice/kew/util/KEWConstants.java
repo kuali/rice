@@ -54,8 +54,6 @@ public final class KEWConstants {
     public static final String PLUGIN_HOT_DEPLOY_MAX_WAIT_TIME = "Plugin.hotDeploy.maxWaitTime";
     public static final String PLUGIN_HOT_DEPLOY_SAFE_TIME = "Plugin.hotDeploy.safeTime";
 
-    public static final String BOOTSTRAP_SPRING_FILE = "kew.bootstrap.spring.file";
-
     public static final String KEW_URL_HOST = "kew.url.host";
     public static final String HTTP_SERVICE_PORT = "http.service.port";
 	public static final String KEW_SERVER_CONTEXT = "kew.server.context";

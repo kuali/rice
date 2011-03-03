@@ -640,6 +640,7 @@
 		<module>core</module>
 		<module>test</module>
 		<module>edl</module>
+		<module>kim</module>
         <module>krad</module>
 		<module>krms</module>
         <module>client-contrib</module>

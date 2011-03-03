@@ -90,11 +90,11 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 	protected Lifecycle getLoadApplicationLifecycle() {
 		return new BaseLifecycle() {
 			public void start() throws Exception {
-				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "classpath:SampleAppBeans-test.xml");
+				System.setProperty("bootstrap.spring.file", "classpath:SampleAppBeans-test.xml");
                 ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();                
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
-                System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
+                System.getProperties().remove("bootstrap.spring.file");
 				super.start();
 			}
 		};

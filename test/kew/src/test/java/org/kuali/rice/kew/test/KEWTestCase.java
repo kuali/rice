@@ -79,7 +79,7 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	 */
 	@Override
 	protected void setUpInternal() throws Exception {
-		System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE,
+		System.setProperty("bootstrap.spring.file",
 				getKEWBootstrapSpringFile());
 		super.setUpInternal();
 	}

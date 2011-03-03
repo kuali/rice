@@ -52,6 +52,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 
     //private List<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
     private ConfigurableApplicationContext context = null;
+    private static final String BOOTSTRAP_SPRING_FILE = "bootstrap.spring.file";
 
     /**
 	 * ServletContextListener interface implementation that schedules the start
@@ -90,10 +91,10 @@ public class ApplicationInitializeListener implements ServletContextListener {
         }
 
         String bootstrapSpringBeans = "classpath:org/kuali/rice/kew/config/ServerKEWSpringBeans.xml";
-        if (!StringUtils.isBlank(System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE))) {
-        	bootstrapSpringBeans = System.getProperty(KEWConstants.BOOTSTRAP_SPRING_FILE);
-        } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE))) {
-            bootstrapSpringBeans = sce.getServletContext().getInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE);
+        if (!StringUtils.isBlank(System.getProperty(BOOTSTRAP_SPRING_FILE))) {
+        	bootstrapSpringBeans = System.getProperty(BOOTSTRAP_SPRING_FILE);
+        } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(BOOTSTRAP_SPRING_FILE))) {
+            bootstrapSpringBeans = sce.getServletContext().getInitParameter(BOOTSTRAP_SPRING_FILE);
             LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
         }
         try {

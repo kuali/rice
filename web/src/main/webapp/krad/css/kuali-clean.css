@@ -179,10 +179,16 @@ div.tab-newh3 img { margin-right:6px
 }
 
 .summary {
-	font-size: small;
-	font-style: italic;
+	font-size: 12px;
+	margin-bottom: auto;
+	display: inline-block;
+}
+
+.constraint {
+	font-size: 10px;
+	color: gray;
 	margin-bottom: 5px;
-    padding-left: 15px;
+	margin-top: 5px;
 	display: inline-block;
 }
 

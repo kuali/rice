@@ -20,6 +20,7 @@
   
   <ul class="chan">
 	 <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView1&methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="Test View 2" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView2&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&viewTypeName=INQUIRY&objectClassName=edu.sampleu.travel.bo.TravelAccount"/></li>
      <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry (KNS Parms)" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount"/></li>
      <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (New)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&viewTypeName=MAINTENANCE&objectClassName=edu.sampleu.travel.bo.TravelAccount"/></li> 

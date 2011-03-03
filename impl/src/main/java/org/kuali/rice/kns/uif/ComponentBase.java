@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
 import org.kuali.rice.kns.uif.decorator.DecoratorChain;
@@ -89,11 +90,11 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private DecoratorChain decoratorChain;
 
 	private List<ComponentModifier> componentModifiers;
-	
+
 	private Map<String, String> componentOptions;
 
 	public ComponentBase() {
-		
+
 		order = 0;
 		colSpan = 1;
 		rowSpan = 1;
@@ -151,17 +152,19 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 *      java.lang.Object)
 	 */
 	public void performFinalize(View view, Object model) {
-		// add the align, valign, and width settings to style
-		if (StringUtils.isNotBlank(getAlign())) {
-			setStyle(getStyle() + CssConstants.TEXT_ALIGN + getAlign() + ";");
-		}
+		if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
+			// add the align, valign, and width settings to style
+			if (StringUtils.isNotBlank(getAlign())) {
+				setStyle(getStyle() + CssConstants.TEXT_ALIGN + getAlign() + ";");
+			}
 
-		if (StringUtils.isNotBlank(getValign())) {
-			setStyle(getStyle() + CssConstants.VERTICAL_ALIGN + getValign() + ";");
-		}
+			if (StringUtils.isNotBlank(getValign())) {
+				setStyle(getStyle() + CssConstants.VERTICAL_ALIGN + getValign() + ";");
+			}
 
-		if (StringUtils.isNotBlank(getWidth())) {
-			setStyle(getStyle() + CssConstants.WIDTH + getWidth() + ";");
+			if (StringUtils.isNotBlank(getWidth())) {
+				setStyle(getStyle() + CssConstants.WIDTH + getWidth() + ";");
+			}
 		}
 
 		decoratorChain = new DecoratorChain(this);
@@ -884,12 +887,12 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	public void setOnMouseMoveScript(String onMouseMoveScript) {
 		this.onMouseMoveScript = onMouseMoveScript;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.uif.widget.Widget#getWidgetOptions()
 	 */
 	public Map<String, String> getComponentOptions() {
-		if(componentOptions == null){
+		if (componentOptions == null) {
 			componentOptions = new HashMap<String, String>();
 		}
 		return this.componentOptions;
@@ -904,12 +907,13 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 
 	/**
 	 * Builds a string from the underlying <code>Map</code> of component options
-	 * that will export that options as a JavaScript Map for use in js and jQuery plugins
+	 * that will export that options as a JavaScript Map for use in js and
+	 * jQuery plugins
 	 * 
 	 * @return String of widget options formatted as JS Map
 	 */
 	public String getComponentOptionsJSString() {
-		if(componentOptions == null){
+		if (componentOptions == null) {
 			componentOptions = new HashMap<String, String>();
 		}
 		StringBuffer sb = new StringBuffer();

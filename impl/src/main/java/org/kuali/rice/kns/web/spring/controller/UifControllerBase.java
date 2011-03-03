@@ -65,45 +65,45 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public abstract class UifControllerBase {
 
-    /**
-     * This method will create/obtain the model(form) object before it is passed to the
-     * Binder/BeanWrapper.
-     * 
-     * This method is not intended to be overridden by client applications as it handles
-     * framework setup and session maintenance.  Clients should override
-     * createIntialForm() instead when they need custom form initialization.
-     * 
-     * @param request
-     * @return
-     */
-    @ModelAttribute(value="KualiForm")
-    public UifFormBase initForm(HttpServletRequest request) {
-        UifFormBase form;
-        String formKeyParam = request.getParameter(KNSConstants.FORM_KEY);
-        
-        if(StringUtils.isNotBlank(formKeyParam)) {
-            form = (UifFormBase)request.getSession().getAttribute(formKeyParam);
-        }
-        else {
-            form = createInitialForm(request);
-        }
-        
-        return form;
-    }
-    
-    /**
-     * This method will be called to create a new model(form) object when necessary.  This
-     * usually occurs on the initial request in a conversation (when the model is not
-     * present in the session).
-     * 
-     * This method must be overridden when extending a controller and using a different
-     * form type than the superclass.
-     * 
-     * @param request
-     * @return
-     */
-    protected abstract UifFormBase createInitialForm(HttpServletRequest request);
-    
+	/**
+	 * This method will create/obtain the model(form) object before it is passed
+	 * to the Binder/BeanWrapper.
+	 * 
+	 * This method is not intended to be overridden by client applications as it
+	 * handles framework setup and session maintenance. Clients should override
+	 * createIntialForm() instead when they need custom form initialization.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ModelAttribute(value = "KualiForm")
+	public UifFormBase initForm(HttpServletRequest request) {
+		UifFormBase form;
+		String formKeyParam = request.getParameter(KNSConstants.FORM_KEY);
+
+		if (StringUtils.isNotBlank(formKeyParam)) {
+			form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
+		}
+		else {
+			form = createInitialForm(request);
+		}
+
+		return form;
+	}
+
+	/**
+	 * This method will be called to create a new model(form) object when
+	 * necessary. This usually occurs on the initial request in a conversation
+	 * (when the model is not present in the session).
+	 * 
+	 * This method must be overridden when extending a controller and using a
+	 * different form type than the superclass.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	protected abstract UifFormBase createInitialForm(HttpServletRequest request);
+
 	private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
 	{
 		methodToCallsToNotCheckAuthorization.add("performLookup");
@@ -233,6 +233,15 @@ public abstract class UifControllerBase {
 		return getUIFModelAndView(uifForm);
 	}
 
+	/**
+	 * Handles menu navigation between view pages
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
+	public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+		return getUIFModelAndView(form, form.getViewId(), form.getPageId());
+	}
+
 	protected ModelAndView getUIFModelAndView(UifFormBase form) {
 		return getUIFModelAndView(form, form.getViewId(), "");
 	}
@@ -283,11 +292,6 @@ public abstract class UifControllerBase {
 
 	protected ViewService getViewService() {
 		return KNSServiceLocator.getViewService();
-	}
-	
-	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
-	public void navigate(UifFormBase form){
-		getUIFModelAndView(form, form.getViewId(), form.getPageId());
 	}
 
 }

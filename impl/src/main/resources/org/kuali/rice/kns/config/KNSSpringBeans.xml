@@ -503,6 +503,15 @@
 		<property name="maintenanceDocumentDao">
 			<ref bean="maintenanceDocumentDao" />
 		</property>
+        <property name="maintenanceDocumentDictionaryService">
+            <ref bean="maintenanceDocumentDictionaryService" />
+        </property> 
+        <property name="businessObjectAuthorizationService">
+            <ref bean="businessObjectAuthorizationService" />
+        </property>   
+        <property name="documentService">
+            <ref bean="documentService" />
+        </property>                          
 	</bean>
 
 	<bean id="noteService" class="org.kuali.rice.kns.service.impl.NoteServiceImpl">

@@ -42,7 +42,6 @@ import edu.sampleu.travel.krad.form.UITestForm;
 @Controller
 @RequestMapping(value = "/uitest")
 public class UITestController extends UifControllerBase {
-	private static final String testViewId = "Travel-testView1";
 
 	@Override
     protected UITestForm createInitialForm(HttpServletRequest request) {
@@ -91,21 +90,21 @@ public class UITestController extends UifControllerBase {
 		uiTestForm.setTravelAccount2(travelAccount);
 		uiTestForm.setTravelAccount3(travelAccount);
 
-		return getUIFModelAndView(uiTestForm, testViewId, "page1");
+		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
 	public ModelAndView save(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, testViewId, "page2");
+		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page2");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
 	public ModelAndView close(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, testViewId, "page1");
+		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
 	}
 
 }

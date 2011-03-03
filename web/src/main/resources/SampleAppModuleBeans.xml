@@ -33,7 +33,8 @@
                 <value>classpath:edu/sampleu/travel/uif/datadictionary/TestInquiries.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/datadictionary/TestLookups.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/datadictionary/TestMaintenance.xml</value>
-                <value>classpath:edu/sampleu/travel/uif/datadictionary/Travel-testView1.xml</value>                
+                <value>classpath:edu/sampleu/travel/uif/datadictionary/Travel-testView1.xml</value>   
+                <value>classpath:edu/sampleu/travel/uif/datadictionary/Travel-testView2.xml</value>             
                 <value>classpath:edu/sampleu/travel/uif/datadictionary/FiscalOfficerView.xml</value>                
             </list>
         </property>

@@ -84,6 +84,8 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	protected Control controlField;
 
 	protected String summary;
+	protected String constraint;
+
 	protected String description;
 
 	protected String formatterClass;
@@ -729,6 +731,20 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		this.childEntryName = childEntryName;
 	}
 
+	/**
+	 * @return the constraintMessage
+	 */
+	public String getConstraint() {
+		return this.constraint;
+	}
+
+	/**
+	 * @param constraintMessage the constraintMessage to set
+	 */
+	public void setConstraint(String constraint) {
+		this.constraint = constraint;
+	}
+	
 //	/**
 //	 * @return the constraint
 //	 */

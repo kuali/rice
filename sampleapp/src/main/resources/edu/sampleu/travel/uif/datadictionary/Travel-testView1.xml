@@ -77,7 +77,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Test Group 1"/> 
       <property name="items">
         <list>
-          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4">
+          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4" p:summary="This title is used for identifying the proposal through the apporval process." p:constraint="Must be 4 chars">
             <property name="control">
               <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
             </property>

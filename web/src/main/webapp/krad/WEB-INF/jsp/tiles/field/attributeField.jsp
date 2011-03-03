@@ -28,7 +28,8 @@
   </c:if>
 
   <%-- render field summary --%>
-
+  <krad:template component="${field.summaryMessageField}"/>
+  
   <%-- render field control --%>
   <c:if test="${field.readOnly}">
   	<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
@@ -43,7 +44,8 @@
   </c:if>
 
   <%-- render field constraint --%>
-
+  <krad:template component="${field.constraintMessageField}"/>
+  
   <%-- render field quickfinder --%>
 
   <%-- render field help --%>

@@ -72,9 +72,13 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 	// messages
 	private String summary;
+	private String constraint;
+
 	private String description;
 
 	private AttributeSecurity attributeSecurity;
+	private MessageField summaryMessageField;
+	private MessageField constraintMessageField;
 
 	public AttributeField() {
 	}
@@ -103,6 +107,18 @@ public class AttributeField extends FieldBase implements DataBinding {
 			control.setId(this.getId());
 		}
 
+		if (StringUtils.isNotBlank(summary)){
+			summaryMessageField.setMessageText(summary);
+		}else{
+			summaryMessageField.setRender(false);
+		}
+		
+		if (StringUtils.isNotBlank(constraint)){
+			constraintMessageField.setMessageText(constraint);
+		}else{
+			constraintMessageField.setRender(false);
+		}
+		
 		// TODO: remove later, this should be done within the service lifecycle
 		if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
 			MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
@@ -163,6 +179,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (getAttributeSecurity() == null) {
 			setAttributeSecurity(attributeDefinition.getAttributeSecurity());
 		}
+		
+		if (StringUtils.isEmpty(getConstraint())){
+			setConstraint(attributeDefinition.getConstraint());
+		}
+		
 	}
 
 	/**
@@ -437,6 +458,12 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 */
 	public void setSummary(String summary) {
 		this.summary = summary;
+		if (StringUtils.isNotBlank(summary)){
+			summaryMessageField.setMessageText(summary);
+			summaryMessageField.setRender(true);
+		}else{
+			summaryMessageField.setRender(false);
+		}
 	}
 
 	/**
@@ -479,4 +506,52 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.attributeSecurity = attributeSecurity;
 	}
 
+	/**
+	 * @return the summaryField
+	 */
+	public MessageField getSummaryMessageField() {
+		return this.summaryMessageField;
+	}
+
+	/**
+	 * @param summaryField the summaryField to set
+	 */
+	public void setSummaryMessageField(MessageField summaryField) {
+		this.summaryMessageField = summaryField;
+	}
+
+	/**
+	 * @return the constraint
+	 */
+	public String getConstraint() {
+		return this.constraint;
+	}
+
+	/**
+	 * @param constraint the constraint to set
+	 */
+	public void setConstraint(String constraint) {
+		this.constraint = constraint;
+		if (StringUtils.isNotBlank(constraint)){
+			constraintMessageField.setMessageText(constraint);
+			constraintMessageField.setRender(true);
+		}else{
+			constraintMessageField.setRender(false);
+		}
+	}
+	
+	/**
+	 * @return the constraintMessageField
+	 */
+	public MessageField getConstraintMessageField() {
+		return this.constraintMessageField;
+	}
+
+	/**
+	 * @param constraintMessageField the constraintMessageField to set
+	 */
+	public void setConstraintMessageField(MessageField constraintMessageField) {
+		this.constraintMessageField = constraintMessageField;
+	}
 }
+

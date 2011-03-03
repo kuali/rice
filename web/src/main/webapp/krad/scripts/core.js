@@ -415,7 +415,9 @@ function placeFocus() {
  *          the id for the page that the link should navigate to
  */
 function handleActionLink(methodToCall, navigateToPageId) {
-	setMethodToCall(methodToCall);
+	/*
+setMethodToCall(methodToCall);
+*/
 	submitForm();
 }
 

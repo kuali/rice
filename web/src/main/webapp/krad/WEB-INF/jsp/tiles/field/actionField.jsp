@@ -25,9 +25,8 @@
 <krad:attributeBuilder component="${field}"/>
  
 <input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${class}/>
-       
-<krad:actionParameters componentId="${field.id}" parameters="${field.actionParameters}"/>
 
+<!-- This needs to be looked at and removed - moved into DD completely probably and appended by ActionField class-->
 <%-- setup client side call --%>
 <c:if test="${field.clientSideCall}">
    <script type="text/javascript">

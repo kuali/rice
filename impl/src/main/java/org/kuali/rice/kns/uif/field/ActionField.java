@@ -70,6 +70,27 @@ public class ActionField extends FieldBase {
 				&& StringUtils.isNotBlank(methodToCall) && !clientSideCall) {
 			actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
 		}
+		
+		if(!actionParameters.isEmpty()){
+			String prefixScript = this.getOnClickScript();
+			if(prefixScript == null){
+				prefixScript = "";
+			}
+			
+			String writeParamsScript = "";
+			for(String key: actionParameters.keySet()){
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + key +
+					"', '" + actionParameters.get(key) + "'); ";
+			}
+			
+			String postScript = "";
+			if(methodToCall.equals(UifConstants.MethodToCallNames.NAVIGATE)){
+				postScript = "submitForm();";
+			}
+			this.setOnClickScript(prefixScript + writeParamsScript + postScript);
+			
+			
+		}
 	}
 
 	/**
@@ -182,8 +203,8 @@ public class ActionField extends FieldBase {
 	 */
 	public void setNavigateToPageId(String navigateToPageId) {
 		this.navigateToPageId = navigateToPageId;
-		actionParameters.put("pageId", navigateToPageId);
-		this.methodToCall = "navigate";
+		actionParameters.put(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID, navigateToPageId);
+		this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
 	}
 
 	/**
@@ -213,9 +234,9 @@ public class ActionField extends FieldBase {
 	 */
 	public void setActionParameters(Map<String, String> actionParameters) {
 		this.actionParameters = actionParameters;
-		if(actionParameters.containsKey("pageId")){
-			navigateToPageId = actionParameters.get("pageId");
-			this.methodToCall = "navigate";
+		if(actionParameters.containsKey(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID)){
+			navigateToPageId = actionParameters.get(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID);
+			this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
 		}
 	}
 
@@ -233,10 +254,18 @@ public class ActionField extends FieldBase {
 		}
 
 		this.actionParameters.put(parameterName, parameterValue);
-		if(actionParameters.containsKey("pageId")){
-			navigateToPageId = actionParameters.get("pageId");
-			this.methodToCall = "navigate";
+		if(actionParameters.containsKey(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID)){
+			navigateToPageId = actionParameters.get(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID);
+			this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
 		}
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnClick()
+	 */
+	@Override
+	public boolean getSupportsOnClick() {
+		return true;
 	}
 
 }

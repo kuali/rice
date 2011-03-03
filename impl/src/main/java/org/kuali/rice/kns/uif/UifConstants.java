@@ -77,8 +77,18 @@ public class UifConstants extends JSTLConstants {
 
 	public static class ActionParameterNames {
 		public static final String METHOD_TO_CALL = "methodToCall";
+		public static final String NAVIGATE_TO_PAGE_ID = "pageId";
 		public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 		public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
+	}
+	
+	public static class MethodToCallNames {
+		public static final String NAVIGATE = "navigate";
+		public static final String START = "start";
+		public static final String SAVE = "save";
+		public static final String CLOSE = "close";
+		public static final String ADD_LINE = "addLine";
+		public static final String DELETE_LINE = "deleteLine";
 	}
 	
 	public static class LayoutComponentOptions {

@@ -27,6 +27,8 @@
   <properties>
   	<maven.skip.packaging>false</maven.skip.packaging>
   	<maven.surefire.forkmode>always</maven.surefire.forkmode>
+    <surefire.forkMode>always</surefire.forkMode>
+    <surefire.useSystemClassLoader>true</surefire.useSystemClassLoader>
   	<maven.surefire.forkedProcessTimeoutInSeconds>300</maven.surefire.forkedProcessTimeoutInSeconds>
   </properties>
 

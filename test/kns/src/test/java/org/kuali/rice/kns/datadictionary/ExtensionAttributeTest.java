@@ -61,7 +61,19 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml");
-		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/Campus.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/CampusType.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/country/Country.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/state/State.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/county/County.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/postalcode/PostalCode.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/Parameter.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/ParameterType.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/namespace/Namespace.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/component/Component.xml");
+
+        dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");
+
         dd.parseDataDictionaryConfigurationFiles( false );
 	}
 

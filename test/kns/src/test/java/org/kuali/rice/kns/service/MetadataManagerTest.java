@@ -25,6 +25,7 @@ import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
 import org.kuali.rice.shareddata.api.country.Country;
+import org.kuali.rice.shareddata.impl.country.CountryBo;
 import org.kuali.rice.shareddata.impl.state.StateBo;
 import org.kuali.rice.shareddata.impl.state.StateId;
 import org.kuali.test.KNSTestCase;
@@ -47,18 +48,18 @@ public class MetadataManagerTest extends KNSTestCase {
 	@Test
 	public void testPKMapToObject() {
 		Map<String, Object> pkMap = new HashMap<String, Object>();
-		Object pkValue = MetadataManager.convertPrimaryKeyMapToObject(Country.class, pkMap);
+		Object pkValue = MetadataManager.convertPrimaryKeyMapToObject(CountryBo.class, pkMap);
 		assertNull("An empty map should return a null key", pkValue);
 		
-		pkMap.put("postalCountryCode", "AN");
-		pkValue = MetadataManager.convertPrimaryKeyMapToObject(Country.class, pkMap);
+		pkMap.put("code", "AN");
+		pkValue = MetadataManager.convertPrimaryKeyMapToObject(CountryBo.class, pkMap);
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"AN\"", "AN", pkValue);
 		
-		pkMap.put("postalCountryName", "ANDORRA");
+		pkMap.put("name", "ANDORRA");
 		boolean exceptionThrown = false;
 		try {
-			pkValue = MetadataManager.convertPrimaryKeyMapToObject(Country.class, pkMap);
+			pkValue = MetadataManager.convertPrimaryKeyMapToObject(CountryBo.class, pkMap);
 		} catch (IllegalArgumentException iae) {
 			exceptionThrown = true;
 		}
@@ -66,15 +67,15 @@ public class MetadataManagerTest extends KNSTestCase {
 		
 		pkMap.clear();
 		
-		pkMap.put("postalCountryCode", "US");
-		pkMap.put("postalStateCode", "WV");
+		pkMap.put("countryCode", "US");
+		pkMap.put("code", "WV");
 		pkValue = MetadataManager.convertPrimaryKeyMapToObject(StateBo.class, pkMap);
 		org.junit.Assert.assertEquals("Composite pkValue for State should have class of StateId", StateId.class, pkValue.getClass());
 		StateId stateId = (StateId)pkValue;
-		assertEquals("postalCountryCode was not correctly set", "US", stateId.getCountryCode());
-		assertEquals("postalStateCode was not correctly set", "WV", stateId.getCode());
+		assertEquals("Country code was not correctly set", "US", stateId.getCountryCode());
+		assertEquals("State code was not correctly set", "WV", stateId.getCode());
 		
-		pkMap.put("postalStateName", "WEST VIRGINIA");
+		pkMap.put("name", "WEST VIRGINIA");
 		exceptionThrown = false;
 		try {
 			pkValue = MetadataManager.convertPrimaryKeyMapToObject(StateBo.class, pkMap);

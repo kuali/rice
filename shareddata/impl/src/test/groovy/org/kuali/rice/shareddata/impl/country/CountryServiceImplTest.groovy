@@ -89,7 +89,7 @@ class CountryServiceImplTest {
   }
 
   @Test
-  public void testGetByAlternatePostalCountryCode() {
+  public void testGetByAlternateCode() {
     mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map ->
       [sampleCountriesKeyedByAltCode.get(
@@ -106,7 +106,7 @@ class CountryServiceImplTest {
   }
 
   @Test
-  public void testGetByAlternatePostalCountryCodeWhenNoneFound() {
+  public void testGetByAlternateCodeWhenNoneFound() {
     mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> []}
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
@@ -120,7 +120,7 @@ class CountryServiceImplTest {
   }
 
   @Test
-  public void testGetByAlternatePostalCountryCodeWhenMultipleFound() {
+  public void testGetByAlternateCodeWhenMultipleFound() {
     mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
     }
@@ -137,14 +137,14 @@ class CountryServiceImplTest {
   }
 
   @Test
-  public void testGetByAlternatePostalCountryCodeWithEmptyCode() {
+  public void testGetByAlternateCodeWithEmptyCode() {
       shouldFail(IllegalArgumentException.class) {
         new CountryServiceImpl().getCountryByAlternateCode(" ")
       }
   }
 
   @Test
-  public void testGetByAlternatePostalCountryCodeWithNullCode() {
+  public void testGetByAlternateCodeWithNullCode() {
       shouldFail(IllegalArgumentException.class) {
         new CountryServiceImpl().getCountryByAlternateCode(null)
       }

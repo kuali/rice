@@ -131,12 +131,12 @@ public final class Country implements CountryContract, ModelObjectComplete {
         private boolean restricted;
         private boolean active;
 
-        private Builder(String code, String alternatePostalCode, String name,
+        private Builder(String code, String alternateCode, String name,
                         boolean restricted, boolean active) {
-            this.setPostalCountryCode(code);
-            this.setAlternatePostalCode(alternatePostalCode);
-            this.setPostalCountryName(name);
-            this.setrestricted(restricted);
+            this.setCode(code);
+            this.setAlternateCode(alternateCode);
+            this.setName(name);
+            this.setRestricted(restricted);
             this.setActive(active);
         }
 
@@ -160,7 +160,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
          *
          * @param code required to be not null and not empty.
          */
-        public void setPostalCountryCode(String code) {
+        public void setCode(String code) {
             if (StringUtils.isBlank(code)) {
                 throw new IllegalArgumentException("code cannot be blank or null");
             }
@@ -177,7 +177,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
          *
          * @param alternatePostalCode
          */
-        public void setAlternatePostalCode(String alternatePostalCode) {
+        public void setAlternateCode(String alternatePostalCode) {
             this.alternateCode = alternatePostalCode;
         }
 
@@ -191,7 +191,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
          *
          * @param name
          */
-        public void setPostalCountryName(String name) {
+        public void setName(String name) {
             this.name = name;
         }
 
@@ -219,7 +219,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
          *
          * @param restricted
          */
-        public void setrestricted(boolean restricted) {
+        public void setRestricted(boolean restricted) {
             this.restricted = restricted;
         }
 

@@ -28,7 +28,11 @@ import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
+import javax.persistence.Entity
+import javax.persistence.Table
 
+@Entity
+@Table(name="KR_COUNTRY_T")
 class CountryBo extends PersistableBusinessObjectBase implements Inactivateable, CountryContract, ExternalizableBusinessObject {
 
   @Id

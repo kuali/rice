@@ -38,6 +38,8 @@
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
     <class>org.kuali.rice.shareddata.impl.campus.CampusBo</class>
     <class>org.kuali.rice.shareddata.impl.campus.CampusTypeBo</class>
+    <class>org.kuali.rice.shareddata.impl.country.CountryBo</class>
+    <class>org.kuali.rice.shareddata.impl.state.StateBo</class>
      
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
@@ -64,6 +66,8 @@
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
     <class>org.kuali.rice.shareddata.impl.campus.CampusBo</class>
     <class>org.kuali.rice.shareddata.impl.campus.CampusTypeBo</class>
+    <class>org.kuali.rice.shareddata.impl.country.CountryBo</class>
+    <class>org.kuali.rice.shareddata.impl.state.StateBo</class>
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

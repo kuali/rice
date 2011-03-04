@@ -131,7 +131,7 @@
 		<surefire.plugin.version>2.7.2</surefire.plugin.version>
 		<surefire.additionalClasspathElement.1>${mysql-connector-java.jar.location}</surefire.additionalClasspathElement.1>
 		<surefire.additionalClasspathElement.2>${ojdbc14.jar.location}</surefire.additionalClasspathElement.2>
-		<surefire.useSystemClassLoader>false</surefire.useSystemClassLoader>
+		<surefire.useSystemClassLoader>true</surefire.useSystemClassLoader>
 		<surefire.useFile>false</surefire.useFile>
 		<surefire.failIfNoTests>false</surefire.failIfNoTests>
 		<surefire.include.1>${test.includes}</surefire.include.1>

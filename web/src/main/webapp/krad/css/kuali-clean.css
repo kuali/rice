@@ -181,7 +181,7 @@ div.tab-newh3 img { margin-right:6px
 .summary {
 	font-size: 12px;
 	margin-bottom: auto;
-	display: inline-block;
+	display: block;
 }
 
 .constraint {
@@ -189,7 +189,7 @@ div.tab-newh3 img { margin-right:6px
 	color: gray;
 	margin-bottom: 5px;
 	margin-top: 5px;
-	display: inline-block;
+	display: block;
 }
 
 .required {

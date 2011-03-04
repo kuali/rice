@@ -15,20 +15,10 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
+import org.kuali.rice.kim.bo.ui.*;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
@@ -40,6 +30,10 @@ import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -225,6 +219,68 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	public List<KimDocumentRoleMember> getMembers() {
 		return this.members;
 	}
+
+    public enum RoleMemberMetaDataType implements Comparator<KimDocumentRoleMember>{
+        MEMBER_ID("memberId"),
+        MEMBER_NAME("memberName"),
+        FULL_MEMBER_NAME("memberFullName");
+
+        private final String attributeName;
+
+        RoleMemberMetaDataType(String anAttributeName) {
+            this.attributeName = anAttributeName;
+        }
+
+        public String getAttributeName() {
+            return attributeName;
+        }
+
+        @Override
+        public int compare(KimDocumentRoleMember m1, KimDocumentRoleMember m2) {
+            if (m1 == null && m2 == null) {
+                return 0;
+            } else if (m1 == null) {
+                return -1;
+            } else if (m2 == null) {
+                return 1;
+            }
+            if (this.getAttributeName().equals(MEMBER_ID.getAttributeName()))
+                return m1.getMemberId().compareToIgnoreCase(m2.getMemberId());
+            else if (this.getAttributeName().equals(FULL_MEMBER_NAME.getAttributeName()))
+                return m1.getMemberFullName().compareToIgnoreCase(m2.getMemberFullName());
+            return m1.getMemberName().compareToIgnoreCase(m2.getMemberName());
+        }
+    }
+
+    public void setMemberMetaDataTypeToSort(Integer columnNumber)
+        {
+           switch( columnNumber )
+           {
+               case 1:
+                   this.memberMetaDataType = RoleMemberMetaDataType.MEMBER_ID;
+                   break;
+               case 2:
+                   this.memberMetaDataType = RoleMemberMetaDataType.MEMBER_NAME;
+                   break;
+               case 3:
+                   this.memberMetaDataType = RoleMemberMetaDataType.FULL_MEMBER_NAME;
+                   break;
+               default:
+                   this.memberMetaDataType = RoleMemberMetaDataType.MEMBER_NAME;
+                   break;
+           }
+        }
+
+    protected RoleMemberMetaDataType memberMetaDataType = RoleMemberMetaDataType.MEMBER_NAME;
+
+    public RoleMemberMetaDataType getMemberMetaDataType() {
+        return memberMetaDataType;
+    }
+
+    public void setMemberMetaDataType(RoleMemberMetaDataType memberMetaDataType) {
+        this.memberMetaDataType = memberMetaDataType;
+    }
+
 	/**
 	 * @return the members
 	 */
@@ -263,7 +319,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 	}
 
 	/**
-	 * @param members the members to set
+	 * @param member the members to set
 	 */
 	public void addMember(KimDocumentRoleMember member) {
 		SequenceAccessorService sas = getSequenceAccessorService();
@@ -276,9 +332,6 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
        	getMembers().add(member);
 	}
 
-	/**
-	 * @param members the members to set
-	 */
 	public KimDocumentRoleMember getBlankMember() {
 		KimDocumentRoleMember member = new KimDocumentRoleMember();
 		KimDocumentRoleQualifier qualifier;
@@ -293,9 +346,6 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
        	return member;
 	}
 
-	/**
-	 * @param members the members to set
-	 */
 	public RoleDocumentDelegationMember getBlankDelegationMember() {
 		RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 		RoleDocumentDelegationMemberQualifier qualifier;

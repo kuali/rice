@@ -62,6 +62,12 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
             if (memberTableMetadata.getSwitchToPageNumber() == -1) {
                 throw new RuntimeException("Couldn't find page number");
             }
+        } else if (KNSConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
+            final String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SORT_METHOD + ".";
+            memberTableMetadata.setColumnToSortIndex(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
+            if (memberTableMetadata.getColumnToSortIndex() == -1) {
+                throw new RuntimeException("Couldn't find page number");
+            }
         }
     }
 

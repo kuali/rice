@@ -563,7 +563,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected String getAttributeDefnId(AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} 
+    	}
     	return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     }
 
@@ -723,7 +723,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(name.isActive()){
 					PersonDocumentName docName = new PersonDocumentName();
 					docName.setNameTypeCode(name.getNameTypeCode());
-					
+
 					//We do not need to check the privacy setting here - The UI should care of it
 					docName.setFirstName(name.getFirstNameUnmasked());
 					docName.setLastName(name.getLastNameUnmasked());
@@ -1089,7 +1089,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					//docEmail.setEntityId(email.getEntityId());
 					docEmail.setEntityTypeCode(email.getEntityTypeCode());
 					docEmail.setEmailTypeCode(email.getEmailTypeCode());
-					// EmailType not on info object. 
+					// EmailType not on info object.
 					//docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
 					//We do not need to check the privacy setting here - The UI should care of it
 					docEmail.setEmailAddress(email.getEmailAddressUnmasked());
@@ -1148,7 +1148,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					PersonDocumentAddress docAddress = new PersonDocumentAddress();
 					docAddress.setEntityTypeCode(address.getEntityTypeCode());
 					docAddress.setAddressTypeCode(address.getAddressTypeCode());
-					
+
 					//We do not need to check the privacy setting here - The UI should care of it
 					docAddress.setLine1(address.getLine1Unmasked());
 					docAddress.setLine2(address.getLine2Unmasked());
@@ -1242,7 +1242,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							}
 							if (roleMember.getActiveToDate() != null) {
 								roleMemberImpl.setActiveToDate(new java.sql.Timestamp(roleMember.getActiveToDate().getTime()));
-							}		
+							}
 							List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
 							if(ObjectUtils.isNotNull(origRoleMembers)){
 								for (RoleMemberImpl origMember : origRoleMembers) {
@@ -1529,16 +1529,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return documentRolePermissions;
 	}
 
-	protected static class RoleMemberNameComparator implements Comparator<KimDocumentRoleMember> {
-		/**
-		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-		 */
-		public int compare(KimDocumentRoleMember m1, KimDocumentRoleMember m2) {
-			return m1.getMemberName().compareToIgnoreCase(m2.getMemberName());
-		}
-	}
-	protected RoleMemberNameComparator roleMemberNameComparator = new RoleMemberNameComparator();
-
 	protected List<KimDocumentRoleMember> loadRoleMembers(
 			IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberImpl> members){
 		List<KimDocumentRoleMember> pndMembers = new ArrayList<KimDocumentRoleMember>();
@@ -1563,7 +1553,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 			}
 		}
-		Collections.sort(pndMembers, roleMemberNameComparator);
+            Collections.sort(pndMembers, identityManagementRoleDocument.getMemberMetaDataType());
 		return pndMembers;
 	}
 
@@ -1662,7 +1652,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}
-			
+
 			return fakeName;
 		}
 		return getMemberName(memberTypeCode, member);
@@ -2265,7 +2255,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * Finds the KNS attribute used to render the given KimAttributeData
 	 *
 	 * @param roleMemberAttributeData a qualifier's attribute information
-	 * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
+     * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
 	 */
 	protected AttributeDefinition getKNSAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimTypeInfo type = getKimTypeInfoService().getKimType(kimTypId);
@@ -2536,14 +2526,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		//List<PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 		oldIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the actionList update
 
-		
+
 		List<GroupMemberImpl> newGroupMembersList = getGroupMembers(identityManagementGroupDocument, origGroupMembers);
 		kimGroup.setMembers(newGroupMembersList);  // add the new, complete list to the group
-		
+
 		//bos.add(kimGroup);
 
 		kimGroup = (GroupImpl)getBusinessObjectService().save(kimGroup);
-		
+
 		newIds = kimGroup.getMemberPrincipalIds();
 		//newIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the action list update
 
@@ -2571,8 +2561,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			groups.add(groupInfoMap.get(groupId));
 		}
 		return groups;
-	} 
-	
+	}
+
 	protected List<GroupMemberImpl> getGroupMembers(IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMemberImpl> origGroupMembers){
 		List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>();
 		GroupMemberImpl newGroupMember;

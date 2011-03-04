@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -39,12 +29,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
+import org.kuali.rice.kim.bo.ui.*;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
@@ -55,7 +40,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -63,6 +48,12 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  *
@@ -91,6 +82,24 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		for(String methodToCallToUncheck: methodToCallToUncheckedList)
 			addMethodToCallToUncheckedList(methodToCallToUncheck);
 	}
+
+    public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+        this.createDocument(roleDocumentForm);
+
+        // mimic loading the document; consider calling the loadDocument method instead
+        Document document = roleDocumentForm.getDocument();
+        KualiWorkflowDocument workflowDocument = roleDocumentForm.getDocument().getDocumentHeader().getWorkflowDocument();
+        roleDocumentForm.populateHeaderFields(workflowDocument);
+        roleDocumentForm.setDocId(document.getDocumentNumber());
+        roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
+
+        if (KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDocumentForm.getRoleDocument().getKimType())) {
+            roleDocumentForm.setCanModifyAssignees(false);
+        }
+        GlobalVariables.getUserSession().addObject(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY, roleDocumentForm.getRoleDocument());
+        return refresh(mapping, roleDocumentForm, request, response);
+    }
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -193,6 +202,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     protected void loadRoleIntoDocument( String roleId, IdentityManagementRoleDocumentForm roleDocumentForm){
         KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(roleId);
+        roleDocumentForm.getRoleDocument().setMemberMetaDataTypeToSort(roleDocumentForm.getMemberTableMetadata().getColumnToSortIndex());
         getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
     }
 
@@ -251,8 +261,10 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
 
         if (KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
-        	newResponsibility.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
-	        roleDocumentForm.getRoleDocument().addResponsibility(newResponsibility);
+            if (newResponsibility != null) {
+                newResponsibility.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
+            }
+            roleDocumentForm.getRoleDocument().addResponsibility(newResponsibility);
 	        roleDocumentForm.setResponsibility(new KimDocumentRoleResponsibility());
 	        roleDocumentForm.getRoleDocument().updateMembers(newResponsibility);
         }
@@ -469,7 +481,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     /**
-     * @see org.kuali.rice.kns.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
+     * @see org.kuali.rice.kns.web.struts.action.KualiTableRenderAction#switchToPage(org.apache.struts.action.ActionMapping,
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ActionForward jumpToRoleMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -562,7 +574,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 	/**
 	 * This method returns a list of all active delegates for role members that are inactive
 	 *
-	 * @param roleDocumentForm
+	 * @param roleDocumentForm form bean
 	 * @param roleMembersToConsiderInactive additional role members to consider inactive for the purposes of this computation
 	 * @return the active delegates of inactive role members
 	 */
@@ -572,7 +584,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 		List<KimDocumentRoleMember> inactiveRoleMembers = new ArrayList<KimDocumentRoleMember>();
 		List<RoleDocumentDelegationMember> activeDelegatesOfInactivatedRoleMembers = new ArrayList<RoleDocumentDelegationMember>();
 
-		for (KimDocumentRoleMember inactiveMember : roleMembersToConsiderInactive) inactiveRoleMembers.add(inactiveMember);
+        inactiveRoleMembers.addAll(Arrays.asList(roleMembersToConsiderInactive));
 
 		if (roleMembers != null) for (KimDocumentRoleMember roleMember : roleMembers) if (roleMember != null) {
 			if (!roleMember.isActive()) inactiveRoleMembers.add(roleMember);

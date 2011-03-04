@@ -15,6 +15,8 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
+<%@ attribute name="formAction" required="false" description="form action" %>
+
 <c:set var="roleMemberAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
@@ -153,12 +155,12 @@
         <td colspan=10 class="tab-subhead">Members:</td>
       </tr>
       <tr>
-        <th>&nbsp;</th> 
+        <th>&nbsp;</th>
         <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.1&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
         <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.2&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.3&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
         <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" />
         <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" />
         <c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">

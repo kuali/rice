@@ -34,6 +34,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.test.TestConstants;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -52,7 +53,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 
     //private List<Lifecycle> lifeCycles = new LinkedList<Lifecycle>();
     private ConfigurableApplicationContext context = null;
-    private static final String BOOTSTRAP_SPRING_FILE = "bootstrap.spring.file";
+    private static final String BOOTSTRAP_SPRING_FILE = TestConstants.WEB_BOOTSTRAP_SPRING_FILE;
 
     /**
 	 * ServletContextListener interface implementation that schedules the start

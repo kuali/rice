@@ -20,6 +20,7 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
+import org.kuali.rice.test.TestConstants;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
@@ -90,11 +91,11 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 	protected Lifecycle getLoadApplicationLifecycle() {
 		return new BaseLifecycle() {
 			public void start() throws Exception {
-				System.setProperty("bootstrap.spring.file", "classpath:SampleAppBeans-test.xml");
+				System.setProperty(TestConstants.WEB_BOOTSTRAP_SPRING_FILE, "classpath:SampleAppBeans-test.xml");
                 ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();                
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
-                System.getProperties().remove("bootstrap.spring.file");
+                System.getProperties().remove(TestConstants.WEB_BOOTSTRAP_SPRING_FILE);
 				super.start();
 			}
 		};

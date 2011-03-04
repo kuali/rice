@@ -11,7 +11,7 @@
 
     <!-- Change this if you want to use a different Spring file -->
     <context-param>
-      <param-name>kew.bootstrap.spring.file</param-name>
+      <param-name>web.bootstrap.spring.file</param-name>
       <param-value>${bootstrap.spring.file}</param-value>
     </context-param>
 

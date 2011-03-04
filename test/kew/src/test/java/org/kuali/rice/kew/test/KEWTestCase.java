@@ -31,6 +31,7 @@ import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.SQLDataLoader;
+import org.kuali.rice.test.TestConstants;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -79,7 +80,7 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	 */
 	@Override
 	protected void setUpInternal() throws Exception {
-		System.setProperty("bootstrap.spring.file",
+		System.setProperty(TestConstants.WEB_BOOTSTRAP_SPRING_FILE,
 				getKEWBootstrapSpringFile());
 		super.setUpInternal();
 	}

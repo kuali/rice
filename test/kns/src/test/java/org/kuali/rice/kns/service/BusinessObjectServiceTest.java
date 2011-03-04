@@ -109,7 +109,7 @@ public class BusinessObjectServiceTest extends KNSTestCase {
     	final Collection<? extends State> allStates = boService.findAll(StateImpl.class);
     	
     	org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
-    	criteria.eq("postalCountryCode", "US");
+    	criteria.eq("code", "US");
     	Collection<State> states = boService.findMatching(criteria);
     	Assert.assertEquals("There should be "+allStates.size()+" states with country code US", allStates.size(), states.size());
     	

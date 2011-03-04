@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -345,8 +346,15 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     	for (Field field : primaryKey.getClass().getDeclaredFields()) {
     		Object fieldValue;
 			try {
-				fieldValue = primaryKey.getClass().getMethod("get" + StringUtils.capitalize(field.getName())).invoke(primaryKey);
-				fieldValues.put(field.getName(), fieldValue);
+                for (Annotation an : field.getAnnotations()) {
+                    //look for class' Id fields.  This is a bit of a hack because this relies on JPA
+                    //annotations existing, but removes any extra generated fields from the criteria.
+                    if (an.annotationType().getName().equals("javax.persistence.Id")) {
+                        fieldValue = primaryKey.getClass().getMethod("get" + StringUtils.capitalize(field.getName())).invoke(primaryKey);
+                        fieldValues.put(field.getName(), fieldValue);
+                        break;
+                    }
+                }
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {

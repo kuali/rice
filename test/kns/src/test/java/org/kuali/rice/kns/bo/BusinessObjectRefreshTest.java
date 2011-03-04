@@ -87,7 +87,7 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 	
 	@Test
 	public void testEagerRefreshField() {
-		final CountyId countyId = new CountyId("US", "COCONINO", "AZ");
+		final CountyId countyId = new CountyId("COCONINO", "US", "AZ");
 		CountyBo county = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(CountyBo.class, countyId);
 		
 		final StateId arizonaStateId = new StateId("US", "AZ");

@@ -22,9 +22,7 @@ import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.commons.lang.builder.ToStringBuilder
 
-class StateId {
-
-    private static final long serialVersionUID = 1L;
+class StateId implements Serializable {
 
     @Id
     @Column(name = "POSTAL_CNTRY_CD")

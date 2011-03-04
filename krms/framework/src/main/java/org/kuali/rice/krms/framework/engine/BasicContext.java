@@ -1,6 +1,7 @@
 package org.kuali.rice.krms.framework.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,10 @@ public class BasicContext implements Context {
 			}
 		}
 		return true;
+	}
+	
+	public List<AssetResolver<?>> getAssetResolvers() {
+		return Collections.unmodifiableList(assetResolvers);
 	}
 
 }

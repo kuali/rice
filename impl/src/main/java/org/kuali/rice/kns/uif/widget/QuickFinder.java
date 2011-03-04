@@ -15,13 +15,105 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
+import java.util.Map;
+
+import org.kuali.rice.kns.uif.field.ActionField;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * Widget for navigating to a lookup from a field (called a quickfinder)
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class QuickFinder extends WidgetBase {
 	private static final long serialVersionUID = 3302390972815386785L;
+
+	private Class<?> objectClassName;
+	private String viewId;
+	private String viewName;
+
+	private Map<String, String> fieldConversions;
+	private Map<String, String> lookupParameters;
+
+	boolean hideReturnColumn;
+	boolean hideActionsColumn;
+	boolean performAutoSearch;
+
+	private ActionField quickfinderActionField;
+
+	public QuickFinder() {
+		super();
+	}
+
+	public Class<?> getObjectClassName() {
+		return this.objectClassName;
+	}
+
+	public void setObjectClassName(Class<?> objectClassName) {
+		this.objectClassName = objectClassName;
+	}
+
+	public String getViewId() {
+		return this.viewId;
+	}
+
+	public void setViewId(String viewId) {
+		this.viewId = viewId;
+	}
+
+	public String getViewName() {
+		return this.viewName;
+	}
+
+	public void setViewName(String viewName) {
+		this.viewName = viewName;
+	}
+
+	public Map<String, String> getFieldConversions() {
+		return this.fieldConversions;
+	}
+
+	public void setFieldConversions(Map<String, String> fieldConversions) {
+		this.fieldConversions = fieldConversions;
+	}
+
+	public Map<String, String> getLookupParameters() {
+		return this.lookupParameters;
+	}
+
+	public void setLookupParameters(Map<String, String> lookupParameters) {
+		this.lookupParameters = lookupParameters;
+	}
+
+	public boolean isHideReturnColumn() {
+		return this.hideReturnColumn;
+	}
+
+	public void setHideReturnColumn(boolean hideReturnColumn) {
+		this.hideReturnColumn = hideReturnColumn;
+	}
+
+	public boolean isHideActionsColumn() {
+		return this.hideActionsColumn;
+	}
+
+	public void setHideActionsColumn(boolean hideActionsColumn) {
+		this.hideActionsColumn = hideActionsColumn;
+	}
+
+	public boolean isPerformAutoSearch() {
+		return this.performAutoSearch;
+	}
+
+	public void setPerformAutoSearch(boolean performAutoSearch) {
+		this.performAutoSearch = performAutoSearch;
+	}
+
+	public ActionField getQuickfinderActionField() {
+		return this.quickfinderActionField;
+	}
+
+	public void setQuickfinderActionField(ActionField quickfinderActionField) {
+		this.quickfinderActionField = quickfinderActionField;
+	}
 
 }

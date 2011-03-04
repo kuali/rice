@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Form class for <code>MaintenanceView</code> screens
@@ -32,17 +29,7 @@ public class MaintenanceForm extends DocumentFormBase {
 	protected String maintenanceAction;
 
 	public MaintenanceForm() {
-		// TODO: remove once session is in place
-		try {
-			document = KNSServiceLocator.getDocumentService().getNewDocument("TravelAccountMaintenanceDocument");
-			newCollectionLines.put("document.documentHeader.boNotes", new Note());
-			//newCollectionLines.put("document.newMaintainableObject.businessObject.fiscalOfficer.accounts", new TravelAccount());
-		}
-		catch (WorkflowException e) {
-			throw new RuntimeException(e);
-		}
-		setDocTypeName("TravelAccountMaintenanceDocument");
-		setDocument(document);
+		super();
 	}
 
 	@Override

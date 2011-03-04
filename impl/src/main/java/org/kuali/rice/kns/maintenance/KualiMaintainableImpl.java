@@ -1724,7 +1724,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 							ex);
 				}
 			}
-			
+
 			populateMaintenanceObjectWithCopyKeyValues(WebUtils.translateRequestParameterMap(requestParameters),
 					oldBusinessObject, document.getOldMaintainableObject());
 			document.getOldMaintainableObject().prepareBusinessObject(oldBusinessObject);
@@ -1870,18 +1870,20 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
 		super.processAfterAddLine(view, collectionGroup, model, addLine);
 
-		MaintenanceForm maintenanceForm = (MaintenanceForm) model;
-		MaintenanceDocument document = maintenanceForm.getDocument();
+		if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
+			MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+			MaintenanceDocument document = maintenanceForm.getDocument();
 
-		// get the old object's collection
-		Collection<Object> oldCollection = ModelUtils.getPropertyValue(document.getOldMaintainableObject()
-				.getBusinessObject(), collectionGroup.getPropertyName());
-		try {
-			Object blankLine = getBoClass().newInstance();
-			oldCollection.add(blankLine);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Unable to create new line instance for old maintenance object", e);
+			// get the old object's collection
+			Collection<Object> oldCollection = ModelUtils.getPropertyValue(document.getOldMaintainableObject()
+					.getBusinessObject(), collectionGroup.getPropertyName());
+			try {
+				Object blankLine = getBoClass().newInstance();
+				oldCollection.add(blankLine);
+			}
+			catch (Exception e) {
+				throw new RuntimeException("Unable to create new line instance for old maintenance object", e);
+			}
 		}
 	}
 

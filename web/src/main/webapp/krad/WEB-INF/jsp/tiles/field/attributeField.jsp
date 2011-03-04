@@ -27,9 +27,11 @@
     <krad:template component="${field.labelField}"/>
   </c:if>
 
-  <%-- render field summary --%>
-  <krad:template component="${field.summaryMessageField}"/>
-  
+  <c:if test="${!field.readOnly}">
+    <%-- render field summary --%>
+    <krad:template component="${field.summaryMessageField}"/>
+  </c:if>  
+
   <%-- render field control --%>
   <c:if test="${field.readOnly}">
   	<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
@@ -43,10 +45,13 @@
     <krad:template component="${field.labelField}"/>
   </c:if>
 
-  <%-- render field constraint --%>
-  <krad:template component="${field.constraintMessageField}"/>
-  
+  <c:if test="${!field.readOnly}">
+    <%-- render field constraint --%>
+    <krad:template component="${field.constraintMessageField}"/>
+  </c:if>  
+
   <%-- render field quickfinder --%>
+  <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
 
   <%-- render field help --%>
   

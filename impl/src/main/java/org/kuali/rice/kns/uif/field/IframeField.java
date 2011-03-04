@@ -23,7 +23,7 @@ package org.kuali.rice.kns.uif.field;
 public class IframeField extends FieldBase {
 	private static final long serialVersionUID = 5797473302619055088L;
 
-	private String src;
+	private String source;
 	private String height;
 	private String frameborder;
 	private String hspace;
@@ -33,12 +33,12 @@ public class IframeField extends FieldBase {
 		super();
 	}
 
-	public String getSrc() {
-		return this.src;
+	public String getSource() {
+		return this.source;
 	}
 
-	public void setSrc(String src) {
-		this.src = src;
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 	public String getHeight() {

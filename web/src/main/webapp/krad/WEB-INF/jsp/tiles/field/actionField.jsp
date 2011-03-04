@@ -18,14 +18,25 @@
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.ActionField"/>
 
 <%--
-    Standard HTML Input Submit
+    Standard HTML Input Submit - will create an input of type submit or type image if the action
+    image field is configured
     
  --%>
- 
-<krad:attributeBuilder component="${field}"/>
- 
-<input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${class}/>
 
+<c:choose>
+  <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
+     <krad:attributeBuilder component="${field.actionImageField}"/>
+  
+     <input type="image" id="${field.id}" src="${field.actionImageField.source}" 
+            alt="${field.actionImageField.altText}" ${style} ${class} ${title}/>
+  </c:when>
+  <c:otherwise>
+     <krad:attributeBuilder component="${field}"/>
+   
+     <input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${class} ${title}/>
+  </c:otherwise>
+</c:choose>       
+       
 <!-- This needs to be looked at and removed - moved into DD completely probably and appended by ActionField class-->
 <%-- setup client side call --%>
 <c:if test="${field.clientSideCall}">

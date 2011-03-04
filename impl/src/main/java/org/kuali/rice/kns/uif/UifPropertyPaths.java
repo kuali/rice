@@ -22,6 +22,7 @@ package org.kuali.rice.kns.uif;
  */
 public class UifPropertyPaths {
 	
+	public static final String ACTION_PARAMETERS = "actionParameters";
 	public static final String BIND_OBJECT_PATH = "bindingInfo.bindingObjectPath";
 	public static final String BIND_TO_FORM = "bindingInfo.bindToForm";
 	public static final String CRITERIA_FIELDS = "criteriaFields";

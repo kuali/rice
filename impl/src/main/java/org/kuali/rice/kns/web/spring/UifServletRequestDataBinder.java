@@ -19,7 +19,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
@@ -100,12 +100,12 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         
         // create initial view, should only happen if this is the first request
         if(form.getView() == null) {
-            String viewId = request.getParameter(UifConstants.RequestParameterName.VIEW_ID);
+            String viewId = request.getParameter(UifParameters.VIEW_ID);
             if (viewId != null) {
                 form.setView(getViewService().getView(viewId, request.getParameterMap()));
             }
             else {
-                String viewTypeName = request.getParameter(UifConstants.RequestParameterName.VIEW_TYPE_NAME);
+                String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
                 if(viewTypeName == null) {
                     viewTypeName = form.getViewTypeName();
                 }

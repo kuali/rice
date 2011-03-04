@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
-import org.kuali.rice.kns.uif.UifConstants.ActionParameterNames;
+import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
@@ -139,9 +139,9 @@ public class CollectionGroup extends Group implements DataBinding {
 	public List<ActionField> getLineActions(int lineIndex) {
 		List<ActionField> lineActions = ComponentUtils.copyFieldList(actionFields);
 		for (ActionField actionField : lineActions) {
-			actionField.addActionParameter(ActionParameterNames.SELLECTED_COLLECTION_PATH, getBindingInfo()
+			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, getBindingInfo()
 					.getBindingPath());
-			actionField.addActionParameter(ActionParameterNames.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
+			actionField.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
 		}
 
 		return lineActions;
@@ -158,7 +158,7 @@ public class CollectionGroup extends Group implements DataBinding {
 	public List<ActionField> getAddLineActions() {
 		List<ActionField> lineActions = ComponentUtils.copyFieldList(addLineActionFields);
 		for (ActionField actionField : lineActions) {
-			actionField.addActionParameter(ActionParameterNames.SELLECTED_COLLECTION_PATH, getBindingInfo()
+			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, getBindingInfo()
 					.getBindingPath());
 		}
 

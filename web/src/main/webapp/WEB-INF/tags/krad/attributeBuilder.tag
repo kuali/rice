@@ -36,3 +36,7 @@ variables --%>
    <c:if test="${!empty component.style}">
       <c:set var="style" value="style=\"${component.style}\""/>
    </c:if>
+   
+   <c:if test="${!empty component.title}">
+      <c:set var="title" value="title=\"${component.title}\""/>
+   </c:if>

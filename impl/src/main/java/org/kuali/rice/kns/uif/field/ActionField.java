@@ -20,6 +20,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifParameters;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
@@ -35,13 +37,16 @@ public class ActionField extends FieldBase {
 	private String navigateToPageId;
 
 	private boolean clientSideCall;
+	private boolean scriptFormSubmit;
 
 	private String actionLabel;
+	private ImageField actionImageField;
 
 	private Map<String, String> actionParameters;
 
 	public ActionField() {
 		clientSideCall = false;
+		scriptFormSubmit = false;
 
 		actionParameters = new HashMap<String, String>();
 	}
@@ -49,10 +54,9 @@ public class ActionField extends FieldBase {
 	/**
 	 * <p>
 	 * The following initialization is performed:
+	 * 
 	 * <ul>
 	 * <li>Set the actionLabel if blank to the Field label</li>
-	 * <li>Add methodToCall action parameter if set and setup event code for
-	 * client side method calls</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -65,31 +69,61 @@ public class ActionField extends FieldBase {
 		if (StringUtils.isBlank(actionLabel)) {
 			actionLabel = this.getLabel();
 		}
+	}
+
+	/**
+	 * <p>
+	 * The following finalization is performed:
+	 * 
+	 * <ul>
+	 * <li>Add methodToCall action parameter if set and setup event code for
+	 * setting action parameters</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
+	 */
+	@Override
+	public void performFinalize(View view, Object model) {
+		super.performFinalize(view, model);
+
+		if (StringUtils.isNotBlank(navigateToPageId)) {
+			actionParameters.put(UifParameters.PAGE_ID, navigateToPageId);
+			if (StringUtils.isBlank(methodToCall)) {
+				actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME,
+						UifConstants.MethodToCallNames.NAVIGATE);
+			}
+		}
 
 		if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)
 				&& StringUtils.isNotBlank(methodToCall) && !clientSideCall) {
 			actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
 		}
-		
-		if(!actionParameters.isEmpty()){
+
+		if (!actionParameters.isEmpty()) {
 			String prefixScript = this.getOnClickScript();
-			if(prefixScript == null){
+			if (prefixScript == null) {
 				prefixScript = "";
 			}
-			
+
 			String writeParamsScript = "";
-			for(String key: actionParameters.keySet()){
-				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + key +
-					"', '" + actionParameters.get(key) + "'); ";
+			for (String key : actionParameters.keySet()) {
+				String parameterPath = key;
+				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+					parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
+				}
+
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
+						+ actionParameters.get(key) + "'); ";
 			}
-			
+
 			String postScript = "";
-			if(methodToCall.equals(UifConstants.MethodToCallNames.NAVIGATE)){
+			if (scriptFormSubmit) {
 				postScript = "submitForm();";
 			}
+
 			this.setOnClickScript(prefixScript + writeParamsScript + postScript);
-			
-			
 		}
 	}
 
@@ -155,6 +189,26 @@ public class ActionField extends FieldBase {
 	}
 
 	/**
+	 * Indicates whether the form should be submitted with a JavaScript call
+	 * (for instance in cases where we have an action link)
+	 * 
+	 * @return boolean true if form should be submitted with script, false if
+	 *         not (regular input or image submit)
+	 */
+	public boolean isScriptFormSubmit() {
+		return this.scriptFormSubmit;
+	}
+
+	/**
+	 * Setter for the script submit indicator
+	 * 
+	 * @param scriptFormSubmit
+	 */
+	public void setScriptFormSubmit(boolean scriptFormSubmit) {
+		this.scriptFormSubmit = scriptFormSubmit;
+	}
+
+	/**
 	 * Label text for the action
 	 * 
 	 * <p>
@@ -176,6 +230,31 @@ public class ActionField extends FieldBase {
 	 */
 	public void setActionLabel(String actionLabel) {
 		this.actionLabel = actionLabel;
+	}
+
+	/**
+	 * Image to use for the action
+	 * 
+	 * <p>
+	 * When the action image field is set (and render is true) the image will be
+	 * used to present the action as opposed to the default (input submit). For
+	 * action link templates the image is used for the link instead of the
+	 * action link text
+	 * </p>
+	 * 
+	 * @return ImageField action image
+	 */
+	public ImageField getActionImageField() {
+		return this.actionImageField;
+	}
+
+	/**
+	 * Setter for the action image field
+	 * 
+	 * @param actionImageField
+	 */
+	public void setActionImageField(ImageField actionImageField) {
+		this.actionImageField = actionImageField;
 	}
 
 	/**
@@ -203,7 +282,7 @@ public class ActionField extends FieldBase {
 	 */
 	public void setNavigateToPageId(String navigateToPageId) {
 		this.navigateToPageId = navigateToPageId;
-		actionParameters.put(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID, navigateToPageId);
+		actionParameters.put(UifParameters.PAGE_ID, navigateToPageId);
 		this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
 	}
 
@@ -234,10 +313,6 @@ public class ActionField extends FieldBase {
 	 */
 	public void setActionParameters(Map<String, String> actionParameters) {
 		this.actionParameters = actionParameters;
-		if(actionParameters.containsKey(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID)){
-			navigateToPageId = actionParameters.get(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID);
-			this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
-		}
 	}
 
 	/**
@@ -254,12 +329,8 @@ public class ActionField extends FieldBase {
 		}
 
 		this.actionParameters.put(parameterName, parameterValue);
-		if(actionParameters.containsKey(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID)){
-			navigateToPageId = actionParameters.get(UifConstants.ActionParameterNames.NAVIGATE_TO_PAGE_ID);
-			this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
-		}
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnClick()
 	 */

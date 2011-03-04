@@ -20,7 +20,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.ComponentBase;
-import org.kuali.rice.kns.uif.Ordered;
 import org.kuali.rice.kns.uif.field.ErrorsField;
 import org.kuali.rice.kns.uif.field.HeaderField;
 import org.kuali.rice.kns.uif.field.MessageField;

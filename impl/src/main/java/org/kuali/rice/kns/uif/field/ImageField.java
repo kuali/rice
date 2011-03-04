@@ -22,9 +22,37 @@ package org.kuali.rice.kns.uif.field;
  */
 public class ImageField extends FieldBase {
 	private static final long serialVersionUID = -7994212503770623408L;
-	
+
+	private String source;
+	private String altText;
+	private String height;
+
 	public ImageField() {
 		super();
+	}
+
+	public String getSource() {
+		return this.source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getAltText() {
+		return this.altText;
+	}
+
+	public void setAltText(String altText) {
+		this.altText = altText;
+	}
+
+	public String getHeight() {
+		return this.height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
 	}
 
 }

@@ -47,6 +47,8 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InquiryForm extends UifFormBase {
+	private static final long serialVersionUID = 4733144086378429410L;
+
 	private static final Logger LOG = Logger.getLogger(InquiryForm.class);
 
 	private String objectClassName;

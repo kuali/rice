@@ -42,33 +42,33 @@ public class UifFormBase implements Serializable {
 	protected String viewId;
 	protected String viewName;
 	protected String viewTypeName;
+	protected String pageId;
 	protected String methodToCall;
 	protected String formKey;
-	protected String pageId;
-
-	protected String selectedCollectionPath;
-	protected int selectedLineIndex;
 
 	protected View view;
 
 	protected Map<String, Object> newCollectionLines;
 
+	protected Map<String, String> actionParameters;
+
 	public UifFormBase() {
-		selectedLineIndex = -1;
-		newCollectionLines = new HashMap<String, Object>();
 		formKey = generateFormKey();
+
+		newCollectionLines = new HashMap<String, Object>();
+		actionParameters = new HashMap<String, String>();
 	}
 
 	/**
-	 * This method creates the unique id used to store this "conversation" in the session.
+	 * Creates the unique id used to store this "conversation" in the session.
 	 * The default method generates a java UUID.
 	 * 
 	 * @return
 	 */
 	protected String generateFormKey() {
-        return UUID.randomUUID().toString();
-    }
-	
+		return UUID.randomUUID().toString();
+	}
+
 	/**
 	 * Called after Spring binds the request to the form and before the
 	 * controller method is invoked.
@@ -142,6 +142,24 @@ public class UifFormBase implements Serializable {
 	}
 
 	/**
+	 * Id for the current page being displayed within the view
+	 * 
+	 * @return String page id
+	 */
+	public String getPageId() {
+		return this.pageId;
+	}
+
+	/**
+	 * Setter for the current page id
+	 * 
+	 * @param pageId
+	 */
+	public void setPageId(String pageId) {
+		this.pageId = pageId;
+	}
+
+	/**
 	 * Identifies the controller method that should be invoked to fulfill a
 	 * request. The value will be matched up against the 'params' setting on the
 	 * <code>RequestMapping</code> annotation for the controller method
@@ -182,41 +200,48 @@ public class UifFormBase implements Serializable {
 	}
 
 	/**
-	 * When an action is taken on a collection this property is set to indicate
-	 * which collection the action was taken on
+	 * Map of parameters sent for the invoked action
 	 * 
-	 * @return String collection path
+	 * <p>
+	 * Many times besides just setting the method to call actions need to send
+	 * additional parameters. For instance the method being called might do a
+	 * redirect, in which case the action needs to send parameters for the
+	 * redirect URL. An example of this is redirecting to a <code>Lookup</code>
+	 * view. In some cases the parameters that need to be sent conflict with
+	 * properties already on the form, and putting all the action parameters as
+	 * form properties would grow massive (in addition to adds an additional
+	 * step from the XML config). So this general map solves those issues.
+	 * </p>
+	 * 
+	 * @return Map<String, String> action parameters
 	 */
-	public String getSelectedCollectionPath() {
-		return this.selectedCollectionPath;
+	public Map<String, String> getActionParameters() {
+		return this.actionParameters;
 	}
 
 	/**
-	 * Setter for the selected collection path
+	 * Setter for the action parameters map
 	 * 
-	 * @param selectedCollectionPath
+	 * @param actionParameters
 	 */
-	public void setSelectedCollectionPath(String selectedCollectionPath) {
-		this.selectedCollectionPath = selectedCollectionPath;
+	public void setActionParameters(Map<String, String> actionParameters) {
+		this.actionParameters = actionParameters;
 	}
 
 	/**
-	 * When an action is taken on a collection line this property is set to
-	 * indicate which line (by index) the action was taken on
+	 * Retrieves the value for the given action parameter, or empty string if
+	 * not found
 	 * 
-	 * @return int selected line index
+	 * @param actionParameterName
+	 *            - name of the action parameter to retrieve value for
+	 * @return String parameter value or empty string
 	 */
-	public int getSelectedLineIndex() {
-		return this.selectedLineIndex;
-	}
+	public String getActionParamaterValue(String actionParameterName) {
+		if ((actionParameters != null) && actionParameters.containsKey(actionParameterName)) {
+			return actionParameters.get(actionParameterName);
+		}
 
-	/**
-	 * Setter for the selected line index
-	 * 
-	 * @param selectedLineIndex
-	 */
-	public void setSelectedLineIndex(int selectedLineIndex) {
-		this.selectedLineIndex = selectedLineIndex;
+		return "";
 	}
 
 	/**
@@ -261,7 +286,7 @@ public class UifFormBase implements Serializable {
 		this.view = view;
 	}
 
-    /**
+	/**
 	 * Instance of the <code>ViewService</code> that can be used to retrieve
 	 * <code>View</code> instances
 	 * 
@@ -271,17 +296,4 @@ public class UifFormBase implements Serializable {
 		return KNSServiceLocator.getViewService();
 	}
 
-	/**
-	 * @return the pageId
-	 */
-	public String getPageId() {
-		return this.pageId;
-	}
-
-	/**
-	 * @param pageId the pageId to set
-	 */
-	public void setPageId(String pageId) {
-		this.pageId = pageId;
-	}
 }

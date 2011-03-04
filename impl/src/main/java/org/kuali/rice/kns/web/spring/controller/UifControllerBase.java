@@ -32,6 +32,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -184,7 +185,7 @@ public abstract class UifControllerBase {
 	public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
+		String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
 		if (StringUtils.isBlank(selectedCollectionPath)) {
 			throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
 		}
@@ -216,12 +217,17 @@ public abstract class UifControllerBase {
 	public ModelAndView deleteLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
+		String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
 		if (StringUtils.isBlank(selectedCollectionPath)) {
 			throw new RuntimeException("Selected collection was not set for delete line action, cannot delete line");
 		}
 
-		int selectedLineIndex = uifForm.getSelectedLineIndex();
+		int selectedLineIndex = -1;
+		String selectedLine = uifForm.getActionParamaterValue(UifParameters.SELECTED_LINE_INDEX);
+		if (StringUtils.isNotBlank(selectedLine)) {
+			selectedLineIndex = Integer.parseInt(selectedLine);
+		}
+		
 		if (selectedLineIndex == -1) {
 			throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
 		}
@@ -239,11 +245,19 @@ public abstract class UifControllerBase {
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
 	public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
+		String pageId = form.getActionParamaterValue(UifParameters.PAGE_ID);
+		
+		return getUIFModelAndView(form, form.getViewId(), pageId);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigateToLookup")
+	public ModelAndView navigateToLookup(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
 		return getUIFModelAndView(form, form.getViewId(), form.getPageId());
 	}
 
 	protected ModelAndView getUIFModelAndView(UifFormBase form) {
-		return getUIFModelAndView(form, form.getViewId(), "");
+		return getUIFModelAndView(form, form.getViewId(), form.getPageId());
 	}
 
 	protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId) {
@@ -280,6 +294,7 @@ public abstract class UifControllerBase {
 		}
 
 		form.setViewId(viewId);
+		form.setPageId(pageId);
 		form.setView(view);
 
 		// create the spring return object pointing to View.jsp

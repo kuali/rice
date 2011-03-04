@@ -38,6 +38,8 @@ import org.kuali.rice.kns.web.ui.Row;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LookupForm extends UifFormBase {
+	private static final long serialVersionUID = -7323484966538685327L;
+
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryForm.class);
 
 	private String objectClassName;

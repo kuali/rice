@@ -60,6 +60,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
+  <bean id="QuickFinder" parent="QuickFinder-parentBean"/>
+  <bean id="QuickFinder-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.QuickFinder" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/quickFinder.jsp"/>
+      <property name="quickfinderActionField">
+        <bean parent="ActionField" p:methodToCall="navigateToLookup" p:actionImageField-ref="QuickFinderImageField"/>
+      </property>
+  </bean>  
+  
   <!-- Modifiers -->
   
   <bean id="CompareFieldCreateModifier" parent="CompareFieldCreateModifier-parentBean"/>

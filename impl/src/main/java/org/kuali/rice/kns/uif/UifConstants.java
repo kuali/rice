@@ -18,7 +18,7 @@ package org.kuali.rice.kns.uif;
 import org.kuali.rice.core.util.JSTLConstants;
 
 /**
- * Constants used within the User Interface Framework
+ * General constants used within the User Interface Framework
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -30,12 +30,6 @@ public class UifConstants extends JSTLConstants {
 	public static final String DEFAULT_MODEL_NAME = "KualiForm";
 	public static final String DEFAULT_VIEW_NAME = "default";
 	public static final String SPRING_VIEW_ID = "ApplicationView";
-
-	public static class RequestParameterName {
-		public static final String VIEW_ID = "viewId";
-		public static final String VIEW_NAME = "viewName";
-		public static final String VIEW_TYPE_NAME = "viewTypeName";
-	}
 
 	public static class Position {
 		public static final String BOTTOM = "BOTTOM";
@@ -75,13 +69,6 @@ public class UifConstants extends JSTLConstants {
 		public static final String OBJECT_CLASS_NAME = "objectClassName";
 	}
 
-	public static class ActionParameterNames {
-		public static final String METHOD_TO_CALL = "methodToCall";
-		public static final String NAVIGATE_TO_PAGE_ID = "pageId";
-		public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
-		public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
-	}
-	
 	public static class MethodToCallNames {
 		public static final String NAVIGATE = "navigate";
 		public static final String START = "start";
@@ -102,7 +89,7 @@ public class UifConstants extends JSTLConstants {
 		public static final String DIV = "_div";
 		public static final String LABEL = "_label";
 	}
-	
+
 	public static class ViewPhases {
 		public static final String INITIALIZE = "INITIALIZE";
 		public static final String APPLY_MODEL = "APPLY_MODEL";

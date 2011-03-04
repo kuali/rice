@@ -15,22 +15,11 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.ActionField"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.DatePicker"/>
+<tiles:useAttribute name="componentId"/>
 
 <%--
-    HTML Link to Submit Form Via JavaScript
-    
+    Renders the lookup icon for a field
  --%>
  
- <krad:attributeBuilder component="${field}"/>
  
- <a id="${field.id}" href="#" ${style} ${class}>
-   <c:choose>
-     <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
-       <krad:template component="${field.actionImageField}"/>
-     </c:when>
-     <c:otherwise>
-       ${field.actionLabel}
-     </c:otherwise>
-   </c:choose>       
- </a>   

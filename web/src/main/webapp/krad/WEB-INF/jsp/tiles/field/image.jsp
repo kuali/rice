@@ -15,22 +15,18 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.ActionField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.ImageField"/>
 
 <%--
-    HTML Link to Submit Form Via JavaScript
+    Standard HTML Image element
     
  --%>
  
- <krad:attributeBuilder component="${field}"/>
+<c:if test="${!empty field.height}">
+   <c:set var="height" value="height=\"${field.height}\""/>
+</c:if>
  
- <a id="${field.id}" href="#" ${style} ${class}>
-   <c:choose>
-     <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
-       <krad:template component="${field.actionImageField}"/>
-     </c:when>
-     <c:otherwise>
-       ${field.actionLabel}
-     </c:otherwise>
-   </c:choose>       
- </a>   
+<krad:attributeBuilder component="${field}"/>
+ 
+<img id="${field.id}" src="${field.source}" alt="${field.altText}" 
+     ${height} ${style} ${class} ${title} />

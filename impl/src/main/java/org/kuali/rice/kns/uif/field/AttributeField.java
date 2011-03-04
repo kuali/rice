@@ -27,6 +27,7 @@ import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
+import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
@@ -80,7 +81,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 	private MessageField summaryMessageField;
 	private MessageField constraintMessageField;
 
+	private QuickFinder fieldLookup;
+
 	public AttributeField() {
+		super();
 	}
 
 	/**
@@ -463,7 +467,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 			summaryMessageField.setRender(true);
 		}else{
 			summaryMessageField.setRender(false);
-		}
+	}
 	}
 
 	/**
@@ -504,6 +508,33 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 */
 	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
 		this.attributeSecurity = attributeSecurity;
+	}
+
+	/**
+	 * Lookup finder widget for the field
+	 * 
+	 * <p>
+	 * The quickfinder widget places a small icon next to the field that allows
+	 * the user to bring up a search screen for finding valid field values. The
+	 * <code>Widget</code> instance can be configured to point to a certain
+	 * <code>LookupView</code>, or the framework will attempt to associate the
+	 * field with a lookup based on its metadata (in particular its
+	 * relationships in the model)
+	 * </p>
+	 * 
+	 * @return QuickFinder lookup widget
+	 */
+	public QuickFinder getFieldLookup() {
+		return this.fieldLookup;
+	}
+
+	/**
+	 * Setter for the lookup widget
+	 * 
+	 * @param fieldLookup
+	 */
+	public void setFieldLookup(QuickFinder fieldLookup) {
+		this.fieldLookup = fieldLookup;
 	}
 
 	/**

@@ -64,6 +64,7 @@ public final class County implements CountyContract, ModelObjectComplete {
     /**
      * This constructor should never be called except during JAXB unmarshalling.
      */
+    @SuppressWarnings("unused")
     private County() {
         this.code = null;
         this.name = null;

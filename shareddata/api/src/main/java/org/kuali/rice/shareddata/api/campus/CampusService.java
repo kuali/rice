@@ -1,5 +1,7 @@
 package org.kuali.rice.shareddata.api.campus;
 
+import org.kuali.rice.shareddata.api.SharedDataConstants;
+
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -7,11 +9,10 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-@WebService(name = "campusServiceSoap", targetNamespace = "http://rice.kuali.org/shareddata/api/campus")
+@WebService(name = "campusService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE )
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CampusService {
 
-    
     /**
      * This will return a {@link Campus}.
      *
@@ -38,7 +39,7 @@ public interface CampusService {
      * @throws IllegalStateException if the campus does not exist in the system under the
      * specific code
      */
-    @WebMethod(operationName="getCampus")
+    @WebMethod(operationName="getCampusType")
     CampusType getCampusType(@WebParam(name = "code") String code);
     
     /**

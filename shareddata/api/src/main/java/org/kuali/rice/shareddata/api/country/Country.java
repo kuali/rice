@@ -32,7 +32,7 @@ import java.util.Collection;
  *
  * @see CountryContract
  */
-@XmlRootElement(name = Country.Constants.ROOT_ELEMENT_NAME, namespace = Country.Constants.NAMESPACE)
+@XmlRootElement(name = Country.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Country.Constants.TYPE_NAME, propOrder = {
         Country.Elements.CODE,
@@ -45,19 +45,19 @@ import java.util.Collection;
 public final class Country implements CountryContract, ModelObjectComplete {
     private static final long serialVersionUID = -8975392777320033940L;
 
-    @XmlElement(name = Elements.CODE, required = true, namespace = Country.Constants.NAMESPACE)
+    @XmlElement(name = Elements.CODE, required = true)
     private final String code;
 
-    @XmlElement(name = Elements.ALTERNATE_CODE, required = false, namespace = Country.Constants.NAMESPACE)
+    @XmlElement(name = Elements.ALTERNATE_CODE, required = false)
     private final String alternateCode;
 
-    @XmlElement(name = Elements.NAME, required = false, namespace = Country.Constants.NAMESPACE)
+    @XmlElement(name = Elements.NAME, required = false)
     private final String name;
 
-    @XmlElement(name = Elements.RESTRICTED, required = true, namespace = Country.Constants.NAMESPACE)
+    @XmlElement(name = Elements.RESTRICTED, required = true)
     private final boolean restricted;
 
-    @XmlElement(name = Elements.ACTIVE, required = true, namespace = Country.Constants.NAMESPACE)
+    @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
     @SuppressWarnings("unused")
@@ -245,7 +245,6 @@ public final class Country implements CountryContract, ModelObjectComplete {
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String NAMESPACE = "http://rice.kuali.org/schema/shareddata";
         final static String ROOT_ELEMENT_NAME = "country";
 		final static String TYPE_NAME = "CountryType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };

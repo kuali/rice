@@ -24,7 +24,7 @@ import org.junit.Test
 
 class CampusTypeTest {
 	def static final String BASE_XML = """
-	  <campusType xmlns="http://rice.kuali.org/shareddata/v1_1">
+	  <campusType xmlns="http://rice.kuali.org/shareddata">
 			<code>A</code>
 			<name>AWESOME</name>
 			<active>true</active>

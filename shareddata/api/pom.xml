@@ -47,6 +47,54 @@
                             <goal>java2ws</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>campusService-wsdl</id>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <className>org.kuali.rice.shareddata.api.campus.CampusService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/CampusService.wsdl</outputFile>
+                            <serviceName>CampusService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>countyService-wsdl</id>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <className>org.kuali.rice.shareddata.api.county.CountyService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/CountyService.wsdl</outputFile>
+                            <serviceName>CountyService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>postalCodeService-wsdl</id>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <className>org.kuali.rice.shareddata.api.postalcode.PostalCodeService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/PostalCodeService.wsdl</outputFile>
+                            <serviceName>PostalCodeService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stateService-wsdl</id>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <className>org.kuali.rice.shareddata.api.state.StateService</className>
+                            <outputFile>${project.build.directory}/generated-sources/wsdl/StateService.wsdl</outputFile>
+                            <serviceName>StateService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
                </executions>
             </plugin>
         </plugins>

@@ -35,7 +35,7 @@ class PostalCodeTest {
 	private static final String ACTIVE = "true";
 
     private static final String XML = """
-    <postalCode xmlns="http://rice.kuali.org/shareddata/v1_1">
+    <postalCode xmlns="http://rice.kuali.org/shareddata">
         <code>${CODE}</code>
         <cityName>${CITY_NAME}</cityName>
         <countryCode>${COUNTRY_CODE}</countryCode>

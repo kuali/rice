@@ -69,6 +69,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
     /**
      * This constructor should never be called except during JAXB unmarshalling.
      */
+    @SuppressWarnings("unused")
     private PostalCode() {
         this.code = null;
         this.cityName = null;

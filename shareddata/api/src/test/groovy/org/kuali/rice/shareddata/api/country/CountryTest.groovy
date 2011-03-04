@@ -83,7 +83,7 @@ class CountryTest {
     String xml = sw.toString()
 
     String expectedCountryElementXml = """
-    <country xmlns="http://rice.kuali.org/schema/shareddata">
+    <country xmlns="http://rice.kuali.org/shareddata">
       <code>US</code>
       <name>United States</name>
       <restricted>false</restricted>
@@ -100,7 +100,7 @@ class CountryTest {
   @Test
   public void testXmlUnmarshal() {
     String rawXml = """
-    <country xmlns="http://rice.kuali.org/schema/shareddata">
+    <country xmlns="http://rice.kuali.org/shareddata">
       <code>AU</code>
       <alternateCode>AUS</alternateCode>
       <name>Australia</name>

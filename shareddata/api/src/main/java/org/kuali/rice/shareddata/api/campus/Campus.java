@@ -51,6 +51,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
      */
+    @SuppressWarnings("unused")
     private Campus() {
     	this.code = null;
     	this.name = null;

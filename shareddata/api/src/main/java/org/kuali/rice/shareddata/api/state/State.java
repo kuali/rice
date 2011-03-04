@@ -60,6 +60,7 @@ public final class State implements StateContract, ModelObjectComplete {
     /**
      * This constructor should never be called except during JAXB unmarshalling.
      */
+    @SuppressWarnings("unused")
     private State() {
         this.code = null;
         this.name = null;

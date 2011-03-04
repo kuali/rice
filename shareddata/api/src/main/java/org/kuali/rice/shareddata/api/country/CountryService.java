@@ -16,6 +16,8 @@
 
 package org.kuali.rice.shareddata.api.country;
 
+import org.kuali.rice.shareddata.api.SharedDataConstants;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -24,7 +26,7 @@ import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 
-@WebService(name = "CountryService", targetNamespace = Country.Constants.NAMESPACE)
+@WebService(name = "CountryService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CountryService {
 

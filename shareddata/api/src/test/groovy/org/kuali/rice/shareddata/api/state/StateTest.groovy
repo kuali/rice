@@ -30,7 +30,7 @@ class StateTest {
 	private static final String ACTIVE = "true";
 
     private static final String XML = """
-    <state xmlns="http://rice.kuali.org/shareddata/v1_1">
+    <state xmlns="http://rice.kuali.org/shareddata">
         <code>${CODE}</code>
         <name>${NAME}</name>
         <countryCode>${COUNTRY_CODE}</countryCode>

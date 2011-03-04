@@ -17,6 +17,7 @@ package org.kuali.rice.kns.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.api.parameter.ParameterType;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.test.KNSTestCase;
@@ -39,7 +40,7 @@ public class ParameterServiceTest extends KNSTestCase {
      * @throws Exception
      */
     @Test
-    public void testRetrieveParameter_WithDatabaseDetailType() throws Exception {
+    public void testRetrieveParameter() throws Exception {
     	String namespaceCode = "KR-NS";
     	String parameterDetailTypeCode = "Lookup";
     	String parameterName = "RESULTS_LIMIT";
@@ -53,23 +54,7 @@ public class ParameterServiceTest extends KNSTestCase {
     	assertNotNull("Should have a detail type: " + detailType);
     	
     }
-    
-    @Test    
-    public void testRetrieveParameter_WithNonDatabaseDetailType() throws Exception {
-    	String namespaceCode = "KR-IDM";
-    	String parameterDetailTypeCode = "EntityNameImpl";
-    	String parameterName = "PREFIXES";
-    	String parameterValue = "Ms;Mrs;Mr;Dr";
-    	
-    	Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
-    	assertNotNull("Parameter should be non-null", parameter);
-    	assertEquals(parameterValue, parameter.getValue());
-    	
-    	String detailType = parameter.getComponentCode();
 
-    	assertTrue("Should not have a detail type because no record in database", ObjectUtils.isNull(detailType));
-    	
-    }
 
     
 }

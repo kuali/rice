@@ -17,20 +17,18 @@ package org.kuali.rice.kns.web.spring.form;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.service.LookupViewHelperService;
+import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 
 /**
  * This class is the model for Lookups
@@ -42,13 +40,14 @@ public class LookupForm extends UifFormBase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryForm.class);
 
-	private String objectClassName;
+	private String dataObjectClassName;
 	private Map<String, String> criteriaFields;
 	private Map<String, String> criteriaFieldsForLookup;
-	private Lookupable lookupable;
 	private String conversionFields;
 	private Map<String, String> fieldConversions;
 	
+	private LookupViewHelperService lookupViewHelperService;
+
 	private Collection<? extends BusinessObject> searchResults;
 
     public LookupForm() {
@@ -56,12 +55,12 @@ public class LookupForm extends UifFormBase {
     	setViewTypeName(ViewType.LOOKUP);
     }
 
-	public String getObjectClassName() {
-    	return this.objectClassName;
+	public String getDataObjectClassName() {
+    	return this.dataObjectClassName;
     }
 
-	public void setObjectClassName(String objectClassName) {
-    	this.objectClassName = objectClassName;
+	public void setDataObjectClassName(String dataObjectClassName) {
+    	this.dataObjectClassName = dataObjectClassName;
     }
 
 	public Map<String, String> getCriteriaFields() {
@@ -80,12 +79,12 @@ public class LookupForm extends UifFormBase {
     	this.criteriaFieldsForLookup = criteriaFieldsForLookup;
     }
 
-	public Lookupable getLookupable() {
-    	return this.lookupable;
+	public LookupViewHelperService getLookupViewHelperService() {
+    	return this.lookupViewHelperService;
     }
 
-	public void setLookupable(Lookupable lookupable) {
-    	this.lookupable = lookupable;
+	public void setLookupViewHelperService(LookupViewHelperService lookupViewHelperService) {
+    	this.lookupViewHelperService = lookupViewHelperService;
     }
 
 	public String getConversionFields() {
@@ -112,6 +111,19 @@ public class LookupForm extends UifFormBase {
     	this.searchResults = searchResults;
     }
 
+	protected LookupViewHelperService getLookupViewHelperServiceFromModel(View view) {
+        ViewHelperService viewHelperService = view.getViewHelperService();
+        if (viewHelperService == null) {
+            LOG.error("ViewHelperService is null.");
+            throw new RuntimeException("ViewHelperService is null.");
+        }
+        if (!LookupViewHelperService.class.isAssignableFrom(viewHelperService.getClass())) {
+            LOG.error("ViewHelperService class '" + viewHelperService.getClass().getName() + "' is not assignable from '" + LookupViewHelperService.class + "'");
+            throw new RuntimeException("ViewHelperService class '" + viewHelperService.getClass().getName() + "' is not assignable from '" + LookupViewHelperService.class + "'");
+        }
+        return (LookupViewHelperService) viewHelperService;
+	}
+
 	/**
 	 * Picks out business object name from the request to get retrieve a
 	 * lookupable and set properties.
@@ -121,23 +133,19 @@ public class LookupForm extends UifFormBase {
 		super.postBind(request);
 
 		try {
-			String deprecatedObjectClassNameParam = request.getParameter(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
-			if ((StringUtils.isBlank(getObjectClassName())) && (StringUtils.isNotBlank(deprecatedObjectClassNameParam))) {
-				setObjectClassName(deprecatedObjectClassNameParam);
-			}
 			/*
 			 * TODO delyea - Investigate to make sure below retrieval takes into
 			 * account the following: 1) handle externalizable business objects
 			 * 2) allow for lookupableImpl bean id to be passed in via request
 			 * parameter KNSConstants.LOOKUPABLE_IMPL_ATTRIBUTE_NAME
 			 */
-			Lookupable localLookupable = (Lookupable) getView().getViewHelperService();
+//			ViewHelperService localLookupable = getView().getViewHelperService();
+			LookupViewHelperService localLookupViewHelperService = getLookupViewHelperServiceFromModel(getView());
 
-			if (localLookupable == null) {
-				LOG.error("Lookup impl not found for view id " + getView().getId());
-				throw new RuntimeException("Lookup impl not found for view id " + getView().getId());
+			if (localLookupViewHelperService == null) {
+				LOG.error("LookupViewHelperService not found for view id " + getView().getId());
+				throw new RuntimeException("LookupViewHelperService not found for view id " + getView().getId());
 			}
-
 			// set parameters on lookupable
 			/*
 			 * TODO: delyea - this setter used to get multipart form data
@@ -145,7 +153,7 @@ public class LookupForm extends UifFormBase {
 			 * request attribute (see PojoFormBase.populate() method for more
 			 * info)
 			 */
-			localLookupable.setParameters(request.getParameterMap());
+//			localLookupable.setParameters(request.getParameterMap());
 
 			// check the doc form key is empty before setting so we don't
 			// override a restored lookup form
@@ -180,61 +188,68 @@ public class LookupForm extends UifFormBase {
 			if (request.getParameter(KNSConstants.LOOKUP_READ_ONLY_FIELDS) != null) {
 				setReadOnlyFields(request.getParameter("readOnlyFields"));
 				setReadOnlyFieldsList(LookupUtils.translateReadOnlyFieldsToList(getReadOnlyFields()));
-				localLookupable.setReadOnlyFieldsList(getReadOnlyFieldsList());
+				localLookupViewHelperService.setReadOnlyFieldsList(getReadOnlyFieldsList());
 			}
 
 			// init lookupable with bo class
-			Class boClass = Class.forName(getObjectClassName());
-			localLookupable.setBusinessObjectClass(boClass);
+			Class boClass = Class.forName(getDataObjectClassName());
+			localLookupViewHelperService.setDataObjectClass(boClass);
 			Map<String, String> fieldValues = new HashMap<String, String>();
 			Map<String, String> formFields = getCriteriaFields();
 
-			// populate values into the localLookupable Field list
-			for (Iterator iter = localLookupable.getRows().iterator(); iter.hasNext();) {
-				Row row = (Row) iter.next();
-
-				for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
-					Field field = (Field) iterator.next();
-
-					// check whether form already has value for field
-					if (formFields != null && formFields.containsKey(field.getPropertyName())) {
-						field.setPropertyValue(formFields.get(field.getPropertyName()));
-					}
-
-					field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
-					fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-					localLookupable.applyFieldAuthorizationsFromNestedLookups(field);
-				}
+			if (formFields != null) {
+				for (Map.Entry<String, String> entry : formFields.entrySet()) {
+					// check here to see if this field is a criteria element on the form
+		            fieldValues.put(entry.getKey(), LookupUtils.forceUppercase(boClass, entry.getKey(), entry.getValue()));
+	            }
 			}
+			
+			// populate values into the localLookupable Field list
+//			for (Iterator iter = localLookupable.getRows().iterator(); iter.hasNext();) {
+//				Row row = (Row) iter.next();
+//
+//				for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+//					Field field = (Field) iterator.next();
+//
+//					// check whether form already has value for field
+//					if (formFields != null && formFields.containsKey(field.getPropertyName())) {
+//						field.setPropertyValue(formFields.get(field.getPropertyName()));
+//					}
+//
+//					field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
+//					fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+//					localLookupable.applyFieldAuthorizationsFromNestedLookups(field);
+//				}
+//			}
 
 			// check the lookupableImpl to see if there are additional fields
-			if (localLookupable.checkForAdditionalFields(fieldValues)) {
-				// populate values into the localLookupable Field list again because additional rows may have been added
-				for (Iterator iter = localLookupable.getRows().iterator(); iter.hasNext();) {
-					Row row = (Row) iter.next();
-
-					for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
-						Field field = (Field) iterator.next();
-
-						// check whether form already has value for field
-						if (formFields != null && formFields.containsKey(field.getPropertyName())) {
-							field.setPropertyValue(formFields.get(field.getPropertyName()));
-						}
-
-						// override values with request
-						if (request.getParameter(field.getPropertyName()) != null) {
-							if (!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-								field.setPropertyValue(request.getParameter(field.getPropertyName()).trim());
-							} else {
-								// multi value, set to values
-								field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
-							}
-						}
-						fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-					}
-				}
-
-			}
+//			if (localLookupable.checkForAdditionalFields(fieldValues)) {
+//				// populate values into the localLookupable Field list again because additional rows may have been added
+//				for (Iterator iter = localLookupable.getRows().iterator(); iter.hasNext();) {
+//					Row row = (Row) iter.next();
+//
+//					for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+//						Field field = (Field) iterator.next();
+//
+//						// check whether form already has value for field
+//						if (formFields != null && formFields.containsKey(field.getPropertyName())) {
+//							field.setPropertyValue(formFields.get(field.getPropertyName()));
+//						}
+//
+//						// override values with request
+//						if (request.getParameter(field.getPropertyName()) != null) {
+//							if (!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+//								field.setPropertyValue(request.getParameter(field.getPropertyName()).trim());
+//							} else {
+//								// multi value, set to values
+//								field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
+//							}
+//						}
+//						fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+//					}
+//				}
+//
+//			}
 //			fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
 			fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
 //			if (this.getDocNum() != null) {
@@ -247,8 +262,8 @@ public class LookupForm extends UifFormBase {
 			this.setCriteriaFields(fieldValues);
 
 			setFieldConversions(LookupUtils.translateFieldConversions(this.conversionFields));
-			localLookupable.setFieldConversions(getFieldConversions());
-			setLookupable(localLookupable);
+			localLookupViewHelperService.setFieldConversions(getFieldConversions());
+			setLookupViewHelperService(localLookupViewHelperService);
 			setCriteriaFieldsForLookup(fieldValues);
 
 			// if showMaintenanceLinks is not already true, only show
@@ -261,8 +276,8 @@ public class LookupForm extends UifFormBase {
 //				}
 //			}
 		} catch (ClassNotFoundException e) {
-			LOG.error("Object class " + getObjectClassName() + " not found");
-			throw new RuntimeException("Object class " + getObjectClassName() + " not found", e);
+			LOG.error("Object class " + getDataObjectClassName() + " not found");
+			throw new RuntimeException("Object class " + getDataObjectClassName() + " not found", e);
 		}
 	}
 

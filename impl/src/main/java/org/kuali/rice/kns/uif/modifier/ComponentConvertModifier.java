@@ -84,7 +84,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 			Object propValue = ModelUtils.getPropertyValue(component, propertyPath);
 
 			if (propValue != null) {
-				if (componentTypeToReplace.isAssignableFrom(propValue.getClass())) {
+				if (getComponentTypeToReplace().isAssignableFrom(propValue.getClass())) {
 					// types match, convert the component
 					performConversion(component, propertyPath, idSuffix++);
 				}

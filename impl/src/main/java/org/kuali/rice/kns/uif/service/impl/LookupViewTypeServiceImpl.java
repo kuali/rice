@@ -48,7 +48,7 @@ public class LookupViewTypeServiceImpl implements ViewTypeService {
 		LookupView lookupView = (LookupView) view;
 
 		parameters.put(ViewTypeParameterNames.NAME, lookupView.getViewName());
-		parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME, lookupView.getObjectClassName().getName());
+		parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME, lookupView.getDataObjectClassName().getName());
 
 		return parameters;
 	}
@@ -66,12 +66,12 @@ public class LookupViewTypeServiceImpl implements ViewTypeService {
 			parameters.put(ViewTypeParameterNames.NAME, UifConstants.DEFAULT_VIEW_NAME);
 		}
 
-		if (requestParameters.containsKey(ViewTypeParameterNames.OBJECT_CLASS_NAME)) {
-			parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME,
-					requestParameters.get(ViewTypeParameterNames.OBJECT_CLASS_NAME));
+		if (requestParameters.containsKey(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME)) {
+			parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME,
+					requestParameters.get(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME));
 		}
 		else {
-			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.OBJECT_CLASS_NAME
+			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME
 					+ "' must be given to find views of type: " + getViewTypeName());
 		}
 

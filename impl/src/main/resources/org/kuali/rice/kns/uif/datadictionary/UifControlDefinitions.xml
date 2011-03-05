@@ -45,7 +45,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="SelectControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.SelectControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/select.jsp"/>
   </bean>     
- 
+  
   <bean id="RadioGroupControl" parent="RadioGroupControl-parentBean"/>
   <bean id="RadioGroupControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.RadioGroupControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/radioGroup.jsp"/>
@@ -65,6 +65,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="datePicker">
         <ref bean="DatePicker"/>
       </property>
-  </bean>    
-
+  </bean>
+  
 </beans>

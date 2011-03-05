@@ -26,7 +26,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.uif.service.LookupViewHelperService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.spring.form.LookupForm;
@@ -66,7 +66,7 @@ public class LookupController extends UifControllerBase {
             super.checkAuthorization(form, methodToCall);
         } else {
             try {
-                Class<?> businessObjectClass = Class.forName(((LookupForm) form).getObjectClassName());
+                Class<?> businessObjectClass = Class.forName(((LookupForm) form).getDataObjectClassName());
                 if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
                     throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
@@ -74,7 +74,7 @@ public class LookupController extends UifControllerBase {
                 }
             }
             catch (ClassNotFoundException e) {
-            	LOG.warn("Unable to load BusinessObject class: " + ((LookupForm) form).getObjectClassName(), e);
+            	LOG.warn("Unable to load BusinessObject class: " + ((LookupForm) form).getDataObjectClassName(), e);
                 super.checkAuthorization(form, methodToCall);
             }
         }
@@ -82,6 +82,7 @@ public class LookupController extends UifControllerBase {
 
 	@RequestMapping(params = "methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+//		checkAuthorization(lookupForm, request.getParameter("methodToCall"));
 		return getUIFModelAndView(lookupForm);
 	}
 
@@ -89,10 +90,12 @@ public class LookupController extends UifControllerBase {
      * Just returns as if return with no value was selected.
      */
     @RequestMapping(params = "methodToCall=cancel")
-	public ModelAndView cancel(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+	public String cancel(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
     	// TODO delyea - how should we setup the backlocation url stuff
 //        String backUrl = lookupForm.getBackLocation() + "?methodToCall=refresh&docFormKey=" + lookupForm.getFormKey()+"&docNum="+lookupForm.getDocNum();
-		return getUIFModelAndView(lookupForm);
+        String backUrl = lookupForm.getBackLocation() + "?methodToCall=refresh&docFormKey=" + lookupForm.getFormKey();
+//        response.sendRedirect(backUrl);
+		return "redirect:" + backUrl;
     }
 
     /**
@@ -100,14 +103,8 @@ public class LookupController extends UifControllerBase {
      */
     @RequestMapping(params = "methodToCall=clearValues")
 	public ModelAndView clearValues(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-        Lookupable kualiLookupable = lookupForm.getLookupable();
-        if (kualiLookupable == null) {
-            LOG.error("Lookupable is null.");
-            throw new RuntimeException("Lookupable is null.");
-        }
-
-        kualiLookupable.performClear(lookupForm.getCriteriaFieldsForLookup());
-
+        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();
+        lookupForm.setCriteriaFields(lookupViewHelperService.performClear(lookupForm.getCriteriaFieldsForLookup()));
 		return getUIFModelAndView(lookupForm);
     }
 
@@ -118,18 +115,16 @@ public class LookupController extends UifControllerBase {
 	public ModelAndView search(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 		GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_METHOD);
 
-        Lookupable kualiLookupable = lookupForm.getLookupable();
-        if (kualiLookupable == null) {
-            LOG.error("Lookupable is null.");
-            throw new RuntimeException("Lookupable is null.");
+        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();
+        if (lookupViewHelperService == null) {
+            LOG.error("LookupViewHelperService is null.");
+            throw new RuntimeException("LookupViewHelperService is null.");
         }
 
         // validate search parameters
-        kualiLookupable.validateSearchParameters(lookupForm.getCriteriaFields());
+        lookupViewHelperService.validateSearchParameters(lookupForm.getCriteriaFields());
 
-        boolean bounded = true;
-
-        Collection<? extends BusinessObject> displayList = kualiLookupable.performSearch(lookupForm.getCriteriaFieldsForLookup(), bounded);
+        Collection<? extends BusinessObject> displayList = lookupViewHelperService.performSearch(lookupForm.getCriteriaFieldsForLookup(), true);
 
         if ( displayList instanceof CollectionIncomplete ){
             request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());

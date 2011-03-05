@@ -69,17 +69,78 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
   <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
      <property name="viewName" value="default"/>
-     <property name="viewHelperServiceBeanId" value="kualiLookupable"/>
+     <property name="viewHelperServiceBeanId" value="lookupViewHelperService"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
      <property name="controllerRequestMapping" value="lookup"/>
      <property name="readOnly" value="false"/>
      <property name="singlePageView" value="true"/>
      <property name="page">
-        <bean parent="PageLookup"/>
+       <bean parent="PageLookup"/>
      </property>
-      <property name="footer">
-        <bean parent="Footer"/>
-      </property>
+     <property name="footer">
+       <bean parent="Footer"/>
+     </property>
+
+    <!-- BELOW WILL BE COPIED OUT TO COMMON BEAN DEFINITIONS -->
+
+    <property name="criteriaGroup">
+      <bean parent="GroupGridLayout">
+        <property name="renderHeader" value="false"/>
+        <property name="title" value="Lookup Criteria"/>
+        <property name="fieldBindingObjectPath" value="criteriaFields"/>
+        <property name="layoutManager.numberOfColumns" value="2"/>
+        <property name="footer">
+          <bean id="Group_SearchClearCancel" parent="Footer">
+            <property name="items">
+              <list> 
+                <bean parent="ActionField" p:methodToCall="search" p:actionLabel="search"/>
+                <bean parent="ActionField" p:methodToCall="clearValues" p:actionLabel="clear values"/>
+                <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="cancel"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="resultsGroup">
+      <bean parent="CollectionGroupTableLayout" p:layoutManager.matchColumnsToFieldCount="true">
+        <property name="propertyName" value="searchResults"/>
+        <property name="layoutManager.renderSequenceField" value="false"/>
+        <property name="renderAddLine" value="false"/>
+        <property name="readOnly" value="true"/>
+      </bean>
+    </property>
+    <property name="formGroup">
+      <bean parent="GroupBodyOnly">
+        <property name="layoutManager">
+          <bean parent="GridLayoutManager"/>
+        </property>
+        <property name="items">
+          <list>
+            <bean parent="AttributeField_Form" p:propertyName="dataObjectClassName">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="backLocation">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="conversionFields">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="readOnlyFields">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
   
   <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>

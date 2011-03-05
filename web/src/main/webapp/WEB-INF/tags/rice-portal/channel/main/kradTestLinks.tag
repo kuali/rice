@@ -28,7 +28,7 @@
   </ul>
 <br/>
   <ul class="chan">
-     <li><portal:portalLink displayTitle="true" title="Spring - Lookup Travel Account" url="${ConfigProperties.application.url}/lookup.mvc?methodToCall=start&objectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
+     <li><portal:portalLink displayTitle="true" title="Spring - Lookup Travel Account" url="${ConfigProperties.application.url}/lookup.mvc?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
   </ul>
   
 </div>

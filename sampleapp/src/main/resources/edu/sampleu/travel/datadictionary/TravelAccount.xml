@@ -209,6 +209,7 @@
         <bean parent="FieldDefinition" p:attributeName="name"/>
         <bean parent="FieldDefinition" p:attributeName="extension.accountTypeCode"/>
         <bean parent="FieldDefinition" p:attributeName="foId" p:forceLookup="true"/>
+        <bean parent="FieldDefinition" p:attributeName="createDate"/>
       </list>
     </property>
     <property name="resultFields">

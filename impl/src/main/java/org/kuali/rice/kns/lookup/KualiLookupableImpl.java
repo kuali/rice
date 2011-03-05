@@ -20,18 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.uif.UifConstants;
-import org.kuali.rice.kns.uif.UifPropertyPaths;
-import org.kuali.rice.kns.uif.container.LookupView;
-import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.field.AttributeField;
-import org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl;
-import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -43,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Kuali lookup implementation. Implements methods necessary to render the lookup and provides search and return methods.
  */
 @Transactional
-public class KualiLookupableImpl extends ViewHelperServiceImpl implements Lookupable {
+public class KualiLookupableImpl /*extends LookupViewHelperServiceImpl*/ implements Lookupable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableImpl.class);
     protected static final String[] IGNORE_LIST = { KNSConstants.DOC_FORM_KEY, KNSConstants.BACK_LOCATION };
 
@@ -57,65 +49,14 @@ public class KualiLookupableImpl extends ViewHelperServiceImpl implements Lookup
     public KualiLookupableImpl() {
     	super();
     }
-
-	/**
-	 * Initialization of Lookupable requires that the business object class be
-	 * set for the
-	 * {@link #initializeAttributeFieldFromDataDictionary(View, AttributeField)}
-	 * method
-	 * 
-	 * @see org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.kns.uif.container.View)
-	 */
+/*
 	@Override
 	public void performInitialization(View view) {
 		setBusinessObjectClass(((LookupView)view).getObjectClassName());
 		super.performInitialization(view);
 	}
-
+*/
 	/**
-	 * After initial Data Dictionary initialization of an {@link AttributeField}
-	 * , the binding path will need to be changed if the initial 'binding object
-	 * path' is set to
-	 * {@link UifConstants.LookupModelPropertyNames#CRITERIA_FIELDS}. The exact
-	 * 'binding path' that needs to be set will be to convert a nested property
-	 * path to one that allows for mapping to a {@link Map} object.
-	 * 
-	 * eg: If the existing 'binding object path' is set to 'criteriaMap' and the
-	 * 'binding name' is 'subAccount' then the default 'binding path' will be
-	 * 'criteriaMap.subAccount'. In the case of lookups we need the 'binding
-	 * path' to be set to 'criteriaMap[subAccount]'.
-	 * 
-	 * @see org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl#initializeAttributeFieldFromDataDictionary(org.kuali.rice.kns.uif.container.View,
-	 *      org.kuali.rice.kns.uif.field.AttributeField)
-	 */
-    @Override
-    protected void initializeAttributeFieldFromDataDictionary(View view, AttributeField field) {
-	    super.initializeAttributeFieldFromDataDictionary(view, field);
-    	if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
-    	    field.getBindingInfo().setBindingPath(field.getBindingInfo().getBindingObjectPath() + "[" + field.getBindingInfo().getBindingName() + "]");
-    	}
-    }
-
-	/**
-	 * When the dictionary model class is retrieved for an AttributeField where
-	 * the BindingObjectPath is equal to the
-	 * {@link org.kuali.rice.kns.web.spring.form.LookupForm} criteria fields
-	 * object... the BusinessObjectClass needs to be returned to fetch the
-	 * proper data dictionary entry.
-	 * 
-	 * @see org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl#getDictionaryModelClass(org.kuali.rice.kns.uif.container.View,
-	 *      org.kuali.rice.kns.uif.field.AttributeField)
-	 */
-	@Override
-	protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
-    	// if the field binding object path matches the map name on the LookupForm model then use BO class rather than looking up dictionary model class
-    	if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
-    		return getBusinessObjectClass();
-    	}
-		return ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());
-	}
-
-    /**
      * Sets the business object class for the lookup instance, then rows can be set for search render.
      *
      * @param boClass Class for the lookup business object
@@ -364,18 +305,13 @@ public class KualiLookupableImpl extends ViewHelperServiceImpl implements Lookup
     }
 
     /**
-     * @deprecated Use {@link #performLookup(org.kuali.rice.kns.web.spring.form.LookupForm, List, boolean)} instead.
+     * Performs a lookup that can only return one row.
+     * @see org.kuali.rice.kns.lookup.Lookupable#performLookup(org.kuali.rice.kns.web.struts.form.LookupForm, java.util.List, boolean)
      */
-    public Collection performLookup(org.kuali.rice.kns.web.struts.form.LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded) {
+    public Collection performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded) {
         return getLookupableHelperService().performLookup(lookupForm, resultTable, bounded);
     }
 
-    /**
-     * @see org.kuali.rice.kns.lookup.Lookupable#performSearch(java.util.Map, boolean)
-     */
-    public Collection<? extends BusinessObject> performSearch(Map<String,String> criteriaFieldsForLookup, boolean bounded) {
-    	return getLookupableHelperService().performSearch(criteriaFieldsForLookup, bounded);
-    }
 
     public boolean isSearchUsingOnlyPrimaryKeyValues() {
         return getLookupableHelperService().isSearchUsingOnlyPrimaryKeyValues();
@@ -386,21 +322,13 @@ public class KualiLookupableImpl extends ViewHelperServiceImpl implements Lookup
         return getLookupableHelperService().getPrimaryKeyFieldLabels();
     }
 
-    /**
-     * @deprecated Use {@link #performClear(Map)} method instead.
-     */
-	public void performClear(LookupForm lookupForm) {
-		 getLookupableHelperService().performClear(lookupForm);
-	}
-
 	/**
 	 * calls the lookup helper service to do "clear" behaviors
 	 *
-	 * @see Lookupable#performClear(Map)
-	 * 
+	 * @see org.kuali.rice.kns.lookup.Lookupable#performClear()
 	 */
-	public void performClear(Map fieldsForLookup) {
-		 getLookupableHelperService().performClear(fieldsForLookup);
+	public void performClear(LookupForm lookupForm) {
+		 getLookupableHelperService().performClear(lookupForm);
 	}
 
 	/**

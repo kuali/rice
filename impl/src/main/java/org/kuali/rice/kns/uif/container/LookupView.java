@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
-import org.kuali.rice.kns.uif.layout.GridLayoutManager;
 
 /**
  * TODO delyea: Fill in javadocs here
@@ -30,7 +29,7 @@ import org.kuali.rice.kns.uif.layout.GridLayoutManager;
 public class LookupView extends FormView {
 	private static final long serialVersionUID = 716926008488403616L;
 
-	private Class<?> objectClassName;
+	private Class<?> dataObjectClassName;
 
 	private Group criteriaGroup;
 	private CollectionGroup resultsGroup;
@@ -38,6 +37,8 @@ public class LookupView extends FormView {
 
 	private List<Component> criteriaFields;
 	private List<Component> resultFields;
+	private List<String> defaultSortAttributeNames;
+	protected boolean sortAscending = true;
 
 	public LookupView() {
 		super();
@@ -62,7 +63,7 @@ public class LookupView extends FormView {
 		}
 		super.performInitialization(view);
 
-		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), objectClassName);
+		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
 	}
 
 	protected void initializeGroups() {
@@ -72,10 +73,9 @@ public class LookupView extends FormView {
 		if (getResultsGroup() != null) {
 			if ( (getResultsGroup().getItems().isEmpty()) && (getResultFields() != null) ) {
 				getResultsGroup().setItems(getResultFields());
-				((GridLayoutManager)getResultsGroup().getLayoutManager()).setNumberOfColumns(getResultFields().size());
 			}
 			if (getResultsGroup().getCollectionObjectClass() == null) {
-				getResultsGroup().setCollectionObjectClass(getObjectClassName());
+				getResultsGroup().setCollectionObjectClass(getDataObjectClassName());
 			}
 		}
 	}
@@ -90,19 +90,19 @@ public class LookupView extends FormView {
 	 * lookup action
 	 * </p>
 	 * 
-	 * @return Class<?> lookup object class
+	 * @return Class<?> lookup data object class
 	 */
-	public Class<?> getObjectClassName() {
-		return this.objectClassName;
+	public Class<?> getDataObjectClassName() {
+		return this.dataObjectClassName;
 	}
 
 	/**
 	 * Setter for the object class name
 	 * 
-	 * @param objectClassName
+	 * @param dataObjectClassName
 	 */
-	public void setObjectClassName(Class<?> objectClassName) {
-		this.objectClassName = objectClassName;
+	public void setDataObjectClassName(Class<?> dataObjectClassName) {
+		this.dataObjectClassName = dataObjectClassName;
 	}
 
 	public Group getCriteriaGroup() {
@@ -144,5 +144,21 @@ public class LookupView extends FormView {
 	public void setResultFields(List<Component> resultFields) {
 		this.resultFields = resultFields;
 	}
+
+	public List<String> getDefaultSortAttributeNames() {
+    	return this.defaultSortAttributeNames;
+    }
+
+	public void setDefaultSortAttributeNames(List<String> defaultSortAttributeNames) {
+    	this.defaultSortAttributeNames = defaultSortAttributeNames;
+    }
+
+	public boolean isSortAscending() {
+    	return this.sortAscending;
+    }
+
+	public void setSortAscending(boolean sortAscending) {
+    	this.sortAscending = sortAscending;
+    }
 
 }

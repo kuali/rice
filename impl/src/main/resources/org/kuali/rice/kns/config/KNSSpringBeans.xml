@@ -745,9 +745,6 @@
 		<property name="lookupableHelperService">
 			<ref bean="lookupableHelperService" />
 		</property>
-        <property name="dataDictionaryService">
-            <ref bean="dataDictionaryService" />
-        </property>
 	</bean>
 
 	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl" scope="prototype">
@@ -1389,6 +1386,33 @@
       <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
   
+  <bean id="lookupViewHelperService" class="org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl" scope="prototype">
+      <property name="dataDictionaryService">
+          <ref bean="dataDictionaryService" />
+      </property>
+      <property name="persistenceStructureService">
+          <ref bean="persistenceStructureService" />
+      </property>
+      <property name="encryptionService">
+          <ref bean="encryptionService" />
+      </property>
+      <property name="lookupService">
+          <ref bean="lookupService" />
+      </property>
+      <property name="businessObjectService">
+          <ref bean="businessObjectService" />
+      </property>
+      <property name="businessObjectDictionaryService">
+          <ref bean="businessObjectDictionaryService" />
+      </property>
+      <property name="businessObjectMetaDataService">
+          <ref bean="businessObjectMetaDataService" />
+      </property>
+      <property name="businessObjectAuthorizationService">
+          <ref bean="businessObjectAuthorizationService" />
+      </property>
+  </bean>
+
   <bean id="inquiryViewTypeService" class="org.kuali.rice.kns.uif.service.impl.InquiryViewTypeServiceImpl"/>
   
   <bean id="lookupViewTypeService" class="org.kuali.rice.kns.uif.service.impl.LookupViewTypeServiceImpl"/>

@@ -423,24 +423,5 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	public void applyConditionalLogicForFieldDisplay() {
 		
 	}
-
-	/**
-	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#performSearch(java.util.Map, boolean)
-	 */
-	@Override
-	public Collection<? extends BusinessObject> performSearch(
-			Map<String, String> criteriaFieldsForLookup, boolean bounded) {
-		// TODO jrenfro - THIS METHOD NEEDS JAVADOCS
-		return null;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#performClear(java.util.Map)
-	 */
-	@Override
-	public void performClear(Map fieldsForLookup) {
-		// TODO jrenfro - THIS METHOD NEEDS JAVADOCS
-		
-	}
 	
 }

@@ -67,6 +67,7 @@ public class UifConstants extends JSTLConstants {
 		public static final String NAME = "name";
 		public static final String INQUIRY_OBJECT_CLASS_NAME = "inquiryObjectClassName";
 		public static final String OBJECT_CLASS_NAME = "objectClassName";
+		public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
 	}
 
 	public static class MethodToCallNames {

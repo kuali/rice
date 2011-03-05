@@ -747,4 +747,19 @@ public class View extends ContainerBase {
 		return true;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object)
+	 */
+	@Override
+	public void performFinalize(View view, Object model) {
+		super.performFinalize(view, model);
+		String prefixScript = "";
+		if(this.getOnLoadScript() != null){
+			prefixScript = this.getOnLoadScript();
+		}
+		this.setOnLoadScript(prefixScript +
+				"$(document).ready(function()" +
+					"{$('#kualiForm').validate({ onfocusout: function(element) { $(element).valid(); }});" +
+				"});");
+	}
 }

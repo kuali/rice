@@ -26,7 +26,7 @@
 <form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" 
             size="${control.size}" maxlength="${field.maxLength}" 
             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-            tabindex="${control.tabIndex}"/>
+            tabindex="${control.tabIndex}" minLength="${field.minLength}"/>
 
 <c:if test="${(!empty control.watermarkText)}">
 	<script type="text/javascript">

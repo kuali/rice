@@ -29,10 +29,12 @@ public class FormView extends View {
 
 	private boolean renderForm;
 	private boolean validateModelData;
+	private boolean validateClientSide;
 
 	public FormView() {
 		renderForm = true;
 		validateModelData = true;
+		validateClientSide = true;
 	}
 
 	/**
@@ -85,6 +87,23 @@ public class FormView extends View {
 
 	public void setControllerRequestMapping(String controllerRequestMapping) {
 		this.controllerRequestMapping = controllerRequestMapping;
+	}
+
+	/**
+	 * @param validateClientSide the validateClientSide to set
+	 */
+	public void setValidateClientSide(boolean validateClientSide) {
+		this.validateClientSide = validateClientSide;
+	}
+
+	/**
+	 * Indicates whether to perform on-the-fly validation on the client using js during
+	 * user data entry. Defaults to true
+	 * 
+	 * @return the validateClientSide
+	 */
+	public boolean isValidateClientSide() {
+		return validateClientSide;
 	}
 
 }

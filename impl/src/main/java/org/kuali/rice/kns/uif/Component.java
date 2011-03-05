@@ -472,4 +472,10 @@ public interface Component extends Serializable, Ordered {
 	 */
 	public void setComponentOptions(Map<String, String> componentOptions);
 
+	/**
+	 * This method adds a single style to the list of styles on this component
+	 * 
+	 * @param style
+	 */
+	public void addStyleClass(String styleClass);
 }

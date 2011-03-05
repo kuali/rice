@@ -937,4 +937,13 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 		return sb.toString();
 	}
 
+	/**
+	 * This method adds a single style to the list of styles on this component
+	 * 
+	 * @param style
+	 */
+	@Override
+	public void addStyleClass(String styleClass){
+		styleClasses.add(styleClass);
+	}
 }

@@ -20,6 +20,10 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
+import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
@@ -53,7 +57,16 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 	// value props
 	private String defaultValue;
+	
+	protected String customValidatorClass;
+	protected ValidCharactersConstraint validCharactersConstraint;
+	protected CaseConstraint caseConstraint;
+	protected List<PrerequisiteConstraint> dependencyConstraints;
+	protected List<MustOccurConstraint> mustOccurConstraints;
 	private Integer maxLength;
+	private Integer minLength;
+	//For testing, maybe become permanent?
+	private String jsRegExValidation;
 
 	private Formatter formatter;
 	private KeyValuesFinder optionsFinder;
@@ -157,6 +170,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 		// max length
 		if (getMaxLength() == null) {
 			setMaxLength(attributeDefinition.getMaxLength());
+		}
+		
+		// max length
+		if (getMinLength() == null) {
+			setMinLength(attributeDefinition.getMinLength());
 		}
 
 		// required
@@ -509,8 +527,72 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
 		this.attributeSecurity = attributeSecurity;
 	}
+	
+	/**
+	 * @return the minLength
+	 */
+	public Integer getMinLength() {
+		return this.minLength;
+	}
 
 	/**
+	 * @param minLength the minLength to set
+	 */
+	public void setMinLength(Integer minLength) {
+		this.minLength = minLength;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
+	 */
+	@Override
+	public boolean getSupportsOnLoad() {
+		return true;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object)
+	 */
+	@Override
+	public void performFinalize(View view, Object model) {
+		super.performFinalize(view, model);
+		
+		
+		if(this.getRequired()){
+			control.addStyleClass("required");
+		}
+		
+		//testing
+		if(StringUtils.isNotEmpty(jsRegExValidation)){
+			String prefixScript = "";
+			if(this.getOnLoadScript() != null){
+				prefixScript = this.getOnLoadScript();
+			}
+			String methodName = this.getLabel() + "-validChars";
+			this.setOnLoadScript(prefixScript +
+			"jQuery.validator.addMethod('"+ methodName +"', function(value, element) {" +
+				"return this.optional(element) ||" + jsRegExValidation + ".test(value);" +
+			"}, 'Failed valid custom valid characters check');");
+			control.addStyleClass(methodName);
+		}
+	}
+
+	/**
+	 * @param jsRegExValidation the jsRegExValidation to set
+	 */
+	public void setJsRegExValidation(String jsRegExValidation) {
+		this.jsRegExValidation = jsRegExValidation;
+	}
+
+	/**
+	 * This is a regular expression expressed in js syntax for use in client side validation only
+	 * @return the jsRegExValidation
+	 */
+	public String getJsRegExValidation() {
+		return jsRegExValidation;
+	}
+	
+		/**
 	 * Lookup finder widget for the field
 	 * 
 	 * <p>

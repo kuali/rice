@@ -144,18 +144,19 @@ function setFieldToFocusAndSubmit(triggerElement) {
 }
 
 function submitForm() {
+	$.watermark.hideAll();
 	var form = $("#kualiForm").serialize();
+	$.watermark.showAll();
 	$.ajax({
 		type: "POST",
 		url: "../spring/uitest",
 		data: form,
 		success: function(data){
-			var pageHtml = $("#page_content", data);
-			$("#page_content").html(pageHtml);
+			var pageHtml = $("#viewpage_div", data);
+			$("#viewpage_div").replaceWith(pageHtml);
 			$("#formComplete").html("");
 		}
 	});
-    //document.forms[0].submit();
 }
 
 function saveScrollPosition() {

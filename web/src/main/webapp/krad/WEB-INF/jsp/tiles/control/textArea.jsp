@@ -26,7 +26,7 @@
 <form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" 
                rows="${control.rows}" cols="${control.cols}" 
                cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-               tabindex="${control.tabIndex}"/>
+               tabindex="${control.tabIndex}" maxLength="${field.maxLength}" minLength="${field.minLength}"/>
                
 <c:if test="${(!empty control.watermarkText)}">
 	<script type="text/javascript">

@@ -31,11 +31,10 @@
       <krad:template component="${view.navigation}" currentPageId="{view.currentPageId}"/>
    </div>
    
-	   <span id="page_content">
    <!----------------------------------- #VIEW PAGE --------------------------------------->  
    <div id="viewpage_div">
       <krad:template component="${view.currentPage}"/>
-   </div>
+   
        
    <%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>
    <c:if test="${view.renderForm}">
@@ -45,7 +44,8 @@
 	
    <%-- all forms will be stored in session, this is the conversation key --%>
    <form:hidden path="formKey"/>
-   		</span>
+   </div>
+   
    </div>  
     
    <!----------------------------------- #VIEW FOOTER --------------------------------------->

@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
-import java.util.Map;
-
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.container.View;
 
 /**
  * Components that provide a user interface function (besides the basic form
@@ -33,6 +32,20 @@ import org.kuali.rice.kns.uif.Component;
  */
 public interface Widget extends Component {
 
-
+	/**
+	 * Special finalize method for <code>Widget</code> instances that takes in
+	 * the parent component. This allows widgets to setup state based on the
+	 * component they apply to (or are associated with)
+	 * 
+	 * <p>
+	 * Widget implementations can implemented the normal performFinalize method,
+	 * the overloaded (taking the parent), or both
+	 * </p>
+	 * 
+	 * @param parent
+	 *            - Component that contains the widget
+	 * @see org.kuali.rice.kns.uif.Component.performFinalize(View, Object)
+	 */
+	public void performFinalize(View view, Object model, Component parent);
 
 }

@@ -31,6 +31,7 @@ import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -94,6 +95,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 	private MessageField summaryMessageField;
 	private MessageField constraintMessageField;
 
+	// widgets
+	private Inquiry fieldInquiry;
 	private QuickFinder fieldLookup;
 
 	public AttributeField() {
@@ -124,18 +127,20 @@ public class AttributeField extends FieldBase implements DataBinding {
 			control.setId(this.getId());
 		}
 
-		if (StringUtils.isNotBlank(summary)){
+		if (StringUtils.isNotBlank(summary)) {
 			summaryMessageField.setMessageText(summary);
-		}else{
+		}
+		else {
 			summaryMessageField.setRender(false);
 		}
-		
-		if (StringUtils.isNotBlank(constraint)){
+
+		if (StringUtils.isNotBlank(constraint)) {
 			constraintMessageField.setMessageText(constraint);
-		}else{
+		}
+		else {
 			constraintMessageField.setRender(false);
 		}
-		
+
 		// TODO: remove later, this should be done within the service lifecycle
 		if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
 			MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
@@ -171,7 +176,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (getMaxLength() == null) {
 			setMaxLength(attributeDefinition.getMaxLength());
 		}
-		
+
 		// max length
 		if (getMinLength() == null) {
 			setMinLength(attributeDefinition.getMinLength());
@@ -201,11 +206,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (getAttributeSecurity() == null) {
 			setAttributeSecurity(attributeDefinition.getAttributeSecurity());
 		}
-		
-		if (StringUtils.isEmpty(getConstraint())){
+
+		if (StringUtils.isEmpty(getConstraint())) {
 			setConstraint(attributeDefinition.getConstraint());
 		}
-		
+
 	}
 
 	/**
@@ -217,6 +222,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 		components.add(control);
 		components.add(errorsField);
+		components.add(fieldLookup);
+		components.add(fieldInquiry);
 
 		return components;
 	}
@@ -480,12 +487,13 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 */
 	public void setSummary(String summary) {
 		this.summary = summary;
-		if (StringUtils.isNotBlank(summary)){
+		if (StringUtils.isNotBlank(summary)) {
 			summaryMessageField.setMessageText(summary);
 			summaryMessageField.setRender(true);
-		}else{
+		}
+		else {
 			summaryMessageField.setRender(false);
-	}
+		}
 	}
 
 	/**
@@ -527,7 +535,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
 		this.attributeSecurity = attributeSecurity;
 	}
-	
+
 	/**
 	 * @return the minLength
 	 */
@@ -619,6 +627,14 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.fieldLookup = fieldLookup;
 	}
 
+	public Inquiry getFieldInquiry() {
+		return this.fieldInquiry;
+	}
+
+	public void setFieldInquiry(Inquiry fieldInquiry) {
+		this.fieldInquiry = fieldInquiry;
+	}
+
 	/**
 	 * @return the summaryField
 	 */
@@ -627,7 +643,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param summaryField the summaryField to set
+	 * @param summaryField
+	 *            the summaryField to set
 	 */
 	public void setSummaryMessageField(MessageField summaryField) {
 		this.summaryMessageField = summaryField;
@@ -641,18 +658,20 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param constraint the constraint to set
+	 * @param constraint
+	 *            the constraint to set
 	 */
 	public void setConstraint(String constraint) {
 		this.constraint = constraint;
-		if (StringUtils.isNotBlank(constraint)){
+		if (StringUtils.isNotBlank(constraint)) {
 			constraintMessageField.setMessageText(constraint);
 			constraintMessageField.setRender(true);
-		}else{
+		}
+		else {
 			constraintMessageField.setRender(false);
 		}
 	}
-	
+
 	/**
 	 * @return the constraintMessageField
 	 */
@@ -661,10 +680,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param constraintMessageField the constraintMessageField to set
+	 * @param constraintMessageField
+	 *            the constraintMessageField to set
 	 */
 	public void setConstraintMessageField(MessageField constraintMessageField) {
 		this.constraintMessageField = constraintMessageField;
 	}
 }
-

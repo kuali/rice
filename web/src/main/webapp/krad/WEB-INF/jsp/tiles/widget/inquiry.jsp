@@ -15,11 +15,11 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.DatePicker"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.Inquiry"/>
 <tiles:useAttribute name="componentId"/>
 
 <%--
-    Renders the lookup icon for a field
+    Renders an inquiry link for a field value
  --%>
  
-<krad:template component="${widget.quickfinderActionField}"/> 
+<krad:template component="${widget.inquiryLinkField}"/> 

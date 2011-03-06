@@ -419,6 +419,8 @@ public class TableLayoutManager extends GridLayoutManager {
 		components.add(headerFieldPrototype);
 		components.add(sequenceFieldPrototype);
 		components.add(actionFieldPrototype);
+		components.addAll(headerFields);
+		components.addAll(dataFields);
 
 		return components;
 	}

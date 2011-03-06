@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,7 @@ import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -65,6 +67,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UifControllerBase {
+	protected static final String REDIRECT_PREFIX = "redirect:";
 
 	/**
 	 * This method will create/obtain the model(form) object before it is passed
@@ -227,7 +230,7 @@ public abstract class UifControllerBase {
 		if (StringUtils.isNotBlank(selectedLine)) {
 			selectedLineIndex = Integer.parseInt(selectedLine);
 		}
-		
+
 		if (selectedLineIndex == -1) {
 			throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
 		}
@@ -246,14 +249,29 @@ public abstract class UifControllerBase {
 	public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 		String pageId = form.getActionParamaterValue(UifParameters.PAGE_ID);
-		
+
 		return getUIFModelAndView(form, form.getViewId(), pageId);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigateToLookup")
 	public ModelAndView navigateToLookup(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-		return getUIFModelAndView(form, form.getViewId(), form.getPageId());
+		Properties lookupParameters = form.getActionParametersAsProperties();
+
+		String baseLookupUrl = (String) lookupParameters.get(UifParameters.BASE_LOOKUP_URL);
+		lookupParameters.remove(UifParameters.BASE_LOOKUP_URL);
+		
+		lookupParameters.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
+
+		return performRedirect(form, baseLookupUrl, lookupParameters);
+	}
+
+	protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
+		String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
+
+		ModelAndView modelAndView = new ModelAndView(REDIRECT_PREFIX + redirectUrl);
+
+		return modelAndView;
 	}
 
 	protected ModelAndView getUIFModelAndView(UifFormBase form) {

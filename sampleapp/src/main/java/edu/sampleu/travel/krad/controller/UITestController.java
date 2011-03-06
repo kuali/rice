@@ -89,6 +89,8 @@ public class UITestController extends UifControllerBase {
 		uiTestForm.setTravelAccount1(travelAccount);
 		uiTestForm.setTravelAccount2(travelAccount);
 		uiTestForm.setTravelAccount3(travelAccount);
+		
+		uiTestForm.setField5("a14");
 
 		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
 	}

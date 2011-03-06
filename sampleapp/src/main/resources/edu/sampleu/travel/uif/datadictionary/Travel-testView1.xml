@@ -51,7 +51,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
    
    <bean id="testSection1" parent="GroupSection_Accordion">
-      <property name="id" value="testSection1"/>
       <property name="title" value="Test Section 1"/> 
       <property name="items">
         <list>
@@ -62,7 +61,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
    
    <bean id="testSection7" parent="GroupSectionGridLayout_Accordion" p:layoutManager.numberOfColumns="2" >
-      <property name="id" value="testSection7"/>
       <property name="title" value="Comparison Section"/> 
       <property name="items">
         <list>
@@ -73,14 +71,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>   
    
    <bean id="testGroup1" parent="GroupGridLayout">   
-      <property name="id" value="testGroup1"/>
       <property name="title" value="Test Group 1"/> 
       <property name="items">
         <list>
-          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4" p:minLength="2" p:summary="This title is used for identifying the proposal through the apporval process." p:constraint="Must be 4 chars">
+          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4" p:minLength="2"
+               p:summary="This title is used for identifying the proposal through the apporval process." p:constraint="Must be 4 chars">
             <property name="control">
               <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
             </property>
+            <property name="fieldLookup.objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:required="true" p:maxLength="25">
             <property name="control">
@@ -106,14 +105,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
    
    <bean id="testGroup2" parent="GroupGridLayout" p:layoutManager.style="width: 50%">   
-      <property name="id" value="testGroup2"/>
       <property name="title" value="Test Group 2"/> 
       <property name="layoutManager.numberOfColumns" value="4"/>
       <property name="items">
         <list>
-          <bean parent="AttributeField_Form" p:propertyName="field5" p:label="Field 5" p:width="auto" p:maxLength="4">
+          <bean parent="AttributeField_Form" p:propertyName="field5" p:readOnly="true" p:label="Field 5" p:width="auto" p:maxLength="4">
             <property name="control">
               <bean parent="TextControl" p:size="5"/>
+            </property>
+            <property name="fieldInquiry.objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldInquiry.parameterFieldMapping">
+              <map>
+                <entry key="number" value="field5"/>
+              </map>
             </property>
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field6" p:label="Field 6" p:required="true" p:width="auto" p:maxLength="25">
@@ -142,7 +146,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>  
    
    <bean id="testSection6" parent="GroupSection_Accordion">
-      <property name="id" value="testSection6"/>
       <property name="title" value="Test Collections"/> 
       <property name="items">
         <list>
@@ -153,7 +156,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>   
    
    <bean id="testGroup4" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
-      <property name="id" value="testGroup4"/>
       <property name="title" value="Collection Group 1"/>  
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="propertyName" value="fiscalOfficer.accounts"/>
@@ -179,7 +181,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>
    
    <bean id="testGroup5" parent="CollectionGroup">
-      <property name="id" value="testGroup5"/>
       <property name="title" value="Collection Group 2"/>  
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="propertyName" value="fiscalOfficer.accounts"/>
@@ -203,7 +204,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean> 
    
    <bean id="testGroup3" parent="GroupGridLayout" p:layoutManager.numberOfColumns="4">   
-      <property name="id" value="testGroup3"/>
       <property name="title" value="Test Group 3"/> 
       <property name="items">
         <list>
@@ -253,7 +253,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean> 
    
    <bean id="testSection5" parent="GroupSection_Accordion">
-      <property name="id" value="testSection5"/>
       <property name="title" value="Banking Info"/> 
       <property name="items">
         <list>
@@ -263,7 +262,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean>   
    
    <bean id="testSection2" parent="GroupSection_Accordion" p:layoutManager.styleClasses="layout_center">
-      <property name="id" value="testSection2"/>
       <property name="title" value="Test Section 2"/> 
       <property name="fieldBindingObjectPath" value="travelAccount3"/>
       <property name="items">
@@ -278,7 +276,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean> 
    
    <bean id="testSection4" parent="GroupSectionGridLayout_Accordion">
-      <property name="id" value="testSection4"/>
       <property name="title" value="Test Section 4"/> 
       <property name="layoutManager.numberOfColumns" value="4"/>
       <property name="items">
@@ -375,7 +372,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean> 
    
    <bean id="testSection3" parent="GroupSectionGridLayout_Accordion">
-      <property name="id" value="testSection3"/>
       <property name="title" value="Test Section 3"/> 
       <property name="fieldBindingObjectPath" value="travelAccount3"/>
       <property name="items">

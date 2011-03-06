@@ -44,6 +44,11 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
 	/**
 	 * Sets the unique Id for a <code>Component</code> if not set
 	 * 
+	 * <p>
+	 * Will use the bean name (if not the spring generated) or generate a
+	 * numeric identifier
+	 * </p>
+	 * 
 	 * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization(java.lang.Object,
 	 *      java.lang.String)
 	 * @see org.kuali.rice.kns.uif.Component#getDecorators
@@ -52,8 +57,14 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if (bean instanceof Component) {
 			Component component = (Component) bean;
+			
 			if (StringUtils.isBlank(component.getId())) {
-				component.setId("id_" + getNextId());
+				if (!StringUtils.contains(beanName, "$")) {
+					component.setId("id_" + beanName);
+				}
+				else {
+					component.setId("id_" + getNextId());
+				}
 			}
 		}
 

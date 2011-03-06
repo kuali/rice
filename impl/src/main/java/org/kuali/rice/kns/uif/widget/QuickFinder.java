@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.UifParameters;
+import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.ActionField;
 
 /**
@@ -27,12 +32,14 @@ import org.kuali.rice.kns.uif.field.ActionField;
 public class QuickFinder extends WidgetBase {
 	private static final long serialVersionUID = 3302390972815386785L;
 
-	private Class<?> objectClassName;
+	private String baseLookupUrl;
+
+	private String objectClassName;
 	private String viewId;
 	private String viewName;
 
-	private Map<String, String> fieldConversions;
-	private Map<String, String> lookupParameters;
+	private Map<String, String> returnFieldMapping;
+	private Map<String, String> parameterFieldMapping;
 
 	boolean hideReturnColumn;
 	boolean hideActionsColumn;
@@ -44,11 +51,51 @@ public class QuickFinder extends WidgetBase {
 		super();
 	}
 
-	public Class<?> getObjectClassName() {
+	/**
+	 * @see org.kuali.rice.kns.uif.widget.WidgetBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.Component)
+	 */
+	@Override
+	public void performFinalize(View view, Object model, Component parent) {
+		super.performFinalize(view, model, parent);
+
+		quickfinderActionField.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
+
+		if (StringUtils.isNotBlank(objectClassName)) {
+			quickfinderActionField.addActionParameter(UifParameters.OBJECT_CLASS_NAME, objectClassName);
+
+			setRender(true);
+		}
+		else {
+			setRender(false);
+		}
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(quickfinderActionField);
+
+		return components;
+	}
+
+	public String getBaseLookupUrl() {
+		return this.baseLookupUrl;
+	}
+
+	public void setBaseLookupUrl(String baseLookupUrl) {
+		this.baseLookupUrl = baseLookupUrl;
+	}
+
+	public String getObjectClassName() {
 		return this.objectClassName;
 	}
 
-	public void setObjectClassName(Class<?> objectClassName) {
+	public void setObjectClassName(String objectClassName) {
 		this.objectClassName = objectClassName;
 	}
 
@@ -68,20 +115,20 @@ public class QuickFinder extends WidgetBase {
 		this.viewName = viewName;
 	}
 
-	public Map<String, String> getFieldConversions() {
-		return this.fieldConversions;
+	public Map<String, String> getReturnFieldMapping() {
+		return this.returnFieldMapping;
 	}
 
-	public void setFieldConversions(Map<String, String> fieldConversions) {
-		this.fieldConversions = fieldConversions;
+	public void setReturnFieldMapping(Map<String, String> returnFieldMapping) {
+		this.returnFieldMapping = returnFieldMapping;
 	}
 
-	public Map<String, String> getLookupParameters() {
-		return this.lookupParameters;
+	public Map<String, String> getParameterFieldMapping() {
+		return this.parameterFieldMapping;
 	}
 
-	public void setLookupParameters(Map<String, String> lookupParameters) {
-		this.lookupParameters = lookupParameters;
+	public void setParameterFieldMapping(Map<String, String> parameterFieldMapping) {
+		this.parameterFieldMapping = parameterFieldMapping;
 	}
 
 	public boolean isHideReturnColumn() {

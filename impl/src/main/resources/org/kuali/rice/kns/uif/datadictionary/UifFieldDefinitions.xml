@@ -34,6 +34,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="fieldLookup">
         <bean parent="QuickFinder"/>
       </property> 
+      <property name="fieldInquiry">
+        <bean parent="Inquiry"/>
+      </property>       
       <property name="summaryMessageField">
         <bean parent="MessageField" p:messageText="*" p:messageType="SUMMARY" p:styleClasses="summary"/>
       </property>
@@ -77,6 +80,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="LinkField" abstract="true" parent="LinkField-parentBean"/>
   <bean id="LinkField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.LinkField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/linkField.jsp"/>
+      <property name="target" value="_blank"/>
   </bean>  
   
   <bean id="MessageField" abstract="true" parent="MessageField-parentBean"/>

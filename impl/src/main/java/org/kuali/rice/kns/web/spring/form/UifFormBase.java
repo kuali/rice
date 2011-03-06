@@ -18,6 +18,7 @@ package org.kuali.rice.kns.web.spring.form;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -217,6 +218,23 @@ public class UifFormBase implements Serializable {
 	 */
 	public Map<String, String> getActionParameters() {
 		return this.actionParameters;
+	}
+
+	/**
+	 * Returns the action parameters map as a <code>Properties</code> instance
+	 * 
+	 * @return Properties action parameters
+	 */
+	public Properties getActionParametersAsProperties() {
+		Properties actionProperties = new Properties();
+
+		if (actionParameters != null) {
+			for (Map.Entry<String, String> actionParameter : actionParameters.entrySet()) {
+				actionProperties.put(actionParameter.getKey(), actionParameter.getValue());
+			}
+		}
+
+		return actionProperties;
 	}
 
 	/**

@@ -63,8 +63,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="QuickFinder" parent="QuickFinder-parentBean"/>
   <bean id="QuickFinder-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.QuickFinder" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/quickFinder.jsp"/>
+      <property name="baseLookupUrl" value="http://localhost:8080/kr-dev/spring/lookup"/>
       <property name="quickfinderActionField">
         <bean parent="ActionField" p:methodToCall="navigateToLookup" p:actionImageField-ref="QuickFinderImageField"/>
+      </property>
+  </bean>  
+  
+  <bean id="Inquiry" parent="Inquiry-parentBean"/>
+  <bean id="Inquiry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Inquiry" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/inquiry.jsp"/>
+      <property name="baseInquiryUrl" value="http://localhost:8080/kr-dev/spring/inquiry"/>
+      <property name="inquiryLinkField">
+        <bean parent="LinkField" p:styleClasses="action"/>
       </property>
   </bean>  
   

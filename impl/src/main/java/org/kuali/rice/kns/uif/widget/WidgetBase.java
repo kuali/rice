@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.ComponentBase;
+import org.kuali.rice.kns.uif.container.View;
 
 /**
  * Base class for Widgets
  * 
  * <p>
- * Sets the component type name for all widget components, and provides some
- * convenience methods for widget templates
+ * Sets the component type name for all widget components and provides default
+ * implementation of performFinalize
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -33,10 +32,16 @@ import org.kuali.rice.kns.uif.ComponentBase;
 public abstract class WidgetBase extends ComponentBase implements Widget {
 	private static final long serialVersionUID = -917582902829056830L;
 
-	
-
 	public WidgetBase() {
-		
+		super();
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.widget.Widget#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.Component)
+	 */
+	public void performFinalize(View view, Object model, Component parent) {
+
 	}
 
 	/**

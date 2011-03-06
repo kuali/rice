@@ -34,6 +34,7 @@ import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.ModelUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
+import org.kuali.rice.kns.uif.widget.Widget;
 
 /**
  * Default Implementation of <code>ViewHelperService</code>
@@ -233,7 +234,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 		// invoke service override hook
 		performCustomApplyModel(view, component, model);
-		
+
 		// invoke component initializers setup to run in the apply model phase
 		for (ComponentModifier initializer : component.getComponentInitializers()) {
 			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.APPLY_MODEL)) {
@@ -278,7 +279,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 		// invoke service override hook
 		performCustomUpdateState(view, component, model);
-		
+
 		// invoke component initializers setup to run in the finalize phase
 		for (ComponentModifier initializer : component.getComponentInitializers()) {
 			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.FINALIZE)) {
@@ -288,6 +289,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 		// get components children and recursively update state
 		for (Component nestedComponent : component.getNestedComponents()) {
+			// invoke special finalize method for widgets
+			if (nestedComponent instanceof Widget) {
+				((Widget) nestedComponent).performFinalize(view, model, component);
+			}
+			
 			performComponentFinalize(view, nestedComponent, model);
 		}
 	}

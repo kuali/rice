@@ -1,13 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- * 
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +15,16 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,18 +36,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.xml.namespace.QName;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.core.util.cache.FastByteArrayOutputStream;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
 
 /**
  * Model bean that represents the definition of a service on the bus.
@@ -282,7 +280,7 @@ public class ServiceInfo implements Serializable {
 	 * @return A checksum for the object.
 	 */
 	public String objectToChecksum(Serializable object) {
-        FastByteArrayOutputStream bos = new FastByteArrayOutputStream();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out = null;
         try {
             out = new ObjectOutputStream(bos);
@@ -296,7 +294,7 @@ public class ServiceInfo implements Serializable {
         }
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            return new String( Base64.encodeBase64( md.digest( bos.getByteArray() ) ), "UTF-8");
+            return new String( Base64.encodeBase64( md.digest( bos.toByteArray() ) ), "UTF-8");
         } catch( GeneralSecurityException ex ) {
         	throw new RiceRuntimeException(ex);
         } catch( UnsupportedEncodingException ex ) {

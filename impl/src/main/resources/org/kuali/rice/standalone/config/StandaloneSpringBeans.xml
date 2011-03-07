@@ -81,5 +81,8 @@
 	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
+  
+    <!-- added to get krad test deploy working -->
+    <import resource="classpath:SampleAppModuleBeans.xml"/>
 
 </beans>

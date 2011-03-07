@@ -44,7 +44,7 @@ import java.util.Collection;
         PostalCode.Elements.STATE_CODE,
         PostalCode.Elements.ACTIVE,
         PostalCode.Elements.COUNTY_CODE,
-        CoreConstants.CommonMembers.ELEMENTS
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PostalCode implements PostalCodeContract, ModelObjectComplete {
 
@@ -70,7 +70,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.
@@ -274,7 +274,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "postalCode";
         final static String TYPE_NAME = "PostalCodeType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonMembers.ELEMENTS};
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

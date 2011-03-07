@@ -42,7 +42,7 @@ import java.util.Collection;
         County.Elements.COUNTRY_CODE,
         County.Elements.STATE_CODE,
         County.Elements.ACTIVE,
-        CoreConstants.CommonMembers.ELEMENTS
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class County implements CountyContract, ModelObjectComplete {
 
@@ -65,7 +65,7 @@ public final class County implements CountyContract, ModelObjectComplete {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.
@@ -238,7 +238,7 @@ public final class County implements CountyContract, ModelObjectComplete {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "county";
         final static String TYPE_NAME = "CountyType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonMembers.ELEMENTS};
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

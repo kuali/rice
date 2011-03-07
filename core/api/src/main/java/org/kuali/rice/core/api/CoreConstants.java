@@ -47,10 +47,10 @@ public final class CoreConstants {
 	    }
     }
 
-    public static final class CommonMembers {
-        public static final String ELEMENTS = "_elements";
+    public static final class CommonElements {
+        public static final String FUTURE_ELEMENTS = "_futureElements";
 
-        private CommonMembers() {
+        private CommonElements() {
 		    throw new UnsupportedOperationException("do not call");
 	    }
     }

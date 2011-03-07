@@ -49,7 +49,7 @@ import java.util.Collection;
     Component.Elements.NAME,
     Component.Elements.VIRTUAL,
     Component.Elements.ACTIVE,
-    CoreConstants.CommonMembers.ELEMENTS
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Component implements ComponentContract, ModelObjectComplete {
 	
@@ -72,7 +72,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 
     /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -280,7 +280,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 	static class Constants {
 	   final static String ROOT_ELEMENT_NAME = "component";
 	   final static String TYPE_NAME = "ComponentType";
-	   final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonMembers.ELEMENTS };
+	   final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
    
 	/**

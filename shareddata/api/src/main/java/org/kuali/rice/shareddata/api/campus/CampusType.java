@@ -23,6 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -39,7 +40,7 @@ import java.util.Collection;
 		CampusType.Elements.CODE,
 		CampusType.Elements.NAME,
 		CampusType.Elements.ACTIVE,
-		CoreConstants.CommonMembers.ELEMENTS
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class CampusType implements CampusTypeContract, ModelObjectComplete{
 	private static final long serialVersionUID = -6325716665728047946L;
@@ -53,7 +54,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 	
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -204,7 +205,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "campusType";
 		final static String TYPE_NAME = "CampusTypeType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonMembers.ELEMENTS };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
 	
 	/**

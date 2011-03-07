@@ -46,7 +46,7 @@ import java.util.Collection;
         Country.Elements.NAME,
         Country.Elements.RESTRICTED,
         Country.Elements.ACTIVE,
-        CoreConstants.CommonMembers.ELEMENTS
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Country implements CountryContract, ModelObjectComplete {
     private static final long serialVersionUID = -8975392777320033940L;
@@ -68,7 +68,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.
@@ -253,6 +253,6 @@ public final class Country implements CountryContract, ModelObjectComplete {
 	static class Constants {
         final static String ROOT_ELEMENT_NAME = "country";
 		final static String TYPE_NAME = "CountryType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonMembers.ELEMENTS };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
 }

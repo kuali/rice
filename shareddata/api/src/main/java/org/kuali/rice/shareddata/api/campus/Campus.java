@@ -43,7 +43,7 @@ import java.util.Collection;
         Campus.Elements.SHORT_NAME,
         Campus.Elements.CAMPUS_TYPE,
         Campus.Elements.ACTIVE,
-        CoreConstants.CommonMembers.ELEMENTS
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Campus implements CampusContract, ModelObjectComplete {
 	private static final long serialVersionUID = 2288194493838509380L;
@@ -61,7 +61,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 	
 	
 	 /** 
@@ -91,18 +91,6 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         }
         this.active = builder.isActive();
     }
-    
-/*	@Override
-	public void refresh() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void prepareForWorkflow() {
-		// TODO Auto-generated method stub
-		
-	}*/
 
 	@Override
 	public String getCode() {
@@ -265,7 +253,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "campus";
 		final static String TYPE_NAME = "CampusType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonMembers.ELEMENTS };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
 	
 	/**

@@ -41,7 +41,7 @@ import java.util.Collection;
         State.Elements.NAME,
         State.Elements.COUNTRY_CODE,
         State.Elements.ACTIVE,
-        CoreConstants.CommonMembers.ELEMENTS
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class State implements StateContract, ModelObjectComplete {
 
@@ -61,7 +61,7 @@ public final class State implements StateContract, ModelObjectComplete {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.
@@ -215,7 +215,7 @@ public final class State implements StateContract, ModelObjectComplete {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "state";
         final static String TYPE_NAME = "StateType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonMembers.ELEMENTS};
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

@@ -23,6 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,7 +48,7 @@ import java.util.Collection;
     Namespace.Elements.APPLICATION_CODE,
     Namespace.Elements.NAME,
     Namespace.Elements.ACTIVE,
-    CoreConstants.CommonMembers.ELEMENTS
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
     })
 public final class Namespace implements NamespaceContract, ModelObjectComplete {
 	
@@ -67,7 +68,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 
     /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -249,7 +250,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "namespace";
 		final static String TYPE_NAME = "NamespaceType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonMembers.ELEMENTS };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
    
    /**

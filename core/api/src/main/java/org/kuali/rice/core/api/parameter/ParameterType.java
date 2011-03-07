@@ -23,6 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,7 +48,7 @@ import java.util.Collection;
     ParameterType.Elements.CODE,
     ParameterType.Elements.NAME,
     ParameterType.Elements.ACTIVE,
-    CoreConstants.CommonMembers.ELEMENTS
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class ParameterType implements ParameterTypeContract, ModelObjectComplete {
 	
@@ -64,7 +65,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final transient Collection<Element> _futureElements = null;
 
     /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -215,7 +216,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "parameterType";
 		final static String TYPE_NAME = "ParameterTypeType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonMembers.ELEMENTS };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
 	
 	/**

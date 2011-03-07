@@ -1,5 +1,29 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.shareddata.impl.postalcode
 
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.Id
+import javax.persistence.IdClass
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 import org.hibernate.annotations.Type
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
@@ -8,7 +32,6 @@ import org.kuali.rice.shareddata.api.postalcode.PostalCodeContract
 import org.kuali.rice.shareddata.impl.country.CountryBo
 import org.kuali.rice.shareddata.impl.county.CountyBo
 import org.kuali.rice.shareddata.impl.state.StateBo
-import javax.persistence.*
 
 @IdClass(PostalCodeId.class)
 @Entity
@@ -50,7 +73,7 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeCo
     def CountyBo county;
 
     /**
-     * Converts a mutable bo to it's immutable counterpart
+     * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
      * @return the immutable object
      */
@@ -63,7 +86,7 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeCo
     }
 
     /**
-     * Converts a immutable object to it's mutable bo counterpart
+     * Converts a immutable object to its mutable counterpart
      * @param im immutable object
      * @return the mutable bo
      */

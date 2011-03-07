@@ -20,11 +20,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -36,7 +42,7 @@ import java.util.Collection;
         County.Elements.COUNTRY_CODE,
         County.Elements.STATE_CODE,
         County.Elements.ACTIVE,
-        "_elements"
+        CoreConstants.CommonMembers.ELEMENTS
 })
 public final class County implements CountyContract, ModelObjectComplete {
 
@@ -232,7 +238,7 @@ public final class County implements CountyContract, ModelObjectComplete {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "county";
         final static String TYPE_NAME = "CountyType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {"_elements"};
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonMembers.ELEMENTS};
     }
 
     /**

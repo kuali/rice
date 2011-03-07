@@ -11,7 +11,7 @@
           <element id="archive" name="rice-impl-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-impl" />
           </element>
-          <element id="archive" name="rice-core-api-1.1.0-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
           </element>
           <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" />
@@ -43,7 +43,7 @@
           <element id="archive" name="rice-core-impl-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-impl" />
           </element>
-          <element id="archive" name="krad-app-framework-1.1.0-SNAPSHOT.jar">
+          <element id="archive" name="krad-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="krad-app-framework" />
           </element>
           <element id="archive" name="kim-api-1.1.0-SNAPSHOT.jar">

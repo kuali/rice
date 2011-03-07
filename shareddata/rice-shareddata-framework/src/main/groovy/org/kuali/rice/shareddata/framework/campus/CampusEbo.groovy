@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+
 package org.kuali.rice.shareddata.framework.campus
 
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
@@ -36,7 +38,7 @@ public class CampusEbo implements Inactivateable, CampusContract, Externalizable
 	}
 	
 	/**
-	* Converts a mutable bo to it's immutable counterpart
+	* Converts a mutable bo to its immutable counterpart
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
@@ -49,7 +51,7 @@ public class CampusEbo implements Inactivateable, CampusContract, Externalizable
    }
 
    /**
-	* Converts a immutable object to it's mutable bo counterpart
+	* Converts a immutable object to its mutable counterpart
 	* @param im immutable object
 	* @return the mutable bo
 	*/

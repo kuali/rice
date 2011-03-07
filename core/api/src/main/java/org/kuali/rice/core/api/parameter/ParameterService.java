@@ -1,4 +1,22 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.core.api.parameter;
+
+import org.kuali.rice.core.api.CoreConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -10,7 +28,7 @@ import java.util.Collection;
 /**
  * Service for interacting with {@link Parameter Parameters}.
  */
-@WebService(name = "parameterServiceSoap", targetNamespace = "http://rice.kuali.org/core/api/parameter")
+@WebService(name = "parameterServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ParameterService {
 
@@ -168,8 +186,11 @@ public interface ParameterService {
      * </p>
      *
      * <p>
-     *   This method will always return an <b>immutable</b> Collection
-     *   even when no values exist.
+     *   This method will always return null when the subparameter does not
+     *   exist or if the parameter value does not conform to the following format(s):
+     *   <ol>
+     *      <li>subparameter_name=subparameter_value;</li>
+     *   </ol>
      * </p>
      *
      * @param key the key to retrieve the parameter by. cannot be null.
@@ -207,6 +228,17 @@ public interface ParameterService {
      * <p>
      *   This method will always return an <b>immutable</b> Collection
      *   even when no values exist.
+     * </p>
+     *
+     *  <p>
+     *   This method will always return an empty <b>immutable</b> Collection when
+     *   the subparameter does not exist or if the parameter value does not
+     *   conform to the following format(s):
+     *   <ol>
+     *      <li>subparameter_name=subparameter_value;</li>
+     *      <li>subparameter_name=subparameter_value1, subparameter_value2;</li>
+     *      <li>subparameter_name=subparameter_value1, subparameter_value2,;</li>
+     *   </ol>
      * </p>
      *
      * @param key the key to retrieve the parameter by. cannot be null.

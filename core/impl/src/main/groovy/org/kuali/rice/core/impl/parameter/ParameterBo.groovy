@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,20 @@
 package org.kuali.rice.core.impl.parameter;
 
 
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.Id
+import javax.persistence.IdClass
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.OneToOne
+import javax.persistence.Table
 import org.kuali.rice.core.api.parameter.EvaluationOperator
 import org.kuali.rice.core.api.parameter.ParameterContract
 import org.kuali.rice.core.impl.component.ComponentBo
 import org.kuali.rice.core.impl.namespace.NamespaceBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import javax.persistence.*
 
 @IdClass(ParameterId.class)
 @Entity
@@ -71,7 +79,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     def ComponentBo component
 
     /**
-     * Converts a mutable bo to it's immutable counterpart
+     * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
      * @return the immutable object
      */
@@ -84,7 +92,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     }
 
     /**
-     * Converts a immutable object to it's mutable bo counterpart
+     * Converts a immutable object to its mutable counterpart
      * @param im immutable object
      * @return the mutable bo
      */

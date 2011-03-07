@@ -1,12 +1,12 @@
 /*
- * Copyright 2008-2009 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +16,21 @@
 package org.kuali.rice.core.impl.component;
 
 
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.Id
+import javax.persistence.IdClass
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
+import javax.persistence.Transient
 import org.hibernate.annotations.Type
 import org.kuali.rice.core.api.component.Component
 import org.kuali.rice.core.api.component.ComponentContract
 import org.kuali.rice.core.impl.namespace.NamespaceBo
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import javax.persistence.*
 
 @IdClass(ComponentId.class)
 @Entity
@@ -54,7 +62,7 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 	def NamespaceBo namespace;
 
    /**
-     * Converts a mutable bo to it's immutable counterpart
+     * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
      * @return the immutable object
      */
@@ -67,7 +75,7 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
     }
 
     /**
-     * Converts a immutable object to it's mutable bo counterpart
+     * Converts a immutable object to its mutable counterpart
      * @param im immutable object
      * @return the mutable bo
      */

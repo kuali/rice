@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.core.api;
 
 /**
@@ -24,7 +25,7 @@ package org.kuali.rice.core.api;
  */
 public final class CoreConstants {
 
-    public final static class Services {
+    public static final class Services {
         public static final String DATETIME_SERVICE = "dateTimeService";
         public static final String ENCRYPTION_SERVICE = "encryptionService";
 
@@ -33,13 +34,25 @@ public final class CoreConstants {
     	}
 	}
     
-    public final static class Namespaces {
+    public static final class Namespaces {
     	public static final String ROOT_NAMESPACE_PREFIX = "http://rice.kuali.org";
     	public static final String CORE_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/core";
 
     	public static final String MAJOR_VERSION = "v1_1";
 
     	public static final String CORE_NAMESPACE = CORE_NAMESPACE_PREFIX + "/" + MAJOR_VERSION;
+
+        private Namespaces() {
+		    throw new UnsupportedOperationException("do not call");
+	    }
+    }
+
+    public static final class CommonMembers {
+        public static final String ELEMENTS = "_elements";
+
+        private CommonMembers() {
+		    throw new UnsupportedOperationException("do not call");
+	    }
     }
 	
 	public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";

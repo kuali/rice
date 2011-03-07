@@ -19,11 +19,17 @@ package org.kuali.rice.shareddata.api.country;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -40,7 +46,7 @@ import java.util.Collection;
         Country.Elements.NAME,
         Country.Elements.RESTRICTED,
         Country.Elements.ACTIVE,
-        "_elements"
+        CoreConstants.CommonMembers.ELEMENTS
 })
 public final class Country implements CountryContract, ModelObjectComplete {
     private static final long serialVersionUID = -8975392777320033940L;
@@ -247,6 +253,6 @@ public final class Country implements CountryContract, ModelObjectComplete {
 	static class Constants {
         final static String ROOT_ELEMENT_NAME = "country";
 		final static String TYPE_NAME = "CountryType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonMembers.ELEMENTS };
 	}
 }

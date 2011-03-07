@@ -1,12 +1,12 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -242,7 +242,7 @@ public interface ClientParameterService {
     Parameter getParameter(String namespaceCode, String componentCode, String parameterName);
 
     /**
-     * Retrieves a parameter's string values where a parameter contains 1 or more values.
+     * Retrieves a parameter's string values where a parameter contains 0 or more values.
      *
      * <p>
      *     The parameter key is constructed from the following:
@@ -266,7 +266,7 @@ public interface ClientParameterService {
     Collection<String> getParameterValuesAsString(Class<?> componentClass, String parameterName);
 
     /**
-     * Retrieves a parameter's string values where a parameter contains 1 or more values.
+     * Retrieves a parameter's string values where a parameter contains 0 or more values.
      *
      * <p>
      *     The parameter key is constructed from the following:
@@ -340,7 +340,7 @@ public interface ClientParameterService {
     String getSubParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName);
 
     /**
-     * Retrieves a subParameter's string values where a subParameter contains 1 or more values.
+     * Retrieves a subParameter's string values where a subParameter contains 0 or more values.
      *
      * <p>
      *     The parameter key is constructed from the following:
@@ -365,7 +365,7 @@ public interface ClientParameterService {
     Collection<String> getSubParameterValuesAsString(Class<?> componentClass, String parameterName, String subParameterName);
 
     /**
-     * Retrieves a subParameter's string values where a subParameter contains 1 or more values.
+     * Retrieves a subParameter's string values where a subParameter contains 0 or more values.
      *
      * <p>
      *     The parameter key is constructed from the following:

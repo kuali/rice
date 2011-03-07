@@ -15,10 +15,16 @@
  */
 package org.kuali.rice.kew.service;
 
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.RunMode;
 import org.kuali.rice.core.config.NodeSettings;
+import org.kuali.rice.core.config.RunMode;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
@@ -37,6 +43,7 @@ import org.kuali.rice.kew.documentlink.service.DocumentLinkService;
 import org.kuali.rice.kew.edl.extract.ExtractService;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.edl.service.StyleService;
+import org.kuali.rice.kew.engine.BlanketApproveEngineFactory;
 import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
@@ -63,12 +70,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.export.XmlExporterService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import javax.xml.namespace.QName;
 
 
 /**
@@ -199,6 +200,8 @@ public final class KEWServiceLocator {
 	public static final String ROUTE_NODE_SERVICE = "enRouteNodeService";
 
 	public static final String WORKFLOW_ENGINE = "workflowEngine";
+	
+	public static final String BLANKET_APPROVE_ENGINE_FACTORY = "blanketApproveEngineFactory";
 
 	public static final String EDOCLITE_SERVICE = "enEDocLiteService";
 
@@ -375,6 +378,10 @@ public final class KEWServiceLocator {
 		return (WorkflowEngine) getBean(WORKFLOW_ENGINE);
 	}
 
+	public static BlanketApproveEngineFactory getBlanketApproveEngineFactory() {
+		return (BlanketApproveEngineFactory) getBean(BLANKET_APPROVE_ENGINE_FACTORY);
+	}
+	
 	public static EDocLiteService getEDocLiteService() {
 		return (EDocLiteService) getBean(EDOCLITE_SERVICE);
 	}

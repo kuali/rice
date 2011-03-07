@@ -626,8 +626,8 @@ public class DocumentServiceImpl implements DocumentService {
     private Document postProcessDocument(String documentHeaderId, KualiWorkflowDocument workflowDocument, Document document) {
         if (document != null) {
             document.getDocumentHeader().setWorkflowDocument(workflowDocument);
-            loadNotes(document);
             document.processAfterRetrieve();
+            loadNotes(document);
         }
         return document;
     }

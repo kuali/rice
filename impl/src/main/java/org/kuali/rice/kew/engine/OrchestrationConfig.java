@@ -34,6 +34,7 @@ public class OrchestrationConfig {
     private String notificationType = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
     private Set<String> destinationNodeNames = new HashSet<String>();
     private ActionTakenValue cause;
+    private boolean runPostProcessorLogic = true;
     
     public Set<? extends String> getDestinationNodeNames() {
         return destinationNodeNames;
@@ -59,5 +60,11 @@ public class OrchestrationConfig {
     public void setCause(ActionTakenValue cause) {
         this.cause = cause;
     }
+	public boolean isRunPostProcessorLogic() {
+		return this.runPostProcessorLogic;
+	}
+	public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
+		this.runPostProcessorLogic = runPostProcessorLogic;
+	}    
     
 }

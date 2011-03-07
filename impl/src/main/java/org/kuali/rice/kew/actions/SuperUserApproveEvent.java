@@ -89,12 +89,13 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 		OrchestrationConfig config = new OrchestrationConfig();
 		config.setCause(actionTaken);
-		config.setDestinationNodeNames(new HashSet());
+		config.setDestinationNodeNames(new HashSet<String>());
 		config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
 		RequestsNode.setSupressPolicyErrors(RouteContext.getCurrentRouteContext());
 		try {
 			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
-			new BlanketApproveEngine(config, isRunPostProcessorLogic()).process(getRouteHeader().getRouteHeaderId(), null);
+			BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config, isRunPostProcessorLogic());
+			blanketApproveEngine.process(getRouteHeader().getRouteHeaderId(), null);
 		} catch (Exception e) {
 			LOG.error("Failed to orchestrate the document to SuperUserApproved.", e);
 			throw new InvalidActionTakenException("Failed to orchestrate the document to SuperUserApproved.", e);

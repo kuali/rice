@@ -120,4 +120,5 @@
 	<bean id="testBaseResponsibilityTypeService" class="org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase"/>
 	<bean id="testBaseRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
 	<bean id="testBaseDelegationTypeService" class="org.kuali.rice.kew.role.KimDelegationTypeServiceBase"/>
+	
 </beans>

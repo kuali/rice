@@ -24,6 +24,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
+import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
@@ -46,7 +47,7 @@ import java.util.*;
 public class BlanketApproveAction extends ActionTakenEvent {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveAction.class);
-    private Set nodeNames;
+    private Set<String> nodeNames;
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
         super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal);
@@ -64,13 +65,13 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     }
 
-    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Set nodeNames) {
+    public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Set<String> nodeNames) {
         super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation);
-        this.nodeNames = (nodeNames == null ? new HashSet() : nodeNames);
+        this.nodeNames = (nodeNames == null ? new HashSet<String>() : nodeNames);
         setQueueDocumentAfterAction(false);
     }
 
-    private static Set convertRouteLevel(DocumentType documentType, Integer routeLevel) {
+    private static Set<String> convertRouteLevel(DocumentType documentType, Integer routeLevel) {
         Set<String> nodeNames = new HashSet<String>();
         if (routeLevel == null) {
             return nodeNames;
@@ -113,7 +114,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     private String isGivenNodeListValid() {
-        for (Iterator iterator = nodeNames.iterator(); iterator.hasNext();) {
+        for (Iterator<String> iterator = nodeNames.iterator(); iterator.hasNext();) {
             String nodeName = (String) iterator.next();
             if (nodeName == null) {
                 iterator.remove();
@@ -196,8 +197,12 @@ public class BlanketApproveAction extends ActionTakenEvent {
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);
         }
-        new BlanketApproveEngine(nodeNames, actionTaken).process(getRouteHeader().getRouteHeaderId(), null);
-        
+        OrchestrationConfig config = new OrchestrationConfig();
+        config.setDestinationNodeNames(nodeNames);
+        config.setCause(actionTaken);
+        BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config);
+        blanketApproveEngine.process(getRouteHeader().getRouteHeaderId(), null);
+   
         queueDocumentProcessing();
    }
 

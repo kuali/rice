@@ -164,6 +164,12 @@
         <property name="routeNodeService" ref="enRouteNodeService" />
         <property name="clientParameterService" ref="clientParameterService" />
     </bean>
+    
+    <bean id="blanketApproveEngineFactory" class="org.kuali.rice.kew.engine.BlanketApproveEngineFactoryImpl" lazy-init="true">
+        <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
+        <property name="routeNodeService" ref="enRouteNodeService" />
+        <property name="clientParameterService" ref="clientParameterService" />
+    </bean>
 
 	<bean id="enRouteNodeService" class="org.kuali.rice.kew.engine.node.service.impl.RouteNodeServiceImpl" lazy-init="true">
 		<property name="routeNodeDAO">

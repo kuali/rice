@@ -105,17 +105,6 @@
 		</listener-class>
 	</listener>
 
-	<servlet>
-		<servlet-name>RequestForwardingServlet</servlet-name>
-		<servlet-class>
-			org.kuali.rice.core.web.RequestForwardingServlet
-		</servlet-class>
-		<init-param>
-			<param-name>.*/(\S+)\.wsdl</param-name>
-			<param-value>/remoting/{0}?wsdl</param-value>
-		</init-param>
-	</servlet>
-
 	<!-- The Struts Action Servlet -->
 <!-- <servlet>
 		<servlet-name>action</servlet-name>
@@ -202,11 +191,6 @@
 	<servlet-mapping>
 		<servlet-name>attachment</servlet-name>
 		<url-pattern>/attachment/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>RequestForwardingServlet</servlet-name>
-		<url-pattern>/wsdl/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

@@ -488,6 +488,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void processAfterRetrieve() {
 
+        super.processAfterRetrieve();
+    	
         populateMaintainablesFromXmlDocumentContents();
         if (oldMaintainableObject != null) {
             oldMaintainableObject.setDocumentNumber(documentNumber);
@@ -499,10 +501,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             checkForLockingDocument(false);
         }
 
-        // need to invoke the super method at the end because it establishes the notes and
-        // the Note target must be available in order to do this.  The Note target for a
-        // maintenance document could be the maintainable itself
-        super.processAfterRetrieve();
+       
 
     }
 

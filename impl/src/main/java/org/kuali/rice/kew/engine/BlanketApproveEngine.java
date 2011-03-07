@@ -16,6 +16,13 @@
  */
 package org.kuali.rice.kew.engine;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -33,8 +40,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import java.util.*;
-
 
 /**
  * A WorkflowEngine implementation which orchestrates the document through the blanket approval process.
@@ -42,45 +47,14 @@ import java.util.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BlanketApproveEngine extends StandardWorkflowEngine {
+	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveEngine.class);
 
-    // private Set nodeNames;
-    // private ActionTakenValue actionTaken;
-//    private ActionRequestNotificationGenerator notifier = new ActionRequestNotificationGenerator();
-    private OrchestrationConfig config;
+    private final OrchestrationConfig config;
 
-    public BlanketApproveEngine(OrchestrationConfig config, boolean runPostProcessorLogic) {
-        super(runPostProcessorLogic);
+    BlanketApproveEngine(OrchestrationConfig config) {
+        super(config.isRunPostProcessorLogic());
         this.config = config;
-    }
-
-    public BlanketApproveEngine(OrchestrationConfig config) {
-        this.config = config;
-    }
-
-    public BlanketApproveEngine(String nodeName, ActionTakenValue actionTaken) {
-        this(wrapInSet(nodeName), actionTaken);
-    }
-
-    public BlanketApproveEngine(Set nodeNames, ActionTakenValue actionTaken) {
-        this(createBlanketApproveConfig(nodeNames, actionTaken));
-    }
-
-    private static Set<String> wrapInSet(String nodeName) {
-        Set<String> nodeNames = new HashSet<String>();
-        if (!org.apache.commons.lang.StringUtils.isEmpty(nodeName)) {
-            nodeNames.add(nodeName);
-        }
-        return nodeNames;
-    }
-
-    private static OrchestrationConfig createBlanketApproveConfig(Set nodeNames, ActionTakenValue actionTaken) {
-        OrchestrationConfig config = new OrchestrationConfig();
-        config.setCause(actionTaken);
-        config.setDestinationNodeNames(nodeNames);
-        config.setNotificationType(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
-        config.setSendNotifications(true);
-        return config;
     }
 
     /**

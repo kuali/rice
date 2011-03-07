@@ -148,7 +148,8 @@ public class MoveDocumentAction extends ActionTakenEvent {
         config.setCause(actionTaken);
         config.setDestinationNodeNames(nodeNames);
         config.setSendNotifications(false);
-        new BlanketApproveEngine(config).process(getRouteHeader().getRouteHeaderId(), null);
+        BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config);
+		blanketApproveEngine.process(getRouteHeader().getRouteHeaderId(), null);
         
         queueDocumentProcessing();
     }

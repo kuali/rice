@@ -164,12 +164,9 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     protected boolean canBlanketApprove(Document document){
     	// check system parameter - if Y, use default workflow behavior: allow a user with the permission
     	// to perform the blanket approve action at any time
-    	try {
-	    	if ( getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND) ) {
-	    		return canEdit(document);
-	    	}
-    	} catch ( IllegalArgumentException ex ) {
-    		// do nothing, the parameter does not exist and defaults to "N"
+    	Boolean allowBlanketApproveNoRequest = getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND);
+    	if ( allowBlanketApproveNoRequest != null && allowBlanketApproveNoRequest.booleanValue() ) {
+    		return canEdit(document);
     	}
     	// otherwise, limit the display of the blanket approve button to only the initiator of the document
     	// (prior to routing)

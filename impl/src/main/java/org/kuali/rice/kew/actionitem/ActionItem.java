@@ -229,12 +229,14 @@ public class ActionItem implements RowStyleable, Serializable {
     }
 
     private Group getGroup(String groupId) {
-    	if( groupId ==null )	return null;
+    	if (StringUtils.isBlank(groupId)) {
+    		return null;
+    	}
     	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
 
     public Group getGroup(){
-    	return getGroup(groupId.toString());
+    	return getGroup(groupId);
     }
 
     private Person getPerson(String workflowId) {

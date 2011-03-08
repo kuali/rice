@@ -29,7 +29,6 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.EngineState;
 import org.kuali.rice.kew.engine.ProcessContext;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.StandardWorkflowEngine;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NoOpNode;
@@ -76,17 +75,23 @@ import java.util.Set;
 public class SimulationEngine extends StandardWorkflowEngine implements SimulationWorkflowEngine {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SimulationEngine.class);
-	
+
 	private SimulationCriteria criteria;
-    private SimulationResults results = new SimulationResults();
-    private RouteHelper helper = new RouteHelper();
+    private SimulationResults results;
 
     @Override
     public SimulationResults runSimulation(SimulationCriteria criteria) throws Exception {
-        this.criteria = criteria;
-        validateCriteria(criteria);
-        process(criteria.getDocumentId(), null);
-        return results;
+        try {
+            this.criteria = criteria;
+            this.results = new SimulationResults();
+            validateCriteria(criteria);
+            process(criteria.getDocumentId(), null);
+            return results;
+        } finally {
+            //nulling out the results & criteria since these really should only be local variables.
+            this.criteria = null;
+            this.results = null;
+        }
     }
 
     @Override

@@ -35,6 +35,12 @@
 					<webAppConfig>
 						<contextPath>/kr-dev</contextPath>
 					</webAppConfig>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>web.bootstrap.spring.file</name>
+                            <value>classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml</value>
+                        </systemProperty>
+                    </systemProperties>
 				</configuration>
 				<dependencies>
 					<dependency>

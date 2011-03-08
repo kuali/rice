@@ -54,7 +54,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final transient Collection<Element> _futureElements = null;
+    private final Collection<Element> _futureElements = null;
 	
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 

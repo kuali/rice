@@ -61,7 +61,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final transient Collection<Element> _futureElements = null;
+    private final Collection<Element> _futureElements = null;
 	
 	
 	 /** 

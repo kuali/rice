@@ -70,7 +70,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
 
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final transient Collection<Element> _futureElements = null;
+    private final Collection<Element> _futureElements = null;
 
     /**
      * This constructor should never be called except during JAXB unmarshalling.

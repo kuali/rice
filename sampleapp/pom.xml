@@ -35,13 +35,14 @@
 					<webAppConfig>
 						<contextPath>/kr-dev</contextPath>
 					</webAppConfig>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>web.bootstrap.spring.file</name>
+                            <value>classpath:SampleAppBeans.xml</value>
+                        </systemProperty>
+                    </systemProperties>
 				</configuration>
-<!--                <systemProperties>
-                    <systemProperty>
-                        <name>web.bootstrap.spring.file</name>
-                        <value>classpath:edu/sampleu/travel/config/SampleAppBeans.xml</value>
-                    </systemProperty>
-                </systemProperties>-->
+
 				<dependencies>
 					<dependency>
 						<groupId>com.oracle</groupId>

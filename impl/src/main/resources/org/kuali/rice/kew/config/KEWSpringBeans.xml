@@ -15,6 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xmlns:p="http://www.springframework.org/schema/p" 
@@ -166,7 +167,7 @@
         <property name="clientParameterService" ref="clientParameterService" />
     </bean>
 
-    <bean id="simulationEngine" class="org.kuali.rice.kew.engine.simulation.SimulationEngine" lazy-init="true">
+    <bean id="simulationEngine" class="org.kuali.rice.kew.engine.simulation.SimulationEngine" lazy-init="true" scope="prototype">
         <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
         <property name="routeNodeService" ref="enRouteNodeService" />
         <property name="clientParameterService" ref="clientParameterService" />

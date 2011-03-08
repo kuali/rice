@@ -87,8 +87,12 @@ public class UifConstants extends JSTLConstants {
 	public static class IdSuffixes {
 		public static final String ADD_LINE = "_addLine";
 		public static final String ATTRIBUTE = "_attribute";
+		public static final String CONSTRAINT = "_constraint";
 		public static final String DIV = "_div";
+		public static final String ERRORS = "_errors";
 		public static final String LABEL = "_label";
+		public static final String SUMMARY = "_summary";
+		public static final String QUICK_FINDER = "_quickfinder";
 	}
 
 	public static class ViewPhases {

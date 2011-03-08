@@ -28,6 +28,7 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
@@ -122,20 +123,25 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 		// update ids so they all match the attribute
 		String id = getId();
-
 		if (getControl() != null) {
 			getControl().setId(id);
 		}
+		if (getErrorsField() != null) {
+			getErrorsField().setId(id + UifConstants.IdSuffixes.ERRORS);
+		}
 		if (getLabelField() != null) {
-			getLabelField().setId(id + "_label");
+			getLabelField().setId(id + UifConstants.IdSuffixes.LABEL);
 		}
 		if (getSummaryMessageField() != null) {
-			getSummaryMessageField().setId(id + "_summary");
+			getSummaryMessageField().setId(id + UifConstants.IdSuffixes.SUMMARY);
 		}
 		if (getConstraintMessageField() != null) {
-			getConstraintMessageField().setId(id + "_constraint");
+			getConstraintMessageField().setId(id + UifConstants.IdSuffixes.CONSTRAINT);
 		}
-		setId(id + "_attribute");
+		if (getFieldLookup() != null) {
+			getFieldLookup().setId(id + UifConstants.IdSuffixes.QUICK_FINDER);
+		}
+		setId(id + UifConstants.IdSuffixes.ATTRIBUTE);
 
 		if (bindingInfo != null) {
 			bindingInfo.setDefaults(view, getPropertyName());

@@ -16,15 +16,16 @@
 
 
 
+
+
 package org.kuali.rice.core.api.mixin
 
-import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlRootElement
 import javax.xml.bind.annotation.XmlType
 
 @XmlRootElement(name = Foo.Constants.ROOT_ELEMENT_NAME)
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
 @XmlType(name = Foo.Constants.TYPE_NAME, propOrder = [
     Foo.Elements.BAR,
 ])

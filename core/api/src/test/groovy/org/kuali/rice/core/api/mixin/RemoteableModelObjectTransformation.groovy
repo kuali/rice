@@ -22,6 +22,8 @@
 
 
 
+
+
 package org.kuali.rice.core.api.mixin
 
 import groovyjarjarasm.asm.Opcodes
@@ -41,14 +43,13 @@ import org.codehaus.groovy.ast.expr.ConstructorCallExpression
 import org.codehaus.groovy.ast.expr.Expression
 import org.codehaus.groovy.ast.expr.ListExpression
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
-import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.control.messages.SimpleMessage
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import org.kuali.rice.core.api.CoreConstants
 
-@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
+@GroovyASTTransformation(phase = org.codehaus.groovy.control.CompilePhase.CANONICALIZATION)
 class RemoteableModelObjectTransformation implements ASTTransformation {
 
     private static final Class MY_CLASS = RemoteableModelObject.class;

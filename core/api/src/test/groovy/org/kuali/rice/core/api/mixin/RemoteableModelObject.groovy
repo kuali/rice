@@ -16,16 +16,16 @@
 
 
 
+
+
 package org.kuali.rice.core.api.mixin
 
-import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 import org.codehaus.groovy.transform.GroovyASTTransformationClass
 
-@Retention(RetentionPolicy.SOURCE)
-@Target([ElementType.TYPE])
+@Retention(java.lang.annotation.RetentionPolicy.SOURCE)
+@Target([java.lang.annotation.ElementType.TYPE])
 @GroovyASTTransformationClass(["org.kuali.rice.core.api.mixin.RemoteableModelObjectTransformation"])
 public @interface RemoteableModelObject {
 }

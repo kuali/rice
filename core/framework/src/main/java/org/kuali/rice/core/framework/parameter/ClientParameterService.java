@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.core.framework.parameter;
 
 import org.kuali.rice.core.api.parameter.Parameter;
@@ -22,8 +23,14 @@ import java.util.Collection;
 /**
  * This service is used by krad to interact with {@link Parameter Parameters}.
  *
+ * <p>
+ * Generally krad client applications will want to use this service since it contains many convenient methods.
+ * </p>
+ *
+ * <p>
  * This service can be viewed a convenient wrapper around the {@link org.kuali.rice.core.api.parameter.ParameterService}.
  * Please see {@link org.kuali.rice.core.api.parameter.ParameterService} for details on the behavior of this service.
+ * </p>
  */
 public interface ClientParameterService {
 

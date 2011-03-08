@@ -1698,14 +1698,14 @@
 					<forkMode>${surefire.forkMode}</forkMode>
 					<reportFormat>${surefire.reportFormat}</reportFormat>
 					<argLine>${surefire.argLine}</argLine>
-					<reportSets>
-						<reportSet>
-							<reports>
-								<report>${surefire.report.1}</report>
-							</reports>
-						</reportSet>
-					</reportSets>
 				</configuration>
+                 <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>${surefire.report.1}</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
 				<inherited>true</inherited>
 			</plugin>
 			<plugin>
@@ -1787,14 +1787,14 @@
 										<forkMode>${surefire.forkMode}</forkMode>
 										<reportFormat>${surefire.reportFormat}</reportFormat>
 										<argLine>${surefire.argLine}</argLine>
-										<reportSets>
-											<reportSet>
-												<reports>
-													<report>${surefire.report.1}</report>
-												</reports>
-											</reportSet>
-										</reportSets>
 									</configuration>
+                                    <reportSets>
+                                        <reportSet>
+                                            <reports>
+                                                <report>${surefire.report.1}</report>
+                                            </reports>
+                                        </reportSet>
+                                    </reportSets>
 								</plugin>
 								<plugin>
 									<groupId>org.codehaus.mojo</groupId>

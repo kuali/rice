@@ -18,6 +18,8 @@
 
 
 
+
+
 package org.kuali.rice.core.api.mixin
 
 import javax.xml.bind.annotation.XmlAccessorType

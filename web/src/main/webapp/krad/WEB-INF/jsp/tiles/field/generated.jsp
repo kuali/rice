@@ -15,19 +15,11 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.LabelField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.IframeField"/>
 
-<c:set var="label" value="${field.labelText}"/>
-
-<c:if test="${field.renderColon}">
-  <c:set var="label" value="${label}:"/>
-</c:if>
-
-<krad:span component="${field}">
-   <%-- required message --%>
-   <krad:template component="${field.requiredMessageField}"/>
+<%--
+    Template writes out the contents of the renderOutput
     
-   <label id="${field.id}" for="${field.labelForComponentId}">
-      ${label}
-   </label>
-</krad:span>   
+ --%>
+ 
+${field.renderOutput}

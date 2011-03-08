@@ -226,10 +226,6 @@ public class StackedLayoutManager extends BoxLayoutManager {
 			lineGroup.getFooter().setItems(actions);
 		}
 
-		// refresh the group's layout manager
-		// TODO: remove?
-		//lineGroup.getLayoutManager().refresh(view, lineGroup);
-
 		// suffix all the groups ids so they will be unique
 		ComponentUtils.updateIdsWithSuffix(lineGroup, idSuffix);
 

@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.uif.container;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kns.uif.Component;
@@ -35,11 +34,11 @@ import org.kuali.rice.kns.uif.field.ActionField;
  */
 public class NavigationGroup extends Group {
 	private static final long serialVersionUID = -7263923392768546340L;
-	
-	private String navigationType;
-	
-	public NavigationGroup() {
 
+	private String navigationType;
+
+	public NavigationGroup() {
+		super();
 	}
 
 	/**

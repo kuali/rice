@@ -128,4 +128,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="KeyLabelPair" class="org.kuali.rice.core.util.KeyLabelPair" scope="prototype"/>
   
+  <bean id="MethodInvoker" class="org.springframework.util.MethodInvoker" scope="prototype"/>
+  
 </beans>

@@ -21,4 +21,4 @@
     Renders text in a span tag     
  --%>
  
-<krad:span component="${field}" idSuffix="${field.messageType}">${field.messageText}</krad:span>
+<krad:span component="${field}">${field.messageText}</krad:span>

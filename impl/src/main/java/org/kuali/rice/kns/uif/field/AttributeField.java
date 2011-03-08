@@ -58,15 +58,16 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 	// value props
 	private String defaultValue;
-	
+
 	protected String customValidatorClass;
 	protected ValidCharactersConstraint validCharactersConstraint;
 	protected CaseConstraint caseConstraint;
 	protected List<PrerequisiteConstraint> dependencyConstraints;
 	protected List<MustOccurConstraint> mustOccurConstraints;
+
 	private Integer maxLength;
 	private Integer minLength;
-	//For testing, maybe become permanent?
+	// For testing, maybe become permanent?
 	private String jsRegExValidation;
 
 	private Formatter formatter;
@@ -118,6 +119,23 @@ public class AttributeField extends FieldBase implements DataBinding {
 	@Override
 	public void performInitialization(View view) {
 		super.performInitialization(view);
+
+		// update ids so they all match the attribute
+		String id = getId();
+
+		if (getControl() != null) {
+			getControl().setId(id);
+		}
+		if (getLabelField() != null) {
+			getLabelField().setId(id + "_label");
+		}
+		if (getSummaryMessageField() != null) {
+			getSummaryMessageField().setId(id + "_summary");
+		}
+		if (getConstraintMessageField() != null) {
+			getConstraintMessageField().setId(id + "_constraint");
+		}
+		setId(id + "_attribute");
 
 		if (bindingInfo != null) {
 			bindingInfo.setDefaults(view, getPropertyName());
@@ -544,12 +562,13 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param minLength the minLength to set
+	 * @param minLength
+	 *            the minLength to set
 	 */
 	public void setMinLength(Integer minLength) {
 		this.minLength = minLength;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
 	 */
@@ -559,48 +578,50 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
 	 */
 	@Override
 	public void performFinalize(View view, Object model) {
 		super.performFinalize(view, model);
-		
-		
-		if(this.getRequired()){
+
+		if (this.getRequired()) {
 			control.addStyleClass("required");
 		}
-		
-		//testing
-		if(StringUtils.isNotEmpty(jsRegExValidation)){
+
+		// testing
+		if (StringUtils.isNotEmpty(jsRegExValidation)) {
 			String prefixScript = "";
-			if(this.getOnLoadScript() != null){
+			if (this.getOnLoadScript() != null) {
 				prefixScript = this.getOnLoadScript();
 			}
 			String methodName = this.getLabel() + "-validChars";
-			this.setOnLoadScript(prefixScript +
-			"jQuery.validator.addMethod('"+ methodName +"', function(value, element) {" +
-				"return this.optional(element) ||" + jsRegExValidation + ".test(value);" +
-			"}, 'Failed valid custom valid characters check');");
+			this.setOnLoadScript(prefixScript + "jQuery.validator.addMethod('" + methodName
+					+ "', function(value, element) {" + "return this.optional(element) ||" + jsRegExValidation
+					+ ".test(value);" + "}, 'Failed valid custom valid characters check');");
 			control.addStyleClass(methodName);
 		}
 	}
 
 	/**
-	 * @param jsRegExValidation the jsRegExValidation to set
+	 * @param jsRegExValidation
+	 *            the jsRegExValidation to set
 	 */
 	public void setJsRegExValidation(String jsRegExValidation) {
 		this.jsRegExValidation = jsRegExValidation;
 	}
 
 	/**
-	 * This is a regular expression expressed in js syntax for use in client side validation only
+	 * This is a regular expression expressed in js syntax for use in client
+	 * side validation only
+	 * 
 	 * @return the jsRegExValidation
 	 */
 	public String getJsRegExValidation() {
 		return jsRegExValidation;
 	}
-	
-		/**
+
+	/**
 	 * Lookup finder widget for the field
 	 * 
 	 * <p>

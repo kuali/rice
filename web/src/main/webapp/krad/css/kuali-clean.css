@@ -265,7 +265,7 @@ th.infoline {
 	text-align: right;
 }	
 
-.group_expandclose #msg_reqind_REQUIRED {
+.group_expandclose #msg_reqind_span {
 	display:block;
 	font-size: 90%;
 }

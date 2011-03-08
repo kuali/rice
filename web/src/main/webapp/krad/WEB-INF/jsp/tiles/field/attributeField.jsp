@@ -20,7 +20,7 @@
 <%-- check to see if label has been rendered in another field (grid layout)--%>
 <c:set var="renderLabel" value="${!field.labelFieldRendered}"/>
 
-<krad:span component="${field}" idSuffix="attribute">
+<krad:span component="${field}">
 
   <%-- render field label left --%>
   <c:if test="${renderLabel && ((field.labelPlacement eq 'LEFT') || (field.labelPlacement eq 'TOP'))}">

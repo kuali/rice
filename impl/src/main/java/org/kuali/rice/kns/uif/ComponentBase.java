@@ -139,7 +139,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * The following setup is done here:
+	 * The following finalization is done here:
 	 * 
 	 * <ul>
 	 * <li>If any of the style properties were given, sets the style string on

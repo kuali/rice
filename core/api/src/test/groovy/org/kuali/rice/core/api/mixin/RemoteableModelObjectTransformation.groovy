@@ -18,6 +18,8 @@
 
 
 
+
+
 package org.kuali.rice.core.api.mixin
 
 import groovyjarjarasm.asm.Opcodes
@@ -90,7 +92,7 @@ class RemoteableModelObjectTransformation implements ASTTransformation {
         final AnnotationNode xmlType = xmlTypes[0]
         final Expression order = xmlType.getMember("propOrder")
         final ConstantExpression futureElementsExpr = new ConstantExpression(CoreConstants.CommonElements.FUTURE_ELEMENTS);
-        final ListExpression listExpression = new ListExpression([futureElementsExpr]);
+        final ListExpression listExpression = new ListExpression();
 
         if (order instanceof ListExpression) {
             ((ListExpression) order).getExpressions().each {
@@ -101,6 +103,7 @@ class RemoteableModelObjectTransformation implements ASTTransformation {
             errorIffutureElementsExist(cNode, source, order, futureElementsExpr)
             listExpression.addExpression(order);
         }
+        listExpression.addExpression(futureElementsExpr)
         xmlType.setMember("propOrder", listExpression)
     }
 

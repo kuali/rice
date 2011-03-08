@@ -28,4 +28,4 @@
   <c:set var="id" value="${id}_${idSuffix}"/>
 </c:if>             
 
-<span id="${id}" ${class} ${style}><jsp:doBody/></span>
+<span id="${id}" ${styleClass} ${style}><jsp:doBody/></span>

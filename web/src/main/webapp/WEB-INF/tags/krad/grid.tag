@@ -83,13 +83,13 @@
      
    <%-- render cell and item template --%>
    <c:if test="${renderHeaderColumns}">
-      <th width="${cellWidth}" colspan="${item.colSpan}" rowspan="${item.rowSpan}" ${style} ${class}>
+      <th width="${cellWidth}" colspan="${item.colSpan}" rowspan="${item.rowSpan}" ${style} ${styleClass}>
        <krad:template component="${item}"/>
       </th>  
    </c:if>
    <c:if test="${!renderHeaderColumns}">
      <td width="${cellWidth}" colspan="${item.colSpan}" rowspan="${item.rowSpan}"
-         ${style} ${class} ${evenOddClass}">
+         ${style} ${styleClass} ${evenOddClass}">
        <krad:template component="${item}"/>
      </td>
    </c:if>

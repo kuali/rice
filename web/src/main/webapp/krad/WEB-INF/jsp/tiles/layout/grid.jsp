@@ -34,14 +34,14 @@
  --%>
 
 <c:if test="${!empty manager.styleClassesAsString}">
-  <c:set var="class" value="class=\"${manager.styleClassesAsString}\""/>
+  <c:set var="styleClass" value="class=\"${manager.styleClassesAsString}\""/>
 </c:if>
 
 <c:if test="${!empty manager.style}">
   <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
-<table id="${manager.id}" ${style} ${class}>
+<table id="${manager.id}" ${style} ${styleClass}>
    <krad:grid items="${items}" numberOfColumns="${manager.numberOfColumns}" 
               applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"/>
 </table>

@@ -29,7 +29,7 @@
  --%>
  
 <c:if test="${!empty manager.styleClassesAsString}">
-  <c:set var="class" value="class=\"${manager.styleClassesAsString}\""/>
+  <c:set var="styleClass" value="class=\"${manager.styleClassesAsString}\""/>
 </c:if>
 
 <c:if test="${!empty manager.style}">
@@ -37,7 +37,7 @@
 </c:if>
 
 <%-- render items --%> 
-<div id="${manager.id}" ${style} ${class}>
+<div id="${manager.id}" ${style} ${styleClass}>
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
      <%-- wrapping span gives a way to pad items and line break for vertical orientation --%>
      <span style="${manager.itemSpanStyle}">

@@ -28,12 +28,12 @@
      <krad:attributeBuilder component="${field.actionImageField}"/>
   
      <input type="image" id="${field.id}" src="${field.actionImageField.source}" 
-            alt="${field.actionImageField.altText}" ${style} ${class} ${title}/>
+            alt="${field.actionImageField.altText}" ${style} ${styleClass} ${title}/>
   </c:when>
   <c:otherwise>
      <krad:attributeBuilder component="${field}"/>
    
-     <input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${class} ${title}/>
+     <input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${styleClass} ${title}/>
   </c:otherwise>
 </c:choose>       
        

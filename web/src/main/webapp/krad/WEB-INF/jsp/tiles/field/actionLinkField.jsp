@@ -24,7 +24,7 @@
  
  <krad:attributeBuilder component="${field}"/>
  
- <a id="${field.id}" href="#" ${style} ${class}>
+ <a id="${field.id}" href="#" ${style} ${styleClass}>
    <c:choose>
      <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
        <krad:template component="${field.actionImageField}"/>

@@ -29,4 +29,4 @@
 <krad:attributeBuilder component="${field}"/>
  
 <img id="${field.id}" src="${field.source}" alt="${field.altText}" 
-     ${height} ${style} ${class} ${title} />
+     ${height} ${style} ${styleClass} ${title} />

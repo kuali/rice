@@ -21,7 +21,7 @@
 <c:set var="headerCloseTag" value="</${field.headerLevel}>"/>
 
 <c:if test="${!empty field.headerStyleClasses}">
-  <c:set var="class" value="class=\"${field.headerStyleClasses}\""/>
+  <c:set var="styleClass" value="class=\"${field.headerStyleClasses}\""/>
 </c:if>
 
 <c:if test="${!empty field.headerStyle}">
@@ -29,7 +29,7 @@
 </c:if>
 
 <krad:div component="${field}">
-  <div id="${field.id}_header" ${style} ${class}>
+  <div id="${field.id}_header" ${style} ${styleClass}>
      ${headerOpenTag}${field.headerText}${headerCloseTag}
   </div>
   

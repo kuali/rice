@@ -19,7 +19,7 @@
               description="The UIF component for which the html attribute will be built" 
               type="org.kuali.rice.kns.uif.Component"%>
               
-<%@ variable name-given="class" scope="AT_END" %>
+<%@ variable name-given="styleClass" scope="AT_END" %>
 <%@ variable name-given="style" scope="AT_END" %>
               
 <%-- Can be called by templates that are building HTML tags to build the standard attributes
@@ -30,7 +30,7 @@ for style. The attribute strings can be referenced by the calling template throu
 variables --%>  
 
    <c:if test="${!empty component.styleClassesAsString}">
-      <c:set var="class" value="class=\"${component.styleClassesAsString}\""/>
+      <c:set var="styleClass" value="class=\"${component.styleClassesAsString}\""/>
    </c:if>
 
    <c:if test="${!empty component.style}">

@@ -24,4 +24,4 @@
  <krad:attributeBuilder component="${field}"/>
  
  <a id="${field.id}" href="${field.hrefText}" target="${field.target}"
-    ${style} ${class}>${field.linkLabel}</a>
+    ${style} ${styleClass}>${field.linkLabel}</a>

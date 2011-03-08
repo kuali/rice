@@ -21,6 +21,6 @@
               
 <krad:attributeBuilder component="${component}"/>            
 
-<div id="${component.id}_div" ${align} ${valign} ${class} ${style}>
+<div id="${component.id}_div" ${styleClass} ${style}>
    <jsp:doBody/>
 </div>

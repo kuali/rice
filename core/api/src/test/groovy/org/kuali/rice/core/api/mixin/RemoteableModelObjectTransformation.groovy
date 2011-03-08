@@ -16,6 +16,8 @@
 
 
 
+
+
 package org.kuali.rice.core.api.mixin
 
 import groovyjarjarasm.asm.Opcodes
@@ -42,7 +44,7 @@ import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import org.kuali.rice.core.api.CoreConstants
 
-@GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
+@GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class RemoteableModelObjectTransformation implements ASTTransformation {
 
     private static final Class MY_CLASS = RemoteableModelObject.class;
@@ -114,7 +116,6 @@ class RemoteableModelObjectTransformation implements ASTTransformation {
         }
 
         if (cNode.getSuperClass().getDeclaredConstructors().any { !it.getParameters() || it.getParameters().size() == 0 }) {
-            source.getErrorCollector().addErrorAndContinue(new SimpleMessage("${cNode.getSuperClass().getDeclaredConstructors()} ${cNode.getSuperClass().getName()}", source));
             cNode.addConstructor(new ConstructorNode(
                     Opcodes.ACC_PRIVATE, Parameter.EMPTY_ARRAY, ClassNode.EMPTY_ARRAY,
                     new ExpressionStatement(

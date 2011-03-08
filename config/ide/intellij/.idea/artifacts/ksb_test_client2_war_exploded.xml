@@ -11,10 +11,8 @@
           <element id="archive" name="rice-impl-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-impl" />
           </element>
-          <element id="archive" name="rice-core-1.1.0-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-api-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
-            <element id="module-output" name="rice-core-impl" />
-            <element id="module-output" name="rice-core-web" />
           </element>
           <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" />
           <element id="library" level="project" name="Maven: asm:asm:3.2" />
@@ -42,7 +40,10 @@
           <element id="archive" name="rice-api-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-api" />
           </element>
-          <element id="archive" name="krad-1.1.0-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-impl-1.1.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-core-impl" />
+          </element>
+          <element id="archive" name="krad-app-framework-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="krad-app-framework" />
           </element>
           <element id="archive" name="kim-api-1.1.0-SNAPSHOT.jar">
@@ -146,6 +147,9 @@
           <element id="library" level="project" name="Maven: com.google.collections:google-collections:1.0" />
           <element id="library" level="project" name="Maven: com.google.code.gson:gson:1.4" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.14.0-GA" />
+          <element id="archive" name="rice-core-web-1.1.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-core-web" />
+          </element>
           <element id="archive" name="rice-shareddata-framework-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-framework" />
           </element>

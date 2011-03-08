@@ -16,6 +16,7 @@
 package org.kuali.rice.web.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -35,6 +36,7 @@ import static org.junit.Assert.*;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Ignore
 public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase {
 
     // it would be a terrible idea to ever use this particular secret key outside of this unit test

@@ -18,6 +18,7 @@ package org.kuali.rice.web.test;
 import org.kuali.rice.core.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.TestConstants;
@@ -26,6 +27,7 @@ import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 
+import javax.xml.namespace.QName;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +45,11 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 	protected static final String MODULE_NAME = "sampleapp";
 	
     private String contextName = "/knstest";
-    private String relativeWebappRoot = "/src/main/webapp";
+    private String relativeWebappRoot = "/src/test/webapp";
     private String sqlFilename = "classpath:org/kuali/rice/web/test/DefaultSuiteTestData.sql";
     private String sqlDelimiter = ";";
     private String xmlFilename = "classpath:org/kuali/rice/web/test/DefaultSuiteTestData.xml";
-    private String testConfigFilename = "classpath:META-INF/web-test-config.xml";
+    private String testConfigFilename = "classpath:META-INF/sampleapp-test-config.xml";
 
 //    @Override
 //    protected List<Lifecycle> getSuiteLifecycles() {
@@ -91,11 +93,11 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 	protected Lifecycle getLoadApplicationLifecycle() {
 		return new BaseLifecycle() {
 			public void start() throws Exception {
-				System.setProperty(TestConstants.WEB_BOOTSTRAP_SPRING_FILE, "classpath:SampleAppBeans-test.xml");
-                ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();                
+				//System.setProperty(TestConstants.WEB_BOOTSTRAP_SPRING_FILE, "classpath:SampleAppBeans-test.xml");
+                //ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
-                System.getProperties().remove(TestConstants.WEB_BOOTSTRAP_SPRING_FILE);
+                //System.getProperties().remove(TestConstants.WEB_BOOTSTRAP_SPRING_FILE);
 				super.start();
 			}
 		};
@@ -168,11 +170,11 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
         this.sqlFilename = sqlFilename;
     }
 
-	@Override
+	/*@Override
 	protected void setBaseDirSystemProperty(String moduleBaseDir) {
 	    if (System.getProperty("basedir") == null) {
 	    	final String userDir = System.getProperty("user.dir");
 	        System.setProperty("basedir", userDir + ((userDir.endsWith(File.separator + moduleBaseDir)) ? "" : File.separator + moduleBaseDir));
 	    }
-	}
+	}*/
 }

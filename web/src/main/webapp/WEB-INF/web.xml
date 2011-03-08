@@ -112,7 +112,7 @@
     </filter-mapping>
 
     <listener>
-      <listener-class>org.kuali.rice.core.web.listener.StandaloneInitializeListener</listener-class>
+      <listener-class>org.kuali.rice.core.web.listener.KualiInitializeListener</listener-class>
     </listener>
     
     <listener>

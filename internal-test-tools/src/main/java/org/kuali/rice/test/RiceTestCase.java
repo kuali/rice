@@ -228,7 +228,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 	 */
     protected void startLifecycles(List<Lifecycle> lifecycles) throws Exception {
         for (Lifecycle lifecycle : lifecycles) {
-            lifecycle.start();
+                lifecycle.start();
         }
     }
 
@@ -237,22 +237,19 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * List of lifecycles is processed in reverse order.
      */
     protected void stopLifecycles(List<Lifecycle> lifecycles) throws Exception {
-        final ListIterator<Lifecycle> iter = lifecycles.listIterator();
-        while (iter.hasNext()) {
-            iter.next();
-        }
-        while (iter.hasPrevious()) {
-            final Lifecycle lifeCycle = iter.previous();
+        int lifecyclesSize = lifecycles.size() - 1;
+        for (int i = lifecyclesSize; i >= 0; i--) {
             try {
-            	if (lifeCycle == null) {
+            	if (lifecycles.get(i) == null) {
             		LOG.warn("Attempted to stop a null lifecycle");
             	} else {
-            		if (lifeCycle.isStarted()) {
-            			lifeCycle.stop();
+            		if (lifecycles.get(i).isStarted()) {
+                        LOG.warn("Attempting to stop a lifecycle " + lifecycles.get(i).getClass());
+            			lifecycles.get(i).stop();
             		}
             	}
             } catch (Exception e) {
-                LOG.warn("Failed to shutdown one of the lifecycles!", e);
+                LOG.error("Failed to shutdown one of the lifecycles!", e);
             }
         }
     }

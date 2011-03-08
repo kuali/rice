@@ -90,7 +90,7 @@
     <param name="cas.validate.password" override="false">false</param>
     <param name="cas.rice.server.name" override="false">${appserver.url}</param>
 
-	<!-- Tells the StandaloneInitializeListener to look in another location for the Rice configuration. Comma separated list -->
+	<!-- Tells the KualiInitializeListener to look in another location for the Rice configuration. Comma separated list -->
 	<param name="additional.config.locations" override="false"></param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->

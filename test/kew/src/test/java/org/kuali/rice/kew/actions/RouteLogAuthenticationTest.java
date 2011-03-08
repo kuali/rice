@@ -50,13 +50,13 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
         assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
 
         // these two should be in the route log
-        GlobalVariables.setUserSession(new UserSession(user1PrincipalId));
+        GlobalVariables.setUserSession(new UserSession("user1"));
         assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
-        GlobalVariables.setUserSession(new UserSession(getPrincipalIdForName("bmcgough")));
+        GlobalVariables.setUserSession(new UserSession("bmcgough"));
         assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
 
         // user2 should NOT be in the route log
-        GlobalVariables.setUserSession(new UserSession(getPrincipalIdForName("user2")));
+        GlobalVariables.setUserSession(new UserSession("user2"));
         assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
     }
 

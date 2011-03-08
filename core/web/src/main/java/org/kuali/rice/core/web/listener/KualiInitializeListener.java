@@ -41,12 +41,11 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StandaloneInitializeListener implements ServletContextListener {
-    private static final long serialVersionUID = -6603009920502691099L;
+public class KualiInitializeListener implements ServletContextListener {
 
-    private static final Log LOG = LogFactory.getLog(StandaloneInitializeListener.class);
+    private static final Log LOG = LogFactory.getLog(KualiInitializeListener.class);
 
-    private static final String DEFAULT_SPRING_BEANS = "classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml";
+    //private static final String DEFAULT_SPRING_BEANS = "classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml";
     private static final String DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE = "${bootstrap.spring.file}";
     public static final String RICE_BASE = "rice.base";
     public static final String CATALINA_BASE = "catalina.base";
@@ -71,7 +70,8 @@ public class StandaloneInitializeListener implements ServletContextListener {
             }
         }
 
-        String bootstrapSpringBeans = DEFAULT_SPRING_BEANS;
+        //String bootstrapSpringBeans = DEFAULT_SPRING_BEANS;
+        String bootstrapSpringBeans = "";
         if (!StringUtils.isBlank(System.getProperty(WEB_BOOTSTRAP_SPRING_FILE))) {
             bootstrapSpringBeans = System.getProperty(WEB_BOOTSTRAP_SPRING_FILE);
         } else if (!StringUtils.isBlank(sce.getServletContext().getInitParameter(WEB_BOOTSTRAP_SPRING_FILE))) {
@@ -100,16 +100,18 @@ public class StandaloneInitializeListener implements ServletContextListener {
         // expose the resource, and then plugging the Resource into the ConfigFactoryBean
         // However, currently, the ConfigFactoryBean operates on String locations, not
         // Resources. Spring can coerce string <value>s into Resources, but not vice-versa
-        if (StringUtils.isEmpty(additionalConfigLocations)) {
+        /*if (StringUtils.isEmpty(additionalConfigLocations)) {
             baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
-        }  
+        }*/
         JAXBConfigImpl config = new JAXBConfigImpl(baseProps);            
         // removing this so that the defaults don't get resolved by default.  
         //config.parseConfig();
         ConfigContext.init(config);
         
         context = new XmlWebApplicationContext();
-        context.setConfigLocation(bootstrapSpringBeans);
+        if (!StringUtils.isEmpty(bootstrapSpringBeans)) {
+            context.setConfigLocation(bootstrapSpringBeans);
+        }
         context.setServletContext(sce.getServletContext());
         context.refresh();
         context.start();
@@ -154,7 +156,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
      * Configures the default config location by first checking the init params for default locations and then falling back
      * to the standard default config location.
      */
-    protected void addDefaultConfigLocation(ServletContext context, List<String> configLocations) {
+    /*protected void addDefaultConfigLocation(ServletContext context, List<String> configLocations) {
         String defaultConfigLocation = context.getInitParameter(KEWConstants.DEFAULT_CONFIG_LOCATION_PARAM);
         if (!StringUtils.isEmpty(defaultConfigLocation)) {
             String[] locations = defaultConfigLocation.split(",");
@@ -164,7 +166,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
         } else {
             configLocations.add(KEWConstants.DEFAULT_SERVER_CONFIG_LOCATION);
         }
-    }
+    }*/
 
     @Override
 	public void contextDestroyed(ServletContextEvent sce) {

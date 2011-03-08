@@ -55,7 +55,7 @@ public class WorkflowInfoTest extends KEWTestCase {
      // ensure the UserSession is cleared out (could have been set up by other tests)
     GlobalVariables.setUserSession(null);
     String ewestfalPrincipalId = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
-    GlobalVariables.setUserSession(new UserSession(ewestfalPrincipalId));
+    GlobalVariables.setUserSession(new UserSession("ewestfal"));
     WorkflowDocument document = new WorkflowDocument(ewestfalPrincipalId, "TestDocumentType");
 	Long documentId = document.getRouteHeaderId();
 	assertNotNull(documentId);

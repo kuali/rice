@@ -107,7 +107,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
         	// Set up a new KEW UserSession in a manner similar to that of WorkflowInfoTest.
             GlobalVariables.setUserSession(null);
             String testPrincipalId = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(testPrincipalNames[i]).getPrincipalId();
-            GlobalVariables.setUserSession(new UserSession(testPrincipalId));
+            GlobalVariables.setUserSession(new UserSession(testPrincipalNames[i]));
             // Get the visibility of the rule attribute, which should be dependent on how the UserSession compares with the "isMemberOfWorkgroup" element.
             StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
             searchableAttribute.setRuleAttribute(ruleAttribute);

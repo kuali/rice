@@ -11,7 +11,11 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/failsafe-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/jetty-tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/sampleapp/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

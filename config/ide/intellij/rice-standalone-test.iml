@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/standalone/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/standalone/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/standalone/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/standalone/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/standalone/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

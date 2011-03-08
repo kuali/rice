@@ -10,6 +10,8 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../api/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

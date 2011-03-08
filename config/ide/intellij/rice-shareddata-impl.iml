@@ -12,6 +12,9 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

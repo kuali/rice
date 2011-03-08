@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
@@ -32,19 +33,42 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
-import org.kuali.rice.kew.dto.*;
+import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.DocumentLinkDTO;
+import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.RuleDTO;
+import org.kuali.rice.kew.dto.RuleExtensionDTO;
+import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
-import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
+import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
-import org.kuali.rice.kew.rule.*;
+import org.kuali.rice.kew.rule.FlexRM;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
@@ -60,7 +84,17 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import javax.jws.WebService;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"unchecked"})
 @WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
@@ -444,7 +478,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
 
 
-        SimulationEngine simulationEngine = new SimulationEngine();
+        SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
         SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
         criteria.setDestinationNodeName(null); // process entire document to conclusion
         criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
@@ -491,7 +525,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             if (!lookFuture) {
             	return principalIds.toArray(new String[]{});
             }
-            SimulationEngine simulationEngine = new SimulationEngine();
+            SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
             SimulationCriteria criteria = new SimulationCriteria(routeHeaderId);
             criteria.setDestinationNodeName(null); // process entire document to conclusion
             SimulationResults results = simulationEngine.runSimulation(criteria);
@@ -561,7 +595,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
      */
     public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) {
         try {
-	        SimulationEngine simulationEngine = new SimulationEngine();
+	        SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
 	        SimulationCriteria criteria = DTOConverter.convertReportCriteriaDTO(reportCriteriaDTO);
 	        // set activate requests to true by default so force action works correctly
 	        criteria.setActivateRequests(Boolean.TRUE);

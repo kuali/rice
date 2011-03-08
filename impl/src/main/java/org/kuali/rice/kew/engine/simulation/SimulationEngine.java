@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +24,21 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.*;
-import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.engine.ActivationContext;
+import org.kuali.rice.kew.engine.EngineState;
+import org.kuali.rice.kew.engine.ProcessContext;
+import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.RouteHelper;
+import org.kuali.rice.kew.engine.StandardWorkflowEngine;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.NoOpNode;
+import org.kuali.rice.kew.engine.node.NodeJotter;
+import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RequestsNode;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.exception.DocumentSimulatedRouteException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -40,9 +51,19 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -51,7 +72,7 @@ import java.util.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SimulationEngine extends StandardWorkflowEngine {
+public class SimulationEngine extends StandardWorkflowEngine implements SimulationWorkflowEngine {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SimulationEngine.class);
 	
@@ -59,6 +80,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     private SimulationResults results = new SimulationResults();
     private RouteHelper helper = new RouteHelper();
 
+    @Override
     public SimulationResults runSimulation(SimulationCriteria criteria) throws Exception {
         this.criteria = criteria;
         validateCriteria(criteria);

@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +15,14 @@
  */
 package mocks;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.mail.service.EmailContentService;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,21 +30,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
-
-public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
+public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEmailServiceImpl*/ implements MockEmailNotificationService {
     private static final Logger LOG = Logger.getLogger(MockEmailNotificationServiceImpl.class);
 
     private static Map<String,List> immediateReminders = new HashMap<String,List>();
     private static Map<String,Integer> aggregateReminderCount = new HashMap<String,Integer>();
     public static boolean SEND_DAILY_REMINDER_CALLED = false;
     public static boolean SEND_WEEKLY_REMINDER_CALLED = false;
+
+    private EmailContentService contentService;
+    private String deploymentEnvironment;
+
+	private Mailer mailer;
 
     /**
      * Resets the reminder counts
@@ -53,7 +58,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
      */
     @Override
     public void sendImmediateReminder(Person user, ActionItem actionItem) {
-        super.sendImmediateReminder(user, actionItem);
+        //super.sendImmediateReminder(user, actionItem);
         List actionItemsSentUser = (List)immediateReminders.get(user.getPrincipalId());
         if (actionItemsSentUser == null) {
             actionItemsSentUser = new ArrayList();
@@ -65,7 +70,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     /**
      * This overridden method returns a value of true always
      */
-    @Override
+    //@Override
     protected boolean sendActionListEmailNotification() {
 
         return true;
@@ -74,20 +79,25 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     @Override
 	public void sendDailyReminder() {
         resetStyleService();
-	    super.sendDailyReminder();
+	    //super.sendDailyReminder();
 		SEND_DAILY_REMINDER_CALLED = true;
     }
 
     @Override
     public void sendWeeklyReminder() {
         resetStyleService();
-        super.sendWeeklyReminder();
+        //super.sendWeeklyReminder();
     	SEND_WEEKLY_REMINDER_CALLED = true;
     }
 
     @Override
+    public void scheduleBatchEmailReminders() throws Exception {
+        //do nothing
+    }
+
+    //@Override
     protected void sendPeriodicReminder(Person user, Collection<ActionItem> actionItems, String emailSetting) {
-        super.sendPeriodicReminder(user, actionItems, emailSetting);
+        //super.sendPeriodicReminder(user, actionItems, emailSetting);
         if (!aggregateReminderCount.containsKey(emailSetting)) {
             aggregateReminderCount.put(emailSetting, actionItems.size());
         } else {
@@ -136,8 +146,19 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
         return emailsSent;
     }
 
-    @Override
-    protected MockStyleableEmailContentService getEmailContentGenerator() {
-        return (MockStyleableEmailContentService) super.getEmailContentGenerator();
+    public void setEmailContentGenerator(EmailContentService contentService) {
+        this.contentService = contentService;
     }
+
+    protected MockStyleableEmailContentService getEmailContentGenerator() {
+        return (MockStyleableEmailContentService) contentService;
+    }
+
+	public void setMailer(Mailer mailer){
+		this.mailer = mailer;
+	}
+
+	public void setDeploymentEnvironment(String deploymentEnvironment) {
+		this.deploymentEnvironment = deploymentEnvironment;
+	}
 }

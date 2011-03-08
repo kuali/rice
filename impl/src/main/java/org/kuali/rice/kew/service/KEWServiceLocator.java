@@ -1,12 +1,12 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 package org.kuali.rice.kew.service;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
@@ -47,6 +41,7 @@ import org.kuali.rice.kew.engine.BlanketApproveEngineFactory;
 import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
+import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowDocumentExceptionRoutingService;
 import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
@@ -70,6 +65,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.export.XmlExporterService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -200,6 +201,8 @@ public final class KEWServiceLocator {
 	public static final String ROUTE_NODE_SERVICE = "enRouteNodeService";
 
 	public static final String WORKFLOW_ENGINE = "workflowEngine";
+
+    public static final String SIMULATION_ENGINE = "simulationEngine";
 	
 	public static final String BLANKET_APPROVE_ENGINE_FACTORY = "blanketApproveEngineFactory";
 
@@ -376,6 +379,10 @@ public final class KEWServiceLocator {
 
 	public static WorkflowEngine getWorkflowEngine() {
 		return (WorkflowEngine) getBean(WORKFLOW_ENGINE);
+	}
+
+    public static SimulationWorkflowEngine getSimulationEngine() {
+		return (SimulationWorkflowEngine) getBean(SIMULATION_ENGINE);
 	}
 
 	public static BlanketApproveEngineFactory getBlanketApproveEngineFactory() {

@@ -1,13 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- * 
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +15,9 @@
  */
 package org.kuali.rice.core.mail;
 
-import java.io.IOException;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.activation.DataHandler;
 import javax.mail.Address;
@@ -26,10 +27,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
-
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import java.io.IOException;
 
 
 /**
@@ -91,7 +89,7 @@ public class Mailer {
 	     *            list of addresses to which the message is sent
 	     * @param subject
 	     *            subject of the message
-	     * @param messageBody
+	     * @param body
 	     *            body of the message
 	     */
 		public void sendEmail(EmailFrom from, EmailTo to, EmailSubject subject, EmailBody body, boolean htmlMessage) {
@@ -123,11 +121,11 @@ public class Mailer {
 	     *            list of addresses to which the message is sent
 	     * @param subject
 	     *            subject of the message
-	     * @param messageBody
+	     * @param body
 	     *            body of the message
 	     * @param cc
 	     *            list of addresses which are to be cc'd on the message
-	     * @param bcc
+	     * @param bc
 	     *            list of addresses which are to be bcc'd on the message
 	     */
 		public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc, boolean htmlMessage) {

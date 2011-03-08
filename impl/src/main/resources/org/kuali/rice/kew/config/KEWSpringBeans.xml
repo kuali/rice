@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright 2006-2011 The Kuali Foundation
   ~
@@ -160,6 +161,12 @@
 
 	<!-- 2.1 Workflow Engine -->
 	<bean id="workflowEngine" class="org.kuali.rice.kew.engine.StandardWorkflowEngine" lazy-init="true">
+        <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
+        <property name="routeNodeService" ref="enRouteNodeService" />
+        <property name="clientParameterService" ref="clientParameterService" />
+    </bean>
+
+    <bean id="simulationEngine" class="org.kuali.rice.kew.engine.simulation.SimulationEngine" lazy-init="true">
         <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
         <property name="routeNodeService" ref="enRouteNodeService" />
         <property name="clientParameterService" ref="clientParameterService" />

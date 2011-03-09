@@ -79,7 +79,9 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
 
         	for (Object whenValue : whenValueList) {
         		if (ValidationUtils.compareValues(fieldValue, whenValue, fieldDataType, operator, caseConstraint.isCaseSensitive(), dateTimeService) && null != wc.getConstraint()) {
-                    return new ProcessorResult(result.addSuccess(nestedReader, CONSTRAINT_NAME), null, nestedReader, wc.getConstraint());
+        			if (nestedReader != null && wc.getValuePath() != null)
+        				nestedReader.setAttributeName(wc.getValuePath());
+        			return new ProcessorResult(result.addSuccess(nestedReader, CONSTRAINT_NAME), null, nestedReader, wc.getConstraint());
         		}
         	}
         }

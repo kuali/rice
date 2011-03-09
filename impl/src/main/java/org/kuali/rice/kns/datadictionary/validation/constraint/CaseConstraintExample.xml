@@ -1,3 +1,5 @@
+ <!-- This a property that can be placed on a spring bean AttributeDefinition -->
+ 
  	<property name="caseConstraint">
 		<bean parent="caseConstraint">
 			<property name="whenConstraint">

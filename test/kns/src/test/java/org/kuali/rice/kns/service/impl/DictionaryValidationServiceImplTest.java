@@ -70,10 +70,13 @@ public class DictionaryValidationServiceImplTest {
 	protected MustOccurConstraint topLevelConstraint;
 	
 	
-	private MockAddress validLondonAddress = new MockAddress("812 Maiden Lane", "", "London", "", "SE1 0P3", "UK", null);
+	private MockAddress validLondonAddress = new MockAddress("8129 Maiden Lane", "", "London", "", "SE1 0P3", "UK", null);
 	private MockAddress validUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
 	private MockAddress noStateUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "Washington", "", "92342", "USA", null);
 	private MockAddress noZipNoCityUSAddress = new MockAddress("893 Presidential Ave", "Suite 800", "", "DC", "", "USA", null);
+	private MockAddress validNonDCUSAddress = new MockAddress("89 11th Street", "Suite 800", "Seattle", "WA", "", "USA", null);
+	private MockAddress invalidDCUSAddress = new MockAddress("89 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
+	
 	
     @SuppressWarnings("rawtypes")
 	private static final ConstraintProvider[] DEFAULT_CONSTRAINT_PROVIDERS = 
@@ -141,31 +144,43 @@ public class DictionaryValidationServiceImplTest {
 		
 		addressEntry.setMustOccurConstraints(mustOccurConstraints);
 		
-		List<WhenConstraint> whenConstraints = new ArrayList<WhenConstraint>();
+		List<WhenConstraint> countryWhenConstraints = new ArrayList<WhenConstraint>();
+		List<WhenConstraint> stateWhenConstraints = new ArrayList<WhenConstraint>();
 		
 		PrerequisiteConstraint prerequisiteConstraint = new PrerequisiteConstraint();
 		prerequisiteConstraint.setAttributePath("state");
 		
-		WhenConstraint whenConstraint1 = new WhenConstraint();
-		whenConstraint1.setValue("USA");
-		whenConstraint1.setConstraint(prerequisiteConstraint);
+		ValidCharactersConstraint street1ValidCharactersConstraint = new ValidCharactersConstraint();
+		street1ValidCharactersConstraint.setValue("regex:\\d{3}\\s+\\w+\\s+Ave");
 		
-		whenConstraints.add(whenConstraint1);
+		// If the country is USA, then it must have a state
+		WhenConstraint stateMustBeThereConstraint = new WhenConstraint();
+		stateMustBeThereConstraint.setValue("USA");
+		stateMustBeThereConstraint.setConstraint(prerequisiteConstraint);
+		countryWhenConstraints.add(stateMustBeThereConstraint);
+		
+		// Set a valid characters constraint for state = DC that it must be a 3-digit street address followed by ____ Ave
+		WhenConstraint streetAddressMustBe3digitAve = new WhenConstraint();
+		streetAddressMustBe3digitAve.setValue("DC");
+		streetAddressMustBe3digitAve.setValuePath("street1");
+		streetAddressMustBe3digitAve.setConstraint(street1ValidCharactersConstraint);
+		
+		stateWhenConstraints.add(streetAddressMustBe3digitAve);
 		
 		countryIsUSACaseConstraint = new CaseConstraint();
 		countryIsUSACaseConstraint.setCaseSensitive(false);
 //		countryIsUSACaseConstraint.setFieldPath("country");
-		countryIsUSACaseConstraint.setWhenConstraint(whenConstraints);
+		countryIsUSACaseConstraint.setWhenConstraint(countryWhenConstraints);
 		
+		CaseConstraint stateIsDCConstraint = new CaseConstraint();
+		stateIsDCConstraint.setCaseSensitive(false);
+		stateIsDCConstraint.setWhenConstraint(stateWhenConstraints);
 		
 		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
 		
-		ValidCharactersConstraint street1ValidCharactersConstraint = new ValidCharactersConstraint();
-		street1ValidCharactersConstraint.setValue("regex:\\d{3}\\s+\\w+\\s+Ave");
-		
 		street1Definition = new AttributeDefinition();
 		street1Definition.setName("street1");
-//		street1Definition.setValidCharactersConstraint(street1ValidCharactersConstraint);
+		//street1Definition.setValidCharactersConstraint(street1ValidCharactersConstraint);
 		attributes.add(street1Definition);
 		
 		street2Definition = new AttributeDefinition();
@@ -182,6 +197,7 @@ public class DictionaryValidationServiceImplTest {
 		stateDefinition = new AttributeDefinition();
 		stateDefinition.setName("state");
 //		stateDefinition.setValidCharactersConstraint(stateValidCharactersConstraint);
+		stateDefinition.setCaseConstraint(stateIsDCConstraint);
 		attributes.add(stateDefinition);
 		
 		postalCodeDefinition = new AttributeDefinition();
@@ -220,6 +236,22 @@ public class DictionaryValidationServiceImplTest {
 	@Test
 	public void testInvalidUSAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(noStateUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
+		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+	}
+	
+	@Test
+	public void testValidNonDCAddress() {
+		DictionaryValidationResult dictionaryValidationResult = service.validate(validNonDCUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
+		
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
+		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
+	}
+	
+	@Test
+	public void testInvalidDCAddress() {
+		DictionaryValidationResult dictionaryValidationResult = service.validate(invalidDCUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());

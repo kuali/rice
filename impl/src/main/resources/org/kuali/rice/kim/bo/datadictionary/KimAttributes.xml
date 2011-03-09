@@ -153,7 +153,7 @@
   </bean>
   	   
   <bean id="KimAttributes-propertyName" parent="KimAttributes-propertyName-parentBean"/>
-  <bean id="KimAttributes-propertyName-parentBean" parent="AttributeDefinition" abstract="true" p:name="propertyName" p:forceUppercase="false" p:label="Property Name" p:shortLabel="Property Name" p:maxLength="40" p:required="false">
+  <bean id="KimAttributes-propertyName-parentBean" parent="AttributeDefinition" abstract="true" p:name="propertyName" p:forceUppercase="false" p:label="Property Name" p:shortLabel="Property Name" p:maxLength="255" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>

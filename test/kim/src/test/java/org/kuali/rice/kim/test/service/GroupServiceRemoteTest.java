@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.test.service;
 
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
@@ -40,10 +39,10 @@ public class GroupServiceRemoteTest extends GroupServiceTest {
 		super.setUp();
 	}
 
-	@Override
+	/*@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
 		return getJettyServerLifecycle();
-	}
+	} */
 	
 	private int getConfigIntProp(String intPropKey) {
 		return Integer.parseInt(getConfigProp(intPropKey));

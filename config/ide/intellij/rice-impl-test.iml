@@ -6,13 +6,13 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../test/impl/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../test/impl/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../test/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../test/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../test/impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/main/groovy" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/main/groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/impl/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/impl/target/classes" />

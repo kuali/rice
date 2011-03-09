@@ -477,6 +477,7 @@
               <file url="file://$PROJECT_DIR$/../../../test/ksb/src/test/clients/TestClient2/WEB-INF/web.xml" />
             </files>
           </module>
+          <module name="rice-sampleapp" />
           <module name="rice-standalone" />
           <module name="rice-web" />
         </modules>

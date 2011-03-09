@@ -132,6 +132,32 @@ public interface ClientParameterService {
     String getParameterValueAsString(Class<?> componentClass, String parameterName);
 
     /**
+     * Retrieves a parameter's string value.  If the parameter is not found the default value will be returned.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @param defaultValue the value to return is the parameter does not exist.  Can be any string value including null
+     * @return string value or null
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    String getParameterValueAsString(Class<?> componentClass, String parameterName, String defaultValue);
+
+
+    /**
      * Retrieves a parameter's string value.
      *
      * <p>
@@ -153,6 +179,30 @@ public interface ClientParameterService {
      * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName);
+
+        /**
+     * Retrieves a parameter's string value.  If the parameter is not found the default value will be returned.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from the passed in namespace code</li>
+     *       <li>component code: from the passed in component code</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @param defaultValue the value to return is the parameter does not exist.  Can be any string value including null
+     * @return string value or null
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String defaultValue);
 
     /**
      * Retrieves a parameter's boolean value.
@@ -178,6 +228,31 @@ public interface ClientParameterService {
      */
     Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName);
 
+    /**
+     * Retrieves a parameter's boolean value.  If the parameter is not found the default value will be returned.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.NAMESPACE}
+     *          annotation on the componentClass</li>
+     *       <li>component code: from a {@link org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT}
+     *         annotation on the componentClass</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param componentClass the class with the namespace & component annotations
+     * @param parameterName the parameter name
+     * @param defaultValue the value to return is the parameter does not exist.  Can be any Boolean value including null
+     * @return true, false, or the defaultValue
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName, Boolean defaultValue);
+
    /**
      * Retrieves a parameter's boolean value.
      *
@@ -200,6 +275,30 @@ public interface ClientParameterService {
      * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName);
+
+    /**
+     * Retrieves a parameter's boolean value.  If the parameter is not found the default value will be returned.
+     *
+     * <p>
+     *     The parameter key is constructed from the following:
+     *     <ul>
+     *       <li>namespace code: from the passed in namespace code</li>
+     *       <li>component code: from the passed in component code</li>
+     *       <li>parameter name: from the passed in parameter name</li>
+     *       <li>application code: from the client configuration of the service implementation</li>
+     *     </ul>
+     * </p>
+     *
+     * @param namespaceCode the namespace code
+     * @param componentCode the component code
+     * @param parameterName the parameter name
+     * @param defaultValue the value to return is the parameter does not exist.  Can be any Boolean value including null
+     * @return true, false, or the defaultValue
+     * @throws IllegalArgumentException if any arguments are null
+     * @throws IllegalStateException if the application code is not configured correctly
+     * @see {@link org.kuali.rice.core.api.parameter.ParameterService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     */
+    Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName, Boolean defaultValue);
 
     /**
      * Retrieves a parameter.

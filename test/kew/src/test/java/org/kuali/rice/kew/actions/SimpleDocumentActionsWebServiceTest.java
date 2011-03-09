@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.actions;
 
 import org.apache.commons.lang.StringUtils;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -125,8 +126,9 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 	protected void verifyDocumentDataChanges(SimpleDocumentActionsWebService simpleService, String docId, String newDocContent, String newDocTitle) throws Exception {
         DocumentResponse dr = simpleService.getDocument(docId, getPrincipalIdForName("admin"));
         verifySuccess(dr);
+
         // verify document content changed
-        assertEquals("doc content value is incorrect", newDocContent, dr.getDocContent());
+        XMLAssert.assertXMLEqual("doc content value is incorrect", newDocContent, dr.getDocContent());
         // verify that the document title changed
         assertEquals("doc title should have changed", newDocTitle, dr.getTitle());
 	}

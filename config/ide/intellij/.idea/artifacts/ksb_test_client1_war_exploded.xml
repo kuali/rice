@@ -33,7 +33,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
-          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.7.8" />
+          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.7.9" />
           <element id="archive" name="rice-core-framework-1.1.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>

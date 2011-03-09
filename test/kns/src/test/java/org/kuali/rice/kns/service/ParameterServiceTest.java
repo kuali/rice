@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,12 @@ package org.kuali.rice.kns.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
-import org.kuali.rice.core.api.parameter.ParameterType;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.KNSWithTestSpringContext;
+import org.kuali.test.NeedsTransactionSupport;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * This class is used to test the {@link NoteService} implementation 
@@ -31,7 +30,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@KNSWithTestSpringContext
+@NeedsTransactionSupport
 public class ParameterServiceTest extends KNSTestCase {
 
     /**

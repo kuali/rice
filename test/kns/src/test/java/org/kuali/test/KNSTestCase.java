@@ -1,14 +1,17 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
- * 
- * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
- * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.kuali.test;
 
@@ -19,10 +22,9 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.TransactionalLifecycle;
-import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
-import org.kuali.rice.test.web.HtmlUnitUtil;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.util.List;
 
@@ -36,10 +38,6 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 
 	private static final String SQL_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.sql";
 	private static final String XML_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.xml";
-	
-	private String contextName = "/knstest";
-	private String relativeWebappRoot = "/src/test/webapp";
-    
 	
 	private TransactionalLifecycle transactionalLifecycle;
 	
@@ -59,16 +57,22 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 	@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
 		return new BaseLifecycle() {
-			public void start() throws Exception {
-				new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
+			GenericXmlApplicationContext context;
+            public void start() throws Exception {
+                context = new GenericXmlApplicationContext("classpath:KnsTestSpringBeans.xml");
+                context.start();
 				super.start();
 			}
+
+            public void stop() throws Exception {
+                context.stop();
+            }
 		};	
 	}
 
 	public void setUp() throws Exception {
 		super.setUp();
-		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
+		final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
 		GlobalVariables.setMessageMap(new MessageMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
@@ -78,7 +82,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 	}
 	
 	public void tearDown() throws Exception {
-		final boolean needsSpring = getClass().isAnnotationPresent(KNSWithTestSpringContext.class);
+		final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
 		if (needsSpring) {
 		    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
 		        transactionalLifecycle.stop();
@@ -93,25 +97,4 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 	protected String getModuleName() {
 		return "kns";
 	}
-
-	protected String getContextName() {
-		return contextName;
-	}
-
-	protected void setContextName(String contextName) {
-		this.contextName = contextName;
-	}
-
-	protected int getPort() {
-		return HtmlUnitUtil.getPort();
-	}
-
-	protected String getRelativeWebappRoot() {
-		return relativeWebappRoot;
-	}
-
-	protected void setRelativeWebappRoot(String relativeWebappRoot) {
-		this.relativeWebappRoot = relativeWebappRoot;
-	}
-
 }

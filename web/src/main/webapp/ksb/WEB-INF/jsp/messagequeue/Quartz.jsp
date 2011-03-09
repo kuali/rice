@@ -18,7 +18,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <html-el:html>
 
@@ -40,7 +40,7 @@
 	<tr>
 		<td width="15%"><img src="images/wf-logo.gif"
 			alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
-		<td width="85%"><a href="Quartz.do?methodToCall=start" />Refresh Page</a></td>
+		<td width="85%"><a href="Quartz.do?methodToCall=start">Refresh Page</a></td>
 		<td>&nbsp;&nbsp;</td>
 	</tr>
 </table>
@@ -50,29 +50,29 @@
   <tr>
     <td width="20" height="20">&nbsp;</td>
     <td>
-		  <display-el:table excludedParams="*" pagesize="40" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="jobs" export="true" id="result"  requestURI="Quartz.do?methodToCall=start" defaultsort="4" defaultorder="descending"
+		  <display:table excludedParams="*" pagesize="40" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="jobs" export="true" id="result"  requestURI="Quartz.do?methodToCall=start" defaultsort="4" defaultorder="descending"
 				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
-		    <display-el:setProperty name="paging.banner.placement" value="both" />
-		    <display-el:setProperty name="export.banner" value="" />
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Job Name</div>" sortProperty="jobDetail.name">
+		    <display:setProperty name="paging.banner.placement" value="both" />
+		    <display:setProperty name="export.banner" value="" />
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Job Name</div>" sortProperty="jobDetail.name">
 		    	<c:out value="${result.jobDetail.name}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Job Group</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Job Group</div>" >
 		    	<c:out value="${result.jobDetail.group}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Description</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Description</div>" >
 		    	<c:out value="${result.jobDetail.description}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Time to execute</div>" sortProperty="trigger.startTime.time">
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Time to execute</div>" sortProperty="trigger.startTime.time">
 		    	<c:out value="${result.trigger.nextFireTime}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>FullName</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>FullName</div>" >
 		    	<c:out value="${result.jobDetail.fullName}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="false" title="<div style='text-align:center;vertical-align:top;'>Actions</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="false" title="<div style='text-align:center;vertical-align:top;'>Actions</div>" >
 		    	<a href='Quartz.do?methodToCall=moveToRouteQueue&jobName=<c:out value="${result.jobDetail.name}" />&jobGroup=<c:out value="${result.jobDetail.group}"/>'>Put in message queue</a>
-		    </display-el:column>
-		  </display-el:table>
+		    </display:column>
+		  </display:table>
 	</td>
   </tr>
 </table>

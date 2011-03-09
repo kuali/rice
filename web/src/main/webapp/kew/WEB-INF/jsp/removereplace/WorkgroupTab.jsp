@@ -18,7 +18,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
           <table width="100%" cellpadding="0"  cellspacing="0" class="tab" summary="">
@@ -54,10 +54,10 @@
             <br>
 
   <c:set var="workgroupIndex" value="0"/>
-  <display-el:table class="result-table" cellspacing="0" cellpadding="0" name="${RemoveReplaceForm.workgroups}" defaultsort="2" id="workgroup" requestURI="RemoveReplace.do"
+  <display:table class="result-table" cellspacing="0" cellpadding="0" name="${RemoveReplaceForm.workgroups}" defaultsort="2" id="workgroup" requestURI="RemoveReplace.do"
        decorator="org.kuali.rice.kew.lookupable.LookupDecorator" >
        <c:set var="wgProp" value="workgroups[${workgroupIndex}]"/>
-	   <display-el:column sortable="false" title="<div align=&quot;center&quot;><input type=&quot;checkbox&quot; id=&quot;masterWorkgroupCheckbox&quot; onclick=&quot;javascript:selectAllWorkgroupCheckboxes(${fn:length(RemoveReplaceForm.workgroups)})&quot;></div>" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
+	   <display:column sortable="false" title="<div align=&quot;center&quot;><input type=&quot;checkbox&quot; id=&quot;masterWorkgroupCheckbox&quot; onclick=&quot;javascript:selectAllWorkgroupCheckboxes(${fn:length(RemoveReplaceForm.workgroups)})&quot;></div>" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
 	     <div align="center">
 	        <c:if test="${workgroup.disabled}">
 	          <img src="images/errormark.gif" alt="warning" width="10" height="10">
@@ -66,18 +66,18 @@
 	     	  <html-el:checkbox styleId="${wgProp}.selected" property="${wgProp}.selected"/>
 	     	</c:if>
 	     </div>
-	   </display-el:column>
-       <display-el:column sortable="true" title="Id"decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
+	   </display:column>
+       <display:column sortable="true" title="Id"decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
          <a target="_blank" href="Workgroup.do?methodToCall=report&workgroupId=<c:out value="${workgroup.id}"/>"><c:out value="${workgroup.id}"/></a>
-       </display-el:column>
-       <display-el:column sortable="true" title="Name" property="name" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
-       <display-el:column sortable="true" title="Type" property="type" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
-	   <display-el:column sortable="true" title="Warnings" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
+       </display:column>
+       <display:column sortable="true" title="Name" property="name" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
+       <display:column sortable="true" title="Type" property="type" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator"/>
+	   <display:column sortable="true" title="Warnings" decorator="org.kuali.rice.kew.lookupable.LookupColumnDecorator">
 	     <c:if test="${!empty workgroup.warning}"><img src="images/errormark.gif" alt="warning" width="10" height="10"> <c:out value="${workgroup.warning}"/></c:if>
-	   </display-el:column>
+	   </display:column>
 
        <c:set var="workgroupIndex" value="${workgroupIndex + 1}"/>
-  </display-el:table>
+  </display:table>
 
   <c:forEach items="${RemoveReplaceForm.workgroups}" varStatus="status">
   	<c:set var="workgroupProp" value="workgroups[${status.index}]"/>

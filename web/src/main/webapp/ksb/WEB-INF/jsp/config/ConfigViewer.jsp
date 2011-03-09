@@ -18,7 +18,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <html-el:html>
 <head>
@@ -46,8 +46,7 @@ tr.highlightrow:hover,tr.over td {
 	<tr>
 		<td width="15%"><img src="images/wf-logo.gif" alt="Workflow"
 			width=150 height=21 hspace=5 vspace=5></td>
-		<td width="85%"><a href="ConfigViewer.do?methodToCall=start" />Refresh
-		Page</a></td>
+		<td width="85%"><a href="ConfigViewer.do?methodToCall=start">Refresh Page</a></td>
 		<td>&nbsp;&nbsp;</td>
 	</tr>
 </table>
@@ -60,24 +59,24 @@ tr.highlightrow:hover,tr.over td {
 		<td width="20" height="20">&nbsp;</td>
 		<td>
 		<b>Configured Properties:</b> <%-- Table layout of the search results --%>
-		<display-el:table excludedParams="*" class="bord-r-t"
+		<display:table excludedParams="*" class="bord-r-t"
 			style="width:100%" cellspacing="0" cellpadding="0"
 			name="${ConfigViewerForm.properties}" id="result"
 			requestURI="ConfigViewer.do?methodToCall=start" defaultsort="1"
 			defaultorder="ascending">
-			<display-el:setProperty name="paging.banner.placement" value="both" />
-			<display-el:setProperty name="paging.banner.all_items_found" value="" />
-			<display-el:setProperty name="export.banner" value="" />
-			<display-el:setProperty name="basic.msg.empty_list">No Configuration Found</display-el:setProperty>
-			<display-el:column class="datacell" sortable="true"
+			<display:setProperty name="paging.banner.placement" value="both" />
+			<display:setProperty name="paging.banner.all_items_found" value="" />
+			<display:setProperty name="export.banner" value="" />
+			<display:setProperty name="basic.msg.empty_list">No Configuration Found</display:setProperty>
+			<display:column class="datacell" sortable="true"
 				title="<div>Config Key</div>">
 				<c:out value="${result.key}" />&nbsp;
-		    </display-el:column>
-			<display-el:column class="datacell" sortable="true"
+		    </display:column>
+			<display:column class="datacell" sortable="true"
 				title="<div>Config Value</div>">
 				<c:out value="${result.value}" />&nbsp;
-		    </display-el:column>
-		</display-el:table>
+		    </display:column>
+		</display:table>
 		</td>
 		<td width="20" height="20">&nbsp;</td>
 	</tr>

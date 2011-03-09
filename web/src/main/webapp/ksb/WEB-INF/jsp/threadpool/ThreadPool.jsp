@@ -18,7 +18,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <html-el:html>
 <head>
@@ -37,7 +37,7 @@
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>
     <td width="15%"><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
-    <td width="85%"><a href="ThreadPool.do?methodToCall=start" />Refresh Page</a></td>
+    <td width="85%"><a href="ThreadPool.do?methodToCall=start">Refresh Page</a></td>
     <td>&nbsp;&nbsp;</td>
   </tr>
 </table>

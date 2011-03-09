@@ -18,7 +18,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <html-el:html>
 <head>
@@ -37,7 +37,7 @@
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>
     <td width="15%"><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
-    <td width="85%"><a href="ServiceRegistry.do?methodToCall=start" />Refresh Page</a></td>
+    <td width="85%"><a href="ServiceRegistry.do?methodToCall=start">Refresh Page</a></td>
     <td>&nbsp;&nbsp;</td>
   </tr>
 </table>
@@ -92,16 +92,16 @@
     <td>
 		  <b>Published Services:</b>
 		  <%-- Table layout of the search results --%>
-		  <display-el:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.publishedServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
+		  <display:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.publishedServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
 				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
-		    <display-el:setProperty name="paging.banner.placement" value="both" />
-		    <display-el:setProperty name="paging.banner.all_items_found" value=""/>
-		    <display-el:setProperty name="export.banner" value="" />
-		    <display-el:setProperty name="basic.msg.empty_list">No Published Services</display-el:setProperty>
-		    <display-el:column class="datacell" sortable="true" title="<div>Service Name</div>" >
+		    <display:setProperty name="paging.banner.placement" value="both" />
+		    <display:setProperty name="paging.banner.all_items_found" value=""/>
+		    <display:setProperty name="export.banner" value="" />
+		    <display:setProperty name="basic.msg.empty_list">No Published Services</display:setProperty>
+		    <display:column class="datacell" sortable="true" title="<div>Service Name</div>" >
 		    	<c:out value="${result.serviceName}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
+		    </display:column>
+		    <display:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 				<c:choose>
 				<c:when test='${result.serviceDefinition.class.name == "org.kuali.rice.ksb.messaging.SOAPServiceDefinition"}'>
 		    	<a href="${result.endpointUrl}?wsdl"><c:out value="${result.endpointUrl}"/></a>&nbsp;
@@ -113,19 +113,19 @@
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 				</c:otherwise>
 				</c:choose>
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.serverIp}"/>&nbsp;
-		    </display-el:column>
-			<display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
+		    </display:column>
+			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
 		    	<c:if test="${result.alive}">true</c:if>
 		    	<c:if test="${!result.alive}">false</c:if>
 		    	&nbsp;
-		    </display-el:column>
-		  </display-el:table>
+		    </display:column>
+		  </display:table>
 
     </td>
     <td width="20" height="20">&nbsp;</td>
@@ -136,30 +136,30 @@
     <td>
 		  <b>Published Temp Services:</b>
 		  <%-- Table layout of the search results --%>
-		  <display-el:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.publishedTempServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
+		  <display:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.publishedTempServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
 				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
-		    <display-el:setProperty name="paging.banner.placement" value="both" />
-		    <display-el:setProperty name="paging.banner.all_items_found" value=""/>
-		    <display-el:setProperty name="export.banner" value="" />
-		    <display-el:setProperty name="basic.msg.empty_list">No Published Temp Services</display-el:setProperty>
-		    <display-el:column class="datacell" sortable="true" title="<div>Service Name</div>" >
+		    <display:setProperty name="paging.banner.placement" value="both" />
+		    <display:setProperty name="paging.banner.all_items_found" value=""/>
+		    <display:setProperty name="export.banner" value="" />
+		    <display:setProperty name="basic.msg.empty_list">No Published Temp Services</display:setProperty>
+		    <display:column class="datacell" sortable="true" title="<div>Service Name</div>" >
 		    	<c:out value="${result.serviceName}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
+		    </display:column>
+		    <display:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.serverIp}"/>&nbsp;
-		    </display-el:column>
-			<display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
+		    </display:column>
+			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
 		    	<c:if test="${result.alive}">true</c:if>
 		    	<c:if test="${!result.alive}">false</c:if>
 		    	&nbsp;
-		    </display-el:column>
-		  </display-el:table>
+		    </display:column>
+		  </display:table>
 
     </td>
     <td width="20" height="20">&nbsp;</td>
@@ -171,30 +171,30 @@
     <td>
 		  <b>All Registry Services:</b>
 		  <%-- Table layout of the search results --%>
-		  <display-el:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.globalRegistryServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
+		  <display:table excludedParams="*" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${ServiceRegistryForm.globalRegistryServices}" id="result" requestURI="ServiceRegistry.do?methodToCall=start" defaultsort="1" defaultorder="ascending"
 				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
-		    <display-el:setProperty name="paging.banner.placement" value="both" />
-		    <display-el:setProperty name="paging.banner.all_items_found" value=""/>
-		    <display-el:setProperty name="export.banner" value="" />
-		    <display-el:setProperty name="basic.msg.empty_list">No Registry Services</display-el:setProperty>
-		    <display-el:column class="datacell" sortable="true" title="<div>Service Name</div>" >
+		    <display:setProperty name="paging.banner.placement" value="both" />
+		    <display:setProperty name="paging.banner.all_items_found" value=""/>
+		    <display:setProperty name="export.banner" value="" />
+		    <display:setProperty name="basic.msg.empty_list">No Registry Services</display:setProperty>
+		    <display:column class="datacell" sortable="true" title="<div>Service Name</div>" >
 		    	<c:out value="${result.serviceName}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
+		    </display:column>
+		    <display:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.serverIp}"/>&nbsp;
-		    </display-el:column>
-			<display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
+		    </display:column>
+			<display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Alive</div>" >
 		    	<c:if test="${result.alive}">true</c:if>
 		    	<c:if test="${!result.alive}">false</c:if>
 		    	&nbsp;
-		    </display-el:column>
-		  </display-el:table>
+		    </display:column>
+		  </display:table>
 
     </td>
     <td width="20" height="20">&nbsp;</td>

@@ -18,7 +18,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <c:set var="hasAnyRows" value="${false}" />
 <c:if test="${!empty MessageQueueForm.messageQueueRows}">
@@ -44,7 +44,7 @@
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>
     <td width="15%"><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>
-    <td width="85%"><a href="MessageQueue.do?methodToCall=start" />Refresh Page</a></td>
+    <td width="85%"><a href="MessageQueue.do?methodToCall=start">Refresh Page</a></td>
     <td>&nbsp;&nbsp;</td>
   </tr>
 </table>
@@ -196,23 +196,23 @@
     <td width="20" height="20">&nbsp;</td>
     <td>
 
-		  <display-el:table excludedParams="*" pagesize="${MessageQueueForm.pageSize}" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${MessageQueueForm.messageQueueRows}" export="true" id="result" requestURI="MessageQueue.do?methodToCall=start&filterApplied=${filterApplied}&queueStatusFilter=${queueStatusFilter}&ipNumberFilter=${ipNumberFilter}&serviceNameFilter=${serviceNameFilter}&serviceNamespaceFilter=${serviceNamespaceFilter}" defaultsort="1" defaultorder="descending"
+		  <display:table excludedParams="*" pagesize="${MessageQueueForm.pageSize}" class="bord-r-t" style="width:100%" cellspacing="0" cellpadding="0" name="${MessageQueueForm.messageQueueRows}" export="true" id="result" requestURI="MessageQueue.do?methodToCall=start&filterApplied=${filterApplied}&queueStatusFilter=${queueStatusFilter}&ipNumberFilter=${ipNumberFilter}&serviceNameFilter=${serviceNameFilter}&serviceNamespaceFilter=${serviceNamespaceFilter}" defaultsort="1" defaultorder="descending"
 				decorator="org.kuali.rice.ksb.messaging.web.KSBTableDecorator">
-		    <display-el:setProperty name="paging.banner.placement" value="both" />
-		    <display-el:setProperty name="export.banner" value="" />
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message<br />Queue Id</div>" sortProperty="routeQueueId">
+		    <display:setProperty name="paging.banner.placement" value="both" />
+		    <display:setProperty name="export.banner" value="" />
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Message<br />Queue Id</div>" sortProperty="routeQueueId">
 		    	<c:out value="${result.routeQueueId}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service<br />Name</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service<br />Name</div>" >
 		    	<c:out value="${result.serviceName}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service<br />Namespace</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;"  class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Service<br />Namespace</div>" >
 		    	<c:out value="${result.serviceNamespace}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>IP Number</div>" >
 		    	<c:out value="${result.ipNumber}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Queue<br />Status</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Queue<br />Status</div>" >
 		    	<c:choose>
 			    	<c:when test="${result.queueStatus == ksb_constant.ROUTE_QUEUE_QUEUED}">
 			    		<c:out value="${ksb_constant.ROUTE_QUEUE_QUEUED_LABEL}" />&nbsp;
@@ -227,33 +227,33 @@
 				    	<c:out value="${result.queueStatus}"/>&nbsp;
 		    		</c:otherwise>
 		    	</c:choose>
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Queue<br />Priority</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Queue<br />Priority</div>" >
 		    	<c:out value="${result.queuePriority}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Queue<br />Date</div>" sortProperty="queueDate.time">
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Queue<br />Date</div>" sortProperty="queueDate.time">
 		    	<fmt:formatDate value="${result.queueDate}" pattern="${rice_constant.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Expiration<br />Date</div>" sortProperty="expirationDate.time">
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Expiration<br />Date</div>" sortProperty="expirationDate.time">
 		    	<fmt:formatDate value="${result.queueDate}" pattern="${rice_constant.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Retry<br />Count</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>Retry<br />Count</div>" >
 		    	<c:out value="${result.retryCount}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>App Specific<br />Value 1</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>App Specific<br />Value 1</div>" >
 		    	<c:out value="${result.value1}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>App Specific<br />Value 2</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="true" title="<div style='text-align:center;vertical-align:top;'>App Specific<br />Value 2</div>" >
 		    	<c:out value="${result.value2}"/>&nbsp;
-		    </display-el:column>
-		    <display-el:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="false" title="<div style='text-align:center;vertical-align:top;'>Actions</div>" >
+		    </display:column>
+		    <display:column style="text-align:center;vertical-align:middle;" class="datacell" sortable="false" title="<div style='text-align:center;vertical-align:top;'>Actions</div>" >
 		    	<a href='MessageQueue.do?methodToCall=view&messageId=<c:out value="${result.routeQueueId}" />'>View</a>
 		    	&nbsp;
 		    	<a href='MessageQueue.do?methodToCall=edit&messageId=<c:out value="${result.routeQueueId}" />'>Edit</a>
 		    	&nbsp;
 		    	<a href='MessageQueue.do?methodToCall=quickRequeueMessage&messageId=<c:out value="${result.routeQueueId}" />' onClick="return confirm('Are you sure you want to ReQueue this message?\n\nThe QueueDate will be reset to today and the Retry set to zero.');">ReQueue</a>
-		    </display-el:column>
-		  </display-el:table>
+		    </display:column>
+		  </display:table>
 
     </td>
     <td width="20" height="20">&nbsp;</td>

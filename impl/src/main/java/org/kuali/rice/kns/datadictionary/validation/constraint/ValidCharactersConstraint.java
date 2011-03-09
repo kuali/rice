@@ -21,6 +21,9 @@ public class ValidCharactersConstraint extends BaseConstraint {
 	    
     @XmlElement
     protected String value;
+    
+    @XmlElement
+    protected String jsValue;
 
     /**
      * @return the value
@@ -35,5 +38,28 @@ public class ValidCharactersConstraint extends BaseConstraint {
     public void setValue(String value) {
         this.value = value;
     }
+
+	/**
+	 * Javascript version of the regex defined in value.  This does not have to be set if this constraint's
+	 * key maps to one of the default valid character methods contained in jQuery - (insert that list here).
+	 * This must be set if there is no default method and applyClientSide is true for validation to occur.
+	 * Otherwise, the field will accept any value client side.
+	 * 
+	 * This is completely ignored if applyClientSide is set to false.
+	 * 
+	 * @return the jsValue
+	 */
+	public String getJsValue() {
+		return this.jsValue;
+	}
+
+	/**
+	 * @param jsValue the jsValue to set
+	 */
+	public void setJsValue(String jsValue) {
+		this.jsValue = jsValue;
+	}
+    
+    
     
 }

@@ -29,6 +29,12 @@ supported and configured on the component --%>
      ${component.onLoadScript}
     });
   </c:if>
+  
+  <c:if test="${component.supportsOnDocumentReady && (!empty component.onDocumentReadyScript)}">
+    $(document).ready(function() {
+     ${component.onDocumentReadyScript}
+    });
+  </c:if>
 
   <c:if test="${component.supportsOnUnload && (!empty component.onUnloadScript)}">
     $("#" + "${component.id}").unload(function() {

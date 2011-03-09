@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.constraint;
 
+import java.io.Serializable;
+
 
 /**
  * This is the marker interface for constraints. Constraints are a central concept in the Rice data dictionary validation, and are the
@@ -31,7 +33,7 @@ package org.kuali.rice.kns.datadictionary.validation.constraint;
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  * @since 1.1
  */
-public interface Constraint {
+public interface Constraint extends Serializable {
 	
 	// Empty - since this is a marker interface, all of the interesting stuff is in interfaces or classes that extend this interface
 	

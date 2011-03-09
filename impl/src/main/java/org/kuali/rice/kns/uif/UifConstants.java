@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.uif;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.kuali.rice.core.util.JSTLConstants;
 
 /**
@@ -106,5 +109,22 @@ public class UifConstants extends JSTLConstants {
 		public static final String INITIALIZED = "I";
 		public static final String FINAL = "F";
 	}
+	
+	public static Map<String, String> validCharactersMethods = new HashMap<String,String>(){{
+		
+		put("digits","digits");
+		put("date","date");
+		put("number","number");
+		put("alphanumeric","alphanumeric");
+		put("integer","integer");
+		put("email","email");
+		put("url","url");
+		put("letterswithbasicpunc","letterswithbasicpunc");
+		put("lettersonly","lettersonly");
+		put("nowhitespace","nowhitespace");
+		put("time","time");
+		put("creditcard","creditcard");
+		put("phoneUS","phoneUS");
+	}};
 
 }

@@ -22,7 +22,13 @@ public class BaseConstraint implements Constraint {
 								// label... a help context, a description
 								// context, and a field label context for
 								// example
-
+    @XmlElement
+    protected Boolean applyClientSide;
+    
+    public BaseConstraint(){
+    	applyClientSide = Boolean.valueOf(true);
+    }
+    
 	public String getLabelKey() {
 		return labelKey;
 	}
@@ -30,4 +36,22 @@ public class BaseConstraint implements Constraint {
 	public void setLabelKey(String labelKey) {
 		this.labelKey = labelKey;
 	}
+
+	/**
+	 * If this is true, the constraint should be applied on the client side when the user interacts with
+	 * a field - if this constraint can be interpreted for client side use. Default is true.
+	 * @return the applyClientSide
+	 */
+	public Boolean getApplyClientSide() {
+		return this.applyClientSide;
+	}
+
+	/**
+	 * @param applyClientSide the applyClientSide to set
+	 */
+	public void setApplyClientSide(Boolean applyClientSide) {
+		this.applyClientSide = applyClientSide;
+	}
+	
+
 }

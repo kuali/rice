@@ -85,6 +85,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private String onMouseUpScript;
 	private String onMouseDownScript;
 	private String onMouseMoveScript;
+	private String onDocumentReadyScript;
 
 	private ComponentDecorator decorator;
 	private DecoratorChain decoratorChain;
@@ -945,5 +946,24 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	@Override
 	public void addStyleClass(String styleClass){
 		styleClasses.add(styleClass);
+	}
+	
+	public boolean getSupportsOnDocumentReady(){
+		return false;
+	}
+
+	/**
+	 * @param onDocumentReadyScript the onDocumentReadyScript to set
+	 */
+	public void setOnDocumentReadyScript(String onDocumentReadyScript) {
+		this.onDocumentReadyScript = onDocumentReadyScript;
+	}
+
+	/**
+	 * Script to be run when the document is 'ready'
+	 * @return the onDocumentReadyScript
+	 */
+	public String getOnDocumentReadyScript() {
+		return onDocumentReadyScript;
 	}
 }

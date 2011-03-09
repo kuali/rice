@@ -25,7 +25,7 @@ jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
 }, "Letters or punctuation only please");  
 
 jQuery.validator.addMethod("alphanumeric", function(value, element) {
-	return this.optional(element) || /^\w+$/i.test(value);
+	return this.optional(element) || /^(\w|\s)+$/i.test(value);
 }, "Letters, numbers, spaces or underscores only please");  
 
 jQuery.validator.addMethod("lettersonly", function(value, element) {

@@ -24,14 +24,20 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.control.CheckboxControl;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
+import org.kuali.rice.kns.uif.control.RadioGroupControl;
+import org.kuali.rice.kns.uif.control.SelectControl;
+import org.kuali.rice.kns.uif.control.TextAreaControl;
+import org.kuali.rice.kns.uif.control.TextControl;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -68,8 +74,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 	private Integer maxLength;
 	private Integer minLength;
-	// For testing, maybe become permanent?
-	private String jsRegExValidation;
 
 	private Formatter formatter;
 	private KeyValuesFinder optionsFinder;
@@ -204,6 +208,16 @@ public class AttributeField extends FieldBase implements DataBinding {
 		// max length
 		if (getMinLength() == null) {
 			setMinLength(attributeDefinition.getMinLength());
+		}
+		
+		//valid characters
+		if (getValidCharactersConstraint() == null){
+			setValidCharactersConstraint(attributeDefinition.getValidCharactersConstraint());
+		}
+		
+		//valid characters
+		if (getCaseConstraint() == null){
+			setCaseConstraint(attributeDefinition.getCaseConstraint());
 		}
 
 		// required
@@ -594,37 +608,104 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (this.getRequired()) {
 			control.addStyleClass("required");
 		}
-
-		// testing
-		if (StringUtils.isNotEmpty(jsRegExValidation)) {
-			String prefixScript = "";
-			if (this.getOnLoadScript() != null) {
-				prefixScript = this.getOnLoadScript();
+		
+		if(validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()){
+			if(validCharactersConstraint.getJsValue() != null){
+				//set jsValue takes precedence
+				String prefixScript = "";
+				if(this.getOnLoadScript() != null){
+					prefixScript = this.getOnLoadScript();
+				}
+				String methodName = validCharactersConstraint.getLabelKey();
+				
+				//TODO instead of getLabelKey here it would get the actual message from somewhere
+				//TODO Does this message need to be prefixed by label name? - probably
+				this.setOnLoadScript(prefixScript +
+				"jQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {" +
+					" return this.optional(element) || " + validCharactersConstraint.getJsValue() + ".test(value); " +
+				"}, \"" + validCharactersConstraint.getLabelKey() + "\");");
+				control.addStyleClass(methodName);
 			}
-			String methodName = this.getLabel() + "-validChars";
-			this.setOnLoadScript(prefixScript + "jQuery.validator.addMethod('" + methodName
-					+ "', function(value, element) {" + "return this.optional(element) ||" + jsRegExValidation
-					+ ".test(value);" + "}, 'Failed valid custom valid characters check');");
-			control.addStyleClass(methodName);
+			else{
+				//attempt to find key in the map of known supported validCharacter methods
+				String methodName = UifConstants.validCharactersMethods.get(validCharactersConstraint.getLabelKey());
+				if(StringUtils.isNotEmpty(methodName)){
+					control.addStyleClass(methodName);
+				}
+			}
+		}
+		
+		if(caseConstraint != null && caseConstraint.getApplyClientSide()){
+			processCaseConstraint(view);
+		}
+		
+	}
+	
+	private void processCaseConstraint(View view){
+		if(caseConstraint.getOperator() == null){
+			caseConstraint.setOperator("equals");
+		}
+		if(caseConstraint.getWhenConstraint() != null && !caseConstraint.getWhenConstraint().isEmpty()){
+			for(WhenConstraint wc: caseConstraint.getWhenConstraint()){
+				processWhenConstraint(view, wc);
+			}
 		}
 	}
-
-	/**
-	 * @param jsRegExValidation
-	 *            the jsRegExValidation to set
-	 */
-	public void setJsRegExValidation(String jsRegExValidation) {
-		this.jsRegExValidation = jsRegExValidation;
-	}
-
-	/**
-	 * This is a regular expression expressed in js syntax for use in client
-	 * side validation only
-	 * 
-	 * @return the jsRegExValidation
-	 */
-	public String getJsRegExValidation() {
-		return jsRegExValidation;
+	
+	private void processWhenConstraint(View view, WhenConstraint wc){
+		String ruleString = "";
+		//prerequisite constraint
+		if(wc.getConstraint() != null && wc.getConstraint() instanceof PrerequisiteConstraint){
+			String function = "";
+			
+			//size 1 value list - not sure we need to support lists here
+			if(wc.getValues() != null && wc.getValues().size() == 1){
+				String operator = "==";
+				if(caseConstraint.getOperator().equalsIgnoreCase("not_equals")){
+					operator = "!=";
+				}
+				//add more operator types here if more are supported later
+				String selector = "";
+				if(control instanceof TextControl || control instanceof SelectControl || control instanceof TextAreaControl){
+					selector = "$('[name=\""+ propertyName + "\"]')";
+				}
+/*				else if(control instanceof TextAreaControl){
+					selector = "$('textarea[name=\""+ propertyName + "\"]')";
+				}*/
+				else if(control instanceof RadioGroupControl || control instanceof CheckboxControl){
+					selector = "$('[name=\""+ propertyName + "\"]:checked')";
+				}
+/*				else if(control instanceof SelectControl){
+					selector = "$('select[name=\""+ propertyName + "\"]')";
+				}*/
+				//add more controls here maybe?
+				
+				if(caseConstraint.isCaseSensitive()){
+					function = "function(element) {" +
+				        "return "+ selector +".val().toUpperCase() " + operator + " \"" + wc.getValues().get(0) + "\".toUpperCase();" +
+				    "}";
+				}
+				else{
+					function = "function(element) {" +
+			        	"return "+ selector +".val() " + operator + " \"" + wc.getValues().get(0) + "\";" +
+			        "}";
+				}
+			}
+			
+			if(StringUtils.isNotEmpty(function)){
+				String name = ((PrerequisiteConstraint)(wc.getConstraint())).getAttributePath();
+				ruleString = "$('[name=\""+ name + "\"]').rules(\"add\", {required: " + function + "});";
+			}
+		}
+		
+		if(StringUtils.isNotEmpty(ruleString)){
+			String prefixScript = "";
+			if(view.getOnDocumentReadyScript() != null){
+				prefixScript = view.getOnDocumentReadyScript();
+			}
+			
+			view.setOnDocumentReadyScript(prefixScript + "\n" +ruleString);
+		}
 	}
 
 	/**
@@ -713,4 +794,37 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void setConstraintMessageField(MessageField constraintMessageField) {
 		this.constraintMessageField = constraintMessageField;
 	}
+
+	/**
+	 * Valid character constraint that defines regular expressions for the valid characters
+	 * for this field
+	 * @return the validCharactersConstraint
+	 */
+	public ValidCharactersConstraint getValidCharactersConstraint() {
+		return this.validCharactersConstraint;
+	}
+
+	/**
+	 * @param validCharactersConstraint the validCharactersConstraint to set
+	 */
+	public void setValidCharactersConstraint(
+			ValidCharactersConstraint validCharactersConstraint) {
+		this.validCharactersConstraint = validCharactersConstraint;
+	}
+
+	/**
+	 * @return the caseConstraint
+	 */
+	public CaseConstraint getCaseConstraint() {
+		return this.caseConstraint;
+	}
+
+	/**
+	 * @param caseConstraint the caseConstraint to set
+	 */
+	public void setCaseConstraint(CaseConstraint caseConstraint) {
+		this.caseConstraint = caseConstraint;
+	}
+	
+	
 }

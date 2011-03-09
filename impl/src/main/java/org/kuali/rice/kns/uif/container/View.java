@@ -738,12 +738,23 @@ public class View extends ContainerBase {
 
 	/**
 	 * onLoad script configured on the <code>View</code> gets placed in a
-	 * document ready jQuery block
+	 * load call
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
 	 */
 	@Override
 	public boolean getSupportsOnLoad() {
+		return true;
+	}
+	
+	/**
+	 * onDocumentReady script configured on the <code>View</code> gets placed in a
+	 * document ready jQuery block
+	 * 
+	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
+	 */
+	@Override
+	public boolean getSupportsOnDocumentReady() {
 		return true;
 	}
 
@@ -754,12 +765,10 @@ public class View extends ContainerBase {
 	public void performFinalize(View view, Object model) {
 		super.performFinalize(view, model);
 		String prefixScript = "";
-		if(this.getOnLoadScript() != null){
-			prefixScript = this.getOnLoadScript();
+		if(this.getOnDocumentReadyScript() != null){
+			prefixScript = this.getOnDocumentReadyScript();
 		}
-		this.setOnLoadScript(prefixScript +
-				"$(document).ready(function()" +
-					"{$('#kualiForm').validate({ onfocusout: function(element) { $(element).valid(); }});" +
-				"});");
+		this.setOnDocumentReadyScript(prefixScript +
+			"$('#kualiForm').validate({ onfocusout: function(element) { $(element).valid(); }});");
 	}
 }

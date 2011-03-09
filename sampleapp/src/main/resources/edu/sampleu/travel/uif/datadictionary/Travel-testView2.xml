@@ -31,7 +31,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="Page" p:id="page1">
              <property name="items">
                <list>
-                 <ref bean="testSection1"/>
+                 <ref bean="testValidationSection1"/>
                </list>
              </property> 
           </bean>
@@ -92,6 +92,98 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <entry key="slideout" value="true"/>
         </map>
       </property>
-   </bean>   
+   </bean>
+   
+   <bean id="testValidationSection1" parent="GroupSection_Accordion">
+      <property name="id" value="testSection1"/>
+      <property name="title" value="Test Section 1"/> 
+      <property name="items">
+        <list>
+          <ref bean="testValidationGroup1"/>
+        </list>
+      </property> 
+   </bean>
+   
+   <bean id="testValidationGroup1" parent="GroupGridLayout">   
+      <property name="id" value="testValidationGroup1"/>
+      <property name="title" value="Validation Test Group 1"/>
+	  <property name="summary" value="Constraint text will tell you what is being tested"/>
+      <property name="items">
+        <list>
+        	
+          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="30" p:minLength="4" p:summary="This title is used for identifying the proposal through the apporval process." p:constraint="Alphanumeric only, Must be 4-30 chars">
+            <property name="control">
+              <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+            </property>
+			<property name="validCharactersConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="alphanumeric"/>
+			</property>
+          </bean>
+		  
+          <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Pet Type" p:required="true" p:constraint="Required">
+            <property name="control">
+               <bean parent="RadioGroupControl">
+		            <property name="options">
+		              <list>
+		                <bean parent="KeyLabelPair" p:key="cat_pet" p:label="Cat"/>
+		                <bean parent="KeyLabelPair" p:key="dog_pet" p:label="Dog"/>
+		                <bean parent="KeyLabelPair" p:key="lizard_pet" p:label="Lizard"/>
+		              </list>
+		            </property>
+         		</bean>
+            </property>
+			<property name="caseConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+			   	<property name="whenConstraint">
+			   		<list>
+						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+							<property name="value" value="cat_pet"/>
+							<property name="constraint">
+								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
+									<property name="attributePath" value="field3"/>
+								</bean>
+							</property>
+						</bean>
+						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+							<property name="value" value="dog_pet"/>
+							<property name="constraint">
+								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
+									<property name="attributePath" value="field4"/>
+								</bean>
+							</property>
+						</bean>
+					</list>
+				</property>
+			   </bean>
+			</property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Whisker Length (in)" p:maxLength="3" p:constraint="Required when cat is selected, Digits only">
+            <property name="control">
+              <bean parent="TextControl" p:size="3" p:watermarkText="#"/>
+            </property>
+			<property name="validCharactersConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="digits"/>
+			</property>
+          </bean>
+		  <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Breed" p:maxLength="10" p:constraint="Required when dog is selected, only letters">
+            <property name="control">
+              <bean parent="TextControl" p:size="10" p:watermarkText="Beagle"/>
+            </property>
+			<property name="validCharactersConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="lettersonly"/>
+			</property>
+          </bean>
+		  <bean parent="AttributeField_Form" p:propertyName="field5" p:label="Weight (lbs)" p:maxLength="10" p:constraint="Required, only numbers">
+            <property name="control">
+              <bean parent="TextControl" p:size="4" p:watermarkText="25"/>
+            </property>
+			<property name="validCharactersConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="numbers"/>
+			</property>
+          </bean>
+        </list>
+      </property> 
+            
+   </bean>
    
 </beans>   

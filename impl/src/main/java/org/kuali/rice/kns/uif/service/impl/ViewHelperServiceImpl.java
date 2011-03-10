@@ -334,7 +334,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			collection.add(addLine);
 
 			// make a new instance for the add line
-			collectionGroup.initNewCollectionLine(model, true);
+			collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
 		}
 
 		processAfterAddLine(view, collectionGroup, model, addLine);

@@ -38,10 +38,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="Inquiry"/>
       </property>       
       <property name="summaryMessageField">
-        <bean parent="MessageField" p:messageText="*" p:messageType="SUMMARY" p:styleClasses="summary"/>
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
       </property>
       <property name="constraintMessageField">
-        <bean parent="MessageField" p:messageText="*" p:messageType="CONSTRAINT" p:styleClasses="constraint"/>
+        <bean parent="MessageField" p:messageType="CONSTRAINT" p:styleClasses="constraint"/>
       </property>           
   </bean>  
   
@@ -123,6 +123,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          <bean parent="GroupBodyOnly"/>
       </property>  
   </bean> 
+  
+  <bean id="SearchField" abstract="true" parent="SearchField-parentBean"/>
+  <bean id="SearchField-parentBean" abstract="true" parent="AttributeField-parentBean">
+      <property name="control">
+         <bean parent="TextControl" p:size="15"/>
+      </property>
+      <property name="summaryMessageField.render" value="false"/>
+      <property name="constraintMessageField.render" value="false"/>
+  </bean>
 
   <!-- Common Fields -->
   

@@ -24,8 +24,8 @@
     <property name="criteriaFields">
       <list>
 <!-- p:dictionaryObjectEntry=edu.sampleu.travel.bo.TravelAccount -->
-        <bean parent="AttributeField" p:propertyName="number" />
-        <bean parent="AttributeField" p:propertyName="name" />
+        <bean parent="SearchField" p:propertyName="number" />
+        <bean parent="SearchField" p:propertyName="name" />
         <bean parent="AttributeField" p:propertyName="subAccount" />
         <bean parent="AttributeField" p:propertyName="subAccountName" />
         <bean parent="AttributeField" p:propertyName="createDate" />

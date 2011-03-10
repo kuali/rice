@@ -151,22 +151,12 @@ public class AttributeField extends FieldBase implements DataBinding {
 			bindingInfo.setDefaults(view, getPropertyName());
 		}
 
-		if (control != null && StringUtils.isBlank(control.getId())) {
-			control.setId(this.getId());
-		}
-
 		if (StringUtils.isNotBlank(summary)) {
 			summaryMessageField.setMessageText(summary);
-		}
-		else {
-			summaryMessageField.setRender(false);
 		}
 
 		if (StringUtils.isNotBlank(constraint)) {
 			constraintMessageField.setMessageText(constraint);
-		}
-		else {
-			constraintMessageField.setRender(false);
 		}
 
 		// TODO: remove later, this should be done within the service lifecycle
@@ -209,14 +199,14 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (getMinLength() == null) {
 			setMinLength(attributeDefinition.getMinLength());
 		}
-		
-		//valid characters
-		if (getValidCharactersConstraint() == null){
+
+		// valid characters
+		if (getValidCharactersConstraint() == null) {
 			setValidCharactersConstraint(attributeDefinition.getValidCharactersConstraint());
 		}
-		
-		//valid characters
-		if (getCaseConstraint() == null){
+
+		// valid characters
+		if (getCaseConstraint() == null) {
 			setCaseConstraint(attributeDefinition.getCaseConstraint());
 		}
 
@@ -233,6 +223,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		// summary
 		if (StringUtils.isEmpty(getSummary())) {
 			setSummary(attributeDefinition.getSummary());
+			getSummaryMessageField().setMessageText(attributeDefinition.getSummary());
 		}
 
 		// description
@@ -245,8 +236,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 			setAttributeSecurity(attributeDefinition.getAttributeSecurity());
 		}
 
+		// constraint
 		if (StringUtils.isEmpty(getConstraint())) {
 			setConstraint(attributeDefinition.getConstraint());
+			getConstraintMessageField().setMessageText(attributeDefinition.getConstraint());
 		}
 
 	}
@@ -525,13 +518,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 */
 	public void setSummary(String summary) {
 		this.summary = summary;
-		if (StringUtils.isNotBlank(summary)) {
-			summaryMessageField.setMessageText(summary);
-			summaryMessageField.setRender(true);
-		}
-		else {
-			summaryMessageField.setRender(false);
-		}
 	}
 
 	/**
@@ -608,103 +594,107 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (this.getRequired()) {
 			control.addStyleClass("required");
 		}
-		
-		if(validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()){
-			if(validCharactersConstraint.getJsValue() != null){
-				//set jsValue takes precedence
+
+		if (validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()) {
+			if (validCharactersConstraint.getJsValue() != null) {
+				// set jsValue takes precedence
 				String prefixScript = "";
-				if(this.getOnLoadScript() != null){
+				if (this.getOnLoadScript() != null) {
 					prefixScript = this.getOnLoadScript();
 				}
 				String methodName = validCharactersConstraint.getLabelKey();
-				
-				//TODO instead of getLabelKey here it would get the actual message from somewhere
-				//TODO Does this message need to be prefixed by label name? - probably
-				this.setOnLoadScript(prefixScript +
-				"jQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {" +
-					" return this.optional(element) || " + validCharactersConstraint.getJsValue() + ".test(value); " +
-				"}, \"" + validCharactersConstraint.getLabelKey() + "\");");
+
+				// TODO instead of getLabelKey here it would get the actual
+				// message from somewhere
+				// TODO Does this message need to be prefixed by label name? -
+				// probably
+				this.setOnLoadScript(prefixScript + "jQuery.validator.addMethod(\"" + methodName
+						+ "\", function(value, element) {" + " return this.optional(element) || "
+						+ validCharactersConstraint.getJsValue() + ".test(value); " + "}, \""
+						+ validCharactersConstraint.getLabelKey() + "\");");
 				control.addStyleClass(methodName);
 			}
-			else{
-				//attempt to find key in the map of known supported validCharacter methods
+			else {
+				// attempt to find key in the map of known supported
+				// validCharacter methods
 				String methodName = UifConstants.validCharactersMethods.get(validCharactersConstraint.getLabelKey());
-				if(StringUtils.isNotEmpty(methodName)){
+				if (StringUtils.isNotEmpty(methodName)) {
 					control.addStyleClass(methodName);
 				}
 			}
 		}
-		
-		if(caseConstraint != null && caseConstraint.getApplyClientSide()){
+
+		if (caseConstraint != null && caseConstraint.getApplyClientSide()) {
 			processCaseConstraint(view);
 		}
-		
+
 	}
-	
-	private void processCaseConstraint(View view){
-		if(caseConstraint.getOperator() == null){
+
+	private void processCaseConstraint(View view) {
+		if (caseConstraint.getOperator() == null) {
 			caseConstraint.setOperator("equals");
 		}
-		if(caseConstraint.getWhenConstraint() != null && !caseConstraint.getWhenConstraint().isEmpty()){
-			for(WhenConstraint wc: caseConstraint.getWhenConstraint()){
+		if (caseConstraint.getWhenConstraint() != null && !caseConstraint.getWhenConstraint().isEmpty()) {
+			for (WhenConstraint wc : caseConstraint.getWhenConstraint()) {
 				processWhenConstraint(view, wc);
 			}
 		}
 	}
-	
-	private void processWhenConstraint(View view, WhenConstraint wc){
+
+	private void processWhenConstraint(View view, WhenConstraint wc) {
 		String ruleString = "";
-		//prerequisite constraint
-		if(wc.getConstraint() != null && wc.getConstraint() instanceof PrerequisiteConstraint){
+		// prerequisite constraint
+		if (wc.getConstraint() != null && wc.getConstraint() instanceof PrerequisiteConstraint) {
 			String function = "";
-			
-			//size 1 value list - not sure we need to support lists here
-			if(wc.getValues() != null && wc.getValues().size() == 1){
+
+			// size 1 value list - not sure we need to support lists here
+			if (wc.getValues() != null && wc.getValues().size() == 1) {
 				String operator = "==";
-				if(caseConstraint.getOperator().equalsIgnoreCase("not_equals")){
+				if (caseConstraint.getOperator().equalsIgnoreCase("not_equals")) {
 					operator = "!=";
 				}
-				//add more operator types here if more are supported later
+				// add more operator types here if more are supported later
 				String selector = "";
-				if(control instanceof TextControl || control instanceof SelectControl || control instanceof TextAreaControl){
-					selector = "$('[name=\""+ propertyName + "\"]')";
+				if (control instanceof TextControl || control instanceof SelectControl
+						|| control instanceof TextAreaControl) {
+					selector = "$('[name=\"" + propertyName + "\"]')";
 				}
-/*				else if(control instanceof TextAreaControl){
-					selector = "$('textarea[name=\""+ propertyName + "\"]')";
-				}*/
-				else if(control instanceof RadioGroupControl || control instanceof CheckboxControl){
-					selector = "$('[name=\""+ propertyName + "\"]:checked')";
+				/*
+				 * else if(control instanceof TextAreaControl){ selector =
+				 * "$('textarea[name=\""+ propertyName + "\"]')"; }
+				 */
+				else if (control instanceof RadioGroupControl || control instanceof CheckboxControl) {
+					selector = "$('[name=\"" + propertyName + "\"]:checked')";
 				}
-/*				else if(control instanceof SelectControl){
-					selector = "$('select[name=\""+ propertyName + "\"]')";
-				}*/
-				//add more controls here maybe?
-				
-				if(caseConstraint.isCaseSensitive()){
-					function = "function(element) {" +
-				        "return "+ selector +".val().toUpperCase() " + operator + " \"" + wc.getValues().get(0) + "\".toUpperCase();" +
-				    "}";
+				/*
+				 * else if(control instanceof SelectControl){ selector =
+				 * "$('select[name=\""+ propertyName + "\"]')"; }
+				 */
+				// add more controls here maybe?
+
+				if (caseConstraint.isCaseSensitive()) {
+					function = "function(element) {" + "return " + selector + ".val().toUpperCase() " + operator
+							+ " \"" + wc.getValues().get(0) + "\".toUpperCase();" + "}";
 				}
-				else{
-					function = "function(element) {" +
-			        	"return "+ selector +".val() " + operator + " \"" + wc.getValues().get(0) + "\";" +
-			        "}";
+				else {
+					function = "function(element) {" + "return " + selector + ".val() " + operator + " \""
+							+ wc.getValues().get(0) + "\";" + "}";
 				}
 			}
-			
-			if(StringUtils.isNotEmpty(function)){
-				String name = ((PrerequisiteConstraint)(wc.getConstraint())).getAttributePath();
-				ruleString = "$('[name=\""+ name + "\"]').rules(\"add\", {required: " + function + "});";
+
+			if (StringUtils.isNotEmpty(function)) {
+				String name = ((PrerequisiteConstraint) (wc.getConstraint())).getAttributePath();
+				ruleString = "$('[name=\"" + name + "\"]').rules(\"add\", {required: " + function + "});";
 			}
 		}
-		
-		if(StringUtils.isNotEmpty(ruleString)){
+
+		if (StringUtils.isNotEmpty(ruleString)) {
 			String prefixScript = "";
-			if(view.getOnDocumentReadyScript() != null){
+			if (view.getOnDocumentReadyScript() != null) {
 				prefixScript = view.getOnDocumentReadyScript();
 			}
-			
-			view.setOnDocumentReadyScript(prefixScript + "\n" +ruleString);
+
+			view.setOnDocumentReadyScript(prefixScript + "\n" + ruleString);
 		}
 	}
 
@@ -735,10 +725,28 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.fieldLookup = fieldLookup;
 	}
 
+	/**
+	 * Inquiry widget for the field
+	 * 
+	 * <p>
+	 * The inquiry widget will render a link for the field value when read-only
+	 * that points to the associated inquiry view for the field. The inquiry can
+	 * be configured to point to a certain <code>InquiryView</code>, or the
+	 * framework will attempt to associate the field with a inquiry based on its
+	 * metadata (in particular its relationships in the model)
+	 * </p>
+	 * 
+	 * @return Inquiry field inquiry
+	 */
 	public Inquiry getFieldInquiry() {
 		return this.fieldInquiry;
 	}
 
+	/**
+	 * Setter for the inquiry widget
+	 * 
+	 * @param fieldInquiry
+	 */
 	public void setFieldInquiry(Inquiry fieldInquiry) {
 		this.fieldInquiry = fieldInquiry;
 	}
@@ -771,13 +779,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 */
 	public void setConstraint(String constraint) {
 		this.constraint = constraint;
-		if (StringUtils.isNotBlank(constraint)) {
-			constraintMessageField.setMessageText(constraint);
-			constraintMessageField.setRender(true);
-		}
-		else {
-			constraintMessageField.setRender(false);
-		}
 	}
 
 	/**
@@ -796,8 +797,9 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * Valid character constraint that defines regular expressions for the valid characters
-	 * for this field
+	 * Valid character constraint that defines regular expressions for the valid
+	 * characters for this field
+	 * 
 	 * @return the validCharactersConstraint
 	 */
 	public ValidCharactersConstraint getValidCharactersConstraint() {
@@ -805,10 +807,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param validCharactersConstraint the validCharactersConstraint to set
+	 * @param validCharactersConstraint
+	 *            the validCharactersConstraint to set
 	 */
-	public void setValidCharactersConstraint(
-			ValidCharactersConstraint validCharactersConstraint) {
+	public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
 		this.validCharactersConstraint = validCharactersConstraint;
 	}
 
@@ -820,11 +822,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param caseConstraint the caseConstraint to set
+	 * @param caseConstraint
+	 *            the caseConstraint to set
 	 */
 	public void setCaseConstraint(CaseConstraint caseConstraint) {
 		this.caseConstraint = caseConstraint;
 	}
-	
-	
+
 }

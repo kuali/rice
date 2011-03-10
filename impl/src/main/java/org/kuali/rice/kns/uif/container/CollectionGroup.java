@@ -16,23 +16,16 @@
 package org.kuali.rice.kns.uif.container;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
-import org.kuali.rice.kns.uif.UifParameters;
-import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.LabelField;
-import org.kuali.rice.kns.uif.util.ComponentUtils;
-import org.kuali.rice.kns.uif.util.ModelUtils;
-import org.kuali.rice.kns.web.spring.form.UifFormBase;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -72,6 +65,8 @@ public class CollectionGroup extends Group implements DataBinding {
 	private List<ActionField> actionFields;
 
 	private List<CollectionGroup> subCollections;
+
+	private CollectionGroupBuilder collectionGroupBuilder;
 
 	public CollectionGroup() {
 		renderAddLine = true;
@@ -126,43 +121,17 @@ public class CollectionGroup extends Group implements DataBinding {
 	}
 
 	/**
-	 * Creates new <code>ActionField</code> instances for the line
+	 * Calls the configured <code>CollectionGroupBuilder</code> to build the
+	 * necessary components based on the collection data
 	 * 
-	 * <p>
-	 * Adds context to the action fields for the given line so that the line the
-	 * action was performed on can be determined when that action is selected
-	 * </p>
-	 * 
-	 * @param lineIndex
-	 *            - index of the line the actions should apply to
+	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
 	 */
-	public List<ActionField> getLineActions(int lineIndex) {
-		List<ActionField> lineActions = ComponentUtils.copyFieldList(actionFields);
-		for (ActionField actionField : lineActions) {
-			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, getBindingInfo()
-					.getBindingPath());
-			actionField.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
-		}
+	@Override
+	public void performApplyModel(View view, Object model) {
+		super.performApplyModel(view, model);
 
-		return lineActions;
-	}
-
-	/**
-	 * Creates new <code>ActionField</code> instances for the add line
-	 * 
-	 * <p>
-	 * Adds context to the action fields for the add line so that the collection
-	 * the action was performed on can be determined
-	 * </p>
-	 */
-	public List<ActionField> getAddLineActions() {
-		List<ActionField> lineActions = ComponentUtils.copyFieldList(addLineActionFields);
-		for (ActionField actionField : lineActions) {
-			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, getBindingInfo()
-					.getBindingPath());
-		}
-
-		return lineActions;
+		getCollectionGroupBuilder().build(view, model, this);
 	}
 
 	/**
@@ -170,46 +139,20 @@ public class CollectionGroup extends Group implements DataBinding {
 	 * the form. The map contains as a key the collection name, and as value an
 	 * instance of the collection type. An entry is created here for the
 	 * collection represented by the <code>CollectionGroup</code> if an instance
-	 * is not available (clearLine will force a new instance). The given model
-	 * must be a subclass of <code>UifFormBase</code> in order to find the Map.
+	 * is not available (clearExistingLine will force a new instance). The given
+	 * model must be a subclass of <code>UifFormBase</code> in order to find the
+	 * Map.
 	 * 
 	 * @param model
 	 *            - Model instance that contains the new collection lines Map
-	 * @param clearLine
-	 *            - forces a new instance to be created even if an instance is
-	 *            already available
+	 * @param clearExistingLine
+	 *            - boolean that indicates whether the line should be set to a
+	 *            new instance if it already exists
 	 * @return String binding path for the new add line
 	 */
-	public String initNewCollectionLine(Object model, boolean clearLine) {
-		if (!(model instanceof UifFormBase)) {
-			throw new RuntimeException("Cannot create new collection line for group: " + getPropertyName()
-					+ ". Model does not extend " + UifFormBase.class.getName());
-		}
-
-		// get new collection line map from form
-		Map<String, Object> newCollectionLines = ModelUtils.getPropertyValue(model,
-				UifPropertyPaths.NEW_COLLECTION_LINES);
-		if (newCollectionLines == null) {
-			newCollectionLines = new HashMap<String, Object>();
-			ModelUtils.setPropertyValue(model, UifPropertyPaths.NEW_COLLECTION_LINES, newCollectionLines);
-		}
-
-		// if there is not an instance available or clear line is set to true
-		// create a new instance
-		if (!newCollectionLines.containsKey(getBindingInfo().getBindingPath())
-				|| (newCollectionLines.get(getBindingInfo().getBindingPath()) == null) || clearLine) {
-			// create new instance of the collection type for the add line
-			try {
-				Object newLineInstance = getCollectionObjectClass().newInstance();
-				newCollectionLines.put(getBindingInfo().getBindingPath(), newLineInstance);
-			}
-			catch (Exception e) {
-				throw new RuntimeException("Cannot create new add line instance for group: " + getPropertyName()
-						+ " with collection class: " + getCollectionObjectClass().getName());
-			}
-		}
-
-		return UifPropertyPaths.NEW_COLLECTION_LINES + "['" + getBindingInfo().getBindingPath() + "']";
+	public String initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
+			boolean clearExistingLine) {
+		return getCollectionGroupBuilder().initializeNewCollectionLine(view, model, collectionGroup, clearExistingLine);
 	}
 
 	/**
@@ -218,7 +161,7 @@ public class CollectionGroup extends Group implements DataBinding {
 	@Override
 	public List<Component> getNestedComponents() {
 		List<Component> components = super.getNestedComponents();
-		
+
 		components.add(addLineLabelField);
 		components.addAll(subCollections);
 		components.addAll(actionFields);
@@ -473,6 +416,28 @@ public class CollectionGroup extends Group implements DataBinding {
 	 */
 	public void setSubCollections(List<CollectionGroup> subCollections) {
 		this.subCollections = subCollections;
+	}
+
+	/**
+	 * <code>CollectionGroupBuilder</code> instance that will build the
+	 * components dynamically for the collection instance
+	 * 
+	 * @return CollectionGroupBuilder instance
+	 */
+	public CollectionGroupBuilder getCollectionGroupBuilder() {
+		if (this.collectionGroupBuilder == null) {
+			this.collectionGroupBuilder = new CollectionGroupBuilder();
+		}
+		return this.collectionGroupBuilder;
+	}
+
+	/**
+	 * Setter for the collection group building instance
+	 * 
+	 * @param collectionGroupBuilder
+	 */
+	public void setCollectionGroupBuilder(CollectionGroupBuilder collectionGroupBuilder) {
+		this.collectionGroupBuilder = collectionGroupBuilder;
 	}
 
 	/**

@@ -34,7 +34,7 @@ public class MessageField extends FieldBase {
 	private String messageType;
 
 	public MessageField() {
-
+		super();
 	}
 
 	/**

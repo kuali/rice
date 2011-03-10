@@ -21,8 +21,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
-import org.kuali.rice.kns.uif.UifPropertyPaths;
-import org.kuali.rice.kns.uif.UifConstants.IdSuffixes;
 import org.kuali.rice.kns.uif.UifConstants.Orientation;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
@@ -52,7 +50,7 @@ import org.kuali.rice.kns.uif.util.ModelUtils;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StackedLayoutManager extends BoxLayoutManager {
+public class StackedLayoutManager extends BoxLayoutManager implements CollectionLayoutManager {
 	private static final long serialVersionUID = 4602368505430238846L;
 
 	private String summaryTitle;
@@ -93,131 +91,47 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	}
 
 	/**
-	 * Builds a <code>Group</code> for each collection line (including the add
-	 * line if enabled). The groups are added to the stackedGroups
-	 * <code>List</code> and picked up by the template.
+	 * Builds a <code>Group</code> instance for a collection line. The group is
+	 * built by first creating a copy of the configured prototype. Then the
+	 * header for the group is created using the configured summary fields on
+	 * the <code>CollectionGroup</code>. The line fields passed in are set as
+	 * the items for the group, and finally the actions are placed into the
+	 * group footer
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
+	 * @see org.kuali.rice.kns.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.CollectionGroup,
+	 *      java.util.List, java.lang.String, java.util.List, java.lang.String,
+	 *      int)
 	 */
-	@Override
-	public void performApplyModel(View view, Object model, Container container) {
-		super.performApplyModel(view, model, container);
+	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<? extends Field> lineFields,
+			String bindingPath, List<ActionField> actions, String idSuffix, int lineIndex) {
+		boolean isAddLine = lineIndex == -1;
 
-		if (!(container instanceof CollectionGroup)) {
-			throw new IllegalArgumentException(
-					"Only CollectionGroup containers supported by the TableLayoutManager, found container class: "
-							+ container.getClass());
-		}
-
-		CollectionGroup collectionGroup = (CollectionGroup) container;
-
-		stackedGroups = new ArrayList<Group>();
-
-		// create add line
-		if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
-			buildAddLine(view, collectionGroup, model);
-		}
-
-		// get the collection for this group from the model
-		List<Object> modelCollection = ModelUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
-				.getBindingInfo().getBindingPath());
-
-		// for each collection row create a new Group
-		if (modelCollection != null) {
-			for (int index = 0; index < modelCollection.size(); index++) {
-				String lineHeaderText = buildLineHeaderText(modelCollection.get(index));
-				String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
-				String idSuffix = "_" + index;
-
-				buildLine(view, collectionGroup, lineHeaderText, bindingPathPrefix, idSuffix,
-						collectionGroup.getLineActions(index), false, false);
-			}
-		}
-	}
-
-	/**
-	 * Builds the add line Group
-	 * 
-	 * <p>
-	 * Group header is set to the add line label given on the collection group
-	 * (org.kuali.rice.kns.uif.container.CollectionGroup.getAddLineLabel()).
-	 * Also the binding is setup for the add line and if the managed by the
-	 * framework (bound to generic form Map) then the Map entry is initialized.
-	 * Finally the add line actions are set in the group footer
-	 * </p>
-	 * 
-	 * @param view
-	 *            - view instance the collection belongs to
-	 * @param collectionGroup
-	 *            - collection group the layout manager applies to
-	 * @param model
-	 *            - Object containing the view data, should extend UifFormBase
-	 *            if using framework managed new lines
-	 */
-	protected void buildAddLine(View view, CollectionGroup collectionGroup, Object model) {
-		// determine how the new line should be managed and the binding path
-		String addLineBindingPath = "";
-		boolean bindAddLineToForm = false;
-		if (StringUtils.isNotBlank(collectionGroup.getAddLineName())) {
-			// managed in model
-			addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-		}
-		else {
-			// managed with framework, generic map on form
-			addLineBindingPath = collectionGroup.initNewCollectionLine(model, false);
-			collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
-			bindAddLineToForm = true;
-		}
-
-		buildLine(view, collectionGroup, collectionGroup.getAddLineLabel(), addLineBindingPath, IdSuffixes.ADD_LINE,
-				collectionGroup.getAddLineActions(), bindAddLineToForm, true);
-	}
-
-	/**
-	 * Builds a <code>Group</code> instance for a collection line. A new
-	 * instance of the lineGroupPrototype is created for the lines group. The
-	 * original items specified on the <code>CollectionGroup</code> are also
-	 * copied and adjusted as necessary for the line (binding path, id)
-	 * 
-	 * @param view
-	 *            - view instance the collection belongs to
-	 * @param collectionGroup
-	 *            - collection group the layout manager applies to
-	 * @param headerText
-	 *            - text to be used for the group header
-	 * @param bindingPath
-	 *            - binding path for the groups items (if DataBinding)
-	 * @param idSuffix
-	 *            - suffix to use for the groups items (in order to maintain
-	 *            unique ids)
-	 * @param actions
-	 *            - List of actions to set in the groups footer
-	 * @param bindToForm
-	 *            - whether the bindToForm property on the items bindingInfo
-	 *            should be set to true (needed for add line)
-	 * @param isAddLine
-	 *            - indicates whether the add line is being built in which case
-	 *            the addLineGroup will be set instead of a new instance of the
-	 *            line prototype
-	 */
-	protected void buildLine(View view, CollectionGroup collectionGroup, String headerText, String bindingPath,
-			String idSuffix, List<ActionField> actions, boolean bindToForm, boolean isAddLine) {
+		// construct new group
 		Group lineGroup = null;
 		if (isAddLine) {
+			stackedGroups = new ArrayList<Group>();
+			
 			lineGroup = getAddLineGroup();
 		}
 		else {
 			lineGroup = ComponentUtils.copy(lineGroupPrototype);
 		}
+		ComponentUtils.updateIdsWithSuffix(lineGroup, idSuffix);
 
-		lineGroup.getHeader().setHeaderText(headerText);
-
-		List<? extends Field> lineFields = ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath);
-		if (bindToForm) {
-			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
+		// build header text for group
+		String headerText = "";
+		if (isAddLine) {
+			headerText = collectionGroup.getAddLineLabel();
 		}
-		view.getViewIndex().addFields(lineFields);
+		else {
+			// get the collection for this group from the model
+			List<Object> modelCollection = ModelUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
+					.getBindingInfo().getBindingPath());
+
+			headerText = buildLineHeaderText(modelCollection.get(lineIndex));
+		}
+		lineGroup.getHeader().setHeaderText(headerText);
 
 		lineGroup.setItems(lineFields);
 
@@ -225,9 +139,6 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
 			lineGroup.getFooter().setItems(actions);
 		}
-
-		// suffix all the groups ids so they will be unique
-		ComponentUtils.updateIdsWithSuffix(lineGroup, idSuffix);
 
 		stackedGroups.add(lineGroup);
 	}

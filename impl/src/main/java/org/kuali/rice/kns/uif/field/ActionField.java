@@ -89,7 +89,7 @@ public class ActionField extends FieldBase {
 		super.performFinalize(view, model);
 
 		if (StringUtils.isNotBlank(navigateToPageId)) {
-			actionParameters.put(UifParameters.PAGE_ID, navigateToPageId);
+			actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
 			if (StringUtils.isBlank(methodToCall)) {
 				actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME,
 						UifConstants.MethodToCallNames.NAVIGATE);
@@ -282,7 +282,7 @@ public class ActionField extends FieldBase {
 	 */
 	public void setNavigateToPageId(String navigateToPageId) {
 		this.navigateToPageId = navigateToPageId;
-		actionParameters.put(UifParameters.PAGE_ID, navigateToPageId);
+		actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
 		this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
 	}
 

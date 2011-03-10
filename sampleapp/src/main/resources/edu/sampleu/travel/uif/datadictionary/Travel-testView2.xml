@@ -173,12 +173,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="lettersonly"/>
 			</property>
           </bean>
-		  <bean parent="AttributeField_Form" p:propertyName="field5" p:label="Weight (lbs)" p:maxLength="10" p:constraint="Required, only numbers">
+		  <bean parent="AttributeField_Form" p:propertyName="field5" p:label="Weight (lbs)" p:maxLength="10" p:required="true" p:constraint="Required, only numbers">
             <property name="control">
               <bean parent="TextControl" p:size="4" p:watermarkText="25"/>
             </property>
 			<property name="validCharactersConstraint">
-			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="numbers"/>
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="number"/>
 			</property>
           </bean>
         </list>

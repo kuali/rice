@@ -30,6 +30,7 @@ public class UifParameters {
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
 	public static final String PAGE_ID = "pageId";
+	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";
 	public static final String VIEW_ID = "viewId";
 	public static final String VIEW_NAME = "viewName";
 	public static final String VIEW_TYPE_NAME = "viewTypeName";

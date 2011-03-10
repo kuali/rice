@@ -248,7 +248,7 @@ public abstract class UifControllerBase {
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
 	public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-		String pageId = form.getActionParamaterValue(UifParameters.PAGE_ID);
+		String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
 
 		return getUIFModelAndView(form, form.getViewId(), pageId);
 	}

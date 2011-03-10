@@ -769,6 +769,6 @@ public class View extends ContainerBase {
 			prefixScript = this.getOnDocumentReadyScript();
 		}
 		this.setOnDocumentReadyScript(prefixScript +
-			"$('#kualiForm').validate({ onfocusout: function(element) { $(element).valid(); }});");
+			"$('#kualiForm').validate({ onsubmit: false, onclick: function(element) { $(element).valid(); }, onfocusout: function(element) { $(element).valid(); }});");
 	}
 }

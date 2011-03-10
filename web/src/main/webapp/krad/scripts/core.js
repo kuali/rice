@@ -144,19 +144,32 @@ function setFieldToFocusAndSubmit(triggerElement) {
 }
 
 function submitForm() {
-	$.watermark.hideAll();
-	var form = $("#kualiForm").serialize();
-	$.watermark.showAll();
-	$.ajax({
-		type: "POST",
-		url: "../spring/uitest",
-		data: form,
-		success: function(data){
-			var pageHtml = $("#viewpage_div", data);
-			$("#viewpage_div").replaceWith(pageHtml);
+	$("#kualiForm").ajaxSubmit({
+		success: function(response){
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = response;
+			var page = $("#viewpage_div", tempDiv);
+			$("#viewpage_div").replaceWith(page);
 			$("#formComplete").html("");
+
 		}
 	});
+}
+
+function validateAndSubmit(){
+	$.watermark.hideAll();
+	if($("#kualiForm").valid()){
+		$.watermark.showAll();
+		submitForm();
+	}
+	else{
+		$.watermark.showAll();
+	}
+}
+
+function saveForm(){
+	writeHiddenToForm("methodToCall", "save");
+	validateAndSubmit();
 }
 
 function saveScrollPosition() {
@@ -457,6 +470,8 @@ function setMethodToCall(methodToCall) {
  *          value for the input field to write
  */
 function writeHiddenToForm(propertyName, propertyValue) {
+	//removing because of performFinalize bug
+	$('input[name="' +propertyName + '"]').remove();
 	$("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo($("#formComplete"));
 }
 

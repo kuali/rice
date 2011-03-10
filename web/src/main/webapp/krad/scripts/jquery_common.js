@@ -49,6 +49,7 @@ $(document).ready(function() {
 	
 	// buttons
 	$( "input:submit" ).button();
+	$( "input:button" ).button();
 	
 	// hide loading indicator
 	//doLoading(false);

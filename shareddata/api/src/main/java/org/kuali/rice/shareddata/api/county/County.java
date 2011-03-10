@@ -113,7 +113,7 @@ public final class County implements CountyContract, ModelObjectComplete {
     }
 
     /**
-     * This builder constructs an Parameter enforcing the constraints of the {@link CountyContract}.
+     * This builder constructs an County enforcing the constraints of the {@link CountyContract}.
      */
     public static class Builder implements CountyContract, ModelBuilder, Serializable {
 
@@ -133,7 +133,7 @@ public final class County implements CountyContract, ModelObjectComplete {
         }
 
         /**
-         * creates a State with the required fields.
+         * creates a County Builder with the required fields.
          */
         public static Builder create(String code, String name, String countryCode, String stateCode) {
             final Builder builder = new Builder(code, name, countryCode, stateCode);
@@ -142,7 +142,7 @@ public final class County implements CountyContract, ModelObjectComplete {
         }
 
         /**
-         * creates a Parameter from an existing {@link CountyContract}.
+         * creates a County Builder from an existing {@link CountyContract}.
          */
         public static Builder create(CountyContract contract) {
             final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode(), contract.getStateCode());
@@ -155,6 +155,11 @@ public final class County implements CountyContract, ModelObjectComplete {
             return code;
         }
 
+        /**
+         * Sets the code to be used for the County created from this Builder.
+         * @param code String code for a County
+         * @throws IllegalArgumentException if the passed in code is null or a blank String.
+         */
         public void setCode(String code) {
             if (StringUtils.isBlank(code)) {
                 throw new IllegalArgumentException("code is blank");
@@ -168,6 +173,11 @@ public final class County implements CountyContract, ModelObjectComplete {
             return name;
         }
 
+        /**
+         * Sets the full name of the County created from this Builder.
+         * @param name String representing the full name for the County
+         * @throws IllegalArgumentException if the passed in name is null or a blank String.
+         */
         public void setName(String name) {
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
@@ -181,6 +191,12 @@ public final class County implements CountyContract, ModelObjectComplete {
             return countryCode;
         }
 
+        /**
+         * Sets the Country code to be associated with the County created from this Builder.
+         * @param countryCode String representing the Country Code
+         * @throws IllegalArgumentException if the passed in countryCode is null or a blank String.
+         * @see org.kuali.rice.shareddata.api.country.CountryContract
+         */
         public void setCountryCode(String countryCode) {
             if (StringUtils.isBlank(countryCode)) {
                 throw new IllegalArgumentException("countryCode is blank");
@@ -194,6 +210,12 @@ public final class County implements CountyContract, ModelObjectComplete {
             return stateCode;
         }
 
+        /**
+         * Sets the State code to be associated with the County created from this Builder.
+         * @param stateCode String representing the State code
+         * @throws  IllegalArgumentException if the passed in statecode is null or a blank String.
+         * @see org.kuali.rice.shareddata.api.state.StateContract
+         */
         public void setStateCode(String stateCode) {
             if (StringUtils.isBlank(stateCode)) {
                 throw new IllegalArgumentException("stateCode is blank");
@@ -207,6 +229,10 @@ public final class County implements CountyContract, ModelObjectComplete {
             return active;
         }
 
+        /**
+         * Sets the active flag for the County created from this Builder.
+         * @param active
+         */
         public void setActive(boolean active) {
             this.active = active;
         }

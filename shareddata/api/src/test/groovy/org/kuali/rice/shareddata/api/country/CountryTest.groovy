@@ -41,7 +41,7 @@ class CountryTest {
   @Test
   public void testCountryBuilderPassedInParams() {
     //No assertions, just test whether the Builder gives us a Country object
-    Country country = Country.Builder.create("US", null, "United States", false, true).build()
+    Country.Builder.create("US", null, "United States", false, true).build()
   }
 
   @Test
@@ -60,12 +60,14 @@ class CountryTest {
     }).build()
   }
 
+  @Test
   public void testCountryBuilderNullCountryCode() {
     shouldFail(IllegalArgumentException.class) {
       Country.Builder.create(null, null, "United States", false, true)
     }
   }
 
+  @Test
   public void testCountryBuilderEmptyCountryCode() {
     shouldFail(IllegalArgumentException.class) {
       Country.Builder.create("  ", null, "United States", false, true)

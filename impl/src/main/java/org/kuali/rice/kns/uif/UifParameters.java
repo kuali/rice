@@ -26,6 +26,7 @@ public class UifParameters {
 
 	public static final String BASE_LOOKUP_URL = "baseLookupUrl";
 	public static final String METHOD_TO_CALL = "methodToCall";
+	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
 	public static final String OBJECT_CLASS_NAME = "objectClassName";
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";

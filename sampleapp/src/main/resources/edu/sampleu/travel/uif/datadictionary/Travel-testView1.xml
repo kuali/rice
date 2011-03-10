@@ -79,7 +79,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="control">
               <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
             </property>
-            <property name="fieldLookup.objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:required="true" p:maxLength="25">
             <property name="control">

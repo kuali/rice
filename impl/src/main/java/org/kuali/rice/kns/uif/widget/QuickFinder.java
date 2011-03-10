@@ -34,7 +34,7 @@ public class QuickFinder extends WidgetBase {
 
 	private String baseLookupUrl;
 
-	private String objectClassName;
+	private String dataObjectClassName;
 	private String viewId;
 	private String viewName;
 
@@ -61,8 +61,8 @@ public class QuickFinder extends WidgetBase {
 
 		quickfinderActionField.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
 
-		if (StringUtils.isNotBlank(objectClassName)) {
-			quickfinderActionField.addActionParameter(UifParameters.OBJECT_CLASS_NAME, objectClassName);
+		if (StringUtils.isNotBlank(dataObjectClassName)) {
+			quickfinderActionField.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
 			setRender(true);
 		}
@@ -91,12 +91,12 @@ public class QuickFinder extends WidgetBase {
 		this.baseLookupUrl = baseLookupUrl;
 	}
 
-	public String getObjectClassName() {
-		return this.objectClassName;
+	public String getDataObjectClassName() {
+		return this.dataObjectClassName;
 	}
 
-	public void setObjectClassName(String objectClassName) {
-		this.objectClassName = objectClassName;
+	public void setDataObjectClassName(String dataObjectClassName) {
+		this.dataObjectClassName = dataObjectClassName;
 	}
 
 	public String getViewId() {

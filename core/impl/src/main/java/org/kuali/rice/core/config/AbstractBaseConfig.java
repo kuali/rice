@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.core.config;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.RiceUtilities;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.RiceUtilities;
 
 /**
  * This abstract class implements all the convenience config methods that
@@ -163,10 +163,6 @@ public abstract class AbstractBaseConfig implements Config {
 
     public Boolean getOutBoxOn() {
         return Boolean.valueOf(getProperty(Config.OUT_BOX_MODE));
-    }
-
-    public String getPortalShowSampleApp() {
-        return getProperty(Config.PORTAL_SHOW_SAMPLE_APP);
     }
 
     public Integer getRefreshRate() {

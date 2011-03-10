@@ -5,7 +5,7 @@
     <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
-      <artifact name="rice-web:war exploded">
+      <artifact name="rice-sampleapp:war exploded">
         <settings>
           <option name="CONTEXT_PATH" value="/kr-dev" />
         </settings>
@@ -55,7 +55,7 @@
     </ConfigurationWrapper>
     <method>
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="rice-web:war exploded" />
+        <artifact name="rice-sampleapp:war exploded" />
       </option>
     </method>
   </configuration>

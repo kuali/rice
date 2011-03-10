@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,8 +149,6 @@ public interface Config {
 	
 	public static final String OUT_BOX_MODE = "actionlist.outbox";
 
-	public static final String PORTAL_SHOW_SAMPLE_APP = "portal.show.sample.app";
-	
 	public void parseConfig() throws IOException;
 
 	public String getDailyEmailFirstDeliveryDate();
@@ -236,12 +233,6 @@ public interface Config {
 	public String getKeystoreFile();
 
 	public String getDocumentLockTimeout();
-
-	/**
-	 * This has to be a string because BooleanS don't work when accessed through 
-	 * ConfigProperties like ${ConfigProperties.portal.show.sample.app} in JSPs.
-	 */
-	public String getPortalShowSampleApp();
 	
     public Boolean getEmailReminderLifecycleEnabled();
 

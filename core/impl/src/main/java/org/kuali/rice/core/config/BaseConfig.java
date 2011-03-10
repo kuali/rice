@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +15,11 @@
  */
 package org.kuali.rice.core.config;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.RiceUtilities;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,11 +32,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.RiceUtilities;
 
 /**
  * Abstract base hierarchical config implementation. Loads a hierarchy configs,
@@ -291,11 +290,7 @@ public abstract class BaseConfig implements Config {
     public String getDocumentLockTimeout() {
         return getProperty(Config.DOCUMENT_LOCK_TIMEOUT);
     }
-    
-    public String getPortalShowSampleApp() {
-    	return getProperty(Config.PORTAL_SHOW_SAMPLE_APP);
-    }
-    
+
     public Boolean getEmailReminderLifecycleEnabled() {
         return Boolean.valueOf(getProperty(ENABLE_EMAIL_REMINDER_LIFECYCLE));
     }

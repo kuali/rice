@@ -127,6 +127,9 @@
 		<surefire.plugin.version>2.7.2</surefire.plugin.version>
         <failsafe.plugin.version>2.7.2</failsafe.plugin.version>
         <source.plugin.version>2.1.2</source.plugin.version>
+
+        <web.launch.context.path>/kr-dev</web.launch.context.path>
+        <web.launch.spring.file></web.launch.spring.file>
 	</properties>
 
 	<build>
@@ -550,11 +553,64 @@
 						</entries>
 					</configuration>
 				</plugin>
-				<plugin>
-					<groupId>org.mortbay.jetty</groupId>
-					<artifactId>jetty-maven-plugin</artifactId>
-					<version>${jetty.version}</version>
-				</plugin>
+
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty.version}</version>
+                    <configuration>
+                        <webAppConfig>
+                            <contextPath>${web.launch.context.path}</contextPath>
+                        </webAppConfig>
+                        <systemProperties>
+                            <systemProperty>
+                                <name>web.bootstrap.spring.file</name>
+                                <value>${web.launch.spring.file}</value>
+                            </systemProperty>
+                        </systemProperties>
+                    </configuration>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.oracle</groupId>
+                            <artifactId>ojdbc14</artifactId>
+                            <version>${ojdbc14.version}</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                        <dependency>
+                            <groupId>mysql</groupId>
+                            <artifactId>mysql-connector-java</artifactId>
+                            <version>${mysql-connector-java.version}</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>tomcat-maven-plugin</artifactId>
+                    <version>1.1</version>
+                    <configuration>
+                        <path>${web.launch.context.path}</path>
+                        <systemProperties>
+                            <swallowOutput>false</swallowOutput>
+                            <web.bootstrap.spring.file>${web.launch.spring.file}</web.bootstrap.spring.file>
+                        </systemProperties>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.oracle</groupId>
+                            <artifactId>ojdbc14</artifactId>
+                            <version>${ojdbc14.version}</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                        <dependency>
+                            <groupId>mysql</groupId>
+                            <artifactId>mysql-connector-java</artifactId>
+                            <version>${mysql-connector-java.version}</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                    </dependencies>
+                </plugin>
 
                 <plugin>
                     <groupId>org.apache.cxf</groupId>

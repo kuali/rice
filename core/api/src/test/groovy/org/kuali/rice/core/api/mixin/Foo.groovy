@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType
 @XmlType(name = Foo.Constants.TYPE_NAME, propOrder = [
     Foo.Elements.BAR,
 ])
-@RemoteableModelObject
+//@RemoteableModelObject
 class Foo extends Bleh {
 
     def String bar = "bar"

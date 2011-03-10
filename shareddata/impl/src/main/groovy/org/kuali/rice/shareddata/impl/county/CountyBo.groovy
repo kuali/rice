@@ -67,7 +67,8 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyContract, 
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
-     * @return the immutable object
+     * @return An immutable County if the passed in mutable is not null.  If the mutable reference was null,
+     * then null is returned.
      */
     static County to(CountyBo bo) {
         if (bo == null) {
@@ -80,7 +81,8 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyContract, 
     /**
      * Converts a immutable object to its mutable counterpart
      * @param im immutable object
-     * @return the mutable bo
+     * @return a new mutable CountyBo if the passed in immutable is not null.  If the immutable reference was null,
+     * then null is returned.
      */
     static CountyBo from(County im) {
         if (im == null) {

@@ -592,7 +592,6 @@
                     <configuration>
                         <path>${web.launch.context.path}</path>
                         <systemProperties>
-                            <swallowOutput>false</swallowOutput>
                             <web.bootstrap.spring.file>${web.launch.spring.file}</web.bootstrap.spring.file>
                         </systemProperties>
                     </configuration>

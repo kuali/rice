@@ -1,16 +1,17 @@
 /*
- * Copyright 2004 Jonathan M. Lehr
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.opensource.org/licenses/ecl2.php
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- * 
- * MODIFIED BY THE KUALI FOUNDATION
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
  
 // begin Kuali Foundation modification
@@ -33,7 +34,15 @@ import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is the base form which implements the PojoForm interface.
@@ -435,7 +444,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	    customInitMaxUploadSizes();
     	    // if it's still empty, add the default
     	    if ( maxUploadFileSizes.isEmpty() ) {
-    	        addMaxUploadSize(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.MAX_UPLOAD_SIZE_PARM_NM));
+    	        addMaxUploadSize(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.MAX_UPLOAD_SIZE_PARM_NM));
     	    }
     	}	
     }

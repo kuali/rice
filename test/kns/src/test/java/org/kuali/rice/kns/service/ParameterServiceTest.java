@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.service;
 
 import org.junit.Test;
@@ -33,11 +34,6 @@ import static org.junit.Assert.assertNotNull;
 @NeedsTransactionSupport
 public class ParameterServiceTest extends KNSTestCase {
 
-    /**
-     * This method tests saving notes when using the {@link RiceKNSDefaultUserDAOImpl} as the implementation of {@link PersonDao}
-     * 
-     * @throws Exception
-     */
     @Test
     public void testRetrieveParameter() throws Exception {
     	String namespaceCode = "KR-NS";
@@ -45,7 +41,7 @@ public class ParameterServiceTest extends KNSTestCase {
     	String parameterName = "RESULTS_LIMIT";
     	String parameterValue = "200";
     	
-    	Parameter resultsLimitParam = CoreFrameworkServiceLocator.getClientParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
+    	Parameter resultsLimitParam = CoreFrameworkServiceLocator.getParameterService().getParameter(namespaceCode, parameterDetailTypeCode, parameterName);
     	assertNotNull("RESULTS_LIMIT should be non-null", resultsLimitParam);
     	assertEquals(parameterValue, resultsLimitParam.getValue());
     	

@@ -17,10 +17,14 @@
 package org.kuali.rice.kew.engine;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessResult;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.transition.Transition;
 import org.kuali.rice.kew.engine.transition.TransitionEngine;
@@ -28,7 +32,14 @@ import org.kuali.rice.kew.engine.transition.TransitionEngineFactory;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.RouteManagerException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.postprocessor.*;
+import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.postprocessor.PostProcessor;
+import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -36,7 +47,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kns.util.KNSConstants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -54,7 +69,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	private boolean runPostProcessorLogic = true;
     private RouteNodeService routeNodeService;
     private RouteHeaderService routeHeaderService;
-    private ClientParameterService clientParameterService;
+    private ParameterService parameterService;
 
     public StandardWorkflowEngine() {}
 
@@ -712,7 +727,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	}
 
     private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {
-	    String maxNodesConstant = getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
+	    String maxNodesConstant = getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
 	    int maxNodes = (org.apache.commons.lang.StringUtils.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
 	    return engineState.getCompleteNodeInstances().size() > maxNodes;
 	}
@@ -725,8 +740,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		return routeHeaderService;
 	}
 
-    protected ClientParameterService getClientParameterService() {
-		return clientParameterService;
+    protected ParameterService getParameterService() {
+		return parameterService;
 	}
 
     public void setRouteNodeService(RouteNodeService routeNodeService) {
@@ -737,7 +752,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         this.routeHeaderService = routeHeaderService;
     }
 
-    public void setClientParameterService(ClientParameterService clientParameterService) {
-        this.clientParameterService = clientParameterService;
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
     }
 }

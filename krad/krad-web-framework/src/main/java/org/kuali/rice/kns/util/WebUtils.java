@@ -1,12 +1,12 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,13 +27,17 @@ import org.apache.struts.upload.CommonsMultipartRequestHandler;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.datadictionary.*;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
+import org.kuali.rice.kns.datadictionary.DataDictionary;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -57,7 +61,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -710,7 +722,7 @@ public final class WebUtils {
         if (StringUtils.isBlank(fieldValue)) {
             return false;
         }
-        ClientParameterService parameterService = CoreFrameworkServiceLocator.getClientParameterService();
+        ParameterService parameterService = CoreFrameworkServiceLocator.getParameterService();
         Collection<String> sensitiveDataPatterns = parameterService.getParameterValuesAsString(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
         for (String pattern : sensitiveDataPatterns) {

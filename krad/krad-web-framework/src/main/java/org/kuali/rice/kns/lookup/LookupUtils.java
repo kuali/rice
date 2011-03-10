@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +29,11 @@ import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -39,7 +44,17 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * Not a static utility class for Lookup related utilities and helper methods.
@@ -206,7 +221,7 @@ public class LookupUtils {
      *
      */
     private static Integer getApplicationSearchResultsLimit() {
-        String limitString = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        String limitString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -230,7 +245,7 @@ public class LookupUtils {
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
-        String limitString = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
+        String limitString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -460,7 +475,7 @@ public class LookupUtils {
      */
     private static void setFieldDirectInquiry(Field field) {
         if (StringUtils.isNotBlank(field.getFieldConversions())) {
-            boolean directInquiriesEnabled = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
+            boolean directInquiriesEnabled = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
             if (directInquiriesEnabled) {
                 if (StringUtils.isNotBlank(field.getFieldConversions())) {
                     String fieldConversions = field.getFieldConversions();

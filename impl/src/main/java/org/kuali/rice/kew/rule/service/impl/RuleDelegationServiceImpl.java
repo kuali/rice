@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.rule.service.impl;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,7 +38,11 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -168,7 +173,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     public List findByResponsibilityId(Long responsibilityId, boolean ignoreCache) {
     	if ( responsibilityId != null ) {
     		PerformanceLogger performanceLogger = new PerformanceLogger();
-    		Boolean cachingRules = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_DLGN_CACHE_IND);
+    		Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_DLGN_CACHE_IND);
     		if (cachingRules.booleanValue()) {
     			List<RuleDelegation> rules = getListFromCache(responsibilityId);
     			if (rules != null && !ignoreCache) {

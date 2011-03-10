@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.actionlist.web;
 
 import org.kuali.rice.core.config.ConfigContext;
@@ -30,7 +31,11 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 
 /**
@@ -347,8 +352,8 @@ public class ActionListForm extends KualiForm {
         //if (documentPopupInd) {
         //    documentPopup = "true";
         //}
-        setRouteLogPopup(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
-        setDocumentPopup(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
+        setRouteLogPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
+        setDocumentPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
         request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
 		super.populate(request);
 	}

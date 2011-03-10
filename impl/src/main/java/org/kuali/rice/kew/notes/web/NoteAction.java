@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.notes.web;
 
 import org.apache.commons.lang.StringUtils;
@@ -42,7 +43,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -203,7 +208,7 @@ public class NoteAction extends KewKualiAction {
         if (! "workflowReport".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "add".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "cancel".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "edit".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "delete".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "save".equalsIgnoreCase(noteForm.getMethodToCall())) {
             retrieveNoteList(request, noteForm);
         }
-        boolean showAttachments = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS_IND);
+        boolean showAttachments = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS_IND);
         noteForm.setShowAttachments(new Boolean(showAttachments));
         return null;
     }

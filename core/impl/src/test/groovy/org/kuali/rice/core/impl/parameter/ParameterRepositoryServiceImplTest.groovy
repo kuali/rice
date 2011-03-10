@@ -1,14 +1,35 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.core.impl.parameter
 
 import groovy.mock.interceptor.MockFor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.kuali.rice.core.api.parameter.EvaluationOperator
+import org.kuali.rice.core.api.parameter.Parameter
+import org.kuali.rice.core.api.parameter.ParameterContract
+import org.kuali.rice.core.api.parameter.ParameterKey
+import org.kuali.rice.core.api.parameter.ParameterType
+import org.kuali.rice.core.api.parameter.ParameterTypeContract
 import org.kuali.rice.kns.bo.PersistableBusinessObject
 import org.kuali.rice.kns.service.BusinessObjectService
-import org.kuali.rice.core.api.parameter.*
 
-class ParameterServiceImplTest {
+class ParameterRepositoryServiceImplTest {
     private def MockFor mock
 
     //importing the should fail method since I don't want to extend
@@ -19,13 +40,13 @@ class ParameterServiceImplTest {
     private static final ParameterKey key =
         ParameterKey.create("BORG_HUNT", "TNG", "C", "SHIELDS_ON");
 
-    private ParameterServiceImpl pservice;
+    private ParameterRepositoryServiceImpl pservice;
     private ParameterBo bo = ParameterBo.from(parameter)
 
     @Before
     void setupBoServiceMockContext() {
         mock = new MockFor(BusinessObjectService)
-        pservice = new ParameterServiceImpl()
+        pservice = new ParameterRepositoryServiceImpl()
     }
 
     @Test

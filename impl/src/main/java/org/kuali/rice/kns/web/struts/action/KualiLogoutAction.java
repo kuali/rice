@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class KualiLogoutAction extends Action {
         // can't check for the existence of a simple parameter, so catch exception and
         // defualt to config parameter
         try {
-            redirectString = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
+            redirectString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
         }
         catch(IllegalArgumentException ex) {
             redirectString = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.LOGOFF_REDIRECT_URL_PROPERTY);

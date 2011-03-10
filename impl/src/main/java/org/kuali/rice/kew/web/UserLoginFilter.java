@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +17,7 @@ package org.kuali.rice.kew.web;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.KualiConfigurationService;
@@ -35,7 +34,12 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +60,7 @@ public class UserLoginFilter implements Filter {
 	
 	private IdentityManagementService identityManagementService;
 	private KualiConfigurationService kualiConfigurationService;
-	private ClientParameterService parameterService;
+	private ParameterService parameterService;
 	
 	private FilterConfig filterConfig;
 	
@@ -202,9 +206,9 @@ public class UserLoginFilter implements Filter {
     	return this.kualiConfigurationService;
     }
     
-    private ClientParameterService getParameterService() {
+    private ParameterService getParameterService() {
     	if (this.parameterService == null) {
-    		this.parameterService = CoreFrameworkServiceLocator.getClientParameterService();
+    		this.parameterService = CoreFrameworkServiceLocator.getParameterService();
     	}
     	
     	return this.parameterService;

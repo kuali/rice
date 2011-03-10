@@ -1,12 +1,12 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.document.authorization;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -30,7 +30,7 @@ import java.util.Set;
 public class DocumentPresentationControllerBase implements DocumentPresentationController {
 //    private static Log LOG = LogFactory.getLog(DocumentPresentationControllerBase.class);
 
-	private static transient ClientParameterService parameterService;
+	private static transient ParameterService parameterService;
   
     public boolean canInitiate(String documentTypeName) {
     	return true;
@@ -282,9 +282,9 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	return documentActions;
     }
 
-	protected ClientParameterService getParameterService() {
+	protected ParameterService getParameterService() {
 		if ( parameterService == null ) {
-			parameterService = CoreFrameworkServiceLocator.getClientParameterService();
+			parameterService = CoreFrameworkServiceLocator.getParameterService();
 		}
 		return parameterService;
 	}

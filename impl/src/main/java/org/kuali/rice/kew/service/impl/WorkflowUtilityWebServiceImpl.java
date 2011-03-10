@@ -672,7 +672,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         // If this app constant is set to true, then we will attempt to simulate activation of non-active requests before
         // attempting to deactivate them, this is in order to address the force action issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
-        Boolean activateFirst = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        Boolean activateFirst = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         if (activateFirst == null) {
             activateFirst = Boolean.FALSE;
         }

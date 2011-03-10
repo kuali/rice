@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,8 +118,8 @@ public class KualiForm extends PojoFormBase {
         }
     }
         
-    private static Boolean ENABLE_FIELD_LEVEL_HELP_IND = null;
-    
+    private static Boolean ENABLE_FIELD_LEVEL_HELP_IND;
+
     protected void populateBackLocation(HttpServletRequest request){
         if (getParameter(request, "returnLocation") != null) {
             setBackLocation(getParameter(request, "returnLocation"));
@@ -134,10 +134,10 @@ public class KualiForm extends PojoFormBase {
      */
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
     	if ( ENABLE_FIELD_LEVEL_HELP_IND == null ) {
-    		ENABLE_FIELD_LEVEL_HELP_IND = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE,
-                    KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND);
+    		ENABLE_FIELD_LEVEL_HELP_IND = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE,
+                    KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND, Boolean.FALSE);
     	}
-    	setFieldLevelHelpEnabled( ENABLE_FIELD_LEVEL_HELP_IND.booleanValue() );
+    	setFieldLevelHelpEnabled( ENABLE_FIELD_LEVEL_HELP_IND);
     }
 
     public Map getDisplayedErrors() {

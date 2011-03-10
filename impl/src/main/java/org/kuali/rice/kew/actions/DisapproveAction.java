@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.actions;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +35,11 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -162,7 +167,7 @@ public class DisapproveAction extends ActionTakenEvent {
     //generate notifications to all people that have approved the document including the initiator
     private void generateNotifications(RouteNodeInstance notificationNodeInstance)
     {
-        String groupName = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(
+        String groupName = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
                 KEWConstants.KEW_NAMESPACE,
                 KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
                 KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);

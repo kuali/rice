@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.quicklinks.dao.impl;
 
 import org.apache.ojb.broker.PersistenceBroker;
@@ -130,7 +131,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectDistinctDocumentTypes.setString(1, principalId);
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
 
-                    String documentNames = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
+                    String documentNames = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
                     if (documentNames != null) {
                         // TODO Should this happen???
                         documentNames = documentNames.trim();

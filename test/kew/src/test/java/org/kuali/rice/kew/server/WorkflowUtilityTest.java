@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +24,24 @@ import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.docsearch.*;
-import org.kuali.rice.kew.dto.*;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
+import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
+import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
+import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
+import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RuleDTO;
+import org.kuali.rice.kew.dto.RuleExtensionDTO;
+import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RuleResponsibilityDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -42,7 +57,13 @@ import org.kuali.rice.kns.util.KNSConstants;
 
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -550,7 +571,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
      */
     @Test public void testIsLastApproverActivation() throws Exception {
         // first test without the parameter set
-        Parameter lastApproverActivateParameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        Parameter lastApproverActivateParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
         assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getValue()));
         String originalParameterValue = lastApproverActivateParameter.getValue();
@@ -637,9 +658,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String parameterValue = "Y";
         Parameter.Builder b = Parameter.Builder.create(lastApproverActivateParameter);
         b.setValue(parameterValue);
-        CoreFrameworkServiceLocator.getClientParameterService().updateParameter(b.build());
+        CoreFrameworkServiceLocator.getParameterService().updateParameter(b.build());
 
-        lastApproverActivateParameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        lastApproverActivateParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
         assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getValue());
 
@@ -699,7 +720,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // set parameter value back to it's original value
         Parameter.Builder b2 = Parameter.Builder.create(lastApproverActivateParameter);
         b2.setValue("");
-        CoreFrameworkServiceLocator.getClientParameterService().updateParameter(b2.build());
+        CoreFrameworkServiceLocator.getParameterService().updateParameter(b2.build());
     }
 
     @Test public void testIsFinalApprover() throws Exception {

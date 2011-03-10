@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +75,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName)));
 
-        Parameter orig = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        Parameter orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
 
         // adjust the app constant to be greater than custom generator value
         adjustResultSetCapApplicationConstantValue(orig, CustomDocumentSearchGenerator.RESULT_SET_LIMIT + 1);
@@ -109,7 +108,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 
         ps.setComponentCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
         ps.setEvaluationOperator(EvaluationOperator.ALLOW);
-        CoreFrameworkServiceLocator.getClientParameterService().updateParameter(ps.build());
+        CoreFrameworkServiceLocator.getParameterService().updateParameter(ps.build());
     }
 
     /**

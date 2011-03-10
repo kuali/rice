@@ -1,14 +1,17 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  * http://www.opensource.org/licenses/ecl2.php
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS
- * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.kuali.rice.kns.rules;
 
@@ -30,10 +33,24 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.TransactionalDocument;
-import org.kuali.rice.kns.rule.*;
+import org.kuali.rice.kns.rule.AddAdHocRoutePersonRule;
+import org.kuali.rice.kns.rule.AddAdHocRouteWorkgroupRule;
+import org.kuali.rice.kns.rule.AddNoteRule;
+import org.kuali.rice.kns.rule.ApproveDocumentRule;
+import org.kuali.rice.kns.rule.RouteDocumentRule;
+import org.kuali.rice.kns.rule.SaveDocumentRule;
+import org.kuali.rice.kns.rule.SendAdHocRequestsRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
-import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.*;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 
@@ -489,7 +506,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     	}
     	
     	boolean patternFound = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
-		boolean warnForSensitiveData = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+		boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
     	if (patternFound && !warnForSensitiveData) {

@@ -30,7 +30,7 @@ import java.util.Collection;
  */
 @WebService(name = "parameterServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface ParameterService {
+public interface ParameterRepositoryService {
 
     /**
      * This will create a {@link Parameter} exactly like the parameter passed in.

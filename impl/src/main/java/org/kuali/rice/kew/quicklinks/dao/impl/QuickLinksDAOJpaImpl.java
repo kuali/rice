@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.quicklinks.dao.impl;
 
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
@@ -67,7 +68,7 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
     @Override
 	@SuppressWarnings("unchecked")
     public List<InitiatedDocumentType> getInitiatedDocumentTypesList(final String principalId) {
-        String documentNames = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
+        String documentNames = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
         if (documentNames != null) {
             documentNames = documentNames.trim();
         }

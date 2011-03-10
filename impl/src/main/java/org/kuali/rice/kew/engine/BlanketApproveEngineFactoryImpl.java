@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.engine;
 
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.springframework.beans.factory.InitializingBean;
@@ -33,7 +33,7 @@ public class BlanketApproveEngineFactoryImpl implements BlanketApproveEngineFact
 
 	private RouteNodeService routeNodeService;
     private RouteHeaderService routeHeaderService;
-    private ClientParameterService clientParameterService;
+    private ParameterService parameterService;
     
 	/**
 	 * Ensures that all dependencies were injected into this factory.
@@ -49,8 +49,8 @@ public class BlanketApproveEngineFactoryImpl implements BlanketApproveEngineFact
 		if (routeHeaderService == null) {
 			throw new IllegalStateException("routeHeaderService not properly injected, was null.");
 		}
-		if (clientParameterService == null) {
-			throw new IllegalStateException("clientParameterService not properly injected, was null.");
+		if (parameterService == null) {
+			throw new IllegalStateException("parameterService not properly injected, was null.");
 		}
 	}
 
@@ -64,7 +64,7 @@ public class BlanketApproveEngineFactoryImpl implements BlanketApproveEngineFact
 		BlanketApproveEngine engine = new BlanketApproveEngine(config);
 		engine.setRouteNodeService(getRouteNodeService());
 		engine.setRouteHeaderService(getRouteHeaderService());
-		engine.setClientParameterService(getClientParameterService());
+		engine.setParameterService(getParameterService());
 		engine.setRunPostProcessorLogic(runPostProcessor);
 		return engine;
 	}
@@ -87,9 +87,9 @@ public class BlanketApproveEngineFactoryImpl implements BlanketApproveEngineFact
 		this.routeHeaderService = routeHeaderService;
 	}
 
-	public void setClientParameterService(
-			ClientParameterService clientParameterService) {
-		this.clientParameterService = clientParameterService;
+	public void setParameterService(
+            ParameterService parameterService) {
+		this.parameterService = parameterService;
 	}
 
 	protected final RouteNodeService getRouteNodeService() {
@@ -100,8 +100,8 @@ public class BlanketApproveEngineFactoryImpl implements BlanketApproveEngineFact
 		return this.routeHeaderService;
 	}
 
-	protected final ClientParameterService getClientParameterService() {
-		return this.clientParameterService;
+	protected final ParameterService getParameterService() {
+		return this.parameterService;
 	}
 
 }

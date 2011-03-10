@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -400,7 +400,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
 	
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
-		Boolean b =  CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		Boolean b =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (b == null || b) {
 			return getIdentityManagementService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
 		}

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.edl.components;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +21,11 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.kew.edl.*;
+import org.kuali.rice.kew.edl.EDLContext;
+import org.kuali.rice.kew.edl.EDLModelComponent;
+import org.kuali.rice.kew.edl.EDLXmlUtils;
+import org.kuali.rice.kew.edl.RequestParser;
+import org.kuali.rice.kew.edl.UserAction;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -35,7 +40,11 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -74,7 +83,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			style.appendChild(dom.createTextNode(styleName));
 
 			Element showAttachments = EDLXmlUtils.getOrCreateChildElement(documentState, "showAttachments", true);
-			boolean showConstants = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS_IND);
+			boolean showConstants = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS_IND);
 
 			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showConstants).toString()));
 

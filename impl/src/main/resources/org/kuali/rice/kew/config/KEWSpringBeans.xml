@@ -65,9 +65,9 @@
 		<property name="serviceName" value="mailer" />
 	</bean>
 
-    <bean id="clientParameterService"
+    <bean id="parameterService"
 		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="clientParameterService" />
+		<property name="serviceName" value="parameterService" />
 	</bean>
 	
 	<bean id="KEWConstants" class="org.kuali.rice.core.util.ConstantsMap">
@@ -164,19 +164,19 @@
 	<bean id="workflowEngine" class="org.kuali.rice.kew.engine.StandardWorkflowEngine" lazy-init="true">
         <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
         <property name="routeNodeService" ref="enRouteNodeService" />
-        <property name="clientParameterService" ref="clientParameterService" />
+        <property name="parameterService" ref="parameterService" />
     </bean>
 
     <bean id="simulationEngine" class="org.kuali.rice.kew.engine.simulation.SimulationEngine" lazy-init="true" scope="prototype">
         <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
         <property name="routeNodeService" ref="enRouteNodeService" />
-        <property name="clientParameterService" ref="clientParameterService" />
+        <property name="parameterService" ref="parameterService" />
     </bean>
     
     <bean id="blanketApproveEngineFactory" class="org.kuali.rice.kew.engine.BlanketApproveEngineFactoryImpl" lazy-init="true">
         <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
         <property name="routeNodeService" ref="enRouteNodeService" />
-        <property name="clientParameterService" ref="clientParameterService" />
+        <property name="parameterService" ref="parameterService" />
     </bean>
 
 	<bean id="enRouteNodeService" class="org.kuali.rice.kew.engine.node.service.impl.RouteNodeServiceImpl" lazy-init="true">

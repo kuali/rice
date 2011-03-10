@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.rule.service.impl;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -34,12 +35,22 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.rule.*;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleRoutingDefinition;
+import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.rule.dao.RuleResponsibilityDAO;
-import org.kuali.rice.kew.rule.service.*;
+import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
+import org.kuali.rice.kew.rule.service.RuleDelegationCacheProcessor;
+import org.kuali.rice.kew.rule.service.RuleDelegationService;
+import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -62,7 +73,17 @@ import javax.xml.namespace.QName;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 
 public class RuleServiceImpl implements RuleService {
@@ -134,7 +155,7 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
@@ -234,7 +255,7 @@ public class RuleServiceImpl implements RuleService {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
@@ -318,7 +339,7 @@ public class RuleServiceImpl implements RuleService {
         boolean isGenerateRuleArs = false;
         if (isRetroactiveUpdatePermitted) {
         	isGenerateRuleArs = true;
-        	String generateRuleArs = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        	String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         	if (!StringUtils.isBlank(generateRuleArs)) {
         		isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         	}
@@ -485,7 +506,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
-        Boolean cachingRules = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND);
+        Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND);
 
         LOG.info("Entering notifyCacheOfRuleChange.  CachingRules: " + cachingRules + " ; ruleID: " + rule.getRuleBaseValuesId());
         if (!cachingRules.booleanValue()) {
@@ -955,7 +976,7 @@ public class RuleServiceImpl implements RuleService {
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        Boolean cachingRules = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND);
+        Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND);
         if (cachingRules.booleanValue()) {
             //Cache cache = SpringServiceLocator.getCache();
             List<RuleBaseValues> rules = getListFromCache(ruleTemplateName, documentType);
@@ -1351,7 +1372,7 @@ public class RuleServiceImpl implements RuleService {
         private List configs = new ArrayList();
         public static RuleRoutingConfig parse() {
             RuleRoutingConfig config = new RuleRoutingConfig();
-            String constant = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CUSTOM_DOC_TYPES);
+            String constant = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CUSTOM_DOC_TYPES);
             if (!StringUtils.isEmpty(constant)) {
                 String[] ruleConfigs = constant.split(",");
                 for (String ruleConfig : ruleConfigs) {

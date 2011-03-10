@@ -49,7 +49,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 
     public String getApplicationEmailAddress() {
         // first check the configured value
-        String fromAddress = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+        String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
         // if there's no value configured, use the default
         if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
             fromAddress = defaultEmailFromAddress;

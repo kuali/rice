@@ -35,7 +35,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.StyleXmlParser;
 import org.kuali.rice.kew.xml.export.StyleXmlExporter;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Templates;
@@ -169,7 +174,7 @@ public class StyleServiceImpl implements StyleService {
                 return null;
             }
 
-            boolean useXSLTC = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND);
+            boolean useXSLTC = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND);
             if (useXSLTC) {
                 LOG.info("using xsltc to compile stylesheet");
                 String key = "javax.xml.transform.TransformerFactory";
@@ -186,7 +191,7 @@ public class StyleServiceImpl implements StyleService {
             if (useXSLTC) {
                 factory.setAttribute("translet-name",name);
                 factory.setAttribute("generate-translet",Boolean.TRUE);
-                String debugTransform = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND);
+                String debugTransform = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND);
                 if (debugTransform.trim().equals("Y")) {
                     factory.setAttribute("debug", Boolean.TRUE);
                 }

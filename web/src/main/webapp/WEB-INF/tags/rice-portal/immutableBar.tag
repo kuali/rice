@@ -13,6 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
+
 <%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
 
 <div class="header2">
@@ -37,7 +38,7 @@
       </html:form>
     </c:when>
     <c:otherwise> 
-      <c:set var="backboorEnabled" value="<%=org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(org.kuali.rice.kew.util.KEWConstants.KEW_NAMESPACE, org.kuali.rice.kns.util.KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, org.kuali.rice.kew.util.KEWConstants.SHOW_BACK_DOOR_LOGIN_IND)%>"/>
+      <c:set var="backboorEnabled" value="<%=org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(org.kuali.rice.kew.util.KEWConstants.KEW_NAMESPACE, org.kuali.rice.kns.util.KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, org.kuali.rice.kew.util.KEWConstants.SHOW_BACK_DOOR_LOGIN_IND)%>"/>
       <c:if test="${backboorEnabled}">
         <html:form action="/backdoorlogin.do" method="post" style="margin:0; display:inline">
           <input name="backdoorId" type="text" class="searchbox" size="10" title="Enter your backdoor ID here.">

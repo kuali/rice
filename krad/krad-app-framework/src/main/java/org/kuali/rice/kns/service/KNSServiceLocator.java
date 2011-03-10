@@ -1,8 +1,23 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
-import org.kuali.rice.core.api.parameter.ParameterService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.KualiConfigurationService;
@@ -16,7 +31,6 @@ public class KNSServiceLocator {
     public static final String NOTE_SERVICE = "noteService";
     public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
     public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
-    public static final String PARAMETER_SERVICE = "parameterService";
     public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
     public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "knsApplicationEntityManagerFactory";
     public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
@@ -59,10 +73,6 @@ public class KNSServiceLocator {
 
     public static KualiConfigurationService getKualiConfigurationService() {
         return getService(KUALI_CONFIGURATION_SERVICE);
-    }
-
-    public static ParameterService getParameterService() {
-        return getService(PARAMETER_SERVICE);
     }
 
     public static EntityManagerFactory getEntityManagerFactory() {

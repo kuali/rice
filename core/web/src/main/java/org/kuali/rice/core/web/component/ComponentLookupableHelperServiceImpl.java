@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.kuali.rice.core.web.component;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.component.Component;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
@@ -38,7 +38,7 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
     private static final String CODE = "code";
     private static final String NAMESPACE_CODE = "namespaceCode";
     private static final String NAME = "name";
-    private ClientParameterService parameterService;
+    private ParameterService parameterService;
 
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
@@ -139,7 +139,7 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
         return super.getCustomActionUrls(businessObject, pkNames);
     }
 
-    public void setParameterService(ClientParameterService parameterService) {
+    public void setParameterService(ParameterService parameterService) {
         this.parameterService = parameterService;
     }
 

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,7 +32,13 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -742,14 +749,14 @@ public class StandardDocumentSearchResultProcessor implements
 	}
 
 	public boolean isDocumentHandlerPopup() {
-	    return CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+	    return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KEWConstants.KEW_NAMESPACE,
                 KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
                 KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND);
 	}
 
 	public boolean isRouteLogPopup() {
-		return CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+		return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KEWConstants.KEW_NAMESPACE,
                 KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
                 KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND);

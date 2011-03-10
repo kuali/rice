@@ -695,12 +695,12 @@
         <property name="businessObjectService" ref="businessObjectService" />
     </bean>	
 
-    <bean id="parameterService" class="org.kuali.rice.core.impl.parameter.ParameterServiceImpl">
+    <bean id="parameterRepositoryService" class="org.kuali.rice.core.impl.parameter.ParameterRepositoryServiceImpl">
         <property name="businessObjectService" ref="businessObjectService" />
     </bean>
 
-	<bean id="clientParameterService" class="org.kuali.rice.core.impl.parameter.ClientParameterServiceImpl">
-		<property name="parameterService" ref="parameterService" />
+	<bean id="parameterService" class="org.kuali.rice.core.impl.parameter.ParameterServiceImpl">
+		<property name="parameterRepositoryService" ref="parameterRepositoryService" />
 		<property name="kualiModuleService" ref="kualiModuleService" />
 		<property name="applicationCode" value="${app.namespace}" />
 	</bean>

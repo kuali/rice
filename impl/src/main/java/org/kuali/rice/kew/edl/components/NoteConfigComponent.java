@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +21,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.mail.*;
+import org.kuali.rice.core.mail.EmailBcList;
+import org.kuali.rice.core.mail.EmailBody;
+import org.kuali.rice.core.mail.EmailCcList;
+import org.kuali.rice.core.mail.EmailContent;
+import org.kuali.rice.core.mail.EmailFrom;
+import org.kuali.rice.core.mail.EmailSubject;
+import org.kuali.rice.core.mail.EmailToList;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
@@ -57,7 +62,13 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -78,7 +89,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 	private List<String> to;
 	private List<String> cc = new ArrayList<String>();
 	private List<String> bc = new ArrayList<String>();
-	private static final String DEFAULT_EMAIL_FROM_ADDRESS = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 		NoteForm noteForm = new NoteForm(edlContext.getRequestParser());

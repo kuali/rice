@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.KualiConfigurationService;
@@ -36,8 +36,22 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
-import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.*;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm;
@@ -48,7 +62,15 @@ import org.kuali.rice.kns.web.ui.Row;
 
 import java.security.GeneralSecurityException;
 import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * This class declares many of the common spring injected properties, the get/set-ers for them,
@@ -85,7 +107,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected LookupResultsService lookupResultsService;
     protected String docNum;
     protected KualiConfigurationService configurationService;
-    protected ClientParameterService parameterService;
+    protected ParameterService parameterService;
     protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
 
     /**
@@ -282,14 +304,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
 
-    public ClientParameterService getParameterService() {
+    public ParameterService getParameterService() {
         if (parameterService == null) {
-            parameterService = CoreFrameworkServiceLocator.getClientParameterService();
+            parameterService = CoreFrameworkServiceLocator.getParameterService();
         }
         return parameterService;
     }
 
-    public void setParameterService(ClientParameterService parameterService) {
+    public void setParameterService(ParameterService parameterService) {
         this.parameterService = parameterService;
     }
 

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.docsearch.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
@@ -145,7 +146,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     private int getSearchResultCap(DocumentSearchGenerator docSearchGenerator) {
         int resultCap = docSearchGenerator.getDocumentSearchResultSetLimit();
-        String resultCapValue = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        String resultCapValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         if (!StringUtils.isBlank(resultCapValue)) {
             try {
                 Integer maxResultCap = Integer.parseInt(resultCapValue);
@@ -165,7 +166,7 @@ public class DocumentSearchDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     // TODO delyea: use searchable attribute count here?
     private int getFetchMoreIterationLimit() {
         int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
-        String fetchMoreLimitValue = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
+        String fetchMoreLimitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
         if (!StringUtils.isBlank(fetchMoreLimitValue)) {
             try {
                 fetchMoreLimit = Integer.parseInt(fetchMoreLimitValue);

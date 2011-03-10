@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.ConcreteKeyValue;
@@ -38,7 +38,13 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.bo.*;
+import org.kuali.rice.kns.bo.AdHocRoutePerson;
+import org.kuali.rice.kns.bo.AdHocRouteRecipient;
+import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
+import org.kuali.rice.kns.bo.Attachment;
+import org.kuali.rice.kns.bo.DocumentHeader;
+import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
@@ -52,10 +58,31 @@ import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
-import org.kuali.rice.kns.rule.event.*;
-import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.*;
+import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
+import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
+import org.kuali.rice.kns.rule.event.AddNoteEvent;
+import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
+import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
+import org.kuali.rice.kns.service.AttachmentService;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.KualiRuleService;
+import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.PessimisticLockService;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.NoteType;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.SessionTicket;
+import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.BlankFormFile;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -68,7 +95,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -89,7 +123,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private DocumentHelperService documentHelperService;
     private DocumentService documentService;
     private KualiConfigurationService kualiConfigurationService;
-    private ClientParameterService parameterService;
+    private ParameterService parameterService;
     private PessimisticLockService pessimisticLockService;
     private KualiRuleService kualiRuleService;
     private IdentityManagementService identityManagementService;
@@ -587,7 +621,7 @@ public class KualiDocumentActionBase extends KualiAction {
         boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
 
         // check if warning is configured in which case we will prompt, or if not business rules will thrown an error
-        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
 
@@ -866,7 +900,7 @@ public class KualiDocumentActionBase extends KualiAction {
         disapprovalNoteText = introNoteMessage + reason;
 
         // check for sensitive data in note
-        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(
+        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
         if (warnForSensitiveData) {
@@ -1724,9 +1758,9 @@ public class KualiDocumentActionBase extends KualiAction {
         return this.kualiConfigurationService;
     }
 
-    protected ClientParameterService getParameterService() {
+    protected ParameterService getParameterService() {
         if (parameterService == null) {
-            parameterService = CoreFrameworkServiceLocator.getClientParameterService();
+            parameterService = CoreFrameworkServiceLocator.getParameterService();
         }
         return this.parameterService;
     }

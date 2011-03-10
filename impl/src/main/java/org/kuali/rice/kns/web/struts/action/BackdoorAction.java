@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,7 +137,7 @@ public class BackdoorAction extends KualiAction {
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
 
-    	Boolean showBackdoorLogin = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+    	Boolean showBackdoorLogin = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
         backdoorForm.setShowBackdoorLogin(showBackdoorLogin);
         setFormGroupPermission(backdoorForm, request);
         if (backdoorForm.getGraphic() != null) {

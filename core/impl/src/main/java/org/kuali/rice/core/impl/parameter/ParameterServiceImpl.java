@@ -19,153 +19,209 @@ package org.kuali.rice.core.impl.parameter;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterKey;
-import org.kuali.rice.core.api.parameter.ParameterService;
-import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.util.KNSConstants;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-public final class ParameterServiceImpl implements ParameterService {
-    private static final String SUB_PARAM_SEPARATOR = "=";
+public class ParameterServiceImpl implements ParameterService {
+    private KualiModuleService kualiModuleService;
+    private ParameterRepositoryService parameterRepositoryService;
+    private String applicationCode = KNSConstants.DEFAULT_APPLICATION_CODE;
 
-    private BusinessObjectService businessObjectService;
-
-    @Override 
+    @Override
     public void createParameter(Parameter parameter) {
-        if (parameter == null) {
-            throw new IllegalArgumentException("parameter is null");
-        }
-
-        final ParameterKey key = ParameterKey.create(parameter.getApplicationCode(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
-        final Parameter existing = getParameter(key);
-        if (existing != null && existing.getApplicationCode().equals(parameter.getApplicationCode())) {
-            throw new IllegalStateException("the parameter to create already exists: " + parameter);
-        }
-
-        businessObjectService.save(ParameterBo.from(parameter));
-    } 
+        parameterRepositoryService.createParameter(parameter);
+    }
 
     @Override
     public void updateParameter(Parameter parameter) {
-        if (parameter == null) {
-            throw new IllegalArgumentException("parameter is null");
-        }
-
-        final ParameterKey key = ParameterKey.create(parameter.getApplicationCode(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
-        final Parameter existing = getParameter(key);
-        if (existing == null) {
-            throw new IllegalStateException("the parameter does not exist: " + parameter);
-        }
-
-        final Parameter toUpdate;
-        if (!existing.getApplicationCode().equals(parameter.getApplicationCode())) {
-            final Parameter.Builder builder = Parameter.Builder.create(parameter);
-            builder.setApplicationCode(existing.getApplicationCode());
-            toUpdate = builder.build();
-        } else {
-            toUpdate = parameter;
-        }
-
-        businessObjectService.save(ParameterBo.from(toUpdate));
+        parameterRepositoryService.updateParameter(parameter);
     }
 
     @Override
-    public Parameter getParameter(ParameterKey key) {
-        if (key == null) {
-            throw new IllegalArgumentException("key is null");
-        }
-
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", key.getName());
-        map.put("applicationCode", key.getApplicationCode());
-        map.put("namespaceCode", key.getNamespaceCode());
-        map.put("componentCode", key.getComponentCode());
-        ParameterBo bo =  businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
-
-        if (bo == null & !KNSConstants.DEFAULT_APPLICATION_CODE.equals(key.getApplicationCode())) {
-            map.put("applicationCode", KNSConstants.DEFAULT_APPLICATION_CODE);
-            bo = businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
-        }
-
-        return ParameterBo.to(bo);
-    }
-
-    @Override
-    public String getParameterValueAsString(ParameterKey key) {
-        final Parameter p =  getParameter(key);
-        return p != null ? p.getValue() : null;
-    }
-
-    @Override
-    public Boolean getParameterValueAsBoolean(ParameterKey key) {
-        final Parameter p =  getParameter(key);
-        final String value =  p != null ? p.getValue() : null;
-        if (value == null) {
-            return null;
-        }
-
-        final Boolean bValue;
-        if ("Y".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value)) {
-            bValue = Boolean.TRUE;
-        } else if ("N".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
-            bValue = Boolean.FALSE;
-        } else {
-            bValue = null;
-        }
-        return bValue;
-    }
-
-    @Override
-    public Collection<String> getParameterValuesAsString(ParameterKey key) {
-        return splitOn(getParameterValueAsString(key), ";");
-    }
-
-    @Override
-    public String getSubParameterValueAsString(ParameterKey key, String subParameterName) {
-        if (StringUtils.isBlank(subParameterName)) {
-            throw new IllegalArgumentException("subParameterName is blank");
-        }
-
-        Collection<String> values = getParameterValuesAsString(key);
-        return getSubParameter(values, subParameterName);
-    }
-
-    @Override
-    public Collection<String> getSubParameterValuesAsString(ParameterKey key, String subParameterName) {
-       return splitOn(getSubParameterValueAsString(key, subParameterName), ",");
-    }
-
-    private String getSubParameter(Collection<String> values, String subParameterName) {
-        for (String value : values) {
-            if (subParameterName.equals(StringUtils.substringBefore(value, SUB_PARAM_SEPARATOR))) {
-                return StringUtils.trimToNull(StringUtils.substringAfter(value, SUB_PARAM_SEPARATOR));
+    public Parameter getParameter(String namespaceCode, String componentCode, String parameterName) {
+        return exec(new Fun<Parameter>() {
+            @Override public Parameter f(ParameterKey key) {
+                return parameterRepositoryService.getParameter(key);
             }
-        }
-        return null;
+        }, namespaceCode, componentCode, parameterName);
     }
 
-    private Collection<String> splitOn(String strValues, String delim) {
-        if (StringUtils.isEmpty(delim)) {
-            throw new IllegalArgumentException("delim is empty");
-        }
-
-        if (strValues == null || StringUtils.isBlank(strValues)) {
-            return Collections.emptyList();
-        }
-
-        final Collection<String> values = new ArrayList<String>();
-        for (String value : strValues.split(delim)) {
-            values.add(value.trim());
-        }
-
-        return Collections.unmodifiableCollection(values);
+    @Override
+    public Parameter getParameter(Class<?> componentClass, String parameterName) {
+        return exec(new Fun<Parameter>() {
+            @Override public Parameter f(ParameterKey key) {
+                return parameterRepositoryService.getParameter(key);
+            }
+        }, componentClass, parameterName);
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    @Override
+    public Boolean parameterExists(String namespaceCode, String componentCode, String parameterName) {
+        return exec(new Fun<Boolean>() {
+            @Override
+            public Boolean f(ParameterKey key) {
+                return Boolean.valueOf(parameterRepositoryService.getParameter(key) != null);
+            }
+        }, namespaceCode, componentCode, parameterName);
+    }
+
+    @Override
+    public Boolean parameterExists(Class<?> componentClass, String parameterName) {
+        return exec(new Fun<Boolean>() {
+            @Override
+            public Boolean f(ParameterKey key) {
+                return Boolean.valueOf(parameterRepositoryService.getParameter(key) != null);
+            }
+        }, componentClass, parameterName);
+    }
+
+    @Override
+    public Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName) {
+        return exec(new Fun<Boolean>() {
+            @Override
+            public Boolean f(ParameterKey key) {
+                return parameterRepositoryService.getParameterValueAsBoolean(key);
+            }
+        }, namespaceCode, componentCode, parameterName);
+    }
+
+    @Override
+    public Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName, Boolean defaultValue) {
+        final Boolean value = getParameterValueAsBoolean(namespaceCode, componentCode, parameterName);
+        return (value != null) ? value : defaultValue;
+    }
+
+    @Override
+    public Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName) {
+        return exec(new Fun<Boolean>() {
+            @Override
+            public Boolean f(ParameterKey key) {
+                return parameterRepositoryService.getParameterValueAsBoolean(key);
+            }
+        }, componentClass, parameterName);
+    }
+
+    @Override
+    public Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName, Boolean defaultValue) {
+        final Boolean value = getParameterValueAsBoolean(componentClass, parameterName);
+        return (value != null) ? value : defaultValue;
+    }
+
+    @Override
+    public String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName) {
+        return exec(new Fun<String>() {
+            @Override
+            public String f(ParameterKey key) {
+                return parameterRepositoryService.getParameterValueAsString(key);
+            }
+        }, namespaceCode, componentCode, parameterName);
+    }
+
+    @Override
+    public String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String defaultValue) {
+        final String value = getParameterValueAsString(namespaceCode, componentCode, parameterName);
+        return (value != null) ? value : defaultValue;
+    }
+
+    @Override
+    public String getParameterValueAsString(Class<?> componentClass, String parameterName) {
+        return exec(new Fun<String>() {
+            @Override public String f(ParameterKey key) {
+                return parameterRepositoryService.getParameterValueAsString(key);
+            }
+        }, componentClass, parameterName);
+    }
+
+    @Override
+    public String getParameterValueAsString(Class<?> componentClass, String parameterName, String defaultValue) {
+        final String value = getParameterValueAsString(componentClass, parameterName);
+        return (value != null) ? value : defaultValue;
+    }
+
+    @Override
+    public Collection<String> getParameterValuesAsString(String namespaceCode, String componentCode, String parameterName) {
+        return exec(new Fun<Collection<String>>() {
+            @Override public Collection<String> f(ParameterKey key) {
+                return parameterRepositoryService.getParameterValuesAsString(key);
+            }
+        }, namespaceCode, componentCode, parameterName);
+    }
+
+    @Override
+    public Collection<String> getParameterValuesAsString(Class<?> componentClass, String parameterName) {
+        return exec(new Fun<Collection<String>>() {
+            @Override public Collection<String> f(ParameterKey key) {
+                return parameterRepositoryService.getParameterValuesAsString(key);
+            }
+        }, componentClass, parameterName);
+    }
+
+    @Override
+    public Collection<String> getSubParameterValuesAsString(String namespaceCode, String componentCode, String parameterName, final String constrainingValue) {
+        return exec(new Fun<Collection<String>>() {
+            @Override public Collection<String> f(ParameterKey key) {
+                return parameterRepositoryService.getSubParameterValuesAsString(key, constrainingValue);
+            }
+        }, namespaceCode, componentCode, parameterName);
+    }
+
+    @Override
+    public Collection<String> getSubParameterValuesAsString(Class<?> componentClass, String parameterName, final String constrainingValue) {
+        return exec(new Fun<Collection<String>>() {
+            @Override public Collection<String> f(ParameterKey key) {
+                return parameterRepositoryService.getSubParameterValuesAsString(key, constrainingValue);
+            }
+        }, componentClass, parameterName);
+    }
+
+    @Override
+    public String getSubParameterValueAsString(String namespaceCode, String componentCode, String parameterName, final String constrainingValue) {
+        return exec(new Fun<String>() {
+            @Override public String f(ParameterKey key) {
+               return parameterRepositoryService.getSubParameterValueAsString(key, constrainingValue);
+            }
+        }, namespaceCode, componentCode, parameterName);
+    }
+
+    @Override
+    public String getSubParameterValueAsString(Class<?> componentClass, String parameterName, final String constrainingValue) {
+        return exec(new Fun<String>() {
+            @Override public String f(ParameterKey key) {
+               return parameterRepositoryService.getSubParameterValueAsString(key, constrainingValue);
+            }
+        }, componentClass, parameterName);
+    }
+
+    public void setKualiModuleService(KualiModuleService kualiModuleService) {
+        this.kualiModuleService = kualiModuleService;
+    }
+
+    public void setParameterRepositoryService(ParameterRepositoryService parameterRepositoryService) {
+        this.parameterRepositoryService = parameterRepositoryService;
+    }
+
+    public void setApplicationCode(String applicationCode) {
+        this.applicationCode = applicationCode;
+    }
+
+    //utilities that act as a poor-man's closure & higher order functions - these help consolidate validation & construction of parameter keys
+    private <R> R exec(Fun<R> fun, String namespaceCode, String componentCode, String parameterName) {
+        if (StringUtils.isBlank(applicationCode)) {
+            throw new IllegalStateException("applicationCode is blank - this service is not configured correctly");
+        }
+
+        return fun.f(ParameterKey.create(applicationCode, namespaceCode, componentCode, parameterName));
+    }
+
+    private <R> R exec(Fun<R> fun, Class<?> componentClass, String parameterName) {
+        return exec(fun, kualiModuleService.getNamespaceCode(componentClass), kualiModuleService.getComponentCode(componentClass), parameterName);
+    }
+
+    private interface Fun<R> {
+        R f(ParameterKey key);
     }
 }

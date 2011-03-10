@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.component.Component;
-import org.kuali.rice.core.framework.parameter.ClientParameterService;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -33,7 +33,12 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -48,7 +53,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
     private static final String COMPONENT_NAME = "component.name";
     private static final String NAMESPACE_CODE = "namespaceCode";
 
-    private ClientParameterService parameterService;
+    private ParameterService parameterService;
 
     @Override
     protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
@@ -181,7 +186,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         }
 	}
 
-    public void setParameterService(ClientParameterService parameterService) {
+    public void setParameterService(ParameterService parameterService) {
         this.parameterService = parameterService;
     }
     

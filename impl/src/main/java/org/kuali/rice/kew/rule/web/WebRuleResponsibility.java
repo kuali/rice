@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.rule.web;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -20,7 +21,11 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kew.rule.*;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -93,7 +98,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void initialize() throws Exception {
-		if (getDelegationRules().size() <= Integer.parseInt(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))) {
+		if (getDelegationRules().size() <= Integer.parseInt(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))) {
 			showDelegations = true;
 		}
 		setNumberOfDelegations(getDelegationRules().size());
@@ -141,7 +146,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
         Object o = Proxy.newProxyInstance(delegationRulesClassLoader, delegationRulesInterfaces, delegationRulesProxy);
         //setDelegationRules((List) o);
 
-		if (Integer.parseInt(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
+		if (Integer.parseInt(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
 				WebRuleBaseValues webRule = new WebRuleBaseValues();

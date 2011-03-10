@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,6 @@ import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
-import org.kuali.rice.shareddata.api.country.Country;
 import org.kuali.rice.shareddata.impl.country.CountryBo;
 import org.kuali.rice.shareddata.impl.state.StateBo;
 import org.kuali.rice.shareddata.impl.state.StateId;
@@ -98,7 +97,7 @@ public class MetadataManagerTest extends KNSTestCase {
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"CONFG\"", "CONFG", pkValue);
 		
-		Parameter parameter = CoreFrameworkServiceLocator.getClientParameterService().getParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
+		Parameter parameter = CoreFrameworkServiceLocator.getParameterService().getParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
 		assertNotNull("State should not be null", parameter);
 		
 		pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(ParameterBo.from(parameter));

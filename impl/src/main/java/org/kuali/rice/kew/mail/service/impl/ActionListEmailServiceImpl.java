@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.mail.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.mail.*;
+import org.kuali.rice.core.mail.EmailBody;
+import org.kuali.rice.core.mail.EmailFrom;
+import org.kuali.rice.core.mail.EmailSubject;
+import org.kuali.rice.core.mail.EmailTo;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -40,11 +45,22 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.quartz.*;
+import org.quartz.CronTrigger;
+import org.quartz.JobDetail;
+import org.quartz.ObjectAlreadyExistsException;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 
 import java.text.FieldPosition;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -90,7 +106,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public String getApplicationEmailAddress() {
 		// first check the configured value
-		String fromAddress = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+		String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
 		// if there's no value configured, use the default
 		if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
 			fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;
@@ -143,7 +159,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 						         false);
 			} else {
 				mailer.sendEmail(getEmailFrom(documentType),
-						         new EmailTo(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
+						         new EmailTo(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
 								 subject,
 								 body,
 								 false);
@@ -541,10 +557,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
 	protected boolean sendActionListEmailNotification() {
-        LOG.debug("actionlistsendconstant: " + CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+        LOG.debug("actionlistsendconstant: " + CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 
         return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
-		        .equals(CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+		        .equals(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 	}
 
 	public void scheduleBatchEmailReminders() throws Exception {

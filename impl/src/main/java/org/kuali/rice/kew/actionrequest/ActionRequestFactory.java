@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.actionrequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -49,7 +50,12 @@ import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.util.KNSConstants;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -148,7 +154,7 @@ public class ActionRequestFactory {
     public List<ActionRequestValue> generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
             String notificationRequestCode, String actionTakenCode)
     {
-        String groupName =  CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE,
+        String groupName =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE,
                 KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
                 KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
         

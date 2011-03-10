@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.StringUtils;
@@ -53,7 +54,7 @@ public class ConfigStringLookup extends StrLookup {
 		
 		// check system parameters first
 		if ( paramValue == null ) {
-			paramValue = CoreFrameworkServiceLocator.getClientParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+			paramValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
 		}
 		if (paramValue == null) {
 			paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);

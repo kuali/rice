@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 
 	public int getRecordsPerPage() {
 		if ( recordsPerPage == -1 ) {
-			Parameter param = CoreFrameworkServiceLocator.getClientParameterService().getParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
+			Parameter param = CoreFrameworkServiceLocator.getParameterService().getParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
 			if ( param != null ) {
 				try {
 					recordsPerPage = Integer.parseInt( param.getValue() );

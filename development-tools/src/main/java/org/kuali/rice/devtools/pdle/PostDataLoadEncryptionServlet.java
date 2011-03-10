@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.web.servlet;
+package org.kuali.rice.devtools.pdle;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -22,7 +22,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.PostDataLoadEncryptionService;
 import org.springframework.core.io.FileSystemResource;
 
 import javax.servlet.ServletException;
@@ -30,7 +29,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * This is a servlet that can be used to invoke the PostDataLoadEncryptionService.
@@ -56,7 +59,7 @@ import java.util.*;
 
 	<servlet>
 	    <servlet-name>postDataLoadEncryption</servlet-name>
-	    <servlet-class>org.kuali.rice.kns.web.servlet.PostDataLoadEncryptionServlet</servlet-class>
+	    <servlet-class>org.kuali.rice.devtools.pdle.PostDataLoadEncryptionServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

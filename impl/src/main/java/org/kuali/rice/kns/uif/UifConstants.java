@@ -127,4 +127,19 @@ public class UifConstants extends JSTLConstants {
 		put("phoneUS","phoneUS");
 	}};
 
+	public static class TableToolsKeys{
+		public static final String LANGUAGE = "oLanguage";
+		public static final String EMPTY_TABLE = "sEmptyTable";
+		public static final String AO_COLUMNS = "aoColumns";
+		public static final String SORT_DATA_TYPE = "sSortDataType";
+		public static final String SORTABLE = "bSortable";
+		public static final String SORT_TYPE = "sType";
+		public static final String TABLE_SORT = "bSort";
+	}
+	
+	public static class TableToolsValues{
+		public static final String DOM_TEXT = "dom-text";
+		public static final String NUMERIC = "numeric";
+		public static final String DATE = "kuali_date";
+	}
 }

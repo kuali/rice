@@ -16,7 +16,50 @@
 
 // global vars
 var $dialog = null;
+jQuery.fn.dataTableExt.oSort['kuali_date-asc']  = function(a,b) {
+	var ukDatea = a.split('/');
+	var ukDateb = b.split('/');
+	var x = (ukDatea[2] + ukDatea[0] + ukDatea[1]) * 1;
+	var y = (ukDateb[2] + ukDateb[0] + ukDateb[1]) * 1;
+	return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+};
+	 
+jQuery.fn.dataTableExt.oSort['kuali_date-desc'] = function(a,b) {
+	var ukDatea = a.split('/');
+	var ukDateb = b.split('/');
+	var x = (ukDatea[2] + ukDatea[0] + ukDatea[1]) * 1;
+	var y = (ukDateb[2] + ukDateb[0] + ukDateb[1]) * 1;
+	return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+};
+	
+$.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
+{
+	var aData = [];
+	$( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		aData.push( this.value );
+	} );
+	return aData;
+}
 
+/* Create an array with the values of all the select options in a column */
+$.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColumn )
+{
+	var aData = [];
+	$( 'td:eq('+iColumn+') select', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		aData.push( $(this).val() );
+	} );
+	return aData;
+}
+
+/* Create an array with the values of all the checkboxes in a column */
+$.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iColumn )
+{
+	var aData = [];
+	$( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		aData.push( this.checked==true ? "1" : "0" );
+	} );
+	return aData;
+}
 // common event registering done here through JQuery ready event
 $(document).ready(function() {
 

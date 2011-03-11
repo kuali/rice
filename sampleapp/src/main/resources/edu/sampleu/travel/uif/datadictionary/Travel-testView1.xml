@@ -150,6 +150,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="items">
         <list>
           <ref bean="testGroup4"/>
+          <ref bean="testGroup6"/>
           <ref bean="testGroup5"/>
         </list>
       </property> 
@@ -160,6 +161,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="propertyName" value="fiscalOfficer.accounts"/>
       <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="layoutManager.sequenceFieldPrototype.label" value="Sl No"/>
+      <property name="id" value="testGroup4"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
@@ -178,6 +181,27 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </list>
       </property>      
       <property name="summary" value="Group with collection and table layout"/>  
+   </bean>
+   
+   <bean id="testGroup6" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="4">
+      <property name="id" value="testGroup6"/>
+      <property name="title" value="Collection Group - Infinite scrolling"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="addLineLabel" value="New Account"/>
+      <property name="layoutManager.tableTools">
+        <bean parent="TableTools-ScrollInfinite"/>
+      </property>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+          <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
+        </list>
+      </property>      
+      <property name="summary" value="Group with collection and table layout with infinite scrolling"/>  
    </bean>
    
    <bean id="testGroup5" parent="CollectionGroup">

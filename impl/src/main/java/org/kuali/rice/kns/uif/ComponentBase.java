@@ -930,7 +930,13 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 
 			sb.append(optionKey);
 			sb.append(":");
-			sb.append("\"" + optionValue + "\"");
+
+			//If an option value starts with { or [, it would be a nested value and it should not use quotes around it
+			if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")){
+				sb.append(optionValue);
+			}else{
+				sb.append("\"" + optionValue + "\"");
+			}
 		}
 
 		sb.append("}");

@@ -50,7 +50,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
       </property>  
       <property name="tableTools">
-        <ref bean="TableTools"/>
+        <ref bean="TableTools-Paging"/>
       </property>   
   </bean>  
   

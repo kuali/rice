@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
@@ -27,6 +28,7 @@ import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.field.LabelField;
+import org.kuali.rice.kns.uif.helper.TableToolsHelper;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.widget.TableTools;
 
@@ -88,6 +90,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		super.performInitialization(view, container);
 
 		numberOfDataColumns = getNumberOfColumns();
+		
+		if (tableTools != null){
+			tableTools.performInitialization(view);
+		}
 	}
 
 	/**
@@ -113,6 +119,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
 		setNumberOfColumns(totalColumns);
+		
+		if (tableTools != null){
+			if (!tableTools.isDisableTableSort()){
+				buildTableToolsColumnOptions(collectionGroup);
+			}
+			tableTools.performFinalize(view, model);
+		}
 	}
 
 	/**
@@ -295,6 +308,29 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		return rowCount;
 	}
 
+	protected void buildTableToolsColumnOptions(CollectionGroup collectionGroup){
+		
+		StringBuffer tableToolsColumnOptions = new StringBuffer("[");
+		
+		if (collectionGroup.isRenderAddLine()) {
+			tableToolsColumnOptions.append(" null ,");
+		}
+		
+		for (Component component : collectionGroup.getItems()) {
+			String colOptions = TableToolsHelper.constructTableColumnOptions(true, component);
+			tableToolsColumnOptions.append(colOptions + " , ");
+		}
+		
+		if (collectionGroup.isRenderLineActions()){
+			String colOptions = TableToolsHelper.constructTableColumnOptions(false, null);
+			tableToolsColumnOptions.append(colOptions);
+		}
+		
+		tableToolsColumnOptions.append("]");
+		
+		tableTools.getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
+	}
+	
 	/**
 	 * @see org.kuali.rice.kns.uif.layout.ContainerAware#getSupportedContainer()
 	 */

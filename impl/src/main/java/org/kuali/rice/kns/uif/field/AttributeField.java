@@ -628,6 +628,24 @@ public class AttributeField extends FieldBase implements DataBinding {
 			processCaseConstraint(view);
 		}
 
+		//Sets message 
+		if (StringUtils.isNotBlank(summary)) {
+			summaryMessageField.setMessageText(summary);
+			summaryMessageField.setRender(true);
+		}
+		else {
+			summaryMessageField.setRender(false);
+		}
+
+		//Sets constraints
+		if (StringUtils.isNotBlank(constraint)) {
+			constraintMessageField.setMessageText(constraint);
+			summaryMessageField.setRender(true);
+		}
+		else {
+			constraintMessageField.setRender(false);
+		}
+
 	}
 
 	private void processCaseConstraint(View view) {
@@ -759,14 +777,18 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param summaryField
-	 *            the summaryField to set
+	 * Sets the summary message field. Developers can use the setSummary method which would set the summary text.
+	 * 
+	 * @param summary field to set
+	 * @see setSummary
 	 */
 	public void setSummaryMessageField(MessageField summaryField) {
 		this.summaryMessageField = summaryField;
 	}
 
 	/**
+	 * Returns the contraint set on the field
+	 * 
 	 * @return the constraint
 	 */
 	public String getConstraint() {
@@ -774,26 +796,31 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param constraint
-	 *            the constraint to set
+	 * Sets the constraint text. This text will be displayed below the component.
+	 *  
+	 * @param constraint for this field
 	 */
 	public void setConstraint(String constraint) {
 		this.constraint = constraint;
 	}
 
 	/**
-	 * @return the constraintMessageField
-	 */
-	public MessageField getConstraintMessageField() {
-		return this.constraintMessageField;
-	}
-
-	/**
-	 * @param constraintMessageField
-	 *            the constraintMessageField to set
+	 * Sets the constraint message field. Developers can use the setContraint method which would set the constraint text.
+	 * 
+	 * @param constraint field to set
+	 * @see setContraint
 	 */
 	public void setConstraintMessageField(MessageField constraintMessageField) {
 		this.constraintMessageField = constraintMessageField;
+	}
+	
+	/**
+	 * Returns the contraint message field. 
+	 * 
+	 * @return constraint Message Field
+	 */
+	public MessageField getConstraintMessageField() {
+		return this.constraintMessageField;
 	}
 
 	/**
@@ -828,5 +855,4 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void setCaseConstraint(CaseConstraint caseConstraint) {
 		this.caseConstraint = caseConstraint;
 	}
-
 }

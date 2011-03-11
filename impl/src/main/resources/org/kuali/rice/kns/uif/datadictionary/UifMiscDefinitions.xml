@@ -50,14 +50,39 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean> 
   
+  <bean id="TableTools-Paging" parent="TableTools-Paging-parentBean"/>
+  
+  <bean id="TableTools-Paging-parentBean" parent="TableTools-parentBean" scope="prototype">
+		<property name="componentOptions">
+          <map merge="true">
+		  	 <entry key="sScrollX" value="100%"/>
+		  	 <entry key="bScrollCollapse" value="true"/>
+		  </map>
+		</property>  	 
+  </bean>
+  
+  <bean id="TableTools-ScrollInfinite" parent="TableTools-ScrollInfinite-parentBean"/>
+  
+  <bean id="TableTools-ScrollInfinite-parentBean" parent="TableTools-parentBean" scope="prototype">
+  	 <property name="componentOptions">
+          <map merge="true">
+          	 <entry key="bScrollInfinite" value="true"/>
+          	 <entry key="bScrollCollapse" value="true"/>
+		  	 <entry key="sScrollY" value="100%"/>
+		  </map>
+		</property>
+  </bean>
+  
   <bean id="TableTools" parent="TableTools-parentBean"/>
   <bean id="TableTools-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.TableTools" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableTools.jsp"/>
       <property name="componentOptions">
           <map>
-              <entry key="sDom" value="T&lt;'clear'&gt;lfrtip"/>   
+              <entry key="sDom" value="T&lt;'clear'&gt;lfrtip"/>
+              <entry key="oTableTools" value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;/kr-dev/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
           </map>      
       </property>
+      <property name="emptyTableMessage" value="No records found"/>
   </bean>
   
   <bean id="QuickFinder" parent="QuickFinder-parentBean"/>

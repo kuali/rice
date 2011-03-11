@@ -41,12 +41,12 @@ public class GlobalResourceLoader {
 
 	private static boolean initializing;
 
-	public static ResourceLoader getResourceLoader() {
+	public static synchronized ResourceLoader getResourceLoader() {
 		ClassLoader classLoader = ClassLoaderUtils.getDefaultClassLoader();
 		return getResourceLoaderCheckParent(classLoader);
 	}
 
-	private static ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
+	private static synchronized ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
 	    System.err.println("classloader: " + classLoader);
         System.err.println("parent classloader: " + (classLoader != null ? classLoader.getParent() : null));
 
@@ -70,11 +70,11 @@ public class GlobalResourceLoader {
 	    return resourceLoader;
 	}
 
-	public static ResourceLoader getResourceLoader(ClassLoader classloader) {
+	public static synchronized ResourceLoader getResourceLoader(ClassLoader classloader) {
 		return rootResourceLoaders.get(classloader);
 	}
 
-	public synchronized static void start() throws Exception {
+	public static synchronized void start() throws Exception {
 		try {
 			initializing = true;
 			ResourceLoader internalResourceLoader = getResourceLoader();
@@ -87,7 +87,7 @@ public class GlobalResourceLoader {
 		}
 	}
 
-	public synchronized static void addResourceLoader(ResourceLoader resourceLoader) {
+	public static synchronized void addResourceLoader(ResourceLoader resourceLoader) {
 		initialize();
 		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {
@@ -96,7 +96,7 @@ public class GlobalResourceLoader {
 		getResourceLoader().addResourceLoader(resourceLoader);
 	}
 
-	public synchronized static void addResourceLoaderFirst(ResourceLoader resourceLoader) {
+	public static synchronized void addResourceLoaderFirst(ResourceLoader resourceLoader) {
 		initialize();
 		LOG.info("Adding ResourceLoader " + resourceLoader.getName() + " to GlobalResourceLoader");
 		if (resourceLoader == null) {
@@ -105,14 +105,14 @@ public class GlobalResourceLoader {
 		getResourceLoader().addResourceLoaderFirst(resourceLoader);
 	}
 
-	protected static void initialize() {
+	protected static synchronized void initialize() {
 		if (getResourceLoader(ClassLoaderUtils.getDefaultClassLoader()) == null) {
 			LOG.info("Creating CompositeResourceLoader in GlobalResourceLoader");
 			rootResourceLoaders.put(ClassLoaderUtils.getDefaultClassLoader(), new ResourceLoaderContainer(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), ResourceLoader.ROOT_RESOURCE_LOADER_NAME)));
 		}
 	}
 
-	public static ResourceLoader getResourceLoader(QName name) {
+	public static synchronized ResourceLoader getResourceLoader(QName name) {
 		return getResourceLoader().getResourceLoader(name);
 	}
 
@@ -122,7 +122,7 @@ public class GlobalResourceLoader {
 	 *
 	 * @throws Exception
 	 */
-	public static void stop() throws Exception {
+	public static synchronized void stop() throws Exception {
 		LOG.info("Stopping the GlobalResourceLoader...");
 		if (getResourceLoader() != null) {
 			LOG.info("Destroying GlobalResourceLoader");
@@ -132,7 +132,7 @@ public class GlobalResourceLoader {
 		LOG.info("...GlobalResourceLoader successfully stopped.");
 	}
 
-	public static <T extends Object> T getService(QName serviceName) {
+	public static synchronized <T extends Object> T getService(QName serviceName) {
 		if (serviceName == null) {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
@@ -145,32 +145,32 @@ public class GlobalResourceLoader {
 		}
 	}
 
-	public static <T extends Object> T getService(String localServiceName) {
+	public static synchronized <T extends Object> T getService(String localServiceName) {
 		if (StringUtils.isEmpty(localServiceName)) {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
 		return GlobalResourceLoader.<T>getService(new QName(localServiceName));
 	}
 
-	public static <T extends Object> T getObject(ObjectDefinition objectDefinition) {
+	public static synchronized <T extends Object> T getObject(ObjectDefinition objectDefinition) {
 		return getResourceLoader().<T>getObject(objectDefinition);
 	}
 
-	public static boolean isInitialized() {
+	public static synchronized boolean isInitialized() {
 		return getResourceLoader() != null;
 	}
 
-	public static void logContents() {
+	public static synchronized void logContents() {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(getResourceLoader().getContents("", false));
 		}
 	}
 
-	public static boolean isInitializing() {
+	public static synchronized boolean isInitializing() {
 		return initializing;
 	}
 
-	public static void setInitializing(boolean initializing) {
+	public static synchronized void setInitializing(boolean initializing) {
 		GlobalResourceLoader.initializing = initializing;
 	}
 }

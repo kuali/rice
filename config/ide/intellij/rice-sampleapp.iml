@@ -35,6 +35,9 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-1.1.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/tomcat" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>
     <orderEntry type="inheritedJdk" />

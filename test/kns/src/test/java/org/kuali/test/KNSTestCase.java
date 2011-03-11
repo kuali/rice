@@ -20,7 +20,6 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
-import org.kuali.rice.test.TransactionalLifecycle;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 
 import javax.xml.namespace.QName;
@@ -38,21 +37,12 @@ public abstract class KNSTestCase extends BaselineTestCase {
 	private static final String SQL_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.sql";
 	private static final String XML_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.xml";
     private static final String KNS_MODULE_NAME = "kns";
-	
-	private TransactionalLifecycle transactionalLifecycle;
 
     public KNSTestCase() {
 		super(KNS_MODULE_NAME);
 	}
 
-	@Override
-	protected void loadSuiteTestData() throws Exception {
-		super.loadSuiteTestData();
-        new SQLDataLoader(SQL_FILE, ";").runSql();
-		//new SQLDataLoaderLifecycle(SQL_FILE, ";").start();
-	}
-
-	@Override
+    @Override
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
 		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle(XML_FILE));
@@ -60,49 +50,15 @@ public abstract class KNSTestCase extends BaselineTestCase {
 	}
 
 	@Override
-	protected Lifecycle getLoadApplicationLifecycle() {
-		/*return new BaseLifecycle() {
-			GenericXmlApplicationContext context;
-            public void start() throws Exception {
-                context = new GenericXmlApplicationContext("classpath:KnsTestSpringBeans.xml");
-                context.start();
-				super.start();
-			}
+	protected void loadSuiteTestData() throws Exception {
+		super.loadSuiteTestData();
+        new SQLDataLoader(SQL_FILE, ";").runSql();
+	}
 
-            public void stop() throws Exception {
-                context.stop();
-            }
-		};*/
+	@Override
+	protected Lifecycle getLoadApplicationLifecycle() {
         SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KNSTestResourceLoader"), "classpath:KnsTestSpringBeans.xml", null);
     	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
     	return springResourceLoader;
-	}
-
-	public void setUp() throws Exception {
-        super.setUp();
-		/*final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
-		GlobalVariables.setMessageMap(new MessageMap());
-		if (needsSpring) {
-			transactionalLifecycle = new TransactionalLifecycle();
-			transactionalLifecycle.setTransactionManager(KNSServiceLocatorInternal.getTransactionManager());
-			transactionalLifecycle.start();
-		}*/
-	}
-
-	public void tearDown() throws Exception {
-		/*final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
-		if (needsSpring) {
-		    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
-		        transactionalLifecycle.stop();
-		    }
-		}
-		GlobalVariables.setMessageMap(new MessageMap());*/
-		super.tearDown();
-	}
-
-
-	@Override
-	protected String getModuleName() {
-		return KNS_MODULE_NAME;
 	}
 }

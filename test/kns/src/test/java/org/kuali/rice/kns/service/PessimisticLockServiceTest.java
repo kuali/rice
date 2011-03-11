@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,18 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.maintainable.AccountType2MaintainableImpl;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KNSTestCase;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -49,6 +55,7 @@ import static org.junit.Assert.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PessimisticLockServiceTest extends KNSTestCase {
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service;
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
@@ -59,6 +60,7 @@ import static org.junit.Assert.assertTrue;
                 }
        )
 )
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class LookupServiceTest extends KNSTestCase {
 
     public LookupServiceTest() {}

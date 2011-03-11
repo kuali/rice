@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.test;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
@@ -71,7 +73,11 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 	}
 
 	public void setUp() throws Exception {
-		super.setUp();
+		if (!GlobalResourceLoader.isInitialized()) {
+            GlobalResourceLoader.start();
+        }
+
+        super.setUp();
 		final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
 		GlobalVariables.setMessageMap(new MessageMap());
 		if (needsSpring) {

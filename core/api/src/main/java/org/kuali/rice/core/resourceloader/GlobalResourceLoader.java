@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +15,16 @@
  */
 package org.kuali.rice.core.resourceloader;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+
+import javax.xml.namespace.QName;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Wrapper on all the Resource loaders.  This is what programmers typically use to get in the resource loading
@@ -48,15 +46,25 @@ public class GlobalResourceLoader {
 	}
 
 	private static ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
-	    ResourceLoader resourceLoader = getResourceLoader(classLoader);
-	    if (resourceLoader != null && classLoader.getParent() != null) {
-		ResourceLoader parentResourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
-		if (parentResourceLoader != null) {
-		    resourceLoader = new ParentChildResourceLoader(parentResourceLoader, resourceLoader);
-		}
+	    System.err.println("classloader: " + classLoader);
+        System.err.println("parent classloader: " + classLoader != null ? classLoader.getParent() : null);
+
+        ResourceLoader resourceLoader = getResourceLoader(classLoader);
+	    System.err.println("resourceLoader: " + resourceLoader);
+
+        if (resourceLoader != null && classLoader.getParent() != null) {
+            ResourceLoader parentResourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
+            System.err.println("parentResourceLoader: " + parentResourceLoader);
+
+            if (parentResourceLoader != null) {
+                resourceLoader = new ParentChildResourceLoader(parentResourceLoader, resourceLoader);
+                System.err.println("new resourceloader from parent: " + resourceLoader);
+		    }
 	    }
+
 	    if (resourceLoader == null && classLoader.getParent() != null) {
-		resourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
+		    resourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
+            System.err.println("last condition resourceloader: " + resourceLoader);
 	    }
 	    return resourceLoader;
 	}

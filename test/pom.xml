@@ -15,6 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <name>rice-test</name>
@@ -27,14 +28,15 @@
     <artifactId>rice-test</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>ken</module>
-        <module>kns</module>
-        <module>kcb</module>
         <module>kim</module>
+        <module>kns</module>
+        <module>ken</module>
+        <module>kcb</module>
         <module>impl</module>
         <module>ksb</module>
         <module>kew</module>
         <module>test-clients</module>
+
     </modules>
     <properties>
       <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->

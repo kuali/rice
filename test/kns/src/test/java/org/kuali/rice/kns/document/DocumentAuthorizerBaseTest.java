@@ -18,10 +18,8 @@ package org.kuali.rice.kns.document;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 @Ignore
-@NeedsTransactionSupport
 public class DocumentAuthorizerBaseTest extends KNSTestCase {
 	// TODO rewrite this test
 //    private static final Logger LOG = Logger.getLogger(DocumentAuthorizerBaseTest.class);

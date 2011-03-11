@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,6 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@NeedsTransactionSupport
 public class BusinessObjectServiceTest extends KNSTestCase {
 
     public BusinessObjectServiceTest() {}

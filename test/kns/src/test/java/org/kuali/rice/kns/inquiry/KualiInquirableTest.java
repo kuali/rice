@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import static org.junit.Assert.assertTrue;
 
@@ -29,7 +28,6 @@ import static org.junit.Assert.assertTrue;
  * 
  * 
  */
-@NeedsTransactionSupport
 public class KualiInquirableTest extends KNSTestCase {
 
     private AccountManager am;

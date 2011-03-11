@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +30,6 @@ import static org.junit.Assert.assertNotNull;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@NeedsTransactionSupport
 public class ParameterServiceTest extends KNSTestCase {
 
     @Test

@@ -17,14 +17,12 @@ package org.kuali.rice.kns.datadictionary.validation.fieldlevel;
 
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
 
-@NeedsTransactionSupport
 public class YearValidationPatternTest extends KNSTestCase {
     YearValidationPattern pattern;
 

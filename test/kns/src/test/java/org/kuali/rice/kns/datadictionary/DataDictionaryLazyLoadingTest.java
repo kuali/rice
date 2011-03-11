@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,7 +28,7 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@NeedsTransactionSupport
+
 public class DataDictionaryLazyLoadingTest extends KNSTestCase {
 
 	@Test

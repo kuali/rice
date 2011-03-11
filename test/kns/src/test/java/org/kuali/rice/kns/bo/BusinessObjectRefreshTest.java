@@ -26,7 +26,6 @@ import org.kuali.rice.shareddata.impl.county.CountyId;
 import org.kuali.rice.shareddata.impl.state.StateBo;
 import org.kuali.rice.shareddata.impl.state.StateId;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 /**
  * Tests how refreshing works for Business Objects 
@@ -34,7 +33,6 @@ import org.kuali.test.NeedsTransactionSupport;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@NeedsTransactionSupport
 public class BusinessObjectRefreshTest extends KNSTestCase {
 
 	@Test

@@ -22,11 +22,9 @@ import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.rules.PromptBeforeValidationBase;
 import org.kuali.rice.kns.rules.PromptBeforeValidationBase.ContextSession;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import static org.junit.Assert.assertEquals;
 
-@NeedsTransactionSupport
 public class PromptBeforeValidationContinuationBaseTest extends KNSTestCase {
 
     private class TestPreRules extends PromptBeforeValidationBase {

@@ -16,17 +16,12 @@
 
 package org.kuali.test;
 
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.TransactionalLifecycle;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
-import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
-import org.springframework.context.support.GenericXmlApplicationContext;
 
 import javax.xml.namespace.QName;
 import java.util.List;
@@ -37,17 +32,24 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK)
+public abstract class KNSTestCase extends BaselineTestCase {
 
 	private static final String SQL_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.sql";
 	private static final String XML_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.xml";
+    private static final String KNS_MODULE_NAME = "kns";
 	
 	private TransactionalLifecycle transactionalLifecycle;
-	
+
+    public KNSTestCase() {
+		super(KNS_MODULE_NAME);
+	}
+
 	@Override
 	protected void loadSuiteTestData() throws Exception {
 		super.loadSuiteTestData();
-		new SQLDataLoaderLifecycle(SQL_FILE, ";").start();
+        new SQLDataLoader(SQL_FILE, ";").runSql();
+		//new SQLDataLoaderLifecycle(SQL_FILE, ";").start();
 	}
 
 	@Override
@@ -78,29 +80,29 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 
 	public void setUp() throws Exception {
         super.setUp();
-		final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
+		/*final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
 		GlobalVariables.setMessageMap(new MessageMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
 			transactionalLifecycle.setTransactionManager(KNSServiceLocatorInternal.getTransactionManager());
 			transactionalLifecycle.start();
-		}
+		}*/
 	}
-	
+
 	public void tearDown() throws Exception {
-		final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
+		/*final boolean needsSpring = getClass().isAnnotationPresent(NeedsTransactionSupport.class);
 		if (needsSpring) {
 		    if ( (transactionalLifecycle != null) && (transactionalLifecycle.isStarted()) ) {
 		        transactionalLifecycle.stop();
 		    }
 		}
-		GlobalVariables.setMessageMap(new MessageMap());
+		GlobalVariables.setMessageMap(new MessageMap());*/
 		super.tearDown();
 	}
 
 
 	@Override
 	protected String getModuleName() {
-		return "kns";
+		return KNS_MODULE_NAME;
 	}
 }

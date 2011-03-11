@@ -22,7 +22,6 @@ import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,7 +30,6 @@ import static org.junit.Assert.assertEquals;
  * 
  * 
  */
-@NeedsTransactionSupport
 public class MaintenanceDocumentTest extends KNSTestCase {
 
     MaintenanceDocument document;

@@ -21,7 +21,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
-import org.kuali.test.NeedsTransactionSupport;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -31,7 +30,7 @@ import static org.junit.Assert.fail;
  * 
  * 
  */
-@NeedsTransactionSupport
+
 public class DataDictionaryBuilderTest extends KNSTestCase {
     protected final Logger LOG = Logger.getLogger(getClass());
 

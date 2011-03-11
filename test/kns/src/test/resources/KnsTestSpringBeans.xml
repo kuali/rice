@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2006-2010 The Kuali Foundation
-
-	Licensed under the Educational Community License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-
-	http://www.opensource.org/licenses/ecl2.php
-
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
--->
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xmlns:p="http://www.springframework.org/schema/p" 
@@ -108,8 +108,12 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-
-	
+	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kns/config/KNSConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kim/config/KIMConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
+	<!--
 	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
 	
 		<bean id="ksbConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
@@ -163,14 +167,7 @@
 	<bean id="lookupResultsDDBoLookupableHelperUrl" class="java.net.URL">
 		<constructor-arg value="${serviceServletUrl}" />
 	</bean>
-	
-	<!-- bean class="org.kuali.rice.ksb.messaging.KSBExporter" depends-on="rice">
-		<property name="serviceDefinition">
-			<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" p:service-ref="lookupResultsDDBoLookupable"
-				p:localServiceName="lookupResultsDDBoLookupable" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" />
-		</property>
-	</bean-->
-	
+
 	<bean id="testModule" class="org.kuali.rice.kns.service.impl.ModuleServiceBase">
   		<property name="moduleConfiguration">
   			<bean id="testModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
@@ -188,5 +185,5 @@
 				</property>
 			</bean>
     	</property>
-	</bean>
+	</bean>-->
 </beans>

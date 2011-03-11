@@ -47,25 +47,18 @@ public class GlobalResourceLoader {
 	}
 
 	private static synchronized ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
-	    System.err.println("classloader: " + classLoader);
-        System.err.println("parent classloader: " + (classLoader != null ? classLoader.getParent() : null));
-
         ResourceLoader resourceLoader = getResourceLoader(classLoader);
-	    System.err.println("resourceLoader: " + resourceLoader);
 
         if (resourceLoader != null && classLoader.getParent() != null) {
             ResourceLoader parentResourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
-            System.err.println("parentResourceLoader: " + parentResourceLoader);
 
             if (parentResourceLoader != null) {
                 resourceLoader = new ParentChildResourceLoader(parentResourceLoader, resourceLoader);
-                System.err.println("new resourceloader from parent: " + resourceLoader);
 		    }
 	    }
 
 	    if (resourceLoader == null && classLoader.getParent() != null) {
 		    resourceLoader = getResourceLoaderCheckParent(classLoader.getParent());
-            System.err.println("last condition resourceloader: " + resourceLoader);
 	    }
 	    return resourceLoader;
 	}

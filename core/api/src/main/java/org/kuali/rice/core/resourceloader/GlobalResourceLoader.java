@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.core.resourceloader;
 
 import org.apache.commons.lang.StringUtils;
@@ -47,7 +48,7 @@ public class GlobalResourceLoader {
 
 	private static ResourceLoader getResourceLoaderCheckParent(ClassLoader classLoader) {
 	    System.err.println("classloader: " + classLoader);
-        System.err.println("parent classloader: " + classLoader != null ? classLoader.getParent() : null);
+        System.err.println("parent classloader: " + (classLoader != null ? classLoader.getParent() : null));
 
         ResourceLoader resourceLoader = getResourceLoader(classLoader);
 	    System.err.println("resourceLoader: " + resourceLoader);

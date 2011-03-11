@@ -18,6 +18,7 @@ package org.kuali.test;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
@@ -27,6 +28,7 @@ import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
+import javax.xml.namespace.QName;
 import java.util.List;
 
 
@@ -57,7 +59,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 
 	@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
-		return new BaseLifecycle() {
+		/*return new BaseLifecycle() {
 			GenericXmlApplicationContext context;
             public void start() throws Exception {
                 context = new GenericXmlApplicationContext("classpath:KnsTestSpringBeans.xml");
@@ -68,7 +70,10 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
             public void stop() throws Exception {
                 context.stop();
             }
-		};	
+		};*/
+        SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KNSTestResourceLoader"), "classpath:KnsTestSpringBeans.xml", null);
+    	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+    	return springResourceLoader;
 	}
 
 	public void setUp() throws Exception {

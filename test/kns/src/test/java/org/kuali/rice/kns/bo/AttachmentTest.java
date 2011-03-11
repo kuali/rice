@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.test.KNSTestCase;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.InputStream;
 
 import static org.junit.Assert.*;
 
@@ -127,7 +131,7 @@ public class AttachmentTest extends KNSTestCase{
 	
 	
 	@Test
-	public void testAttachmentContents(){
+	public void testAttachmentContents() throws Exception {
 		
 		
 		try{
@@ -158,9 +162,6 @@ public class AttachmentTest extends KNSTestCase{
 			}
 			inStream.close();
 			assertEquals("Testing attachmentContents in AttachmentTest","Hello testAttachmentContent",result );
-		}
-		catch(Exception e){
-			fail("Testing testAttachmentContents fails because IllegalArgumentException : " + e.toString());
 		}
 		finally{
 			new File("dummy.txt").delete();

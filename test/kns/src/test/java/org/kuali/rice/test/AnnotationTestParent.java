@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.kuali.rice.test;
 
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.test.KNSTestCase;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -25,8 +26,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -40,25 +39,10 @@ import static org.junit.Assert.*;
         @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('1')"),
         @UnitTestData(filename = "classpath:org/kuali/rice/core/test/AnnotationTestParentData.sql")
 })
-public abstract class AnnotationTestParent extends RiceTestCase {
+public abstract class AnnotationTestParent extends KNSTestCase {
 
     protected static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
     
-    /**
-     * This method ...
-     * 
-     */
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
-        new ClearDatabaseLifecycle(Arrays.asList(new String[]{TEST_TABLE_NAME}),new ArrayList<String>()).start();
-    }
-
-    @Override
-    protected String getModuleName() {
-        return "impl";
-    }
-
     protected void verifyCount(String valueToVerify, int count) throws SQLException {
         assertEquals(count + " value(s) should be found for id " + valueToVerify, count, countTableResults(valueToVerify));
     }

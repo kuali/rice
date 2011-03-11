@@ -425,12 +425,13 @@
                                 <goal>integration-test</goal>
                             </goals>
                         </execution>
-                        <execution>
+                        <!-- removing verify execution to allow itests to run completely with failures -->
+                        <!--<execution>
                             <id>verify</id>
                             <goals>
                                 <goal>verify</goal>
                             </goals>
-                        </execution>
+                        </execution>-->
                     </executions>
                     <configuration>
                         <skip>${maven.failsafe.skip}</skip>

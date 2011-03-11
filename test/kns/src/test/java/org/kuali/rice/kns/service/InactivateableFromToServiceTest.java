@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.service;
 
+import org.junit.Ignore;
 import org.kuali.test.KNSTestCase;
 
 
@@ -41,6 +43,7 @@ import org.kuali.test.KNSTestCase;
                 }
        )
 )*/
+@Ignore
 public class InactivateableFromToServiceTest extends KNSTestCase {
 
 

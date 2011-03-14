@@ -51,7 +51,7 @@ public class BlanketApproveTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testBlanketApproverNotInBlanketApproverWorkgroup() throws Exception  {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), SequentialSetup.DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), SequentialSetup.DOCUMENT_TYPE_NAME);
     	try {
     		document.blanketApprove("");
     		fail("InvalidActionTakenException should have been thrown");
@@ -66,8 +66,8 @@ public class BlanketApproveTest extends KEWTestCase {
      * should be thrown.
      */
     @Test public void testBlanketApproverNotInitiator() throws Exception  {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), SequentialSetup.DOCUMENT_TYPE_NAME);
-        WorkflowDocument newDocument = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument newDocument = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         try {
             newDocument.blanketApprove("");
             fail("Exception should have been thrown when non-initiator user attempts blanket approve on default blanket approve policy document");
@@ -78,9 +78,9 @@ public class BlanketApproveTest extends KEWTestCase {
     
     @SuppressWarnings("deprecation")
 	@Test public void testBlanketApproveSequential() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("");
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("Document should be processed.", document.stateIsProcessed());
         Collection nodeInstances = getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
         // once the document is processed there are no active nodes
@@ -130,43 +130,43 @@ public class BlanketApproveTest extends KEWTestCase {
         assertTrue(isNotification3);
         assertTrue(isAck1);
         assertTrue(isAck2);
-        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
         assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));        
         assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
         assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));        
         document.acknowledge("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
         assertTrue(document.stateIsProcessed());
         assertTrue(document.isAcknowledgeRequested());
         assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue(document.stateIsFinal());
         
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", SequentialSetup.WORKFLOW_DOCUMENT_2_NODE);
         assertTrue("Document should be enroute.", document.stateIsEnroute());
         nodeInstances = getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
@@ -178,14 +178,14 @@ public class BlanketApproveTest extends KEWTestCase {
     
     @Test public void testBlanketApproveSequentialErrors() throws Exception {
         // blanket approve to invalid node
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         try {
             document.blanketApprove("", "TotallyInvalidNode");
             fail("Should have thrown exception");
         } catch (Exception e) {}
         
         // blanket approve backwards
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", SequentialSetup.WORKFLOW_DOCUMENT_2_NODE);
         try {
             document.blanketApprove("", SequentialSetup.WORKFLOW_DOCUMENT_NODE);
@@ -193,7 +193,7 @@ public class BlanketApproveTest extends KEWTestCase {
         } catch (Exception e) {}
         
         // blanket approve to current node
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         try {
             document.blanketApprove("", SequentialSetup.WORKFLOW_DOCUMENT_NODE);
@@ -201,7 +201,7 @@ public class BlanketApproveTest extends KEWTestCase {
         } catch (Exception e) {}
         
         // blanket approve as user not in the blanket approve workgroup
-        document = new WorkflowDocument(new NetworkIdDTO("user1"), SequentialSetup.DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(getPrincipalIdForName("user1"), SequentialSetup.DOCUMENT_TYPE_NAME);
         try {
             document.blanketApprove("");
             fail("Shouldn't be able to blanket approve if not in blanket approve workgroup");
@@ -209,9 +209,9 @@ public class BlanketApproveTest extends KEWTestCase {
     }
     
     @Test public void testBlanketApproveParallel() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("");        
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("Document should be processed.", document.stateIsProcessed());
         Collection nodeInstances = getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
         // once the document has gone processed there are no active nodes
@@ -227,7 +227,7 @@ public class BlanketApproveTest extends KEWTestCase {
     }
     
     @Test public void testBlanketApproveIntoBranch() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE);
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Wrong number of pending action requests.", 5, actionRequests.size());
@@ -252,7 +252,7 @@ public class BlanketApproveTest extends KEWTestCase {
         assertFalse("Should be at join node.", isAtJoin);
         
         document.blanketApprove("");
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("Document should be processed.", document.stateIsProcessed());
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         
@@ -261,7 +261,7 @@ public class BlanketApproveTest extends KEWTestCase {
     
     @Test public void testBlanketApproveToMultipleNodes() throws Exception {
         
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", new String[] { ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE, ParallelSetup.WORKFLOW_DOCUMENT_3_B2_NODE });
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Wrong number of pending action requests.", 5, actionRequests.size());
@@ -286,7 +286,7 @@ public class BlanketApproveTest extends KEWTestCase {
         assertFalse("Should not be at join node.", isAtJoin);
         
         document.blanketApprove("");
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("Document should be processed.", document.stateIsProcessed());
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Wrong number of pending action requests.", 10, actionRequests.size());
@@ -294,7 +294,7 @@ public class BlanketApproveTest extends KEWTestCase {
     
     @Test public void testBlanketApproveToJoin() throws Exception {
         
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", ParallelSetup.JOIN_NODE);
         assertTrue("Document should still be enroute.", document.stateIsEnroute());
 
@@ -304,7 +304,7 @@ public class BlanketApproveTest extends KEWTestCase {
         RouteNodeInstance nodeInstance = (RouteNodeInstance)activeNodes.iterator().next();
         assertEquals("Document at wrong node.", ParallelSetup.WORKFLOW_DOCUMENT_FINAL_NODE, nodeInstance.getName());
         
-        document = new WorkflowDocument(new NetworkIdDTO("xqi"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("xqi"), document.getRouteHeaderId());
         assertTrue("Should have approve request.", document.isApprovalRequested());
         document.blanketApprove("", ParallelSetup.ACKNOWLEDGE_1_NODE);
         
@@ -319,7 +319,7 @@ public class BlanketApproveTest extends KEWTestCase {
     
     @Test public void testBlanketApproveToAcknowledge() throws Exception {
         
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", ParallelSetup.ACKNOWLEDGE_1_NODE);
         assertTrue("Document should be processed.", document.stateIsProcessed());
 
@@ -335,14 +335,14 @@ public class BlanketApproveTest extends KEWTestCase {
     
     @Test public void testBlanketApproveToMultipleNodesErrors() throws Exception {
         
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         try {
             document.blanketApprove("", new String[] { ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE, ParallelSetup.ACKNOWLEDGE_1_NODE });    
             fail("document should have thrown exception");
         } catch (Exception e) {
             // Shouldn't be able to blanket approve past the join in conjunction with blanket approve within a branch
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
             assertTrue("Document should be in exception routing.", document.stateIsException());            
         }
     }
@@ -351,7 +351,7 @@ public class BlanketApproveTest extends KEWTestCase {
      * Tests that the notifications are generated properly on a blanket approve.  Works against the "NotificationTest" document type.
      */
     @Test public void testBlanketApproveNotification() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("");
         ActionRequestService arService = KEWServiceLocator.getActionRequestService(); 
         List actionRequests = arService.getRootRequests(arService.findPendingByDoc(document.getRouteHeaderId()));
@@ -453,7 +453,7 @@ public class BlanketApproveTest extends KEWTestCase {
      * Addresses issue http://fms.dfa.cornell.edu:8080/browse/KULWF-461
      */
     @Test public void testBlanketApprovePastMandatoryNode() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "BlanketApproveMandatoryNodeTest");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveMandatoryNodeTest");
         document.blanketApprove("");
         assertTrue("Document should be processed.", document.stateIsProcessed());
     }
@@ -464,7 +464,7 @@ public class BlanketApproveTest extends KEWTestCase {
      */
     @Test public void testBlanketApproveThroughRoleAndWorkgroup() throws Exception {
     	String jitruePrincipalId = getPrincipalIdForName("jitrue");
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "BlanketApproveThroughRoleAndWorkgroupTest");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "BlanketApproveThroughRoleAndWorkgroupTest");
     	document.saveDocument("");
     	assertTrue(document.stateIsSaved());
     	TestUtilities.assertNotInActionList(jitruePrincipalId, document.getRouteHeaderId());
@@ -483,7 +483,7 @@ public class BlanketApproveTest extends KEWTestCase {
     	TestUtilities.assertInActionList(jitruePrincipalId, document.getRouteHeaderId());
     	
     	// acknowledge as a member of the workgroup who is not jitrue
-    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
     	assertTrue(document.isAcknowledgeRequested());
     	document.acknowledge("");
     	

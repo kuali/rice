@@ -38,12 +38,12 @@ public class ClearFYIActionTest extends KEWTestCase {
     }
 
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
         doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
-        UserIdDTO user = new NetworkIdDTO("dewey");
-        doc = new WorkflowDocument(user, doc.getRouteHeaderId());
-        assertTrue("FYI should be requested of user " + user, doc.isFYIRequested());
+        String userId = getPrincipalIdForName("dewey");
+        doc = new WorkflowDocument(userId, doc.getRouteHeaderId());
+        assertTrue("FYI should be requested of user " + userId, doc.isFYIRequested());
         try {
             doc.clearFYI();
         } catch (Exception e) {
@@ -51,13 +51,13 @@ public class ClearFYIActionTest extends KEWTestCase {
         }
         assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.stateIsSaved());
 
-        UserIdDTO workgroupUser = new NetworkIdDTO("dewey");
-        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+        String workgroupUserId = getPrincipalIdForName("dewey");
+        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
 
         doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_FYI_REQ, "annotation1", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "respDesc1", false);
-        doc = new WorkflowDocument(workgroupUser, doc.getRouteHeaderId());
-        assertTrue("FYI should be requested of user " + workgroupUser, doc.isFYIRequested());
+        doc = new WorkflowDocument(workgroupUserId, doc.getRouteHeaderId());
+        assertTrue("FYI should be requested of user " + workgroupUserId, doc.isFYIRequested());
         try {
             doc.clearFYI();
         } catch (Exception e) {

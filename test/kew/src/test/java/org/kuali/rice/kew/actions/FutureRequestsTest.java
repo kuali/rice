@@ -197,7 +197,6 @@ public class FutureRequestsTest extends KEWTestCase {
         info = new WorkflowInfo();
         reportCriteriaDTO = new ReportCriteriaDTO(document.getRouteHeaderId());
         String delyeaPrincipalId = getPrincipalIdForName("delyea");
-        NetworkIdDTO delyeaIdDTO = new NetworkIdDTO("delyea");
         reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
         actionToTakeNode = "Node1";
         reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)});

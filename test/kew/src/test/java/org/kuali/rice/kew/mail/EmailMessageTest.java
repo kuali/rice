@@ -58,7 +58,7 @@ public class EmailMessageTest extends KEWTestCase {
     }
 
     private int generateDocs(String[] docTypes, Person user) throws Exception {
-        NetworkIdDTO nid = new NetworkIdDTO(user.getPrincipalName());
+        String nid = getPrincipalNameForId(user.getPrincipalName());
 
         for (String docType: docTypes) {
             WorkflowDocument document = new WorkflowDocument(nid, docType);

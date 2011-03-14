@@ -65,7 +65,7 @@ public class OutboxTest extends KEWTestCase {
         recipients.add(rkirkendPrincipalId);
         TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("quickstart"), "TestDocumentType");
         document.routeDocument("");
 
         document = new WorkflowDocument(rkirkendPrincipalId, document.getRouteHeaderId());
@@ -87,7 +87,7 @@ public class OutboxTest extends KEWTestCase {
         recipients.add(rkirkendPrincipalId);
         TestRuleAttribute.setRecipientPrincipalIds("TestRole", "qualRole", recipients);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("quickstart"), "TestDocumentType");
         document.routeDocument("");
 
         document = new WorkflowDocument(rkirkendPrincipalId, document.getRouteHeaderId());
@@ -150,7 +150,7 @@ public class OutboxTest extends KEWTestCase {
         turnOnOutboxForUser(rkirkendPrincipalId);
         turnOnOutboxForUser(user1PrincipalId);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("quickstart"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("quickstart"), "TestDocumentType");
         document.routeDocument("");
 
         // verify test is sane and users have action items
@@ -190,7 +190,7 @@ public class OutboxTest extends KEWTestCase {
         assertEquals("Wrong number of outbox items found for rkirkend", 0, KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter()).size());
         assertEquals("Wrong number of outbox items found for user1", 0, KEWServiceLocator.getActionListService().getOutbox(user1PrincipalId, new ActionListFilter()).size());
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         document.blanketApprove("");
         // verify only user who took action has the outbox item
         assertEquals("Wrong number of outbox items found for rkirkend", 1, KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter()).size());
@@ -206,7 +206,7 @@ public class OutboxTest extends KEWTestCase {
         turnOnOutboxForUser(rkirkendPrincipalId);
         turnOnOutboxForUser(user1PrincipalId);
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user2"), "OutboxTestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user2"), "OutboxTestDocumentType");
         document.routeDocument("");
         // verify action items exist
         assertEquals("Wrong number of action items found for rkirkend", 1, KEWServiceLocator.getActionListService().getActionList(rkirkendPrincipalId, new ActionListFilter()).size());
@@ -231,10 +231,12 @@ public class OutboxTest extends KEWTestCase {
         Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1PrincipalId);
         assertTrue("By default the user's pref should be outbox on", prefs.isUsingOutbox());
 
-        ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM, "false");
+        //TODO: this can no longer be set on the fly and grabbed through the preference service (default values are set at startup)
+        //TODO: this is a prime candidate for a mocking tool
+        /*ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM, "false");
         final String natjohnsPrincipalId = getPrincipalIdForName("natjohns");
         prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohnsPrincipalId);
-        assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());
+        assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());*/
     }
     
     @Test

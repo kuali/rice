@@ -66,7 +66,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      */
     @Test public void testUpdateActionItemsForWorkgroupChange() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
@@ -151,7 +151,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
     @Test public void testUpdateActionItemsForNestedGroupChange() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
 
         GroupInfo workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
@@ -191,7 +191,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          // test nested
          KimPrincipal user1 = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
 
-         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionItemDocumentType");
+         document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
          document.setTitle("");
 
          workgroup1 = KIMServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested1");
@@ -220,11 +220,11 @@ public class ActionItemServiceTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testWorkgroupActionItemGenerationWhenMultipleWorkgroupRequests() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdDTO("jitrue"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jitrue"), document.getRouteHeaderId());
 
         Group testGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
         Group adminGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
@@ -264,7 +264,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      * multiple Action Items but only one of them will show up in their Action List.
      */
     @Test public void testMultipleActionItemGeneration() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "ActionItemDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
@@ -310,7 +310,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      * The routing is configured in the BAOrphanedRequestDocumentType.
      */
     @Test public void testOrphanedAcknowledgeFromBlanketApprovalFix() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "BAOrphanedRequestDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BAOrphanedRequestDocumentType");
     	document.blanketApprove("");
     	assertTrue("Document should be processed.", document.stateIsProcessed());
 

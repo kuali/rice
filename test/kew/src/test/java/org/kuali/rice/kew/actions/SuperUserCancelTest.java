@@ -35,10 +35,10 @@ public class SuperUserCancelTest extends KEWTestCase {
 
     @Test
     public void testSuperUserCancel() throws Exception {
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
 	document.routeDocument("");
 
-	document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
+	document = new WorkflowDocument(getPrincipalNameForId("jhopf"), document.getRouteHeaderId());
 	assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
 	document.superUserCancel("");
 	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
@@ -46,7 +46,7 @@ public class SuperUserCancelTest extends KEWTestCase {
 
     @Test
     public void testSuperUserInitiatorCancel() throws Exception {
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
 	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
 	document.superUserCancel("");
 	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
@@ -54,8 +54,8 @@ public class SuperUserCancelTest extends KEWTestCase {
 
     @Test
     public void testSuperUserNonInitiatorCancel() throws Exception {
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("delyea"), NotifySetup.DOCUMENT_TYPE_NAME);
-	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("delyea"), NotifySetup.DOCUMENT_TYPE_NAME);
+	document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
 	assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
 	document.superUserCancel("");
 	assertTrue("Document should be final after Super User Cancel", document.stateIsCanceled());
@@ -63,10 +63,10 @@ public class SuperUserCancelTest extends KEWTestCase {
 
     @Test
     public void testSuperUserCancelInvalidUser() throws Exception {
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
 	document.routeDocument("");
 
-	document = new WorkflowDocument(new NetworkIdDTO("quickstart"), document.getRouteHeaderId());
+	document = new WorkflowDocument(getPrincipalNameForId("quickstart"), document.getRouteHeaderId());
 	try {
 	    assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
 	    document.superUserCancel("");

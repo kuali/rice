@@ -150,7 +150,7 @@ public class ActionListTest extends KEWTestCase {
      * their secondary list.
      */
     @Test public void testSecondaryActionList() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
 
     	// at this point the document should be routed to the following people
@@ -227,9 +227,9 @@ public class ActionListTest extends KEWTestCase {
             assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
         }
 
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
@@ -285,7 +285,7 @@ public class ActionListTest extends KEWTestCase {
      * their secondary list.
      */
     @Test public void testPrimaryDelegationActionList() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
 
     	// at this point the document should be routed to the following people
@@ -371,11 +371,11 @@ public class ActionListTest extends KEWTestCase {
 
         Person jhopf = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         Person bmcgough = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
         document.routeDocument("");
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
         Collection<Recipient> recipients = getActionListService().findUserPrimaryDelegations(jhopf.getPrincipalId());

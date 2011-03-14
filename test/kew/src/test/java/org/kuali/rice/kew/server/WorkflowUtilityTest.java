@@ -817,7 +817,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     			)
     	);
     	
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), RouteLogTestSetup.DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), RouteLogTestSetup.DOCUMENT_TYPE_NAME);
 		document.routeDocument("");
 
 		// just look at the current node

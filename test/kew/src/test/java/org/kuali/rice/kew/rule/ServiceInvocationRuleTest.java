@@ -44,7 +44,7 @@ public class ServiceInvocationRuleTest extends KEWTestCase {
         assertNotNull(fakeService);
         
         
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("arh14"), "ServiceInvocationRuleTest");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), "ServiceInvocationRuleTest");
         doc.routeDocument("routing");
 
         // no requests whatsoever were sent...we're done

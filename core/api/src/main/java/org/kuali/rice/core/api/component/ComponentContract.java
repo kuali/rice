@@ -56,4 +56,12 @@ public interface ComponentContract {
      * @return active
      */
     boolean isActive();
+
+
+    /**
+     * This the ojb object version number for Component.
+     *
+     * @return the version number of the Parameter
+     */
+    Long getVersionNumber();
 }

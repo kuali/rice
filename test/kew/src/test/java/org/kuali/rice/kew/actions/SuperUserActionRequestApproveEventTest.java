@@ -39,12 +39,12 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
     }
 
     @Test public void testSuperUserActionsOnEnroute() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("jhopf"), "", true);
         document.routeDocument("");
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an FYI request.", document.isFYIRequested());
 
         String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
@@ -63,20 +63,20 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
     }
 
     @Test public void testSuperUserActionsOnFinal() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SuperUserApproveActionRequestFyiTest");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "SuperUserApproveActionRequestFyiTest");
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
         document.routeDocument("");
 
         // doc should still be final
         assertEquals("Document should be FINAL", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an FYI request.", document.isFYIRequested());
 
         String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
         List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkendPrincipalId, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         assertEquals("There should only be 1 fyi request to rkirkend.", 1, actionRequests.size());
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
         document.superUserActionRequestApprove(actionRequests.get(0).getActionRequestId(), "");
 
         // FYI should no longer be requested
@@ -85,7 +85,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
     }
     
     @Test public void testSuperUserActionsOnProcessed() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "SuperUserApproveActionRequestFyiTest");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "SuperUserApproveActionRequestFyiTest");
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "", getPrincipalIdForName("jhopf"), "", true);
         document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
         document.routeDocument("");
@@ -93,13 +93,13 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         // doc should still be processed
         assertEquals("Document should be PROCESSED", KEWConstants.ROUTE_HEADER_PROCESSED_CD, document.getRouteHeader().getDocRouteStatus());
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
         assertTrue("rkirkend should have an FYI request.", document.isFYIRequested());
 
         String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
         List<ActionRequestValue> fyiActionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(rkirkendPrincipalId, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         assertEquals("There should only be 1 fyi request to rkirkend.", 1, fyiActionRequests.size());
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
         document.superUserActionRequestApprove(fyiActionRequests.get(0).getActionRequestId(), "");
 
         // FYI should no longer be requested
@@ -112,7 +112,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         String jhopfPrincipalId = getPrincipalIdForName("jhopf");
         List<ActionRequestValue> ackActionRequests = KEWServiceLocator.getActionRequestService().findAllValidRequests(jhopfPrincipalId, document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         assertEquals("There should only be 1 ACK request to jhopf.", 1, ackActionRequests.size());
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
         document.superUserActionRequestApprove(ackActionRequests.get(0).getActionRequestId(), "");
 
         // ACK should no longer be requested
@@ -126,14 +126,14 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
 
     @Test public void testSuperUserActionRoutesDocumentToEnroute() throws Exception {
 	Long routeHeaderId = testSuperUserActionRoutesDocument("SuperUserApproveActionRequestApproveTest");
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), routeHeaderId);
+	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), routeHeaderId);
         // doc should now be enroute
         assertEquals("Document should be ENROUTE", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
     }
 
     @Test public void testSuperUserActionRoutesDocumentToFinal() throws Exception {
 	Long routeHeaderId = testSuperUserActionRoutesDocument("SuperUserApproveActionRequestFyiTest");
-	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), routeHeaderId);
+	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), routeHeaderId);
         // doc should now be enroute
         assertEquals("Document should be FINAL", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
     }
@@ -148,7 +148,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         document = new WorkflowDocument(ewestfalPrincipalId, document.getRouteHeaderId());
         assertTrue("ewestfal should have Complete request", document.isCompletionRequested());
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
         assertFalse("rkirkend should not have Complete request", document.isCompletionRequested());
         assertFalse("rkirkend should not have Approve request", document.isApprovalRequested());
         assertTrue("rkirkend should be a super user of the document", document.isSuperUser());
@@ -166,7 +166,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
 
     @Test public void testSavedDocumentSuperUserAdhocActionsApprove() throws Exception {
 	String initiatorNetworkId = "ewestfal";
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), "SuperUserApproveActionRequestFyiTest");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId(initiatorNetworkId), "SuperUserApproveActionRequestFyiTest");
         String adhocActionRequestCode = KEWConstants.ACTION_REQUEST_APPROVE_REQ;
         String adhocActionUserNetworkId = "jhopf";
         document.adHocRouteDocumentToPrincipal(adhocActionRequestCode, "", getPrincipalIdForName(adhocActionUserNetworkId), "", true);
@@ -174,10 +174,10 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         // doc should be saved
         assertEquals("Document should be SAVED", KEWConstants.ROUTE_HEADER_SAVED_CD, document.getRouteHeader().getDocRouteStatus());
 
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
         assertTrue("ewestfal should have Complete request", document.isCompletionRequested());
 
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
         assertFalse("rkirkend should not have Complete request", document.isCompletionRequested());
         assertFalse("rkirkend should not have Approve request", document.isApprovalRequested());
         assertTrue("rkirkend should be a super user of the document", document.isSuperUser());
@@ -191,7 +191,7 @@ public class SuperUserActionRequestApproveEventTest extends KEWTestCase {
         assertFalse(adhocPrincipalId + " should not have approve request", document.isApprovalRequested());
 
         // complete should no longer be requested
-        document = new WorkflowDocument(new NetworkIdDTO(initiatorNetworkId), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId(initiatorNetworkId), document.getRouteHeaderId());
         assertTrue(initiatorNetworkId + " should not have complete request", document.isCompletionRequested());
 
         // doc should still be saved

@@ -36,27 +36,27 @@ public class SuperUserDisapproveTest extends KEWTestCase {
     }
 	
     @Test public void testSuperUserDisapprove() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("jhopf"), document.getRouteHeaderId());
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.stateIsDisapproved());
 	}
 	
     @Test public void testSuperUserInitiatorDisapprove() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.stateIsDisapproved());
 	}
 	
     @Test public void testSuperUserDisapproveInvalidUser() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("quickstart"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("quickstart"), document.getRouteHeaderId());
         try {
         	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
         	document.superUserDisapprove("");

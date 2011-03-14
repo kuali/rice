@@ -415,6 +415,7 @@ class ParameterRepositoryServiceImplTest {
 				def String code ="PC"
 				def String name = "Config"
 				def boolean active = true
+                def Long versionNumber = 1
 			}).build()
             }
             def String applicationCode = "BORG_HUNT"
@@ -422,6 +423,7 @@ class ParameterRepositoryServiceImplTest {
             def String componentCode = "C"
             def String value = "true"
             def String description = "turn the shields on"
+            def Long versionNumber = 1
             def EvaluationOperator evaluationOperator = EvaluationOperator.ALLOW
         }).build()
 	}

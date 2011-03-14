@@ -41,7 +41,7 @@ public class RouteDocumentTest extends KEWTestCase {
      * Tests that an exception is thrown if you try to execute a "route" command on an already routed document.
      */
     @Test public void testRouteAlreadyRoutedDocument() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("user1"), DOCUMENT_TYPE_NAME);
     	document.routeDocument("");
     	
     	assertTrue("Document should be ENROUTE.", document.stateIsEnroute());
@@ -68,15 +68,15 @@ public class RouteDocumentTest extends KEWTestCase {
      * Tests that an exception is not thrown if you try to execute a "route" command on a document you did not initiate.
      */
     @Test public void testRouteDocumentAsNonInitiatorUser() throws Exception {
-        WorkflowDocument firstDocument = new WorkflowDocument(new NetworkIdDTO("user1"), DOCUMENT_TYPE_POLICY_TEST_NAME);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user2"), firstDocument.getRouteHeaderId());
+        WorkflowDocument firstDocument = new WorkflowDocument(getPrincipalNameForId("user1"), DOCUMENT_TYPE_POLICY_TEST_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("user2"), firstDocument.getRouteHeaderId());
         try {
             document.routeDocument("");
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception thrown but should not have have been... Exception was of type " + e.getClass().getName() + " and message was " + e.getMessage());
         }
-        document = new WorkflowDocument(new NetworkIdDTO("user1"), firstDocument.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("user1"), firstDocument.getRouteHeaderId());
         assertEquals("Document should be in Enroute status.", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
 
         // verify that there is 1 action taken
@@ -88,8 +88,8 @@ public class RouteDocumentTest extends KEWTestCase {
      * Tests that an exception is not thrown if you try to execute a "route" command on a document you did not initiate.
      */
     @Test public void testRouteDefaultDocumentAsNonInitiatorUser() throws Exception {
-        WorkflowDocument firstDocument = new WorkflowDocument(new NetworkIdDTO("user1"), DOCUMENT_TYPE_NAME);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user2"), firstDocument.getRouteHeaderId());
+        WorkflowDocument firstDocument = new WorkflowDocument(getPrincipalNameForId("user1"), DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("user2"), firstDocument.getRouteHeaderId());
         try {
             document.routeDocument("");
             fail("Exception should have been thrown.");

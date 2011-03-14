@@ -111,4 +111,11 @@ public interface ParameterContract {
      */
 	ParameterTypeContract getParameterType();
 
+    /**
+     * This the ojb object version number for Parameter.
+     *
+     * @return the version number of the Parameter
+     */
+    Long getVersionNumber();
+
 }

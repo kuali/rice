@@ -37,23 +37,23 @@ public class CancelActionTest extends KEWTestCase {
     }
 
     @Test public void testCancel() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         document.approve("");//ewestfal had force action rule
         
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         document.approve("");
         
         //this be the role delegate of jitrue
-        document = new WorkflowDocument(new NetworkIdDTO("natjohns"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("natjohns"), document.getRouteHeaderId());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         document.cancel("");
         
         assertTrue("Document should be disapproved", document.stateIsCanceled());
@@ -70,9 +70,9 @@ public class CancelActionTest extends KEWTestCase {
     }
 
     @Test public void testInitiatorOnlyCancel() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         
-        document = new WorkflowDocument(new NetworkIdDTO("user1"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
         try {
             document.cancel("");
             fail("Document should not be allowed to be cancelled due to initiator check.");

@@ -29,6 +29,7 @@ class ParameterTypeTest {
             <code>PC</code>
             <name>Config</name>
             <active>true</active>
+            <versionNumber>1</versionNumber>
         </parameterType>
     """
 
@@ -80,6 +81,7 @@ class ParameterTypeTest {
 				def String code ="PC"
 				def String name = "Config"
 				def boolean active = true
+                def Long versionNumber = 1
 			}).build()
 	}
 }

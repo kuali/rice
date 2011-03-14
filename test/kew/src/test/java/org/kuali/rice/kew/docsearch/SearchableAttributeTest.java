@@ -314,7 +314,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         loadXmlFile("testdoc0.xml");
 
         String documentTypeName = "SearchDoc";
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("arh14"), documentTypeName);
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), documentTypeName);
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         doc.routeDocument("routing");
 
@@ -333,7 +333,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
 
         // route a new doc
-        doc = new WorkflowDocument(new NetworkIdDTO("arh14"), documentTypeName);
+        doc = new WorkflowDocument(getPrincipalNameForId("arh14"), documentTypeName);
         doc.routeDocument("routing");
 
         // with no attribute criteria, both docs should be found

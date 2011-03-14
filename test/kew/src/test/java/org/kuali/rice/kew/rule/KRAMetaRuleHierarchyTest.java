@@ -45,7 +45,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
 
     protected void approve(String user, Long docId) throws WorkflowException {
         log.info("Approving as " + user);
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO(user), docId);
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId(user), docId);
         doc.approve("approving as " + user);
     }
 
@@ -53,7 +53,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
     public void test() throws WorkflowException {
         loadXmlFile("KRAMetaRuleHierarchy.xml");
         
-        WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("quickstart"), "KRAMetaRuleHierarchyTest");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("quickstart"), "KRAMetaRuleHierarchyTest");
         
         doc.getDocumentContent().setApplicationContent(HIERARCHY);
         doc.routeDocument("initial route");
@@ -118,7 +118,7 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
 
         TestUtilities.logActionRequests(doc.getRouteHeaderId());
 
-        doc = new WorkflowDocument(new NetworkIdDTO("quickstart"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalNameForId("quickstart"), doc.getRouteHeaderId());
         assertTrue(doc.stateIsFinal());
     }
 }

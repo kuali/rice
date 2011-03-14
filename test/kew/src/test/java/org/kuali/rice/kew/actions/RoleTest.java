@@ -38,30 +38,30 @@ public class RoleTest extends KEWTestCase {
     }
 
     @Test public void testRoleRequestGeneration() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("jhopf"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");//ewestfal had force action rule
         
-        document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
         //this be the role delegate of jitrue
-        document = new WorkflowDocument(new NetworkIdDTO("natjohns"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("natjohns"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
         document.approve("");
         
-        document = new WorkflowDocument(new NetworkIdDTO("xqi"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalNameForId("xqi"), document.getRouteHeaderId());
         document.acknowledge("");
         
         assertTrue("Document should be final", document.stateIsFinal());

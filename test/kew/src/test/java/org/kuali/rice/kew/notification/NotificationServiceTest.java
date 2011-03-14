@@ -41,7 +41,7 @@ public class NotificationServiceTest extends KEWTestCase {
 	 * Tests that when a user is routed to twice at the same time that only email is sent to them.
 	 */
 	@Test public void testNoDuplicateEmails() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("user1"), "NotificationTest");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("user1"), "NotificationTest");
 		document.routeDocument("");
 
 		assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));

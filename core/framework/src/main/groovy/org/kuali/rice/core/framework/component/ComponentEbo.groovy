@@ -30,6 +30,7 @@ class ComponentEbo implements ComponentContract, Inactivateable, ExternalizableB
 	def String name
 	def boolean active = true
 	def boolean virtual
+    def Long versionNumber
 
     /**
      * Converts a mutable ebo to its immutable counterpart

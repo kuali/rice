@@ -324,7 +324,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         String documentTypeName = "SearchDocTypeRangeSearchDataType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalNameForId(userNetworkId), documentTypeName);
 
         /*
          *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
@@ -350,7 +350,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalNameForId(userNetworkId), workflowDocument.getRouteHeaderId());
 
         /*
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());

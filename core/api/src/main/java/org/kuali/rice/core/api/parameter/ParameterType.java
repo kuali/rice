@@ -48,6 +48,7 @@ import java.util.Collection;
     ParameterType.Elements.CODE,
     ParameterType.Elements.NAME,
     ParameterType.Elements.ACTIVE,
+    CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class ParameterType implements ParameterTypeContract, ModelObjectComplete {
@@ -63,6 +64,9 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -74,6 +78,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
     	this.code = null;
     	this.name = null;
     	this.active = false;
+        this.versionNumber = null;
     }
 
 	/**
@@ -86,6 +91,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
         code = builder.getCode();
         name = builder.getName();
         active = builder.isActive();
+        versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -103,6 +109,11 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 		return active;
 	}
 
+     @Override
+	public Long getVersionNumber() {
+		return versionNumber;
+	}
+
 	/**
      * This builder is used to construct instances of ParameterType.  It enforces the constraints of the {@link ParameterTypeContract}.
      */
@@ -113,6 +124,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 		private String code;
         private String name;
         private boolean active;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -144,6 +156,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
             Builder builder =  new Builder(contract.getCode());
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -168,6 +181,10 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 			this.active = active;
 		}
 
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
+        }
+
 		@Override
 		public String getCode() {
 			return code;
@@ -182,6 +199,11 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 		public boolean isActive() {
 			return active;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
 
 		/**
 		 * Builds an instance of a ParameterType based on the current state of the builder.

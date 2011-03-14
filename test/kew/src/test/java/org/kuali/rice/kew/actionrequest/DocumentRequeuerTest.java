@@ -44,9 +44,9 @@ public class DocumentRequeuerTest extends KEWTestCase {
     }
 
     @Test public void testDocumentRequeueSingleNode() throws Exception {
-       WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+       WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
        document.routeDocument("");
-       document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), document.getRouteHeaderId());
+       document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
        assertTrue(document.stateIsEnroute());
        ActionRequestDTO[] requests = document.getActionRequests();
        assertEquals("Should be 2 requests.", 2, requests.length);
@@ -64,7 +64,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
        // initiate a requeue of the document
 //       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getRouteHeaderId(), DocumentRequeuerImpl.class.getName());
 
-       document = new WorkflowDocument(new NetworkIdDTO("bmcgough"), document.getRouteHeaderId());
+       document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
        assertTrue(document.stateIsEnroute());
        requests = document.getActionRequests();
        assertEquals("Should be 2 requests.", 2, requests.length);
@@ -79,7 +79,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
        // have only one pending request to ryan
 //       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getRouteHeaderId(), DocumentRequeuerImpl.class.getName());
        documentRequeuer.requeueDocument(document.getRouteHeaderId());
-       document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), document.getRouteHeaderId());
+       document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
        assertTrue(document.stateIsEnroute());
        requests = document.getActionRequests();
        assertEquals("Should be 2 requests.", 2, requests.length);

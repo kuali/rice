@@ -45,6 +45,7 @@ import java.util.Collection;
         Parameter.Elements.DESCRIPTION,
         Parameter.Elements.PARAMETER_TYPE,
         Parameter.Elements.EVALUATION_OPERATOR,
+        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Parameter implements ParameterContract, ModelObjectComplete {
@@ -75,6 +76,9 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
     @XmlElement(name = Elements.EVALUATION_OPERATOR, required = false)
     private final EvaluationOperator evaluationOperator;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -91,6 +95,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         this.description = null;
         this.parameterType = null;
         this.evaluationOperator = null;
+        this.versionNumber = null;
     }
 
     private Parameter(Builder builder) {
@@ -102,6 +107,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         description = builder.getDescription();
         parameterType = builder.parameterType.build();
         evaluationOperator = builder.getEvaluationOperator();
+        versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -144,6 +150,11 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         return evaluationOperator;
     }
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
     /**
      * This builder constructs an Parameter enforcing the constraints of the {@link ParameterContract}.
      */
@@ -159,6 +170,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         private String description;
         private ParameterType.Builder parameterType;
         private EvaluationOperator evaluationOperator;
+        private Long versionNumber;
 
         private Builder(String applicationCode, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType) {
             setApplicationCode(applicationCode);
@@ -183,6 +195,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
             builder.setValue(contract.getValue());
             builder.setDescription(contract.getDescription());
             builder.setEvaluationOperator(contract.getEvaluationOperator());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -233,6 +246,10 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
             this.evaluationOperator = evaluationOperator;
         }
 
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
+        }
+
         @Override
         public String getApplicationCode() {
             return applicationCode;
@@ -276,6 +293,11 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         @Override
         public ParameterType.Builder getParameterType() {
             return parameterType;
+        }
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
         }
     }
 

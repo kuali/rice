@@ -49,6 +49,7 @@ import java.util.Collection;
     Component.Elements.NAME,
     Component.Elements.VIRTUAL,
     Component.Elements.ACTIVE,
+    CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Component implements ComponentContract, ModelObjectComplete {
@@ -70,6 +71,9 @@ public final class Component implements ComponentContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -83,6 +87,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
     	this.name = null;
     	this.virtual = false;
     	this.active = true;
+        this.versionNumber = null;
     }
 
 	/**
@@ -97,6 +102,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
         name = builder.getName();
         virtual = builder.isVirtual();
         active = builder.isActive();
+        versionNumber = builder.getVersionNumber();
     }
     
     
@@ -125,6 +131,11 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 		return active;
 	}
 
+    @Override
+	public Long getVersionNumber() {
+		return versionNumber;
+	}
+
 	/**
      * This builder is used to construct instances of Component.  It enforces the constraints of the {@link ComponentContract}.
      */
@@ -137,6 +148,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
         private String name;
         private boolean virtual;
         private boolean active;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -172,6 +184,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
         public static Builder create(ComponentContract contract) {
             Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName(),  contract.isVirtual());
             builder.active = contract.isActive();
+            builder.versionNumber = contract.getVersionNumber();
             return builder;
         }
 
@@ -245,6 +258,15 @@ public final class Component implements ComponentContract, ModelObjectComplete {
         @Override
 		public String getName() {
 			return name;
+		}
+
+         @Override
+		public Long getVersionNumber() {
+			return versionNumber;
+		}
+
+		public void setVersionNumber(Long versionNumber) {
+			this.versionNumber = versionNumber;
 		}
 
 		/**

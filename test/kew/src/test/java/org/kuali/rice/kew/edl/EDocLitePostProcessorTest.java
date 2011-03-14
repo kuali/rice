@@ -36,7 +36,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
     public void testPostEvent() throws Exception {
         String dummyData = "testing this stuff";
         Integer testServerPort = Integer.valueOf(getJettyServerPort() + 1);
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "TestDocumentType");
         String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
         document.setApplicationContent(applicationContent);
         document.saveRoutingData();

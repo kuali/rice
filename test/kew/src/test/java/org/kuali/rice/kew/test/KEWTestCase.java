@@ -55,6 +55,7 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
 		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle(XML_FILE));
+
 		return suiteLifecycles;
 	}
 
@@ -62,6 +63,24 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	protected void loadSuiteTestData() throws Exception {
 		super.loadSuiteTestData();
         new SQLDataLoader(SQL_FILE, ";").runSql();
+	}
+
+
+    /**
+	 * By default this loads the "default" data set from the DefaultTestData.sql
+	 * and DefaultTestData.xml files. Subclasses can override this to change
+	 * this behaviour
+	 */
+	protected void loadDefaultTestData() throws Exception {
+		// at this point this is constants. loading these through xml import is
+		// problematic because of cache notification
+		// issues in certain low level constants.
+		new SQLDataLoader(
+				"classpath:org/kuali/rice/kew/test/DefaultPerTestData.sql", ";")
+				.runSql();
+
+		KEWXmlDataLoader.loadXmlClassLoaderResource(KEWTestCase.class,
+				"DefaultPerTestData.xml");
 	}
 
 	@Override
@@ -93,6 +112,9 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	 */
 	@Override
 	protected void loadPerTestData() throws Exception {
+        final long t1 = System.currentTimeMillis();
+        loadDefaultTestData();
+
 		final long t2 = System.currentTimeMillis();
 		loadTestData();
 
@@ -183,17 +205,14 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	}
 
 	protected String getPrincipalIdForName(String principalName) {
-		return KEWServiceLocator.getIdentityHelperService()
-				.getIdForPrincipalName(principalName);
+		return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
 	}
 
 	protected String getPrincipalNameForId(String principalId) {
-		return KEWServiceLocator.getIdentityHelperService().getPrincipal(
-				principalId).getPrincipalName();
+		return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId).getPrincipalName();
 	}
 
 	protected String getGroupIdForName(String namespace, String groupName) {
-		return KEWServiceLocator.getIdentityHelperService().getIdForGroupName(
-				namespace, groupName);
+		return KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getGroupId();
 	}
 }

@@ -47,7 +47,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
      * Tests revoking by action request id.
      */
     @Test public void testRevokeByActionRequestId() throws Exception {
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
+    	WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
     	doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
 
@@ -93,7 +93,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
      */
     @Test public void testRevokeByUserAndWorkgroup() throws Exception {
     	// ad hoc the document to dewey (twice) and the workgroup WorkflowAdmin
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
+    	WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
     	String principalId = getPrincipalIdForName("dewey");
     	doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", principalId, "respDesc1", false);
@@ -151,7 +151,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
      */
     @Test public void testRevokeByNodeName() throws Exception {
     	// ad hoc requests at the AdHoc node and then revoke the entire node
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
+    	WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
     	doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotationDewey1", getPrincipalIdForName("dewey"), "respDesc1", false);
     	String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
@@ -197,7 +197,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
      */
     @Test public void testRevokePriorToRouting() throws Exception {
     	// ad hoc the document to dewey and the workgroup WorkflowAdmin
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
+    	WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
     	doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "AdHoc", "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
 
@@ -242,7 +242,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
      * ad hoc requests doesn't have any adverse effects on the notification requests
      */
     @Test public void testRevokeAfterBlanketApprove() throws Exception {
-    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), ADH0C_DOC);
+    	WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), ADH0C_DOC);
     	docId = doc.getRouteHeaderId();
     	// send an FYI to the AdHoc node prior to blanket approving
     	doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "AdHoc", "annotationEwestfal1", getPrincipalIdForName("ewestfal"), "respDesc1", false);
@@ -271,7 +271,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     }
 
     private WorkflowDocument getDocument(String netid) throws WorkflowException {
-    	return new WorkflowDocument(new NetworkIdDTO(netid), docId);
+    	return new WorkflowDocument(getPrincipalNameForId(netid), docId);
     }
 
 }

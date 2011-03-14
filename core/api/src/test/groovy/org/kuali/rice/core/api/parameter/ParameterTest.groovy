@@ -37,6 +37,7 @@ public class ParameterTest {
 	private static final String PARAMETER_TYPE_CODE = "PC"
     private static final String PARAMETER_TYPE_NAME = "Config"
     private static final String PARAMETER_TYPE_ACTIVE = "true"
+    private static final Long VERSION_NUMBER = new Integer(1);
 
     private static final String XML = """
     <parameter xmlns="http://rice.kuali.org/core/v1_1">
@@ -50,8 +51,10 @@ public class ParameterTest {
             <code>${PARAMETER_TYPE_CODE}</code>
             <name>${PARAMETER_TYPE_NAME}</name>
             <active>${PARAMETER_TYPE_ACTIVE}</active>
+            <versionNumber>1</versionNumber>
         </parameterType>
         <evaluationOperator>${EVALUATION_OP.operatorCode}</evaluationOperator>
+        <versionNumber>1</versionNumber>
     </parameter>
     """
 
@@ -158,6 +161,7 @@ public class ParameterTest {
 				def String code = ParameterTest.PARAMETER_TYPE_CODE
 				def String name = ParameterTest.PARAMETER_TYPE_NAME
 				def boolean active = ParameterTest.PARAMETER_TYPE_ACTIVE.toBoolean()
+                def Long versionNumber = ParameterTest.VERSION_NUMBER
 			}).build()
             }
             def String applicationCode = ParameterTest.APPLICATION_CODE
@@ -166,6 +170,7 @@ public class ParameterTest {
             def String value = ParameterTest.VALUE
             def String description = ParameterTest.DESC
             def EvaluationOperator evaluationOperator = ParameterTest.EVALUATION_OP;
+            def Long versionNumber = ParameterTest.VERSION_NUMBER;
         }).build()
 	}
 }

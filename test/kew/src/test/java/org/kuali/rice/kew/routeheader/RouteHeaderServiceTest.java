@@ -81,13 +81,13 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     }
 
     @Test public void testGetServiceNamespaceByDocumentId() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType2");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "TestDocumentType2");
     	Long documentId = document.getRouteHeaderId();
     	String serviceNamespace = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
     	assertEquals("Service Namespace should be KEWNEW", "KEWNEW", serviceNamespace);
 
     	// now check TestDocumentType
-    	document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "TestDocumentType");
+    	document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "TestDocumentType");
     	documentId = document.getRouteHeaderId();
     	serviceNamespace = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
     	assertEquals("Service Namespace should be KEW", "KEW", serviceNamespace);
@@ -99,7 +99,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     		return;
     	}
 
-    	WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
     	document.saveRoutingData();
     	final Long documentId = document.getRouteHeaderId();
         Locker locker = null;

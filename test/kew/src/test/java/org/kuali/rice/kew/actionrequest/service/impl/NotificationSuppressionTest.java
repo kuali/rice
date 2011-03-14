@@ -64,7 +64,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testNotificationSuppressionKeys() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), TEST_DOC_TYPE);
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
 		document.routeDocument("");
 		ActionRequestDTO[] requests = document.getActionRequests();
 		assertTrue("there must be ActionRequestDTOs to test!", requests != null && requests.length > 0);
@@ -95,7 +95,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testActionItemFiltering() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), TEST_DOC_TYPE);
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
 		document.routeDocument("");
 		ActionRequestDTO[] requests = document.getActionRequests();
 		assertTrue("there must be ActionRequestDTOs to test!", requests != null && requests.length > 0);
@@ -134,7 +134,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testSuppression() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), TEST_DOC_TYPE);
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
 		document.routeDocument("");
 
 		assertTrue("the responsible party should have been notified",

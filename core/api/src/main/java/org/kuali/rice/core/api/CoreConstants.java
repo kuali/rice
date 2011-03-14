@@ -49,6 +49,7 @@ public final class CoreConstants {
 
     public static final class CommonElements {
         public static final String FUTURE_ELEMENTS = "_futureElements";
+        public static final String VERSION_NUMBER = "versionNumber";
 
         private CommonElements() {
 		    throw new UnsupportedOperationException("do not call");

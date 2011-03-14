@@ -28,6 +28,7 @@ class ComponentTest {
             <namespaceCode>NSC</namespaceCode>
             <virtual>false</virtual>
             <active>true</active>
+            <versionNumber>1</versionNumber>
         </component>
     """
 
@@ -115,6 +116,7 @@ class ComponentTest {
 				def String namespaceCode = "NSC"
                 def boolean virtual = false
                 def boolean active = true
+                def Long versionNumber = 1
 			}).build()
 	}
 }

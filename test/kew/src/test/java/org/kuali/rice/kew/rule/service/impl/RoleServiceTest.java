@@ -70,7 +70,7 @@ public class RoleServiceTest extends KEWTestCase {
 	}
 
 	private Long routeDocument() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.routeDocument("testing only");
         return document.getRouteHeaderId();
@@ -125,7 +125,7 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
         DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
@@ -181,7 +181,7 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
         DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());

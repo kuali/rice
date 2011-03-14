@@ -98,7 +98,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="optionsFinder">
               <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"/>
             </property>
-          </bean>                        
+          </bean>
         </list>
       </property> 
       <property name="summary" value="Group with grid layout and 2 columns"/>      
@@ -130,7 +130,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean parent="TextControl" p:size="10"/>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field7" p:label="Field 8" p:width="auto">
+          <bean parent="AttributeField_Form" p:propertyName="field8" p:label="Field 8" p:width="auto">
             <property name="control">
               <bean parent="CheckboxControl"/>
             </property>

@@ -27,6 +27,7 @@ import org.springframework.beans.BeanWrapperImpl;
  * @see org.springframework.beans.BeanWrapper
  */
 public class ModelUtils {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ModelUtils.class);
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Object> T getPropertyValue(Object model, String propertyPath) {
@@ -44,6 +45,9 @@ public class ModelUtils {
 		catch (Exception e) {
 			if (!ignoreUnknown) {
 				throw new RuntimeException(e);
+			}
+			if (LOG.isInfoEnabled()) {
+				LOG.info("Ignoring exception thrown during setting of property '" + propertyPath + "': " + e.getLocalizedMessage());
 			}
 		}
 	}

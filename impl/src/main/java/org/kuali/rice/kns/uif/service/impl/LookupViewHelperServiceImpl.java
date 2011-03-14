@@ -268,17 +268,17 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		Set<String> fieldsForLookup = lookupFormFields.keySet();
 		for (String propName : fieldsForLookup) {
 			if (propName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-				String fromDateValue = lookupFormFields.get(propName);
+				String from_DateValue = lookupFormFields.get(propName);
 				String dateFieldName = StringUtils.remove(propName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
-				String dateValue = lookupFormFields.get(dateFieldName);
-				String newPropValue = dateValue;// maybe clean above with
+				String to_DateValue = lookupFormFields.get(dateFieldName);
+				String newPropValue = to_DateValue;// maybe clean above with
 				// ObjectUtils.clean(propertyValue)
-				if (StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(dateValue)) {
-					newPropValue = fromDateValue + KNSConstants.BETWEEN_OPERATOR + dateValue;
-				} else if (StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(dateValue)) {
-					newPropValue = ">=" + fromDateValue;
-				} else if (StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {
-					newPropValue = "<=" + dateValue;
+				if (StringUtils.isNotEmpty(from_DateValue) && StringUtils.isNotEmpty(to_DateValue)) {
+					newPropValue = from_DateValue + KNSConstants.BETWEEN_OPERATOR + to_DateValue;
+				} else if (StringUtils.isNotEmpty(from_DateValue) && StringUtils.isEmpty(to_DateValue)) {
+					newPropValue = ">=" + from_DateValue;
+				} else if (StringUtils.isNotEmpty(to_DateValue) && StringUtils.isEmpty(from_DateValue)) {
+					newPropValue = "<=" + to_DateValue;
 				} // could optionally continue on else here
 
 				fieldsToUpdate.put(dateFieldName, newPropValue);

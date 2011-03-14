@@ -24,6 +24,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="TextControl" parent="TextControl-parentBean"/>
   <bean id="TextControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.TextControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/text.jsp"/>
+      <property name="size" value="30"/>
   </bean>  
   
   <bean id="CheckboxControl" parent="CheckboxControl-parentBean"/>
@@ -39,6 +40,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="TextAreaControl" parent="TextAreaControl-parentBean"/>
   <bean id="TextAreaControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.TextAreaControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/textArea.jsp"/>
+      <property name="rows" value="3"/>
+      <property name="cols" value="40"/>
   </bean> 
   
   <bean id="SelectControl" parent="SelectControl-parentBean"/>

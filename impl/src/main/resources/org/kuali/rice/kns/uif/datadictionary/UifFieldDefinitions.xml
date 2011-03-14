@@ -50,6 +50,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo.bindToForm" value="true"/>
   </bean>    
   
+  <bean id="LookupCriteriaAttributeField" abstract="true" parent="LookupCriteriaAttributeField-parentBean"/>
+  <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.LookupCriteriaAttributeField" parent="AttributeField">
+<!--
+      <property name="summaryMessageField.render" value="false"/>
+      <property name="constraintMessageField.render" value="false"/>
+-->
+  </bean>
+  
   <bean id="LabelField" abstract="true" parent="LabelField-parentBean"/>
   <bean id="LabelField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.LabelField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/labelField.jsp"/>
@@ -124,15 +132,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
   </bean> 
   
-  <bean id="SearchField" abstract="true" parent="SearchField-parentBean"/>
-  <bean id="SearchField-parentBean" abstract="true" parent="AttributeField-parentBean">
-      <property name="control">
-         <bean parent="TextControl" p:size="15"/>
-      </property>
-      <property name="summaryMessageField.render" value="false"/>
-      <property name="constraintMessageField.render" value="false"/>
-  </bean>
-
   <!-- Common Fields -->
   
   <bean id="MessageField_RequiredIndicator" parent="MessageField" p:messageText="* indicates required field" 

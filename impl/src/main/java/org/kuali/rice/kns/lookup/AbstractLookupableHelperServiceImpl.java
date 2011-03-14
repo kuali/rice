@@ -1228,14 +1228,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			 if(propName.startsWith(KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
 				 String fromDateValue = (String)lookupFormFields.get(propName);
 				 String dateFieldName = StringUtils.remove(propName, KNSConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
-				 String dateValue = (String)lookupFormFields.get(dateFieldName);
-				 String newPropValue = dateValue;//maybe clean above with ObjectUtils.clean(propertyValue)
-				 if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(dateValue)) {
-					newPropValue = fromDateValue + KNSConstants.BETWEEN_OPERATOR + dateValue;
-				 } else if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(dateValue)) {
+				 String toDateValue = (String)lookupFormFields.get(dateFieldName);
+				 String newPropValue = toDateValue;//maybe clean above with ObjectUtils.clean(propertyValue)
+				 if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(toDateValue)) {
+					newPropValue = fromDateValue + KNSConstants.BETWEEN_OPERATOR + toDateValue;
+				 } else if(StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(toDateValue)) {
 					 newPropValue = ">="+fromDateValue;
-				 } else if(StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {
-					 newPropValue = "<="+dateValue;
+				 } else if(StringUtils.isNotEmpty(toDateValue) && StringUtils.isEmpty(fromDateValue)) {
+					 newPropValue = "<="+toDateValue;
 				 } //could optionally continue on else here
 
 				 fieldsToUpdate.put(dateFieldName, newPropValue);

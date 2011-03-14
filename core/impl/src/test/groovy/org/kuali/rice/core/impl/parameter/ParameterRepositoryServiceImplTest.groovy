@@ -423,8 +423,8 @@ class ParameterRepositoryServiceImplTest {
             def String componentCode = "C"
             def String value = "true"
             def String description = "turn the shields on"
-            def Long versionNumber = 1
             def EvaluationOperator evaluationOperator = EvaluationOperator.ALLOW
+            def Long versionNumber = 1
         }).build()
 	}
 }

@@ -70,6 +70,7 @@ public class ParameterTypeBo extends PersistableBusinessObjectBase implements Pa
         bo.active = im.active
         bo.code = im.code
         bo.name = im.name
+        bo.versionNumber = im.versionNumber
         return bo
     }
 }

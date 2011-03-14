@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.edl;
 
 import org.apache.log4j.Logger;
+import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 import static org.junit.Assert.assertTrue;
@@ -31,6 +33,11 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessorTest.class);
 
     private static final String CONTEXT_NAME = "/edl-test";
+
+    @Test
+    public void junk() {
+
+    }
     /*
     @Test
     public void testPostEvent() throws Exception {

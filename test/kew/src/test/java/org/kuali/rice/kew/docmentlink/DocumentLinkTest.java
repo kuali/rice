@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentLinkTest extends KEWTestCase{
 
 	private static final Logger LOG = Logger.getLogger(DocumentLinkTest.class);

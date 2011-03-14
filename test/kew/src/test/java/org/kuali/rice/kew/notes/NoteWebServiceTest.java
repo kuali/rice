@@ -32,7 +32,7 @@ public class NoteWebServiceTest extends KEWTestCase {
 	
 	@Test public void testNotesClient() throws Exception {
 		NoteDTO testNoteVO;
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 		//Test add notes
 		testNoteVO = new NoteDTO();
 		testNoteVO.setNoteAuthorWorkflowId("andlee");

@@ -48,7 +48,7 @@ public class RoutingReportServiceTest extends KEWTestCase {
         
         
         // route a document to the first node
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
         // there should now be 1 active node and 2 pending requests on the document

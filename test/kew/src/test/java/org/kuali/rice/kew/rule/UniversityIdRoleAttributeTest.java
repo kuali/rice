@@ -95,7 +95,7 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
     public void testParameterizedUniversityIdAttribute() throws Exception {
 	loadXmlFile("ParameterizedUniversityIdRoleAttributeTestConfig.xml");
 	
-	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "UniversityIdRoleAttributeTest");
+	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "UniversityIdRoleAttributeTest");
 	
 	WorkflowAttributeDefinitionDTO univIdDef1 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
 	PropertyDefinitionDTO univIdProp1 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "2002");

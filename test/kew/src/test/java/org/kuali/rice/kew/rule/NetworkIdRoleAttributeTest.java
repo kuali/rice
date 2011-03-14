@@ -46,7 +46,7 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 	public void testNetworkIdAttribute() throws Exception {
 		loadXmlFile("NetworkIdRoleAttributeTestConfig.xml");
 
-		WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId(
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName(
 				"ewestfal"), "NetworkIdRoleAttributeTest");
 
 		WorkflowAttributeDefinitionDTO networkIdDef1 = new WorkflowAttributeDefinitionDTO(
@@ -68,14 +68,14 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 
 		// load the document as rkirkend
 
-		document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document
+		document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document
 				.getRouteHeaderId());
 		assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 		assertTrue("rkirkend should have an approve request.", document
 				.isApprovalRequested());
 
 		// load the document as bmcgough
-		document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document
+		document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document
 				.getRouteHeaderId());
 		assertTrue("bmcgough should have an approve request.", document
 				.isApprovalRequested());
@@ -84,7 +84,7 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 		document.approve("i approve");
 
 		// reload as rkirkend, verify still enroute
-		document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document
+		document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document
 				.getRouteHeaderId());
 		assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 		assertTrue("rkirkend should have an approve request.", document
@@ -100,7 +100,7 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 	public void testParameterizedNetworkIdAttribute() throws Exception {
 		loadXmlFile("ParameterizedNetworkIdRoleAttributeTestConfig.xml");
 
-		WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId(
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName(
 				"ewestfal"), "NetworkIdRoleAttributeTest");
 
 		WorkflowAttributeDefinitionDTO networkIdDef1 = new WorkflowAttributeDefinitionDTO(
@@ -115,7 +115,7 @@ public class NetworkIdRoleAttributeTest extends KEWTestCase {
 
 		// load the document as rkirkend
 
-		document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document
+		document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document
 				.getRouteHeaderId());
 		assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 		assertTrue("rkirkend should have an approve request.", document

@@ -42,12 +42,12 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
     }
 
     @Test public void testReleaseWorkgroupAuthority() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
         doc.routeDocument("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
         //have member rkirkend take authority
-        doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
         doc.takeGroupAuthority("", groupId);
 
         // verify there is only one action item and that it's to rkirkend
@@ -59,7 +59,7 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
         assertEquals("action item should be to group", groupId, ai.getGroupId());
         
         //have rkirkend release authority
-        doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
 
         doc.releaseGroupAuthority("", groupId);
 

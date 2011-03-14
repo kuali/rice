@@ -46,7 +46,7 @@ public class ParallelRoutingTest extends KEWTestCase {
     }
 
     @Test public void testParallelRoute() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
         document.saveRoutingData();
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
@@ -56,7 +56,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         document.routeDocument("Routing for parallel");
         
         // should have generated a request to "bmcgough"
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Incorrect pending action requests.", 1, actionRequests.size());
@@ -67,7 +67,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         document.approve("Approving test");
         
         // document should split at this point and generate an ack to temay and approves to rkirkend and pmckown
-        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
         actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Incorrect pending action requests.", 3, actionRequests.size());
@@ -127,7 +127,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertNotNull("Node should be in branch.", instance2.getBranch());
         assertTrue("Branches should be different.", !instance1.getBranch().getBranchId().equals(instance2.getBranch().getBranchId()));
         
-        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("Should have request.", document.isApprovalRequested());
         document.approve("Git-r-dun");
         
@@ -148,7 +148,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertTrue("Not at join", isAtJoin);
         assertTrue("Not at WD3", isAtWD3);
         
-        document = new WorkflowDocument(getPrincipalNameForId("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         assertTrue("Should have request.", document.isApprovalRequested());
         document.approve("Do it.");
         
@@ -163,7 +163,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         }
         assertTrue("Not at WDF", isAtWDF);
         
-        document = new WorkflowDocument(getPrincipalNameForId("xqi"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("xqi"), document.getRouteHeaderId());
         assertTrue("Should still be enroute.", document.stateIsEnroute());
         assertTrue("Should have request.", document.isApprovalRequested());
         document.approve("I'm the last approver");
@@ -181,7 +181,7 @@ public class ParallelRoutingTest extends KEWTestCase {
 //        }
 //        assertTrue("Not at WDF", isAtWDF);
         
-        document = new WorkflowDocument(getPrincipalNameForId("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
         assertTrue("Should have request.", document.isAcknowledgeRequested());
         document.acknowledge("");
         assertTrue(document.stateIsFinal());
@@ -193,7 +193,7 @@ public class ParallelRoutingTest extends KEWTestCase {
      */
     @Test public void testEmptyParallelBranches() throws Exception {
         
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), PARALLEL_EMPTY_DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), PARALLEL_EMPTY_DOCUMENT_TYPE_NAME);
         document.saveRoutingData();
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
@@ -203,7 +203,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         document.routeDocument("");
         
         // should have generated a request to "bmcgough"
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Incorrect pending action requests.", 1, actionRequests.size());
@@ -215,7 +215,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         
         // now the document should have split, passed through nodes in each branch which didn't generate requests,
         // and then passed the join node and generated requests at WorkflowDocumentFinal
-        document = new WorkflowDocument(getPrincipalNameForId("xqi"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("xqi"), document.getRouteHeaderId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
         assertTrue(document.isApprovalRequested());
         
@@ -255,11 +255,11 @@ public class ParallelRoutingTest extends KEWTestCase {
     }*/
     
     @Test public void testAdhocApproversJoinScenario() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "AdHocApproversDocType");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "AdHocApproversDocType");
         document.routeDocument("");
         
         // should send an approve to bmcgough
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("Bmcgough should have approve request.", document.isApprovalRequested());
         document.approve("");
         
@@ -272,7 +272,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         
         // pmckown has the request at the adhoc approvers node, if we approve as him then the document should _not_ transition out
         // of it's current nodes
-        document = new WorkflowDocument(getPrincipalNameForId("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         assertTrue("Pmckown should have approve request.", document.isApprovalRequested());
         document.approve("");
         
@@ -283,7 +283,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("AdHocApproversJoin"));
     
         // at WorkflowDocument2, rkirkend is the approver, if we approve as him we should end up at the WorkflowDocumentFinal node
-        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("Rkirkend should have approve request.", document.isApprovalRequested());
         document.approve("");
         
@@ -292,7 +292,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertEquals("There should be one node name.", 1, nodeNames.size());
         assertTrue("Should be at WorkflowDocumentFinal node.", nodeNames.contains("WorkflowDocumentFinal"));
         
-        document = new WorkflowDocument(getPrincipalNameForId("xqi"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("xqi"), document.getRouteHeaderId());
         assertTrue("Document should still be enroute.", document.stateIsEnroute());
         document.approve("");
         assertTrue("Document should now be final.", document.stateIsFinal());

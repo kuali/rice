@@ -37,56 +37,56 @@ public class DisapproveActionTest extends KEWTestCase {
     }
 
     @Test public void testDisapprove() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");//ewestfal had force action rule
 
-        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
 
         //this be the role delegate of jitrue
-        document = new WorkflowDocument(getPrincipalNameForId("natjohns"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("natjohns"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("This user should have an approve request", document.isApprovalRequested());
         // assert that the document is at the same node before and after disapprove
         TestUtilities.assertAtNode(document, NotifySetup.NOTIFY_FINAL_NODE);
         document.disapprove("");
         TestUtilities.assertAtNode(document, NotifySetup.NOTIFY_FINAL_NODE);
         // reload just to double check
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         TestUtilities.assertAtNode(document, NotifySetup.NOTIFY_FINAL_NODE);
 
         assertTrue("Document should be disapproved", document.stateIsDisapproved());
-        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
-        document = new WorkflowDocument(getPrincipalNameForId("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
-        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
         //jitrue while part of original approval chain did not take approve action and therefore should
         //not get action
-        document = new WorkflowDocument(getPrincipalNameForId("jitrue"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jitrue"), document.getRouteHeaderId());
         assertFalse("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
-        document = new WorkflowDocument(getPrincipalNameForId("natjohns"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("natjohns"), document.getRouteHeaderId());
         assertTrue("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
         //shenl part of approval chain but didn't take action
-        document = new WorkflowDocument(getPrincipalNameForId("shenl"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("shenl"), document.getRouteHeaderId());
         assertFalse("ack should be requested as part of disapprove notification", document.isAcknowledgeRequested());
 
         //check that all the emailing went right.
@@ -133,13 +133,13 @@ public class DisapproveActionTest extends KEWTestCase {
     @Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorRoleDisapprove() throws WorkflowException {
         // test initiator disapproval of their own doc via InitiatorRoleAttribute
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("arh14"), "InitiatorRoleApprovalTest");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("arh14"), "InitiatorRoleApprovalTest");
         document.routeDocument("routing document");
 
-        document = new WorkflowDocument(getPrincipalNameForId("arh14"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("arh14"), document.getRouteHeaderId());
         document.disapprove("disapproving the document");
 
-        document = new WorkflowDocument(getPrincipalNameForId("arh14"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("arh14"), document.getRouteHeaderId());
         assertFalse("Initiator should not have an Ack request from disapproval because they were the disapprover user", document.isAcknowledgeRequested());
     }
 
@@ -150,28 +150,28 @@ public class DisapproveActionTest extends KEWTestCase {
     @Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorDisapprove() throws WorkflowException {
         // test initiator disapproval, via normal request with forceAction=true
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         document.disapprove("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertFalse("Initiator should not have an Ack request from disapproval because they were the disapprover user", document.isAcknowledgeRequested());
     }
 
     @Test public void testDisapproveByArbitraryRecipient() throws WorkflowException {
         // test approval by some other person
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "BlanketApproveSequentialTest");
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveSequentialTest");
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         document.disapprove("disapproving as bmcgough");
 
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertFalse("Acknowledge was incorrectly sent to non-initiator disapprover", document.isAcknowledgeRequested());
 
-        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("Acknowledge was not sent to initiator", document.isAcknowledgeRequested());
     }
 

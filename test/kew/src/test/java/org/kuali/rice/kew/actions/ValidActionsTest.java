@@ -44,7 +44,7 @@ public class ValidActionsTest extends KEWTestCase {
     @Test public void testValidActions() throws Exception {
         WorkflowDocument document = null;
         String networkId = null;
-        document = new WorkflowDocument(getPrincipalNameForId("user1"), DOCUMENT_TYPE_NAME);
+        document = new WorkflowDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
         Long routeHeaderId = document.getRouteHeaderId();
 
         networkId = "rkirkend";
@@ -123,23 +123,23 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no route "O"
         // check for no save "S"
 
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         document.approve("");
 
         // SHOULD NOW BE ONLY ACKNOWLEDGED
 
-        document = new WorkflowDocument(getPrincipalNameForId("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
         // test for Processed Status on document
         document.acknowledge("");
-        document = new WorkflowDocument(getPrincipalNameForId("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
         document.acknowledge("");
     }
 
     private WorkflowDocument checkActions(String networkId,Long routeHeaderId,String[] validActionsAllowed,String[] invalidActionsNotAllowed) throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId(networkId), routeHeaderId);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName(networkId), routeHeaderId);
         ValidActionsDTO validActions = document.getRouteHeader().getValidActions();
         Set<String> validActionsSet = (validActions.getValidActionCodesAllowed() != null) ? new HashSet<String>(Arrays.asList(validActions.getValidActionCodesAllowed())) : new HashSet<String>();
 

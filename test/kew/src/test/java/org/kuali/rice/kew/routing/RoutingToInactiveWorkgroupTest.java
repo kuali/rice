@@ -34,7 +34,7 @@ public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
     }
     
     @Test public void testRoutingToInactiveWorkgroup() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "InactiveWorkgroupDocType");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "InactiveWorkgroupDocType");
         try {
             doc.routeDocument("");
             fail("document should have thrown routing exception");
@@ -42,7 +42,7 @@ public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
             
         }
         TestUtilities.getExceptionThreader().join();//wait for doc to go into exception routing
-        doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
         assertTrue("Document should be in exception routing because workgroup is inactive", doc.stateIsException());
 
         try {

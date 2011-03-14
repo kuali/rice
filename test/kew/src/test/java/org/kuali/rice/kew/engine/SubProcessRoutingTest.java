@@ -44,7 +44,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
     }
 
     @Test public void testSubProcessRoute() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
     	document.saveRoutingData();
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
@@ -82,11 +82,11 @@ public class SubProcessRoutingTest extends KEWTestCase {
         }
         assertTrue(isAck);
         assertTrue(isApprove);
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("Should have acknowledge.", document.isAcknowledgeRequested());
         document.acknowledge("");
         
-        document = new WorkflowDocument(getPrincipalNameForId("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
         document.approve("");
         
         // find the subprocess and assert it is complete, not active, and not initial
@@ -103,10 +103,10 @@ public class SubProcessRoutingTest extends KEWTestCase {
         }
         assertTrue("Could not locate sub process node.", foundSubProcess);
         
-        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         document.approve("");
         
-        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertTrue("Document should be final.", document.stateIsFinal());
     }
     

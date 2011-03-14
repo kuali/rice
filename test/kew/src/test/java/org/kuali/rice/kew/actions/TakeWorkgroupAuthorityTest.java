@@ -76,7 +76,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
 
     @Test public void testTakeWorkgroupAuthorityAction() throws Exception {
 
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("user1"), DOC_TYPE);
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), DOC_TYPE);
         doc.routeDocument("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
@@ -91,7 +91,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         }
 
         //have member rkirkend take authority
-        doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
         doc.takeGroupAuthority("", groupId);
 
         //verify that only rkirkend has an action item now.

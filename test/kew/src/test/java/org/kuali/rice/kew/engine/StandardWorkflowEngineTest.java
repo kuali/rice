@@ -54,7 +54,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 	 */
 	@Test public void testSystemBranchState() throws Exception {
 		// route the document to final
-		WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "SimpleDocType");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "SimpleDocType");
 		document.routeDocument("");
 		assertTrue("Document should be final.", document.stateIsFinal());
 
@@ -79,7 +79,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 	@Test public void testFinalDocumentExceptionRoutingRecovery() throws Exception {
 
 		// route the document to final
-		WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "SimpleDocType");
+		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "SimpleDocType");
 		document.routeDocument("");
 		assertTrue("Document should be final.", document.stateIsFinal());
 		assertEquals(1, TestPostProcessor.processedCount);
@@ -108,7 +108,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		TestUtilities.waitForExceptionRouting();
 
 		// the document should be in exception routing now
-		document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
 		assertTrue("Document should be in exception routing.", document.stateIsException());
 		assertEquals(1, TestPostProcessor.processedCount);
 		assertEquals(1, TestPostProcessor.finalCount);
@@ -117,7 +117,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		document.complete("");
 
 		// the document should be final once again
-		document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+		document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
 		assertTrue("Document should be final.", document.stateIsFinal());
 		assertEquals(1, TestPostProcessor.processedCount);
 		assertEquals(1, TestPostProcessor.finalCount);

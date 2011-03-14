@@ -39,14 +39,14 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
     }
 
     @Test public void testSpawnDocument() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("jitrue"), DOCUMENT_TYPE_THAT_SPAWNS);
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jitrue"), DOCUMENT_TYPE_THAT_SPAWNS);
     	document.saveRoutingData();
     	assertNotNull(document.getRouteHeaderId());
     	assertTrue("Document should be initiatied", document.stateIsInitiated());
     	document.routeDocument("Route");
 
         // should have generated a request to "bmcgough"
-    	document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
         assertEquals("Document should be enroute.", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         assertTrue(document.isApprovalRequested());
@@ -54,11 +54,11 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
         Long originalRouteHeaderId = document.getRouteHeaderId();
     	
     	// get spawned document (should be next document id)
-    	document = new WorkflowDocument(getPrincipalNameForId("jhopf"), Long.valueOf(originalRouteHeaderId.longValue() + 1));
+    	document = new WorkflowDocument(getPrincipalIdForName("jhopf"), Long.valueOf(originalRouteHeaderId.longValue() + 1));
         assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
 
     	// get original document
-        document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), originalRouteHeaderId);
+        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), originalRouteHeaderId);
         assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
     }
 }

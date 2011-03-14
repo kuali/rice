@@ -129,24 +129,24 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	testDoc("BlanketApprovePolicy", null);
     	
     	// on BlanketApprovePolicy1 anyone can blanket approve
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("pzhang"), "BlanketApprovePolicy1");
+    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy1");
     	document.saveRoutingData();
     	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
 
     	// on BlanketApprovePolicy2 no-one can blanket approve
-    	document = new WorkflowDocument(getPrincipalNameForId("pzhang"), "BlanketApprovePolicy2");
+    	document = new WorkflowDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy2");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy3 no-one can blanket approve
-    	document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "BlanketApprovePolicy3");
+    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BlanketApprovePolicy3");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());
+    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy4 TestWorkgroup can blanket approve

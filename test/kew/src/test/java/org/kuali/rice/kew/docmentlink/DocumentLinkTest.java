@@ -40,7 +40,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	private static final Logger LOG = Logger.getLogger(DocumentLinkTest.class);
 
 	@Test public void testAddLinkBTW2DocsSucess() throws Exception {
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
@@ -61,7 +61,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	}
 
 	@Test public void testAddDuplicatedLinkBTW2DocsFailure() throws Exception {
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
@@ -82,7 +82,7 @@ public class DocumentLinkTest extends KEWTestCase{
 
 	@Test public void testAddIncomplelteLinkBTW2DocsFailure() throws Exception{
 
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 
@@ -108,7 +108,7 @@ public class DocumentLinkTest extends KEWTestCase{
 
 	@Test public void testGetLinkBTW2DocsSucess() throws Exception{
 
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
@@ -126,7 +126,7 @@ public class DocumentLinkTest extends KEWTestCase{
 
 	@Test public void testGetLinkBTW2DocsFailure() throws Exception{
 
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
@@ -145,7 +145,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testGetAllLinksFromOrgnDocSucess() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 
 		//Test add link	
@@ -175,7 +175,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testGetAllLinksFromOrgnDocFailure()throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
 		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
@@ -199,7 +199,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testRemoveLinkBTW2DocsSucess() throws Exception{
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
 		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
@@ -224,7 +224,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testRemoveAllLinksFromOrgnDocSucess() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
 		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
@@ -262,7 +262,7 @@ public class DocumentLinkTest extends KEWTestCase{
 
 		try{
 			//DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-			WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+			WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 			//Test add link	
 			testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
@@ -280,7 +280,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testDocLinkClient() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
 		testDocLinkVO.setOrgnDocId(Long.valueOf(5009));
@@ -311,7 +311,7 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testAddDocLinkWithLinkID() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
 		testDocLinkVO.setOrgnDocId(Long.valueOf(5009));

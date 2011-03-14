@@ -35,79 +35,79 @@ public class KRAMetaRuleTest extends KEWTestCase {
     }
 
     @Test public void testKRAMetaRule() throws WorkflowException {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), "KRAMetaRuleTest");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), "KRAMetaRuleTest");
         doc.routeDocument("routing");
 
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
 
         // user2 defined on bizRule4...the first rule that yields responsibilities
         assertTrue(doc.isApprovalRequested());
         
         doc.approve("approving as user2");
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
         
         assertFalse(doc.isApprovalRequested());
         
         // now load it up as user3
-        doc = new WorkflowDocument(getPrincipalNameForId("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
 
         // user1 defined on bizRule5...the second rule that yields responsibilities
         assertTrue(doc.isApprovalRequested());
         
         doc.approve("approving as user3");
 
-        doc = new WorkflowDocument(getPrincipalNameForId("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("user1"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user1"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
      
         assertTrue(doc.stateIsFinal());
     }
     
     @Test public void testKRAMetaRuleMaps() throws WorkflowException {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), "KRAMetaRuleMapsTest");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), "KRAMetaRuleMapsTest");
         doc.routeDocument("routing");
 
         // xqi, shenl, dewey
 
         // test that TestWorkgroup requests get activated first
-        doc = new WorkflowDocument(getPrincipalNameForId("xqi"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("xqi"), doc.getRouteHeaderId());
         assertTrue(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("shenl"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("shenl"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("dewey"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("dewey"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
         
-        doc = new WorkflowDocument(getPrincipalNameForId("xqi"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("xqi"), doc.getRouteHeaderId());
         doc.approve("approving as xqi");
         
         // next is shenl from the mock role
-        doc = new WorkflowDocument(getPrincipalNameForId("xqi"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("xqi"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("shenl"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("shenl"), doc.getRouteHeaderId());
         assertTrue(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("jhopf"), doc.getRouteHeaderId());
         assertTrue(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("dewey"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("dewey"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
 
-        doc = new WorkflowDocument(getPrincipalNameForId("shenl"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("shenl"), doc.getRouteHeaderId());
         doc.approve("approving as shenl");
         
         // last is dewey from NonSIT workgroup
-        doc = new WorkflowDocument(getPrincipalNameForId("xqi"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("xqi"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("shenl"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("shenl"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("jhopf"), doc.getRouteHeaderId());
         assertFalse(doc.isApprovalRequested());
-        doc = new WorkflowDocument(getPrincipalNameForId("dewey"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("dewey"), doc.getRouteHeaderId());
         assertTrue(doc.isApprovalRequested());
 
-        doc = new WorkflowDocument(getPrincipalNameForId("dewey"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("dewey"), doc.getRouteHeaderId());
         doc.approve("approving as dewey");
      
         assertTrue(doc.stateIsFinal());

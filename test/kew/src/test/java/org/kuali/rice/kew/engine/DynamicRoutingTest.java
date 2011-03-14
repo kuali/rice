@@ -45,7 +45,7 @@ public class DynamicRoutingTest extends KEWTestCase {
     }
 
     @Test public void testDynamicParallelRoute() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), SEQ_DOC_TYPE_NAME);
+        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SEQ_DOC_TYPE_NAME);
         document.saveRoutingData();
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
@@ -55,25 +55,25 @@ public class DynamicRoutingTest extends KEWTestCase {
         assertEquals("Wrong active node.", INIT, ((RouteNodeInstance) nodeInstances.iterator().next()).getRouteNode().getRouteNodeName());
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("bmcgough"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
         nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-        document = new WorkflowDocument(getPrincipalNameForId("pmckown"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("temay"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("jhopf"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalNameForId("rkirkend"), document.getRouteHeaderId());
+        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 

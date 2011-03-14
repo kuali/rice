@@ -84,7 +84,7 @@ public class WorkflowInfoTest extends KEWTestCase {
 	} catch (WorkflowException e) {}
 
 	// now create a doc and load it's status
-	WorkflowDocument document = new WorkflowDocument(getPrincipalNameForId("ewestfal"), "TestDocumentType");
+	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
 	Long documentId = document.getRouteHeaderId();
 	assertNotNull(documentId);
 

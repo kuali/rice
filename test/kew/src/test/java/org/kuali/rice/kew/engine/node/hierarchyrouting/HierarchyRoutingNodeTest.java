@@ -112,7 +112,7 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
     public void testHierarchyRoutingNode() throws WorkflowException {
         loadXmlFile("HierarchyRoutingNodeConfig.xml");
         
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), "HierarchyDocType");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), "HierarchyDocType");
         
         
         doc.getDocumentContent().setApplicationContent(HIERARCHY);
@@ -121,44 +121,44 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
         doc.approve("approving as user2");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("jhopf"), doc.getRouteHeaderId());
         doc.approve("approving as jhopf");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "jhopf", "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user1"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user1"), doc.getRouteHeaderId());
         doc.approve("approving as user1");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("temay"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("temay"), doc.getRouteHeaderId());
         doc.approve("approving as temay");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "quickstart" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "temay", "user1", "jhopf", "user2", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
         doc.approve("approving as user3");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "quickstart" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay", "user1", "jhopf", "user2", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("quickstart"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("quickstart"), doc.getRouteHeaderId());
         doc.approve("approving as quickstart");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "dewey" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay", "user1", "jhopf", "user2", "quickstart" }, false);
         
 
-        doc = new WorkflowDocument(getPrincipalNameForId("dewey"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("dewey"), doc.getRouteHeaderId());
         doc.approve("approving as dewey");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "dewey", "user3", "temay", "user1", "jhopf", "user2", "quickstart" }, false);
@@ -170,7 +170,7 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
     public void testHierarchyRoutingNodeUnevenApproval() throws WorkflowException {
         loadXmlFile("HierarchyRoutingNodeConfig.xml");
         
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), "HierarchyDocType");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), "HierarchyDocType");
         
         doc.getDocumentContent().setApplicationContent(HIERARCHY);
         doc.routeDocument("initial route");
@@ -178,43 +178,43 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
         doc.approve("approving as user2");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("jhopf"), doc.getRouteHeaderId());
         doc.approve("approving as jhopf");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "jhopf", "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user1"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user1"), doc.getRouteHeaderId());
         doc.approve("approving as user1");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
         doc.approve("approving as user3");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "user1", "jhopf", "user2", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("temay"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("temay"), doc.getRouteHeaderId());
         doc.approve("approving as temay");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "quickstart" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay", "user1", "jhopf", "user2", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("quickstart"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("quickstart"), doc.getRouteHeaderId());
         doc.approve("approving as quickstart");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "dewey" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay", "user1", "jhopf", "user2", "quickstart" }, false);
 
-        doc = new WorkflowDocument(getPrincipalNameForId("dewey"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("dewey"), doc.getRouteHeaderId());
         doc.approve("approving as dewey");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "dewey", "user3", "temay", "user1", "jhopf", "user2", "quickstart" }, false);
@@ -226,7 +226,7 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
     public void testHierarchyRoutingNodeUnevenApprovalExtraStops() throws WorkflowException {
         loadXmlFile("HierarchyRoutingNodeConfig.xml");
         
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), "HierarchyDocType");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), "HierarchyDocType");
         
         doc.getDocumentContent().setApplicationContent(HIERARCHY);
         doc.routeDocument("initial route");
@@ -234,68 +234,68 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
         doc.approve("approving as user2");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("jhopf"), doc.getRouteHeaderId());
         doc.approve("approving as jhopf");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "jhopf", "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user1"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user1"), doc.getRouteHeaderId());
         doc.setApplicationContent(HIERARCHY_UPDATED);
         doc.approve("approving as user1");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay", "delyea", "pzhang", "shenl" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
         doc.approve("approving as user3");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "temay", "delyea", "pzhang", "shenl" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "user1", "jhopf", "user2", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("temay"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("temay"), doc.getRouteHeaderId());
         doc.approve("approving as temay");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "delyea", "pzhang", "shenl" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay", "user1", "jhopf", "user2", "dewey", "quickstart" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("delyea"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("delyea"), doc.getRouteHeaderId());
         doc.approve("approving as delyea");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "pzhang", "shenl" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "delyea", "temay", "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
 
-        doc = new WorkflowDocument(getPrincipalNameForId("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
         doc.approve("approving as user3");
 
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "pzhang", "shenl" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "delyea", "temay", "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
 
-        doc = new WorkflowDocument(getPrincipalNameForId("pzhang"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("pzhang"), doc.getRouteHeaderId());
         doc.approve("approving as pzhang");
 
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "quickstart", "shenl" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "pzhang", "delyea", "temay", "user1", "jhopf", "user2", "dewey" }, false);
 
-        doc = new WorkflowDocument(getPrincipalNameForId("quickstart"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("quickstart"), doc.getRouteHeaderId());
         doc.approve("approving as quickstart");
 
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "shenl" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "pzhang", "delyea", "temay", "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
 
-        doc = new WorkflowDocument(getPrincipalNameForId("shenl"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("shenl"), doc.getRouteHeaderId());
         doc.approve("approving as shenl");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "dewey" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "pzhang", "delyea", "temay", "user1", "jhopf", "user2", "quickstart", "shenl" }, false);
 
-        doc = new WorkflowDocument(getPrincipalNameForId("dewey"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("dewey"), doc.getRouteHeaderId());
         doc.approve("approving as dewey");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "shenl", "dewey", "pzhang", "delyea", "user3", "temay", "user1", "jhopf", "user2", "quickstart" }, false);
@@ -307,7 +307,7 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
     public void testHierarchyRoutingNodeUnevenApprovalDisapprove() throws WorkflowException {
         loadXmlFile("HierarchyRoutingNodeConfig.xml");
         
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalNameForId("arh14"), "HierarchyDocType");
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), "HierarchyDocType");
         
         doc.getDocumentContent().setApplicationContent(HIERARCHY);
         doc.routeDocument("initial route");
@@ -315,28 +315,28 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
         doc.approve("approving as user2");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay", "jhopf" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("jhopf"), doc.getRouteHeaderId());
         doc.approve("approving as jhopf");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "jhopf", "user2", "user3", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user1"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user1"), doc.getRouteHeaderId());
         doc.approve("approving as user1");
         
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay" }, true);
         TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user3"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
         doc.disapprove("disapproving as user3");
         
-        doc = new WorkflowDocument(getPrincipalNameForId("arh14"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("arh14"), doc.getRouteHeaderId());
 
         //TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "temay", "user1", "jhopf", "user2", "quickstart", "dewey" }, false);
 
@@ -350,13 +350,13 @@ public class HierarchyRoutingNodeTest extends KEWTestCase {
         int numActionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(doc.getRouteHeaderId()).size();
         assertEquals("Incorrect number of action items.", 4, numActionItems);
         
-        doc = new WorkflowDocument(getPrincipalNameForId("user2"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
         doc.acknowledge("acknowledging disapproval as user2");
-        doc = new WorkflowDocument(getPrincipalNameForId("jhopf"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("jhopf"), doc.getRouteHeaderId());
         doc.acknowledge("acknowledging disapproval as jhopf");
-        doc = new WorkflowDocument(getPrincipalNameForId("user1"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("user1"), doc.getRouteHeaderId());
         doc.acknowledge("acknowledging disapproval as user1");
-        doc = new WorkflowDocument(getPrincipalNameForId("arh14"), doc.getRouteHeaderId());
+        doc = new WorkflowDocument(getPrincipalIdForName("arh14"), doc.getRouteHeaderId());
         doc.acknowledge("acknowledging disapproval as arh14");
         
         assertTrue(doc.stateIsDisapproved());

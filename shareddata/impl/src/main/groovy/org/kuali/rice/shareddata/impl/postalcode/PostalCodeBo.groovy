@@ -75,7 +75,8 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeCo
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
-     * @return the immutable object
+     * @return An immutable PostalCode if the passed in mutable is not null.  If the mutable reference was null, then
+     * null is returned.
      */
     static PostalCode to(PostalCodeBo bo) {
         if (bo == null) {
@@ -88,7 +89,8 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeCo
     /**
      * Converts a immutable object to its mutable counterpart
      * @param im immutable object
-     * @return the mutable bo
+     * @return a new mutable PostalCodeBo if the passed in mutable is not null.  If the immutable reference was null,
+     * then null is returned.
      */
     static PostalCodeBo from(PostalCode im) {
         if (im == null) {

@@ -31,28 +31,43 @@ import org.junit.Test
  */
 class CountryTest {
 
+  private static final String CODE = "US"
+  private static final String ALT_CODE = "USA"
+  private static final String NAME = "United States"
+
+  private static final String XML = """
+      <country xmlns="http://rice.kuali.org/shareddata">
+        <code>${CODE}</code>
+        <name>${NAME}</name>
+        <alternateCode>${ALT_CODE}</alternateCode>
+        <restricted>false</restricted>
+        <active>true</active>
+    </country>
+  """
+
+
   private final shouldFail = new GroovyTestCase().&shouldFail
 
     @Test
     void test_create_only_required() {
-        Country.Builder.create(Country.Builder.create("US", null, "United States", false, true)).build();
+        Country.Builder.create(Country.Builder.create(CODE, null, NAME, false, true)).build();
     }
 
   @Test
   public void testCountryBuilderPassedInParams() {
     //No assertions, just test whether the Builder gives us a Country object
-    Country.Builder.create("US", null, "United States", false, true).build()
+    Country.Builder.create(CODE, null, NAME, false, true).build()
   }
 
   @Test
   public void testCountryBuilderPassedInCountryContract() {
     //No assertions, just test whether the Builder gives us a Country object
     Country country = Country.Builder.create(new CountryContract() {
-      String getCode() {"US"}
+      String getCode() {CODE}
 
-      String getAlternateCode() { "USA" }
+      String getAlternateCode() { ALT_CODE }
 
-      String getName() { "United States" }
+      String getName() { NAME }
 
       boolean isActive() { true }
 
@@ -63,58 +78,49 @@ class CountryTest {
   @Test
   public void testCountryBuilderNullCountryCode() {
     shouldFail(IllegalArgumentException.class) {
-      Country.Builder.create(null, null, "United States", false, true)
+      Country.Builder.create(null, null, NAME, false, true)
     }
   }
 
   @Test
   public void testCountryBuilderEmptyCountryCode() {
     shouldFail(IllegalArgumentException.class) {
-      Country.Builder.create("  ", null, "United States", false, true)
+      Country.Builder.create("  ", null, NAME, false, true)
     }
   }
 
   @Test
-  public void testXmlMarshaling() {
+  public void testXmlMarshalingAndUnMarshalling() {
     JAXBContext jc = JAXBContext.newInstance(Country.class)
     Marshaller marshaller = jc.createMarshaller()
     StringWriter sw = new StringWriter()
 
-    Country country = Country.Builder.create("US", null, "United States", false, true).build()
+    Country country = Country.Builder.create(CODE, ALT_CODE, NAME, false, true).build()
     marshaller.marshal(country, sw)
     String xml = sw.toString()
 
-    String expectedCountryElementXml = """
-    <country xmlns="http://rice.kuali.org/shareddata">
-      <code>US</code>
-      <name>United States</name>
-      <restricted>false</restricted>
-      <active>true</active>
-    </country>
-    """
+//    String expectedCountryElementXml = """
+//    <country xmlns="http://rice.kuali.org/shareddata">
+//      <code>US</code>
+//      <name>United States</name>
+//      <restricted>false</restricted>
+//      <active>true</active>
+//    </country>
+//    """
 
     Unmarshaller unmarshaller = jc.createUnmarshaller();
     Object actual = unmarshaller.unmarshal(new StringReader(xml))
-    Object expected = unmarshaller.unmarshal(new StringReader(expectedCountryElementXml))
+    Object expected = unmarshaller.unmarshal(new StringReader(XML))
     Assert.assertEquals(expected, actual)
   }
 
   @Test
   public void testXmlUnmarshal() {
-    String rawXml = """
-    <country xmlns="http://rice.kuali.org/shareddata">
-      <code>AU</code>
-      <alternateCode>AUS</alternateCode>
-      <name>Australia</name>
-    </country>
-    """
-
     JAXBContext jc = JAXBContext.newInstance(Country.class)
     Unmarshaller unmarshaller = jc.createUnmarshaller();
-    Country country = (Country) unmarshaller.unmarshal(new StringReader(rawXml))
-    Assert.assertEquals("AU",country.code)
-    Assert.assertEquals("AUS",country.alternateCode)
-    Assert.assertEquals("Australia",country.name)
-
+    Country country = (Country) unmarshaller.unmarshal(new StringReader(XML))
+    Assert.assertEquals(CODE,country.code)
+    Assert.assertEquals(ALT_CODE,country.alternateCode)
+    Assert.assertEquals(NAME,country.name)
   }
 }

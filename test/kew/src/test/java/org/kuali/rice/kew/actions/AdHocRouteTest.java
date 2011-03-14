@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +30,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class AdHocRouteTest extends KEWTestCase {
 
 	private static final String ADHOC_DOC = "AdhocRouteTest";

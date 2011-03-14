@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +27,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.test.BaselineTestCase;
 import org.w3c.dom.Element;
 
 import javax.xml.transform.Templates;
@@ -42,6 +42,7 @@ import static org.junit.Assert.*;
  * Tests EDocLiteServiceImpl
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class EDocLiteServiceImplTest extends KEWTestCase {
 
 	@Test public void testLoadXML() throws FileNotFoundException {

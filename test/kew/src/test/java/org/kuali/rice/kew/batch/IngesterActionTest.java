@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +23,6 @@ import org.junit.Test;
 import org.kuali.rice.kew.batch.web.IngesterAction;
 import org.kuali.rice.kew.batch.web.IngesterForm;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.test.web.MockFormFile;
 import org.kuali.rice.kew.test.web.WorkflowServletRequest;
 import org.kuali.rice.kew.web.UserLoginFilter;
@@ -37,7 +35,11 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.File;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -104,7 +106,7 @@ public class IngesterActionTest extends KEWTestCase {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             String filePath = entry.getKey().toString();
-            filePath = filePath.replace("${"+TestUtils.BASEDIR_PROP+"}", getBaseDir());
+            filePath = filePath.replace("${basedir}", getBaseDir());
             String fileName = new File(filePath).getName();
             if (Boolean.valueOf(entry.getValue().toString()).booleanValue()) {
                 shouldPass.add(fileName);

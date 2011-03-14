@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,12 @@
  */
 package org.kuali.rice.test;
 
-import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.junit.Assert;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public final class TestUtilities {
@@ -70,16 +64,6 @@ public final class TestUtilities {
 
     public static void setExceptionThreader(Thread exceptionThreader) {
         TestUtilities.exceptionThreader = exceptionThreader;
-    }	
-
-    protected List<Class> annotationsPresent(Class clazz, Class[] annotationClasses) {
-        List<Class> annotationsPresent = new ArrayList<Class>();
-        for (Class c: annotationClasses) {
-            if (clazz.isAnnotationPresent(c)) {
-                annotationsPresent.add(c);
-            }
-        }
-        return annotationsPresent;
     }
 
     protected static boolean contains(Class[] list, Class target) {
@@ -174,22 +158,5 @@ public final class TestUtilities {
             }
         }
         return overrides;
-    }
-    
-    /**
-     * Adds all ResourceLoaders registered to WebAppClassLoaders to the GlobalResourceLoader.
-     * Overrides the current context config with the Config registered to the (last) WebAppClassLoader
-     */
-    public static void addWebappsToContext() {
-        for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
-            if (configEntry.getKey() instanceof WebAppClassLoader) {
-                ResourceLoader rl = GlobalResourceLoader.getResourceLoader(configEntry.getKey());
-                if (rl == null) {
-                    Assert.fail("didn't find resource loader for workflow test harness web app");
-                }
-                GlobalResourceLoader.addResourceLoader(rl);
-                ConfigContext.overrideConfig(Thread.currentThread().getContextClassLoader(), configEntry.getValue());
-            }
-        }
     }
 }

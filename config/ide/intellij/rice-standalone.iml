@@ -6,6 +6,12 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../standalone/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../standalone/target/generated-sources/annotations" />
+          <root url="file://$MODULE_DIR$/../../../standalone/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../standalone/src/main/resources" />
+          <root url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">

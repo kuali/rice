@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +48,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 import static org.junit.Assert.fail;
 
@@ -71,52 +76,6 @@ public final class TestUtilities {
     public static InputStream loadResource(Class packageClass, String resourceName) {
     	return packageClass.getResourceAsStream(resourceName);
     }
-
-//    public static PersistedMessageBO createRouteQueue(DocumentRouteHeaderValue routeHeader) throws Exception {
-//        Assert.assertNotNull(routeHeader);
-//        Assert.assertNotNull(routeHeader.getRouteHeaderId());
-//    	return createRouteQueue(routeHeader.getRouteHeaderId().toString());
-//    }
-//
-//    public static PersistedMessageBO createRouteQueue(String payload) throws Exception {
-//        PersistedMessageBO routeQueue = new PersistedMessageBO();
-//        routeQueue.setIpNumber(InetAddress.getLocalHost().getHostAddress());
-//        // set the time back 60 seconds so that we can pull it from the queue
-//        routeQueue.setQueueDate(new Timestamp(new Date().getTime()-60*1000));
-//        routeQueue.setQueuePriority(new Integer(0));
-//        routeQueue.setQueueStatus("Q");
-//        routeQueue.setRetryCount(new Integer(0));
-//        routeQueue.setPayload( KSBServiceLocator.getMessageHelper().serializeObject(payload));
-//        routeQueue.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
-//        KEWServiceLocator.getRouteQueueService().save(routeQueue);
-//        return routeQueue;
-//    }
-
-//	/**
-//	 * There's no easy way to wire up additional topics from the test harness because it's the
-//	 * workflow server's point of view.  At the moment we'd have to override the ksbconfigurer in the
-//	 * test spring files or give the ksbconfigurer an option to do nothing but register services...
-//	 *
-//	 * @throws Exception
-//	 */
-//	public static void programmaticallyRegisterTestHarnessTopic(QName serviceName, Object service) throws Exception {
-//		ServiceDefinition serviceDef = new JavaServiceDefinition();
-//		serviceDef.setPriority(3);
-//		serviceDef.setRetryAttempts(3);
-//		serviceDef.setService(service);
-//		serviceDef.setServiceName(serviceName);
-//		serviceDef.setQueue(false);
-//		try {
-//			serviceDef.validate();
-//		} catch (Exception e) {
-//			throw new WorkflowRuntimeException(e);
-//		}
-//		KEWServiceLocator.getServiceDeployer().registerService(serviceDef);
-//		// force a refresh on our node
-//		RemoteResourceServiceLocatorImpl remoteResourceServiceLocator = (RemoteResourceServiceLocatorImpl) GlobalResourceLoader.getResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(),
-//				ResourceLoader.REMOTE_RESOURCE_LOADER_NAME));
-//		remoteResourceServiceLocator.run();
-//	}
 
     public static TransactionTemplate getTransactionTemplate() {
 		return (TransactionTemplate)

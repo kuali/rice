@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,7 @@
 package org.kuali.rice.kew.edl;
 
 import org.apache.log4j.Logger;
-import org.junit.Test;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.web.jetty.JettyServer;
-import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
 
 import static org.junit.Assert.assertTrue;
 
@@ -42,7 +31,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessorTest.class);
 
     private static final String CONTEXT_NAME = "/edl-test";
-
+    /*
     @Test
     public void testPostEvent() throws Exception {
         String dummyData = "testing this stuff";
@@ -88,7 +77,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
                 }
             }
         }
-    }
+    } */
 
     private void testPostProcessorMethod(Long routeHeaderId, String dummyData, String eventType) {
         int maxWaitSeconds = EDocLitePostProcessor.SUBMIT_URL_MILLISECONDS_WAIT + 10000;

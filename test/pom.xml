@@ -28,13 +28,13 @@
     <artifactId>rice-test</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>kew</module>
         <module>kns</module>
         <module>kim</module>
         <module>ken</module>
         <module>kcb</module>
         <module>impl</module>
         <module>ksb</module>
-        <module>kew</module>
         <module>test-clients</module>
 
     </modules>

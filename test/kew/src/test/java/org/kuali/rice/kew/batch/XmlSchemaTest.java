@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +18,8 @@ package org.kuali.rice.kew.batch;
 import org.junit.Test;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
-import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
-import org.kuali.rice.test.BaseRiceTestCase;
+import org.kuali.rice.test.RiceTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;
@@ -51,15 +49,8 @@ import static org.junit.Assert.fail;
  * Test schema validation
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XmlSchemaTest extends BaseRiceTestCase {
+public class XmlSchemaTest extends RiceTestCase {
     private Document validate(InputStream stream) throws ParserConfigurationException, IOException , SAXException {
-        /*DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
-          factory.setIgnoringElementContentWhitespace(true);
-          DocumentBuilder builder = factory.newDocumentBuilder();
-          org.w3c.dom.Document oldDocument = builder.parse(input);
-          org.w3c.dom.Element naviElement=oldDocument.getDocumentElement();
-          trimElement(naviElement);
-          return oldDocument;*/
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(true);
@@ -90,7 +81,7 @@ public class XmlSchemaTest extends BaseRiceTestCase {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             String filePath = entry.getKey().toString();
-            filePath = filePath.replace("${"+TestUtils.BASEDIR_PROP+"}", TestUtils.getBaseDir());
+            filePath = filePath.replace("${basedir}", getBaseDir());
             File testFile = new File(filePath);
             boolean shouldSucceed = Boolean.valueOf(entry.getValue().toString()).booleanValue();
             System.out.println("Validating " + testFile);
@@ -125,5 +116,10 @@ public class XmlSchemaTest extends BaseRiceTestCase {
         //System.out.println("n: " + node.getNodeName());
         //System.out.println("n: " + node.getLocalName());
         //System.out.println("n: " + node.getNamespaceURI());
+    }
+
+    @Override
+    protected String getModuleName() {
+        return "kew";
     }
 }

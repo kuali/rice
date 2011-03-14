@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +24,6 @@ import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -33,7 +31,13 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -112,7 +116,7 @@ public class XmlIngestionTest extends KEWTestCase {
 
         // Define the path for the test environment
         String relativeFolder = "/src/test/resources/org/kuali/rice/kew/batch/data/";
-        String filePath = TestUtils.getBaseDir() + relativeFolder + "widgetsTest.xml";
+        String filePath = getBaseDir() + relativeFolder + "widgetsTest.xml";
         File ingestedFile = new File(filePath);
         List<XmlDocCollection> collections = new ArrayList<XmlDocCollection>();
         XmlDocCollection fileDoc = new FileXmlDocCollection(ingestedFile);
@@ -176,7 +180,7 @@ public class XmlIngestionTest extends KEWTestCase {
         while (entries.hasNext()) {
             Map.Entry<?, ?> entry = entries.next();
             String filePath = entry.getKey().toString();
-            filePath = filePath.replace("${" + TestUtils.BASEDIR_PROP + "}", TestUtils.getBaseDir());
+            filePath = filePath.replace("${basedir}", getBaseDir());
             File testFile = new File(filePath);
             File pendingDir = new File(PENDING_DIR + "/TestDoc-" + i);
             Assert.assertTrue(pendingDir.mkdirs());

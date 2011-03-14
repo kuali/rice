@@ -76,16 +76,16 @@ class CountryServiceImplTest {
 
   @Test
   public void testGetByPrimaryIdEmptyCountryCode() {
-      shouldFail(IllegalArgumentException.class) {
-        new CountryServiceImpl().getCountry("")
-      }
+    shouldFail(IllegalArgumentException.class) {
+      new CountryServiceImpl().getCountry("")
+    }
   }
 
   @Test
   public void testGetByPrimaryIdNullCountryCode() {
-      shouldFail(IllegalArgumentException.class) {
-        new CountryServiceImpl().getCountry(null)
-      }
+    shouldFail(IllegalArgumentException.class) {
+      new CountryServiceImpl().getCountry(null)
+    }
   }
 
   @Test
@@ -138,21 +138,21 @@ class CountryServiceImplTest {
 
   @Test
   public void testGetByAlternateCodeWithEmptyCode() {
-      shouldFail(IllegalArgumentException.class) {
-        new CountryServiceImpl().getCountryByAlternateCode(" ")
-      }
+    shouldFail(IllegalArgumentException.class) {
+      new CountryServiceImpl().getCountryByAlternateCode(" ")
+    }
   }
 
   @Test
   public void testGetByAlternateCodeWithNullCode() {
-      shouldFail(IllegalArgumentException.class) {
-        new CountryServiceImpl().getCountryByAlternateCode(null)
-      }
+    shouldFail(IllegalArgumentException.class) {
+      new CountryServiceImpl().getCountryByAlternateCode(null)
+    }
   }
 
   @Test
   public void findAllCountriesNotRestricted() {
-     mockBusinessObjectService.demand.findMatching(1..1) {
+    mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
@@ -164,6 +164,22 @@ class CountryServiceImplTest {
   }
 
   @Test
+  public void findAllCountriesNotRestrictedReturnsImmutableList() {
+    mockBusinessObjectService.demand.findMatching(1) {
+      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+    }
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+    CountryService service = new CountryServiceImpl()
+    service.setBusinessObjectService(bos)
+    List<Country> countries = service.findAllCountriesNotRestricted()
+    shouldFail(UnsupportedOperationException.class) {
+      countries.add(null);
+    }
+    mockBusinessObjectService.verify(bos)
+
+  }
+
+  @Test
   public void testFindAllCountries() {
     mockBusinessObjectService.demand.findMatching(1..1) {
       Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
@@ -172,8 +188,24 @@ class CountryServiceImplTest {
 
     CountryService service = new CountryServiceImpl()
     service.setBusinessObjectService(bos)
-    service.findAllCountriesNotRestricted()
+    service.findAllCountries()
 
+    mockBusinessObjectService.verify(bos)
+  }
+
+  public void testFindAllCountriesReturnsImmutableList() {
+    mockBusinessObjectService.demand.findMatching(1..1) {
+      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
+    }
+    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+
+    CountryService service = new CountryServiceImpl()
+    service.setBusinessObjectService(bos)
+    List<Country> countries = service.findAllCountriesNotRestricted()
+
+    shouldFail(UnsupportedOperationException.class) {
+      countries.add(null)
+    }
     mockBusinessObjectService.verify(bos)
   }
 }

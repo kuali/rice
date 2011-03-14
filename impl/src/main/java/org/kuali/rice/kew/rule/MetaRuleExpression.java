@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -95,7 +95,7 @@ public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
                 }
             }
             result = new RuleExpressionResult(rule, success, responsibilities);
-            LOG.debug("KRAMetaRuleExpression returning result: " + result);
+            LOG.debug("MetaRuleExpression returning result: " + result);
             return result;
         } catch (ParseException pe) {
             throw new WorkflowException("Error parsing expression", pe);

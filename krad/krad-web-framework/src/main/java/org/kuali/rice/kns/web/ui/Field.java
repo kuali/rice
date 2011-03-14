@@ -786,18 +786,14 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     /**
      * @param fieldConversionsMap The fieldConversions to set.
      */
-    public void setFieldConversions(Map fieldConversionsMap) {
-        // TODO: should use a StringBuilder
-        String fieldConversionString = "";
-        for (Iterator iter = fieldConversionsMap.keySet().iterator(); iter.hasNext();) {
-            String field = (String) iter.next();
-            String mappedField = (String) fieldConversionsMap.get(field);
-            fieldConversionString += field + ":" + mappedField;
-            if (iter.hasNext()) {
-                fieldConversionString += ",";
-            }
+    public void setFieldConversions(Map<String,String> fieldConversionsMap) {
+        List<String> keyValuePairStrings = new ArrayList<String>();
+        for (String key : fieldConversionsMap.keySet()) {
+            String mappedField = fieldConversionsMap.get(key);
+            keyValuePairStrings.add(key + ":" + mappedField) ;
         }
-        setFieldConversions(fieldConversionString);
+        String commaDelimitedConversions = StringUtils.join(keyValuePairStrings,",");
+        setFieldConversions(commaDelimitedConversions );
     }
 
 

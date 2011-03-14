@@ -48,10 +48,10 @@ class CountryTest {
 
   private final shouldFail = new GroovyTestCase().&shouldFail
 
-    @Test
-    void test_create_only_required() {
-        Country.Builder.create(Country.Builder.create(CODE, null, NAME, false, true)).build();
-    }
+  @Test
+  void test_create_only_required() {
+    Country.Builder.create(Country.Builder.create(CODE, null, NAME, false, true)).build();
+  }
 
   @Test
   public void testCountryBuilderPassedInParams() {
@@ -119,8 +119,8 @@ class CountryTest {
     JAXBContext jc = JAXBContext.newInstance(Country.class)
     Unmarshaller unmarshaller = jc.createUnmarshaller();
     Country country = (Country) unmarshaller.unmarshal(new StringReader(XML))
-    Assert.assertEquals(CODE,country.code)
-    Assert.assertEquals(ALT_CODE,country.alternateCode)
-    Assert.assertEquals(NAME,country.name)
+    Assert.assertEquals(CODE, country.code)
+    Assert.assertEquals(ALT_CODE, country.alternateCode)
+    Assert.assertEquals(NAME, country.name)
   }
 }

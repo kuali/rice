@@ -58,7 +58,8 @@ class StateBo extends PersistableBusinessObjectBase implements StateContract, In
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
-     * @return the immutable object
+     * @return An immutable State if the passed in mutable is not null.  If the mutable reference was null, then null
+     * is returned.
      */
     static State to(StateBo bo) {
         if (bo == null) {
@@ -71,7 +72,8 @@ class StateBo extends PersistableBusinessObjectBase implements StateContract, In
     /**
      * Converts a immutable object to its mutable counterpart
      * @param im immutable object
-     * @return the mutable bo
+     * @return a new mutable CountryBo if the passed in immutable is not null.  If the immutable reference was null,
+     * then null is returned.
      */
     static StateBo from(State im) {
         if (im == null) {

@@ -125,7 +125,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
     }
 
     /**
-     * This builder constructs an Parameter enforcing the constraints of the {@link PostalCodeContract}.
+     * This builder constructs a PostalCode enforcing the constraints of the {@link PostalCodeContract}.
      */
     public static class Builder implements PostalCodeContract, ModelBuilder, Serializable {
 
@@ -144,7 +144,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         }
 
         /**
-         * creates a State with the required fields.
+         * creates a PostalCode builder with the required fields.
          */
         public static Builder create(String code, String countryCode) {
             final Builder builder = new Builder(code, countryCode);
@@ -153,7 +153,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         }
 
         /**
-         * creates a Parameter from an existing {@link PostalCodeContract}.
+         * creates a PostalCode builder from an existing {@link PostalCodeContract}.
          */
         public static Builder create(PostalCodeContract contract) {
             final Builder builder = new Builder(contract.getCode(), contract.getCountryCode());
@@ -178,6 +178,12 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
             return code;
         }
 
+        /**
+         * Sets the code for the PostalCode created from this Builder.
+         *
+         * @param code String code for the PostalCode
+         * @throws IllegalArgumentException if the passed in code is null or a blank String.
+         */
         public void setCode(String code) {
             if (StringUtils.isBlank(code)) {
                 throw new IllegalArgumentException("code is blank");
@@ -191,6 +197,12 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
             return cityName;
         }
 
+        /**
+         * Sets the name of the city associated with the PostalCode to be created from this Builder.
+         *
+         * @param cityName String representing the name of the City
+         * @throws IllegalArgumentException if the passed in cityname is null or a blank String.
+         */
         public void setCityName(String cityName) {
             if (StringUtils.isBlank(cityName)) {
                 throw new IllegalArgumentException("cityName is blank");
@@ -204,6 +216,13 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
             return countryCode;
         }
 
+        /**
+         * Sets the Country code to be associated with the PostalCode created from this Builder.
+         *
+         * @param countryCode String representing the Country Code
+         * @throws IllegalArgumentException if the passed in countryCode is null or a blank String.
+         * @see org.kuali.rice.shareddata.api.country.CountryContract
+         */
         public void setCountryCode(String countryCode) {
             if (StringUtils.isBlank(countryCode)) {
                 throw new IllegalArgumentException("countryCode is blank");
@@ -217,6 +236,13 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
             return stateCode;
         }
 
+        /**
+         * Sets the State code to be associated with the PostalCode created from this Builder.
+         *
+         * @param stateCode String representing the State code
+         * @throws IllegalArgumentException if the passed in stateCode is null or a blank String.
+         * @see org.kuali.rice.shareddata.api.state.StateContract
+         */
         public void setStateCode(String stateCode) {
             if (StringUtils.isBlank(stateCode)) {
                 throw new IllegalArgumentException("stateCode is blank");
@@ -230,6 +256,13 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
             return countyCode;
         }
 
+        /**
+         * Sets the County code to be associated with the PostalCode created from this Builder.
+         *
+         * @param countyCode String representing the County code
+         * @throws IllegalArgumentException if the passed in countyCode is null or a blank String.
+         * @see org.kuali.rice.shareddata.api.county.CountyContract
+         */
         public void setCountyCode(String countyCode) {
             if (StringUtils.isBlank(countyCode)) {
                 throw new IllegalArgumentException("countyCode is blank");

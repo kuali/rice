@@ -34,6 +34,11 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * POJO implementation of CountryContract that is immutable. Instances of State can be (un)marshalled to and from XML.
+ *
+ * @see StateContract
+ */
 @XmlRootElement(name = State.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = State.Constants.TYPE_NAME, propOrder = {
@@ -43,6 +48,7 @@ import java.util.Collection;
         State.Elements.ACTIVE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
+
 public final class State implements StateContract, ModelObjectComplete {
 
     private static final long serialVersionUID = 6097498602725305353L;
@@ -102,7 +108,7 @@ public final class State implements StateContract, ModelObjectComplete {
     }
 
     /**
-     * This builder constructs an Parameter enforcing the constraints of the {@link StateContract}.
+     * This builder constructs a State enforcing the constraints of the {@link StateContract}.
      */
     public static class Builder implements StateContract, ModelBuilder, Serializable {
 
@@ -124,6 +130,10 @@ public final class State implements StateContract, ModelObjectComplete {
 
         /**
          * creates a State with the required fields.
+         * @param code represents code for the State being built
+         * @param name represents full name for the State being built
+         * @param countryCode code for the Country this State is associated with
+         * @return a bootstrapped Builder defaulted with the passed in code, name, and countryCode.
          */
         public static Builder create(String code, String name, String countryCode) {
             final Builder builder = new Builder(code, name, countryCode);
@@ -145,6 +155,11 @@ public final class State implements StateContract, ModelObjectComplete {
             return code;
         }
 
+        /**
+         * Sets the code to be used for the State created from this Builder.
+         * @param code String code for a State.
+         * @throws IllegalArgumentException if the passed in code is null or a blank String.
+         */
         public void setCode(String code) {
             if (StringUtils.isBlank(code)) {
                 throw new IllegalArgumentException("code is blank");
@@ -158,6 +173,11 @@ public final class State implements StateContract, ModelObjectComplete {
             return name;
         }
 
+        /**
+         * Sets the full name of the State created from this Builder.
+         * @param name String representing the full name for the State
+         * @throws IllegalArgumentException if the passed in name is null or a blank String.
+         */
         public void setName(String name) {
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
@@ -171,6 +191,11 @@ public final class State implements StateContract, ModelObjectComplete {
             return countryCode;
         }
 
+        /**
+         * Sets the Country code to be associated with the State created from this Builder.
+         * @param countryCode String representing the Country Code
+         * @throws IllegalArgumentException if the passed in countryCode is null or a blank String.
+         */
         public void setCountryCode(String countryCode) {
             if (StringUtils.isBlank(countryCode)) {
                 throw new IllegalArgumentException("countryCode is blank");

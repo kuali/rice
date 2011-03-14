@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,11 +41,17 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.test.BaselineTestCase;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);
 

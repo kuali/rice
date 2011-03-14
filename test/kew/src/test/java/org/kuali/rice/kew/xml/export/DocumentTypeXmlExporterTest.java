@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +25,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -36,7 +36,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
     
     private static final Logger LOG = Logger.getLogger(DocumentTypeXmlExporterTest.class);

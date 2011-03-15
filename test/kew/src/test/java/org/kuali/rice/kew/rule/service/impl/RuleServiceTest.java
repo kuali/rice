@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +18,13 @@ package org.kuali.rice.kew.rule.service.impl;
 import org.junit.Test;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.persistence.PersistenceException;
@@ -34,7 +33,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RuleServiceTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {

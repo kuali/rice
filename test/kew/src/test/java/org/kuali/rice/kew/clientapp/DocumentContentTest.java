@@ -19,7 +19,7 @@ package org.kuali.rice.kew.clientapp;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
@@ -28,6 +28,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.custommonkey.xmlunit.XMLAssert;
 
 import java.lang.reflect.Field;
 
@@ -184,7 +185,8 @@ public class DocumentContentTest extends KEWTestCase {
         // reload the document
         document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
         assertFalse("Content should not be loaded yet.", isContentLoaded(document));
-        assertEquals("Invalid application content", applicationContent, document.getApplicationContent());
+
+        XMLAssert.assertXMLEqual("Invalid application content", applicationContent, document.getApplicationContent());
         assertTrue("Content should now be loaded.", isContentLoaded(document));
         
     }
@@ -205,26 +207,26 @@ public class DocumentContentTest extends KEWTestCase {
     	String appContent = "<app>content</app>";
     	document.setApplicationContent(appContent);
     	document.saveRoutingData();
-    	assertEquals(appContent, document.getApplicationContent());
+        XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());
     	
     	// load the document and modify the content
     	WorkflowDocument document2 = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
-    	assertEquals(appContent, document2.getApplicationContent());
+    	XMLAssert.assertXMLEqual(appContent, document2.getApplicationContent());
     	String appContent2 = "<app>content2</app>";
     	document2.setApplicationContent(appContent2);
-    	assertEquals(appContent2, document2.getApplicationContent());
+    	XMLAssert.assertXMLEqual(appContent2, document2.getApplicationContent());
     	document2.saveRoutingData();
     	
     	// the original document should not notice these changes yet
-    	assertEquals(appContent, document.getApplicationContent());
+    	XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());
     	// but if we saveRoutingData, we should see the new value
     	document.saveRoutingData();
-    	assertEquals(appContent2, document.getApplicationContent());
+    	XMLAssert.assertXMLEqual(appContent2, document.getApplicationContent());
     	
     	// also verify that just setting the content, but not saving it, doesn't get persisted
     	document2.setApplicationContent("<bad>content</bad>");
     	document2 = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document2.getRouteHeaderId());
-    	assertEquals(appContent2, document.getApplicationContent());
+    	XMLAssert.assertXMLEqual(appContent2, document.getApplicationContent());
     }
     
     /**
@@ -246,11 +248,11 @@ public class DocumentContentTest extends KEWTestCase {
     	assertTrue(isContentLoaded(document));
     	
     	// test that the content on the document is the same as the content we just set
-    	assertEquals(appContent, document.getApplicationContent());
+    	XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());
     	
     	// fetch the document fresh and make sure the content is correct
     	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
-    	assertEquals(appContent, document.getApplicationContent());
+    	XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());
     	
     }
 }

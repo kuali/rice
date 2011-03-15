@@ -28,6 +28,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -36,6 +37,7 @@ import java.sql.Timestamp;
 import static org.junit.Assert.*;
 
 
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RouteHeaderServiceTest extends KEWTestCase {
 
     private Object lock = new Object();

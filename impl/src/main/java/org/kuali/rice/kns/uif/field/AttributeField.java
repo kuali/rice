@@ -15,14 +15,18 @@
  */
 package org.kuali.rice.kns.uif.field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
+import org.kuali.rice.kns.datadictionary.validation.constraint.BaseConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -38,6 +42,7 @@ import org.kuali.rice.kns.uif.control.RadioGroupControl;
 import org.kuali.rice.kns.uif.control.SelectControl;
 import org.kuali.rice.kns.uif.control.TextAreaControl;
 import org.kuali.rice.kns.uif.control.TextControl;
+import org.kuali.rice.kns.uif.widget.DatePicker;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -66,15 +71,18 @@ public class AttributeField extends FieldBase implements DataBinding {
 	// value props
 	private String defaultValue;
 
+	//Constraint variables
 	protected String customValidatorClass;
 	protected ValidCharactersConstraint validCharactersConstraint;
 	protected CaseConstraint caseConstraint;
 	protected List<PrerequisiteConstraint> dependencyConstraints;
 	protected List<MustOccurConstraint> mustOccurConstraints;
-
-	private Integer maxLength;
-	private Integer minLength;
-
+	protected SimpleConstraint simpleConstraint;
+	//used to give validation methods unique signatures
+	private static int methodKey = 0;
+	//list used to temporarily store mustOccurs field names for the error message
+	private List<String> mustOccurFieldNames;
+	
 	private Formatter formatter;
 	private KeyValuesFinder optionsFinder;
 
@@ -107,6 +115,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 	public AttributeField() {
 		super();
+		simpleConstraint = new SimpleConstraint();
 	}
 
 	/**
@@ -204,10 +213,17 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (getValidCharactersConstraint() == null) {
 			setValidCharactersConstraint(attributeDefinition.getValidCharactersConstraint());
 		}
-
-		// valid characters
-		if (getCaseConstraint() == null) {
+		
+		if (getCaseConstraint() == null){
 			setCaseConstraint(attributeDefinition.getCaseConstraint());
+		}
+		
+		if (getDependencyConstraints() == null){
+			setDependencyConstraints(attributeDefinition.getPrerequisiteConstraints());
+		}
+		
+		if (getMustOccurConstraints() == null){
+			setMustOccurConstraints(attributeDefinition.getMustOccurConstraints());
 		}
 
 		// required
@@ -481,25 +497,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.optionsFinder = optionsFinder;
 	}
 
-	/**
-	 * Maximum number of the characters the attribute value is allowed to have.
-	 * Used to set the maxLength for supporting controls. Note this can be
-	 * smaller or longer than the actual control size
-	 * 
-	 * @return Integer max length
-	 */
-	public Integer getMaxLength() {
-		return this.maxLength;
-	}
 
-	/**
-	 * Setter for attributes max length
-	 * 
-	 * @param maxLength
-	 */
-	public void setMaxLength(Integer maxLength) {
-		this.maxLength = maxLength;
-	}
 
 	/**
 	 * Brief statement of the field (attribute) purpose. Used to display helpful
@@ -560,20 +558,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.attributeSecurity = attributeSecurity;
 	}
 
-	/**
-	 * @return the minLength
-	 */
-	public Integer getMinLength() {
-		return this.minLength;
-	}
 
-	/**
-	 * @param minLength
-	 *            the minLength to set
-	 */
-	public void setMinLength(Integer minLength) {
-		this.minLength = minLength;
-	}
 
 	/**
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
@@ -594,25 +579,32 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (this.getRequired()) {
 			control.addStyleClass("required");
 		}
-
-		if (validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()) {
-			if (validCharactersConstraint.getJsValue() != null) {
-				// set jsValue takes precedence
-				String prefixScript = "";
-				if (this.getOnLoadScript() != null) {
-					prefixScript = this.getOnLoadScript();
-				}
-				String methodName = validCharactersConstraint.getLabelKey();
-
-				// TODO instead of getLabelKey here it would get the actual
-				// message from somewhere
-				// TODO Does this message need to be prefixed by label name? -
-				// probably
-				this.setOnLoadScript(prefixScript + "jQuery.validator.addMethod(\"" + methodName
-						+ "\", function(value, element) {" + " return this.optional(element) || "
-						+ validCharactersConstraint.getJsValue() + ".test(value); " + "}, \""
-						+ validCharactersConstraint.getLabelKey() + "\");");
-				control.addStyleClass(methodName);
+		
+		if (this.getExclusiveMin() != null){
+			if(control instanceof TextControl && ((TextControl) control).getDatePicker() != null){
+				((TextControl) control).getDatePicker().getComponentOptions().put("minDate", this.getExclusiveMin());
+			}
+			else{
+				String rule = "$('[name=\""+ propertyName + "\"]').rules(\"add\", {\n minExclusive: ["+ this.getExclusiveMin() + "]});";
+				addScriptToView(view, rule);
+			}
+		}
+		
+		if (this.getInclusiveMax() != null){
+			if(control instanceof TextControl && ((TextControl) control).getDatePicker() != null){
+				((TextControl) control).getDatePicker().getComponentOptions().put("maxDate", this.getInclusiveMax());
+			}
+			else{
+				String rule = "$('[name=\""+ propertyName + "\"]').rules(\"add\", {\n maxInclusive: ["+ this.getInclusiveMax() + "]});";
+				addScriptToView(view, rule);
+			}
+		}
+		
+		if(validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()){
+			if(validCharactersConstraint.getJsValue() != null){
+				//set jsValue takes precedence
+				this.addScriptToView(view, getRegexMethod(validCharactersConstraint));
+				control.addStyleClass(validCharactersConstraint.getLabelKey());
 			}
 			else {
 				// attempt to find key in the map of known supported
@@ -625,7 +617,19 @@ public class AttributeField extends FieldBase implements DataBinding {
 		}
 
 		if (caseConstraint != null && caseConstraint.getApplyClientSide()) {
-			processCaseConstraint(view);
+			processCaseConstraint(view, null);
+		}
+		
+		if(dependencyConstraints != null){
+			for(PrerequisiteConstraint prc: dependencyConstraints){
+				processPrerequisiteConstraint(prc, view);
+			}
+		}
+		
+		if(mustOccurConstraints != null){
+			for(MustOccurConstraint mc: mustOccurConstraints){
+				processMustOccurConstraint(view, mc, "true");
+			}
 		}
 
 		//Sets message 
@@ -647,73 +651,223 @@ public class AttributeField extends FieldBase implements DataBinding {
 		}
 
 	}
-
-	private void processCaseConstraint(View view) {
-		if (caseConstraint.getOperator() == null) {
+	
+	private String getRegexMethod(ValidCharactersConstraint validCharactersConstraint){
+		//TODO instead of getLabelKey here it would get the actual message from somewhere for the error
+		//TODO should it use the labelKey here?
+		//TODO Does this message need to be prefixed by label name? - probably
+		return "\njQuery.validator.addMethod(\""+ validCharactersConstraint.getLabelKey() +"\", function(value, element) {\n" +
+			" return this.optional(element) || " + validCharactersConstraint.getJsValue() + ".test(value); " +
+			"}, \"" + validCharactersConstraint.getLabelKey() + "\");";
+	}
+	
+	private void processCaseConstraint(View view, String andedCase){		
+		if(caseConstraint.getOperator() == null){
 			caseConstraint.setOperator("equals");
 		}
+		
+		String operator = "==";
+		if(caseConstraint.getOperator().equalsIgnoreCase("not_equals")){
+			operator = "!=";
+		}
+		//add more operator types here if more are supported later
+		
+		control.addStyleClass("dependsOn-" + caseConstraint.getFieldPath());
+		
 		if (caseConstraint.getWhenConstraint() != null && !caseConstraint.getWhenConstraint().isEmpty()) {
 			for (WhenConstraint wc : caseConstraint.getWhenConstraint()) {
-				processWhenConstraint(view, wc);
+				processWhenConstraint(view, wc, caseConstraint.getFieldPath(), operator, andedCase);
 			}
 		}
 	}
-
-	private void processWhenConstraint(View view, WhenConstraint wc) {
+	
+	private void processWhenConstraint(View view, WhenConstraint wc, String fieldPath, String operator, String andedCase){
 		String ruleString = "";
-		// prerequisite constraint
-		if (wc.getConstraint() != null && wc.getConstraint() instanceof PrerequisiteConstraint) {
-			String function = "";
-
-			// size 1 value list - not sure we need to support lists here
-			if (wc.getValues() != null && wc.getValues().size() == 1) {
-				String operator = "==";
-				if (caseConstraint.getOperator().equalsIgnoreCase("not_equals")) {
-					operator = "!=";
-				}
-				// add more operator types here if more are supported later
-				String selector = "";
-				if (control instanceof TextControl || control instanceof SelectControl
-						|| control instanceof TextAreaControl) {
-					selector = "$('[name=\"" + propertyName + "\"]')";
-				}
-				/*
-				 * else if(control instanceof TextAreaControl){ selector =
-				 * "$('textarea[name=\""+ propertyName + "\"]')"; }
-				 */
-				else if (control instanceof RadioGroupControl || control instanceof CheckboxControl) {
-					selector = "$('[name=\"" + propertyName + "\"]:checked')";
-				}
-				/*
-				 * else if(control instanceof SelectControl){ selector =
-				 * "$('select[name=\""+ propertyName + "\"]')"; }
-				 */
-				// add more controls here maybe?
-
-				if (caseConstraint.isCaseSensitive()) {
-					function = "function(element) {" + "return " + selector + ".val().toUpperCase() " + operator
-							+ " \"" + wc.getValues().get(0) + "\".toUpperCase();" + "}";
-				}
-				else {
-					function = "function(element) {" + "return " + selector + ".val() " + operator + " \""
-							+ wc.getValues().get(0) + "\";" + "}";
+		//prerequisite constraint
+		
+		String booleanStatement = "";
+		//size 1 value list - not sure we need to support lists here
+		if(wc.getValues() != null && wc.getValues().size() == 1){
+			
+			String caseStr = "";
+			if(!caseConstraint.isCaseSensitive()){
+				caseStr = ".toUpperCase()";
+			}
+			for(int i=0; i < wc.getValues().size(); i++){
+				booleanStatement = booleanStatement + "(coerceValue('" + fieldPath +"')"+ caseStr +" "+ operator + " \"" + wc.getValues().get(i) + "\"" + caseStr +")";
+				if((i + 1) != wc.getValues().size()){
+					booleanStatement = booleanStatement + " || ";
 				}
 			}
+			
+		}
+		
+		if(andedCase != null){
+			booleanStatement = "(" + booleanStatement + ") && (" + andedCase + ")";
+		}
+		
+		if(wc.getConstraint() != null && StringUtils.isNotEmpty(booleanStatement)){
+			ruleString = createRule(this.getPropertyName(), wc.getConstraint(), booleanStatement, view);
+		}
+		
+		if(StringUtils.isNotEmpty(ruleString)){
+			addScriptToView(view, ruleString);
+		}
+	}
+	
+	private void addScriptToView(View view, String script){
+		String prefixScript = "";
+		if(view.getOnDocumentReadyScript() != null){
+			prefixScript = view.getOnDocumentReadyScript();
+		}
+		
+		view.setOnDocumentReadyScript(prefixScript + "\n" + script);
+	}
+	
+	@SuppressWarnings("boxing")
+	private String createRule(String applyToField, Constraint constraint, String booleanStatement, View view){
+		String rule = "";
+		int constraintCount = 0;
+		if(constraint instanceof BaseConstraint && ((BaseConstraint)constraint).getApplyClientSide()){
+			if(constraint instanceof SimpleConstraint){
+				if(((SimpleConstraint) constraint).getRequired()){
+					rule = rule + "required: function(element){\nreturn (" + booleanStatement + ");}";
+					constraintCount++;
+				}
+				if(((SimpleConstraint) constraint).getMinLength() != null){
+					if(constraintCount > 0){
+						rule = rule + ",\n";
+					}
+					rule = rule + "minLengthConditional: [" + ((SimpleConstraint) constraint).getMinLength() + ", function(){return " + booleanStatement + ";}]";
+				}
+				if(((SimpleConstraint) constraint).getMaxLength() != null){
+					if(constraintCount > 0){
+						rule = rule + ",\n";
+					}
+					rule = rule + "maxLengthConditional: [" + ((SimpleConstraint) constraint).getMaxLength() + ", function(){return "  + booleanStatement + ";}]";
+				}
+				
+				if(((SimpleConstraint) constraint).getExclusiveMin() != null){
+					if(constraintCount > 0){
+						rule = rule + ",\n";
+					}
+					rule = rule + "minExclusive: [" + ((SimpleConstraint) constraint).getExclusiveMin() + ", function(){return "  + booleanStatement + ";}]";
+				}
+				
+				if(((SimpleConstraint) constraint).getInclusiveMax() != null){
+					if(constraintCount > 0){
+						rule = rule + ",\n";
+					}
+					rule = rule + "maxInclusive: [" + ((SimpleConstraint) constraint).getInclusiveMax() + ", function(){return "  + booleanStatement + ";}]";
+				}
+				
+				rule = "$('[name=\""+ applyToField + "\"]').rules(\"add\", {" + rule + "\n});";
+			}
+			else if(constraint instanceof ValidCharactersConstraint){
+				String regexMethod = "";
+				String methodName = ((BaseConstraint)constraint).getLabelKey();
+				if(validCharactersConstraint.getJsValue() != null){
+					regexMethod = getRegexMethod((ValidCharactersConstraint) constraint) + "\n";
+				}
+				else{
+					methodName = UifConstants.validCharactersMethods.get(validCharactersConstraint.getLabelKey());
+				}
+				if(StringUtils.isNotEmpty(methodName)){
+					rule = regexMethod + "$('[name=\""+ applyToField + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
+				}
+			}
+			else if(constraint instanceof PrerequisiteConstraint){
+				processPrerequisiteConstraint((PrerequisiteConstraint)constraint, view, booleanStatement);
+			}
+			else if(constraint instanceof CaseConstraint){
+				processCaseConstraint(view, booleanStatement);
+			}
+			else if(constraint instanceof MustOccurConstraint){
+				processMustOccurConstraint(view, (MustOccurConstraint)constraint, booleanStatement);
+			}
+		}	
+		return rule;
+	}
+	
+	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view){
+		processPrerequisiteConstraint(constraint, view, "true");
+	}
+	
+	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view, String booleanStatement){
+		if(constraint != null && constraint.getApplyClientSide()){
+			this.addScriptToView(view, getPrerequisiteStatement(constraint, booleanStatement) + getPostrequisiteStatement(constraint, booleanStatement));
+		}
+	}
+	
+	
+	private String getPrerequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement){
+		methodKey++;
+		//field occurs before case
+		String dependsClass = "dependsOn-" + constraint.getAttributePath();
+		String methodName = "prConstraint" + methodKey;
+		//TODO make it a unique methodName
+		String addClass = "$('[name=\""+ propertyName + "\"]').addClass('" + dependsClass + "');\n" +
+			"$('[name=\""+ propertyName + "\"]').addClass('" + methodName + "');\n";
+		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
+			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + constraint.getAttributePath() + "')));}else{return true;} " +
+			"}, \"This field requires " + constraint.getAttributePath() +"\");";
+		
+		String ifStatement = "if(occursBefore('" + constraint.getAttributePath() + "','" + propertyName + 
+		"')){" + addClass + method + "}";
+		return ifStatement;
+	}
+	
+	private String getPostrequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement){
+		//field occurs after case
+		String rule = "";
+		String function = "function(element){\n" +
+			"return (coerceValue('"+ this.getPropertyName() + "') && " + booleanStatement + ");}";
+		String postStatement = "\nelse if(occursBefore('" + propertyName + "','" + constraint.getAttributePath() + 
+			"')){\n$('[name=\""+ constraint.getAttributePath() + 
+			"\"]').rules(\"add\", { required: \n" + function 
+			+ ", \nmessages: {\nrequired: \"Required by field: "+ this.getLabel() +"\"}});}\n";
+		
+		return postStatement;
+		
+	}
 
-			if (StringUtils.isNotEmpty(function)) {
-				String name = ((PrerequisiteConstraint) (wc.getConstraint())).getAttributePath();
-				ruleString = "$('[name=\"" + name + "\"]').rules(\"add\", {required: " + function + "});";
+	private void processMustOccurConstraint(View view, MustOccurConstraint mc, String booleanStatement){
+		methodKey++;
+		mustOccurFieldNames = new ArrayList<String>();
+		//TODO make this show the fields its requiring
+		String methodName = "moConstraint" + methodKey;
+		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
+		" if(" + booleanStatement + "){return (this.optional(element) || ("+ getMustOccurStatement(mc) + "));}else{return true;}" +
+		"}, \"This field requires something else" + "" +"\");";
+		String rule = method + "$('[name=\""+ propertyName + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
+		addScriptToView(view, rule);
+	}
+
+	private String getMustOccurStatement(MustOccurConstraint constraint){
+		String statement = "";
+		if(constraint != null && constraint.getApplyClientSide()){
+			String array = "[";
+			if(constraint.getPrerequisiteConstraints() != null){
+				for(int i = 0; i < constraint.getPrerequisiteConstraints().size(); i++){
+					control.addStyleClass("dependsOn-" + constraint.getPrerequisiteConstraints().get(i).getAttributePath());
+					array = array + "'" + constraint.getPrerequisiteConstraints().get(i).getAttributePath() + "'";
+					if(i + 1 != constraint.getPrerequisiteConstraints().size()){
+						array = array + ",";
+					}
+					
+				}
+			}
+			array = array + "]";
+			mustOccurFieldNames.add(array);
+			statement = "mustOccurCheck(" + array +", " + constraint.getMin() + ", " + constraint.getMax() + ")";
+			
+			if(constraint.getMustOccurConstraints() != null){
+				for(MustOccurConstraint mc: constraint.getMustOccurConstraints()){
+					statement = statement + " || " + getMustOccurStatement(mc);
+				}
 			}
 		}
-
-		if (StringUtils.isNotEmpty(ruleString)) {
-			String prefixScript = "";
-			if (view.getOnDocumentReadyScript() != null) {
-				prefixScript = view.getOnDocumentReadyScript();
-			}
-
-			view.setOnDocumentReadyScript(prefixScript + "\n" + ruleString);
-		}
+		return statement;
 	}
 
 	/**
@@ -855,4 +1009,138 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void setCaseConstraint(CaseConstraint caseConstraint) {
 		this.caseConstraint = caseConstraint;
 	}
+
+	/**
+	 * @return the dependencyConstraints
+	 */
+	public List<PrerequisiteConstraint> getDependencyConstraints() {
+		return this.dependencyConstraints;
+	}
+
+	/**
+	 * @param dependencyConstraints the dependencyConstraints to set
+	 */
+	public void setDependencyConstraints(
+			List<PrerequisiteConstraint> dependencyConstraints) {
+		this.dependencyConstraints = dependencyConstraints;
+	}
+
+	/**
+	 * @return the mustOccurConstraints
+	 */
+	public List<MustOccurConstraint> getMustOccurConstraints() {
+		return this.mustOccurConstraints;
+	}
+
+	/**
+	 * @param mustOccurConstraints the mustOccurConstraints to set
+	 */
+	public void setMustOccurConstraints(
+			List<MustOccurConstraint> mustOccurConstraints) {
+		this.mustOccurConstraints = mustOccurConstraints;
+	}
+
+	/**
+	 * A simple constraint which store the values for required, min/max length, and min/max value
+	 * @return the simpleConstraint
+	 */
+	public SimpleConstraint getSimpleConstraint() {
+		return this.simpleConstraint;
+	}
+
+	/**
+	 * When a simple constraint is set on this object ALL simple validation constraints set
+	 * directly will be overridden - recommended to use this or the other gets/sets for defining
+	 * simple constraints, not both
+	 * @param simpleConstraint the simpleConstraint to set
+	 */
+	public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
+		this.simpleConstraint = simpleConstraint;
+	}
+	
+	/**
+	 * Maximum number of the characters the attribute value is allowed to have.
+	 * Used to set the maxLength for supporting controls. Note this can be
+	 * smaller or longer than the actual control size
+	 * 
+	 * @return Integer max length
+	 */
+	public Integer getMaxLength() {
+		return simpleConstraint.getMaxLength();
+	}
+
+	/**
+	 * Setter for attributes max length
+	 * 
+	 * @param maxLength
+	 */
+	public void setMaxLength(Integer maxLength) {
+		simpleConstraint.setMaxLength(maxLength);
+	}
+	
+	/**
+	 * @return the minLength
+	 */
+	public Integer getMinLength() {
+		return simpleConstraint.getMinLength();
+	}
+
+	/**
+	 * @param minLength
+	 *            the minLength to set
+	 */
+	public void setMinLength(Integer minLength) {
+		simpleConstraint.setMinLength(minLength);
+	}
+
+	/**
+	 * @return the required
+	 */
+	@Override
+	public Boolean getRequired() {
+		return simpleConstraint.getRequired();
+	}
+
+	/**
+	 * @param required the required to set
+	 */
+	@Override
+	public void setRequired(Boolean required) {
+		simpleConstraint.setRequired(required);
+	}
+	
+	/**
+	 * The exclusiveMin element determines the minimum allowable value for data
+	 * entry editing purposes. Value can be an integer or decimal value such as
+	 * -.001 or 99.
+	 */
+	public String getExclusiveMin() {
+		return simpleConstraint.getExclusiveMin();
+	}
+
+	/**
+	 * @param minValue the minValue to set
+	 */
+	public void setExclusiveMin(String exclusiveMin) {
+		simpleConstraint.setExclusiveMin(exclusiveMin);
+	}
+
+	/**
+	 * The inclusiveMax element determines the maximum allowable value for data
+	 * entry editing purposes. Value can be an integer or decimal value such as
+	 * -.001 or 99.
+	 * 
+	 * JSTL: This field is mapped into the field named "exclusiveMax".
+	 */
+	public String getInclusiveMax() {
+		return simpleConstraint.getInclusiveMax();
+	}
+
+	/**
+	 * @param maxValue the maxValue to set
+	 */
+	public void setInclusiveMax(String inclusiveMax) {
+		simpleConstraint.setInclusiveMax(inclusiveMax);
+	}
+	
 }

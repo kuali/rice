@@ -489,3 +489,130 @@ function collapseAccordions() {
 	$("div.accordion").slideUp(100);
 }
 
+function coerceValue(name){
+	var value = "";
+	var nameSelect = "[name='" + name + "']";
+	if($(nameSelect + ":checkbox").length){
+		value = $(nameSelect + ":checked").val();
+	}
+	else if($(nameSelect + ":radio").length){
+		value = $(nameSelect + ":checked").val();
+	}
+	else if($(nameSelect).length){
+		if ($(nameSelect).hasClass("watermark")) {
+			$.watermark.hide(nameSelect);
+			value = $(nameSelect).val();
+			$.watermark.show(nameSelect);
+		}
+		else{
+			value = $(nameSelect).val();
+		}
+	}
+	if(value == null){
+		value = "";
+	}
+	return value;
+}
+
+function setupValidator(){
+	$('#kualiForm').validate(
+	{ 
+		onsubmit: false,
+		debug: true, 
+		onclick: function(element) { 
+			$(element).valid();
+			dependsOnCheck(element); 
+		}, 
+		onfocusout: function(element) {
+			$(element).valid();
+			dependsOnCheck(element); 
+		}
+	});
+	jQuery.validator.addMethod("minExclusive", function(value, element, param){
+		if (param.length == 1 || param[1]()) {
+			return this.optional(element) || value > param[0];
+		}
+		else{
+			return true;
+		}
+	}, "Value must be greater than {0}");
+	jQuery.validator.addMethod("maxInclusive", function(value, element, param){
+		if (param.length == 1 || param[1]()) {
+			return this.optional(element) || value <= param[0];
+		}
+		else{
+			return true;
+		}
+	}, "Value must not exceed {0}");
+	jQuery.validator.addMethod("minLengthConditional", function(value, element, param){
+		if (param.length == 1 || param[1]()) {
+			return this.optional(element) || this.getLength($.trim(value), element) >= param[0];
+		}
+		else{
+			return true;
+		}
+	}, "Must be at least {0} characters");
+	jQuery.validator.addMethod("maxLengthConditional", function(value, element, param){
+		if (param.length == 1 || param[1]()) {
+			return this.optional(element) || this.getLength($.trim(value), element) <= param[0];
+		}
+		else{
+			return true;
+		}
+	}, "Must be at most {0} characters");
+	$.watermark.showAll();
+}
+
+function dependsOnCheck(element){
+	var name = $(element).attr('name');
+	$(".dependsOn-" + name).each(function(){
+		if ($(this).hasClass("valid") || $(this).hasClass("error")) {
+			$.watermark.hide(this);
+			$(this).valid();
+			$.watermark.show(this);
+		}
+	});
+}
+
+function mustOccurCheck(nameArray, min, max){
+	var total = 0;
+	for(i=0; i < nameArray.length; i++){
+		if(coerceValue(nameArray[i])){
+			total++;
+		}
+	}
+	if (total >= min && total <= max) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+function occursBefore(name1, name2){
+	var field1 = $("[name=" + name1 + "]");
+	var field2 = $("[name=" + name2 + "]");
+	
+	field1.addClass("prereqcheck");
+	field2.addClass("prereqcheck");
+	
+	var fields = $(".prereqcheck");
+	
+	field1.removeClass("prereqcheck");
+	field2.removeClass("prereqcheck");
+	
+	if(fields.index(field1) < fields.index(field2) ){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function getFieldLabel(name){
+	
+}
+
+function getFieldLabels(names){
+	
+}

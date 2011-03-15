@@ -951,7 +951,9 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 */
 	@Override
 	public void addStyleClass(String styleClass){
-		styleClasses.add(styleClass);
+		if(!styleClasses.contains(styleClass)){
+			styleClasses.add(styleClass);
+		}
 	}
 	
 	public boolean getSupportsOnDocumentReady(){

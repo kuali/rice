@@ -132,23 +132,27 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		            </property>
          		</bean>
             </property>
+			
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Whisker Length (in)" p:maxLength="3" p:constraint="Required when cat is selected (also adds exclusive min 1 and max 50, Digits only">
+            <property name="control">
+              <bean parent="TextControl" p:size="3" p:watermarkText="#"/>
+            </property>
+			<property name="validCharactersConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="digits"/>
+			</property>
 			<property name="caseConstraint">
 			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+			   	<property name="fieldPath" value="field2"/>
 			   	<property name="whenConstraint">
 			   		<list>
 						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
 							<property name="value" value="cat_pet"/>
 							<property name="constraint">
-								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
-									<property name="attributePath" value="field3"/>
-								</bean>
-							</property>
-						</bean>
-						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
-							<property name="value" value="dog_pet"/>
-							<property name="constraint">
-								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
-									<property name="attributePath" value="field4"/>
+								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint">
+									<property name="required" value="true"/>
+									<property name="exclusiveMin" value="1"/>
+									<property name="inclusiveMax" value="50"/>
 								</bean>
 							</property>
 						</bean>
@@ -157,30 +161,101 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			   </bean>
 			</property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Whisker Length (in)" p:maxLength="3" p:constraint="Required when cat is selected, Digits only">
-            <property name="control">
-              <bean parent="TextControl" p:size="3" p:watermarkText="#"/>
-            </property>
-			<property name="validCharactersConstraint">
-			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="digits"/>
-			</property>
-          </bean>
 		  <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Breed" p:maxLength="10" p:constraint="Required when dog is selected, only letters">
             <property name="control">
-              <bean parent="TextControl" p:size="10" p:watermarkText="Beagle"/>
+              <bean parent="TextControl" p:size="8" p:watermarkText="Beagle"/>
             </property>
 			<property name="validCharactersConstraint">
 			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="lettersonly"/>
 			</property>
+			<property name="caseConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+			   	<property name="fieldPath" value="field2"/>
+			   	<property name="whenConstraint">
+			   		<list>
+						<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+							<property name="value" value="dog_pet"/>
+							<property name="constraint">
+								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint">
+									<property name="required" value="true"/>
+								</bean>
+							</property>
+						</bean>
+						
+					</list>
+				</property>
+			   </bean>
+			</property>
           </bean>
-		  <bean parent="AttributeField_Form" p:propertyName="field5" p:label="Weight (lbs)" p:maxLength="10" p:required="true" p:constraint="Required, only numbers">
+		  <bean parent="AttributeField_Form" p:propertyName="field13" p:label="Weight" p:maxLength="10" p:inclusiveMax="500" p:constraint="Only numbers, max value 500">
             <property name="control">
               <bean parent="TextControl" p:size="4" p:watermarkText="25"/>
             </property>
 			<property name="validCharactersConstraint">
 			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="number"/>
 			</property>
+			<property name="dependencyConstraints">
+				<list>
+					<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="field14"/>
+				</list>
+			</property>
           </bean>
+		  <bean parent="AttributeField_Form" p:propertyName="field14" p:label="Units" p:constraint="Required when weight is filled out AND weight requires this is filled out">
+            <property name="control">
+              <bean parent="TextControl" p:size="4" p:watermarkText="lbs"/>
+            </property>
+			<property name="dependencyConstraints">
+				<list>
+					<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="field13"/>
+				</list>
+			</property>
+          </bean>
+		  <bean parent="AttributeField_Form" p:propertyName="field15" p:label="Address 1" p:maxLength="40">
+            <property name="control">
+              <bean parent="TextControl"/>
+            </property>
+          </bean>
+		  <bean parent="AttributeField_Form" p:propertyName="field16" p:label="City" p:maxLength="20" >
+            <property name="control">
+              <bean parent="TextControl"/>
+            </property>
+          </bean>
+		  <bean parent="AttributeField_Form" p:propertyName="field17" p:label="State" p:minLength="2" p:maxLength="2" p:constraint="Must be 2 letters">
+            <property name="control">
+              <bean parent="TextControl"/>
+            </property>
+			<property name="validCharactersConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="lettersonly"/>
+			</property>
+          </bean>
+		  <bean parent="AttributeField_Form" p:propertyName="field18" p:label="Zip" p:minLength="5" p:maxLength="5" p:constraint="Must be 5 digits only, This field requires that Address 1, City, and State MUST OCCUR before it can be filled out">
+            <property name="control">
+              <bean parent="TextControl"/>
+            </property>
+			<property name="validCharactersConstraint">
+			   <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" p:labelKey="digits"/>
+			</property>
+			<property name="mustOccurConstraints">
+				<list>
+					<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+						<property name="min" value="3" />
+						<property name="max" value="3" />
+						<property name="prerequisiteConstraints">
+							<list>
+								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="field15" />
+								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="field16" />
+								<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="field17" />
+							</list>
+						</property>
+					</bean>	
+				</list>
+			</property>
+          </bean>
+<!--		  <bean parent="AttributeField_Form" p:propertyName="field6" p:label="Field 6" p:required="true" p:width="auto" p:exclusiveMin="03/01/2011" p:inclusiveMax="04/25/2011" p:maxLength="25">
+            <property name="control">
+              <bean parent="DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
+            </property>
+          </bean> -->
         </list>
       </property> 
             

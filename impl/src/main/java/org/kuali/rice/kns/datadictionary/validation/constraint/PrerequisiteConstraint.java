@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @since 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PrerequisiteConstraint implements Constraint {
+public class PrerequisiteConstraint extends BaseConstraint {
 	@XmlElement
     protected String attributePath;
 

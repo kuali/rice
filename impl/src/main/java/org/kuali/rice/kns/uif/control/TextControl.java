@@ -74,6 +74,9 @@ public class TextControl extends ControlBase {
 	 * @param watermarkText the watermarkText to set
 	 */
 	public void setWatermarkText(String watermarkText) {
+		//to avoid users from putting in the same value as the watermark adding some spaces here
+		//see watermark troubleshooting for more info
+		watermarkText = watermarkText + "   ";
 		this.watermarkText = watermarkText;
 	}
 }

@@ -122,8 +122,8 @@
 
 		<cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
 		<javadoc.plugin.version>2.7</javadoc.plugin.version>
-		<project.info.reports.plugin.version>2.2</project.info.reports.plugin.version>
-		<site.plugin.version>2.2</site.plugin.version>
+		<project.info.reports.plugin.version>2.3.1</project.info.reports.plugin.version>
+		<site.plugin.version>3.0-beta-3</site.plugin.version>
 		<surefire.plugin.version>2.7.2</surefire.plugin.version>
         <failsafe.plugin.version>2.7.2</failsafe.plugin.version>
         <source.plugin.version>2.1.2</source.plugin.version>
@@ -199,7 +199,7 @@
 										<version>1.6</version>
 									</requireJavaVersion>
 									<requireMavenVersion>
-										<version>[2.2,4.0)</version>
+										<version>[3.0,4.0)</version>
 									</requireMavenVersion>
 									<DependencyConvergence/>
 
@@ -347,11 +347,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>${site.plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>2.5</version>
 				</plugin>
@@ -406,53 +401,6 @@
               </plugin>
 
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${surefire.plugin.version}</version>
-                    <configuration>
-                        <skip>${maven.surefire.skip}</skip>
-                    </configuration>
-				</plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${failsafe.plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>integration-test</id>
-                            <goals>
-                                <goal>integration-test</goal>
-                            </goals>
-                        </execution>
-                        <!-- removing verify execution to allow itests to run completely with failures -->
-                        <!--<execution>
-                            <id>verify</id>
-                            <goals>
-                                <goal>verify</goal>
-                            </goals>
-                        </execution>-->
-                    </executions>
-                    <configuration>
-                        <skip>${maven.failsafe.skip}</skip>
-                        <additionalClasspathElements>
-                            <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
-                            <additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
-                        </additionalClasspathElements>
-                        <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
-                        <useFile>false</useFile>
-                        <failIfNoTests>false</failIfNoTests>
-                        <includes>
-                            <include>${maven.failsafe.includes}</include>
-                        </includes>
-                        <forkMode>${maven.failsafe.forkmode}</forkMode>
-                        <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
-                        <reportFormat>plain</reportFormat>
-                        <argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
-                    </configuration>
-                </plugin>
-
-				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>buildnumber-maven-plugin</artifactId>
 					<version>1.0-beta-4</version>
@@ -488,18 +436,6 @@
 								<Build-Time>${current.timestamp}</Build-Time>
 							</manifestEntries>
 						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>cobertura-maven-plugin</artifactId>
-					<version>${cobertura.maven.plugin.version}</version>
-					<configuration>
-						<instrumentation>
-							<excludes>
-								<exclude>org/kuali/rice/**/test/**/*.class</exclude>
-							</excludes>
-						</instrumentation>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -662,6 +598,147 @@
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${source.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${javadoc.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${project.info.reports.plugin.version}</version>
+                </plugin>
+
+                <plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${surefire.plugin.version}</version>
+                    <configuration>
+                        <skip>${maven.surefire.skip}</skip>
+                        <useFile>false</useFile>
+                        <failIfNoTests>false</failIfNoTests>
+                        <includes>
+                            <include>${maven.surefire.includes}</include>
+                        </includes>
+                        <reportFormat>plain</reportFormat>
+                    </configuration>
+				</plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${failsafe.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <skip>${maven.failsafe.skip}</skip>
+                        <additionalClasspathElements>
+                            <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
+                            <additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
+                        </additionalClasspathElements>
+                        <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
+                        <useFile>false</useFile>
+                        <failIfNoTests>false</failIfNoTests>
+                        <includes>
+                            <include>${maven.failsafe.includes}</include>
+                        </includes>
+                        <forkMode>${maven.failsafe.forkmode}</forkMode>
+                        <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
+                        <reportFormat>plain</reportFormat>
+                        <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>${cobertura.maven.plugin.version}</version>
+					<configuration>
+						<instrumentation>
+							<excludes>
+								<exclude>org/kuali/rice/**/test/**/*.class</exclude>
+							</excludes>
+						</instrumentation>
+                    </configuration>
+				</plugin>
+                <plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>${site.plugin.version}</version>
+                    <configuration>
+                        <reportPlugins>
+                            <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-javadoc-plugin</artifactId>
+                                <version>${javadoc.plugin.version}</version>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                    <maxmemory>512m</maxmemory>
+                                </configuration>
+                            </plugin>
+
+                            <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-project-info-reports-plugin</artifactId>
+                                <version>${project.info.reports.plugin.version}</version>
+                                <configuration>
+                                    <!-- this takes forever to complete, enable as needed -->
+                                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                                </configuration>
+                            </plugin>
+
+                            <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-surefire-plugin</artifactId>
+                                <version>${surefire.plugin.version}</version>
+                                <configuration>
+                                    <reportFormat>plain</reportFormat>
+                                </configuration>
+                                 <reportSets>
+                                    <reportSet>
+                                        <reports>
+                                            <report>report-only</report>
+                                        </reports>
+                                    </reportSet>
+                                </reportSets>
+                            </plugin>
+
+                            <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-failsafe-plugin</artifactId>
+                                <version>${failsafe.plugin.version}</version>
+                                <configuration>
+                                    <reportFormat>plain</reportFormat>
+                                </configuration>
+                                <reportSets>
+                                    <reportSet>
+                                        <reports>
+                                            <report>report-only</report>
+                                        </reports>
+                                    </reportSet>
+                                </reportSets>
+                            </plugin>
+
+                            <plugin>
+                                <groupId>org.codehaus.mojo</groupId>
+                                <artifactId>cobertura-maven-plugin</artifactId>
+                                <version>${cobertura.maven.plugin.version}</version>
+                                <configuration>
+                                    <formats>
+                                        <format>html</format>
+                                        <format>xml</format>
+                                    </formats>
+                                </configuration>
+                            </plugin>
+                        </reportPlugins>
+                    </configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -1740,101 +1817,6 @@
             </dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<!-- Maven 3 Migration: The reporting section should be removed when fully
-		migrated to Maven 3 Currently, Maven 3 reporting is configured with a profile
-		see https://cwiki.apache.org/MAVEN/maven-3x-and-site-plugin.html -->
-	<reporting>
-		<!-- these plugins are not configured in the pluginManagement section b/c
-			those configurations do not affect reporting. -->
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${javadoc.plugin.version}</version>
-				<configuration>
-					<aggregate>true</aggregate>
-					<maxmemory>512m</maxmemory>
-				</configuration>
-				<inherited>true</inherited>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>${project.info.reports.plugin.version}</version>
-				<configuration>
-					<!-- this takes forever to complete, enable as needed -->
-					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-				</configuration>
-				<inherited>true</inherited>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${surefire.plugin.version}</version>
-				<configuration>
-					<useFile>false</useFile>
-					<failIfNoTests>false</failIfNoTests>
-					<includes>
-						<include>${maven.surefire.includes}</include>
-					</includes>
-					<reportFormat>plain</reportFormat>
-				</configuration>
-                 <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report-only</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-				<inherited>true</inherited>
-			</plugin>
-
-            <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${failsafe.plugin.version}</version>
-				<configuration>
-					<additionalClasspathElements>
-						<additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
-						<additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
-					</additionalClasspathElements>
-					<useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
-					<useFile>false</useFile>
-					<failIfNoTests>false</failIfNoTests>
-					<includes>
-						<include>${maven.failsafe.includes}</include>
-					</includes>
-					<forkMode>${maven.failsafe.forkmode}</forkMode>
-                    <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
-					<reportFormat>plain</reportFormat>
-					<argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
-				</configuration>
-                 <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report-only</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-				<inherited>true</inherited>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>${cobertura.maven.plugin.version}</version>
-				<configuration>
-					<formats>
-						<format>html</format>
-						<format>xml</format>
-					</formats>
-				</configuration>
-				<inherited>true</inherited>
-			</plugin>
-		</plugins>
-	</reporting>
 
 	<profiles>
 		<profile>

@@ -1,12 +1,12 @@
 /*
- * Copyright 2009 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 
 import java.util.List;
@@ -31,6 +32,7 @@ import static org.junit.Assert.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class QuickLinksServiceTest extends KEWTestCase {
     private static String principalId = "admin";
     private static String badPrincipalId = "joeshmoe";

@@ -23,7 +23,7 @@ import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -155,7 +155,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));*/
     	
     	// on Blanket ApprovePolicy 5, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (getPrincipalNameForId("pzhang"), "BlanketApprovePolicy5");
+    	document = new WorkflowDocument (getPrincipalIdForName("pzhang"), "BlanketApprovePolicy5");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	document = new WorkflowDocument (getPrincipalNameForId("ewestfal"), document.getRouteHeaderId());

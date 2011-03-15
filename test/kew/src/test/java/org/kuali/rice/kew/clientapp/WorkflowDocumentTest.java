@@ -18,7 +18,7 @@ package org.kuali.rice.kew.clientapp;
 
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
@@ -120,18 +120,18 @@ public class WorkflowDocumentTest extends KEWTestCase {
 
     	WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
 
-    	verifyIsRouteCapable(false, getPrincipalNameForId("ewestfal"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(false, getPrincipalIdForName("ewestfal"), doc.getRouteHeaderId());
     	verifyIsRouteCapable(false, "2001", doc.getRouteHeaderId());
 
-    	verifyIsRouteCapable(true, getPrincipalNameForId("rkirkend"), doc.getRouteHeaderId());
+    	verifyIsRouteCapable(true, getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
     	verifyIsRouteCapable(true, "2002", doc.getRouteHeaderId());
 
         doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "NonInitiatorCanRouteDocument");
 
-        verifyIsRouteCapable(true, getPrincipalNameForId("ewestfal"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, getPrincipalIdForName("ewestfal"), doc.getRouteHeaderId());
         verifyIsRouteCapable(true, "2001", doc.getRouteHeaderId());
 
-        verifyIsRouteCapable(true, getPrincipalNameForId("rkirkend"), doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
         verifyIsRouteCapable(true, "2002", doc.getRouteHeaderId());
     }
 

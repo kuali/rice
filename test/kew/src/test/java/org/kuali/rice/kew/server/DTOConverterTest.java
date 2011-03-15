@@ -17,6 +17,7 @@ package org.kuali.rice.kew.server;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.Test;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -92,9 +93,9 @@ public class DTOConverterTest extends KEWTestCase {
         String fleXml = "<flexdoc><meinAttribute>nein</meinAttribute></flexdoc>";
         contentVO = DTOConverter.convertDocumentContent(fleXml, null);
         assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
-        assertEquals("Attribute content is invalid.", fleXml, contentVO.getAttributeContent());
-        assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
-        assertEquals("Application content is invalid.", "", contentVO.getApplicationContent());
+        assertEquals("Attribute content is invalid.", StringUtils.deleteWhitespace(fleXml), StringUtils.deleteWhitespace(contentVO.getAttributeContent()));
+        assertEquals("Searchable content is invalid.", "", StringUtils.deleteWhitespace(contentVO.getSearchableContent()));
+        assertEquals("Application content is invalid.", "", StringUtils.deleteWhitespace(contentVO.getApplicationContent()));
     }
 
     /**
@@ -116,7 +117,7 @@ public class DTOConverterTest extends KEWTestCase {
         DocumentContentDTO contentVO = new DocumentContentDTO();
         //routeHeaderVO.setDocumentContent(contentVO);
         String content = DTOConverter.buildUpdatedDocumentContent(contentVO);
-        assertEquals("Invalid content conversion.", KEWConstants.DEFAULT_DOCUMENT_CONTENT, content);
+        assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(KEWConstants.DEFAULT_DOCUMENT_CONTENT), StringUtils.deleteWhitespace(content));
 
         // test simple case, no attributes
         String attributeContent = "<attribute1><id value=\"3\"/></attribute1>";
@@ -125,7 +126,7 @@ public class DTOConverterTest extends KEWTestCase {
         contentVO.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
         contentVO.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
         content = DTOConverter.buildUpdatedDocumentContent(contentVO);
-        String fullContent = startContent+constructContent(ATTRIBUTE_CONTENT, attributeContent)+constructContent(SEARCHABLE_CONTENT, searchableContent)+endContent;
+        String fullContent = startContent+"\n"+constructContent(ATTRIBUTE_CONTENT, attributeContent)+"\n"+constructContent(SEARCHABLE_CONTENT, searchableContent)+"\n"+endContent;
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(fullContent), StringUtils.deleteWhitespace(content));
 
         // now, add an attribute
@@ -167,9 +168,9 @@ public class DTOConverterTest extends KEWTestCase {
             searchableContent = "<"+SEARCHABLE_CONTENT+">"+searchableContent+"</"+SEARCHABLE_CONTENT+">";
         }
         assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
-        assertEquals("Attribute content is invalid.", attributeContent, contentVO.getAttributeContent());
-        assertEquals("Searchable content is invalid.", searchableContent, contentVO.getSearchableContent());
-        assertEquals("Application content is invalid.", applicationContent, contentVO.getApplicationContent());
+        assertEquals("Attribute content is invalid.", StringUtils.deleteWhitespace(attributeContent), StringUtils.deleteWhitespace(contentVO.getAttributeContent()));
+        assertEquals("Searchable content is invalid.", StringUtils.deleteWhitespace(searchableContent), StringUtils.deleteWhitespace(contentVO.getSearchableContent()));
+        assertEquals("Application content is invalid.", StringUtils.deleteWhitespace(applicationContent), StringUtils.deleteWhitespace(contentVO.getApplicationContent()));
         assertEquals("Incorrect number of attribute definitions.", 0, contentVO.getAttributeDefinitions().length);
         assertEquals("Incorrect number of searchable attribute definitions.", 0, contentVO.getSearchableDefinitions().length);
     }

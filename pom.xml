@@ -80,7 +80,7 @@
 		<dom4j.version>1.6.1</dom4j.version>
 		<dwr.version>3.0.M1</dwr.version>
 		<groovy.version>1.7.9</groovy.version>
-		<hibernate.version>3.6.1.Final</hibernate.version>
+		<hibernate.version>3.6.2.Final</hibernate.version>
 		<mail.version>1.4.4</mail.version>
 		<javassist.version>3.14.0-GA</javassist.version>
 		<jaxen.version>1.1.1</jaxen.version>

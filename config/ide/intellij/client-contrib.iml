@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="FacetManager">
-    <facet type="Spring" name="Spring">
-      <configuration />
-    </facet>
-  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../client-contrib/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../client-contrib/target/test-classes" />
@@ -19,10 +14,10 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.8" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
@@ -49,7 +44,7 @@
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.2.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />

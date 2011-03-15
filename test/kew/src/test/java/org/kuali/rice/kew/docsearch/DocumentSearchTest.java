@@ -29,6 +29,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -39,6 +40,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentSearchTest extends KEWTestCase {
     private static final String KREW_DOC_HDR_T = "KREW_DOC_HDR_T";
     private static final String INITIATOR_COL = "INITR_PRNCPL_ID";

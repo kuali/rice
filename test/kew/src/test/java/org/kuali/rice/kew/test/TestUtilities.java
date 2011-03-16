@@ -24,12 +24,13 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -240,8 +241,9 @@ public final class TestUtilities {
      */
     public static void assertApprovals(Long docId, String[] users, boolean shouldHaveApproval) throws WorkflowException {
         List<String> failedUsers = new ArrayList<String>();
+        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         for (String user: users) {
-            WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO(user), docId);
+            WorkflowDocument doc = new WorkflowDocument(ims.getPrincipalByPrincipalName(user).getPrincipalId(), docId);
             boolean appRqsted = doc.isApprovalRequested();
             if (shouldHaveApproval != appRqsted) {
                 failedUsers.add(user);

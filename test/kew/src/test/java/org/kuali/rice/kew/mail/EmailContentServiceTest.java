@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.rule.RuleTestUtils;

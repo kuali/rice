@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule.xmlrouting;
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentContent;

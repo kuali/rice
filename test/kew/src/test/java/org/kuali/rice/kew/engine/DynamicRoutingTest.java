@@ -18,7 +18,7 @@ package org.kuali.rice.kew.engine;
 
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;

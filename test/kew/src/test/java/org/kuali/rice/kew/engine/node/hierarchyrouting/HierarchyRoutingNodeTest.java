@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.engine.node.hierarchyrouting;
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import org.kuali.rice.kew.engine.node.hierarchyrouting.SimpleHierarchyProvider.SimpleStop;
 import org.kuali.rice.kew.exception.WorkflowException;

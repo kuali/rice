@@ -78,8 +78,6 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
     def ComponentBo component
 
-    def Long versionNumber;
-
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object

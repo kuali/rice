@@ -21,7 +21,7 @@ import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -30,6 +30,7 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -1191,7 +1192,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
          List searchResults = results.getSearchResults();
          assertEquals("Search results should have one document.", 1, searchResults.size());
          DocumentSearchResult result = (DocumentSearchResult)searchResults.get(0);
-         org.kuali.rice.kew.web.KeyValueSort kvs = result.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
+         org.kuali.rice.kew.web.KeyValueSort kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
          assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
 
          // search with no searchable attribute criteria, should return our document as well
@@ -1201,7 +1202,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
          searchResults = results.getSearchResults();
          assertEquals("Search results should have one document.", 1, searchResults.size());
          result = (DocumentSearchResult)searchResults.get(0);
-         kvs = result.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
+         kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
          assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
 
     }
@@ -1245,7 +1246,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         List searchResults = results.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
         DocumentSearchResult result = (DocumentSearchResult)searchResults.get(0);
-        KeyValueSort kvs = result.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
+        KeyValueSort kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
         assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
         // also check that the chart field is not in the result set and the org field is
         kvs = null;

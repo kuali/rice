@@ -16,18 +16,19 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class StandardGenericXMLSearchableAttributePostProcessor extends DefaultPostProcessor {
     
     @Override
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-		WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), statusChangeEvent.getRouteHeaderId());
+		WorkflowDocument doc = new WorkflowDocument(KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId(), statusChangeEvent.getRouteHeaderId());
 		doc.setTitle("I'm a title - I should increment the lockVersion Number of this document");
 		doc.saveRoutingData();
 		return new ProcessDocReport(true);

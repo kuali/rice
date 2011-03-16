@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.SecurityAttribute;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
+
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
@@ -60,7 +60,7 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
 
     private Boolean checkAuthorizations(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId) {
         try {
-            WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO(currentUser.getPrincipalName()),documentId);
+            WorkflowDocument doc = new WorkflowDocument(currentUser.getPrincipalId(),documentId);
             String networkId = VIEWERS_BY_STATUS.get(doc.getRouteHeader().getDocRouteStatus());
             return ( (StringUtils.isNotBlank(networkId)) && (networkId.equals(currentUser.getPrincipalName())) );
         } catch (Exception e) {

@@ -58,6 +58,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 List<ActionListStats> docTypes = new ArrayList<ActionListStats>();
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
+
                     selectActionItems = connection.prepareStatement("select DOC_TYP_NM, COUNT(*) from KREW_ACTN_ITM_T where PRNCPL_ID = ? " +
                             "and (dlgn_typ is null or dlgn_typ != '" + KEWConstants.DELEGATION_SECONDARY + "') group by DOC_TYP_NM");
                     selectDocTypeLabel = connection.prepareStatement("select LBL from KREW_DOC_TYP_T WHERE DOC_TYP_NM = ? and CUR_IND = 1");

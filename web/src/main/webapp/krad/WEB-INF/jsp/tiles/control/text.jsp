@@ -30,7 +30,7 @@
 
 <c:if test="${(!empty control.watermarkText)}">
 	<script type="text/javascript">
-  		$("#" + "${control.id}").watermark("${control.watermarkText}");
+  		jq("#" + "${control.id}").watermark("${control.watermarkText}");
 	</script>
 </c:if>     
 

@@ -16,6 +16,7 @@
 
 // global vars
 var $dialog = null;
+var jq = jQuery.noConflict();
 jQuery.fn.dataTableExt.oSort['kuali_date-asc']  = function(a,b) {
 	var ukDatea = a.split('/');
 	var ukDateb = b.split('/');
@@ -32,36 +33,39 @@ jQuery.fn.dataTableExt.oSort['kuali_date-desc'] = function(a,b) {
 	return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
 };
 	
-$.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
+jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
 {
 	var aData = [];
-	$( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+	jq( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
 		aData.push( this.value );
 	} );
 	return aData;
 }
 
 /* Create an array with the values of all the select options in a column */
-$.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColumn )
+jQuery.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColumn )
 {
 	var aData = [];
-	$( 'td:eq('+iColumn+') select', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		aData.push( $(this).val() );
+	jq( 'td:eq('+iColumn+') select', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		aData.push( jq(this).val() );
 	} );
 	return aData;
 }
 
 /* Create an array with the values of all the checkboxes in a column */
-$.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iColumn )
+jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iColumn )
 {
 	var aData = [];
-	$( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+	jq( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
 		aData.push( this.checked==true ? "1" : "0" );
 	} );
 	return aData;
 }
+
+
+
 // common event registering done here through JQuery ready event
-$(document).ready(function() {
+jq(document).ready(function() {
 
 // if (!dialogMode) {
 // $.jGrowl("Save Successful", {
@@ -71,10 +75,10 @@ $(document).ready(function() {
 
 	// $.loading(true, { img:'images/jquery/loading.gif', align:'center', text:
 	// 'Loading...'});
- // $("#red").loading();
+ // jq("#red").loading();
 
 
-	// $(":input").watermark("Fill Me ...");
+	// jq(":input").watermark("Fill Me ...");
 
 	// initializeInquiryHandlers();
 
@@ -87,45 +91,45 @@ $(document).ready(function() {
 
 	// this is for nested inquiries to keep opening in the same dialog
 	// if (dialogMode) {
-	// $('a[href*=inquiry.do]').attr('target', '_self');
+	// jq('a[href*=inquiry.do]').attr('target', '_self');
 	// }
 	
 	// buttons
-	$( "input:submit" ).button();
-	$( "input:button" ).button();
+	jq( "input:submit" ).button();
+	jq( "input:button" ).button();
 	
 	// hide loading indicator
 	//doLoading(false);
 	
 	// validate form
-	// $("form").validate();
+	// jq("form").validate();
 	
 	
 	// TMP for style stuff
-    $(document).ready(function() {
-        $(".green").slideUp(000);
+    jq(document).ready(function() {
+        jq(".green").slideUp(000);
 		
-        $(".showgreen").toggle(function() {
-            $(".green").slideDown(600);
+        jq(".showgreen").toggle(function() {
+            jq(".green").slideDown(600);
             
-            $(".showgreen").html(" close <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/cancel.png' width='16' height='16' alt='collapse'>");
+            jq(".showgreen").html(" close <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/cancel.png' width='16' height='16' alt='collapse'>");
         }, function() {
-            $(".showgreen").html("#34683456  <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/down.png' width='16' height='16' alt='collapse'>");
-            $(".green").slideUp(600);
+            jq(".showgreen").html("#34683456  <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/down.png' width='16' height='16' alt='collapse'>");
+            jq(".green").slideUp(600);
      });
     });    
 
    // end tmp
 })
 
-$(document).unload(function() {
+jq(document).unload(function() {
 	
 })
 
 
 function resizeDialog() {
-	var width = $(document).width();
-	var height = $(document).height() + 50;
+	var width = jq(document).width();
+	var height = jq(document).height() + 50;
 	
 	window.parent.$dialog.dialog('option', 'width', width);
 	window.parent.$dialog.dialog('option', 'height', height);
@@ -136,26 +140,26 @@ function resizeDialog() {
  */
 function initializeInquiryHandlers() {
 	// select all links pointing to the inquiry action
-	$('a[href*=inquiry.do]').click(function(e) {
+	jq('a[href*=inquiry.do]').click(function(e) {
 		// cancel the link behavior
 		e.preventDefault();
 
 		// get the inquiry link target
-		var href = $(this).attr('href') + '&dialogMode=Y';
+		var href = jq(this).attr('href') + '&dialogMode=Y';
 		showIFrameDialog(href, 'Inquiry');
 	})
 }
 
 function initializeLookupHandlers() {
 	// select inputs of type 'image' that have performLookup in name
-	$(':input[type=image][name*=performLookup]')
+	jq(':input[type=image][name*=performLookup]')
 			.click(
 					function(e) {
 						// cancel the submit behavior
 						e.preventDefault();
 
 						// build lookup URL from input name
-						var name = $(this).attr('name');
+						var name = jq(this).attr('name');
 
 						var href = 'lookup.do?dialogMode=Y&docFormKey=0&returnLocation=portal.jsp&methodToCall=start&businessObjectClassName=';
 						var businessObjectClass = substringBetween(name, '(!!', '!!)');
@@ -175,12 +179,12 @@ function initializeLookupHandlers() {
 
 function initializeReturnHandlers() {
 	// select links that have 'refreshCaller' parameter in href
-	$('a[href*=refreshCaller]').click(function(e) {
+	jq('a[href*=refreshCaller]').click(function(e) {
 		// cancel the link behavior
 		e.preventDefault();
 
 		// get the inquiry link target
-		var href = $(this).attr('href');
+		var href = jq(this).attr('href');
 
 		// parse out return parameters and set form values
 		var parameterString = href.substring(href.indexOf('?') + 1);
@@ -191,10 +195,10 @@ function initializeReturnHandlers() {
 			var parameterValue = keyValue[1];
 			// TODO: this filtering isn't working, need a way to filter out parms we
 			// don't want to populate
-			if (window.parent.$('[name=' + parameterName + ']')) {
+			if (window.parent.jq('[name=' + parameterName + ']')) {
 				// set focus to remove any water-marks
-				window.parent.$('[name=' + parameterName + ']').focus();
-				window.parent.$('[name=' + parameterName + ']').val(parameterValue);
+				window.parent.jq('[name=' + parameterName + ']').focus();
+				window.parent.jq('[name=' + parameterName + ']').val(parameterValue);
 			}
 		}
 
@@ -208,12 +212,12 @@ function initializeReturnHandlers() {
  * creates/opens a JQuery dialog for the iframe
  */
 function showIFrameDialog(href, title) {
-	var width = ($(document).width() / 4) * 3;
-	var height = ($(document).height() / 4) * 3;
+	var width = (jq(document).width() / 4) * 3;
+	var height = (jq(document).height() / 4) * 3;
 
 	if (dialogMode) {
-		width = $(window).width();
-		height = $(window).height();
+		width = jq(window).width();
+		height = jq(window).height();
 	}
 
 	var iframe = "<div><iframe id='dialogIFrame' src='" + href + "' height='100%' width='100%'/></div>";
@@ -223,7 +227,7 @@ function showIFrameDialog(href, title) {
 
 	// create dialog with iframe source
 	if (dialogMode) {
-		$dialog = window.parent.$(iframe).dialog({
+		$dialog = window.parent.jq(iframe).dialog({
 			autoOpen : false,
 			draggable : true,
 			resizable : true,
@@ -234,7 +238,7 @@ function showIFrameDialog(href, title) {
 		});
 
 	} else {
-		$dialog = $(iframe).dialog({
+		$dialog = jq(iframe).dialog({
 			autoOpen : false,
 			draggable : true,
 			resizable : true,
@@ -292,8 +296,8 @@ function createNavigation(listId, navigationType, options) {
  *          unique id for the unordered list
  */
 function createVerticalMenu(listId, options) {
-	$(document).ready(function() {
-		$("#" + listId).navMenu(options);
+	jq(document).ready(function() {
+		jq("#" + listId).navMenu(options);
 	});
 }
 
@@ -310,8 +314,8 @@ function createVerticalMenu(listId, options) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createDatePicker(controlId, options) {
-  $(function() {
-   	$("#" + controlId).datepicker(options);
+  jq(function() {
+   	jq("#" + controlId).datepicker(options);
 	});	
 }
 
@@ -332,23 +336,23 @@ function createDatePicker(controlId, options) {
  */
 function createAccordion(accordionToggleLink, openAccordionHeaderContents, closedAccordionHeaderContents, 
 		             accordionDiv, isOpen) {
-  $(document).ready(function() {
+  jq(document).ready(function() {
   	if (isOpen) {
-  		$("#" + accordionDiv).slideDown(000);
-  		$("#" + accordionToggleLink).html(openAccordionHeaderContents);
+  		jq("#" + accordionDiv).slideDown(000);
+  		jq("#" + accordionToggleLink).html(openAccordionHeaderContents);
   	}
   	else {
-  		$("#" + accordionDiv).slideUp(000);
-  		$("#" + accordionToggleLink).html(closedAccordionHeaderContents);
+  		jq("#" + accordionDiv).slideUp(000);
+  		jq("#" + accordionToggleLink).html(closedAccordionHeaderContents);
   	} 
  
-    $("#" + accordionToggleLink).toggle(
+    jq("#" + accordionToggleLink).toggle(
        function() {
-         $("#" + accordionDiv).slideUp(500);
-         $("#" + accordionToggleLink).html(closedAccordionHeaderContents);
+         jq("#" + accordionDiv).slideUp(500);
+         jq("#" + accordionToggleLink).html(closedAccordionHeaderContents);
        }, function() {
-         $("#" + accordionDiv).slideDown(500);
-         $("#" + accordionToggleLink).html(openAccordionHeaderContents);
+         jq("#" + accordionDiv).slideDown(500);
+         jq("#" + accordionToggleLink).html(openAccordionHeaderContents);
        }
     );
   });
@@ -365,10 +369,10 @@ function createAccordion(accordionToggleLink, openAccordionHeaderContents, close
  */
 function createLoading(showLoading) {
 	if (showLoading) {
-	  $("#view_div").showLoading();
+	  jq("#view_div").showLoading();
 	}
 	else {
-		$("#view_div").hideLoading();
+		jq("#view_div").hideLoading();
 	}
 }
 
@@ -384,8 +388,8 @@ function createLoading(showLoading) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createTable(controlId, options) {
-	$(document).ready(function() {
-		var oTable = $("#" + controlId).dataTable(options);
+	jq(document).ready(function() {
+		var oTable = jq("#" + controlId).dataTable(options);
 	})
 }
 

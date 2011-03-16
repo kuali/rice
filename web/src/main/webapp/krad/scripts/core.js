@@ -144,13 +144,13 @@ function setFieldToFocusAndSubmit(triggerElement) {
 }
 
 function submitForm() {
-	$("#kualiForm").ajaxSubmit({
+	jq("#kualiForm").ajaxSubmit({
 		success: function(response){
 			var tempDiv = document.createElement('div');
 			tempDiv.innerHTML = response;
-			var page = $("#viewpage_div", tempDiv);
-			$("#viewpage_div").replaceWith(page);
-			$("#formComplete").html("");
+			var page = jq("#viewpage_div", tempDiv);
+			jq("#viewpage_div").replaceWith(page);
+			jq("#formComplete").html("");
 
 		}
 	});
@@ -158,13 +158,13 @@ function submitForm() {
 
 //Called when a form is being persisted to assure all validation passes
 function validateAndSubmit(){
-	$.watermark.hideAll();
-	if($("#kualiForm").valid()){
-		$.watermark.showAll();
+	jq.watermark.hideAll();
+	if(jq("#kualiForm").valid()){
+		jq.watermark.showAll();
 		submitForm();
 	}
 	else{
-		$.watermark.showAll();
+		jq.watermark.showAll();
 	}
 }
 
@@ -456,7 +456,7 @@ setMethodToCall(methodToCall);
  *          the value that should be set for the methodToCall parameter
  */
 function setMethodToCall(methodToCall) {
-	$("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo($("#formComplete"));
+	jq("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo(jq("#formComplete"));
 }
 
 /**
@@ -472,22 +472,22 @@ function setMethodToCall(methodToCall) {
  */
 function writeHiddenToForm(propertyName, propertyValue) {
 	//removing because of performFinalize bug
-	$('input[name="' +propertyName + '"]').remove();
-	$("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo($("#formComplete"));
+	jq('input[name="' +propertyName + '"]').remove();
+	jq("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo(jq("#formComplete"));
 }
 
 /**
  * Expands all the accordion divs on the page
  */
 function expandAccordions() {
-	$("div.accordion").slideDown(100);
+	jq("div.accordion").slideDown(100);
 }
 
 /**
  * Collapses all the accordion divs on the page
  */
 function collapseAccordions() {
-	$("div.accordion").slideUp(100);
+	jq("div.accordion").slideUp(100);
 }
 
 /**
@@ -496,20 +496,20 @@ function collapseAccordions() {
 function coerceValue(name){
 	var value = "";
 	var nameSelect = "[name='" + name + "']";
-	if($(nameSelect + ":checkbox").length){
-		value = $(nameSelect + ":checked").val();
+	if(jq(nameSelect + ":checkbox").length){
+		value = jq(nameSelect + ":checked").val();
 	}
-	else if($(nameSelect + ":radio").length){
-		value = $(nameSelect + ":checked").val();
+	else if(jq(nameSelect + ":radio").length){
+		value = jq(nameSelect + ":checked").val();
 	}
-	else if($(nameSelect).length){
-		if ($(nameSelect).hasClass("watermark")) {
-			$.watermark.hide(nameSelect);
-			value = $(nameSelect).val();
-			$.watermark.show(nameSelect);
+	else if(jq(nameSelect).length){
+		if (jq(nameSelect).hasClass("watermark")) {
+			jq.watermark.hide(nameSelect);
+			value = jq(nameSelect).val();
+			jq.watermark.show(nameSelect);
 		}
 		else{
-			value = $(nameSelect).val();
+			value = jq(nameSelect).val();
 		}
 	}
 	if(value == null){
@@ -521,15 +521,15 @@ function coerceValue(name){
 //sets up the validator with the necessary default settings and methods
 //note the use of onClick and onFocusout for on the fly validation client side
 function setupValidator(){
-	$('#kualiForm').validate(
+	jq('#kualiForm').validate(
 	{ 
 		onsubmit: false,
 		onclick: function(element) { 
-			$(element).valid();
+			jq(element).valid();
 			dependsOnCheck(element); 
 		}, 
 		onfocusout: function(element) {
-			$(element).valid();
+			jq(element).valid();
 			dependsOnCheck(element); 
 		}
 	});
@@ -551,7 +551,7 @@ function setupValidator(){
 	}, "Value must not exceed {0}");
 	jQuery.validator.addMethod("minLengthConditional", function(value, element, param){
 		if (param.length == 1 || param[1]()) {
-			return this.optional(element) || this.getLength($.trim(value), element) >= param[0];
+			return this.optional(element) || this.getLength(jq.trim(value), element) >= param[0];
 		}
 		else{
 			return true;
@@ -559,25 +559,25 @@ function setupValidator(){
 	}, "Must be at least {0} characters");
 	jQuery.validator.addMethod("maxLengthConditional", function(value, element, param){
 		if (param.length == 1 || param[1]()) {
-			return this.optional(element) || this.getLength($.trim(value), element) <= param[0];
+			return this.optional(element) || this.getLength(jq.trim(value), element) <= param[0];
 		}
 		else{
 			return true;
 		}
 	}, "Must be at most {0} characters");
-	$.watermark.showAll();
+	jq.watermark.showAll();
 }
 
 //checks to see if any fields depend on the field being validated, if they do calls validate
 //on them as well which will either add errors or remove them
 //Note: with the way that validation work the field must have been previously validated (ie validated)
 function dependsOnCheck(element){
-	var name = $(element).attr('name');
-	$(".dependsOn-" + name).each(function(){
-		if ($(this).hasClass("valid") || $(this).hasClass("error")) {
-			$.watermark.hide(this);
-			$(this).valid();
-			$.watermark.show(this);
+	var name = jq(element).attr('name');
+	jq(".dependsOn-" + name).each(function(){
+		if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {
+			jq.watermark.hide(this);
+			jq(this).valid();
+			jq.watermark.show(this);
 		}
 	});
 }
@@ -602,13 +602,13 @@ function mustOccurCheck(nameArray, min, max){
 
 //returns true if the field with name of name1 occurs before field with name2
 function occursBefore(name1, name2){
-	var field1 = $("[name=" + name1 + "]");
-	var field2 = $("[name=" + name2 + "]");
+	var field1 = jq("[name=" + name1 + "]");
+	var field2 = jq("[name=" + name2 + "]");
 	
 	field1.addClass("prereqcheck");
 	field2.addClass("prereqcheck");
 	
-	var fields = $(".prereqcheck");
+	var fields = jq(".prereqcheck");
 	
 	field1.removeClass("prereqcheck");
 	field2.removeClass("prereqcheck");

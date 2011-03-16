@@ -583,7 +583,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 				((TextControl) control).getDatePicker().getComponentOptions().put("minDate", this.getExclusiveMin());
 			}
 			else{
-				String rule = "$('[name=\""+ propertyName + "\"]').rules(\"add\", {\n minExclusive: ["+ this.getExclusiveMin() + "]});";
+				String rule = "jq('[name=\""+ propertyName + "\"]').rules(\"add\", {\n minExclusive: ["+ this.getExclusiveMin() + "]});";
 				addScriptToView(view, rule);
 			}
 		}
@@ -593,7 +593,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 				((TextControl) control).getDatePicker().getComponentOptions().put("maxDate", this.getInclusiveMax());
 			}
 			else{
-				String rule = "$('[name=\""+ propertyName + "\"]').rules(\"add\", {\n maxInclusive: ["+ this.getInclusiveMax() + "]});";
+				String rule = "jq('[name=\""+ propertyName + "\"]').rules(\"add\", {\n maxInclusive: ["+ this.getInclusiveMax() + "]});";
 				addScriptToView(view, rule);
 			}
 		}
@@ -824,7 +824,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 					rule = rule + "maxInclusive: [" + ((SimpleConstraint) constraint).getInclusiveMax() + ", function(){return "  + booleanStatement + ";}]";
 				}
 				
-				rule = "$('[name=\""+ applyToField + "\"]').rules(\"add\", {" + rule + "\n});";
+				rule = "jq('[name=\""+ applyToField + "\"]').rules(\"add\", {" + rule + "\n});";
 			}
 			else if(constraint instanceof ValidCharactersConstraint){
 				String regexMethod = "";
@@ -836,7 +836,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 					methodName = UifConstants.validCharactersMethods.get(validCharactersConstraint.getLabelKey());
 				}
 				if(StringUtils.isNotEmpty(methodName)){
-					rule = regexMethod + "$('[name=\""+ applyToField + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
+					rule = regexMethod + "jq('[name=\""+ applyToField + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
 				}
 			}
 			else if(constraint instanceof PrerequisiteConstraint){
@@ -893,8 +893,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 		String dependsClass = "dependsOn-" + constraint.getAttributePath();
 		String methodName = "prConstraint" + methodKey;
 		//TODO make it a unique methodName
-		String addClass = "$('[name=\""+ propertyName + "\"]').addClass('" + dependsClass + "');\n" +
-			"$('[name=\""+ propertyName + "\"]').addClass('" + methodName + "');\n";
+		String addClass = "jq('[name=\""+ propertyName + "\"]').addClass('" + dependsClass + "');\n" +
+			"jq('[name=\""+ propertyName + "\"]').addClass('" + methodName + "');\n";
 		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
 			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + constraint.getAttributePath() + "')));}else{return true;} " +
 			"}, \"This field requires " + constraint.getAttributePath() +"\");";
@@ -919,7 +919,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		String function = "function(element){\n" +
 			"return (coerceValue('"+ this.getPropertyName() + "') && " + booleanStatement + ");}";
 		String postStatement = "\nelse if(occursBefore('" + propertyName + "','" + constraint.getAttributePath() + 
-			"')){\n$('[name=\""+ constraint.getAttributePath() + 
+			"')){\njq('[name=\""+ constraint.getAttributePath() + 
 			"\"]').rules(\"add\", { required: \n" + function 
 			+ ", \nmessages: {\nrequired: \"Required by field: "+ this.getLabel() +"\"}});}\n";
 		
@@ -944,7 +944,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
 		" if(" + booleanStatement + "){return (this.optional(element) || ("+ getMustOccurStatement(mc) + "));}else{return true;}" +
 		"}, \"This field requires something else" + "" +"\");";
-		String rule = method + "$('[name=\""+ propertyName + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
+		String rule = method + "jq('[name=\""+ propertyName + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
 		addScriptToView(view, rule);
 	}
 

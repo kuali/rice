@@ -67,7 +67,7 @@
     
     <!-- custom script for the view -->
     <script type="text/javascript">
-      $(document).ready(function() {
+      jq(document).ready(function() {
         ${view.onLoadScript}
       })
     </script>    

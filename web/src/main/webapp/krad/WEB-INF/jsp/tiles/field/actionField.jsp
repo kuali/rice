@@ -41,8 +41,8 @@
 <%-- setup client side call --%>
 <c:if test="${field.clientSideCall}">
    <script type="text/javascript">
- 	 $(document).ready(function() {
-		 $("#" + "${field.id}").click(function(e) {
+ 	 jq(document).ready(function() {
+		 jq("#" + "${field.id}").click(function(e) {
 			 e.preventDefault();
 			 ${field.clientSideEventCode}
 			 return false;

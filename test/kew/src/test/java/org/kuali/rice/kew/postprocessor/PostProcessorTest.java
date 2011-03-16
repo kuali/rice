@@ -17,6 +17,8 @@
 package org.kuali.rice.kew.postprocessor;
 
 import org.apache.commons.lang.StringUtils;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -24,6 +26,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -33,6 +36,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PostProcessorTest extends KEWTestCase {
 
 	private static final String APPLICATION_CONTENT = "<some><application>content</application></some>";
@@ -53,6 +57,7 @@ public class PostProcessorTest extends KEWTestCase {
 	 * being thrown after returning from the EPIC post processor.
 	 */
 	@Test public void testModifyDocumentInPostProcessor() throws Exception {
+        XMLUnit.setIgnoreWhitespace(true);
 		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "testModifyDocumentInPostProcessor");
 		document.saveDocument("");
 		assertEquals("application content should be empty initially", "", document.getApplicationContent());
@@ -63,7 +68,7 @@ public class PostProcessorTest extends KEWTestCase {
 		assertEquals("Should have transitioned nodes twice", 2, DocumentModifyingPostProcessor.levelChanges);
 		assertTrue("SHould have called the processed status change", DocumentModifyingPostProcessor.processedChange);
 		assertTrue("Document should be final.", document.stateIsFinal());
-		assertEquals("Application content should have been sucessfully modified.", APPLICATION_CONTENT, document.getApplicationContent());
+		XMLAssert.assertXMLEqual("Application content should have been sucessfully modified.", APPLICATION_CONTENT, document.getApplicationContent());
 				
 		// check that the title was modified successfully
 		assertEquals("Wrong doc title", DOC_TITLE, document.getTitle());

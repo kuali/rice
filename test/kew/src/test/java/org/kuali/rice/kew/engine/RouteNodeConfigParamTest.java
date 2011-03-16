@@ -16,13 +16,17 @@
 package org.kuali.rice.kew.engine;
 
 import org.apache.log4j.Logger;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.Utilities;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -45,7 +49,14 @@ public class RouteNodeConfigParamTest extends KEWTestCase {
      */
     protected void assertHasConfigParam(RouteNode routeNodeDef, String key, String value) {
         Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(routeNodeDef.getConfigParams());
-        assertEquals(value, cfgMap.get(key));
+        try {
+            XMLUnit.setIgnoreWhitespace(true);
+            XMLAssert.assertXMLEqual(value, cfgMap.get(key));
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test public void testRouteNodeConfigParams() {

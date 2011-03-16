@@ -759,6 +759,8 @@ public class View extends ContainerBase {
 	}
 
 	/**
+	 * Perform finalize here adds to its document ready script 
+	 * the setupValidator js function for setting up the validator for this view.
 	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object)
 	 */
 	@Override

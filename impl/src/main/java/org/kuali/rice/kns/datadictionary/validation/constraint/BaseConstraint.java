@@ -29,6 +29,13 @@ public class BaseConstraint implements Constraint {
     	applyClientSide = Boolean.valueOf(true);
     }
     
+	/**
+	 * LabelKey should be a single word key.  This key is used to find a message to use for this
+	 * constraint from available messages.  The key is also used for defining/retrieving validation method
+	 * names when applicable - as such this key MUST exist for valid character constraints.
+	 * 
+	 * @return
+	 */
 	public String getLabelKey() {
 		return labelKey;
 	}

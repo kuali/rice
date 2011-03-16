@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
+ * A simple constraint stores 'basic' constraints for a field.  This constraint is meant to be used as a
+ * constraint for WhenConstraints in CaseConstraint, and is also used internally in AttributeField.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -49,6 +51,7 @@ public class SimpleConstraint extends BaseConstraint {
 	private Integer maxOccurs;
 
 	/**
+	 * If true the field is required
 	 * @return the required
 	 */
 	public Boolean getRequired() {
@@ -63,6 +66,7 @@ public class SimpleConstraint extends BaseConstraint {
 	}
 
 	/**
+	 * The maximum amount of characters this field's value can be
 	 * @return the maxLength
 	 */
 	public Integer getMaxLength() {
@@ -77,6 +81,7 @@ public class SimpleConstraint extends BaseConstraint {
 	}
 
 	/**
+	 * The minimum amount of characters this field's value has to be
 	 * @return the minLength
 	 */
 	public Integer getMinLength() {
@@ -91,6 +96,7 @@ public class SimpleConstraint extends BaseConstraint {
 	}
 
 	/**
+	 * Exclusive minimum value for this field
 	 * @return the exclusiveMin
 	 */
 	public String getExclusiveMin() {
@@ -105,6 +111,7 @@ public class SimpleConstraint extends BaseConstraint {
 	}
 
 	/**
+	 * Inclusive max value for this field
 	 * @return the inclusiveMax
 	 */
 	public String getInclusiveMax() {
@@ -119,6 +126,7 @@ public class SimpleConstraint extends BaseConstraint {
 	}
 
 	/**
+	 * The minimum amount of items in this fields list of values - not yet used/do not use
 	 * @return the minOccurs
 	 */
 	public Integer getMinOccurs() {
@@ -133,6 +141,7 @@ public class SimpleConstraint extends BaseConstraint {
 	}
 
 	/**
+	 * The maximum amount of items in this field's list of values - not yet used/do not use
 	 * @return the maxOccurs
 	 */
 	public Integer getMaxOccurs() {

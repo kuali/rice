@@ -26,6 +26,7 @@ public class ValidCharactersConstraint extends BaseConstraint {
     protected String jsValue;
 
     /**
+     * The Java based regex for valid characters
      * @return the value
      */
     public String getValue() {
@@ -42,8 +43,7 @@ public class ValidCharactersConstraint extends BaseConstraint {
 	/**
 	 * Javascript version of the regex defined in value.  This does not have to be set if this constraint's
 	 * key maps to one of the default valid character methods contained in jQuery - (insert that list here).
-	 * This must be set if there is no default method and applyClientSide is true for validation to occur.
-	 * Otherwise, the field will accept any value client side.
+	 * This must be set if there is NO default method that matches the label key and applyClientSide is true.
 	 * 
 	 * This is completely ignored if applyClientSide is set to false.
 	 * 

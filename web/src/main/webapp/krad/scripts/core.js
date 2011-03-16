@@ -156,6 +156,7 @@ function submitForm() {
 	});
 }
 
+//Called when a form is being persisted to assure all validation passes
 function validateAndSubmit(){
 	$.watermark.hideAll();
 	if($("#kualiForm").valid()){
@@ -489,6 +490,9 @@ function collapseAccordions() {
 	$("div.accordion").slideUp(100);
 }
 
+/**
+ * Retrieves the actual value from the input widget specified by name
+ */
 function coerceValue(name){
 	var value = "";
 	var nameSelect = "[name='" + name + "']";
@@ -514,11 +518,12 @@ function coerceValue(name){
 	return value;
 }
 
+//sets up the validator with the necessary default settings and methods
+//note the use of onClick and onFocusout for on the fly validation client side
 function setupValidator(){
 	$('#kualiForm').validate(
 	{ 
 		onsubmit: false,
-		debug: true, 
 		onclick: function(element) { 
 			$(element).valid();
 			dependsOnCheck(element); 
@@ -563,6 +568,9 @@ function setupValidator(){
 	$.watermark.showAll();
 }
 
+//checks to see if any fields depend on the field being validated, if they do calls validate
+//on them as well which will either add errors or remove them
+//Note: with the way that validation work the field must have been previously validated (ie validated)
 function dependsOnCheck(element){
 	var name = $(element).attr('name');
 	$(".dependsOn-" + name).each(function(){
@@ -574,6 +582,8 @@ function dependsOnCheck(element){
 	});
 }
 
+//checks to see if the fields with names specified in the name array contain a value
+//if they do - returns true if the num of fields with values are between min/max
 function mustOccurCheck(nameArray, min, max){
 	var total = 0;
 	for(i=0; i < nameArray.length; i++){
@@ -581,6 +591,7 @@ function mustOccurCheck(nameArray, min, max){
 			total++;
 		}
 	}
+	
 	if (total >= min && total <= max) {
 		return true;
 	}
@@ -589,6 +600,7 @@ function mustOccurCheck(nameArray, min, max){
 	}
 }
 
+//returns true if the field with name of name1 occurs before field with name2
 function occursBefore(name1, name2){
 	var field1 = $("[name=" + name1 + "]");
 	var field2 = $("[name=" + name2 + "]");
@@ -607,12 +619,4 @@ function occursBefore(name1, name2){
 	else{
 		return false;
 	}
-}
-
-function getFieldLabel(name){
-	
-}
-
-function getFieldLabels(names){
-	
 }

@@ -35,14 +35,9 @@ import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.control.CheckboxControl;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
-import org.kuali.rice.kns.uif.control.RadioGroupControl;
-import org.kuali.rice.kns.uif.control.SelectControl;
-import org.kuali.rice.kns.uif.control.TextAreaControl;
 import org.kuali.rice.kns.uif.control.TextControl;
-import org.kuali.rice.kns.uif.widget.DatePicker;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -569,6 +564,9 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
+	 * performFinalize in AttributeField sets up the client side validation for constraints on this field.
+	 * In addition, it sets up the messages applied to this field.
+	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
@@ -617,7 +615,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		}
 
 		if (caseConstraint != null && caseConstraint.getApplyClientSide()) {
-			processCaseConstraint(view, null);
+			processCaseConstraint(view, caseConstraint, null);
 		}
 		
 		if(dependencyConstraints != null){
@@ -652,6 +650,13 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 	}
 	
+	/**
+	 * Returns the add method jquery validator call for the regular expression stored in 
+	 * validCharactersConstraint.
+	 * 
+	 * @param validCharactersConstraint
+	 * @return js validator.addMethod script
+	 */
 	private String getRegexMethod(ValidCharactersConstraint validCharactersConstraint){
 		//TODO instead of getLabelKey here it would get the actual message from somewhere for the error
 		//TODO should it use the labelKey here?
@@ -661,33 +666,52 @@ public class AttributeField extends FieldBase implements DataBinding {
 			"}, \"" + validCharactersConstraint.getLabelKey() + "\");";
 	}
 	
-	private void processCaseConstraint(View view, String andedCase){		
-		if(caseConstraint.getOperator() == null){
-			caseConstraint.setOperator("equals");
+	/**
+	 * This method processes a single CaseConstraint.  Internally it makes calls to processWhenConstraint
+	 * for each WhenConstraint that exists in this constraint.  It adds a "dependsOn" css class to this field
+	 * for the field which the CaseConstraint references.
+	 * 
+	 * @param view
+	 * @param andedCase the boolean logic to be anded when determining if this case is satisfied (used for
+	 * nested CaseConstraints)
+	 */
+	private void processCaseConstraint(View view, CaseConstraint constraint, String andedCase){		
+		if(constraint.getOperator() == null){
+			constraint.setOperator("equals");
 		}
 		
 		String operator = "==";
-		if(caseConstraint.getOperator().equalsIgnoreCase("not_equals")){
+		if(constraint.getOperator().equalsIgnoreCase("not_equals")){
 			operator = "!=";
 		}
 		//add more operator types here if more are supported later
 		
-		control.addStyleClass("dependsOn-" + caseConstraint.getFieldPath());
+		control.addStyleClass("dependsOn-" + constraint.getFieldPath());
 		
-		if (caseConstraint.getWhenConstraint() != null && !caseConstraint.getWhenConstraint().isEmpty()) {
-			for (WhenConstraint wc : caseConstraint.getWhenConstraint()) {
-				processWhenConstraint(view, wc, caseConstraint.getFieldPath(), operator, andedCase);
+		if (constraint.getWhenConstraint() != null && !constraint.getWhenConstraint().isEmpty()) {
+			for (WhenConstraint wc : constraint.getWhenConstraint()) {
+				processWhenConstraint(view, constraint, wc, constraint.getFieldPath(), operator, andedCase);
 			}
 		}
 	}
 	
-	private void processWhenConstraint(View view, WhenConstraint wc, String fieldPath, String operator, String andedCase){
+	/**
+	 * This method processes the WhenConstraint passed in.  The when constraint is used to create a boolean
+	 * statement to determine if the constraint will be applied.  The necessary rules/methods for applying this
+	 * constraint are created in the createRule call.  Note the use of the use of coerceValue js function call.
+	 * 
+	 * @param view
+	 * @param wc
+	 * @param fieldPath
+	 * @param operator
+	 * @param andedCase
+	 */
+	private void processWhenConstraint(View view, CaseConstraint caseConstraint, WhenConstraint wc, String fieldPath, String operator, String andedCase){
 		String ruleString = "";
 		//prerequisite constraint
 		
 		String booleanStatement = "";
-		//size 1 value list - not sure we need to support lists here
-		if(wc.getValues() != null && wc.getValues().size() == 1){
+		if(wc.getValues() != null){
 			
 			String caseStr = "";
 			if(!caseConstraint.isCaseSensitive()){
@@ -724,6 +748,18 @@ public class AttributeField extends FieldBase implements DataBinding {
 		view.setOnDocumentReadyScript(prefixScript + "\n" + script);
 	}
 	
+	/**
+	 * This method takes in a constraint to apply only when the passed in booleanStatement is valid.  The method
+	 * will create the necessary addMethod and addRule jquery validator calls for the rule to be applied to
+	 * the field when the statement passed in evaluates to true during runtime and this field is being validated.
+	 * Note the use of custom methods for min/max length/value.
+	 * 
+	 * @param applyToField the field to apply the generated methods and rules to
+	 * @param constraint the constraint to be applied when the booleanStatement evaluates to true during validation
+	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
+	 * @param view
+	 * @return
+	 */
 	@SuppressWarnings("boxing")
 	private String createRule(String applyToField, Constraint constraint, String booleanStatement, View view){
 		String rule = "";
@@ -780,7 +816,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 				processPrerequisiteConstraint((PrerequisiteConstraint)constraint, view, booleanStatement);
 			}
 			else if(constraint instanceof CaseConstraint){
-				processCaseConstraint(view, booleanStatement);
+				processCaseConstraint(view, (CaseConstraint)constraint, booleanStatement);
 			}
 			else if(constraint instanceof MustOccurConstraint){
 				processMustOccurConstraint(view, (MustOccurConstraint)constraint, booleanStatement);
@@ -789,10 +825,24 @@ public class AttributeField extends FieldBase implements DataBinding {
 		return rule;
 	}
 	
+	/**
+	 * This method is a simpler version of processPrerequisiteConstraint
+	 * @see AttributeField#processPrerequisiteConstraint(PrerequisiteConstraint, View, String)
+	 * @param constraint
+	 * @param view
+	 */
 	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view){
 		processPrerequisiteConstraint(constraint, view, "true");
 	}
 	
+	/**
+	 * This method processes a Prerequisite constraint that should be applied when the booleanStatement
+	 * passed in evaluates to true.
+	 * 
+	 * @param constraint prerequisiteConstraint
+	 * @param view 
+	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
+	 */
 	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view, String booleanStatement){
 		if(constraint != null && constraint.getApplyClientSide()){
 			this.addScriptToView(view, getPrerequisiteStatement(constraint, booleanStatement) + getPostrequisiteStatement(constraint, booleanStatement));
@@ -800,6 +850,16 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 	
 	
+	/**
+	 * This method creates the script necessary for executing a prerequisite rule in which this field occurs
+	 * after the field specified in the prerequisite rule - since it requires a specific set of UI logic.  Builds
+	 * an if statement containing an addMethod jquery validator call.  Adds a "dependsOn" css class to this
+	 * field for the field specified.
+	 * 
+	 * @param constraint prerequisiteConstraint
+	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
+	 * @return
+	 */
 	private String getPrerequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement){
 		methodKey++;
 		//field occurs before case
@@ -817,6 +877,15 @@ public class AttributeField extends FieldBase implements DataBinding {
 		return ifStatement;
 	}
 	
+	/**
+	 * This method creates the script necessary for executing a prerequisite rule in which this field occurs
+	 * before the field specified in the prerequisite rule - since it requires a specific set of UI logic.  Builds
+	 * an if statement containing an addMethod jquery validator call.
+	 * 
+	 * @param constraint prerequisiteConstraint
+	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
+	 * @return
+	 */
 	private String getPostrequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement){
 		//field occurs after case
 		String rule = "";
@@ -831,6 +900,15 @@ public class AttributeField extends FieldBase implements DataBinding {
 		
 	}
 
+	/**
+	 * This method processes the MustOccurConstraint.  The constraint is only applied when the booleanStatement
+	 * evaluates to true during validation.  This method creates the addMethod and add rule calls for the jquery
+	 * validation plugin necessary for applying this constraint to this field.
+	 * 
+	 * @param view
+	 * @param mc
+	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
+	 */
 	private void processMustOccurConstraint(View view, MustOccurConstraint mc, String booleanStatement){
 		methodKey++;
 		mustOccurFieldNames = new ArrayList<String>();
@@ -843,6 +921,15 @@ public class AttributeField extends FieldBase implements DataBinding {
 		addScriptToView(view, rule);
 	}
 
+	/**
+	 * This method takes in a MustOccurConstraint and returns the statement used in determining if the must
+	 * occurs constraint has been satisfied when this field is validated.  Note the use of the mustOccurCheck
+	 * method.  Nested mustOccurConstraints are ored against the result of the mustOccurCheck by calling this
+	 * method recursively.
+	 * 
+	 * @param constraint
+	 * @return
+	 */
 	private String getMustOccurStatement(MustOccurConstraint constraint){
 		String statement = "";
 		if(constraint != null && constraint.getApplyClientSide()){

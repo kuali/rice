@@ -77,19 +77,24 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 
         Parameter orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
 
+        String origValue = orig.getValue();
         // adjust the app constant to be greater than custom generator value
         adjustResultSetCapApplicationConstantValue(orig, CustomDocumentSearchGenerator.RESULT_SET_LIMIT + 1);
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal custom generator class threshold", CustomDocumentSearchGenerator.RESULT_SET_LIMIT, criteria.getThreshold().intValue());
 
+        orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         // adjust the app constant to be less than custom generator value
         int newLimit = CustomDocumentSearchGenerator.RESULT_SET_LIMIT - 1;
         adjustResultSetCapApplicationConstantValue(orig, newLimit);
         KEWServiceLocator.getDocumentSearchService().getList(user.getPrincipalId(), criteria);
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
+        orig = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
         // reset the parameter
-        adjustResultSetCapApplicationConstantValue(orig, Integer.valueOf(orig.getValue()));
+        Parameter.Builder pb = Parameter.Builder.create(orig);
+        pb.setValue(origValue);
+        CoreFrameworkServiceLocator.getParameterService().updateParameter(pb.build());
 
         // old parameter value will still be cached, let's flush the cache
         //KNSServiceLocator.getParameterService().clearCache();
@@ -101,13 +106,13 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
     private void adjustResultSetCapApplicationConstantValue(Parameter p, Integer newValue) {
         Parameter.Builder ps = Parameter.Builder.create(p);
 
-        ps.setNamespaceCode(KEWConstants.KEW_NAMESPACE);
-        ps.setName(KEWConstants.DOC_SEARCH_RESULT_CAP);
+        //ps.setNamespaceCode(KEWConstants.KEW_NAMESPACE);
+        //ps.setName(KEWConstants.DOC_SEARCH_RESULT_CAP);
         ps.setValue(newValue.toString());
-        ps.setParameterType(ParameterType.Builder.create("CONFG"));
-
-        ps.setComponentCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
-        ps.setEvaluationOperator(EvaluationOperator.ALLOW);
+        //ps.setParameterType(ParameterType.Builder.create("CONFG"));
+        //ps.setVersionNumber(p.getVersionNumber());
+        //ps.setComponentCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
+        //ps.setEvaluationOperator(EvaluationOperator.ALLOW);
         CoreFrameworkServiceLocator.getParameterService().updateParameter(ps.build());
     }
 

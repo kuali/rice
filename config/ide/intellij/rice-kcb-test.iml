@@ -15,11 +15,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/failsafe-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

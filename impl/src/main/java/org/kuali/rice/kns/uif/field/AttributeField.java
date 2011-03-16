@@ -684,6 +684,21 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if(constraint.getOperator().equalsIgnoreCase("not_equals")){
 			operator = "!=";
 		}
+		else if(constraint.getOperator().equalsIgnoreCase("greater_than_equal")){
+			operator = ">=";
+		}
+		else if(constraint.getOperator().equalsIgnoreCase("less_than_equal")){
+			operator = "<=";
+		}
+		else if(constraint.getOperator().equalsIgnoreCase("greater_than")){
+			operator = ">";
+		}
+		else if(constraint.getOperator().equalsIgnoreCase("less_than")){
+			operator = "<";
+		}
+		else if(constraint.getOperator().equalsIgnoreCase("has_value")){
+			operator = "";
+		}
 		//add more operator types here if more are supported later
 		
 		control.addStyleClass("dependsOn-" + constraint.getFieldPath());
@@ -718,7 +733,19 @@ public class AttributeField extends FieldBase implements DataBinding {
 				caseStr = ".toUpperCase()";
 			}
 			for(int i=0; i < wc.getValues().size(); i++){
-				booleanStatement = booleanStatement + "(coerceValue('" + fieldPath +"')"+ caseStr +" "+ operator + " \"" + wc.getValues().get(i) + "\"" + caseStr +")";
+				if(operator.isEmpty()){
+					//has_value case
+					if(wc.getValues().get(i) instanceof String && ((String) wc.getValues().get(i)).equalsIgnoreCase("false")){
+						booleanStatement = booleanStatement + "!(coerceValue('" + fieldPath +"'))";
+					}
+					else{
+						booleanStatement = booleanStatement + "(coerceValue('" + fieldPath +"'))";
+					}
+				}
+				else{
+					//everything else
+					booleanStatement = booleanStatement + "(coerceValue('" + fieldPath +"')"+ caseStr +" "+ operator + " \"" + wc.getValues().get(i) + "\"" + caseStr +")";
+				}
 				if((i + 1) != wc.getValues().size()){
 					booleanStatement = booleanStatement + " || ";
 				}

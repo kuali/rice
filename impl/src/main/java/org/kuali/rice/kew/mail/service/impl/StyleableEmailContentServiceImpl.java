@@ -112,7 +112,11 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     protected static void addTextElement(Document doc, Element baseElement, String elementName, Object elementData) {
         Element element = doc.createElement(elementName);
-        element.appendChild(doc.createTextNode(elementData.toString()));
+        String dataValue = "";
+        if (elementData != null) {
+        	dataValue = elementData.toString();
+        }
+        element.appendChild(doc.createTextNode(dataValue));
         baseElement.appendChild(element);
     }
 

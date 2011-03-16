@@ -130,18 +130,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean parent="TextControl" p:size="10"/>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field8" p:label="Field 8" p:width="auto">
+          <bean parent="AttributeField_Form" p:propertyName="field7" p:label="Field 8" p:width="auto">
             <property name="control">
               <bean parent="CheckboxControl"/>
             </property>
           </bean>                              
         </list>
-      </property> 
+      </property>
       <property name="componentInitializers">
          <list merge="true">
             <ref bean="CheckboxToRadioConvertModifier"/>
          </list>
-      </property>      
+      </property>
       <property name="summary" value="Group with grid layout, 4 columns, 50% centered"/>       
    </bean>  
    

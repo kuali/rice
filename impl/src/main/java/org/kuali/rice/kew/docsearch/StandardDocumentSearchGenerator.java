@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -68,6 +49,24 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -1006,21 +1005,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         // if we have threshold+1 results, then we have more results than we are going to display
         criteria.setOverThreshold(resultSetHasNext);
 
-        UserSession userSession = GlobalVariables.getUserSession();
-        if ( (userSession == null) && (principalId != null && !"".equals(principalId)) ) {
-            LOG.info("Authenticated User Session is null... using parameter user: " + principalId);
-            Person user = KIMServiceLocator.getPersonService().getPerson(principalId);
-            if (user != null) {
-            	userSession = new UserSession(user.getPrincipalName());
-            }
-        } else if (searchCriteria.isOverridingUserSession()) {
-            if (principalId == null) {
-                LOG.error("Search Criteria specified UserSession override but given user paramter is null");
-                throw new WorkflowRuntimeException("Search criteria specified UserSession override but given user is null.");
-            }
-            LOG.info("Search Criteria specified UserSession override.  Using user: " + principalId);
-            userSession = new UserSession(principalId);
-        }
+        final UserSession userSession = createUserSession(searchCriteria, principalId);
         if (userSession != null) {
             // TODO do we really want to allow the document search if there is no User Session?
             // This is mainly to allow for the unit tests to run but I wonder if we need to push
@@ -1039,6 +1024,28 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         LOG.debug("Processed "+size+" document search result rows.");
         return docList;
+    }
+
+    private static UserSession createUserSession(DocSearchCriteriaDTO searchCriteria, String principalId) {
+        UserSession userSession = GlobalVariables.getUserSession();
+        if ( (userSession == null) && StringUtils.isNotBlank(principalId)) {
+            LOG.info("Authenticated User Session is null... using parameter user: " + principalId);
+            Person user = KIMServiceLocator.getPersonService().getPerson(principalId);
+            if (user != null) {
+            	userSession = new UserSession(user.getPrincipalName());
+            }
+        } else if (searchCriteria.isOverridingUserSession()) {
+            if (principalId == null) {
+                LOG.error("Search Criteria specified UserSession override but given user paramter is null");
+                throw new WorkflowRuntimeException("Search criteria specified UserSession override but given user is null.");
+            }
+            LOG.info("Search Criteria specified UserSession override.  Using user: " + principalId);
+            Person user = KIMServiceLocator.getPersonService().getPerson(principalId);
+            if (user != null) {
+            	userSession = new UserSession(user.getPrincipalName());
+            }
+        }
+        return userSession;
     }
 
     /**

@@ -28,7 +28,7 @@ name and the parameter value as the input value --%>
 
 <c:if test="${!empty parameters}">            
   <script type="text/javascript">
-    $("#" + "${componentId}").click(function() {
+    jq("#" + "${componentId}").click(function() {
   	    <c:forEach items="${parameters}" var="parameter">
   	      writeHiddenToForm('${parameter.key}', '${parameter.value}');
     	</c:forEach>

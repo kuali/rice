@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +14,6 @@
  * limitations under the License.
  */
 package org.kuali.rice.ksb.messaging.config;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.sql.DataSource;
 
 import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
@@ -48,6 +39,13 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -300,11 +298,11 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 
     public List<AlternateEndpointLocation> getAlternateEndpointLocations() {
-	return this.alternateEndpointLocations;
+	    return this.alternateEndpointLocations;
     }
 
     public void setAlternateEndpointLocations(List<AlternateEndpointLocation> alternateEndpointLocations) {
-	this.alternateEndpointLocations = alternateEndpointLocations;
+	    this.alternateEndpointLocations = alternateEndpointLocations;
 	}
 
     public List<AlternateEndpoint> getAlternateEndpoints() {

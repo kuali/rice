@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 package org.kuali.rice.core.config;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
-import javax.servlet.ServletContext;
-import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +33,15 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.web.context.ServletContextAware;
+
+import javax.servlet.ServletContext;
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 
 public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent>, ServletContextAware {
     protected final Logger LOG = Logger.getLogger(getClass());
@@ -74,7 +73,9 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	
 	@Override
 	public final void destroy() throws Exception {
-		stop();
+        stop();
+        //FIXME: attempting to see if this fixes the ksb tests...
+        GlobalResourceLoader.stop();
 	}
 	
 	@Override

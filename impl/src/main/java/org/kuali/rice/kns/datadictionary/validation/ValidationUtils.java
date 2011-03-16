@@ -17,12 +17,12 @@ package org.kuali.rice.kns.datadictionary.validation;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -48,6 +48,15 @@ public class ValidationUtils {
 		boolean result = false;
 		Integer compareResult = null;
 
+		if("has_value".equalsIgnoreCase(operator)){
+			if(value1==null){
+				return "false".equals(value2.toString().toLowerCase());
+			}
+			if(value1 instanceof Collection && ((Collection<?>) value1).isEmpty()){
+				return "false".equals(value2.toString().toLowerCase());
+			}
+			return "true".equals(value2.toString().toLowerCase());
+		}		
 		// Convert objects into appropriate data types
 		if (null != dataType) {
 			if (DataType.STRING.equals(dataType)) {

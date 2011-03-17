@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +36,6 @@ public class SQLDataLoaderLifecycle extends BaseLifecycle {
     private String filename;
 
     private String delimiter;
-
-    public SQLDataLoaderLifecycle() {
-        this("classpath:DefaultTestData.sql", ";");
-    }
 
     public SQLDataLoaderLifecycle(String filename, String delimiter) {
         this.filename = filename;

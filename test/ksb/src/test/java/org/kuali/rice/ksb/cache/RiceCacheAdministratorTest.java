@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,16 @@
  */
 package org.kuali.rice.ksb.cache;
 
+import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.junit.Test;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.test.KSBTestCase;
+import org.springframework.context.ApplicationContext;
 
 import javax.xml.namespace.QName;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -88,6 +94,25 @@ public class RiceCacheAdministratorTest extends KSBTestCase {
 		cache.putInCache(this.key, this.value, this.group);
 		client1Cache.putInCache(this.key, this.value, this.group);
 	}
+
+    public static Object getServiceFromTestClient1SpringContext(String serviceName) {
+        for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
+            if (configEntry.getKey() instanceof WebAppClassLoader) {
+                ClassLoader old = Thread.currentThread().getContextClassLoader();
+                // to make GRL select services from correct classloader
+                Thread.currentThread().setContextClassLoader(configEntry.getKey());
+                try {
+                    // TestClient1SpringContext found in web.xml of TestClient1
+                    ApplicationContext appContext = (ApplicationContext) ConfigContext.getCurrentContextConfig().getObject("TestClient1SpringContext");
+
+                    return appContext.getBean(serviceName);
+                } finally {
+                    Thread.currentThread().setContextClassLoader(old);
+                }
+            }
+        }
+        throw new RiceRuntimeException("Couldn't find service " + serviceName + " in TestClient1 Spring Context");
+    }
 	
 }
 

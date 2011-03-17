@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,14 +32,6 @@ public class KEWXmlDataLoaderLifecycle extends BaseLifecycle {
     private static final Logger LOG = Logger.getLogger(KEWXmlDataLoaderLifecycle.class);
 
     private String filename;
-
-    /**
-     * Configures the KEWXmlDataLoaderLifecycle to load the "default" data set from the classpath,
-     * classpath:DefaultTestData.xml files
-     */
-    public KEWXmlDataLoaderLifecycle() {
-        this("classpath:DefaultTestData.xml");
-    }
 
     /**
      * Specifies the XML resource to load.  The resource path should be in Spring resource notation.

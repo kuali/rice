@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.test;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
@@ -40,7 +41,7 @@ import java.util.List;
  * template method for running custom transactional setUp. Tear down handles
  * automatic tear down of objects created inside the test environment.
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public abstract class KEWTestCase extends BaselineTestCase {
 
     private static final String SQL_FILE = "classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql";

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
+import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
+import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.testclient1.RemotedObject;
@@ -30,6 +32,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
 import javax.xml.namespace.QName;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -81,5 +84,27 @@ public class ObjectRemotingTest extends KSBTestCase {
 		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}ObjectRemoterService"), "getRemotedClassURL", false));
 		assertTrue(verifyServiceCallsViaBam(QName.valueOf("{TestCl1}ObjectRemoterService"), "removeService", true));
 	}
+
+    public static boolean verifyServiceCallsViaBam(QName serviceName, String methodName, boolean serverInvocation) throws Exception {
+        BAMService bamService = KSBServiceLocator.getBAMService();
+        List<BAMTargetEntry> bamCalls = null;
+        if (methodName == null) {
+            bamCalls = bamService.getCallsForService(serviceName);
+        } else {
+            bamCalls = bamService.getCallsForService(serviceName, methodName);
+        }
+
+        if (bamCalls.size() == 0) {
+            return false;
+        }
+        for (BAMTargetEntry bamEntry : bamCalls) {
+            if (bamEntry.getServerInvocation() && serverInvocation) {
+                return true;
+            } else if (!serverInvocation) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

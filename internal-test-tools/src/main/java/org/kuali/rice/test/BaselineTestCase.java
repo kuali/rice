@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,11 @@ package org.kuali.rice.test;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +37,11 @@ import java.util.List;
  *   <dt>CLEAR_DB</dt>
  *   <dd>The database is cleared for each test.  The suite ClearDatabaseLifecycle is omitted (since it's getting cleared each test
  *       anyway)</dd>
- *   <dt>ROLLBACK</dt>
+ *   <dt>ROLLBACK_CLEAR_DB</dt>
  *   <dd>A TransactionalLifecycle is installed that wraps each test and rolls back data.  The suite ClearDatabaseLifecycle will be
  *       invoked once initially, and subsequently if the test has detected that the environment has been left "dirty" by a previous
  *       test.  After a successful rollback, the test environment is marked clean again.</dd>
+ *   <dd>A TransactionalLifecycle is installed that wraps each test and rolls back data.</dd>
  * </dl>
  * 
  * The BaselineMode annotation can be used on a per-test-class basis to indicate to the base class which mode to use for test
@@ -50,7 +55,7 @@ public class BaselineTestCase extends BaseModuleTestCase {
      * Enum of "baselining" modes that this test case supports
      */
     public static enum Mode {
-        CLEAR_DB, ROLLBACK, NONE
+        CLEAR_DB, ROLLBACK_CLEAR_DB, ROLLBACK, NONE
     }
 
     @Target({ElementType.TYPE})
@@ -114,7 +119,8 @@ public class BaselineTestCase extends BaseModuleTestCase {
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
         switch (mode) {
-            case ROLLBACK: return getRollbackPerTestLifecycles();
+            case ROLLBACK_CLEAR_DB: return getRollbackClearDbPerTestLifecycles();
+            case ROLLBACK: return getRollbackTestLifecycles();
             case CLEAR_DB: return getClearDbPerTestLifecycles();
             case NONE: return super.getPerTestLifecycles();
             default:
@@ -140,9 +146,9 @@ public class BaselineTestCase extends BaseModuleTestCase {
     }
     
     /**
-     * @return the per-test lifecycles for rolling back the database
+     * @return the per-test lifecycles for rolling back & clearing the database
      */
-    protected List<Lifecycle> getRollbackPerTestLifecycles() {
+    protected List<Lifecycle> getRollbackClearDbPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getPerTestLifecycles();
         lifecycles.add(0, new TransactionalLifecycle() {
             @Override
@@ -158,6 +164,15 @@ public class BaselineTestCase extends BaseModuleTestCase {
             log.warn("Previous test case did not clean up the database; clearing database...");
             lifecycles.add(0, new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()));
         }
+        return lifecycles;
+    }
+
+    /**
+     * @return the per-test lifecycles for rolling back the database
+     */
+    protected List<Lifecycle> getRollbackTestLifecycles() {
+        List<Lifecycle> lifecycles = super.getPerTestLifecycles();
+        lifecycles.add(0, new TransactionalLifecycle());
         return lifecycles;
     }
 }

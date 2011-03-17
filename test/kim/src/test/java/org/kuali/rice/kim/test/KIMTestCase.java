@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kim.test;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
@@ -43,7 +44,7 @@ import static org.junit.Assert.fail;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK)
+@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
 public abstract class KIMTestCase extends BaselineTestCase {
 
 	private static final String KIM_MODULE_NAME = "kim";

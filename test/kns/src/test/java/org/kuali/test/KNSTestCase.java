@@ -31,7 +31,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public abstract class KNSTestCase extends BaselineTestCase {
 
 	private static final String SQL_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.sql";

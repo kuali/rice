@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,38 +15,33 @@
  */
 package org.kuali.rice.ksb.test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
-import org.eclipse.jetty.webapp.WebAppClassLoader;
-import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.ojb.BaseOjbConfigurer;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
-import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
-import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.server.TestClient1;
 import org.kuali.rice.ksb.server.TestClient2;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.test.RiceTestCase;
-import org.springframework.context.ApplicationContext;
+import org.kuali.rice.test.BaselineTestCase;
 
+import javax.xml.namespace.QName;
+import java.util.List;
 
-public abstract class KSBTestCase extends RiceTestCase {
-    
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK)
+public abstract class KSBTestCase extends BaselineTestCase {
+
+    private static final String KSB_MODULE_NAME = "ksb";
+
     protected static final String MOCK_JAVA_SECURITY_MANAGEMENT_SERVICE_BEAN_ID = "testJavaSecurityManagementService";
 
     private TestClient1 testClient1;
     private TestClient2 testClient2;
     private ResourceLoader springContextResourceLoader;
+
+    public KSBTestCase() {
+		super(KSB_MODULE_NAME);
+	}
 
     @Override
     public void setUp() throws Exception {
@@ -65,18 +60,8 @@ public abstract class KSBTestCase extends RiceTestCase {
         if (startClient1() || startClient2()) {
             ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
         }
-        // new SQLDataLoader("classpath:db/DefaultTestData.sql", ";").runSql();
-    }
-
-    @Override
-    protected String getModuleName() {
-        return "ksb";
     }
     
-    protected List<String> getPerTestTablesNotToClear() {
-        return new ArrayList<String>();
-    }
-
     @Override
     protected List<Lifecycle> getPerTestLifecycles() {
         List<Lifecycle> lifecycles = super.getSuiteLifecycles();
@@ -113,63 +98,6 @@ public abstract class KSBTestCase extends RiceTestCase {
 
     public TestClient2 getTestClient2() {
         return this.testClient2;
-    }
-
-    public static boolean verifyServiceCallsViaBam(QName serviceName, String methodName, boolean serverInvocation) throws Exception {
-        BAMService bamService = KSBServiceLocator.getBAMService();
-        List<BAMTargetEntry> bamCalls = null;
-        if (methodName == null) {
-            bamCalls = bamService.getCallsForService(serviceName);
-        } else {
-            bamCalls = bamService.getCallsForService(serviceName, methodName);
-        }
-
-        if (bamCalls.size() == 0) {
-            return false;
-        }
-        for (BAMTargetEntry bamEntry : bamCalls) {
-            if (bamEntry.getServerInvocation() && serverInvocation) {
-                return true;
-            } else if (!serverInvocation) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static Object getServiceFromWebAppResourceLoader(String serviceName) {
-        for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
-            if (configEntry.getKey() instanceof WebAppClassLoader) {
-                ClassLoader old = Thread.currentThread().getContextClassLoader();
-                // to make GRL select services from correct classloader
-                Thread.currentThread().setContextClassLoader(configEntry.getKey());
-                try {
-                    return GlobalResourceLoader.getService(serviceName);
-                } finally {
-                    Thread.currentThread().setContextClassLoader(old);
-                }
-            }
-        }
-        throw new RiceRuntimeException("Couldn't find service " + serviceName + " in WebApp Resource Loader");
-    }
-
-    public static Object getServiceFromTestClient1SpringContext(String serviceName) {
-        for (Map.Entry<ClassLoader, Config> configEntry : ConfigContext.getConfigs()) {
-            if (configEntry.getKey() instanceof WebAppClassLoader) {
-                ClassLoader old = Thread.currentThread().getContextClassLoader();
-                // to make GRL select services from correct classloader
-                Thread.currentThread().setContextClassLoader(configEntry.getKey());
-                try {
-                    // TestClient1SpringContext found in web.xml of TestClient1
-                    ApplicationContext appContext = (ApplicationContext) ConfigContext.getCurrentContextConfig().getObject("TestClient1SpringContext");
-
-                    return appContext.getBean(serviceName);
-                } finally {
-                    Thread.currentThread().setContextClassLoader(old);
-                }
-            }
-        }
-        throw new RiceRuntimeException("Couldn't find service " + serviceName + " in TestClient1 Spring Context");
     }
 
     public ResourceLoader getSpringContextResourceLoader() {

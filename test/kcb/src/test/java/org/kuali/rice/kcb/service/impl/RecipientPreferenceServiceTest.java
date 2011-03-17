@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK)
+@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
 public class RecipientPreferenceServiceTest extends KCBTestCase {
     public static final String VALID_DELIVERER_NAME = EmailMessageDeliverer.NAME;
     public static final String VALID_PROPERTY = EmailMessageDeliverer.NAME + "." + EmailMessageDeliverer.EMAIL_ADDR_PREF_KEY;

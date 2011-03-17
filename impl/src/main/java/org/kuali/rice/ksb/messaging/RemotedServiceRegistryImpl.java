@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 package org.kuali.rice.ksb.messaging;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -45,6 +31,19 @@ import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.web.servlet.mvc.Controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runnable {
 
@@ -118,8 +117,13 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			copiedInfo.setChecksum(copiedInfo.objectToChecksum(serviceDef));
 		}
 		this.serviceInfoCopyHolder.put(serviceDef.getServiceName(), copiedInfo);
-		
-		return new ServiceInfo(serviceDef, this.serverIp, new String(copiedInfo.getChecksum()));
+
+
+        if (serviceDef.getServiceEndPoint() == null) {
+            System.err.println("the service def:" + serviceDef);
+            //serviceDef.validate();
+        }
+		return new ServiceInfo(serviceDef, this.serverIp, copiedInfo.getChecksum());
 	}
 	
 	private ServiceInfo getForwardHandlerServiceInfo(ServiceDefinition serviceDef) {
@@ -287,12 +291,11 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 
 		// First, we need to get the list of services that we should be publishing
 		
-		List<?> javaServices = (List<?>) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
+		List<ServiceDefinition> javaServices = (List<ServiceDefinition>) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		// convert the ServiceDefinitions into ServiceInfos for diff comparison
 		List<ServiceInfo> configuredJavaServices = new ArrayList<ServiceInfo>();
-		for (Iterator<?> iter = javaServices.iterator(); iter.hasNext();) {
-			ServiceDefinition serviceDef = (ServiceDefinition) iter.next();
-			configuredJavaServices.add(createServiceInfoAndServiceInfoCopy(serviceDef));
+		for (ServiceDefinition serviceDef: javaServices) {
+            configuredJavaServices.add(createServiceInfoAndServiceInfoCopy(serviceDef));
 			configuredJavaServices.add(getForwardHandlerServiceInfo(serviceDef));
 		}
 

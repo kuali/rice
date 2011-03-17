@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ksb.messaging.config;
 
 import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
@@ -138,10 +139,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 				    Protocol.registerProtocol("https", new Protocol("https",
 					    (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
 				}
-	
-				for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
-					serviceDef.validate();
-				}
 				super.start();
 			}
 		});
@@ -153,6 +150,13 @@ public class KSBConfigurer extends ModuleConfigurer {
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.REMOTED_SERVICE_REGISTRY));
 		return lifecycles;
 	}
+
+    @Override
+    public void doAdditonalConfigurerValidations() {
+        for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
+			serviceDef.validate();
+		}
+    }
 
 	@Override
 	public void doAdditionalContextStartedLogic() {

@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +15,9 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import junit.framework.Assert;
 import org.junit.Test;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.GenericTestService;
 import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
@@ -38,31 +39,28 @@ import static org.junit.Assert.assertTrue;
  */
 public class DevModeTest extends KSBTestCase {
 
-	@Override
+    @Override
 	public void setUp() throws Exception {
-		System.setProperty("dev.mode", "true");
 		// included in ksb-test-config.xml
-		System.setProperty("additional.config.locations", "classpath:org/kuali/rice/ksb/messaging/dev_mode_config.xml");
+		System.setProperty("a.test.specific.config.location", "classpath:org/kuali/rice/ksb/messaging/dev_mode_config.xml");
 		super.setUp();
 	}
-
-
 
 	@Override
 	public void tearDown() throws Exception {
 	    try {
-		System.clearProperty("dev.mode");
-	    // included in ksb-test-config.xml
-		System.clearProperty("additional.config.locations");
+	        // included in ksb-test-config.xml
+            System.clearProperty("a.test.specific.config.location");
 	    } finally {
-		super.tearDown();
+		    super.tearDown();
 	    }
 	}
 
-
-
 	@Test public void testCallInDevMode() throws Exception {
-		QName serviceName = new QName("KEW", "testLocalServiceFavoriteCall");
+        //make sure we are actually in dev mode
+		Assert.assertEquals(ConfigContext.getCurrentContextConfig().getDevMode(), Boolean.TRUE);
+
+        QName serviceName = new QName("KEW", "testLocalServiceFavoriteCall");
 		TestServiceInterface service = (TestServiceInterface) GlobalResourceLoader.getService(serviceName);
 		service.invoke();
 		assertTrue("No calls to dev defined service", GenericTestService.NUM_CALLS > 0);
@@ -77,6 +75,6 @@ public class DevModeTest extends KSBTestCase {
 		service.invoke();
 		assertTrue("No calls to dev defined service", GenericTestService.NUM_CALLS > 1);
 
-		assertTrue("should be no registered services", KSBServiceLocator.getServiceRegistry().fetchAll().size() == 0);
+		Assert.assertEquals("should be no registered services", KSBServiceLocator.getServiceRegistry().fetchAll().size(), 0);
 	}
 }

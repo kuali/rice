@@ -12,6 +12,8 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/surefire" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -35,7 +37,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.9" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="krad-app-framework" />

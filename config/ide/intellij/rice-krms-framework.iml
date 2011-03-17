@@ -13,6 +13,9 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/framework/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/framework/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/framework/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/framework/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -38,7 +41,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.9" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="kim-api" />

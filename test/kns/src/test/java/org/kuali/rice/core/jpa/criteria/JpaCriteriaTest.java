@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,14 +28,20 @@ import org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.test.TransactionalTest;
 import org.kuali.test.KNSTestCase;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -45,7 +51,6 @@ import static org.junit.Assert.fail;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@TransactionalTest
 public class JpaCriteriaTest extends KNSTestCase {
 	
 	private EntityManager em;

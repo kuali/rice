@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,12 @@ package org.kuali.rice.kns.workflow;
 
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.docsearch.*;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -33,7 +38,6 @@ import org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.test.TransactionalTest;
 import org.kuali.test.KNSTestCase;
 
 import java.util.Arrays;
@@ -48,7 +52,6 @@ import static org.junit.Assert.fail;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@TransactionalTest
 public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeIndexRequestTest.class);
 	final static String SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE = "SearchAttributeIndexTestDocument";

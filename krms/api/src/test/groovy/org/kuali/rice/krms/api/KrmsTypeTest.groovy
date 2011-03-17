@@ -18,6 +18,10 @@
 
 
 
+
+
+
+
 package org.kuali.rice.krms.api
 
 import javax.xml.bind.JAXBContext
@@ -25,8 +29,8 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
 import org.junit.Test
-import org.kuali.rice.krms.api.repository.KrmsType;
-import org.kuali.rice.krms.api.repository.KrmsTypeContract;
+import org.kuali.rice.krms.api.repository.KrmsType
+import org.kuali.rice.krms.api.repository.KrmsTypeContract
 
 /**
  * Exercises the immutable Country class, including XML (un)marshalling
@@ -37,19 +41,19 @@ class KrmsTypeTest {
 
     @Test
     void test_create_only_required() {
-        Type.Builder.create(Type.Builder.create("1", "Default", "KRMS_TEST", null)).build();
+        KrmsType.Builder.create(KrmsType.Builder.create("1", "Default", "KRMS_TEST", null)).build();
     }
 
   @Test
   public void testTypeBuilderPassedInParams() {
     //No assertions, just test whether the Builder gives us a KRMS KrmsType object
-    KrmsType myType = Type.Builder.create("1", "Default", "KRMS_TEST", "").build()
+    KrmsType myType = KrmsType.Builder.create("1", "Default", "KRMS_TEST", "").build()
   }
 
   @Test
   public void testTypeBuilderPassedInContract() {
     //No assertions, just test whether the Builder gives us a KRMS KrmsType object
-    KrmsType type = Type.Builder.create(new KrmsTypeContract() {
+    KrmsType type = KrmsType.Builder.create(new KrmsTypeContract() {
       String getId() {"1"}
       String getName() { "Student" }
 	  String getNamespace() {"KRMS_TEST" }
@@ -60,13 +64,13 @@ class KrmsTypeTest {
 
   public void testTypeBuilderNullTypeId() {
     shouldFail(IllegalArgumentException.class) {
-      Type.Builder.create(null, "United States", "KRMS_TEST", null)
+      KrmsType.Builder.create(null, "United States", "KRMS_TEST", null)
     }
   }
 
   public void testTypeBuilderEmptyTypeId() {
     shouldFail(IllegalArgumentException.class) {
-      Type.Builder.create("  ", "United States", "KRMS_TEST", null)
+      KrmsType.Builder.create("  ", "United States", "KRMS_TEST", null)
     }
   }
 
@@ -76,7 +80,7 @@ class KrmsTypeTest {
     Marshaller marshaller = jc.createMarshaller()
     StringWriter sw = new StringWriter()
 
-    KrmsType myType = Type.Builder.create("2", "United States", "KRMS_TEST", null).build()
+    KrmsType myType = KrmsType.Builder.create("2", "United States", "KRMS_TEST", null).build()
     marshaller.marshal(myType, sw)
     String xml = sw.toString()
 

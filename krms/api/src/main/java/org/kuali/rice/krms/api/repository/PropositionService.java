@@ -22,10 +22,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.kuali.rice.core.api.parameter.Parameter;
-
-import java.util.List;
-
 
 @WebService(name = "PropositionService", targetNamespace = Type.Constants.KRMSNAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
@@ -39,7 +35,7 @@ public interface PropositionService {
      * @throws IllegalStateException if the proposition already exists in the system
      */
     @WebMethod(operationName="createProposition")
-    void createParameter(@WebParam(name = "prop") Proposition prop);
+    void createProposition(@WebParam(name = "prop") Proposition prop);
 
     /**
      * This will update a {@link Proposition}.
@@ -50,14 +46,14 @@ public interface PropositionService {
      * @throws IllegalStateException if the proposition does not exist in the system
      */
     @WebMethod(operationName="updateProposition")
-    void updateParameter(@WebParam(name = "prop") Proposition prop);
+    void updateProposition(@WebParam(name = "prop") Proposition prop);
 
     /**
      * Lookup the proposition based on the given proposition id.
      *
      * @param propId the given proposition id
-     * @return a propositionassociated with the given proposition id.  A null reference is returned if an invalid or
-     *         non-existant id is supplied.
+     * @return a proposition associated with the given proposition id.  A null reference is returned if an invalid or
+     *         non-existent id is supplied.
      */
     @WebMethod(operationName = "getPropositionById")
     @WebResult(name = "prop")

@@ -50,7 +50,7 @@ public class UITestForm extends UifFormBase {
 	private String field15;
 	private String field16;
 	private String field17;
-	private String field18;
+	private String field18 = "Dyn Label";
 	private String field19;
 	private String field20;
 	private String field21;

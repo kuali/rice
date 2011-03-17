@@ -55,6 +55,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private LabelField headerFieldPrototype;
 
 	private boolean renderSequenceField;
+	private String conditionalRenderSequenceField;
 	private AttributeField sequenceFieldPrototype;
 
 	private GroupField actionFieldPrototype;
@@ -90,10 +91,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		super.performInitialization(view, container);
 
 		numberOfDataColumns = getNumberOfColumns();
-		
-		if (tableTools != null){
-			tableTools.performInitialization(view);
-		}
 	}
 
 	/**
@@ -119,12 +116,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
 		setNumberOfColumns(totalColumns);
-		
-		if (tableTools != null){
-			if (!tableTools.isDisableTableSort()){
+
+		if (tableTools != null) {
+			if (!tableTools.isDisableTableSort()) {
 				buildTableToolsColumnOptions(collectionGroup);
 			}
-			tableTools.performFinalize(view, model);
 		}
 	}
 
@@ -138,10 +134,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * @see org.kuali.rice.kns.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.CollectionGroup,
 	 *      java.util.List, java.lang.String, java.util.List, java.lang.String,
-	 *      int)
+	 *      java.lang.Object, int)
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<? extends Field> lineFields,
-			String bindingPath, List<ActionField> actions, String idSuffix, int lineIndex) {
+			String bindingPath, List<ActionField> actions, String idSuffix, Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
 
 		// if add line build table header first
@@ -151,6 +147,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			dataFields = new ArrayList<Field>();
 
 			buildTableHeaderRows(collectionGroup);
+			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.LINE, currentLine);
+			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.INDEX, new Integer(
+					lineIndex));
 		}
 
 		// set label field rendered to true on line fields
@@ -158,6 +157,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			field.setLabelFieldRendered(true);
 
 			// don't display summary message
+			// TODO: remove once we have modifier
 			ComponentUtils.setComponentPropertyDeep(field, "summaryMessageField.render", new Boolean(false));
 		}
 
@@ -179,7 +179,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 				view.getViewIndex().addAttributeField((AttributeField) sequenceField);
 			}
 
-			ComponentUtils.updateIdsWithSuffix(sequenceField, idSuffix);
+			ComponentUtils.updateIdsAndContextForLine(sequenceField, currentLine, lineIndex);
 
 			dataFields.add(sequenceField);
 		}
@@ -195,6 +195,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()
 					&& !collectionGroup.isReadOnly()) {
 				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
+				ComponentUtils.updateIdsAndContextForLine(lineActionsField, currentLine, lineIndex);
+
 				lineActionsField.setItems(actions);
 
 				dataFields.add(lineActionsField);
@@ -308,29 +310,30 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		return rowCount;
 	}
 
-	protected void buildTableToolsColumnOptions(CollectionGroup collectionGroup){
-		
+	protected void buildTableToolsColumnOptions(CollectionGroup collectionGroup) {
+
 		StringBuffer tableToolsColumnOptions = new StringBuffer("[");
-		
+
 		if (collectionGroup.isRenderAddLine()) {
 			tableToolsColumnOptions.append(" null ,");
 		}
-		
+
 		for (Component component : collectionGroup.getItems()) {
 			String colOptions = TableToolsHelper.constructTableColumnOptions(true, component);
 			tableToolsColumnOptions.append(colOptions + " , ");
 		}
-		
-		if (collectionGroup.isRenderLineActions()){
+
+		if (collectionGroup.isRenderLineActions()) {
 			String colOptions = TableToolsHelper.constructTableColumnOptions(false, null);
 			tableToolsColumnOptions.append(colOptions);
 		}
-		
+
 		tableToolsColumnOptions.append("]");
-		
-		tableTools.getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
+
+		tableTools.getComponentOptions()
+				.put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.uif.layout.ContainerAware#getSupportedContainer()
 	 */
@@ -349,6 +352,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		components.add(headerFieldPrototype);
 		components.add(sequenceFieldPrototype);
 		components.add(actionFieldPrototype);
+		components.add(tableTools);
 		components.addAll(headerFields);
 		components.addAll(dataFields);
 
@@ -442,6 +446,25 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 */
 	public void setRenderSequenceField(boolean renderSequenceField) {
 		this.renderSequenceField = renderSequenceField;
+	}
+
+	/**
+	 * Expression language string for conditionally setting the render sequence
+	 * field property
+	 * 
+	 * @return String el that should evaluate to boolean
+	 */
+	public String getConditionalRenderSequenceField() {
+		return this.conditionalRenderSequenceField;
+	}
+
+	/**
+	 * Setter for the conditional render sequence field string
+	 * 
+	 * @param conditionalRenderSequenceField
+	 */
+	public void setConditionalRenderSequenceField(String conditionalRenderSequenceField) {
+		this.conditionalRenderSequenceField = conditionalRenderSequenceField;
 	}
 
 	/**

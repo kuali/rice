@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
@@ -102,10 +103,19 @@ public class CollectionGroup extends Group implements DataBinding {
 		}
 
 		if (addLineBindingInfo != null) {
-			addLineBindingInfo.setDefaults(view, getPropertyName());
-			addLineBindingInfo.setBindingName(addLineName);
-			if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
-				addLineBindingInfo.setBindByNamePrefix(getFieldBindByNamePrefix());
+			// add line binds to model property
+			if (StringUtils.isNotBlank(addLineName)) {
+				addLineBindingInfo.setDefaults(view, getPropertyName());
+				addLineBindingInfo.setBindingName(addLineName);
+				if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
+					addLineBindingInfo.setBindByNamePrefix(getFieldBindByNamePrefix());
+				}
+			}
+			// add line binds to generic form map
+			else {
+				String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "['" + bindingInfo.getBindingPath()
+						+ "']";
+				addLineBindingInfo.setBindingPath(addLineBindingPath);
 			}
 		}
 
@@ -148,11 +158,10 @@ public class CollectionGroup extends Group implements DataBinding {
 	 * @param clearExistingLine
 	 *            - boolean that indicates whether the line should be set to a
 	 *            new instance if it already exists
-	 * @return String binding path for the new add line
 	 */
-	public String initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
+	public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
 			boolean clearExistingLine) {
-		return getCollectionGroupBuilder().initializeNewCollectionLine(view, model, collectionGroup, clearExistingLine);
+		getCollectionGroupBuilder().initializeNewCollectionLine(view, model, collectionGroup, clearExistingLine);
 	}
 
 	/**

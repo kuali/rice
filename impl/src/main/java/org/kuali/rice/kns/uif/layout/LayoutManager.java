@@ -17,8 +17,11 @@ package org.kuali.rice.kns.uif.layout;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.PropertyReplacer;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
@@ -140,6 +143,17 @@ public interface LayoutManager extends Serializable {
 	public List<Component> getNestedComponents();
 
 	/**
+	 * Used by the copy process to determine for which properties only the value
+	 * reference should be copied (not a new copy instance). Subclasses can
+	 * define the properties for which only the reference should be copied
+	 * 
+	 * @return Set<String> property names for which only the value reference
+	 *         should be copied
+	 * @see org.kuali.rice.kns.uif.util.ComponentUtils.copy(T)
+	 */
+	public Set<String> getPropertiesForReferenceCopy();
+
+	/**
 	 * CSS style string to be applied to the area (div) the layout manager
 	 * generates for the items
 	 * 
@@ -206,5 +220,46 @@ public interface LayoutManager extends Serializable {
 	 * @param styleClass
 	 */
 	public void setStyleClasses(List<String> styleClasses);
+
+	/**
+	 * Context map for the layout manager
+	 * 
+	 * @return Map<String, Object> context
+	 * @see org.kuali.rice.kns.uif.Component.getContext()
+	 */
+	public Map<String, Object> getContext();
+
+	/**
+	 * Setter for the context Map
+	 * 
+	 * @param context
+	 * @see org.kuali.rice.kns.uif.Component.setElContext(Map<String, Object>)
+	 */
+	public void setContext(Map<String, Object> context);
+
+	/**
+	 * Places the given object into the context Map for the layout manager
+	 * with the given name
+	 * 
+	 * @see org.kuali.rice.kns.uif.Component.pushObjectToContext(String,
+	 *      Object)
+	 */
+	public void pushObjectToContext(String objectName, Object object);
+	
+	/**
+	 * List of <code>PropertyReplacer</code> instances that will be
+	 * evaluated during the view lifecycle to conditional set properties on the
+	 * <code>LayoutManager</code> based on expression evaluations
+	 * 
+	 * @return List<PropertyReplacer> replacers to evaluate
+	 */
+	public List<PropertyReplacer> getPropertyReplacers();
+
+	/**
+	 * Setter for the layout managers property substitutions
+	 * 
+	 * @param propertyReplacers
+	 */
+	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers);
 
 }

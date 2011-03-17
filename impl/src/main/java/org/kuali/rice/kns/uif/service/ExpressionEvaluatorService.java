@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.uif;
+package org.kuali.rice.kns.uif.service;
+
+import java.util.Map;
 
 /**
- * Constants for property paths
+ * Provides evaluation of expression language statements against a given context
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifPropertyPaths {
-	
-	public static final String ACTION_PARAMETERS = "actionParameters";
-	public static final String BIND_OBJECT_PATH = "bindingInfo.bindingObjectPath";
-	public static final String BIND_TO_FORM = "bindingInfo.bindToForm";
-	public static final String COMPONENT_MODIFIERS = "componentModifiers";
-	public static final String CONTEXT = "context";
-	public static final String CRITERIA_FIELDS = "criteriaFields";
-	public static final String NEW_COLLECTION_LINES = "newCollectionLines";
-	
+public interface ExpressionEvaluatorService {
+
+	public void evaluateObjectProperties(Object object, Object contextObject, Map<String, Object> evaluationParameters);
+
+	public String evaluateExpressionTemplate(Object contextObject, Map<String, Object> evaluationParameters,
+			String expressionTemplate);
 }

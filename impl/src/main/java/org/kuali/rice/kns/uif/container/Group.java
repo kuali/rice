@@ -123,7 +123,7 @@ public class Group extends ContainerBase {
 
 		return supportedComponents;
 	}
-
+	
 	/**
 	 * @see org.kuali.rice.kns.uif.Component#getComponentTypeName()
 	 */

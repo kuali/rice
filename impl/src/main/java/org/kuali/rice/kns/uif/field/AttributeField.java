@@ -66,18 +66,19 @@ public class AttributeField extends FieldBase implements DataBinding {
 	// value props
 	private String defaultValue;
 
-	//Constraint variables
+	// Constraint variables
 	protected String customValidatorClass;
 	protected ValidCharactersConstraint validCharactersConstraint;
 	protected CaseConstraint caseConstraint;
 	protected List<PrerequisiteConstraint> dependencyConstraints;
 	protected List<MustOccurConstraint> mustOccurConstraints;
 	protected SimpleConstraint simpleConstraint;
-	//used to give validation methods unique signatures
+	// used to give validation methods unique signatures
 	private static int methodKey = 0;
-	//list used to temporarily store mustOccurs field names for the error message
+	// list used to temporarily store mustOccurs field names for the error
+	// message
 	private List<String> mustOccurFieldNames;
-	
+
 	private Formatter formatter;
 	private KeyValuesFinder optionsFinder;
 
@@ -208,16 +209,16 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (getValidCharactersConstraint() == null) {
 			setValidCharactersConstraint(attributeDefinition.getValidCharactersConstraint());
 		}
-		
-		if (getCaseConstraint() == null){
+
+		if (getCaseConstraint() == null) {
 			setCaseConstraint(attributeDefinition.getCaseConstraint());
 		}
-		
-		if (getDependencyConstraints() == null){
+
+		if (getDependencyConstraints() == null) {
 			setDependencyConstraints(attributeDefinition.getPrerequisiteConstraints());
 		}
-		
-		if (getMustOccurConstraints() == null){
+
+		if (getMustOccurConstraints() == null) {
 			setMustOccurConstraints(attributeDefinition.getMustOccurConstraints());
 		}
 
@@ -492,8 +493,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.optionsFinder = optionsFinder;
 	}
 
-
-
 	/**
 	 * Brief statement of the field (attribute) purpose. Used to display helpful
 	 * information to the user on the form
@@ -553,8 +552,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.attributeSecurity = attributeSecurity;
 	}
 
-
-
 	/**
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
 	 */
@@ -564,8 +561,9 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * performFinalize in AttributeField sets up the client side validation for constraints on this field.
-	 * In addition, it sets up the messages applied to this field.
+	 * performFinalize in AttributeField sets up the client side validation for
+	 * constraints on this field. In addition, it sets up the messages applied
+	 * to this field.
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
@@ -574,33 +572,41 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void performFinalize(View view, Object model) {
 		super.performFinalize(view, model);
 
-		if (this.getRequired()) {
+		// if read only or the control is not set no need to set client side
+		// validation
+		if (isReadOnly() || getControl() == null) {
+			return;
+		}
+
+		if ((this.getRequired() != null) && (this.getRequired().booleanValue())) {
 			control.addStyleClass("required");
 		}
-		
-		if (this.getExclusiveMin() != null){
-			if(control instanceof TextControl && ((TextControl) control).getDatePicker() != null){
+
+		if (this.getExclusiveMin() != null) {
+			if (control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
 				((TextControl) control).getDatePicker().getComponentOptions().put("minDate", this.getExclusiveMin());
 			}
-			else{
-				String rule = "jq('[name=\""+ propertyName + "\"]').rules(\"add\", {\n minExclusive: ["+ this.getExclusiveMin() + "]});";
+			else {
+				String rule = "jq('[name=\"" + propertyName + "\"]').rules(\"add\", {\n minExclusive: ["
+						+ this.getExclusiveMin() + "]});";
 				addScriptToView(view, rule);
 			}
 		}
-		
-		if (this.getInclusiveMax() != null){
-			if(control instanceof TextControl && ((TextControl) control).getDatePicker() != null){
+
+		if (this.getInclusiveMax() != null) {
+			if (control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
 				((TextControl) control).getDatePicker().getComponentOptions().put("maxDate", this.getInclusiveMax());
 			}
-			else{
-				String rule = "jq('[name=\""+ propertyName + "\"]').rules(\"add\", {\n maxInclusive: ["+ this.getInclusiveMax() + "]});";
+			else {
+				String rule = "jq('[name=\"" + propertyName + "\"]').rules(\"add\", {\n maxInclusive: ["
+						+ this.getInclusiveMax() + "]});";
 				addScriptToView(view, rule);
 			}
 		}
-		
-		if(validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()){
-			if(validCharactersConstraint.getJsValue() != null){
-				//set jsValue takes precedence
+
+		if (validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()) {
+			if (validCharactersConstraint.getJsValue() != null) {
+				// set jsValue takes precedence
 				this.addScriptToView(view, getRegexMethod(validCharactersConstraint));
 				control.addStyleClass(validCharactersConstraint.getLabelKey());
 			}
@@ -617,20 +623,20 @@ public class AttributeField extends FieldBase implements DataBinding {
 		if (caseConstraint != null && caseConstraint.getApplyClientSide()) {
 			processCaseConstraint(view, caseConstraint, null);
 		}
-		
-		if(dependencyConstraints != null){
-			for(PrerequisiteConstraint prc: dependencyConstraints){
+
+		if (dependencyConstraints != null) {
+			for (PrerequisiteConstraint prc : dependencyConstraints) {
 				processPrerequisiteConstraint(prc, view);
 			}
 		}
-		
-		if(mustOccurConstraints != null){
-			for(MustOccurConstraint mc: mustOccurConstraints){
+
+		if (mustOccurConstraints != null) {
+			for (MustOccurConstraint mc : mustOccurConstraints) {
 				processMustOccurConstraint(view, mc, "true");
 			}
 		}
 
-		//Sets message 
+		// Sets message
 		if (StringUtils.isNotBlank(summary)) {
 			summaryMessageField.setMessageText(summary);
 			summaryMessageField.setRender(true);
@@ -639,7 +645,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 			summaryMessageField.setRender(false);
 		}
 
-		//Sets constraints
+		// Sets constraints
 		if (StringUtils.isNotBlank(constraint)) {
 			constraintMessageField.setMessageText(constraint);
 			summaryMessageField.setRender(true);
@@ -649,71 +655,77 @@ public class AttributeField extends FieldBase implements DataBinding {
 		}
 
 	}
-	
+
 	/**
-	 * Returns the add method jquery validator call for the regular expression stored in 
-	 * validCharactersConstraint.
+	 * Returns the add method jquery validator call for the regular expression
+	 * stored in validCharactersConstraint.
 	 * 
 	 * @param validCharactersConstraint
 	 * @return js validator.addMethod script
 	 */
-	private String getRegexMethod(ValidCharactersConstraint validCharactersConstraint){
-		//TODO instead of getLabelKey here it would get the actual message from somewhere for the error
-		//TODO should it use the labelKey here?
-		//TODO Does this message need to be prefixed by label name? - probably
-		return "\njQuery.validator.addMethod(\""+ validCharactersConstraint.getLabelKey() +"\", function(value, element) {\n" +
-			" return this.optional(element) || " + validCharactersConstraint.getJsValue() + ".test(value); " +
-			"}, \"" + validCharactersConstraint.getLabelKey() + "\");";
+	private String getRegexMethod(ValidCharactersConstraint validCharactersConstraint) {
+		// TODO instead of getLabelKey here it would get the actual message from
+		// somewhere for the error
+		// TODO should it use the labelKey here?
+		// TODO Does this message need to be prefixed by label name? - probably
+		return "\njQuery.validator.addMethod(\"" + validCharactersConstraint.getLabelKey()
+				+ "\", function(value, element) {\n" + " return this.optional(element) || "
+				+ validCharactersConstraint.getJsValue() + ".test(value); " + "}, \""
+				+ validCharactersConstraint.getLabelKey() + "\");";
 	}
-	
+
 	/**
-	 * This method processes a single CaseConstraint.  Internally it makes calls to processWhenConstraint
-	 * for each WhenConstraint that exists in this constraint.  It adds a "dependsOn" css class to this field
-	 * for the field which the CaseConstraint references.
+	 * This method processes a single CaseConstraint. Internally it makes calls
+	 * to processWhenConstraint for each WhenConstraint that exists in this
+	 * constraint. It adds a "dependsOn" css class to this field for the field
+	 * which the CaseConstraint references.
 	 * 
 	 * @param view
-	 * @param andedCase the boolean logic to be anded when determining if this case is satisfied (used for
-	 * nested CaseConstraints)
+	 * @param andedCase
+	 *            the boolean logic to be anded when determining if this case is
+	 *            satisfied (used for nested CaseConstraints)
 	 */
-	private void processCaseConstraint(View view, CaseConstraint constraint, String andedCase){		
-		if(constraint.getOperator() == null){
+	private void processCaseConstraint(View view, CaseConstraint constraint, String andedCase) {
+		if (constraint.getOperator() == null) {
 			constraint.setOperator("equals");
 		}
-		
+
 		String operator = "==";
-		if(constraint.getOperator().equalsIgnoreCase("not_equals")){
+		if (constraint.getOperator().equalsIgnoreCase("not_equals")) {
 			operator = "!=";
 		}
-		else if(constraint.getOperator().equalsIgnoreCase("greater_than_equal")){
+		else if (constraint.getOperator().equalsIgnoreCase("greater_than_equal")) {
 			operator = ">=";
 		}
-		else if(constraint.getOperator().equalsIgnoreCase("less_than_equal")){
+		else if (constraint.getOperator().equalsIgnoreCase("less_than_equal")) {
 			operator = "<=";
 		}
-		else if(constraint.getOperator().equalsIgnoreCase("greater_than")){
+		else if (constraint.getOperator().equalsIgnoreCase("greater_than")) {
 			operator = ">";
 		}
-		else if(constraint.getOperator().equalsIgnoreCase("less_than")){
+		else if (constraint.getOperator().equalsIgnoreCase("less_than")) {
 			operator = "<";
 		}
-		else if(constraint.getOperator().equalsIgnoreCase("has_value")){
+		else if (constraint.getOperator().equalsIgnoreCase("has_value")) {
 			operator = "";
 		}
-		//add more operator types here if more are supported later
-		
+		// add more operator types here if more are supported later
+
 		control.addStyleClass("dependsOn-" + constraint.getFieldPath());
-		
+
 		if (constraint.getWhenConstraint() != null && !constraint.getWhenConstraint().isEmpty()) {
 			for (WhenConstraint wc : constraint.getWhenConstraint()) {
 				processWhenConstraint(view, constraint, wc, constraint.getFieldPath(), operator, andedCase);
 			}
 		}
 	}
-	
+
 	/**
-	 * This method processes the WhenConstraint passed in.  The when constraint is used to create a boolean
-	 * statement to determine if the constraint will be applied.  The necessary rules/methods for applying this
-	 * constraint are created in the createRule call.  Note the use of the use of coerceValue js function call.
+	 * This method processes the WhenConstraint passed in. The when constraint
+	 * is used to create a boolean statement to determine if the constraint will
+	 * be applied. The necessary rules/methods for applying this constraint are
+	 * created in the createRule call. Note the use of the use of coerceValue js
+	 * function call.
 	 * 
 	 * @param view
 	 * @param wc
@@ -721,262 +733,296 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 * @param operator
 	 * @param andedCase
 	 */
-	private void processWhenConstraint(View view, CaseConstraint caseConstraint, WhenConstraint wc, String fieldPath, String operator, String andedCase){
+	private void processWhenConstraint(View view, CaseConstraint caseConstraint, WhenConstraint wc, String fieldPath,
+			String operator, String andedCase) {
 		String ruleString = "";
-		//prerequisite constraint
-		
+		// prerequisite constraint
+
 		String booleanStatement = "";
-		if(wc.getValues() != null){
-			
+		if (wc.getValues() != null) {
+
 			String caseStr = "";
-			if(!caseConstraint.isCaseSensitive()){
+			if (!caseConstraint.isCaseSensitive()) {
 				caseStr = ".toUpperCase()";
 			}
-			for(int i=0; i < wc.getValues().size(); i++){
-				if(operator.isEmpty()){
-					//has_value case
-					if(wc.getValues().get(i) instanceof String && ((String) wc.getValues().get(i)).equalsIgnoreCase("false")){
-						booleanStatement = booleanStatement + "!(coerceValue('" + fieldPath +"'))";
+			for (int i = 0; i < wc.getValues().size(); i++) {
+				if (operator.isEmpty()) {
+					// has_value case
+					if (wc.getValues().get(i) instanceof String
+							&& ((String) wc.getValues().get(i)).equalsIgnoreCase("false")) {
+						booleanStatement = booleanStatement + "!(coerceValue('" + fieldPath + "'))";
 					}
-					else{
-						booleanStatement = booleanStatement + "(coerceValue('" + fieldPath +"'))";
+					else {
+						booleanStatement = booleanStatement + "(coerceValue('" + fieldPath + "'))";
 					}
 				}
-				else{
-					//everything else
-					booleanStatement = booleanStatement + "(coerceValue('" + fieldPath +"')"+ caseStr +" "+ operator + " \"" + wc.getValues().get(i) + "\"" + caseStr +")";
+				else {
+					// everything else
+					booleanStatement = booleanStatement + "(coerceValue('" + fieldPath + "')" + caseStr + " "
+							+ operator + " \"" + wc.getValues().get(i) + "\"" + caseStr + ")";
 				}
-				if((i + 1) != wc.getValues().size()){
+				if ((i + 1) != wc.getValues().size()) {
 					booleanStatement = booleanStatement + " || ";
 				}
 			}
-			
+
 		}
-		
-		if(andedCase != null){
+
+		if (andedCase != null) {
 			booleanStatement = "(" + booleanStatement + ") && (" + andedCase + ")";
 		}
-		
-		if(wc.getConstraint() != null && StringUtils.isNotEmpty(booleanStatement)){
+
+		if (wc.getConstraint() != null && StringUtils.isNotEmpty(booleanStatement)) {
 			ruleString = createRule(this.getPropertyName(), wc.getConstraint(), booleanStatement, view);
 		}
-		
-		if(StringUtils.isNotEmpty(ruleString)){
+
+		if (StringUtils.isNotEmpty(ruleString)) {
 			addScriptToView(view, ruleString);
 		}
 	}
-	
-	private void addScriptToView(View view, String script){
+
+	private void addScriptToView(View view, String script) {
 		String prefixScript = "";
-		if(view.getOnDocumentReadyScript() != null){
+		if (view.getOnDocumentReadyScript() != null) {
 			prefixScript = view.getOnDocumentReadyScript();
 		}
-		
+
 		view.setOnDocumentReadyScript(prefixScript + "\n" + script);
 	}
-	
+
 	/**
-	 * This method takes in a constraint to apply only when the passed in booleanStatement is valid.  The method
-	 * will create the necessary addMethod and addRule jquery validator calls for the rule to be applied to
-	 * the field when the statement passed in evaluates to true during runtime and this field is being validated.
-	 * Note the use of custom methods for min/max length/value.
+	 * This method takes in a constraint to apply only when the passed in
+	 * booleanStatement is valid. The method will create the necessary addMethod
+	 * and addRule jquery validator calls for the rule to be applied to the
+	 * field when the statement passed in evaluates to true during runtime and
+	 * this field is being validated. Note the use of custom methods for min/max
+	 * length/value.
 	 * 
-	 * @param applyToField the field to apply the generated methods and rules to
-	 * @param constraint the constraint to be applied when the booleanStatement evaluates to true during validation
-	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
+	 * @param applyToField
+	 *            the field to apply the generated methods and rules to
+	 * @param constraint
+	 *            the constraint to be applied when the booleanStatement
+	 *            evaluates to true during validation
+	 * @param booleanStatement
+	 *            the booleanstatement in js - should return true when the
+	 *            validation rule should be applied
 	 * @param view
 	 * @return
 	 */
 	@SuppressWarnings("boxing")
-	private String createRule(String applyToField, Constraint constraint, String booleanStatement, View view){
+	private String createRule(String applyToField, Constraint constraint, String booleanStatement, View view) {
 		String rule = "";
 		int constraintCount = 0;
-		if(constraint instanceof BaseConstraint && ((BaseConstraint)constraint).getApplyClientSide()){
-			if(constraint instanceof SimpleConstraint){
-				if(((SimpleConstraint) constraint).getRequired()){
+		if (constraint instanceof BaseConstraint && ((BaseConstraint) constraint).getApplyClientSide()) {
+			if (constraint instanceof SimpleConstraint) {
+				if (((SimpleConstraint) constraint).getRequired()) {
 					rule = rule + "required: function(element){\nreturn (" + booleanStatement + ");}";
 					constraintCount++;
 				}
-				if(((SimpleConstraint) constraint).getMinLength() != null){
-					if(constraintCount > 0){
+				if (((SimpleConstraint) constraint).getMinLength() != null) {
+					if (constraintCount > 0) {
 						rule = rule + ",\n";
 					}
-					rule = rule + "minLengthConditional: [" + ((SimpleConstraint) constraint).getMinLength() + ", function(){return " + booleanStatement + ";}]";
+					rule = rule + "minLengthConditional: [" + ((SimpleConstraint) constraint).getMinLength()
+							+ ", function(){return " + booleanStatement + ";}]";
 				}
-				if(((SimpleConstraint) constraint).getMaxLength() != null){
-					if(constraintCount > 0){
+				if (((SimpleConstraint) constraint).getMaxLength() != null) {
+					if (constraintCount > 0) {
 						rule = rule + ",\n";
 					}
-					rule = rule + "maxLengthConditional: [" + ((SimpleConstraint) constraint).getMaxLength() + ", function(){return "  + booleanStatement + ";}]";
+					rule = rule + "maxLengthConditional: [" + ((SimpleConstraint) constraint).getMaxLength()
+							+ ", function(){return " + booleanStatement + ";}]";
 				}
-				
-				if(((SimpleConstraint) constraint).getExclusiveMin() != null){
-					if(constraintCount > 0){
+
+				if (((SimpleConstraint) constraint).getExclusiveMin() != null) {
+					if (constraintCount > 0) {
 						rule = rule + ",\n";
 					}
-					rule = rule + "minExclusive: [" + ((SimpleConstraint) constraint).getExclusiveMin() + ", function(){return "  + booleanStatement + ";}]";
+					rule = rule + "minExclusive: [" + ((SimpleConstraint) constraint).getExclusiveMin()
+							+ ", function(){return " + booleanStatement + ";}]";
 				}
-				
-				if(((SimpleConstraint) constraint).getInclusiveMax() != null){
-					if(constraintCount > 0){
+
+				if (((SimpleConstraint) constraint).getInclusiveMax() != null) {
+					if (constraintCount > 0) {
 						rule = rule + ",\n";
 					}
-					rule = rule + "maxInclusive: [" + ((SimpleConstraint) constraint).getInclusiveMax() + ", function(){return "  + booleanStatement + ";}]";
+					rule = rule + "maxInclusive: [" + ((SimpleConstraint) constraint).getInclusiveMax()
+							+ ", function(){return " + booleanStatement + ";}]";
 				}
-				
-				rule = "jq('[name=\""+ applyToField + "\"]').rules(\"add\", {" + rule + "\n});";
+
+				rule = "jq('[name=\"" + applyToField + "\"]').rules(\"add\", {" + rule + "\n});";
 			}
-			else if(constraint instanceof ValidCharactersConstraint){
+			else if (constraint instanceof ValidCharactersConstraint) {
 				String regexMethod = "";
-				String methodName = ((BaseConstraint)constraint).getLabelKey();
-				if(validCharactersConstraint.getJsValue() != null){
+				String methodName = ((BaseConstraint) constraint).getLabelKey();
+				if (validCharactersConstraint.getJsValue() != null) {
 					regexMethod = getRegexMethod((ValidCharactersConstraint) constraint) + "\n";
 				}
-				else{
+				else {
 					methodName = UifConstants.validCharactersMethods.get(validCharactersConstraint.getLabelKey());
 				}
-				if(StringUtils.isNotEmpty(methodName)){
-					rule = regexMethod + "jq('[name=\""+ applyToField + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
+				if (StringUtils.isNotEmpty(methodName)) {
+					rule = regexMethod + "jq('[name=\"" + applyToField + "\"]').rules(\"add\", {\n" + methodName
+							+ ": function(element){return (" + booleanStatement + ");}\n});";
 				}
 			}
-			else if(constraint instanceof PrerequisiteConstraint){
-				processPrerequisiteConstraint((PrerequisiteConstraint)constraint, view, booleanStatement);
+			else if (constraint instanceof PrerequisiteConstraint) {
+				processPrerequisiteConstraint((PrerequisiteConstraint) constraint, view, booleanStatement);
 			}
-			else if(constraint instanceof CaseConstraint){
-				processCaseConstraint(view, (CaseConstraint)constraint, booleanStatement);
+			else if (constraint instanceof CaseConstraint) {
+				processCaseConstraint(view, (CaseConstraint) constraint, booleanStatement);
 			}
-			else if(constraint instanceof MustOccurConstraint){
-				processMustOccurConstraint(view, (MustOccurConstraint)constraint, booleanStatement);
+			else if (constraint instanceof MustOccurConstraint) {
+				processMustOccurConstraint(view, (MustOccurConstraint) constraint, booleanStatement);
 			}
-		}	
-		return rule;
-	}
-	
-	/**
-	 * This method is a simpler version of processPrerequisiteConstraint
-	 * @see AttributeField#processPrerequisiteConstraint(PrerequisiteConstraint, View, String)
-	 * @param constraint
-	 * @param view
-	 */
-	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view){
-		processPrerequisiteConstraint(constraint, view, "true");
-	}
-	
-	/**
-	 * This method processes a Prerequisite constraint that should be applied when the booleanStatement
-	 * passed in evaluates to true.
-	 * 
-	 * @param constraint prerequisiteConstraint
-	 * @param view 
-	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
-	 */
-	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view, String booleanStatement){
-		if(constraint != null && constraint.getApplyClientSide()){
-			this.addScriptToView(view, getPrerequisiteStatement(constraint, booleanStatement) + getPostrequisiteStatement(constraint, booleanStatement));
 		}
-	}
-	
-	
-	/**
-	 * This method creates the script necessary for executing a prerequisite rule in which this field occurs
-	 * after the field specified in the prerequisite rule - since it requires a specific set of UI logic.  Builds
-	 * an if statement containing an addMethod jquery validator call.  Adds a "dependsOn" css class to this
-	 * field for the field specified.
-	 * 
-	 * @param constraint prerequisiteConstraint
-	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
-	 * @return
-	 */
-	private String getPrerequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement){
-		methodKey++;
-		//field occurs before case
-		String dependsClass = "dependsOn-" + constraint.getAttributePath();
-		String methodName = "prConstraint" + methodKey;
-		//TODO make it a unique methodName
-		String addClass = "jq('[name=\""+ propertyName + "\"]').addClass('" + dependsClass + "');\n" +
-			"jq('[name=\""+ propertyName + "\"]').addClass('" + methodName + "');\n";
-		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
-			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + constraint.getAttributePath() + "')));}else{return true;} " +
-			"}, \"This field requires " + constraint.getAttributePath() +"\");";
-		
-		String ifStatement = "if(occursBefore('" + constraint.getAttributePath() + "','" + propertyName + 
-		"')){" + addClass + method + "}";
-		return ifStatement;
-	}
-	
-	/**
-	 * This method creates the script necessary for executing a prerequisite rule in which this field occurs
-	 * before the field specified in the prerequisite rule - since it requires a specific set of UI logic.  Builds
-	 * an if statement containing an addMethod jquery validator call.
-	 * 
-	 * @param constraint prerequisiteConstraint
-	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
-	 * @return
-	 */
-	private String getPostrequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement){
-		//field occurs after case
-		String rule = "";
-		String function = "function(element){\n" +
-			"return (coerceValue('"+ this.getPropertyName() + "') && " + booleanStatement + ");}";
-		String postStatement = "\nelse if(occursBefore('" + propertyName + "','" + constraint.getAttributePath() + 
-			"')){\njq('[name=\""+ constraint.getAttributePath() + 
-			"\"]').rules(\"add\", { required: \n" + function 
-			+ ", \nmessages: {\nrequired: \"Required by field: "+ this.getLabel() +"\"}});}\n";
-		
-		return postStatement;
-		
+		return rule;
 	}
 
 	/**
-	 * This method processes the MustOccurConstraint.  The constraint is only applied when the booleanStatement
-	 * evaluates to true during validation.  This method creates the addMethod and add rule calls for the jquery
+	 * This method is a simpler version of processPrerequisiteConstraint
+	 * 
+	 * @see AttributeField#processPrerequisiteConstraint(PrerequisiteConstraint,
+	 *      View, String)
+	 * @param constraint
+	 * @param view
+	 */
+	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view) {
+		processPrerequisiteConstraint(constraint, view, "true");
+	}
+
+	/**
+	 * This method processes a Prerequisite constraint that should be applied
+	 * when the booleanStatement passed in evaluates to true.
+	 * 
+	 * @param constraint
+	 *            prerequisiteConstraint
+	 * @param view
+	 * @param booleanStatement
+	 *            the booleanstatement in js - should return true when the
+	 *            validation rule should be applied
+	 */
+	private void processPrerequisiteConstraint(PrerequisiteConstraint constraint, View view, String booleanStatement) {
+		if (constraint != null && constraint.getApplyClientSide()) {
+			this.addScriptToView(view, getPrerequisiteStatement(constraint, booleanStatement)
+					+ getPostrequisiteStatement(constraint, booleanStatement));
+		}
+	}
+
+	/**
+	 * This method creates the script necessary for executing a prerequisite
+	 * rule in which this field occurs after the field specified in the
+	 * prerequisite rule - since it requires a specific set of UI logic. Builds
+	 * an if statement containing an addMethod jquery validator call. Adds a
+	 * "dependsOn" css class to this field for the field specified.
+	 * 
+	 * @param constraint
+	 *            prerequisiteConstraint
+	 * @param booleanStatement
+	 *            the booleanstatement in js - should return true when the
+	 *            validation rule should be applied
+	 * @return
+	 */
+	private String getPrerequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement) {
+		methodKey++;
+		// field occurs before case
+		String dependsClass = "dependsOn-" + constraint.getAttributePath();
+		String methodName = "prConstraint" + methodKey;
+		// TODO make it a unique methodName
+		String addClass = "jq('[name=\"" + propertyName + "\"]').addClass('" + dependsClass + "');\n" + "jq('[name=\""
+				+ propertyName + "\"]').addClass('" + methodName + "');\n";
+		String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" + " if("
+				+ booleanStatement + "){ return (this.optional(element) || (coerceValue('"
+				+ constraint.getAttributePath() + "')));}else{return true;} " + "}, \"This field requires "
+				+ constraint.getAttributePath() + "\");";
+
+		String ifStatement = "if(occursBefore('" + constraint.getAttributePath() + "','" + propertyName + "')){"
+				+ addClass + method + "}";
+		return ifStatement;
+	}
+
+	/**
+	 * This method creates the script necessary for executing a prerequisite
+	 * rule in which this field occurs before the field specified in the
+	 * prerequisite rule - since it requires a specific set of UI logic. Builds
+	 * an if statement containing an addMethod jquery validator call.
+	 * 
+	 * @param constraint
+	 *            prerequisiteConstraint
+	 * @param booleanStatement
+	 *            the booleanstatement in js - should return true when the
+	 *            validation rule should be applied
+	 * @return
+	 */
+	private String getPostrequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement) {
+		// field occurs after case
+		String rule = "";
+		String function = "function(element){\n" + "return (coerceValue('" + this.getPropertyName() + "') && "
+				+ booleanStatement + ");}";
+		String postStatement = "\nelse if(occursBefore('" + propertyName + "','" + constraint.getAttributePath()
+				+ "')){\njq('[name=\"" + constraint.getAttributePath() + "\"]').rules(\"add\", { required: \n"
+				+ function + ", \nmessages: {\nrequired: \"Required by field: " + this.getLabel() + "\"}});}\n";
+
+		return postStatement;
+
+	}
+
+	/**
+	 * This method processes the MustOccurConstraint. The constraint is only
+	 * applied when the booleanStatement evaluates to true during validation.
+	 * This method creates the addMethod and add rule calls for the jquery
 	 * validation plugin necessary for applying this constraint to this field.
 	 * 
 	 * @param view
 	 * @param mc
-	 * @param booleanStatement the booleanstatement in js - should return true when the validation rule should be applied
+	 * @param booleanStatement
+	 *            the booleanstatement in js - should return true when the
+	 *            validation rule should be applied
 	 */
-	private void processMustOccurConstraint(View view, MustOccurConstraint mc, String booleanStatement){
+	private void processMustOccurConstraint(View view, MustOccurConstraint mc, String booleanStatement) {
 		methodKey++;
 		mustOccurFieldNames = new ArrayList<String>();
-		//TODO make this show the fields its requiring
+		// TODO make this show the fields its requiring
 		String methodName = "moConstraint" + methodKey;
-		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
-		" if(" + booleanStatement + "){return (this.optional(element) || ("+ getMustOccurStatement(mc) + "));}else{return true;}" +
-		"}, \"This field requires something else" + "" +"\");";
-		String rule = method + "jq('[name=\""+ propertyName + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
+		String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" + " if("
+				+ booleanStatement + "){return (this.optional(element) || (" + getMustOccurStatement(mc)
+				+ "));}else{return true;}" + "}, \"This field requires something else" + "" + "\");";
+		String rule = method + "jq('[name=\"" + propertyName + "\"]').rules(\"add\", {\n" + methodName
+				+ ": function(element){return (" + booleanStatement + ");}\n});";
 		addScriptToView(view, rule);
 	}
 
 	/**
-	 * This method takes in a MustOccurConstraint and returns the statement used in determining if the must
-	 * occurs constraint has been satisfied when this field is validated.  Note the use of the mustOccurCheck
-	 * method.  Nested mustOccurConstraints are ored against the result of the mustOccurCheck by calling this
-	 * method recursively.
+	 * This method takes in a MustOccurConstraint and returns the statement used
+	 * in determining if the must occurs constraint has been satisfied when this
+	 * field is validated. Note the use of the mustOccurCheck method. Nested
+	 * mustOccurConstraints are ored against the result of the mustOccurCheck by
+	 * calling this method recursively.
 	 * 
 	 * @param constraint
 	 * @return
 	 */
-	private String getMustOccurStatement(MustOccurConstraint constraint){
+	private String getMustOccurStatement(MustOccurConstraint constraint) {
 		String statement = "";
-		if(constraint != null && constraint.getApplyClientSide()){
+		if (constraint != null && constraint.getApplyClientSide()) {
 			String array = "[";
-			if(constraint.getPrerequisiteConstraints() != null){
-				for(int i = 0; i < constraint.getPrerequisiteConstraints().size(); i++){
-					control.addStyleClass("dependsOn-" + constraint.getPrerequisiteConstraints().get(i).getAttributePath());
+			if (constraint.getPrerequisiteConstraints() != null) {
+				for (int i = 0; i < constraint.getPrerequisiteConstraints().size(); i++) {
+					control.addStyleClass("dependsOn-"
+							+ constraint.getPrerequisiteConstraints().get(i).getAttributePath());
 					array = array + "'" + constraint.getPrerequisiteConstraints().get(i).getAttributePath() + "'";
-					if(i + 1 != constraint.getPrerequisiteConstraints().size()){
+					if (i + 1 != constraint.getPrerequisiteConstraints().size()) {
 						array = array + ",";
 					}
-					
+
 				}
 			}
 			array = array + "]";
 			mustOccurFieldNames.add(array);
-			statement = "mustOccurCheck(" + array +", " + constraint.getMin() + ", " + constraint.getMax() + ")";
-			
-			if(constraint.getMustOccurConstraints() != null){
-				for(MustOccurConstraint mc: constraint.getMustOccurConstraints()){
+			statement = "mustOccurCheck(" + array + ", " + constraint.getMin() + ", " + constraint.getMax() + ")";
+
+			if (constraint.getMustOccurConstraints() != null) {
+				for (MustOccurConstraint mc : constraint.getMustOccurConstraints()) {
 					statement = statement + " || " + getMustOccurStatement(mc);
 				}
 			}
@@ -1045,9 +1091,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * Sets the summary message field. Developers can use the setSummary method which would set the summary text.
+	 * Sets the summary message field. Developers can use the setSummary method
+	 * which would set the summary text.
 	 * 
-	 * @param summary field to set
+	 * @param summary
+	 *            field to set
 	 * @see setSummary
 	 */
 	public void setSummaryMessageField(MessageField summaryField) {
@@ -1064,26 +1112,30 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * Sets the constraint text. This text will be displayed below the component.
-	 *  
-	 * @param constraint for this field
+	 * Sets the constraint text. This text will be displayed below the
+	 * component.
+	 * 
+	 * @param constraint
+	 *            for this field
 	 */
 	public void setConstraint(String constraint) {
 		this.constraint = constraint;
 	}
 
 	/**
-	 * Sets the constraint message field. Developers can use the setContraint method which would set the constraint text.
+	 * Sets the constraint message field. Developers can use the setContraint
+	 * method which would set the constraint text.
 	 * 
-	 * @param constraint field to set
+	 * @param constraint
+	 *            field to set
 	 * @see setContraint
 	 */
 	public void setConstraintMessageField(MessageField constraintMessageField) {
 		this.constraintMessageField = constraintMessageField;
 	}
-	
+
 	/**
-	 * Returns the contraint message field. 
+	 * Returns the contraint message field.
 	 * 
 	 * @return constraint Message Field
 	 */
@@ -1132,10 +1184,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param dependencyConstraints the dependencyConstraints to set
+	 * @param dependencyConstraints
+	 *            the dependencyConstraints to set
 	 */
-	public void setDependencyConstraints(
-			List<PrerequisiteConstraint> dependencyConstraints) {
+	public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
 		this.dependencyConstraints = dependencyConstraints;
 	}
 
@@ -1147,15 +1199,17 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param mustOccurConstraints the mustOccurConstraints to set
+	 * @param mustOccurConstraints
+	 *            the mustOccurConstraints to set
 	 */
-	public void setMustOccurConstraints(
-			List<MustOccurConstraint> mustOccurConstraints) {
+	public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
 		this.mustOccurConstraints = mustOccurConstraints;
 	}
 
 	/**
-	 * A simple constraint which store the values for required, min/max length, and min/max value
+	 * A simple constraint which store the values for required, min/max length,
+	 * and min/max value
+	 * 
 	 * @return the simpleConstraint
 	 */
 	public SimpleConstraint getSimpleConstraint() {
@@ -1163,15 +1217,17 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * When a simple constraint is set on this object ALL simple validation constraints set
-	 * directly will be overridden - recommended to use this or the other gets/sets for defining
-	 * simple constraints, not both
-	 * @param simpleConstraint the simpleConstraint to set
+	 * When a simple constraint is set on this object ALL simple validation
+	 * constraints set directly will be overridden - recommended to use this or
+	 * the other gets/sets for defining simple constraints, not both
+	 * 
+	 * @param simpleConstraint
+	 *            the simpleConstraint to set
 	 */
 	public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
 		this.simpleConstraint = simpleConstraint;
 	}
-	
+
 	/**
 	 * Maximum number of the characters the attribute value is allowed to have.
 	 * Used to set the maxLength for supporting controls. Note this can be
@@ -1191,7 +1247,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void setMaxLength(Integer maxLength) {
 		simpleConstraint.setMaxLength(maxLength);
 	}
-	
+
 	/**
 	 * @return the minLength
 	 */
@@ -1216,13 +1272,14 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param required the required to set
+	 * @param required
+	 *            the required to set
 	 */
 	@Override
 	public void setRequired(Boolean required) {
 		simpleConstraint.setRequired(required);
 	}
-	
+
 	/**
 	 * The exclusiveMin element determines the minimum allowable value for data
 	 * entry editing purposes. Value can be an integer or decimal value such as
@@ -1233,7 +1290,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param minValue the minValue to set
+	 * @param minValue
+	 *            the minValue to set
 	 */
 	public void setExclusiveMin(String exclusiveMin) {
 		simpleConstraint.setExclusiveMin(exclusiveMin);
@@ -1251,10 +1309,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 	}
 
 	/**
-	 * @param maxValue the maxValue to set
+	 * @param maxValue
+	 *            the maxValue to set
 	 */
 	public void setInclusiveMax(String inclusiveMax) {
 		simpleConstraint.setInclusiveMax(inclusiveMax);
 	}
-	
+
 }

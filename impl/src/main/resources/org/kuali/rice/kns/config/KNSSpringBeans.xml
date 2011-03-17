@@ -1382,14 +1382,16 @@
       </property>
   </bean>
   
-  <bean id="ViewHelperService"  class="org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl">
+  <bean id="viewHelperService"  class="org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl">
       <property name="dataDictionaryService" ref="dataDictionaryService"/>
+      <property name="expressionEvaluatorService" ref="expressionEvaluatorService"/>
   </bean>
   
-  <bean id="lookupViewHelperService" class="org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl" scope="prototype">
-      <property name="dataDictionaryService">
-          <ref bean="dataDictionaryService" />
-      </property>
+  <bean id="expressionEvaluatorService"  class="org.kuali.rice.kns.uif.service.impl.ExpressionEvaluatorServiceImpl">
+  </bean>
+  
+  <bean id="lookupViewHelperService" class="org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl" 
+        scope="prototype" parent="viewHelperService">
       <property name="persistenceStructureService">
           <ref bean="persistenceStructureService" />
       </property>

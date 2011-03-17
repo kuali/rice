@@ -40,7 +40,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property>
-      <property name="componentInitializers">
+      <property name="componentModifiers">
          <list>
             <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
          </list>
@@ -84,7 +84,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property> 
-      <property name="componentInitializers">
+      <property name="componentModifiers">
          <list>
             <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
          </list>

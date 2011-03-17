@@ -17,10 +17,16 @@ package org.kuali.rice.kns.uif.layout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.PropertyReplacer;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
 
@@ -40,10 +46,17 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	private String id;
 	private String template;
 	private String style;
+
 	private List<String> styleClasses;
+
+	private Map<String, Object> context;
+
+	private List<PropertyReplacer> propertyReplacers;
 
 	public LayoutManagerBase() {
 		styleClasses = new ArrayList<String>();
+		context = new HashMap<String, Object>();
+		propertyReplacers = new ArrayList<PropertyReplacer>();
 	}
 
 	/**
@@ -71,6 +84,22 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	 */
 	public void performFinalize(View view, Object model, Container container) {
 
+	}
+
+	/**
+	 * Set of property names for the layout manager base for which on the
+	 * property value reference should be copied. Subclasses can override this
+	 * but should include a call to super
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager.
+	 *      getPropertiesForReferenceCopy()
+	 */
+	public Set<String> getPropertiesForReferenceCopy() {
+		Set<String> refCopyProperties = new HashSet<String>();
+
+		refCopyProperties.add(UifPropertyPaths.CONTEXT);
+
+		return refCopyProperties;
 	}
 
 	/**
@@ -172,6 +201,46 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	public void setStyleClasses(String styleClasses) {
 		String[] classes = StringUtils.split(styleClasses);
 		this.styleClasses = Arrays.asList(classes);
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getContext()
+	 */
+	public Map<String, Object> getContext() {
+		return this.context;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#setContext(java.util.Map)
+	 */
+	public void setContext(Map<String, Object> context) {
+		this.context = context;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#pushObjectToContext(java.lang.String,
+	 *      java.lang.Object)
+	 */
+	public void pushObjectToContext(String objectName, Object object) {
+		if (this.context == null) {
+			this.context = new HashMap<String, Object>();
+		}
+
+		this.context.put(objectName, object);
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getPropertyReplacers()
+	 */
+	public List<PropertyReplacer> getPropertyReplacers() {
+		return this.propertyReplacers;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#setPropertyReplacers(java.util.List)
+	 */
+	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
+		this.propertyReplacers = propertyReplacers;
 	}
 
 }

@@ -40,7 +40,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </list>
              </property>
              <property name="title" value="Account Information"/>
-             <property name="componentInitializers">
+             <property name="componentModifiers">
                <list merge="true">
                  <ref bean="MaintenanceCompareModifier"/>
                </list>
@@ -61,7 +61,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <bean parent="StackedGroupPrototype">
                    <property name="layoutManager.numberOfColumns" value="4"/>
                    <property name="layoutManager.renderLabelFieldsSeparately" value="false"/>
-                   <property name="componentInitializers">
+                   <property name="componentModifiers">
                      <list>
                        <bean parent="MaintenanceCompareModifier" p:runPhase="FINALIZE"/>
                        <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>

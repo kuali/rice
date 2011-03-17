@@ -18,6 +18,7 @@ package org.kuali.rice.kns.uif;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
@@ -194,10 +195,10 @@ public interface Component extends Serializable, Ordered {
 	 * invoked by the initialize method.
 	 * </p>
 	 * 
-	 * @return List of component initializers
+	 * @return List of component modifiers
 	 * @see ViewHelperService#initializeComponent
 	 */
-	public List<ComponentModifier> getComponentInitializers();
+	public List<ComponentModifier> getComponentModifiers();
 
 	/**
 	 * Setter for the components List of <code>ComponentModifier</code>
@@ -205,7 +206,18 @@ public interface Component extends Serializable, Ordered {
 	 * 
 	 * @param componentModifiers
 	 */
-	public void setComponentInitializers(List<ComponentModifier> componentModifiers);
+	public void setComponentModifiers(List<ComponentModifier> componentModifiers);
+
+	/**
+	 * Used by the copy process to determine for which properties only the value
+	 * reference should be copied (not a new copy instance). Subclasses can
+	 * define the properties for which only the reference should be copied
+	 * 
+	 * @return Set<String> property names for which only the value reference
+	 *         should be copied
+	 * @see org.kuali.rice.kns.uif.util.ComponentUtils.copy(T)
+	 */
+	public Set<String> getPropertiesForReferenceCopy();
 
 	/**
 	 * Indicates whether the component should be rendered in the UI
@@ -357,6 +369,13 @@ public interface Component extends Serializable, Ordered {
 	public void setStyleClasses(List<String> styleClasses);
 
 	/**
+	 * Adds a single style to the list of styles on this component
+	 * 
+	 * @param style
+	 */
+	public void addStyleClass(String styleClass);
+
+	/**
 	 * Number of places the component should take up horizontally in the
 	 * container
 	 * 
@@ -408,6 +427,84 @@ public interface Component extends Serializable, Ordered {
 	public void setRowSpan(int rowSpan);
 
 	/**
+	 * Context map for the component
+	 * 
+	 * <p>
+	 * Any el statements configured for the components properties (e.g.
+	 * title="@{foo.property}") are evaluated using the el context map. This map
+	 * will get populated with default objects like the model, view, and request
+	 * from the <code>ViewHelperService</code>. Other components can push
+	 * further objects into the context so that they are available for use with
+	 * that component. For example, <code>Field</code> instances that are part
+	 * of a collection line as receive the current line instance
+	 * </p>
+	 * 
+	 * <p>
+	 * Context map also provides objects to methods that are invoked for
+	 * <code>GeneratedField</code> instances
+	 * </p>
+	 * 
+	 * <p>
+	 * The Map key gives the name of the variable that can be used within
+	 * expressions, and the Map value gives the object instance for which
+	 * expressions containing the variable should evaluate against
+	 * </p>
+	 * 
+	 * @return Map<String, Object> context
+	 */
+	public Map<String, Object> getContext();
+
+	/**
+	 * Setter for the context Map
+	 * 
+	 * @param context
+	 */
+	public void setContext(Map<String, Object> context);
+
+	/**
+	 * Places the given object into the context Map for the component with the
+	 * given name
+	 * 
+	 * @param objectName
+	 *            - name the object should be exposed under in the context map
+	 * @param object
+	 *            - object instance to place into context
+	 */
+	public void pushObjectToContext(String objectName, Object object);
+
+	/**
+	 * List of <code>PropertyReplacer</code> instances that will be
+	 * evaluated during the view lifecycle to conditional set properties on the
+	 * <code>Component</code> based on expression evaluations
+	 * 
+	 * @return List<PropertyReplacer> replacers to evaluate
+	 */
+	public List<PropertyReplacer> getPropertyReplacers();
+
+	/**
+	 * Setter for the components property substitutions
+	 * 
+	 * @param propertyReplacers
+	 */
+	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers);
+
+	/**
+	 * Options that are passed through to the Component renderer. The Map key is
+	 * the option name, with the Map value as the option value. See
+	 * documentation on the particular widget render for available options.
+	 * 
+	 * @return Map<String, String> options
+	 */
+	public Map<String, String> getComponentOptions();
+
+	/**
+	 * Setter for the widget's options
+	 * 
+	 * @param widgetOptions
+	 */
+	public void setComponentOptions(Map<String, String> componentOptions);
+
+	/**
 	 * <code>ComponentDecorator</code> instance for the component
 	 * 
 	 * <p>
@@ -455,27 +552,5 @@ public interface Component extends Serializable, Ordered {
 	 * @param order
 	 */
 	public void setOrder(int order);
-	
-	/**
-	 * Options that are passed through to the Component renderer. The Map key is
-	 * the option name, with the Map value as the option value. See
-	 * documentation on the particular widget render for available options.
-	 * 
-	 * @return Map<String, String> options
-	 */
-	public Map<String, String> getComponentOptions();
 
-	/**
-	 * Setter for the widget's options
-	 * 
-	 * @param widgetOptions
-	 */
-	public void setComponentOptions(Map<String, String> componentOptions);
-
-	/**
-	 * This method adds a single style to the list of styles on this component
-	 * 
-	 * @param style
-	 */
-	public void addStyleClass(String styleClass);
 }

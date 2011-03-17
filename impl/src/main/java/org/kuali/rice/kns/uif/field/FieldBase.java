@@ -55,8 +55,21 @@ public class FieldBase extends ComponentBase implements Field {
 	}
 
 	/**
-	 * <p>
 	 * The following initialization is performed:
+	 * 
+	 * <ul>
+	 * </ul>
+	 * 
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 */
+	@Override
+	public void performInitialization(View view) {
+		super.performInitialization(view);
+	}
+
+	/**
+	 * The following finalization is performed:
+	 * 
 	 * <ul>
 	 * <li>Set the labelForComponentId to this component id</li>
 	 * <li>Set the label text on the label field from the field's label property
@@ -65,13 +78,13 @@ public class FieldBase extends ComponentBase implements Field {
 	 * field is marked as required</li>
 	 * <li>If label placement is right, set render colon to false</li>
 	 * </ul>
-	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
 	 */
 	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
+	public void performFinalize(View view, Object model) {
+		super.performFinalize(view, model);
 
 		if (labelField != null) {
 			labelField.setLabelForComponentId(this.getId());

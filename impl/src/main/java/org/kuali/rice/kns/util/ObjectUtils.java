@@ -907,7 +907,7 @@ public class ObjectUtils {
     }
 
     /**
-     * This method runs the ObjectUtils.isNotNull() method for each item in a list of BOs. ObjectUtils.isNotNull() will materialize
+     * This method runs the ObjectPropertyUtils.isNotNull() method for each item in a list of BOs. ObjectPropertyUtils.isNotNull() will materialize
      * the objects if they are currently OJB proxies.
      * 
      * @param possiblyProxiedObjects - a Collection of objects that may be proxies

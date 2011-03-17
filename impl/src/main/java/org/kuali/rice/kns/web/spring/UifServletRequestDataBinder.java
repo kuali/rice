@@ -92,33 +92,31 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 		throw new RuntimeException("Direct Field access is not allowed in Kuali");
 	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void bind(ServletRequest request) {
-        super.bind(request);
-        UifFormBase form = (UifFormBase) this.getTarget();
-        
-        // create initial view, should only happen if this is the first request
-        if(form.getView() == null) {
-            String viewId = request.getParameter(UifParameters.VIEW_ID);
-            if (viewId != null) {
-                form.setView(getViewService().getView(viewId, request.getParameterMap()));
-            }
-            else {
-                String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
-                if(viewTypeName == null) {
-                    viewTypeName = form.getViewTypeName();
-                }
-                
-                form.setView(getViewService().getViewByType(viewTypeName,
-                        WebUtils.translateRequestParameterMap(request.getParameterMap())));
-            }
-            
-            form.setViewId(form.getView().getId());
-        }
-        
-        form.postBind((HttpServletRequest)request);
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	public void bind(ServletRequest request) {
+		super.bind(request);
+		UifFormBase form = (UifFormBase) this.getTarget();
+
+		// recreate view from id or type
+		String viewId = request.getParameter(UifParameters.VIEW_ID);
+		if (viewId != null) {
+			form.setView(getViewService().getView(viewId, request.getParameterMap()));
+		}
+		else {
+			String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
+			if (viewTypeName == null) {
+				viewTypeName = form.getViewTypeName();
+			}
+
+			form.setView(getViewService().getViewByType(viewTypeName,
+					WebUtils.translateRequestParameterMap(request.getParameterMap())));
+		}
+
+		form.setViewId(form.getView().getId());
+
+		form.postBind((HttpServletRequest) request);
+	}
     
     public ViewService getViewService() {
         if(viewService == null) {

@@ -76,7 +76,6 @@ public class View extends ContainerBase {
 	private String viewHelperServiceBeanId;
 
 	private Set<String> allowedParameters;
-	private Map<String, String> context;
 
 	private String viewStatus;
 	private ViewIndex viewIndex;
@@ -92,6 +91,8 @@ public class View extends ContainerBase {
 	// TODO: scripting variables, should be in context
 	private boolean dialogMode;
 
+	private ViewHelperService viewHelperService;
+
 	public View() {
 		dialogMode = false;
 		singlePageView = false;
@@ -105,7 +106,6 @@ public class View extends ContainerBase {
 		items = new ArrayList<Group>();
 		abstractTypeClasses = new HashMap<String, Class<?>>();
 		allowedParameters = new HashSet<String>();
-		context = new HashMap<String, String>();
 	}
 
 	/**
@@ -148,6 +148,24 @@ public class View extends ContainerBase {
 			Group firstPageGroup = getItems().get(0);
 			currentPageId = firstPageGroup.getId();
 		}
+	}
+
+	/**
+	 * Perform finalize here adds to its document ready script the
+	 * setupValidator js function for setting up the validator for this view.
+	 * 
+	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object)
+	 */
+	@Override
+	public void performFinalize(View view, Object model) {
+		super.performFinalize(view, model);
+
+		String prefixScript = "";
+		if (this.getOnDocumentReadyScript() != null) {
+			prefixScript = this.getOnDocumentReadyScript();
+		}
+		this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();");
 	}
 
 	/**
@@ -481,18 +499,18 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * Retrieves the <code>ViewHelperService</code> configured for the view from
-	 * the application context. If a service is not found a
-	 * <code>RuntimeException</code> will be thrown.
+	 * Retrieves the <code>ViewHelperService</code> associated with the View
 	 * 
 	 * @return ViewHelperService instance
 	 */
 	public ViewHelperService getViewHelperService() {
-		ViewHelperService viewHelperService = KNSServiceLocator.getService(getViewHelperServiceBeanId());
+		if (this.viewHelperService == null) {
+			viewHelperService = KNSServiceLocator.getService(getViewHelperServiceBeanId());
 
-		if (viewHelperService == null) {
-			throw new RuntimeException("Unable to find ViewHelperService (using bean id: "
-					+ getViewHelperServiceBeanId() + ") for view: " + getId());
+			if (viewHelperService == null) {
+				throw new RuntimeException("Unable to find ViewHelperService (using bean id: "
+						+ getViewHelperServiceBeanId() + ") for view: " + getId());
+			}
 		}
 
 		return viewHelperService;
@@ -532,30 +550,6 @@ public class View extends ContainerBase {
 	 */
 	public void setAllowedParameters(Set<String> allowedParameters) {
 		this.allowedParameters = allowedParameters;
-	}
-
-	/**
-	 * Key value pairs that provide context information for the view instance
-	 * <p>
-	 * Will contain any view parameters that were set and can be used by the
-	 * view components or view helper service to place additional information
-	 * about the context
-	 * </p>
-	 * 
-	 * @return Map<String, String> context
-	 * @see getAllowedParameters()
-	 */
-	public Map<String, String> getContext() {
-		return this.context;
-	}
-
-	/**
-	 * Setter for the view context
-	 * 
-	 * @param context
-	 */
-	public void setContext(Map<String, String> context) {
-		this.context = context;
 	}
 
 	/**
@@ -737,8 +731,8 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * onLoad script configured on the <code>View</code> gets placed in a
-	 * load call
+	 * onLoad script configured on the <code>View</code> gets placed in a load
+	 * call
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
 	 */
@@ -746,10 +740,10 @@ public class View extends ContainerBase {
 	public boolean getSupportsOnLoad() {
 		return true;
 	}
-	
+
 	/**
-	 * onDocumentReady script configured on the <code>View</code> gets placed in a
-	 * document ready jQuery block
+	 * onDocumentReady script configured on the <code>View</code> gets placed in
+	 * a document ready jQuery block
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
 	 */
@@ -758,19 +752,4 @@ public class View extends ContainerBase {
 		return true;
 	}
 
-	/**
-	 * Perform finalize here adds to its document ready script 
-	 * the setupValidator js function for setting up the validator for this view.
-	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object)
-	 */
-	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
-		String prefixScript = "";
-		if(this.getOnDocumentReadyScript() != null){
-			prefixScript = this.getOnDocumentReadyScript();
-		}
-		this.setOnDocumentReadyScript(prefixScript +
-			"\nsetupValidator();");
-	}
 }

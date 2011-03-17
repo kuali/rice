@@ -110,7 +110,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableTools.jsp"/>
       <property name="componentOptions">
           <map>
-              <entry key="sDom" value="T&lt;'clear'&gt;lfrtip"/>
+              <entry key="sDom" value="T&lt;'clear'&gt;lfrtip"/>   
               <entry key="oTableTools" value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;/kr-dev/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
           </map>      
       </property>
@@ -190,5 +190,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="KeyLabelPair" class="org.kuali.rice.core.util.KeyLabelPair" scope="prototype"/>
   
   <bean id="MethodInvoker" class="org.springframework.util.MethodInvoker" scope="prototype"/>
+  
+  <bean id="PropertyReplacer" class="org.kuali.rice.kns.uif.PropertyReplacer" scope="prototype"/>
   
 </beans>

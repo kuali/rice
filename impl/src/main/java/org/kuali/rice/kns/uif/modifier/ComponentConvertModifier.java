@@ -22,7 +22,7 @@ import java.util.Set;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
-import org.kuali.rice.kns.uif.util.ModelUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 
 /**
  * For a given <code>Component</code> instance converts all component properties
@@ -81,7 +81,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 		// check all component properties for the type to replace
 		List<String> componentProperties = ComponentUtils.getComponentPropertyNames(component.getClass());
 		for (String propertyPath : componentProperties) {
-			Object propValue = ModelUtils.getPropertyValue(component, propertyPath);
+			Object propValue = ObjectPropertyUtils.getPropertyValue(component, propertyPath);
 
 			if (propValue != null) {
 				if (getComponentTypeToReplace().isAssignableFrom(propValue.getClass())) {
@@ -114,7 +114,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 
 		ComponentUtils.updateIdsWithSuffix(componentReplacement, "_" + idSuffix);
 
-		ModelUtils.setPropertyValue(component, componentProperty, componentReplacement);
+		ObjectPropertyUtils.setPropertyValue(component, componentProperty, componentReplacement);
 	}
 
 	/**

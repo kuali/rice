@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.lookup.keyvalues;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ import java.util.Map;
  *
  *
  */
-public interface KeyValuesFinder {
+public interface KeyValuesFinder extends Serializable {
 
     /**
      * Builds a list of key values representations for valid value selections.

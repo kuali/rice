@@ -45,6 +45,21 @@ public interface ScriptEventSupport {
 	public String getOnLoadScript();
 
 	/**
+	 * Indicates whether the component supports the document ready event
+	 * 
+	 * @return boolean true if event is supported, false if the event is not
+	 *         supported
+	 */
+	public boolean getSupportsOnDocumentReady();
+
+	/**
+	 * Script to be run when the document ready event is triggered
+	 * 
+	 * @return the onDocumentReadyScript
+	 */
+	public String getOnDocumentReadyScript();
+
+	/**
 	 * Indicates whether the component supports the onUnload event
 	 * 
 	 * @return boolean true if event is supported, false if the event is not

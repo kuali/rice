@@ -70,10 +70,12 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 *            and binding updated
 	 * @param idSuffix
 	 *            - suffix to use for any generated items
+	 * @param currentLine
+	 *            - object instance for the current line, or null if add line          
 	 * @param lineIndex
 	 *            - index of the collection line being iterated over, or -1 if
 	 *            the add line
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<? extends Field> lineFields,
-			String bindingPath, List<ActionField> actions, String idSuffix, int lineIndex);
+			String bindingPath, List<ActionField> actions, String idSuffix, Object currentLine, int lineIndex);
 }

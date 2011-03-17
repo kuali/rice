@@ -81,7 +81,7 @@ public class UifConstants extends JSTLConstants {
 		public static final String ADD_LINE = "addLine";
 		public static final String DELETE_LINE = "deleteLine";
 	}
-	
+
 	public static class LayoutComponentOptions {
 		public static final String COLUMN_SPAN = "colSpan";
 		public static final String ROW_SPAN = "rowSpan";
@@ -109,23 +109,39 @@ public class UifConstants extends JSTLConstants {
 		public static final String INITIALIZED = "I";
 		public static final String FINAL = "F";
 	}
-	
-	public static Map<String, String> validCharactersMethods = new HashMap<String,String>(){{
-		
-		put("digits","digits");
-		put("date","date");
-		put("number","number");
-		put("alphanumeric","alphanumeric");
-		put("integer","integer");
-		put("email","email");
-		put("url","url");
-		put("letterswithbasicpunc","letterswithbasicpunc");
-		put("lettersonly","lettersonly");
-		put("nowhitespace","nowhitespace");
-		put("time","time");
-		put("creditcard","creditcard");
-		put("phoneUS","phoneUS");
-	}};
+
+	public static Map<String, String> validCharactersMethods = new HashMap<String, String>() {
+		private static final long serialVersionUID = -2457154523353529782L;
+
+		{
+			put("digits", "digits");
+			put("date", "date");
+			put("number", "number");
+			put("alphanumeric", "alphanumeric");
+			put("integer", "integer");
+			put("email", "email");
+			put("url", "url");
+			put("letterswithbasicpunc", "letterswithbasicpunc");
+			put("lettersonly", "lettersonly");
+			put("nowhitespace", "nowhitespace");
+			put("time", "time");
+			put("creditcard", "creditcard");
+			put("phoneUS", "phoneUS");
+		}
+	};
+
+	public static final String EL_PLACEHOLDER_PREFIX = "@{";
+	public static final String EL_PLACEHOLDER_SUFFIX = "}";
+	public static final String EL_CONDITIONAL_PROPERTY_PREFIX = "conditional";
+
+	public static class ContextVariableNames {
+		public static final String CONFIG_PROPERTIES = "ConfigProperties";
+		public static final String COMPONENT = "component";
+		public static final String INDEX = "index";
+		public static final String LINE = "line";
+		public static final String PARENT = "parent";
+		public static final String VIEW = "view";
+	}
 
 	public static class TableToolsKeys{
 		public static final String LANGUAGE = "oLanguage";

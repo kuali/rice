@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.Field;
@@ -55,7 +54,7 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 					+ component.getClass());
 		}
 
-		if (component == null || ViewStatus.FINAL.equals(view.getViewStatus())) {
+		if (component == null) {
 			return;
 		}
 

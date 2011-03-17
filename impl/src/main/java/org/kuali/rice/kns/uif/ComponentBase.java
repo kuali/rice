@@ -18,8 +18,10 @@ package org.kuali.rice.kns.uif;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
@@ -54,8 +56,10 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private String title;
 
 	private boolean render;
+	private String conditionalRender;
 	private boolean hidden;
 	private boolean readOnly;
+	private String conditionalReadOnly;
 	private Boolean required;
 
 	private String align;
@@ -88,14 +92,17 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private String onDocumentReadyScript;
 
 	private ComponentDecorator decorator;
-	private DecoratorChain decoratorChain;
+	private transient DecoratorChain decoratorChain;
 
 	private List<ComponentModifier> componentModifiers;
 
 	private Map<String, String> componentOptions;
 
-	public ComponentBase() {
+	private transient Map<String, Object> context;
 
+	private List<PropertyReplacer> propertyReplacers;
+
+	public ComponentBase() {
 		order = 0;
 		colSpan = 1;
 		rowSpan = 1;
@@ -104,6 +111,9 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 
 		styleClasses = new ArrayList<String>();
 		componentModifiers = new ArrayList<ComponentModifier>();
+		componentOptions = new HashMap<String, String>();
+		context = new HashMap<String, Object>();
+		propertyReplacers = new ArrayList<PropertyReplacer>();
 	}
 
 	/**
@@ -184,6 +194,22 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
+	 * Set of property names for the component base for which on the property
+	 * value reference should be copied. Subclasses can override this but should
+	 * include a call to super
+	 * 
+	 * @see org.kuali.rice.kns.uif.Component#getPropertiesForReferenceCopy()
+	 */
+	public Set<String> getPropertiesForReferenceCopy() {
+		Set<String> refCopyProperties = new HashSet<String>();
+
+		refCopyProperties.add(UifPropertyPaths.COMPONENT_MODIFIERS);
+		refCopyProperties.add(UifPropertyPaths.CONTEXT);
+
+		return refCopyProperties;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.uif.Component#getId()
 	 */
 	public String getId() {
@@ -254,6 +280,25 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
+	 * Expression language string for conditionally setting the readOnly
+	 * property
+	 * 
+	 * @return String el that should evaluate to boolean
+	 */
+	public String getConditionalReadOnly() {
+		return this.conditionalReadOnly;
+	}
+
+	/**
+	 * Setter for the conditional readOnly string
+	 * 
+	 * @param conditionalReadOnly
+	 */
+	public void setConditionalReadOnly(String conditionalReadOnly) {
+		this.conditionalReadOnly = conditionalReadOnly;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.uif.Component#getRequired()
 	 */
 	public Boolean getRequired() {
@@ -265,6 +310,24 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 */
 	public void setRequired(Boolean required) {
 		this.required = required;
+	}
+
+	/**
+	 * Expression language string for conditionally setting the render property
+	 * 
+	 * @return String el that should evaluate to boolean
+	 */
+	public String getConditionalRender() {
+		return this.conditionalRender;
+	}
+
+	/**
+	 * Setter for the conditional render string
+	 * 
+	 * @param conditionalRender
+	 */
+	public void setConditionalRender(String conditionalRender) {
+		this.conditionalRender = conditionalRender;
 	}
 
 	/**
@@ -434,6 +497,15 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.uif.Component#addStyleClass(java.lang.String)
+	 */
+	public void addStyleClass(String styleClass) {
+		if (!styleClass.contains(styleClass)) {
+			styleClasses.add(styleClass);
+		}
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.uif.Component#isRender()
 	 */
 	public boolean isRender() {
@@ -448,17 +520,57 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentInitializers()
+	 * @see org.kuali.rice.kns.uif.Component#getComponentModifiers()
 	 */
-	public List<ComponentModifier> getComponentInitializers() {
+	public List<ComponentModifier> getComponentModifiers() {
 		return this.componentModifiers;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setComponentInitializers(java.util.List)
+	 * @see org.kuali.rice.kns.uif.Component#setComponentModifiers(java.util.List)
 	 */
-	public void setComponentInitializers(List<ComponentModifier> componentModifiers) {
+	public void setComponentModifiers(List<ComponentModifier> componentModifiers) {
 		this.componentModifiers = componentModifiers;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getContext()
+	 */
+	public Map<String, Object> getContext() {
+		return this.context;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setContext(java.util.Map)
+	 */
+	public void setContext(Map<String, Object> context) {
+		this.context = context;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#pushObjectToContext(java.lang.String,
+	 *      java.lang.Object)
+	 */
+	public void pushObjectToContext(String objectName, Object object) {
+		if (this.context == null) {
+			this.context = new HashMap<String, Object>();
+		}
+
+		this.context.put(objectName, object);
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#getPropertyReplacers()
+	 */
+	public List<PropertyReplacer> getPropertyReplacers() {
+		return this.propertyReplacers;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#setPropertyReplacers(java.util.List)
+	 */
+	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
+		this.propertyReplacers = propertyReplacers;
 	}
 
 	/**
@@ -519,6 +631,29 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 */
 	public void setOnLoadScript(String onLoadScript) {
 		this.onLoadScript = onLoadScript;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnDocumentReady()
+	 */
+	public boolean getSupportsOnDocumentReady() {
+		return false;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnDocumentReadyScript()
+	 */
+	public String getOnDocumentReadyScript() {
+		return onDocumentReadyScript;
+	}
+
+	/**
+	 * Setter for the components onDocumentReady script
+	 * 
+	 * @param onDocumentReadyScript
+	 */
+	public void setOnDocumentReadyScript(String onDocumentReadyScript) {
+		this.onDocumentReadyScript = onDocumentReadyScript;
 	}
 
 	/**
@@ -931,10 +1066,12 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 			sb.append(optionKey);
 			sb.append(":");
 
-			//If an option value starts with { or [, it would be a nested value and it should not use quotes around it
-			if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")){
+			// If an option value starts with { or [, it would be a nested value
+			// and it should not use quotes around it
+			if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")) {
 				sb.append(optionValue);
-			}else{
+			}
+			else {
 				sb.append("\"" + optionValue + "\"");
 			}
 		}
@@ -944,34 +1081,4 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 		return sb.toString();
 	}
 
-	/**
-	 * This method adds a single style to the list of styles on this component
-	 * 
-	 * @param style
-	 */
-	@Override
-	public void addStyleClass(String styleClass){
-		if(!styleClasses.contains(styleClass)){
-			styleClasses.add(styleClass);
-		}
-	}
-	
-	public boolean getSupportsOnDocumentReady(){
-		return false;
-	}
-
-	/**
-	 * @param onDocumentReadyScript the onDocumentReadyScript to set
-	 */
-	public void setOnDocumentReadyScript(String onDocumentReadyScript) {
-		this.onDocumentReadyScript = onDocumentReadyScript;
-	}
-
-	/**
-	 * Script to be run when the document is 'ready'
-	 * @return the onDocumentReadyScript
-	 */
-	public String getOnDocumentReadyScript() {
-		return onDocumentReadyScript;
-	}
 }

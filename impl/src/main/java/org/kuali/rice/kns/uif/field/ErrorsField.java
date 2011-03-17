@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.uif.field;
 
+
 /**
  * Field that displays error messages or counts
  * 
@@ -36,6 +37,7 @@ public class ErrorsField extends FieldBase {
 	private boolean displayInfoMessages;
 	private boolean displayLockMessages;
 	private boolean displayWarningMessages;
+	
 
 	public ErrorsField() {
 

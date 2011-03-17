@@ -68,7 +68,7 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl;
-import org.kuali.rice.kns.uif.util.ModelUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -1621,7 +1621,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 		if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
 			PersistableBusinessObject newBO = document.getNewMaintainableObject().getBusinessObject();
 			Map<String, String> parameters = buildKeyMapFromRequest(requestParameters);
-			ModelUtils.copyPropertiesToModel(parameters, newBO);
+			ObjectPropertyUtils.copyPropertiesToObject(parameters, newBO);
 			newBO.refresh();
 
 			setupNewFromExisting(document, requestParameters);
@@ -1772,7 +1772,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	protected void clearPrimaryKeyFields(Object maintenanceObject) {
 		List<String> keyFieldNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBoClass());
 		for (String keyFieldName : keyFieldNames) {
-			ModelUtils.setPropertyValue(maintenanceObject, keyFieldName, null);
+			ObjectPropertyUtils.setPropertyValue(maintenanceObject, keyFieldName, null);
 		}
 	}
 
@@ -1852,7 +1852,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 
 		if (parametersToCopy != null) {
 			// TODO: make sure we are doing formatting here eventually
-			ModelUtils.copyPropertiesToModel(parametersToCopy, oldBusinessObject);
+			ObjectPropertyUtils.copyPropertiesToObject(parametersToCopy, oldBusinessObject);
 		}
 	}
 
@@ -1875,7 +1875,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 			MaintenanceDocument document = maintenanceForm.getDocument();
 
 			// get the old object's collection
-			Collection<Object> oldCollection = ModelUtils.getPropertyValue(document.getOldMaintainableObject()
+			Collection<Object> oldCollection = ObjectPropertyUtils.getPropertyValue(document.getOldMaintainableObject()
 					.getBusinessObject(), collectionGroup.getPropertyName());
 			try {
 				Object blankLine = getBoClass().newInstance();

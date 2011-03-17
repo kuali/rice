@@ -25,12 +25,8 @@
  <krad:attributeBuilder component="${field}"/>
  
  <a id="${field.id}" href="#" ${style} ${styleClass}>
-   <c:choose>
-     <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
-       <krad:template component="${field.actionImageField}"/>
-     </c:when>
-     <c:otherwise>
-       ${field.actionLabel}
-     </c:otherwise>
-   </c:choose>       
+   <c:if test="${(field.actionImageField != null) && field.actionImageField.render}">
+      <krad:template component="${field.actionImageField}"/>
+   </c:if>
+   ${field.actionLabel}
  </a>   

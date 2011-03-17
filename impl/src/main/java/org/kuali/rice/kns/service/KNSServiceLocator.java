@@ -25,6 +25,7 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
+import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
@@ -186,6 +187,12 @@ public class KNSServiceLocator {
 
     public static DataDictionaryService getDataDictionaryService() {
 	return (DataDictionaryService) getService(DATA_DICTIONARY_SERVICE);
+    }
+    
+    public static final String EXPRESSION_EVALUATOR_SERVICE = "expressionEvaluatorService";
+    
+    public static ExpressionEvaluatorService getExpressionEvaluatorService() {
+    	return (ExpressionEvaluatorService) getService(EXPRESSION_EVALUATOR_SERVICE);
     }
 
     public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";

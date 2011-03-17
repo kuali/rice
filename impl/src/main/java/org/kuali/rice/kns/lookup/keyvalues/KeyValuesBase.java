@@ -30,7 +30,9 @@ import org.kuali.rice.core.util.KeyLabelPair;
  *
  */
 public abstract class KeyValuesBase implements KeyValuesFinder {
-    public Collection getOptionLabels() {
+    private static final long serialVersionUID = 129133599486660497L;
+
+	public Collection getOptionLabels() {
         List optionLabels = new ArrayList();
 
         List keyLabels = getKeyValues();

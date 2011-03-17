@@ -16,18 +16,26 @@
 package org.kuali.rice.kns.uif.util;
 
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.Ordered;
+import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
+import org.kuali.rice.kns.uif.layout.LayoutManager;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
@@ -40,22 +48,123 @@ import org.springframework.core.OrderComparator;
  */
 public class ComponentUtils {
 
-	@SuppressWarnings("unchecked")
 	public static <T extends Component> T copy(T component, String idSuffix) {
-		T copy = (T) ObjectUtils.deepCopy(component);
+		T copy = copy(component);
 		updateIdsWithSuffix(copy, idSuffix);
 
 		return copy;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T extends Component> T copy(T component) {
-		return (T) ObjectUtils.deepCopy(component);
+		return copyObject(component);
 	}
 
 	@SuppressWarnings("unchecked")
+	protected static <T extends Object> T copyObject(T object) {
+		if (object == null) {
+			return null;
+		}
+
+		T copy = getNewInstance(object);
+
+		Set<String> propertiesForReferenceCopy = new HashSet<String>();
+		if (Component.class.isAssignableFrom(object.getClass())) {
+			propertiesForReferenceCopy = ((Component) object).getPropertiesForReferenceCopy();
+		}
+		else if (LayoutManager.class.isAssignableFrom(object.getClass())) {
+			propertiesForReferenceCopy = ((LayoutManager) object).getPropertiesForReferenceCopy();
+		}
+
+		PropertyDescriptor[] propertyDescriptors = ObjectPropertyUtils.getPropertyDescriptors(object);
+		for (int i = 0; i < propertyDescriptors.length; i++) {
+			PropertyDescriptor descriptor = propertyDescriptors[i];
+			if ((descriptor.getReadMethod() == null) || (descriptor.getWriteMethod() == null)) {
+				continue;
+			}
+
+			String propertyName = descriptor.getName();
+			Class<?> propertyType = descriptor.getPropertyType();
+
+			Object propertyValue = ObjectPropertyUtils.getPropertyValue(object, propertyName);
+			Object valueCopy = null;
+
+			if (propertyValue != null) {
+				// for collections and maps, create new instance and copy each
+				// entry
+				if (Collection.class.isAssignableFrom(propertyType)) {
+					Collection<?> collection = (Collection<?>) propertyValue;
+
+					valueCopy = getNewInstance(collection);
+					for (Object itemObject : collection) {
+						Object itemCopy = getCopyPropertyValue(propertiesForReferenceCopy, propertyName, itemObject);
+
+						((Collection<Object>) valueCopy).add(itemCopy);
+					}
+				}
+				else if (Map.class.isAssignableFrom(propertyType)) {
+					Map<?, ?> map = (Map<?, ?>) propertyValue;
+
+					valueCopy = getNewInstance(map);
+					for (Entry<?, ?> entry : map.entrySet()) {
+						Object keyCopy = getCopyPropertyValue(propertiesForReferenceCopy, propertyName, entry.getKey());
+						Object entryValueCopy = getCopyPropertyValue(propertiesForReferenceCopy, propertyName,
+								entry.getValue());
+
+						((Map<Object, Object>) valueCopy).put(keyCopy, entryValueCopy);
+					}
+				}
+				else {
+					valueCopy = getCopyPropertyValue(propertiesForReferenceCopy, propertyName, propertyValue);
+				}
+			}
+
+			// set property value on copy
+			ObjectPropertyUtils.setPropertyValue(copy, propertyName, valueCopy, true);
+		}
+
+		return copy;
+	}
+
+	protected static Object getCopyPropertyValue(Set<String> propertiesForReferenceCopy, String propertyName,
+			Object propertyValue) {
+		if (propertyValue == null) {
+			return null;
+		}
+
+		Object copyValue = propertyValue;
+
+		Class<?> valuePropertyType = propertyValue.getClass();
+		if (propertiesForReferenceCopy.contains(propertyName) || TypeUtils.isSimpleType(valuePropertyType)
+				|| TypeUtils.isClassClass(valuePropertyType)) {
+			return copyValue;
+		}
+
+		if (Component.class.isAssignableFrom(valuePropertyType)
+				|| LayoutManager.class.isAssignableFrom(valuePropertyType)) {
+			copyValue = copyObject(propertyValue);
+		}
+		else {
+			copyValue = ObjectUtils.deepCopy((Serializable) propertyValue);
+		}
+
+		return copyValue;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static <T extends Object> T getNewInstance(T object) {
+		T copy = null;
+		try {
+			copy = (T) object.getClass().newInstance();
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Unable to create new instance of class: " + object.getClass());
+		}
+
+		return copy;
+	}
+
 	public static <T extends Component> T copyField(T component, String addBindingPrefix, String idSuffix) {
-		T copy = (T) ObjectUtils.deepCopy(component);
+		T copy = copy(component);
 		updateIdsWithSuffix(copy, idSuffix);
 
 		if (copy instanceof DataBinding) {
@@ -153,7 +262,7 @@ public class ComponentUtils {
 	}
 
 	public static void setComponentPropertyDeep(Component component, String propertyPath, Object propertyValue) {
-		ModelUtils.setPropertyValue(component, propertyPath, propertyValue, true);
+		ObjectPropertyUtils.setPropertyValue(component, propertyPath, propertyValue, true);
 
 		for (Component nested : component.getNestedComponents()) {
 			if (nested != null) {
@@ -174,6 +283,51 @@ public class ComponentUtils {
 		}
 
 		return componentProperties;
+	}
+
+	public static void pushObjectToContext(List<? extends Component> components, String contextName, Object contextValue) {
+		for (Component component : components) {
+			pushObjectToContext(component, contextName, contextValue);
+		}
+	}
+
+	public static void pushObjectToContext(Component component, String contextName, Object contextValue) {
+		if (component == null) {
+			return;
+		}
+
+		component.pushObjectToContext(contextName, contextValue);
+
+		// special container check so we pick up the layout manager
+		if (Container.class.isAssignableFrom(component.getClass())) {
+			LayoutManager layoutManager = ((Container) component).getLayoutManager();
+			if (layoutManager != null) {
+				layoutManager.pushObjectToContext(contextName, contextValue);
+
+				for (Component nestedComponent : layoutManager.getNestedComponents()) {
+					pushObjectToContext(nestedComponent, contextName, contextValue);
+				}
+			}
+		}
+
+		for (Component nestedComponent : component.getNestedComponents()) {
+			pushObjectToContext(nestedComponent, contextName, contextValue);
+		}
+	}
+
+	public static void updateIdsAndContextForLine(List<? extends Component> components, Object collectionLine,
+			int lineIndex) {
+		for (Component component : components) {
+			updateIdsAndContextForLine(component, collectionLine, lineIndex);
+		}
+	}
+
+	public static void updateIdsAndContextForLine(Component component, Object collectionLine, int lineIndex) {
+		pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
+		pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
+
+		String idSuffix = "_" + lineIndex;
+		updateIdsWithSuffix(component, idSuffix);
 	}
 
 	/**

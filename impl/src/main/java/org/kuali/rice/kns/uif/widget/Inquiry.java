@@ -28,7 +28,7 @@ import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.LinkField;
-import org.kuali.rice.kns.uif.util.ModelUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 
@@ -79,7 +79,7 @@ public class Inquiry extends WidgetBase {
 			// get inquiry parameter values
 			for (Entry<String, String> parameterMapping : parameterFieldMapping.entrySet()) {
 				fieldBindingInfo.setBindingName(parameterMapping.getValue());
-				Object parameterValue = ModelUtils.getPropertyValue(model, fieldBindingInfo.getBindingPath());
+				Object parameterValue = ObjectPropertyUtils.getPropertyValue(model, fieldBindingInfo.getBindingPath());
 				if (parameterValue != null) {
 					urlParameters.put(parameterMapping.getKey(), parameterValue);
 				}
@@ -89,7 +89,7 @@ public class Inquiry extends WidgetBase {
 			inquiryLinkField.setHrefText(inquiryUrl);
 
 			// get inquiry link text
-			Object fieldValue = ModelUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
+			Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
 			if (fieldValue != null) {
 				inquiryLinkField.setLinkLabel(fieldValue.toString());
 

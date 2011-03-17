@@ -43,7 +43,7 @@ public class ViewModelUtils {
 
 		// if not found in the view's map, get the type based on the form
 		if (propertyType == null) {
-			propertyType = ModelUtils.getPropertyType(view.getFormClass(), propertyPath);
+			propertyType = ObjectPropertyUtils.getPropertyType(view.getFormClass(), propertyPath);
 		}
 
 		return propertyType;

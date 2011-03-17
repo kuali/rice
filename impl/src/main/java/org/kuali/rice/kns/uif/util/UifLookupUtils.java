@@ -105,9 +105,9 @@ public class UifLookupUtils {
 		try {
 	        Control newControl = controlClass.newInstance();
 	        for (String propertyPath : ComponentUtils.getComponentPropertyNames(existingControl.getClass())) {
-				Object propValue = ModelUtils.getPropertyValue(existingControl, propertyPath);
+				Object propValue = ObjectPropertyUtils.getPropertyValue(existingControl, propertyPath);
 				if (propValue != null) {
-					ModelUtils.setPropertyValue(newControl, propertyPath, propValue, true);
+					ObjectPropertyUtils.setPropertyValue(newControl, propertyPath, propValue, true);
 				}
             }
 	        return newControl;

@@ -29,7 +29,7 @@ import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
-import org.kuali.rice.kns.uif.util.ModelUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 
 /**
  * Layout manager that works with <code>CollectionGroup</code> containers and
@@ -101,23 +101,24 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	 * @see org.kuali.rice.kns.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.CollectionGroup,
 	 *      java.util.List, java.lang.String, java.util.List, java.lang.String,
-	 *      int)
+	 *      java.lang.Object, int)
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<? extends Field> lineFields,
-			String bindingPath, List<ActionField> actions, String idSuffix, int lineIndex) {
+			String bindingPath, List<ActionField> actions, String idSuffix, Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
 
 		// construct new group
 		Group lineGroup = null;
 		if (isAddLine) {
 			stackedGroups = new ArrayList<Group>();
-			
+
 			lineGroup = getAddLineGroup();
 		}
 		else {
 			lineGroup = ComponentUtils.copy(lineGroupPrototype);
 		}
-		ComponentUtils.updateIdsWithSuffix(lineGroup, idSuffix);
+
+		ComponentUtils.updateIdsAndContextForLine(lineGroup, currentLine, lineIndex);
 
 		// build header text for group
 		String headerText = "";
@@ -126,7 +127,7 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 		}
 		else {
 			// get the collection for this group from the model
-			List<Object> modelCollection = ModelUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
+			List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
 					.getBindingInfo().getBindingPath());
 
 			headerText = buildLineHeaderText(modelCollection.get(lineIndex));
@@ -160,7 +161,7 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	protected String buildLineHeaderText(Object line) {
 		String summaryFieldString = "";
 		for (String summaryField : summaryFields) {
-			Object summaryFieldValue = ModelUtils.getPropertyValue(line, summaryField);
+			Object summaryFieldValue = ObjectPropertyUtils.getPropertyValue(line, summaryField);
 			if (StringUtils.isNotBlank(summaryFieldString)) {
 				summaryFieldString += " - ";
 			}

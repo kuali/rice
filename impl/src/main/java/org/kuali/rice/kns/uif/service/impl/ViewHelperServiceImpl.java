@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,11 +29,14 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
+import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.layout.LayoutManager;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
+import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
-import org.kuali.rice.kns.uif.util.ModelUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.uif.widget.Widget;
 
@@ -46,6 +50,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
 	private transient DataDictionaryService dataDictionaryService;
+	private transient ExpressionEvaluatorService expressionEvaluatorService;
 
 	/**
 	 * Default implementation consults the <code>View</code> instance for the
@@ -135,7 +140,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// invoke component initializers setup to run in the initialize phase
-		for (ComponentModifier initializer : component.getComponentInitializers()) {
+		for (ComponentModifier initializer : component.getComponentModifiers()) {
 			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.INITIALIZE)) {
 				initializer.performModification(view, component);
 			}
@@ -229,24 +234,47 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			return;
 		}
 
+		// evaluate properties
+		puchCommonContext(view, component, model);
+		getExpressionEvaluatorService().evaluateObjectProperties(component, model, component.getContext());
+
+		if (component instanceof Container) {
+			LayoutManager layoutManager = ((Container) component).getLayoutManager();
+			if (layoutManager != null) {
+				layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
+				expressionEvaluatorService.evaluateObjectProperties(layoutManager, model, layoutManager.getContext());
+			}
+		}
+
 		// invoke component to perform its conditional logic
 		component.performApplyModel(view, model);
 
 		// invoke service override hook
 		performCustomApplyModel(view, component, model);
 
-		// invoke component initializers setup to run in the apply model phase
-		for (ComponentModifier initializer : component.getComponentInitializers()) {
+		// invoke component modifiers configured to run in the apply model phase
+		for (ComponentModifier initializer : component.getComponentModifiers()) {
 			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.APPLY_MODEL)) {
 				initializer.performModification(view, component);
 			}
 		}
 
-		// get components children and recursively call perform conditional
-		// logic
+		// get children and recursively perform conditional logic
 		for (Component nestedComponent : component.getNestedComponents()) {
+			if (nestedComponent != null) {
+				nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
+			}
+
 			performComponentApplyModel(view, nestedComponent, model);
 		}
+	}
+
+	public void puchCommonContext(View view, Component component, Object model) {
+		component.pushObjectToContext(UifConstants.ContextVariableNames.VIEW, view);
+		component.pushObjectToContext(UifConstants.ContextVariableNames.COMPONENT, component);
+
+		Properties properties = KNSServiceLocator.getKualiConfigurationService().getAllProperties();
+		component.pushObjectToContext(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
 	}
 
 	/**
@@ -281,7 +309,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		performCustomUpdateState(view, component, model);
 
 		// invoke component initializers setup to run in the finalize phase
-		for (ComponentModifier initializer : component.getComponentInitializers()) {
+		for (ComponentModifier initializer : component.getComponentModifiers()) {
 			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.FINALIZE)) {
 				initializer.performModification(view, component);
 			}
@@ -293,7 +321,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			if (nestedComponent instanceof Widget) {
 				((Widget) nestedComponent).performFinalize(view, model, component);
 			}
-			
+
 			performComponentFinalize(view, nestedComponent, model);
 		}
 	}
@@ -311,14 +339,14 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// get the collection instance for adding the new line
-		Collection<Object> collection = ModelUtils.getPropertyValue(model, collectionPath);
+		Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
 		if (collection == null) {
 			logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
 		}
 
 		// now get the new line we need to add
 		String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-		Object addLine = ModelUtils.getPropertyValue(model, addLinePath);
+		Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 		if (addLine == null) {
 			logAndThrowRuntime("Add line instance not found for path: " + addLinePath);
 		}
@@ -377,7 +405,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// get the collection instance for adding the new line
-		Collection<Object> collection = ModelUtils.getPropertyValue(model, collectionPath);
+		Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
 		if (collection == null) {
 			logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
 		}
@@ -507,14 +535,27 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	protected DataDictionaryService getDataDictionaryService() {
-		if (dataDictionaryService == null) {
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		if (this.dataDictionaryService == null) {
+			this.dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 		}
+
 		return this.dataDictionaryService;
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 		this.dataDictionaryService = dataDictionaryService;
+	}
+
+	protected ExpressionEvaluatorService getExpressionEvaluatorService() {
+		if (this.expressionEvaluatorService == null) {
+			this.expressionEvaluatorService = KNSServiceLocator.getExpressionEvaluatorService();
+		}
+
+		return this.expressionEvaluatorService;
+	}
+
+	public void setExpressionEvaluatorService(ExpressionEvaluatorService expressionEvaluatorService) {
+		this.expressionEvaluatorService = expressionEvaluatorService;
 	}
 
 }

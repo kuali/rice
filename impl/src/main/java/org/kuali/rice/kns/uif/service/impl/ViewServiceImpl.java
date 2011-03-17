@@ -100,7 +100,8 @@ public class ViewServiceImpl implements ViewService {
 		Map<String, String> context = helperService.createInitialViewContext(view, parameters);
 
 		// set context on View instance for reference by its components
-		view.setContext(context);
+		// TODO: revisit this
+		//view.setContext(context);
 
 		// invoke initialize phase on the views helper service
 		helperService.performInitialization(view);

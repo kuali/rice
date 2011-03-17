@@ -67,8 +67,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * The following initialization is performed:
 	 * 
 	 * <ul>
-	 * <li>Sets the headerText of the header Group if it is blank</li>
-	 * <li>Set the messageText of the summary MessageField if it is blank</li>
 	 * <li>Sorts the containers list of components</li>
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
@@ -80,19 +78,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		// if header title not given, use the container title
-		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
-			header.setHeaderText(this.getTitle());
-		}
-
-		// setup summary message field if necessary
-		if (summaryMessageField != null && StringUtils.isBlank(summaryMessageField.getMessageText())) {
-			summaryMessageField.setMessageText(summary);
-		}
-
 		// sort items list by the order property
-		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(
-				getItems(), itemOrderingSequence);
+		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
+				itemOrderingSequence);
 		setItems(sortedItems);
 
 		if (layoutManager != null) {
@@ -114,12 +102,30 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
+	 * The following finalization is performed:
+	 * 
+	 * <ul>
+	 * <li>Sets the headerText of the header Group if it is blank</li>
+	 * <li>Set the messageText of the summary MessageField if it is blank</li>
+	 * <li>Finalizes LayoutManager</li>
+	 * </ul>
+	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
 	public void performFinalize(View view, Object model) {
 		super.performFinalize(view, model);
+
+		// if header title not given, use the container title
+		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
+			header.setHeaderText(this.getTitle());
+		}
+
+		// setup summary message field if necessary
+		if (summaryMessageField != null && StringUtils.isBlank(summaryMessageField.getMessageText())) {
+			summaryMessageField.setMessageText(summary);
+		}
 
 		if (layoutManager != null) {
 			layoutManager.performFinalize(view, model, this);

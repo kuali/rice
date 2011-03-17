@@ -36,6 +36,7 @@ public class GroupField extends FieldBase {
 	private Group group;
 
 	public GroupField() {
+		super();
 	}
 
 	/**

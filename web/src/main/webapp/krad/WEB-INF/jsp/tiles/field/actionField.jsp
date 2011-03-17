@@ -50,3 +50,5 @@
  	 });
    </script>
 </c:if>
+
+<krad:template component="${field.lightBox}" componentId="${field.id}"/>

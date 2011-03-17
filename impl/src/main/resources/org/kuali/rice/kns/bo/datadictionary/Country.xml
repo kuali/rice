@@ -150,6 +150,31 @@
     </property>
   </bean>
 
+
+<!-- KRAD Inquiry Definition --> 
+  
+  <bean id="Country-InquiryView" parent="InquiryView">
+     <property name="title" value="Country Inquiry"/>
+     <property name="objectClassName" value="org.kuali.rice.kns.bo.CountryImpl"/>
+     <property name="Items">
+         <list>
+           <bean parent="GroupSectionGridLayout_Accordion">
+             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="items">
+               <list>
+                <bean parent="AttributeField" p:propertyName="postalCountryCode"/>
+                <bean parent="AttributeField" p:propertyName="postalCountryName"/>
+                <bean parent="AttributeField" p:propertyName="alternatePostalCountryCode"/>
+                <bean parent="AttributeField" p:propertyName="postalCountryRestrictedIndicator"/>
+                <bean parent="AttributeField" p:propertyName="active"/>
+               </list>
+             </property>
+             <property name="title" value="Country Information"/>
+           </bean>               
+         </list>
+     </property>
+  </bean> 
+
 <!-- Business Object Lookup Definition -->
 
 

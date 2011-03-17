@@ -50,6 +50,38 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean> 
   
+  <bean id="LightBox" parent="LightBox-parentBean"/>
+  <bean id="LightBox-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.LightBox" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/lightBox.jsp"/>
+      <property name="componentOptions">
+          <map>
+              <entry key="autoScale" value="true"/>              
+              <entry key="centerOnScroll" value="false"/>
+              <!--
+              <entry key="width" value="5"/>
+              <entry key="height" value="5"/>
+              -->
+              <entry key="type" value="iframe"/>    
+               <!-- Set the position to the top of the root viewport - avoid it centering out of view --> 
+              <!--  Remove the resize event to avoid repositioning : jq(window).unbind('resize.fb');  -->      
+              <entry key="onComplete" value="function () {var top = parent.document.documentElement.scrollTop;if (top&lt;20){top=20;}else{top=top-20;};jq('#fancybox-wrap').css({ 'top': top + 'px'});jq(window).unbind('resize.fb');}"/>          		
+          </map>
+      </property>
+  </bean> 
+  
+  <bean id="LightBoxLookup" parent="LightBoxLookup-parentBean"/>
+  <bean id="LightBoxLookup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.LightBoxLookup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/lightBoxLookup.jsp"/>
+      <!-- <property name="styleClasses" value="calendar"/>  -->
+      <property name="componentOptions">
+          <map>
+              <entry key="autoScale" value="false"/>
+              <entry key="centerOnScroll" value="false"/>
+              <entry key="onComplete" value="function () {var top = parent.document.documentElement.scrollTop;if (top&lt;20){top=20;}else{top=top-20;};jq('#fancybox-wrap').css({ 'top': top + 'px'});jq(window).unbind('resize.fb');}"/>
+          </map>
+      </property>
+  </bean>    
+  
   <bean id="TableTools-Paging" parent="TableTools-Paging-parentBean"/>
   
   <bean id="TableTools-Paging-parentBean" parent="TableTools-parentBean" scope="prototype">
@@ -99,7 +131,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/inquiry.jsp"/>
       <property name="baseInquiryUrl" value="http://localhost:8080/kr-dev/spring/inquiry"/>
       <property name="inquiryLinkField">
-        <bean parent="LinkField" p:styleClasses="action"/>
+        <bean parent="LinkField" p:styleClasses="action">
+        	<property name="lightBox">
+        		<ref bean="LightBox"/>
+      		</property>
+      	</bean>
       </property>
   </bean>  
   

@@ -23,6 +23,7 @@ import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.widget.LightBoxLookup;
 
 /**
  * Field that presents an action that can be taken on the UI such as submitting
@@ -43,6 +44,8 @@ public class ActionField extends FieldBase {
 	private ImageField actionImageField;
 
 	private Map<String, String> actionParameters;
+	
+	private LightBoxLookup lightBox;
 
 	public ActionField() {
 		clientSideCall = false;
@@ -337,6 +340,20 @@ public class ActionField extends FieldBase {
 	@Override
 	public boolean getSupportsOnClick() {
 		return true;
+	}
+
+	/**
+	 * @param lightBox the lightBox to set
+	 */
+	public void setLightBox(LightBoxLookup lightBox) {
+		this.lightBox = lightBox;
+	}
+
+	/**
+	 * @return the lightBox
+	 */
+	public LightBoxLookup getLightBox() {
+		return lightBox;
 	}
 
 }

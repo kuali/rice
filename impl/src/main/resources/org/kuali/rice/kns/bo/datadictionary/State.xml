@@ -122,6 +122,29 @@
       </list>
     </property>
   </bean>
+  
+<!-- KRAD Inquiry Definition -->   
+  
+  <bean id="State-InquiryView" parent="InquiryView">
+     <property name="title" value="State Inquiry"/>
+     <property name="objectClassName" value="org.kuali.rice.kns.bo.StateImpl"/>
+     <property name="Items">
+         <list>
+           <bean parent="GroupSectionGridLayout_Accordion">
+             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="items">
+               <list>
+                <bean parent="AttributeField" p:propertyName="postalCountryCode"/>
+                <bean parent="AttributeField" p:propertyName="postalStateCode"/>
+                <bean parent="AttributeField" p:propertyName="postalStateName"/>
+                <bean parent="AttributeField" p:propertyName="active"/>
+               </list>
+             </property>
+             <property name="title" value="State Information"/>
+           </bean>               
+         </list>
+     </property>
+  </bean>   
 
 <!-- Business Object Lookup Definition -->
 

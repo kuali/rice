@@ -320,6 +320,57 @@ function createDatePicker(controlId, options) {
 }
 
 /**
+ * Uses jQuery fancybox to link a fancybox to a given control id. 
+ * The second argument is a Map
+ * of options that are available for the FancyBox. See
+ * <link>http://fancybox.net/api</link> for
+ * documentation on these options
+ * 
+ * @param controlId -
+ *          id for the control that the fancybox should be linked to
+ * @param options -
+ *          map of option settings (option name/value pairs) for the plugin
+ */
+function createLightBox(controlId, options) {	
+    jq(function () {
+    	jq("#" + controlId).fancybox(options);    	
+    });			
+}
+
+/**
+ * To fix : 
+ * 1. does not work in iframe
+ * 2. Get post paramaters dynamic
+ * Uses jQuery fancybox to create lightbox for lookups. 
+ * It prevents the default submit and makes an ajax post. 
+ * The second argument is a Map
+ * of options that are available for the FancyBox. See
+ * <link>http://fancybox.net/api</link> for
+ * documentation on these options
+ * 
+ * @param controlId -
+ *          id for the control that the fancybox should be linked to
+ * @param options -
+ *          map of option settings (option name/value pairs) for the plugin
+ */
+function createLightBoxLookup(controlId, options) {
+    jq(function () {    	
+        jq("#" + controlId).click(function (e) {
+            e.preventDefault();
+            jq.ajax({
+        		type		: "POST",
+        		cache	: false,
+        		url		: "/kr-dev/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount",
+        		data		: jq(this).serializeArray(),
+        		success: function(data) {
+        			jq.fancybox(data, options);
+        		}
+        	});
+        });
+    });		
+}
+
+/**
  * Sets up the script necessary to toggle a group as a accordion
  * 
  * @param accordionToggleLink -

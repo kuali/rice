@@ -15,14 +15,13 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.LinkField"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.LightBox"/>
+<tiles:useAttribute name="componentId"/>
 
 <%--
-    Standard HTML Link     
+    Invokes JS method to implement a script linking the lightbox (fancybox) for lookups
  --%>
  
- <krad:attributeBuilder component="${field}"/>
- <krad:template component="${field.lightBox}" componentId="${field.id}"/>
- 
- <a id="${field.id}" href="${field.hrefText}" target="${field.target}"
-    ${style} ${styleClass}>${field.linkLabel}</a>
+<script type="text/javascript">
+   createLightBoxLookup('${componentId}', ${widget.componentOptionsJSString});
+</script>

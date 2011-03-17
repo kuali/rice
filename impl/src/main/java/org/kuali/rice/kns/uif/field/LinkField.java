@@ -17,6 +17,7 @@ package org.kuali.rice.kns.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.widget.LightBox;
 
 /**
  * Field that encloses a link element
@@ -29,6 +30,7 @@ public class LinkField extends FieldBase {
 	private String linkLabel;
 	private String target;
 	private String hrefText;
+	private LightBox lightBox;
 
 	public LinkField() {
 
@@ -75,6 +77,20 @@ public class LinkField extends FieldBase {
 
 	public void setHrefText(String hrefText) {
 		this.hrefText = hrefText;
+	}
+
+	/**
+	 * @param lightBox the lightBox to set
+	 */
+	public void setLightBox(LightBox lightBox) {
+		this.lightBox = lightBox;
+	}
+
+	/**
+	 * @return the lightBox
+	 */
+	public LightBox getLightBox() {
+		return lightBox;
 	}
 
 }

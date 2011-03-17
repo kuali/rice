@@ -25,13 +25,13 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
 import org.junit.Test
-import org.kuali.rice.krms.api.repository.Type;
-import org.kuali.rice.krms.api.repository.TypeContract;
+import org.kuali.rice.krms.api.repository.KrmsType;
+import org.kuali.rice.krms.api.repository.KrmsTypeContract;
 
 /**
  * Exercises the immutable Country class, including XML (un)marshalling
  */
-class TypeTest {
+class KrmsTypeTest {
 
   private final shouldFail = new GroovyTestCase().&shouldFail
 
@@ -42,14 +42,14 @@ class TypeTest {
 
   @Test
   public void testTypeBuilderPassedInParams() {
-    //No assertions, just test whether the Builder gives us a KRMS Type object
-    Type myType = Type.Builder.create("1", "Default", "KRMS_TEST", "").build()
+    //No assertions, just test whether the Builder gives us a KRMS KrmsType object
+    KrmsType myType = Type.Builder.create("1", "Default", "KRMS_TEST", "").build()
   }
 
   @Test
   public void testTypeBuilderPassedInContract() {
-    //No assertions, just test whether the Builder gives us a KRMS Type object
-    Type type = Type.Builder.create(new TypeContract() {
+    //No assertions, just test whether the Builder gives us a KRMS KrmsType object
+    KrmsType type = Type.Builder.create(new KrmsTypeContract() {
       String getId() {"1"}
       String getName() { "Student" }
 	  String getNamespace() {"KRMS_TEST" }
@@ -72,11 +72,11 @@ class TypeTest {
 
   @Test
   public void testXmlMarshaling() {
-    JAXBContext jc = JAXBContext.newInstance(Type.class)
+    JAXBContext jc = JAXBContext.newInstance(KrmsType.class)
     Marshaller marshaller = jc.createMarshaller()
     StringWriter sw = new StringWriter()
 
-    Type myType = Type.Builder.create("2", "United States", "KRMS_TEST", null).build()
+    KrmsType myType = Type.Builder.create("2", "United States", "KRMS_TEST", null).build()
     marshaller.marshal(myType, sw)
     String xml = sw.toString()
 
@@ -106,9 +106,9 @@ class TypeTest {
     </KRMSType>
     """
 
-    JAXBContext jc = JAXBContext.newInstance(Type.class)
+    JAXBContext jc = JAXBContext.newInstance(KrmsType.class)
     Unmarshaller unmarshaller = jc.createUnmarshaller();
-    Type myType = (Type) unmarshaller.unmarshal(new StringReader(rawXml))
+    KrmsType myType = (KrmsType) unmarshaller.unmarshal(new StringReader(rawXml))
     Assert.assertEquals("3",myType.id)
     Assert.assertEquals("Student",myType.name)
 	Assert.assertEquals("KRMS_TEST", myType.namespace)

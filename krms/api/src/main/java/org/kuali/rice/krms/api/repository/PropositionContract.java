@@ -37,7 +37,7 @@ public interface PropositionContract {
 	public String getTypeId();
 
 	/**
-	 * This is the Proposition Type of the proposition.
+	 * This is the Proposition KrmsType of the proposition.
 	 * There are three main types of Propositions:
 	 *   Compound Propositions - a proposition consisting of other propositions 
 	 *   	and a boolean algebra operator (AND, OR) defining how to evaluate 

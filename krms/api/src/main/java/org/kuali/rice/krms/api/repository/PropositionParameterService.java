@@ -26,7 +26,7 @@ import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 
-@WebService(name = "PropositionParameterService", targetNamespace = Type.Constants.KRMSNAMESPACE)
+@WebService(name = "PropositionParameterService", targetNamespace = KrmsType.Constants.KRMSNAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PropositionParameterService {
 

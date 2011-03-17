@@ -19,28 +19,28 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.Type;
-import org.kuali.rice.krms.api.repository.TypeService;
+import org.kuali.rice.krms.api.repository.KrmsType;
+import org.kuali.rice.krms.api.repository.KrmsTypeService;
 
 import java.util.*;
 
-public final class TypeServiceImpl implements TypeService {
+public final class TypeServiceImpl implements KrmsTypeService {
 
     private BusinessObjectService businessObjectService;
 
     @Override
-    public Type getTypeById(final String id) {
+    public KrmsType getTypeById(final String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("id is blank");
         }
 
-        TypeBo typeBo = businessObjectService.findByPrimaryKey(TypeBo.class, Collections.singletonMap("id", id));
+        KrmsTypeBo krmsTypeBo = businessObjectService.findByPrimaryKey(KrmsTypeBo.class, Collections.singletonMap("id", id));
 
-        return TypeBo.to(typeBo);
+        return KrmsTypeBo.to(krmsTypeBo);
     }
 
     @Override
-    public Type getTypeByNameAndNamespace(final String name, final String namespace) {
+    public KrmsType getTypeByNameAndNamespace(final String name, final String namespace) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name is blank");
         }
@@ -52,32 +52,32 @@ public final class TypeServiceImpl implements TypeService {
         map.put("name", name);
         map.put("namespace", namespace);
 
-        Collection<TypeBo> typeList = businessObjectService.findMatching(TypeBo.class, Collections.unmodifiableMap(map));
+        Collection<KrmsTypeBo> typeList = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
         if (typeList == null || typeList.isEmpty()) {
             return null;
         } else if (typeList.size() == 1) {
-            return TypeBo.to(typeList.iterator().next());
+            return KrmsTypeBo.to(typeList.iterator().next());
         } else throw new IllegalStateException("Multiple KRMS types found with same name and namespace");
     }
 
     @Override
-    public List<Type> findAllTypesByNamespace(final String namespace) {
+    public List<KrmsType> findAllTypesByNamespace(final String namespace) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespace);
         map.put("active", Boolean.TRUE);
 
-        Collection<TypeBo> typeBos = businessObjectService.findMatching(TypeBo.class, Collections.unmodifiableMap(map));
+        Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
 
-        return convertListOfBosToImmutables(typeBos);
+        return convertListOfBosToImmutables(krmsTypeBos);
     }
 
     @Override
-    public List<Type> findAllTypes() {
+    public List<KrmsType> findAllTypes() {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("active", Boolean.TRUE);
 
-        Collection<TypeBo> typeBos = businessObjectService.findMatching(TypeBo.class, Collections.unmodifiableMap(map));
-        return convertListOfBosToImmutables(typeBos);
+        Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
+        return convertListOfBosToImmutables(krmsTypeBos);
     }
 
     /**
@@ -95,12 +95,12 @@ public final class TypeServiceImpl implements TypeService {
      * @param countryBos a mutable List<CountryBo> to made completely immutable.
      * @return An unmodifiable List<Country>
      */
-    List<Type> convertListOfBosToImmutables(final Collection<TypeBo> typeBos) {
-        ArrayList<Type> types = new ArrayList<Type>();
-        for (TypeBo bo : typeBos) {
-            Type type = TypeBo.to(bo);
-            types.add(type);
+    List<KrmsType> convertListOfBosToImmutables(final Collection<KrmsTypeBo> krmsTypeBos) {
+        ArrayList<KrmsType> krmsTypes = new ArrayList<KrmsType>();
+        for (KrmsTypeBo bo : krmsTypeBos) {
+            KrmsType krmsType = KrmsTypeBo.to(bo);
+            krmsTypes.add(krmsType);
         }
-        return Collections.unmodifiableList(types);
+        return Collections.unmodifiableList(krmsTypes);
     }
 }

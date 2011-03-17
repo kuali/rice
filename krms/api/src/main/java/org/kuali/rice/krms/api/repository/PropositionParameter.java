@@ -37,15 +37,15 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
 public final class PropositionParameter implements PropositionParameterContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.ID, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String id;
-	@XmlElement(name = Elements.PROP_ID, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PROP_ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String propId;
-	@XmlElement(name = Elements.VALUE, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.VALUE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String value;
-	@XmlElement(name = Elements.PARM_TYPE, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PARM_TYPE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String parameterType;
-	@XmlElement(name = Elements.SEQUENCE, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.SEQUENCE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private Integer sequenceNumber;
 	
 	@SuppressWarnings("unused")
@@ -64,7 +64,7 @@ public final class PropositionParameter implements PropositionParameterContract,
     }
     
     /**
-	 * Constructs a KRMS Type from the given builder.  This constructor is private and should only
+	 * Constructs a KRMS KrmsType from the given builder.  This constructor is private and should only
 	 * ever be invoked from the builder.
 	 * 
 	 * @param builder the Builder from which to construct the KRMS type
@@ -102,7 +102,7 @@ public final class PropositionParameter implements PropositionParameterContract,
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS Type.  It enforces the constraints of the {@link TypeContract}.
+     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
      */
     public static class Builder implements PropositionParameterContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
@@ -126,7 +126,7 @@ public final class PropositionParameter implements PropositionParameterContract,
 
 
         /**
-         * Creates a builder by populating it with data from the given {@link TypeContract}.
+         * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract

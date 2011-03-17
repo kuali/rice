@@ -12,11 +12,11 @@ import org.hibernate.annotations.Type
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.TypeContract;
+import org.kuali.rice.krms.api.repository.KrmsTypeContract;
 
 @Entity
 @Table(name="KRMS_TYP_T")
-public class TypeBo extends PersistableBusinessObjectBase implements Inactivateable, TypeContract {
+public class KrmsTypeBo extends PersistableBusinessObjectBase implements Inactivateable, KrmsTypeContract {
 
 	@Id
 	@Column(name="TYP_ID")
@@ -40,9 +40,9 @@ public class TypeBo extends PersistableBusinessObjectBase implements Inactivatea
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   static org.kuali.rice.krms.api.repository.Type to(TypeBo bo) {
+   static org.kuali.rice.krms.api.repository.KrmsType to(KrmsTypeBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.Type.Builder.create(bo).build();
+	   return org.kuali.rice.krms.api.repository.KrmsType.Builder.create(bo).build();
    }
 
    /**
@@ -50,10 +50,10 @@ public class TypeBo extends PersistableBusinessObjectBase implements Inactivatea
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static TypeBo from(org.kuali.rice.krms.api.repository.Type im) {
+   static KrmsTypeBo from(org.kuali.rice.krms.api.repository.KrmsType im) {
 	   if (im == null) { return null }
 
-	   TypeBo bo = new TypeBo()
+	   KrmsTypeBo bo = new KrmsTypeBo()
 	   bo.id = im.id
 	   bo.name = im.name
 	   bo.namespace = im.namespace

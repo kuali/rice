@@ -23,24 +23,24 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.kuali.rice.kns.service.BusinessObjectService
 import org.kuali.rice.kns.util.KNSPropertyConstants
-import org.kuali.rice.krms.api.repository.Type;
-import org.kuali.rice.krms.api.repository.TypeService;
-import org.kuali.rice.krms.impl.repository.TypeBo;
+import org.kuali.rice.krms.api.repository.KrmsType;
+import org.kuali.rice.krms.api.repository.KrmsTypeService;
+import org.kuali.rice.krms.impl.repository.KrmsTypeBo;
 import org.kuali.rice.krms.impl.repository.TypeServiceImpl;
 
 class TypeServiceImplTest {
 
   private final shouldFail = new GroovyTestCase().&shouldFail
 
-  static Map<String, TypeBo> sampleTypes = new HashMap<String, TypeBo>()
-  static Map<String, TypeBo> sampleTypesKeyedByName = new HashMap<String, TypeBo>()
+  static Map<String, KrmsTypeBo> sampleTypes = new HashMap<String, KrmsTypeBo>()
+  static Map<String, KrmsTypeBo> sampleTypesKeyedByName = new HashMap<String, KrmsTypeBo>()
   def mockBusinessObjectService
 
   @BeforeClass
   static void createSampleTypeBOs() {
-    TypeBo defaultBo = new TypeBo(active: true, id: "1", name: "DEFAULT", namespace: "KRMS_TEST", serviceName: "TypeServiceImpl")
-    TypeBo studentBo = new TypeBo(active: true, id: "2", name: "Student", namespace: "KRMS_TEST", serviceName: "TypeServiceImpl")
-    TypeBo ifopalBo = new TypeBo(active: true, id: "3", name: "IFOPAL", namespace: "KC_TEST", serviceName: null)
+    KrmsTypeBo defaultBo = new KrmsTypeBo(active: true, id: "1", name: "DEFAULT", namespace: "KRMS_TEST", serviceName: "TypeServiceImpl")
+    KrmsTypeBo studentBo = new KrmsTypeBo(active: true, id: "2", name: "Student", namespace: "KRMS_TEST", serviceName: "TypeServiceImpl")
+    KrmsTypeBo ifopalBo = new KrmsTypeBo(active: true, id: "3", name: "IFOPAL", namespace: "KC_TEST", serviceName: null)
     for (bo in [defaultBo, studentBo, ifopalBo]) {
       sampleTypes.put(bo.id, bo)
       sampleTypesKeyedByName.put(bo.name, bo)
@@ -61,11 +61,11 @@ class TypeServiceImplTest {
 
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    TypeService service = new TypeServiceImpl()
+    KrmsTypeService service = new TypeServiceImpl()
     service.setBusinessObjectService(bos)
-    Type myType = service.getTypeById("1")
+    KrmsType myType = service.getTypeById("1")
 
-    Assert.assertEquals(TypeBo.to(sampleTypes.get("1")), myType)
+    Assert.assertEquals(KrmsTypeBo.to(sampleTypes.get("1")), myType)
     mockBusinessObjectService.verify(bos)
   }
 
@@ -92,11 +92,11 @@ class TypeServiceImplTest {
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    TypeService service = new TypeServiceImpl()
+    KrmsTypeService service = new TypeServiceImpl()
     service.setBusinessObjectService(bos)
-    Type myType = service.getTypeByNameAndNamespace("Student","KRMS_TEST")
+    KrmsType myType = service.getTypeByNameAndNamespace("Student","KRMS_TEST")
 
-    Assert.assertEquals(TypeBo.to(sampleTypesKeyedByName.get("Student")), myType)
+    Assert.assertEquals(KrmsTypeBo.to(sampleTypesKeyedByName.get("Student")), myType)
     mockBusinessObjectService.verify(bos)
   }
 
@@ -151,7 +151,7 @@ class TypeServiceImplTest {
       Class clazz, Map map -> [sampleTypes.get("1"), sampleTypes.get("2")]
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-    TypeService service = new TypeServiceImpl()
+    KrmsTypeService service = new TypeServiceImpl()
     service.setBusinessObjectService(bos)
     service.findAllTypesByNamespace()
 
@@ -165,7 +165,7 @@ class TypeServiceImplTest {
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    TypeService service = new TypeServiceImpl()
+    KrmsTypeService service = new TypeServiceImpl()
     service.setBusinessObjectService(bos)
     service.findAllTypes()
 

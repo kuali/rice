@@ -26,7 +26,7 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
  *
  * @see PropositionContract
  */
-@XmlRootElement(name = Proposition.Constants.ROOT_ELEMENT_NAME, namespace = Type.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = Proposition.Constants.ROOT_ELEMENT_NAME, namespace = KrmsType.Constants.KRMSNAMESPACE)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Proposition.Constants.TYPE_NAME, propOrder = {
 		Proposition.Elements.PROP_ID,
@@ -38,15 +38,15 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
 public final class Proposition implements PropositionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.PROP_ID, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PROP_ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String propId;
-	@XmlElement(name = Elements.DESC, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.DESC, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String description;
-	@XmlElement(name = Elements.TYPE_ID, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.TYPE_ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String typeId;
-	@XmlElement(name = Elements.PROP_TYPE_CODE, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PROP_TYPE_CODE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String propositionTypeCode;
-//	@XmlElement(name = Elements.PARAMETER, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+//	@XmlElement(name = Elements.PARAMETER, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 //	private List<PropositionParameter> parameters;
 	
 	@SuppressWarnings("unused")
@@ -65,7 +65,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
     }
     
     /**
-	 * Constructs a KRMS Type from the given builder.  This constructor is private and should only
+	 * Constructs a KRMS KrmsType from the given builder.  This constructor is private and should only
 	 * ever be invoked from the builder.
 	 * 
 	 * @param builder the Builder from which to construct the KRMS type
@@ -104,7 +104,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 //	}
 
 	/**
-     * This builder is used to construct instances of KRMS Type.  It enforces the constraints of the {@link TypeContract}.
+     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
      */
     public static class Builder implements PropositionContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
@@ -128,7 +128,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 
 
         /**
-         * Creates a builder by populating it with data from the given {@link TypeContract}.
+         * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract

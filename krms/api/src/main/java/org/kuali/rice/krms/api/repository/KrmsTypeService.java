@@ -24,20 +24,20 @@ import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 
-@WebService(name = "KRMSTypeService", targetNamespace = Type.Constants.KRMSNAMESPACE)
+@WebService(name = "KRMSTypeService", targetNamespace = KrmsType.Constants.KRMSNAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface TypeService {
+public interface KrmsTypeService {
 
     /**
      * Lookup a krms type based on the given id.
      *
      * @param id the given KRMS type id
-     * @return a KRMS Type object with the given id.  A null reference is returned if an invalid or
+     * @return a KRMS KrmsType object with the given id.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
      */
     @WebMethod(operationName = "getTypeById")
     @WebResult(name = "type")
-    Type getTypeById(@WebParam(name = "id") String id);
+    KrmsType getTypeById(@WebParam(name = "id") String id);
 
     /**
      * Get a krms type object based on name and namespace
@@ -50,7 +50,7 @@ public interface TypeService {
      */
     @WebMethod(operationName = "getTypeByNameAndNamespace")
     @WebResult(name = "type")
-    Type getTypeByNameAndNamespace(
+    KrmsType getTypeByNameAndNamespace(
             @WebParam(name = "name") String name,
             @WebParam(name = "namespace") String namespace);
 
@@ -61,7 +61,7 @@ public interface TypeService {
      */
     @WebMethod(operationName = "findAllTypesByNamespace")
     @WebResult(name = "namespaceTypes")
-    List<Type> findAllTypesByNamespace(
+    List<KrmsType> findAllTypesByNamespace(
     		@WebParam(name = "namespace") String namespace);
 
     /**
@@ -71,5 +71,5 @@ public interface TypeService {
      */
     @WebMethod(operationName = "findAllTypes")
     @WebResult(name = "allTypes")
-    List<Type> findAllTypes();
+    List<KrmsType> findAllTypes();
 }

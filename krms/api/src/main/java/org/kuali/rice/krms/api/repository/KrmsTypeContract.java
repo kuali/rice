@@ -3,7 +3,7 @@ package org.kuali.rice.krms.api.repository;
 
 //import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
-public interface TypeContract {
+public interface KrmsTypeContract {
 	/**
 	 * This is the ID for the KRMSType 
 	 *
@@ -35,7 +35,7 @@ public interface TypeContract {
 	public String getNamespace();
 
 	/**
-	 * This is the name of the KRMS Type service
+	 * This is the name of the KRMS KrmsType service
 	 * 
 	 * @return the service name of the KRMS type
 	 */

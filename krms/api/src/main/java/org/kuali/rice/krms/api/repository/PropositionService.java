@@ -23,7 +23,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 
-@WebService(name = "PropositionService", targetNamespace = Type.Constants.KRMSNAMESPACE)
+@WebService(name = "PropositionService", targetNamespace = KrmsType.Constants.KRMSNAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PropositionService {
 

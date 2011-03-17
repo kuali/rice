@@ -18,34 +18,34 @@ import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 
 /**
- * Concrete model object implementation of KRMS Type. 
+ * Concrete model object implementation of KRMS KrmsType. 
  * immutable. 
- * Instances of Type can be (un)marshalled to and from XML.
+ * Instances of KrmsType can be (un)marshalled to and from XML.
  *
- * @see TypeContract
+ * @see KrmsTypeContract
  */
-@XmlRootElement(name = Type.Constants.ROOT_ELEMENT_NAME, namespace = Type.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = KrmsType.Constants.ROOT_ELEMENT_NAME, namespace = KrmsType.Constants.KRMSNAMESPACE)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Type.Constants.TYPE_NAME, propOrder = {
-		Type.Elements.ID,
-		Type.Elements.NAME,
-		Type.Elements.NAMESPACE,
-		Type.Elements.SERVICENAME,
-		Type.Elements.ACTIVE,
+@XmlType(name = KrmsType.Constants.TYPE_NAME, propOrder = {
+		KrmsType.Elements.ID,
+		KrmsType.Elements.NAME,
+		KrmsType.Elements.NAMESPACE,
+		KrmsType.Elements.SERVICENAME,
+		KrmsType.Elements.ACTIVE,
 		"_elements"
 })
-public final class Type implements TypeContract, ModelObjectComplete{
+public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.ID, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String id;
-	@XmlElement(name = Elements.NAME, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAME, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String name;
-	@XmlElement(name = Elements.NAMESPACE, required=true, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAMESPACE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String namespace;
-	@XmlElement(name = Elements.SERVICENAME, required=false, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.SERVICENAME, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String serviceName;
-	@XmlElement(name = Elements.ACTIVE, required=false, namespace = Type.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ACTIVE, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private boolean active;
 	
 	@SuppressWarnings("unused")
@@ -55,7 +55,7 @@ public final class Type implements TypeContract, ModelObjectComplete{
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
      */
-    private Type() {
+    private KrmsType() {
     	this.id = null;
     	this.name = null;
     	this.namespace = null;
@@ -64,12 +64,12 @@ public final class Type implements TypeContract, ModelObjectComplete{
     }
     
     /**
-	 * Constructs a KRMS Type from the given builder.  This constructor is private and should only
+	 * Constructs a KRMS KrmsType from the given builder.  This constructor is private and should only
 	 * ever be invoked from the builder.
 	 * 
 	 * @param builder the Builder from which to construct the KRMS type
 	 */
-    private Type(Builder builder) {
+    private KrmsType(Builder builder) {
         this.id = builder.getId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
@@ -102,9 +102,9 @@ public final class Type implements TypeContract, ModelObjectComplete{
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS Type.  It enforces the constraints of the {@link TypeContract}.
+     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
      */
-    public static class Builder implements TypeContract, ModelBuilder, Serializable {
+    public static class Builder implements KrmsTypeContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
 		
 		private String id;
@@ -138,12 +138,12 @@ public final class Type implements TypeContract, ModelObjectComplete{
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link TypeContract}.
+         * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(TypeContract contract) {
+        public static Builder create(KrmsTypeContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -218,8 +218,8 @@ public final class Type implements TypeContract, ModelObjectComplete{
 		 * @return the fully-constructed CampusType
 		 */
         @Override
-        public Type build() {
-            return new Type(this);
+        public KrmsType build() {
+            return new KrmsType(this);
         }
 		
     }

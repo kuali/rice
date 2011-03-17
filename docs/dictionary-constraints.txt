@@ -61,21 +61,133 @@ Finally, note that the ValidCharactersConstraint has a second property, "jsValue
 
 h2. Occurrences Constraints
 
-An occurrence constraint states that for a given attribute to be valid, a certain number of prerequisite conditions must be matched.  A prerequisite condition simply means that another attribute with a specified attribute path is non-empty.  These constraints thus handle situations where one or more of a number of fields are required.
+An occurrence constraint states that for a given attribute to be valid, a certain number of prerequisite conditions must be matched.  A prerequisite condition simply means that another attribute with a specified attribute path is non-empty (so Strings must have some text in them; Collections must have at least one member; or the attribute must otherwise not be null).  These constraints thus handle situations where one or more of a number of fields are required.
 
-An occurrence constraint is specified via the MustOccurConstraint constraint.  Let's say that an application requires either a phone number, an e-mail address, or a time for showing up be specified as contact information.
+An occurrence constraint is specified via the MustOccurConstraint constraint.  Let's say that an application requires either a phone number, an e-mail address, or a time for showing up be specified as contact information.  The following example sets up that validation in the data dictionary, adding the error to the phone number attribute (though the same constraint could be copied to the other attributes just as easily):
 
-[JAMES HERE - GIVE SIMPLE EXAMPLE AND MORE COMPLEX EXAMPLE - SEE JAVADOC ON MUSTOCCURCONSTRAINT FOR IDEAS]
+{code:xml}
+1.   <bean id="DataObject-phoneNumber" parent="AttributeDefinition">
+2.     <property name="name" value="phoneNumber" />
+3.     <property name="mustOccurConstraints">
+4.       <list>
+5.         <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+6.           <property name="min" value="1" />
+7.           <property name="max" value="3" />
+8.           <property name="prerequisiteConstraints">
+9.             <list>
+10.              <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="phoneNumber"/>
+11.              <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="emailAddress"/>
+12.              <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="showUpTime"/>
+13.            </list>
+14.          </property>
+15.        </bean>
+16.      </list>
+17.    </property>
+18.  </bean>
+{code}
 
-A MustOccurConstraint also has a list of child MustOccurConstraints.  [JAMES - COMPLEX EXAMPLE]
+The min and max properties of lines 6 and 7 tell the constraint how many of the following properties must be present and the maximum number of filled in properties we expect.  Here, the min is 1 - so at least one of the properties must be filled in - and the max is 3, so if all three are filled in, the validation will still work fine.  If there was a desire to only have one attribute filled in, the max could have been set to 1.
+
+The MustOccurConstraint has a list of prerequisiteConstraints - lines 8 through 14 - which describe which attributes are grouped by this constraint.
+
+A MustOccurConstraint can also have a list of child MustOccurConstraints.  Why would such a thing be desirable?  Because it provides a way to set up nested validations.  Let's say that, instead of specifying a show up time, we had an address which needed to be filled in.  If that was the case, we'd need every field of the address - street, city, state, and zip filled in - for the constraint to pass.  In that case, we would have left min and max at 1 and 3 respectively; but instead of line 12, we would have specified a value for the property mustOccurConstraints at line 15, and added a list of constraints asking for all the address attributes to be filled in.
+
+This constraint has been sorely lacked in Kuali development for some time.  It's great that such a powerful feature has been added to KRAD.
+
+h2. Dependency Constraints
+
+[JAMES R - TRUE THAT?]
+
+A dependency constraint reuses the org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint but outside the context of the min occurs/max occurs of the MustOccurConstraint.  Basically, if the attribute is non-empty, then it is expected that any prerequisite constraints will also be non-empty.
+
+{code:xml}
+1.  <bean id="DataObject-phoneNumber" parent="AttributeDefinition">
+2.    <property name="name" value="phoneNumber" />
+3.    <property name="dependencyConstraints">
+4.      <list>
+5.        <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="phoneExtension" />
+6.      </list>
+7.    </property>
+8.  </bean>
+{code}
+
+In this case, if phoneNumber is non-empty, then phoneExtension must be non-empty as well.
 
 h2. Lookup Constraints
 
 These are constraints on values returned from lookups into an attribute.  As of the time of this writing, they're still in process of implementation.
 
-h2. Dependency Constraints
 h2. Conditional Logic Constraints
+
+All of the constraints so far covered are static, in a fashion.  Once declared, they will apply to their attributes no matter what.  However, let's say that a constraint should only be tested when the attribute has a certain value.  How could the constraint be turned off if that value isn't present and only be applied if the attribute has the given value?
+
+The final constraint to look at is org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint, which will turn on and off child constraints if attributes match certain values.  The classic example of using this is in an international address form.  If the country code is the United States, then the state code should be filled in as well.  If the country code is for Canada or Turkey, a province should be filled in.  That would be done via a configuration like this:
+
+{code:xml}
+1.  <bean id="DataObject-countryCode" parent="AttributeDefinition">
+2.    <property name="name" value="countryCode" />
+3.    <property name="caseConstraint">
+4.      <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+5.        <property name="whenConstraint">
+6.          <list>
+7.            <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+8.              <property name="values">
+9.                <list>
+10.                 <value>US</value>
+11.               </list>
+12.             </property>
+13.             <property name="constraint">
+14.               <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="state" />
+15.             </property>
+16.           </bean>
+17.           <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+18.             <property name="values">
+19.               <list>
+20.                 <value>CA</value>
+21.                 <value>TR</value>
+22.               </list>
+23.             </property>
+24.             <property name="constraint">
+25.               <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="province" />
+26.             </property>
+27.           </bean>
+28.         </list>
+29.       </property>
+30.     </bean>
+31.   </property>
+32. </bean>
+{code}
+
+Obviously, for such a powerful constraint, configuration becomes a bit more complex.
+
+A CaseConstraint has a List of WhenConstraints.  WhenConstraints match values to constraints that should be run when the attribute's value matches the WhenConstraint's values.  Here, values are hard coded (lines 8 through 12 and lines 18 through 23) but they need not be.  If the values are in other attributes, a List of valuePaths can be specified.
+
+A WhenConstraint also has one child constraint to match.  In both of the WhenConstraints above, a PrerequisiteConstraint is used to make sure that another attribute - either state or province - is non-empty (lines 14 and 25).  Any Constraint could be used as the child of the WhenConstraint - a SimpleConstraint, another CaseConstraint, and so on.
+
+The ability to turn on and off constraints such can lead to very powerful validations being built directly in the DataDictionary.
+
 h2. Constraints on the Client Side
+h2. Changing Error Messages
+
+All of the covered constraints come are associated with standard error messages.  For instance, if a "required" constraint has been violated, the user will get the following message:
+
+{code}
+Phone Number is a required field.
+{code}
+
+...which has taken the label from the attribute which violated the constraint and formatted that in to the standard error.required message in the KR-ApplicationResources.properties file.
+
+With most of the constraints, the message can be overridden on the constraint, by specifying the "labelKey" property.  For instance, a configuration like this:
+
+{code:xml}
+1.  <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+2.    <property name="min" value="1" />
+3.    <property name="max" value="3" />
+4.    <property name="labelKey" value="error.must.be.able.to.track.down" />
+{code}
+
+...instead of using the standard message, the error message show will be the message associated with the "error.must.be.able.to.track.down" key.  This allows for a great deal more flexibility in what message gets displayed - though, the classic messages will still show up as they always did if nothing else is specified.
+
 h1. Constraint Architecture
 h2. The Constraint Interface{anchor: constraint_interface}
 h2. Injecting processors into DictionaryValidationService

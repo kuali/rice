@@ -1,0 +1,82 @@
+{toc}
+
+h1. Attribute Definition Constraints
+
+In the earliest versions of the Kuali Nervous System, it was recognized that forcing developers to write Java-based rules to check if a required field was filled in or if it matched a date pattern was a hefty load of work that easily could be transferred to the data dictionary.  And therefore, every AttributeDefinition defined for a property of a data object had the ability to define validations.  For instance, let's take a generic date field from KFS's org/kuali/kfs/sys/businessobject/datadictionary/GenericAttributes.xml file:
+
+{code:xml}
+1.  <bean id="GenericAttributes-genericDate" parent="GenericAttributes-genericDate-parentBean"/>
+2.  <bean id="GenericAttributes-genericDate-parentBean" abstract="true" parent="AttributeDefinition">
+3.    <property name="name" value="genericDate"/>
+4.    <property name="forceUppercase" value="false"/>
+5.    <property name="label" value="Generic Date Style Attribute"/>
+6.    <property name="shortLabel" value="GenericDate"/>
+7.    <property name="maxLength" value="22"/>
+8.    <property name="validationPattern" ref="DateValidation" />
+9.    <property name="control" ref="DateControl" />
+10.   <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateFormatter"/>
+11. </bean>
+{code}
+
+It's a simple enough example, but lines 7 and 8 pack quite a bit of power: together, they limit the length of the field to a size which can fit in the database (evidently twenty-two characters) and they add the DateValidation, which requires that any user input fits a certain pattern defined as a regular expression.  Two lines of configuration, and the developer gets a fair amount of error checking.
+
+That's wonderful, of course, but it has limits.  There's no way to only run constraints based on the values present in other attributes.  There wasn't a general way to enforce a data type for a user input value.  There wasn't a way to say, for instance, that one or another field was required - either a field was required or it wasn't.  Such logic, not that much more complex, all required a Java-based rules solution.
+
+However, thanks to some enterprising work from the Kuali Student team, the data dictionary for the Kuali Rapid Application Development framework (better known as KRAD) has gained a lot of power in the validation space.  Much more complex logic is available than ever before.  Not only that, but it can be enabled to work on the client side via JavaScript as well.  Finally, for even more flexibility, the processors which act on the constraints have been pulled out into injectable classes - meaning that applications can override the logic for a constraint if needed.  Furthermore, constraints need not act only on AttributeDefinitions; new interfaces have been developed which allow any configuration class to participate in being validated.
+
+Obviously, there's a lot of functionality to cover - from the classic constraints which continue on in the framework to the powerful constraints that the Kuali Student team contributed to KRAD.  This article will do an overview of the specific "built-in" constraints available to developers.  It will then look at the architecture of the constraint framework, with a special emphasis on how constraint logic may be overridden, how new constraints would be constructed, and non-attributes could have Constraint logic built for them.
+
+h2. Simple Constraints
+
+As will be covered in more detail in [The Constraint Interface|#constraint_interface], every constraint in KRAD implements the org.kuali.rice.kns.datadictionary.validation.constraint.Constraint interface.  This interface is a simple marker interface.  Children of that interface tend to define the data they would need from the configuration to figure out if the value put into the attribute is valid or not.  For instance, in the GenericAttributes-genericDate example above, the maxLength property is set to 22.  One would expect a length-based constraint to require a getMaxLength() method which could then be fed to the Constraint to find the maximum length.
+
+[HERE JAMES]
+
+org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint defines what we might call a "nervous system classic" constraint.  It is built from normal fields on AttributeDefinition - required; maxLength and minLength (the latter has been added as part of KRAD); exclusiveMin and exclusiveMax; and finally, minOccurs and maxOccurs, which will be covered in more detail presently.  The required constraint, of course, means that some value must be set for the attribute.  The maxLength and minLength attributes typically apply to String data, which must be a certain size.  Likewise, exclusiveMin and exclusiveMax apply to numeric data which must fit within some set range.
+
+[HERE JAMES - MINOCCURS AND MAX OCCURS; FINISH UP]
+
+h2. ValidCharactersConstraint
+
+Another hold over from the nervous system constraints, ValidCharactersConstraint exists to make sure that a String value matches against a regular expression.  For instance, let's say that a KRAD application requires that all phone numbers must be in the form of (###) ###-####  (Evidently, the attribute does not accept international numbers...but as developers, we must rest assured that's the requirement.)  In the data dictionary for that attribute, the following could be set:
+
+{code:xml}
+1.  <bean id="DataObject-phoneNumber" parent="AttributeDefinition">
+2.    <property name="name" value="phoneNumber" />
+3.    <property name="validCharactersConstraint">
+4.      <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
+5.        <property name="value" value="\(\d{3}\) \d{3}-\d{4}" />
+6.      </bean>
+7.    </property>
+8.  </bean>
+{code}
+
+In lines 3 through 7, we set the validCharactersConstraint property on the AttributeDefinition, handing the bean we just created a regex which should match the phone number pattern which the requirements say all phone numbers should match.  This regex is passed in as the value property to the ValidCharactersConstraint bean.
+
+[JAMES - STANDARD VALID CHARACTERS CONSTRAINTS?]
+
+Finally, note that the ValidCharactersConstraint has a second property, "jsValue".  In most cases, Java's regular expression engine (ValidCharactersConstraint uses the built-in regular expression engine) will accept the same expressions as the JavaScript engine.  That's good, because the same regular expression can be passed to the client and handled client side, as will be covered in more detail soon.  However, there's a small number of discrepancies between the two engines, so sometimes an extra, JavaScript version of the regular expression must be supplied.
+
+*Side note:* So what are those discrepancies?  It's hard to say.  Part of the issue is that each browser basically has its own JavaScript regular expression engine.  The best idea is to keep validation regular expressions to the use of broadly supported features, and keep on eye on engine comparison pages such as [http://en.wikipedia.org/wiki/Comparison_of_regular_expression_engines].
+
+h2. Occurrences Constraints
+
+An occurrence constraint states that for a given attribute to be valid, a certain number of prerequisite conditions must be matched.  A prerequisite condition simply means that another attribute with a specified attribute path is non-empty.  These constraints thus handle situations where one or more of a number of fields are required.
+
+An occurrence constraint is specified via the MustOccurConstraint constraint.  Let's say that an application requires either a phone number, an e-mail address, or a time for showing up be specified as contact information.
+
+[JAMES HERE - GIVE SIMPLE EXAMPLE AND MORE COMPLEX EXAMPLE - SEE JAVADOC ON MUSTOCCURCONSTRAINT FOR IDEAS]
+
+A MustOccurConstraint also has a list of child MustOccurConstraints.  [JAMES - COMPLEX EXAMPLE]
+
+h2. Lookup Constraints
+
+These are constraints on values returned from lookups into an attribute.  As of the time of this writing, they're still in process of implementation.
+
+h2. Dependency Constraints
+h2. Conditional Logic Constraints
+h2. Constraints on the Client Side
+h1. Constraint Architecture
+h2. The Constraint Interface{anchor: constraint_interface}
+h2. Injecting processors into DictionaryValidationService
+h2. Applying Constraints to non-Attributes

@@ -36,8 +36,6 @@
         <module>kcb</module>
         <module>impl</module>
         <module>edl</module>
-        <module>rice-edl-test</module>
-        <module>edl</module>
     </modules>
     <properties>
       <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->

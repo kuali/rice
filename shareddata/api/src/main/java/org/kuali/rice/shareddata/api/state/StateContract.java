@@ -48,4 +48,11 @@ public interface StateContract {
      * @return the active flag of the State
      */
     boolean isActive();
+
+    /**
+     * This the object version number for State.
+     *
+     * @return the version number of the State
+     */
+    Long getVersionNumber();
 }

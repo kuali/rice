@@ -42,6 +42,7 @@ import java.util.Collection;
         County.Elements.COUNTRY_CODE,
         County.Elements.STATE_CODE,
         County.Elements.ACTIVE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class County implements CountyContract, ModelObjectComplete {
@@ -63,6 +64,9 @@ public final class County implements CountyContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -77,6 +81,7 @@ public final class County implements CountyContract, ModelObjectComplete {
         this.countryCode = null;
         this.stateCode = null;
         this.active = false;
+        this.versionNumber = null;
     }
 
     private County(Builder builder) {
@@ -85,6 +90,7 @@ public final class County implements CountyContract, ModelObjectComplete {
         countryCode = builder.getCountryCode();
         stateCode = builder.getStateCode();
         active = builder.isActive();
+        versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -112,6 +118,11 @@ public final class County implements CountyContract, ModelObjectComplete {
         return active;
     }
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
     /**
      * This builder constructs an County enforcing the constraints of the {@link CountyContract}.
      */
@@ -124,19 +135,21 @@ public final class County implements CountyContract, ModelObjectComplete {
         private String countryCode;
         private String stateCode;
         private boolean active;
+        private Long versionNumber;
 
-        private Builder(String code, String name, String countryCode, String stateCode) {
+        private Builder(String code, String name, String countryCode, String stateCode, Long versionNumber) {
             setCode(code);
             setName(name);
             setCountryCode(countryCode);
             setStateCode(stateCode);
+            setVersionNumber(versionNumber);
         }
 
         /**
          * creates a County Builder with the required fields.
          */
-        public static Builder create(String code, String name, String countryCode, String stateCode) {
-            final Builder builder = new Builder(code, name, countryCode, stateCode);
+        public static Builder create(String code, String name, String countryCode, String stateCode, Long versionNumber) {
+            final Builder builder = new Builder(code, name, countryCode, stateCode, versionNumber);
             builder.setActive(true);
             return builder;
         }
@@ -145,7 +158,7 @@ public final class County implements CountyContract, ModelObjectComplete {
          * creates a County Builder from an existing {@link CountyContract}.
          */
         public static Builder create(CountyContract contract) {
-            final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode(), contract.getStateCode());
+            final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode(), contract.getStateCode(), contract.getVersionNumber());
             builder.setActive(contract.isActive());
             return builder;
         }
@@ -235,6 +248,15 @@ public final class County implements CountyContract, ModelObjectComplete {
          */
         public void setActive(boolean active) {
             this.active = active;
+        }
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
         }
 
         @Override

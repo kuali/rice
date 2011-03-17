@@ -59,7 +59,7 @@ public interface ComponentContract {
 
 
     /**
-     * This the ojb object version number for Component.
+     * This the object version number for Component.
      *
      * @return the version number of the Parameter
      */

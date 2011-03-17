@@ -64,4 +64,11 @@ public interface PostalCodeContract {
      * @return the active flag of the PostalCode
      */
     boolean isActive();
+
+    /**
+     * This the object version number for PostalCode.
+     *
+     * @return the version number of the PostalCode
+     */
+    Long getVersionNumber();
 }

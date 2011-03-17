@@ -33,6 +33,7 @@ class CountryEbo implements Inactivateable, CountryContract, ExternalizableBusin
   def String name;
   def boolean restricted;
   def boolean active;
+  def Long versionNumber
 
   /**
    * Converts a mutable CountryEbo to an immutable Country representation.
@@ -58,6 +59,7 @@ class CountryEbo implements Inactivateable, CountryContract, ExternalizableBusin
     bo.name = immutable.name
     bo.restricted = immutable.restricted
     bo.active = immutable.active
+    bo.versionNumber = immutable.versionNumber
 
     return bo;
   }

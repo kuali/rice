@@ -55,4 +55,11 @@ public interface CountyContract {
      * @return the active flag of the County
      */
     boolean isActive();
+
+    /**
+     * This the object version number for County.
+     *
+     * @return the version number of the County
+     */
+    Long getVersionNumber();
 }

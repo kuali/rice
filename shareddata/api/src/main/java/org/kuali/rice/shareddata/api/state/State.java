@@ -46,6 +46,7 @@ import java.util.Collection;
         State.Elements.NAME,
         State.Elements.COUNTRY_CODE,
         State.Elements.ACTIVE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 
@@ -65,6 +66,9 @@ public final class State implements StateContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -78,6 +82,7 @@ public final class State implements StateContract, ModelObjectComplete {
         this.name = null;
         this.countryCode = null;
         this.active = false;
+        this.versionNumber = null;
     }
 
     private State(Builder builder) {
@@ -85,6 +90,7 @@ public final class State implements StateContract, ModelObjectComplete {
         name = builder.getName();
         countryCode = builder.getCountryCode();
         active = builder.isActive();
+        versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -107,6 +113,11 @@ public final class State implements StateContract, ModelObjectComplete {
         return active;
     }
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
     /**
      * This builder constructs a State enforcing the constraints of the {@link StateContract}.
      */
@@ -122,10 +133,13 @@ public final class State implements StateContract, ModelObjectComplete {
 
         private boolean active;
 
-        private Builder(String code, String name, String countryCode) {
+        private Long versionNumber;
+
+        private Builder(String code, String name, String countryCode, Long versionNumber) {
             setCode(code);
             setName(name);
             setCountryCode(countryCode);
+            setVersionNumber(versionNumber);
         }
 
         /**
@@ -135,8 +149,8 @@ public final class State implements StateContract, ModelObjectComplete {
          * @param countryCode code for the Country this State is associated with
          * @return a bootstrapped Builder defaulted with the passed in code, name, and countryCode.
          */
-        public static Builder create(String code, String name, String countryCode) {
-            final Builder builder = new Builder(code, name, countryCode);
+        public static Builder create(String code, String name, String countryCode, Long versionNumber) {
+            final Builder builder = new Builder(code, name, countryCode, versionNumber);
             builder.setActive(true);
             return builder;
         }
@@ -145,7 +159,7 @@ public final class State implements StateContract, ModelObjectComplete {
          * creates a Parameter from an existing {@link StateContract}.
          */
         public static Builder create(StateContract contract) {
-            final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode());
+            final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode(), contract.getVersionNumber());
             builder.setActive(contract.isActive());
             return builder;
         }
@@ -211,6 +225,15 @@ public final class State implements StateContract, ModelObjectComplete {
 
         public void setActive(boolean active) {
             this.active = active;
+        }
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
         }
 
         @Override

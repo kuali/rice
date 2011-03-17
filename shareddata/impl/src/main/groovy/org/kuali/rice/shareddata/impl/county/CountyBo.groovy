@@ -95,6 +95,7 @@ class CountyBo extends PersistableBusinessObjectBase implements CountyContract, 
         bo.countryCode = im.countryCode
         bo.stateCode = im.stateCode
         bo.active = im.active
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

@@ -27,6 +27,7 @@ class NamespaceTest {
             <applicationCode>AC</applicationCode>
             <name>N</name>
             <active>true</active>
+            <versionNumber>1</versionNumber>
         </namespace>
     """
 
@@ -35,43 +36,43 @@ class NamespaceTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
-        Namespace.Builder.create(null, null);
+        Namespace.Builder.create(null, null, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        Namespace.Builder.create(null, APP_CODE);
+        Namespace.Builder.create(null, APP_CODE, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        Namespace.Builder.create("", APP_CODE);
+        Namespace.Builder.create("", APP_CODE, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        Namespace.Builder.create("  ", APP_CODE);
+        Namespace.Builder.create("  ", APP_CODE, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
-        Namespace.Builder.create(CODE, null);
+        Namespace.Builder.create(CODE, null, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
-        Namespace.Builder.create(CODE, "");
+        Namespace.Builder.create(CODE, "", 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
         Namespace.Builder.create(CODE, """
-        """);
+        """, 1);
     }
 
     @Test
     void happy_path() {
-        Namespace.Builder.create(CODE, APP_CODE);
+        Namespace.Builder.create(CODE, APP_CODE, 1);
     }
 
     @Test
@@ -96,6 +97,7 @@ class NamespaceTest {
 				def String applicationCode = "AC"
                 def String name = "N"
                 def boolean active = true
+                def Long versionNumber = 1
 			}).build()
 	}
 }

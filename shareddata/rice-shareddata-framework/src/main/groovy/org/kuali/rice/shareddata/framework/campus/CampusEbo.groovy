@@ -31,6 +31,7 @@ public class CampusEbo implements Inactivateable, CampusContract, Externalizable
 	def String campusTypeCode;
 	def boolean active;
 	def CampusTypeEbo campusType;
+    def Long versionNumber;
 	
 	@Override
 	CampusTypeEbo getCampusType() {
@@ -68,7 +69,7 @@ public class CampusEbo implements Inactivateable, CampusContract, Externalizable
 	   bo.campusTypeCode = im.campusType.code
  
 	   bo.campusType = CampusTypeEbo.from(im.campusType)
-
+       bo.versionNumber = im.versionNumber
 
 	   return bo
    }

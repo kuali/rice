@@ -34,6 +34,7 @@ class PostalCodeEbo implements Inactivateable, PostalCodeContract, Externalizabl
     def CountryEbo country;
     def StateEbo state;
     def CountyEbo county;
+    def Long versionNumber;
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -65,6 +66,7 @@ class PostalCodeEbo implements Inactivateable, PostalCodeContract, Externalizabl
         bo.active = im.active
         bo.stateCode = im.stateCode
         bo.cityName = im.cityName
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

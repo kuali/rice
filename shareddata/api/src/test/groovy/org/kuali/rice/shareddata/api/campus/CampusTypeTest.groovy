@@ -23,23 +23,28 @@ import junit.framework.Assert
 import org.junit.Test
 
 class CampusTypeTest {
-	def static final String BASE_XML = """
+    private static String CODE = "A";
+    private static String NAME = "AWESOME";
+    private static String ACTIVE = "true";
+    private static Long VERSION_NUMBER = new Long(1);
+	def static final String XML = """
 	  <campusType xmlns="http://rice.kuali.org/shareddata">
-			<code>A</code>
-			<name>AWESOME</name>
-			<active>true</active>
+			<code>${CODE}</code>
+			<name>${NAME}</name>
+			<active>${ACTIVE}</active>
+			<versionNumber>${VERSION_NUMBER}</versionNumber>
 	  </campusType>
 	  """
 
     @Test
     void test_create_only_required() {
-        CampusType.Builder.create(CampusType.Builder.create("A")).build();
+        CampusType.Builder.create(CampusType.Builder.create(CODE, VERSION_NUMBER)).build();
     }
 
 	@Test
 	public void testCampusTypeBuilderPassedInParams() {
 	  //No assertions, just test whether the Builder gives us a Country object
-	  CampusType campustype = CampusType.Builder.create("A").build()
+	  CampusType campustype = CampusType.Builder.create(CODE, VERSION_NUMBER).build()
 	}
 	
 	@Test
@@ -49,12 +54,12 @@ class CampusTypeTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCampusTypeBuilderEmptyCode() {
-	  CampusType.Builder.create("")
+	  CampusType.Builder.create("", VERSION_NUMBER)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCampusTypeBuilderNullCode() {
-	  CampusType.Builder.create(null)
+	  CampusType.Builder.create(null, VERSION_NUMBER)
 	}
 	
 	@Test
@@ -65,34 +70,34 @@ class CampusTypeTest {
   
 	  CampusType campusType = this.createCampusTypeFromPassedInContract()
 	  marshaller.marshal(campusType,sw)
-	  String xml = sw.toString()
-  
-	  String expectedCampusTypeElementXml = BASE_XML
-  
+	  String marshalled_xml = sw.toString()
+
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
-	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
-	  Object expected = unmarshaller.unmarshal(new StringReader(expectedCampusTypeElementXml))
+	  Object actual = unmarshaller.unmarshal(new StringReader(marshalled_xml))
+	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
 	  Assert.assertEquals(expected,actual)
 	}
   
 	@Test
 	public void testXmlUnmarshal() {
-	  String rawXml = BASE_XML
+	  String rawXml = XML
   
 	  JAXBContext jc = JAXBContext.newInstance(Campus.class)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  CampusType campusType = (CampusType) unmarshaller.unmarshal(new StringReader(rawXml))
-	  Assert.assertEquals("A",campusType.code)
-	  Assert.assertEquals("AWESOME",campusType.name)
-	  Assert.assertEquals(true,campusType.active)
+	  Assert.assertEquals(CODE,campusType.code)
+	  Assert.assertEquals(NAME,campusType.name)
+	  Assert.assertEquals(ACTIVE.toBoolean(),campusType.active)
+      Assert.assertEquals(VERSION_NUMBER,campusType.versionNumber)
   
 	}
 	
 	private CampusType createCampusTypeFromPassedInContract() {
-		CampusType campusType = CampusType.Builder.create(new CampusTypeContract() {
-			String getCode() {"A"}
-			String getName() { "AWESOME" }
-			boolean isActive() { true }
+		return CampusType.Builder.create(new CampusTypeContract() {
+			String getCode() { CampusTypeTest.CODE }
+			String getName() { CampusTypeTest.NAME }
+			boolean isActive() { CampusTypeTest.ACTIVE.toBoolean() }
+            Long getVersionNumber() {CampusTypeTest.VERSION_NUMBER}
 		  }).build()
 	}
 }

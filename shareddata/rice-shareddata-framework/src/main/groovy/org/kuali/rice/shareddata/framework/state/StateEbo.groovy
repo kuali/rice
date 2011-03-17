@@ -28,6 +28,7 @@ class StateEbo implements Inactivateable, StateContract, ExternalizableBusinessO
     def String name;
     def boolean active;
     def CountryEbo country;
+    def Long versionNumber;
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -57,6 +58,7 @@ class StateEbo implements Inactivateable, StateContract, ExternalizableBusinessO
         bo.countryCode = im.countryCode
         bo.name = im.name
         bo.active = im.active
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

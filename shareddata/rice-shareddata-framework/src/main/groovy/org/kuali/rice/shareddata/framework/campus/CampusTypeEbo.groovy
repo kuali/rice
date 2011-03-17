@@ -26,6 +26,7 @@ public class CampusTypeEbo implements Inactivateable, CampusTypeContract, Extern
 	def String code;
 	def String name;
 	def boolean active;
+    def Long versionNumber;
 	
 	/**
 	* Converts a mutable CampusType business object to an immutable CampusType representation.
@@ -49,6 +50,7 @@ public class CampusTypeEbo implements Inactivateable, CampusTypeContract, Extern
 	 bo.code = im.code
 	 bo.name = im.name
 	 bo.active = im.active
+     bo.versionNumber = im.versionNumber
  
 	 return bo;
    }

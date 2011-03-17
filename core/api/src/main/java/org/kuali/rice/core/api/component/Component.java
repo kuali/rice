@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
+import sun.beans.editors.LongEditor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -71,7 +72,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -153,12 +154,13 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String namespaceCode, String code, String name, boolean virtual) {
+        private Builder(String namespaceCode, String code, String name, boolean virtual, Long versionNumber) {
 			setNamespaceCode(namespaceCode);
             setCode(code);
             setName(name);
             setVirtual(virtual);
 			setActive(true);
+            setVersionNumber(versionNumber);
         }
 
         /**
@@ -171,8 +173,8 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 		 * @param virtual the virtual flag to use when constructing this builder
 		 * @throws IllegalArgumentException if any of the parameters are null or blank
 		 */
-        public static Builder create(String namespaceCode, String code, String name, boolean virtual) {
-            return new Builder(namespaceCode, code, name, virtual);
+        public static Builder create(String namespaceCode, String code, String name, boolean virtual, Long versionNumber) {
+            return new Builder(namespaceCode, code, name, virtual, versionNumber);
         }
 
         /**
@@ -182,9 +184,8 @@ public final class Component implements ComponentContract, ModelObjectComplete {
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(ComponentContract contract) {
-            Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName(),  contract.isVirtual());
+            Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName(),  contract.isVirtual(), contract.getVersionNumber());
             builder.active = contract.isActive();
-            builder.versionNumber = contract.getVersionNumber();
             return builder;
         }
 

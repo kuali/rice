@@ -80,7 +80,7 @@ public class CampusBo extends PersistableBusinessObjectBase implements Inactivat
 		   bo.campusTypeCode = im.campusType.code
 	   }
 	   bo.campusType = CampusTypeBo.from(im.campusType)
-
+       bo.versionNumber = im.versionNumber
 
 	   return bo
    }

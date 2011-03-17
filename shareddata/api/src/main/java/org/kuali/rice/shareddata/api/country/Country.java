@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
+import sun.beans.editors.LongEditor;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,6 +47,7 @@ import java.util.Collection;
         Country.Elements.NAME,
         Country.Elements.RESTRICTED,
         Country.Elements.ACTIVE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Country implements CountryContract, ModelObjectComplete {
@@ -66,6 +68,9 @@ public final class Country implements CountryContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -80,6 +85,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
         this.name = null;
         this.restricted = false;
         this.active = false;
+        this.versionNumber = null;
     }
 
     private Country(Builder builder) {
@@ -88,6 +94,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
         this.name = builder.getName();
         this.restricted = builder.isRestricted();
         this.active = builder.isActive();
+        this.versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -115,6 +122,11 @@ public final class Country implements CountryContract, ModelObjectComplete {
         return this.restricted;
     }
 
+    @Override
+    public Long getVersionNumber() {
+        return this.versionNumber;
+    }
+
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
@@ -136,24 +148,26 @@ public final class Country implements CountryContract, ModelObjectComplete {
         private String name;
         private boolean restricted;
         private boolean active;
+        private Long versionNumber;
 
         private Builder(String code, String alternateCode, String name,
-                        boolean restricted, boolean active) {
+                        boolean restricted, boolean active, Long versionNumber) {
             this.setCode(code);
             this.setAlternateCode(alternateCode);
             this.setName(name);
             this.setRestricted(restricted);
             this.setActive(active);
+            this.setVersionNumber(versionNumber);
         }
 
         public static Builder create(String code, String alternatePostalCode, String name,
-                                     boolean restricted, boolean active) {
-            return new Builder(code, alternatePostalCode, name, restricted, active);
+                                     boolean restricted, boolean active, Long versionNumber) {
+            return new Builder(code, alternatePostalCode, name, restricted, active, versionNumber);
         }
 
         public static Builder create(CountryContract cc) {
             return new Builder(cc.getCode(), cc.getAlternateCode(),
-                    cc.getName(), cc.isRestricted(), cc.isActive());
+                    cc.getName(), cc.isRestricted(), cc.isActive(), cc.getVersionNumber());
         }
 
         @Override
@@ -218,6 +232,20 @@ public final class Country implements CountryContract, ModelObjectComplete {
         @Override
         public boolean isActive() {
             return this.active;
+        }
+
+        /**
+         * Sets the versionNumber property.
+         *
+         * @param versionNumber
+         */
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
+        }
+
+        @Override
+        public Long getVersionNumber() {
+            return this.versionNumber;
         }
 
         /**

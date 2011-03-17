@@ -24,7 +24,7 @@ import junit.framework.Assert
 class CountyBoTest {
   @Test
   public void testNotEqualsWithCampus() {
-    County immutable = County.Builder.create("SHA", "SHA County", "US", "MI").build();
+    County immutable = County.Builder.create("SHA", "SHA County", "US", "MI", 1).build();
     CountyBo bo = CountyBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

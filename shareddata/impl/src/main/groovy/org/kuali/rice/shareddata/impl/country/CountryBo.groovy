@@ -77,6 +77,7 @@ class CountryBo extends PersistableBusinessObjectBase implements Inactivateable,
     bo.name = immutable.name
     bo.restricted = immutable.restricted
     bo.active = immutable.active
+    bo.versionNumber = immutable.versionNumber
 
     return bo;
   }

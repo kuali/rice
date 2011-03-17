@@ -64,7 +64,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -129,8 +129,9 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String code) {
+        private Builder(String code, Long versionNumber) {
             setCode(code);
+            setVersionNumber(versionNumber);
         }
 
         /**
@@ -140,8 +141,8 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
          * @return an instance of the builder with the code already populated
          * @throws IllegalArgumentException if the code is null or blank
          */
-        public static Builder create(String code) {
-            Builder builder = new Builder(code);
+        public static Builder create(String code, Long versionNumber) {
+            Builder builder = new Builder(code, versionNumber);
             builder.setActive(true);
             return builder;
         }
@@ -153,10 +154,9 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(ParameterTypeContract contract) {
-            Builder builder =  new Builder(contract.getCode());
+            Builder builder =  new Builder(contract.getCode(), contract.getVersionNumber());
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
-            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 

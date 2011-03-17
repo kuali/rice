@@ -104,6 +104,7 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeCo
         bo.active = im.active
         bo.stateCode = im.stateCode
         bo.cityName = im.cityName
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

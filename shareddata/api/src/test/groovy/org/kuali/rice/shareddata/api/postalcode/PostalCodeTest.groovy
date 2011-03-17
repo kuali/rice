@@ -33,6 +33,7 @@ class PostalCodeTest {
     private static final String STATE_CODE = "MI";
 	private static final String COUNTY_CODE = "SHA"
 	private static final String ACTIVE = "true";
+    private static final Long VERSION_NUMBER = new Long(1);
 
     private static final String XML = """
     <postalCode xmlns="http://rice.kuali.org/shareddata">
@@ -42,97 +43,98 @@ class PostalCodeTest {
         <stateCode>${STATE_CODE}</stateCode>
         <countyCode>${COUNTY_CODE}</countyCode>
         <active>${ACTIVE}</active>
+        <versionNumber>${VERSION_NUMBER}</versionNumber>
     </postalCode>
     """
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
-        PostalCode.Builder.create(null, null);
+        PostalCode.Builder.create(null, null, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        PostalCode.Builder.create(null, COUNTRY_CODE);
+        PostalCode.Builder.create(null, COUNTRY_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        PostalCode.Builder.create("", COUNTRY_CODE);
+        PostalCode.Builder.create("", COUNTRY_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        PostalCode.Builder.create("  ", COUNTRY_CODE);
+        PostalCode.Builder.create("  ", COUNTRY_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
-        PostalCode.Builder.create(CODE, null);
+        PostalCode.Builder.create(CODE, null, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
-        PostalCode.Builder.create(CODE, "");
+        PostalCode.Builder.create(CODE, "", VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
-        PostalCode.Builder.create(CODE, "  ");
+        PostalCode.Builder.create(CODE, "  ", VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_cityName_null() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCityName(null);
+        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCityName(null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_cityName_empty() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCityName("");
+        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCityName("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_cityName_whitespace() {
-        PostalCode.Builder.create(CODE,COUNTRY_CODE).setCityName("  ");
+        PostalCode.Builder.create(CODE,COUNTRY_CODE, VERSION_NUMBER).setCityName("  ");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_stateCode_null() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE).setStateCode(null);
+        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setStateCode(null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_stateCode_empty() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE).setStateCode("");
+        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setStateCode("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_stateCode_whitespace() {
-        PostalCode.Builder.create(CODE,COUNTRY_CODE).setStateCode("  ");
+        PostalCode.Builder.create(CODE,COUNTRY_CODE, VERSION_NUMBER).setStateCode("  ");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_countyCode_null() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCountyCode(null);
+        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCountyCode(null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_countyCode_empty() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCountyCode("");
+        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCountyCode("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_countyCode_whitespace() {
-        PostalCode.Builder.create(CODE,COUNTRY_CODE).setCountyCode("  ");
+        PostalCode.Builder.create(CODE,COUNTRY_CODE, VERSION_NUMBER).setCountyCode("  ");
     }
 
     @Test
     void test_create_only_required() {
-        PostalCode.Builder.create(PostalCode.Builder.create(CODE, COUNTRY_CODE)).build();
+        PostalCode.Builder.create(PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER)).build();
     }
 
     @Test
     void happy_path() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE).build();
+        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).build();
     }
 
     @Test
@@ -159,6 +161,7 @@ class PostalCodeTest {
             def String stateCode = PostalCodeTest.STATE_CODE
             def String countyCode = PostalCodeTest.COUNTY_CODE
             def boolean active = PostalCodeTest.ACTIVE.toBoolean()
+            def Long versionNumber = PostalCodeTest.VERSION_NUMBER
         }).build()
 	}
 }

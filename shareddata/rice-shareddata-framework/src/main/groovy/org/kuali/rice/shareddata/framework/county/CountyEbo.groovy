@@ -31,6 +31,7 @@ class CountyEbo implements Inactivateable, CountyContract, ExternalizableBusines
     def boolean active
     def CountryEbo country;
     def StateEbo state;
+    def Long versionNumber
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -61,6 +62,7 @@ class CountyEbo implements Inactivateable, CountyContract, ExternalizableBusines
         bo.countryCode = im.countryCode
         bo.stateCode = im.stateCode
         bo.active = im.active
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

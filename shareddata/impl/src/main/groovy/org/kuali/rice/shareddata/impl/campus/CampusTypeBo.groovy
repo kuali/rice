@@ -65,6 +65,7 @@ public class CampusTypeBo extends PersistableBusinessObjectBase implements Inact
 	 bo.code = im.code
 	 bo.name = im.name
 	 bo.active = im.active
+     bo.versionNumber = im.versionNumber
  
 	 return bo;
    }

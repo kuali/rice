@@ -48,6 +48,7 @@ import java.util.Collection;
     Namespace.Elements.APPLICATION_CODE,
     Namespace.Elements.NAME,
     Namespace.Elements.ACTIVE,
+    CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
     })
 public final class Namespace implements NamespaceContract, ModelObjectComplete {
@@ -66,6 +67,9 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -78,6 +82,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
     	this.applicationCode = null;
     	this.name = null;
     	this.active = true;
+        this.versionNumber = null;
     }
 
 	/**
@@ -91,6 +96,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
         applicationCode = builder.getApplicationCode();
         name = builder.getName();
         active = builder.isActive();
+        versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -113,6 +119,11 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		return active;
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
 	/**
      * This builder is used to construct instances of Namespace.  It enforces the constraints of the {@link NamespaceContract}.
      */
@@ -124,6 +135,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		private String applicationCode;
 		private String name;
 		private boolean active;
+        private Long versionNumber;
 
 		/**
 		 * Constructs a Namespace Builder with the given namespace code and application code.  Defaults the active indicator to true.
@@ -132,10 +144,11 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		 * @param applicationCode the application code to use when constructing this builder
 		 * @throws IllegalArgumentException if the code or applicationCode are null or blank
 		 */
-        private Builder(String code, String applicationCode) {
+        private Builder(String code, String applicationCode, Long versionNumber) {
             setCode(code);
             setApplicationCode(applicationCode);
 			setActive(true);
+            setVersionNumber(versionNumber);
         }
 
         /**
@@ -146,8 +159,8 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		 * @return an instance of the builder with the given data already populated
 		 * @throws IllegalArgumentException if the code or applicationCode are null or blank
          */
-        public static Builder create(String code, String applicationCode) {
-            return new Builder(code, applicationCode);
+        public static Builder create(String code, String applicationCode, Long versionNumber) {
+            return new Builder(code, applicationCode, versionNumber);
         }
 
 		/**
@@ -157,7 +170,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(NamespaceContract contract) {
-            Builder builder  = new Builder(contract.getCode(), contract.getApplicationCode());
+            Builder builder  = new Builder(contract.getCode(), contract.getApplicationCode(), contract.getVersionNumber());
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
             return builder;
@@ -215,6 +228,16 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
         @Override
 		public String getApplicationCode() {
 			return applicationCode;
+		}
+
+        @Override
+		public Long getVersionNumber() {
+			return versionNumber;
+		}
+
+
+		public void setVersionNumber(Long versionNumber) {
+			this.versionNumber = versionNumber;
 		}
 
 		/**

@@ -29,7 +29,7 @@ public interface ParameterTypeContract {
     boolean isActive();
 
     /**
-     * This the ojb object version number for ParameterType.
+     * This the object version number for ParameterType.
      *
      * @return the version number of the ParameterType
      */

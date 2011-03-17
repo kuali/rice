@@ -43,21 +43,29 @@ import java.util.Collection;
         Campus.Elements.SHORT_NAME,
         Campus.Elements.CAMPUS_TYPE,
         Campus.Elements.ACTIVE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Campus implements CampusContract, ModelObjectComplete {
 	private static final long serialVersionUID = 2288194493838509380L;
 
 	@XmlElement(name = Elements.CODE, required=true)
-	private String code;
+	private final String code;
+
 	@XmlElement(name = Elements.NAME, required=false)
-	private String name;
+	private final String name;
+
 	@XmlElement(name = Elements.SHORT_NAME, required=false)
-	private String shortName;
+	private final String shortName;
+
 	@XmlElement(name = Elements.CAMPUS_TYPE, required=false)
-	private CampusType campusType;
+	private final CampusType campusType;
+
 	@XmlElement(name = Elements.ACTIVE, required=false)
-	private boolean active;
+	private final boolean active;
+
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    private final Long versionNumber;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -74,6 +82,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
     	this.shortName = null;
     	this.campusType = null;
     	this.active = false;
+        this.versionNumber = null;
     }
     
     /**
@@ -88,8 +97,11 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         this.shortName = builder.getShortName();
         if (builder.campusType != null) {
         	this.campusType = builder.campusType.build();
+        }   else {
+            this.campusType = null;
         }
         this.active = builder.isActive();
+        this.versionNumber = builder.getVersionNumber();
     }
 
 	@Override
@@ -117,6 +129,10 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 		return this.active;
 	}
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
 	/**
      * This builder is used to construct instances of Campus.  It enforces the constraints of the {@link CampusContract}.
      */
@@ -127,13 +143,15 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         private String shortName;
         private CampusType.Builder campusType;
         private boolean active;
+        private Long versionNumber;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String code) {
+        private Builder(String code, Long versionNumber) {
             setCode(code);
 			setActive(true);
+            setVersionNumber(versionNumber);
         }
 
         /**
@@ -143,8 +161,8 @@ public final class Campus implements CampusContract, ModelObjectComplete {
          * @return an instance of the builder with the code already populated
          * @throws IllegalArgumentException if the code is null or blank
          */
-        public static Builder create(String code) {
-            return new Builder(code);
+        public static Builder create(String code, Long versionNumber) {
+            return new Builder(code, versionNumber);
         }
 
         /**
@@ -157,7 +175,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getCode());
+            Builder builder =  new Builder(contract.getCode(), contract.getVersionNumber());
             builder.setName(contract.getName());
             builder.setShortName(contract.getShortName());
             if (contract.getCampusType() != null) {
@@ -196,6 +214,10 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 			this.active = active;
 		}
 
+        public void setVersionNumber(Long versionNumber){
+            this.versionNumber = versionNumber;
+        }
+
 		@Override
 		public String getCode() {
 			return code;
@@ -220,6 +242,12 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 		public boolean isActive() {
 			return active;
 		}
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
 
 		/**
 		 * Builds an instance of a Campus based on the current state of the builder.

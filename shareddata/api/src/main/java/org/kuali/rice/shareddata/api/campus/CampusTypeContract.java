@@ -26,7 +26,7 @@ public interface CampusTypeContract {
 	 * </p>
 	 * @return code for CampusType.  Will never be null or an empty string.
 	 */
-	public String getCode();
+	String getCode();
 
 
 	/**
@@ -37,7 +37,7 @@ public interface CampusTypeContract {
 	 * </p>
 	 * @return name for CampusType.
 	 */
-	public String getName();
+	String getName();
 
 
 	/**
@@ -48,6 +48,13 @@ public interface CampusTypeContract {
 	 * </p>
 	 * @return active boolean for CampusType.
 	 */
-	public boolean isActive();
+	boolean isActive();
+
+    /**
+     * This the object version number for CampusType.
+     *
+     * @return the version number of the CampusType
+     */
+    Long getVersionNumber();
 
 }

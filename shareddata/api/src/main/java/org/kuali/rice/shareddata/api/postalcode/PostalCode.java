@@ -44,6 +44,7 @@ import java.util.Collection;
         PostalCode.Elements.STATE_CODE,
         PostalCode.Elements.ACTIVE,
         PostalCode.Elements.COUNTY_CODE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PostalCode implements PostalCodeContract, ModelObjectComplete {
@@ -68,6 +69,9 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    private final Long versionNumber;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -81,8 +85,9 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         this.cityName = null;
         this.countryCode = null;
         this.stateCode = null;
-        countyCode = null;
+        this.countyCode = null;
         this.active = false;
+        this.versionNumber = null;
     }
 
     private PostalCode(Builder builder) {
@@ -92,6 +97,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         stateCode = builder.getStateCode();
         countyCode = builder.getCountyCode();
         active = builder.isActive();
+        versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -124,6 +130,11 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         return active;
     }
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
     /**
      * This builder constructs a PostalCode enforcing the constraints of the {@link PostalCodeContract}.
      */
@@ -137,17 +148,19 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         private String stateCode;
         private String countyCode;
         private boolean active;
+        private Long versionNumber;
 
-        private Builder(String code, String countryCode) {
+        private Builder(String code, String countryCode, Long versionNumber) {
             setCode(code);
             setCountryCode(countryCode);
+            setVersionNumber(versionNumber);
         }
 
         /**
          * creates a PostalCode builder with the required fields.
          */
-        public static Builder create(String code, String countryCode) {
-            final Builder builder = new Builder(code, countryCode);
+        public static Builder create(String code, String countryCode, Long versionNumber) {
+            final Builder builder = new Builder(code, countryCode, versionNumber);
             builder.setActive(true);
             return builder;
         }
@@ -156,7 +169,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
          * creates a PostalCode builder from an existing {@link PostalCodeContract}.
          */
         public static Builder create(PostalCodeContract contract) {
-            final Builder builder = new Builder(contract.getCode(), contract.getCountryCode());
+            final Builder builder = new Builder(contract.getCode(), contract.getCountryCode(), contract.getVersionNumber());
             builder.setActive(contract.isActive());
 
             if (StringUtils.isNotBlank(contract.getCountyCode())) {
@@ -278,6 +291,15 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
 
         public void setActive(boolean active) {
             this.active = active;
+        }
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
         }
 
         @Override

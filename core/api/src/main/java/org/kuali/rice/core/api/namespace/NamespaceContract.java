@@ -39,4 +39,11 @@ public interface NamespaceContract {
      * @return active
      */
     boolean isActive();
+
+    /**
+     * This the object version number for Namespace.
+     *
+     * @return the version number of the Namespace
+     */
+    Long getVersionNumber();
 }

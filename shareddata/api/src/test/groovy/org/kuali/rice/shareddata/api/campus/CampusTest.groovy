@@ -23,29 +23,42 @@ import junit.framework.Assert
 import org.junit.Test
 
 class CampusTest {
-	def static final String BASE_XML = """
-	  <campus xmlns="http://rice.kuali.org/shareddata">
-		<code>AMES</code>
-		<name>Iowa State University - Ames</name>
-		<shortName>ISU - Ames</shortName>
+    private static final String CODE = "AMES";
+    private static final String NAME = "Iowa State University - Ames"
+    private static final String SHORT_NAME = "ISU - Ames";
+    private static final String CAMPUS_TYPE_CODE = "B";
+	private static final String CAMPUS_TYPE_NAME = "BOTH"
+    private static final String CAMPUS_TYPE_ACTIVE = "true";
+    private static final Long CAMPUS_TYPE_VERSION_NUMBER = new Long(1);
+	private static final String ACTIVE = "true";
+    private static final Long VERSION_NUMBER = new Long(1);
+
+    private static final String XML = """
+    <campus xmlns="http://rice.kuali.org/shareddata">
+		<code>${CODE}</code>
+		<name>${NAME}</name>
+		<shortName>${SHORT_NAME}</shortName>
 		<campusType>
-			<code>B</code>
-			<name>BOTH</name>
-			<active>true</active>
+			<code>${CAMPUS_TYPE_CODE}</code>
+			<name>${CAMPUS_TYPE_NAME}</name>
+			<active>${CAMPUS_TYPE_ACTIVE}</active>
+			<versionNumber>${CAMPUS_TYPE_VERSION_NUMBER}</versionNumber>
 		</campusType>
-		<active>true</active>
+		<active>${ACTIVE}</active>
+		<versionNumber>${VERSION_NUMBER}</versionNumber>
 	  </campus>
-	  """
+    """
+
 
     @Test
     void test_create_only_required() {
-        Campus.Builder.create(Campus.Builder.create("AMES")).build();
+        Campus.Builder.create(Campus.Builder.create(CODE, VERSION_NUMBER)).build()
     }
 
 	@Test
 	public void testCampusBuilderPassedInParams() {
 	  //No assertions, just test whether the Builder gives us a Country object
-	  Campus campus = Campus.Builder.create("AMES").build()
+	  Campus campus = Campus.Builder.create(CODE, VERSION_NUMBER).build()
 	}
 	
 	@Test
@@ -55,12 +68,12 @@ class CampusTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCampusBuilderEmptyCode() {
-	  Campus.Builder.create("")
+	  Campus.Builder.create("", VERSION_NUMBER)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCampusBuilderNullCode() {
-	  Campus.Builder.create(null)
+	  Campus.Builder.create(null, null)
 	}
 	
 	@Test
@@ -76,42 +89,43 @@ class CampusTest {
 	  marshaller.marshal(campus,sw)
 	  String xml = sw.toString()
   
-	  String expectedCampusElementXml = BASE_XML
-  
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
 	  Object actual = unmarshaller.unmarshal(new StringReader(xml))
-	  Object expected = unmarshaller.unmarshal(new StringReader(expectedCampusElementXml))
+	  Object expected = unmarshaller.unmarshal(new StringReader(XML))
 	  Assert.assertEquals(expected,actual)
 	}
   
 	@Test
 	public void testXmlUnmarshal() {
-	  String rawXml = BASE_XML
-  
 	  JAXBContext jc = JAXBContext.newInstance(Campus.class)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
-	  Campus campus = (Campus) unmarshaller.unmarshal(new StringReader(rawXml))
-	  Assert.assertEquals("AMES",campus.code)
-	  Assert.assertEquals("Iowa State University - Ames",campus.name)
-	  Assert.assertEquals("ISU - Ames",campus.shortName)
-	  Assert.assertEquals(true,campus.active)
-	  Assert.assertEquals("B",campus.campusType.code)
-	  Assert.assertEquals("BOTH", campus.campusType.name)
-	  Assert.assertEquals(true, campus.campusType.active)
-  
+	  Campus campus = (Campus) unmarshaller.unmarshal(new StringReader(XML))
+	  Assert.assertEquals(CODE,campus.code)
+	  Assert.assertEquals(NAME,campus.name)
+	  Assert.assertEquals(SHORT_NAME,campus.shortName)
+	  Assert.assertEquals(new Boolean(ACTIVE).booleanValue(),campus.active)
+	  Assert.assertEquals(CAMPUS_TYPE_CODE,campus.campusType.code)
+	  Assert.assertEquals(CAMPUS_TYPE_NAME, campus.campusType.name)
+	  Assert.assertEquals(CAMPUS_TYPE_ACTIVE.toBoolean(), campus.campusType.active)
+      Assert.assertEquals(VERSION_NUMBER, campus.versionNumber)
+      Assert.assertEquals(CAMPUS_TYPE_VERSION_NUMBER, campus.campusType.versionNumber)
 	}
 	
 	private Campus createCampusFromPassedInContract() {
-		Campus campus = Campus.Builder.create(new CampusContract() {
-			String getCode() {"AMES"}
-			String getName() { "Iowa State University - Ames" }
-			String getShortName() { "ISU - Ames" }
+		Campus campus =  Campus.Builder.create(new CampusContract() {
+			String getCode() {CampusTest.CODE}
+			String getName() {CampusTest.NAME}
+			String getShortName() {CampusTest.SHORT_NAME}
 			CampusType getCampusType() { CampusType.Builder.create(new CampusTypeContract() {
-				String getCode() {"B"}
-				String getName() {"BOTH"}
-				boolean isActive() { true }
+				String getCode() {CampusTest.CAMPUS_TYPE_CODE}
+				String getName() {CampusTest.CAMPUS_TYPE_NAME}
+				boolean isActive() {CampusTest.CAMPUS_TYPE_ACTIVE.toBoolean()}
+                Long getVersionNumber() { CampusTest.CAMPUS_TYPE_VERSION_NUMBER }
 			}).build()}
-			boolean isActive() { true }
+			boolean isActive() { CampusTest.ACTIVE.toBoolean() }
+            Long getVersionNumber() { CampusTest.VERSION_NUMBER }
 		  }).build()
+
+        return campus
 	}
 }

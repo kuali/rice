@@ -74,6 +74,7 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceCont
         bo.active = im.active
         bo.code = im.code
         bo.name = im.name
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

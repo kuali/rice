@@ -29,6 +29,7 @@ class NamespaceEbo implements NamespaceContract, Inactivateable, ExternalizableB
     def String code
     def String name
     def boolean active
+    def Long versionNumber
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -58,6 +59,7 @@ class NamespaceEbo implements NamespaceContract, Inactivateable, ExternalizableB
         bo.active = im.active
         bo.code = im.code
         bo.name = im.name
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

@@ -33,6 +33,7 @@ class CountyTest {
     private static final String COUNTRY_CODE = "US";
     private static final String STATE_CODE = "MI";
 	private static final String ACTIVE = "true";
+    private static final Long VERSION_NUMBER = new Long(1);
 
     private static final String XML = """
     <county xmlns="http://rice.kuali.org/shareddata">
@@ -41,82 +42,83 @@ class CountyTest {
         <countryCode>${COUNTRY_CODE}</countryCode>
         <stateCode>${STATE_CODE}</stateCode>
         <active>${ACTIVE}</active>
+        <versionNumber>${VERSION_NUMBER}</versionNumber>
     </county>
     """
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
-        County.Builder.create(null, null, null, null);
+        County.Builder.create(null, null, null, null, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        County.Builder.create(null, NAME, COUNTRY_CODE, STATE_CODE);
+        County.Builder.create(null, NAME, COUNTRY_CODE, STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        County.Builder.create("", NAME, COUNTRY_CODE, STATE_CODE);
+        County.Builder.create("", NAME, COUNTRY_CODE, STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        County.Builder.create(" ", NAME, COUNTRY_CODE, STATE_CODE);
+        County.Builder.create(" ", NAME, COUNTRY_CODE, STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
-        County.Builder.create(CODE, null, COUNTRY_CODE, STATE_CODE);
+        County.Builder.create(CODE, null, COUNTRY_CODE, STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
-        County.Builder.create(CODE, "", COUNTRY_CODE, STATE_CODE);
+        County.Builder.create(CODE, "", COUNTRY_CODE, STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
-        County.Builder.create(CODE, "  ", COUNTRY_CODE, STATE_CODE);
+        County.Builder.create(CODE, "  ", COUNTRY_CODE, STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_null() {
-        County.Builder.create(CODE, NAME, null, STATE_CODE);
+        County.Builder.create(CODE, NAME, null, STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_empty() {
-        County.Builder.create(CODE, NAME, "", STATE_CODE);
+        County.Builder.create(CODE, NAME, "", STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_whitespace() {
-        County.Builder.create(CODE, NAME, "  ", STATE_CODE);
+        County.Builder.create(CODE, NAME, "  ", STATE_CODE, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_null() {
-        County.Builder.create(CODE, NAME, COUNTRY_CODE, null);
+        County.Builder.create(CODE, NAME, COUNTRY_CODE, null, VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_empty() {
-        County.Builder.create(CODE, NAME, COUNTRY_CODE, "");
+        County.Builder.create(CODE, NAME, COUNTRY_CODE, "", VERSION_NUMBER);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_fourth_whitespace() {
-        County.Builder.create(CODE, NAME, COUNTRY_CODE, "  ");
+        County.Builder.create(CODE, NAME, COUNTRY_CODE, "  ", VERSION_NUMBER);
     }
 
     @Test
     void test_create_only_required() {
-        County.Builder.create(County.Builder.create(CODE, NAME, COUNTRY_CODE, STATE_CODE)).build();
+        County.Builder.create(County.Builder.create(CODE, NAME, COUNTRY_CODE, STATE_CODE, VERSION_NUMBER)).build();
     }
 
     @Test
     void happy_path() {
-        County.Builder.create(CODE, NAME, COUNTRY_CODE, STATE_CODE).build();
+        County.Builder.create(CODE, NAME, COUNTRY_CODE, STATE_CODE, VERSION_NUMBER).build();
     }
 
     @Test
@@ -142,6 +144,7 @@ class CountyTest {
             def String countryCode = CountyTest.COUNTRY_CODE
             def String stateCode = CountyTest.STATE_CODE
             def boolean active = CountyTest.ACTIVE.toBoolean()
+            def Long versionNumber = CountyTest.VERSION_NUMBER
         }).build()
 	}
 }

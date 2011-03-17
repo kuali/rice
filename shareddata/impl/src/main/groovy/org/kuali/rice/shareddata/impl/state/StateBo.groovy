@@ -85,6 +85,7 @@ class StateBo extends PersistableBusinessObjectBase implements StateContract, In
         bo.countryCode = im.countryCode
         bo.name = im.name
         bo.active = im.active
+        bo.versionNumber = im.versionNumber
 
         return bo
     }

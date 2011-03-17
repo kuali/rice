@@ -66,4 +66,11 @@ public interface CountryContract {
      * @return if a country is restricted.
      */
     boolean isRestricted();
+
+    /**
+     * This the object version number for Country.
+     *
+     * @return the version number of the Country
+     */
+    Long getVersionNumber();
 }

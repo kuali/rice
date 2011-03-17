@@ -572,6 +572,16 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void performFinalize(View view, Object model) {
 		super.performFinalize(view, model);
 
+		// Sets message
+		if (StringUtils.isNotBlank(summary)) {
+			summaryMessageField.setMessageText(summary);
+		}
+
+		// Sets constraints
+		if (StringUtils.isNotBlank(constraint)) {
+			constraintMessageField.setMessageText(constraint);
+		}	
+
 		// if read only or the control is not set no need to set client side
 		// validation
 		if (isReadOnly() || getControl() == null) {
@@ -635,25 +645,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 				processMustOccurConstraint(view, mc, "true");
 			}
 		}
-
-		// Sets message
-		if (StringUtils.isNotBlank(summary)) {
-			summaryMessageField.setMessageText(summary);
-			summaryMessageField.setRender(true);
-		}
-		else {
-			summaryMessageField.setRender(false);
-		}
-
-		// Sets constraints
-		if (StringUtils.isNotBlank(constraint)) {
-			constraintMessageField.setMessageText(constraint);
-			summaryMessageField.setRender(true);
-		}
-		else {
-			constraintMessageField.setRender(false);
-		}
-
 	}
 
 	/**

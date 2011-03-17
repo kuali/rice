@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/client-contrib.iml" filepath="$PROJECT_DIR$/client-contrib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/client-contrib.iml" filepath="$PROJECT_DIR$/client-contrib.iml" />
       <module fileurl="file://$PROJECT_DIR$/kim.iml" filepath="$PROJECT_DIR$/kim.iml" group="kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/kim-api.iml" filepath="$PROJECT_DIR$/kim-api.iml" group="kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/kim-impl.iml" filepath="$PROJECT_DIR$/kim-impl.iml" group="kim and modules" />
@@ -19,7 +18,6 @@
       <module fileurl="file://$PROJECT_DIR$/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-core-web.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-development-tools.iml" filepath="$PROJECT_DIR$/rice-development-tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-doc.iml" filepath="$PROJECT_DIR$/rice-doc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../doc/rice-doc.iml" filepath="$PROJECT_DIR$/../../../doc/rice-doc.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl.iml" filepath="$PROJECT_DIR$/rice-edl.iml" group="rice-edl and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl-api.iml" filepath="$PROJECT_DIR$/rice-edl-api.iml" group="rice-edl and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl-framework.iml" filepath="$PROJECT_DIR$/rice-edl-framework.iml" group="rice-edl and modules" />

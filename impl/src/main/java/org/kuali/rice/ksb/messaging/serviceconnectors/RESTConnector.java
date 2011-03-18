@@ -22,9 +22,8 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
 /**
  * Connector (provider of client proxys) for RESTful services.
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @since 0.9
  */
-public class RESTConnector extends AbstractServiceConnector {
+public class RESTConnector extends AbstractCxfClientServiceConnector {
     
     public RESTConnector(final ServiceInfo serviceInfo) {
         super(serviceInfo);

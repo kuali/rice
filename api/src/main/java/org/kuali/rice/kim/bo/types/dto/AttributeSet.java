@@ -61,7 +61,7 @@ public class AttributeSet extends HashMap<String,String> {
 	public String formattedDump( int indent ) {
 		int maxKeyLen = 1;
 		for ( String key : this.keySet() ) {
-			if ( key.length() > maxKeyLen ) {
+			if ( key!=null && key.length() > maxKeyLen ) {
 				maxKeyLen = key.length();
 			}
 		}

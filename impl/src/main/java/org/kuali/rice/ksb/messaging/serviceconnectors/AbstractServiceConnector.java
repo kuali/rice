@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
@@ -32,7 +31,7 @@ import org.springframework.util.Assert;
  * 
  */
 public abstract class AbstractServiceConnector implements ServiceConnector {
-
+	
 	/**
 	 * Maintains the information about the service.  This should never be null.
 	 */
@@ -66,8 +65,16 @@ public abstract class AbstractServiceConnector implements ServiceConnector {
 
 	protected Object getServiceProxyWithFailureMode(final Object service,
 			final ServiceInfo serviceInfo) {
+
+		applyClientPolicy(service);
+		
 		Object bamWrappedClientProxy = BAMClientProxy
 				.wrap(service, serviceInfo);
 		return BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceInfo);
 	}
+	
+	protected void applyClientPolicy(Object service) {
+		// do nothing by default
+	}
+
 }

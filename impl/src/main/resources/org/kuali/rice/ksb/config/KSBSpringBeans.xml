@@ -105,6 +105,11 @@
 	<bean id="enThreadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
 	<bean id="enScheduledThreadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBScheduledThreadPoolExecutor" lazy-init="true" />
 
+    <bean id="httpClientPolicy" class="org.apache.cxf.transports.http.configuration.HTTPClientPolicy">
+        <property name="connectionTimeout" value="${rice.cxf.client.connectionTimeout}" />
+        <property name="receiveTimeout" value="${rice.cxf.client.receiveTimeout}" />
+        <property name="allowChunking" value="${rice.cxf.client.allowChunking}" />
+    </bean>
 
 	<bean id="bamService" class="org.kuali.rice.ksb.messaging.bam.service.impl.BAMServiceImpl">
 		<property name="dao" ref="bamDao" />

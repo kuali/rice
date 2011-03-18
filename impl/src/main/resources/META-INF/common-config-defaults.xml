@@ -23,17 +23,24 @@
     <param name="datasource.pool.maxSize" override="false">5</param>
     <param name="datasource.pool.size" override="false">5</param>
     <param name="datasource.pool.maxWait" override="false">30000</param>
+    
+    <!-- cxf client properties -->
+    <param name="rice.cxf.client.connectionTimeout" override="false">30000</param>
+    <param name="rice.cxf.client.receiveTimeout" override="false">120000</param>
+    <param name="rice.cxf.client.allowChunking" override="false">false</param>
 
 
     <param name="datasource.ojb.platform" override="false">Oracle9i</param>
 
     <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.driver.OracleDriver</param>
+    <param name="datasource.driver.name.xa.Oracle" overrice="false">oracle.jdbc.xa.client.OracleXADataSource</param>
     <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle" override="false">select 1 from dual</param>
 
     <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.driver.OracleDriver</param>
+    <param name="datasource.driver.name.xa.Oracle9i" overrice="false">oracle.jdbc.xa.client.OracleXADataSource</param>
     <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>

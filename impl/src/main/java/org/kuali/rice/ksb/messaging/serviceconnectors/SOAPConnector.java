@@ -34,7 +34,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
-public class SOAPConnector extends AbstractServiceConnector {
+public class SOAPConnector extends AbstractCxfClientServiceConnector {
 
 	public SOAPConnector(final ServiceInfo serviceInfo) {
 		super(serviceInfo);
@@ -75,4 +75,5 @@ public class SOAPConnector extends AbstractServiceConnector {
 		Object service = clientFactory.create();		
 		return getServiceProxyWithFailureMode(service, this.getServiceInfo());
 	}	
+
 }

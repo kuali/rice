@@ -62,6 +62,7 @@ import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.transaction.annotation.Transactional;
 
 @WebService(endpointInterface = KIMWebServiceConstants.IdentityManagementService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityManagementService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityManagementService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class IdentityManagementServiceImpl implements IdentityManagementService, InitializingBean {
@@ -435,7 +436,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 
     // AUTHORIZATION SERVICE
-
+    @Transactional(readOnly=true)
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
     	if ( LOG.isDebugEnabled() ) {
     		logHasPermissionCheck("Permission", principalId, namespaceCode, permissionName, permissionDetails);
@@ -460,6 +461,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return hasPerm;
     }
 
+    @Transactional(readOnly=true)
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	if ( qualification == null || qualification.isEmpty() ) {
     		return hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
@@ -489,6 +491,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	return isAuthorized;
     }
 
+    @Transactional(readOnly=true)
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
     	if ( LOG.isDebugEnabled() ) {
     		logHasPermissionCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails);
@@ -512,7 +515,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
     	return hasPerm;
     }
-
+    
+    @Transactional(readOnly=true)
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification ) {
     	if ( qualification == null || qualification.isEmpty() ) {
     		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails );
@@ -559,12 +563,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     		String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
     	return getPermissionService().getAuthorizedPermissions( principalId, namespaceCode, permissionName, permissionDetails, qualification );
     }
-
+    @Transactional(readOnly=true)
     public List<? extends KimPermissionInfo> getAuthorizedPermissionsByTemplateName(String principalId,
     		String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification) {
     	return getPermissionService().getAuthorizedPermissionsByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
     }
-
+    
+    @Transactional(readOnly=true)
     public boolean isPermissionDefinedForTemplateName(String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
     	StringBuffer key = new StringBuffer();
     	key.append( namespaceCode ).append( '-' ).append( permissionTemplateName ).append( '/' );
@@ -805,7 +810,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
     	addPrincipalToCache(principal);
     	return principal;
 	}
-
+	@Transactional(readOnly=true)
     public KimPrincipalInfo getPrincipalByPrincipalName(String principalName) {
     	KimPrincipalInfo principal = getPrincipalByNameCache(principalName);
 		if (principal != null) {
@@ -843,6 +848,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      *
      * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityDefaultInfoByPrincipalId(java.lang.String)
      */
+    @Transactional(readOnly=true)
     public KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId(
     		String principalId) {
     	KimEntityDefaultInfo entity = getEntityDefaultInfoFromCacheByPrincipalId( principalId );
@@ -873,6 +879,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
      *
      * @see org.kuali.rice.kim.service.IdentityManagementService#lookupEntityDefaultInfo(Map, boolean)
      */
+    @Transactional(readOnly=true)
     public List<? extends KimEntityDefaultInfo> lookupEntityDefaultInfo(
     		Map<String, String> searchCriteria, boolean unbounded) {
     	return getIdentityService().lookupEntityDefaultInfo(searchCriteria, unbounded);
@@ -894,6 +901,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#getEntityInfoByPrincipalId(java.lang.String)
 	 */
+	@Transactional(readOnly=true)
 	public KimEntityInfo getEntityInfoByPrincipalId(String principalId) {
     	KimEntityInfo entity = getEntityInfoFromCacheByPrincipalId( principalId );
     	if ( entity == null ) {
@@ -920,6 +928,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#lookupEntityInfo(java.util.Map, boolean)
 	 */
+    @Transactional(readOnly=true)
 	public List<KimEntityInfo> lookupEntityInfo(
 			Map<String, String> searchCriteria, boolean unbounded) {
 		return getIdentityService().lookupEntityInfo(searchCriteria, unbounded);
@@ -1066,6 +1075,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibility(java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
 	 */
+    @Transactional(readOnly=true)
 	public boolean hasResponsibility(String principalId, String namespaceCode,
 			String responsibilityName, AttributeSet qualification,
 			AttributeSet responsibilityDetails) {
@@ -1097,6 +1107,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	 *
 	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibilityByTemplateName(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
+    @Transactional(readOnly=true)
 	public boolean hasResponsibilityByTemplateName(String principalId,
 			String namespaceCode, String responsibilityTemplateName,
 			AttributeSet qualification, AttributeSet responsibilityDetails) {

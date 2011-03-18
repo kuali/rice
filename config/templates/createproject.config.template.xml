@@ -1,0 +1,35 @@
+<config>
+	<!-- App specific parameters -->
+	<param name="app.namespace">KUALI</param>
+	<param name="app.code">${PROJECT_NAME}</param>
+	<param name="app.context.name">${app.code}-${environment}</param>
+	<param name="production.environment.code">PRD</param>
+
+	<!-- Misc parameters -->
+	<param name="institution">iu</param>
+	<param name="version">03/19/2007 01:59 PM</param>
+
+	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
+	<param name="datasource.username">rice</param>
+	<param name="datasource.password">*** password ***</param>
+	<param name="datasource.ojb.platform">Oracle9i</param>
+	<param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+	<param name="datasource.driver.name">oracle.jdbc.OracleDriver</param>
+	<param name="datasource.pool.validationQuery">select 1 from dual</param>
+	<param name="datasource.pool.maxWait">30000</param>
+	<param name="datasource.pool.size">5</param>
+
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.file">${USER_HOME}/kuali/main/dev/rice.keystore</param>
+	<param name="keystore.password">r1c3pw</param>
+
+	<param name="dev.mode">true</param>
+	<param name="useQuartzDatabase">false</param>
+	<param name="Routing.ImmediateExceptionRouting">true</param>
+
+
+	<!-- Kuali parameters -->
+	<param name="encryption.key">7IC64w6ksLU</param>
+	<param name="kfsLocator.useAppContext">true</param>
+
+</config>

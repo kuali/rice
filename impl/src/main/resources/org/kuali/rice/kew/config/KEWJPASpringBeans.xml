@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/jdbc
+                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                           http://www.springframework.org/schema/jee
+                           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+                           http://www.springframework.org/schema/jms
+                           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                           http://www.springframework.org/schema/oxm
+                           http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+                           http://www.springframework.org/schema/task
+                           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+  <bean id="kewJpaParent" abstract="true">
+    <property name="entityManager" ref="kewEntityManager" />
+  </bean>
+
+
+  <bean id="enActionListDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOJpaImpl" />
+
+  <bean id="enActionItemDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actionitem.dao.impl.ActionItemDAOJpaImpl" />
+
+  <bean id="enActionTakenDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDAOJpaImpl" />
+
+  <bean id="enActionRequestDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOJpaImpl" />
+
+  <bean id="enBranchDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOJpaImpl" />
+
+  <bean id="enDocumentRouteHeaderDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOJpaImpl" />
+
+  <bean id="enDocumentTypeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOJpaImpl" />
+
+  <bean id="enEDocLiteDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.edl.dao.impl.EDocLiteDAOJpaImpl" />
+
+  <bean id="enExtractDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOJpaImpl" />
+
+  <bean id="enHelpDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.help.dao.impl.HelpDaoJpaImpl" />
+
+  <bean id="enNoteDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.notes.dao.impl.NoteDAOJpaImpl" />
+
+  <bean id="enQuickLinksDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpaImpl" />
+
+  <bean id="enResponsibilityIdDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOJpaImpl" />
+
+  <bean id="enRouteNodeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.engine.node.dao.impl.RouteNodeDAOJpaImpl" />
+
+  <bean id="enRuleDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleDAOJpaImpl" />
+
+  <bean id="enRuleAttributeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOJpaImpl" />
+
+  <bean id="enRuleDelegationDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOJpaImpl" />
+
+  <bean id="enRuleResponsibilityDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleResponsibilityDAOJpaImpl" />
+
+  <bean id="enRuleTemplateAttributeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateAttributeDAOJpaImpl" />
+
+  <bean id="enRuleTemplateOptionDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateOptionDAOJpaImpl" />
+
+  <bean id="enRuleTemplateDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOJpaImpl" />
+
+  <bean id="enSearchableAttributeDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOJpaImpl" />
+
+  <bean id="enStatsDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.stats.dao.impl.StatsDaoJpaImpl" />
+
+  <bean id="enUserOptionsDAO" parent="kewJpaParent"
+    class="org.kuali.rice.kew.useroptions.dao.impl.UserOptionsDaoJpaImpl" />
+
+  <bean id="enDocumentLinkDAO" parent="kewJpaParent" 
+  	class="org.kuali.rice.kew.documentlink.dao.impl.DocumentLinkDAOJpaImpl" />
+  
+  <bean
+    class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref bean="NoResultExceptionInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="enActionListDAO" />
+        <idref local="enActionRequestDAO" />
+        <idref local="enActionTakenDAO" />
+        <idref local="enBranchDAO" />
+        <!--<idref local="enDocumentLinkDAO" />-->
+        <idref local="enDocumentRouteHeaderDAO" />
+        <idref local="enDocumentTypeDAO" />
+        <idref local="enEDocLiteDAO" />
+        <idref local="enExtractDAO" />
+        <idref local="enHelpDAO" />
+        <idref local="enNoteDAO" />
+        <idref local="enRouteNodeDAO" />
+        <idref local="enRuleAttributeDAO" />
+        <idref local="enRuleDAO" />
+        <idref local="enStatsDAO" />
+        <idref local="enUserOptionsDAO" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

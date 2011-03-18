@@ -1,0 +1,98 @@
+/*
+ * Copyright 2007-2010 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kim.service.impl;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.ResponsibilityUpdateService;
+
+/**
+ * This is a description of what this class does - jjhanso don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
+public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase implements ResponsibilityUpdateService {
+	private static final Logger LOG = Logger.getLogger( ResponsibilityUpdateServiceImpl.class );
+	// --------------------
+    // ResponsibilityUpdateService methods
+    // --------------------
+
+    public void saveResponsibility(String responsibilityId,
+    		String responsibilityTemplateId, String namespaceCode, String name,
+    		String description, boolean active, AttributeSet responsibilityDetails ) {
+    	// look for an existing responsibility of the given type
+    	try {
+	    	KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
+	    	if ( resp == null ) {
+	    		resp = new KimResponsibilityImpl();
+	    		resp.setResponsibilityId(responsibilityId);
+	    	}
+	    	resp.setTemplateId(responsibilityTemplateId);
+	    	resp.refreshReferenceObject( "template" );
+	    	resp.setNamespaceCode(namespaceCode);
+	    	resp.setName(name);
+	    	resp.setDescription(description);
+	    	resp.setActive(active);
+	    	AttributeSet attributesToAdd = new AttributeSet( responsibilityDetails );
+	    	List<ResponsibilityAttributeDataImpl> details = resp.getDetailObjects();
+	    	Iterator<ResponsibilityAttributeDataImpl> detailIter = details.iterator();
+	    	while ( detailIter.hasNext() ) {
+	    		ResponsibilityAttributeDataImpl detail = detailIter.next();
+	    		String attrName = detail.getKimAttribute().getAttributeName();
+	    		String attrValue = attributesToAdd.get(attrName);
+	    		// if not present in the list or is blank, remove from the list
+	    		if ( StringUtils.isBlank(attrValue) ) {
+	    			detailIter.remove();
+	    		} else {
+	    			detail.setAttributeValue(attrValue);
+	    		}
+	    		// remove from detail map - used to add new ones later
+	    		attributesToAdd.remove(attrName);
+	    	}
+	    	for ( Entry<String,String> attrEntry : attributesToAdd.entrySet() ) {
+	    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrEntry.getKey());
+	    		if (attr != null && StringUtils.isNotBlank(attrEntry.getValue()) ) {
+	    			ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
+	    			newDetail.setAttributeDataId(getNewAttributeDataId());
+	    			newDetail.setKimAttributeId(attr.getKimAttributeId());
+	    			newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
+	    			newDetail.setResponsibilityId(responsibilityId);
+	    			newDetail.setAttributeValue(attrEntry.getValue());
+	    			details.add(newDetail);
+	    		}
+	    	}
+	    	getBusinessObjectService().save(resp);
+	    	// flush the IdM service caches
+	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
+	    	// flush the local implementation class cache
+	    	flushResponsibilityImplCache();
+    	} catch ( RuntimeException ex ) {
+    		LOG.error( "Exception in saveResponsibility: ", ex );
+    		throw ex;
+    	}
+    }
+
+}

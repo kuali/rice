@@ -1,0 +1,73 @@
+/*
+ * Copyright 2006-2011 The Kuali Foundation
+ *
+ *  Licensed under the Educational Community License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.opensource.org/licenses/ecl2.php
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+package org.kuali.rice.shareddata.api.campus;
+
+
+public interface CampusContract {
+	/**
+	 * This is the campus code for the Campus.  This is cannot be a null or a blank string.
+	 *
+	 * <p>
+	 * It is a unique abreviation of a campus.
+	 * </p>
+	 * @return code for Campus.  Will never be null or an empty string.
+	 */
+	String getCode();
+
+	/**
+	 * This is the name for the Campus. 
+	 *
+	 * <p>
+	 * It is a name a campus.
+	 * </p>
+	 * @return name for Campus.
+	 */
+	String getName();
+
+	/**
+	 * This is the short name for the Campus. 
+	 *
+	 * <p>
+	 * It is a shorter name for a campus.
+	 * </p>
+	 * @return short name for Campus.
+	 */
+	String getShortName();
+
+	/**
+	 * This is the campus type for the Campus. 
+	 *
+	 * <p>
+	 * It is a object that defines the type of a campus.
+	 * </p>
+	 * @return short name for Campus.
+	 */
+	CampusTypeContract getCampusType();
+
+	/**
+	 * @return the active
+	 */
+	boolean isActive();
+
+    /**
+     * This the object version number for Campus.
+     *
+     * @return the version number of the Campus
+     */
+    Long getVersionNumber();
+
+}

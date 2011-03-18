@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate allowOverwrite="true">
+			<name>RuleTemplate_Valid_Some_Defaults</name>
+			<description>TestRuleTemplate</description>
+			<attributes>
+				<attribute>
+					<name>TemplateTestRuleAttribute3</name>
+					<required>false</required>
+					<active>true</active>
+				</attribute>
+			</attributes>
+			<ruleDefaults>
+                <!--
+                  existing values should be reset to defaults ("overwritten")
+                  and only these new and updated values should be defined
+                -->
+                <description>a rule based on (updated) RuleTemplate_Valid_Some_Defaults</description>
+				<supportsAcknowledge>true</supportsAcknowledge>
+			</ruleDefaults>
+		</ruleTemplate>
+	</ruleTemplates>
+
+</data>

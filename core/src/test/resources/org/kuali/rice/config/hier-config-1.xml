@@ -1,5 +1,0 @@
-<config>
-	<param name="axis:user">user1</param>
-	<param name="axis:password">password1</param>
-	<param name="config.location">classpath:org/kuali/rice/config/hier-config-2.xml</param>
-</config>

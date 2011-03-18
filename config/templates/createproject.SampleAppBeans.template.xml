@@ -1,0 +1,42 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!--
+		This Spring File loads all of the Rice Configuration plus configuration for
+		a simple sample application.
+		
+		Add any additional Spring Beans you have to this file.  Also feel free to
+		modify and re-arrange these Spring files as you see fit!
+	-->
+	
+		<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<bean id="bootstrapConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/${PROJECT_NAME}-config.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="bootstrapConfig"/></list>
+		</property>
+	</bean>
+	
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="bootstrapConfig" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+	
+	<import resource="classpath:${PROJECT_NAME}-RiceJTASpringBeans.xml"/>
+	<import resource="classpath:${PROJECT_NAME}-RiceDataSourceSpringBeans.xml"/>
+	<import resource="classpath:${PROJECT_NAME}-RiceSpringBeans.xml"/>
+	
+	<import resource="classpath:${PROJECT_NAME}-SampleAppModuleBeans.xml"/>
+	 
+</beans>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-
-<beans>
- 	<bean class="org.kuali.rice.config.spring.ConfigPropertyPlaceholderConfigurer"/>
-	<bean id="digitalSignatureService" class="edu.iu.uis.eden.security.DigitalSignatureServiceImpl" lazy-init="true"/>
-</beans>

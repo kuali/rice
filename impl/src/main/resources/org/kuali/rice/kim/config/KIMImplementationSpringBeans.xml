@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2006-2007 The Kuali Foundation
+
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.opensource.org/licenses/ecl2.php
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/jdbc
+                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                           http://www.springframework.org/schema/jee
+                           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+                           http://www.springframework.org/schema/jms
+                           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                           http://www.springframework.org/schema/oxm
+                           http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+                           http://www.springframework.org/schema/task
+                           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="jtaTransactionManager"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="jtaTransactionManager" />
+	</bean>
+	
+	<bean id="businessObjectService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="businessObjectService" />
+	</bean>
+	
+	<bean id="kualiConfigurationService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kualiConfigurationService" />
+	</bean>
+
+  	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+
+    <bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+        <property name="preferredDataSourceParams">
+            <list>
+                <value>kim.datasource</value>
+            </list>
+        </property>
+        <property name="preferredDataSourceJndiParams">
+            <list>
+                <value>kim.datasource.jndi.location</value>
+            </list>
+        </property>
+        <property name="serverDataSource" value="true"/>
+    </bean>
+
+	<bean id="kimOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>kimDataSource</value>
+			</list>
+		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/kim/config/OJB-repository-kim.xml" />
+	</bean>
+
+	<bean id="dbPlatform"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dbPlatform" />
+	</bean>
+
+    <bean id="kimPlatformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
+        <property name="jcdAlias" value="kimDataSource" />
+        <property name="dbPlatform" ref="dbPlatform" />
+    </bean>
+    
+
+
+    <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="kimPlatformAwareDao" />
+	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="kimPlatformAwareDao" />
+	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
+	<bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="kimPlatformAwareDao"/>
+<!-- 
+	<bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoJpa">
+		<property name="entityManager" ref="kimEntityManager"/>
+	</bean>
+	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoJpa">
+		<property name="entityManager" ref="kimEntityManager"/>
+	</bean>
+	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoJpa">
+		<property name="entityManager" ref="kimEntityManager"/>
+	</bean>   
+    <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoJpa">
+      <property name="entityManager" ref="kimEntityManager"/>
+    </bean> 
+-->
+
+  <!-- START JPA CONFIGURATION -->
+
+  <bean id="kimEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
+    <constructor-arg value="rice.kim"/>
+    <constructor-arg ref="kimDataSource"/>
+  </bean>
+
+  <bean id="kimEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+  	<property name="entityManagerFactory" ref="kimEntityManagerFactory"/>
+  </bean>
+
+  <!-- END JPA CONFIGURATION -->
+  <!--
+        Identity Service
+  -->
+
+  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
+
+  <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
+  	p:businessObjectService-ref="businessObjectService"
+  	p:kualiConfigurationService-ref="kualiConfigurationService"
+  />
+
+  <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityCurrentAndArchivedServiceImpl">
+    <constructor-arg ref="kimIdentityArchiveService" />
+    <constructor-arg ref="kimIdentityDelegateService" />
+  </bean>
+
+
+  <!--
+        Role Service
+  -->
+  <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
+  	p:roleDao-ref="kimRoleDao" />
+
+  <bean id="kimRoleUpdateService" class="org.kuali.rice.kim.service.impl.RoleUpdateServiceImpl" 
+    p:roleDao-ref="kimRoleDao"/>
+
+  <!--
+        Group Services
+  -->
+  <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"
+          p:kimGroupDao-ref="kimGroupDao"/>
+  <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"/>
+
+  <!--
+        Permission Service
+  -->
+  <bean id="kimPermissionService" class="org.kuali.rice.kim.service.impl.PermissionServiceImpl"
+    p:permissionDao-ref="kimPermissionDao"
+  />
+
+  <bean id="kimPermissionUpdateService" class="org.kuali.rice.kim.service.impl.PermissionUpdateServiceImpl" />
+
+  <!--
+        Responsibility Service
+  -->
+ 
+  <bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl"
+  	p:responsibilityDao-ref="kimResponsibilityDao"
+  />
+
+  <bean id="kimResponsibilityUpdateService" class="org.kuali.rice.kim.service.impl.ResponsibilityUpdateServiceImpl" />
+  <!--
+    IdentityManagementNotificationService 
+  -->
+
+  <bean id="kimIdentityManagementNotificationService" class="org.kuali.rice.kim.service.impl.IdentityManagementNotificationServiceImpl"/>
+  
+
+  <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />
+
+  <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />
+
+  <bean id="groupInternalService" class="org.kuali.rice.kim.service.impl.GroupInternalServiceImpl" />
+  <bean id="responsibilityInternalService" class="org.kuali.rice.kim.service.impl.ResponsibilityInternalServiceImpl" />
+
+  <bean id="documentInitiatorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
+	<property name="permissionTemplateNamespace" value="KR-SYS" />
+	<property name="permissionTemplateName" value="Initiate Document" />
+  </bean>
+
+  <bean id="documentEditorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
+	<property name="permissionTemplateNamespace" value="KR-NS" />
+	<property name="permissionTemplateName" value="Edit Document" />
+  </bean>
+
+  <bean id="documentOpenerRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
+	<property name="permissionTemplateNamespace" value="KR-NS" />
+	<property name="permissionTemplateName" value="Open Document" />
+  </bean>
+
+  <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
+  <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
+  <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase" />
+
+  <bean id="permissionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="permissionName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
+
+  <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="responsibilityName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
+
+  <bean id="rolePermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="roleName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
+
+  <bean id="groupPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+    	<property name="exactMatchStringAttributeName" value="groupName" />
+    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    </bean>
+
+  <!-- for person Doc UI  -->
+  <bean id="kimTypeService" class="org.kuali.rice.kim.service.support.impl.KimTypeServiceBase" />
+  <bean id="kimPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase"/>
+  <bean id="kimRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
+  <bean id="kimGroupTypeService" class="org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase"/>
+  <bean id="kimDelegationTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
+
+  <bean id="kimNoMembersRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase" />
+
+</beans>

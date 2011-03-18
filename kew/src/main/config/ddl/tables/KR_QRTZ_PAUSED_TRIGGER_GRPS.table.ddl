@@ -1,6 +1,0 @@
-CREATE TABLE kr_qrtz_paused_trigger_grps
-  (
-    TRIGGER_GROUP  VARCHAR2(80) NOT NULL,
-    PRIMARY KEY (TRIGGER_GROUP)
-)
-/

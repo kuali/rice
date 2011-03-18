@@ -1,0 +1,22 @@
+<config>
+
+    <!--                                                                    -->
+    <!-- All params below are required for configuration of a thin client.  -->
+    <!--                                                                    -->
+
+    <!-- remote service URLs -->
+    <param name="workflowdocument.javaservice.endpoint">http://localhost:${http.service.port}/en-test/remoting/WorkflowDocumentActionsService</param>
+    <param name="workflowutility.javaservice.endpoint">http://localhost:${http.service.port}/en-test/remoting/WorkflowUtilityService</param>
+    <param name="identity.javaservice.endpoint">http://localhost:${http.service.port}/en-test/remoting/kimIdentityService</param>
+    <param name="group.javaservice.endpoint">http://localhost:${http.service.port}/en-test/remoting/kimGroupService</param>
+
+
+    <!-- required for message signing -->
+    <param name="keystore.alias">rice</param>
+    <param name="keystore.password">r1c3pw</param>
+    <param name="keystore.file">${basedir}/../security/rice.keystore</param>
+
+    <!-- required by the encryption service -->
+    <param name="encryption.key">7IC64w6ksLU</param>
+	
+</config>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="5.0">
+    <info>
+        <title>Kuali Rice ${pom.version} Release Notes</title>
+        <edition>${pom.version}</edition>
+        <author>
+            <personname>Kuali Rice Team</personname>
+            <email>rice.collab@kuali.org</email>
+        </author>
+        <pubdate>${reldate}</pubdate>
+        <releaseinfo>This document contains a cumulative list of work accomplished between versions
+            ${previous.version} and ${pom.version}. It also contains the steps necessary in
+            upgrading from release ${previous.version} to ${pom.version} </releaseinfo>
+    </info>
+    <sect1 xml:id="overview" xreflabel="Overview">
+        <title>Overview</title>
+        <para>This Release Notes documentation includes information on the list of changes between
+            Rice ${previous.version} (released ${previous.reldate}) and Rice ${pom.version}. There
+            are no upgrade instructions from Rice ${previous.version} to Rice ${pom.version} because
+            should be a pure drop in replacement. There have been no database changes.</para>
+        <para>If you encounter any difficulty, please don’t hesitate to contact the Rice team on our
+            public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
+        <itemizedlist>
+            <title>Highlights of this release include:</title>
+            <listitem>
+                <simpara>Numerous bug fixes</simpara>
+            </listitem>
+        </itemizedlist>
+        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download"/>.</para>
+        <para>There are three differient distributions of Rice available: source, binary and server.
+            Please read the Installation Guide for more details on each of these
+            distributions.</para>
+        <para>Documentation for this release can be found at at <link
+            xlink:href="http://kuali.org/rice/docs/${pom.version}"
+                >http://kuali.org/rice/docs/${pom.version}</link>.</para>
+        </sect1>
+        <sect1 xml:id="bug-fix" xreflabel="Bug Fix">
+            <title>Bug Fix</title>            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-3831">KULRICE-3831</link>: person inquiry displays too much information</para>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-3997">KULRICE-3997</link>: Make AnyCharacterValidationPattern to accept UTF-8</para>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4083">KULRICE-4083</link>: ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND doesn't appear to work the way it's being described.</para>
+                    
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4256">KULRICE-4256</link>: new pages don't load at the top of the
+                    page</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4385">KULRICE-4385</link>: Multiple delegates seem to be mixed up when
+                    viewing a person</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4500">KULRICE-4500</link>: From and To dates note handled correctly on
+                    Routing Rules Maintenance document</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4567">KULRICE-4567</link>: Make Responsibility Service not sensitive
+                    to miscoded role type services</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4576">KULRICE-4576</link>: Looks like there is a bug in the KNS
+                    framework with nested collections and externalizable business
+                    objects.</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4613">KULRICE-4613</link>: Cannot return a derived role as an assignee
+                    in the Role Document</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4621">KULRICE-4621</link>: KFS-SYS user roles with blank qualifiers
+                    not appearing on person</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4679">KULRICE-4679</link>: incorrect error message when I put in too
+                    long of a message on workflow annotations</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4696">KULRICE-4696</link>: Parameter lookup reports all rows when only
+                    searching by Component</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4699">KULRICE-4699</link>: WorkflowUtilityWebServiceImpl.hasRouteNode() does not consider parent
+                    documents</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4768">KULRICE-4768</link>: creating a new Person and then blanket
+                    approving returns the user to the rice portal rather than client portal
+                    (kc)</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4771">KULRICE-4771</link>: Show/Hide buttons affect incorrect rows on
+                    Inquiry with multiple collections</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4772">KULRICE-4772</link>: Sections on direct inquiries have blank
+                    gaps between sections</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4782">KULRICE-4782</link>: forceUppercase and encrypted PK fields are
+                    not compatible - unable to perform inquiry</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4785">KULRICE-4785</link>: Document Operation Screen's "Create Date"
+                    field doesn't have time component, so updating resets create date of
+                    document to 12:00</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4796">KULRICE-4796</link>: MaintainableFieldDefinition's
+                    readOnlyAfterAdd flag is ignored in a specific scenario</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4800">KULRICE-4800</link>: KSB attempting to deploy SOAP services
+                    multiple times</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4801">KULRICE-4801</link>: IdentityManagementService deployed as
+                    Simple instead of JAX-WS service</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4805">KULRICE-4805</link>: DocumentTypePermissionServiceImpl seems to
+                    build permission details incorrectly</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4818">KULRICE-4818</link>: Unable to delete Delegation</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4822">KULRICE-4822</link>: fix inconsistencies in person role
+                    maintenance</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4831">KULRICE-4831</link>: IdentityManagementService jaxws annotations
+                    are incomplete</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4832">KULRICE-4832</link>: Editable properties do not update when
+                    there is a validation error</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4835">KULRICE-4835</link>: help.tag direct parameter access is
+                    outdated</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4836">KULRICE-4836</link>: Some KIM DTO objects (mostly labeled in KIM
+                    as 'Info' objects) do not properly serialize when the service returning
+                    them is consumed over the bus</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4837">KULRICE-4837</link>: KualiDecimal accepts multiple decimal
+                    parts</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4840">KULRICE-4840</link>: UiDocumentServiceImpl::getMember should not
+                    call BO service to get Principals,groups, roles. Use kim services</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4841">KULRICE-4841</link>: permission lookup returns inactive
+                    permissions</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4842">KULRICE-4842</link>: iframeportlet height calculated
+                    wrong</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4845">KULRICE-4845</link>: FieldOverrideForValueReplaceImpl does not
+                    implement the FieldOverride interface</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4849">KULRICE-4849</link>: Looking up permissions by person not
+                    working for Permission and Responsibility screens</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4852">KULRICE-4852</link>: Kim Role search returns roles for "member"
+                    (group and principals) that are inactive</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4857">KULRICE-4857</link>: Role delgations can't be inactivated</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4859">KULRICE-4859</link>: The "create new" button shows up on the
+                    permission look up screen and the responsibility look up screen even if
+                    the user does not have permissions to initiate a new maintenance
+                    document of that type</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4885">KULRICE-4885</link>: Keystore loader may not be closing files
+                    properly</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4890">KULRICE-4890</link>: Direct Inquiry on KIM Objects does not
+                    handle invalid inputs</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4899">KULRICE-4899</link>: Cannot add member to role because
+                    qualifiers are not being checked for uniqueness</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4903">KULRICE-4903</link>: Document Exit logic has to accomodate
+                    non-standard exits also</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4953">KULRICE-4953</link>: KIM Person Document does not handle
+                    duplicate active group memberships correctly.</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4955">KULRICE-4955</link>: Lookups on qualified groups are not working
+                    correctly</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4960">KULRICE-4960</link>: Role document aborts when we try to edit a
+                    role that has a RadioControlDefinition</para>              
+        </sect1>
+        <sect1 xml:id="improvement" xreflabel="Improvement">
+            <title>Improvement</title>        
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4558">
+                    KULRICE-4558</link>: Group document: add text indicating a namespace must be chosen before group members can be added</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4790">KULRICE-4790</link>: HideWebInfFilter inefficient</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4833">KULRICE-4833</link>: add &lt;c:otherwise> to
+                    htmlControlAttribute</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4877">KULRICE-4877</link>: createproject.groovy still generates a
+                    project which does not compile successfully in Eclipse</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4901">KULRICE-4901</link>: move to new ojb patch</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4950">KULRICE-4950</link>: Fix impex tool so that it's not required to
+                    define import.torque.threads</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4952">KULRICE-4952</link>: Review patch to improve usability for
+                    multiple value lookups</para>
+        </sect1>
+        <sect1 xml:id="task" xreflabel="Task">
+            <title>Task</title>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4601">KULRICE-4601</link>: Query to KREW_RIA_DOCTYPE_MAP_T happening
+                    for each search result row</para>
+                          <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4806">KULRICE-4806</link>: Update the rice-site url in the main
+                    pom.xml file</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4823">KULRICE-4823</link>: Country's "Alternate Postal CountryCode"
+                    has a max length of 2, but should be 3.</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4846">KULRICE-4846</link>: Remove PDF work from Rice</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4865">KULRICE-4865</link>: EmailStyleHelper needs a LOG.isDebugEnabled
+                    test before a LOG.debug statement that calls XmlHelper.jotNode</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4924">KULRICE-4924</link>: Include source and javadoc tarballs with
+                    SNAPSHOTS and RELEASES</para>
+            
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4957">KULRICE-4957</link>: Update surefire plugin due to memory
+                    leak</para>
+        </sect1>
+</article>

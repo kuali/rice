@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<!--
+ Copyright 2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <bean id="GenericPermission" parent="GenericPermission-parentBean"/>
+
+  <bean id="GenericPermission-parentBean" abstract="true" parent="BusinessObjectEntry" 
+        p:businessObjectClass="org.kuali.rice.kim.bo.impl.GenericPermission" 
+        p:titleAttribute="permissionId" 
+        p:objectLabel="Permission">
+    <property name="attributes">
+      <list>
+        <ref bean="GenericPermission-permissionId"/>
+        <ref bean="GenericPermission-namespaceCode"/>
+        <ref bean="GenericPermission-name"/>
+        <ref bean="GenericPermission-description"/>
+        <ref bean="GenericPermission-active"/>
+
+        <ref bean="GenericPermission-templateId"/>
+        <ref bean="GenericPermission-detailValues"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="GenericPermission-permissionId" parent="PermissionImpl-permissionId"/>
+  
+  <bean id="GenericPermission-namespaceCode" parent="GenericPermission-namespaceCode-parentBean"/>
+  <bean id="GenericPermission-namespaceCode-parentBean" parent="Namespace-code" abstract="true" 
+        p:name="namespaceCode" 
+        p:label="Permission Namespace" 
+        p:shortLabel="Permission Namespace" 
+        p:required="true">
+    <property name="control">
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.core.web.namespace.NamespaceValuesFinder" p:includeKeyInLabel="true"/>
+    </property>
+  </bean>
+
+  <bean id="GenericPermission-name" parent="PermissionImpl-name"/>
+  <bean id="GenericPermission-description" parent="AttributeReferenceDummy-genericBigText"
+    p:name="description"
+    p:label="Permission Description" 
+    p:shortLabel="Perm. Desc." />
+  <bean id="GenericPermission-active" parent="PermissionImpl-active"/>
+
+  <bean id="GenericPermission-templateId" parent="KimPermissionTemplateImpl-templateId-parentBean"
+        p:required="true"
+        p:name="templateId">
+    <property name="control">
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.lookup.valuefinder.PermissionTemplateValuesFinder" p:includeKeyInLabel="true"/>
+    </property>
+  </bean>
+  <bean id="GenericPermission-detailValues" parent="AttributeReferenceDummy-genericBigText"
+        p:required="false" 
+        p:name="detailValues"
+        p:label="Permission Details"
+        p:shortLabel="Perm. Dtls." />
+
+</beans>

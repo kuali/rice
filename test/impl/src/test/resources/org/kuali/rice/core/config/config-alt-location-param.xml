@@ -1,0 +1,14 @@
+<!-- this file tests that the alt location can be consumed without problems if it's parsed.
+This is so folks doing a maven build of any rice project can put this param in at the 
+command line to point the config to an alternate location (this will be used for multiple 
+environmnets in ci)
+ -->
+
+<config>
+	<param name="axis:user">user1</param>
+	<param name="axis:password">password1</param>
+	<param name="config.location">classpath:org/kuali/rice/core/config/hier-config-2.xml</param>
+	<param name="config.location">${alt.config.location}</param>
+	
+	<param name="config.location">${user.home}/me.xml</param>
+</config>

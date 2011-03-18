@@ -1,0 +1,89 @@
+<!--
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<name>Kuali Rice Documentation</name>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.kuali.rice</groupId>
+		<artifactId>rice</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>rice-doc</artifactId>
+
+
+	<properties>
+		<reldate>February 2011</reldate>
+		<previous.version>1.0.3</previous.version>
+		<previous.reldate>October 2010</previous.reldate>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<outputDirectory>${basedir}/target/docbook-filtered</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/docbook</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-xhtml</goal>
+							<goal>generate-pdf</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceDirectory>${basedir}/target/docbook-filtered</sourceDirectory>
+							<targetDirectory>${project.build.outputDirectory}</targetDirectory>
+							
+							<!-- parameter> 
+  <name>fop.extensions</name> 
+  <value>1</value> 
+</parameter--> 
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.docbook</groupId>
+						<artifactId>docbook-xml</artifactId>
+						<version>4.4</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

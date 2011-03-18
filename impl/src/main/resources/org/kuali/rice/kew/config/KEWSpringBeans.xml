@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/jdbc
+                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                           http://www.springframework.org/schema/jee
+                           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+                           http://www.springframework.org/schema/jms
+                           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                           http://www.springframework.org/schema/oxm
+                           http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+                           http://www.springframework.org/schema/task
+                           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <!-- DAO's are located in KEWOJBSpringBeans.xml and KEWJPASpringBeans.xml -->
+
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+
+    <bean id="mailer"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="mailer" />
+	</bean>
+
+    <bean id="parameterService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="parameterService" />
+	</bean>
+	
+	<bean id="KEWConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.kew.util.KEWConstants"/>
+	</bean>
+	
+	<bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+		<property name="attributes">
+			<map>
+				<entry key="KEWConstants" value-ref="KEWConstants"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
+        <property name="preferredDataSourceParams">
+			<list>
+				<value>org.kuali.workflow.datasource</value>
+			</list>
+		</property>
+		<property name="preferredDataSourceJndiParams">
+			<list>
+				<value>org.kuali.workflow.datasource.jndi.location</value>
+			</list>
+		</property>
+		<property name="serverDataSource" value="true"/>
+    </bean>
+    
+    <bean id="kewNonTransactionalDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+        <property name="nullAllowed" value="true"/>
+        <property name="nonTransactionalDataSource" value="true"/>
+        <property name="preferredDataSourceParams">
+            <list>
+                <value>kew.nonTransactional.datasource</value>
+            </list>
+        </property>
+        <property name="preferredDataSourceJndiParams">
+            <list>
+                <value>kew.nonTransactional.datasource.jndi.location</value>
+            </list>
+        </property>
+        <property name="serverDataSource" value="false"/>
+    </bean>
+
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref local="enRuleAttributeService" />
+				<idref local="enRuleTemplateService" />
+				<idref local="enRuleService" />
+				<idref local="enDocumentRouteHeaderService" />
+				<idref local="enActionListService" />
+				<idref local="enDocumentSearchService" />
+				<idref local="enDocumentTypeService" />
+				<idref local="enDocumentTypePermissionService" />
+				<idref local="enPreferencesService" />
+				<idref local="enActionTakenService" />
+				<idref local="enActionRequestService" />
+				<idref local="enResponsibilityIdService" />
+				<idref local="enRuleDelegationService" />
+				<idref local="enNotificationService" />
+				<idref local="enRouteModuleService" />
+				<idref local="enWorkflowDocumentService" />
+				<idref local="enRoleService" />
+				<idref local="enRoutingReportService" />
+                <idref local="enExtractService" />
+				<idref local="workflowEngine" />
+				<idref local="enRouteNodeService" />
+				<idref local="enBranchService" />
+				<idref local="enExceptionRoutingService" />
+                <idref local="enHelpService" />
+                <idref local="enEDocLiteService" />
+                <idref local="enStyleService" />
+                <idref local="enXmlDigesterService" />
+                <idref local="enStatsService" />
+                <idref local="enNoteService" />
+                <idref local="enDocumentRoutingService" />
+                <idref local="enBlanketApproveProcessor" />
+                <idref local="enSearchableAttributeProcessor" />
+                <idref local="enMoveDocumentService" />
+                <idref local="enActionInvocationService" />
+                <idref local="enImmediateEmailReminderService" />
+                <idref local="enActionListEmailService" />
+                <idref local="enWorkflowUtilityService" />
+                <idref local="enWorkflowDocumentActionsService" />
+                <idref local="enQuickLinksService" />
+                <idref local="enDocumentRequeuerService"/>
+                <!-- it's important that this service remains non-transactionally proxied for various reasons
+                <idref local="enUserOptionsService"/>
+                -->
+			</list>
+		</property>
+	</bean>
+
+	<!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
+
+
+	<!-- WorkflowDocument -->
+	<bean id="enWorkflowDocumentService" class="org.kuali.rice.kew.routeheader.service.impl.WorkflowDocumentServiceImpl" lazy-init="true" />
+
+	<!--  RouteModuleService -->
+	<bean id="enRouteModuleService" class="org.kuali.rice.kew.routemodule.service.impl.RouteModuleServiceImpl"  lazy-init="true"/>
+
+	<!-- 2.1 Workflow Engine -->
+	<bean id="workflowEngine" class="org.kuali.rice.kew.engine.StandardWorkflowEngine" lazy-init="true">
+        <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
+        <property name="routeNodeService" ref="enRouteNodeService" />
+        <property name="parameterService" ref="parameterService" />
+    </bean>
+
+    <bean id="simulationEngine" class="org.kuali.rice.kew.engine.simulation.SimulationEngine" lazy-init="true" scope="prototype">
+        <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
+        <property name="routeNodeService" ref="enRouteNodeService" />
+        <property name="parameterService" ref="parameterService" />
+    </bean>
+    
+    <bean id="blanketApproveEngineFactory" class="org.kuali.rice.kew.engine.BlanketApproveEngineFactoryImpl" lazy-init="true">
+        <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
+        <property name="routeNodeService" ref="enRouteNodeService" />
+        <property name="parameterService" ref="parameterService" />
+    </bean>
+
+	<bean id="enRouteNodeService" class="org.kuali.rice.kew.engine.node.service.impl.RouteNodeServiceImpl" lazy-init="true">
+		<property name="routeNodeDAO">
+			<ref bean="enRouteNodeDAO" />
+		</property>
+	</bean>
+
+	<bean id="enBranchService" class="org.kuali.rice.kew.engine.node.service.impl.BranchServiceImpl" lazy-init="true">
+		<property name="branchDAO">
+			<ref bean="enBranchDAO"/>
+		</property>
+	</bean>
+
+	<!--  ResponsibilityIdService -->
+	<bean id="enResponsibilityIdService" class="org.kuali.rice.kew.responsibility.service.impl.ResponsibilityIdServiceImpl" lazy-init="true">
+		<property name="responsibilityIdDAO" ref="enResponsibilityIdDAO" />
+	</bean>
+
+	<!--  ActionRequestService -->
+	<bean id="enActionRequestService" class="org.kuali.rice.kew.actionrequest.service.impl.ActionRequestServiceImpl" lazy-init="true">
+		<property name="actionRequestDAO">
+			<ref bean="enActionRequestDAO" />
+		</property>
+	</bean>
+
+	<!--  RuleAttributeService -->
+	<bean id="enRuleAttributeService" class="org.kuali.rice.kew.rule.service.impl.RuleAttributeServiceImpl" lazy-init="true">
+		<property name="ruleAttributeDAO">
+			<ref bean="enRuleAttributeDAO" />
+		</property>
+	</bean>
+
+	<!--  RuleTemplateService -->
+	<bean id="enRuleTemplateService" class="org.kuali.rice.kew.rule.service.impl.RuleTemplateServiceImpl" lazy-init="true">
+		<property name="ruleTemplateDAO">
+			<ref bean="enRuleTemplateDAO" />
+		</property>
+		<property name="ruleTemplateAttributeDAO">
+			<ref bean="enRuleTemplateAttributeDAO" />
+		</property>
+		<property name="ruleTemplateOptionDAO">
+			<ref bean="enRuleTemplateOptionDAO" />
+		</property>
+		<property name="ruleDAO">
+			<ref bean="enRuleDAO" />
+		</property>
+		<property name="ruleDelegationDAO">
+			<ref bean="enRuleDelegationDAO" />
+		</property>
+	</bean>
+
+	<!--  RuleDelegationService -->
+	<bean id="enRuleDelegationService" class="org.kuali.rice.kew.rule.service.impl.RuleDelegationServiceImpl" lazy-init="true">
+		<property name="ruleDelegationDAO">
+			<ref bean="enRuleDelegationDAO" />
+		</property>
+	</bean>
+
+	<!--  RuleService -->
+	<bean id="enRuleService" class="org.kuali.rice.kew.rule.service.impl.RuleServiceImpl" lazy-init="true">
+		<property name="ruleDAO">
+			<ref bean="enRuleDAO" />
+		</property>
+		<property name="ruleResponsibilityDAO">
+			<ref bean="enRuleResponsibilityDAO" />
+		</property>
+	</bean>
+
+	<!--  RouteHeaderService -->
+	<bean id="enDocumentRouteHeaderService" class="org.kuali.rice.kew.routeheader.service.impl.RouteHeaderServiceImpl" lazy-init="true">
+		<property name="routeHeaderDAO">
+			<ref bean="enDocumentRouteHeaderDAO" />
+		</property>
+		<property name="searchableAttributeDAO">
+			<ref bean="enSearchableAttributeDAO" />
+		</property>
+	</bean>
+
+
+  <!--  EDL Extract Service -->
+  <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">
+    <property name="extractDAO">
+      <ref bean="enExtractDAO"/>
+    </property>
+  </bean>
+
+	<!--  Routing Report Service -->
+	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"  lazy-init="true"/>
+	<!--  ActionListService -->
+	<bean id="enActionListService" class="org.kuali.rice.kew.actionlist.service.impl.ActionListServiceImpl" lazy-init="true">
+		<property name="actionListDAO">
+			<ref bean="enActionListDAO" />
+		</property>
+		<property name="actionItemDAO">
+			<ref bean="enActionItemDAO" />
+		</property>
+	</bean>
+
+	<!--  DocumentSearchService -->
+	<bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl" lazy-init="true">
+		<property name="documentSearchDAO" ref="enDocumentSearchDAO" />
+		<property name="userOptionsService" ref="enUserOptionsService" />
+	</bean>
+    <bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOJdbcImpl" lazy-init="true">
+        <property name="dataSource" ref="enWorkflowDataSource" />
+    </bean>
+    <!--
+	<bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOOjbImpl" lazy-init="true">
+		<property name="jcdAlias" value="enWorkflowDataSource" />
+	</bean>
+    -->
+
+	<!--  DocumentTypeService -->
+	<bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl" lazy-init="true">
+		<property name="documentTypeDAO" ref="enDocumentTypeDAO" />
+	</bean>
+
+	<bean id="enDocumentTypePermissionService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceImpl" lazy-init="true"/>
+
+    <!--  DocumentSecurityService -->
+    <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl"/>
+
+	<!-- Exception routing service -->
+	<bean id="enExceptionRoutingService" class="org.kuali.rice.kew.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
+
+	<!--  PreferencesService -->
+	<bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true" />
+	<!--  UserOptionsService -->
+	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceCache" lazy-init="true">
+		<property name="innerService">
+			<ref local="UserOptionsServiceInner" />
+		</property>
+	</bean>
+
+	<!--  UserOptionsServiceInner -->
+	<bean id="UserOptionsServiceInner" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
+		<property name="userOptionsDAO">
+            <ref bean="enUserOptionsDAO" />
+		</property>
+        <property name="reloadActionListDAO">
+            <ref bean="reloadActionListDAO" />
+        </property>
+	</bean>
+
+
+	<!--  ActionTakenService -->
+	<bean id="enActionTakenService" class="org.kuali.rice.kew.actiontaken.service.impl.ActionTakenServiceImpl" lazy-init="true">
+		<property name="actionTakenDAO">
+			<ref bean="enActionTakenDAO" />
+		</property>
+	</bean>
+
+	<!--  RoleService -->
+	<bean id="enRoleService" class="org.kuali.rice.kew.role.service.impl.RoleServiceImpl"  lazy-init="true"/>
+
+    <bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+	  <property name="lookupableHelperService">
+  		<ref bean="edlLookupHelperService" />
+	  </property>
+    </bean>
+
+    <bean id="ruleBaseValuesLookupHelperService" class="org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="ruleBaseValuesLookupable" class="org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl" scope="prototype">
+	  <property name="lookupableHelperService">
+  		<ref bean="ruleBaseValuesLookupHelperService" />
+	  </property>
+    </bean>
+
+    <bean id="ruleDelegationLookupHelperService" class="org.kuali.rice.kew.rule.bo.RuleDelegationLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="ruleDelegationLookupable" class="org.kuali.rice.kew.rule.bo.RuleDelegationLookupableImpl" scope="prototype">
+	  <property name="lookupableHelperService">
+  		<ref bean="ruleDelegationLookupHelperService" />
+	  </property>
+    </bean>
+
+    <bean id="docTypeLookupHelperService" class="org.kuali.rice.kew.doctype.DocumentTypeLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="docTypeLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+      <property name="lookupableHelperService">
+        <ref local="docTypeLookupHelperService" />
+      </property>
+    </bean>
+
+    <bean id="docRouteHeaderValueLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="docRouteHeaderValueLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+      <property name="lookupableHelperService">
+        <ref local="docRouteHeaderValueLookupHelperService" />
+      </property>
+    </bean>
+
+    <bean id="docSearchCriteriaDTOLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocSearchCriteriaDTOLookupableHelperServiceImpl" scope="prototype"/>
+
+    <bean id="docSearchCriteriaDTOLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+      <property name="lookupableHelperService">
+        <ref local="docSearchCriteriaDTOLookupHelperService" />
+      </property>
+      <property name="extraOnLoad" value="storeCurrentDocTypeNameOnLoad()"/>
+    </bean>
+    
+	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl" lazy-init="true">
+        <property name="styleService" ref="enStyleService"/>
+    </bean>
+    <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl">
+        <property name="deploymentEnvironment">
+            <value>${environment}</value>
+        </property>
+        <property name="emailContentGenerator" ref="enEmailContentService"/>
+        <property name="mailer" ref="mailer" />
+    </bean>
+
+	<bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.KCBNotificationService"  lazy-init="true"/>
+
+    <!-- <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.DefaultNotificationService"  lazy-init="true"/>  -->
+
+	<!-- Action Registry -->
+	<bean id="enActionRegistry" class="org.kuali.rice.kew.actions.ActionRegistryImpl" lazy-init="true"/>
+
+    <!-- some beans shared by client and server -->
+
+    <bean id="enXmlIngesterService" class="org.kuali.rice.kew.batch.XmlIngesterServiceImpl" lazy-init="true">
+        <property name="xmlDigesterService">
+          <ref bean="enXmlDigesterService"/>
+        </property>
+        <property name="validate">
+            <value>true</value>
+        </property>
+        <property name="serviceOrder">
+            <list>
+                <value>enUserXmlService</value>
+                <value>enRuleAttributeService</value>
+                <value>enGroupXmlService</value>
+                <value>enRuleTemplateService</value>
+                <value>enDocumentTypeService</value>
+                <value>enRuleService</value>
+                <value>enRuleDelegationService</value>
+                <value>enHelpService</value>
+                <value>enEDocLiteService</value>
+                <value>enStyleService</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="enXmlDigesterService" class="org.kuali.rice.kew.batch.XmlDigesterServiceImpl"  lazy-init="true"/>
+
+    <bean id="enEDocLiteService" class="org.kuali.rice.kew.edl.service.impl.EDocLiteServiceImpl" lazy-init="true">
+        <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
+        <property name="styleService" ref="enStyleService"/>
+    </bean>
+
+    <bean id="enStyleService" class="org.kuali.rice.kew.edl.service.impl.StyleServiceImpl" lazy-init="true">
+        <property name="styleDAO" ref="enEDocLiteDAO"/>
+    </bean>
+
+    <bean id="enHelpService" class="org.kuali.rice.kew.help.service.impl.HelpServiceImpl" lazy-init="true">
+        <property name="helpDAO" ref="enHelpDAO" />
+    </bean>
+
+
+    <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
+	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
+		<property name="secretKey">
+			<bean class="org.kuali.rice.core.config.spring.ConfigPropertyFactoryBean">
+				<property name="name" value="encryption.key"/>
+			</bean>
+		</property>
+	</bean>
+
+  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
+    <property name="transactionManager">
+      <ref bean="transactionManager" />
+    </property>
+    <property name="transactionAttributeSource">
+      <ref bean="matchAllWithPropReqCheckedException" />
+    </property>
+  </bean>
+
+
+  <bean id="checkedExceptionAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref local="matchAllTxCheckedExceptionInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="enWorkflowDocumentActionsService" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="enWorkflowDocumentActionsService" class="org.kuali.rice.kew.service.impl.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
+
+
+  <bean id="enXmlPollerService" class="org.kuali.rice.kew.batch.XmlPollerServiceImpl">
+    <property name="xmlPendingLocation">
+      <value>${data.xml.pending.location}</value>
+    </property>
+    <property name="xmlCompletedLocation">
+      <value>${data.xml.loaded.location}</value>
+    </property>
+    <property name="xmlProblemLocation">
+      <value>${data.xml.problem.location}</value>
+    </property>
+    <property name="xmlParentDirectory">
+      <value>${data.xml.root.location}</value>
+    </property>
+    <property name="pollIntervalSecs">
+      <value>${data.xml.pollIntervalSecs}</value>
+    </property>
+    <property name="initialDelaySecs">
+      <value>${initialDelaySecs}</value>
+    </property>
+  </bean>
+
+  <bean id="enXmlExporterService" class="org.kuali.rice.kew.xml.export.XmlExporterServiceImpl" lazy-init="true">
+    <property name="serviceOrder">
+      <list>
+		<value>enGroupXmlService</value>
+        <value>enRuleAttributeService</value>
+        <value>enDocumentTypeService</value>
+        <value>enRuleTemplateService</value>
+        <value>enRuleService</value>
+        <value>enRuleDelegationService</value>
+        <value>enHelpService</value>
+        <value>enEDocLiteService</value>
+        <value>enStyleService</value>
+      </list>
+    </property>
+  </bean>
+
+
+
+  <!--  StatsService -->
+  <bean id="enStatsService" class="org.kuali.rice.kew.stats.service.impl.StatsServiceImpl">
+    <property name="statsDAO">
+      <ref bean="enStatsDAO" />
+    </property>
+  </bean>
+
+  <!--  NoteService -->
+  <bean id="enNoteService" class="org.kuali.rice.kew.notes.service.impl.NoteServiceImpl">
+    <property name="noteDAO" ref="enNoteDAO" />
+    <property name="attachmentService">
+      <bean class="org.kuali.rice.kew.notes.service.impl.AttachmentServiceImpl">
+        <property name="attachmentDir" value="${attachment.dir.location}" />
+      </bean>
+    </property>
+  </bean>
+
+  <!--  QuickLinksService -->
+  <bean id="enQuickLinksService" class="org.kuali.rice.kew.quicklinks.service.impl.QuickLinksServiceImpl">
+    <property name="quickLinksDAO" ref="enQuickLinksDAO" />
+  </bean>
+
+  <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
+
+  <!-- XML parsing/export has not been promoted out of KEW into the core yet, until then let's wire up the GroupXmlServiceImpl here -->
+  <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
+  <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
+
+	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.service.impl.WorkflowUtilityWebServiceImpl" lazy-init="true" />
+    <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
+    <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
+    <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.service.impl.SearchableAttributeProcessor"/>
+    <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
+    <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
+    <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
+    <bean id="simpleDocumentActionsService" class="org.kuali.rice.kew.webservice.impl.SimpleDocumentActionsWebServiceImpl"/>
+    <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
+
+	<bean id="dataDictionaryService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dataDictionaryService" />
+	</bean>
+	
+	<bean id="persistenceServiceOjb"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="persistenceServiceOjb" />
+	</bean>
+	
+	<bean id="kualiModuleService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kualiModuleService" />
+	</bean>
+
+  <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService">
+  	<property name="moduleConfiguration" ref="kewModuleConfiguration"/>
+    <property name="kualiModuleService" ref="kualiModuleService" />
+  </bean>
+
+  <bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+		<property name="namespaceCode" value="KR-WKFLW" />
+		<property name="dataSourceName" value="enWorkflowDataSource"/>
+		<property name="entityManager" ref="kewEntityManager" />
+		<property name="initializeDataDictionary" value="true"/>
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+ 	    <property name="persistenceService" ref="persistenceServiceOjb" />
+		<property name="dataDictionaryPackages">
+			<list>
+				<!-- FIXME: RICE MODULARITY  -->
+				<!-- had to combine all the DD files into a single list here to make lookups, inquiry work across modules -->
+				<!-- from KEW -->
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
+			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
+              	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
+              	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocSearchCriteriaDTO.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>
+                
+                <!-- from KIM-->
+                
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleMemberImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentCitizenship.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml</value>
+                
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml</value>
+
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmailType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityNameType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeInfo.xml</value>
+                
+                <!-- from kns -->
+                
+                <value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Attachment.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
+            </list>
+		</property>
+        <property name="packagePrefixes">
+            <list>
+                <value>org.kuali.rice.kew.</value>
+                <value>org.kuali.rice.kew.doctype.bo</value>
+                <value>org.kuali.rice.kew.docsearch</value>
+            </list>
+        </property>
+        <property name="externalizableBusinessObjectImplementations">
+            <map>
+	           <entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
+	           <entry key="org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO" value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO" />
+            </map>
+        </property>
+	</bean>
+
+  <!-- START JPA CONFIGURATION -->
+
+  <bean id="kewEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
+    <constructor-arg value="rice.kew"/>
+    <constructor-arg ref="enWorkflowDataSource"/>
+  </bean>
+
+  <bean id="kewEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+  	<property name="entityManagerFactory" ref="kewEntityManagerFactory"/>
+  </bean>
+
+  <!-- END JPA CONFIGURATION -->
+
+  <bean id="routeLogDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.RouteLogDerivedRoleTypeServiceImpl" />
+
+  <bean id="actionRequestDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.ActionRequestDerivedRoleTypeServiceImpl" />
+
+  <bean id="adhocReviewPermissionTypeService" class="org.kuali.rice.kew.service.impl.AdhocReviewPermissionTypeServiceImpl" />
+
+  <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
+
+  <bean id="documentTypeResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl" />
+
+
+  <bean class="org.kuali.rice.kns.util.spring.NamedOrderedListBean">
+		<property name="name" value="scriptConfigurationFilePaths" />
+		<property name="listItem" value="classpath:org/kuali/rice/kew/dwr-core.xml" />
+	</bean>
+
+	<bean id="enDocumentLinkService" class="org.kuali.rice.kew.documentlink.service.impl.DocumentLinkServiceImpl" lazy-init="true">
+		<property name="documentLinkDAO" ref="enDocumentLinkDAO"/>
+	</bean>
+    
+    <bean id="reloadActionListDAO" class="org.kuali.rice.kew.useroptions.dao.impl.ReloadActionListDaoJdbcImpl">
+         <constructor-arg>
+            <ref bean="kewNonTransactionalDataSource"/>
+         </constructor-arg>
+    </bean>
+    
+</beans>

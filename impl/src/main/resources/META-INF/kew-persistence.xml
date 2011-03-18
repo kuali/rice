@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<persistence
+    version="1.0" 
+    xmlns="http://java.sun.com/xml/ns/persistence" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  
+  <persistence-unit name="kew-unit" transaction-type="JTA">
+    <mapping-file>META-INF/kew-orm.xml</mapping-file>
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent</class>
+    <class>org.kuali.rice.kew.notes.Note</class>
+    <class>org.kuali.rice.kew.notes.Attachment</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension</class>
+    <class>org.kuali.rice.kew.actionitem.ActionItem</class>
+    <class>org.kuali.rice.kew.actionitem.ActionItemActionListExtension</class>
+    <class>org.kuali.rice.kew.actionitem.OutboxItemActionListExtension</class>
+    <class>org.kuali.rice.kew.actiontaken.ActionTakenValue</class>
+    <class>org.kuali.rice.kew.actionrequest.ActionRequestValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeStringValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeLongValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue</class>
+    <class>org.kuali.rice.kew.doctype.bo.DocumentType</class>
+    <class>org.kuali.rice.kew.doctype.DocumentTypePolicy</class>
+    <class>org.kuali.rice.kew.doctype.ApplicationDocumentStatus</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentStatusTransition</class>
+    <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
+    <class>org.kuali.rice.kew.useroptions.UserOptions</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplate</class>
+    <class>org.kuali.rice.kew.rule.RuleTemplateOption</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleAttribute</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplateAttribute</class>
+    <class>org.kuali.rice.kew.rule.RuleBaseValues</class>
+    <class>org.kuali.rice.kew.rule.RuleExpressionDef</class>
+    <class>org.kuali.rice.kew.rule.RuleDelegation</class>
+    <class>org.kuali.rice.kew.rule.RuleResponsibility</class>
+    <class>org.kuali.rice.kew.rule.RuleExtension</class>
+    <class>org.kuali.rice.kew.rule.RuleExtensionValue</class>
+    <class>org.kuali.rice.kew.help.HelpEntry</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNode</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNodeConfigParam</class>
+    <class>org.kuali.rice.kew.engine.node.BranchPrototype</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNodeInstance</class>
+    <class>org.kuali.rice.kew.engine.node.Branch</class>
+    <class>org.kuali.rice.kew.engine.node.BranchState</class>
+    <class>org.kuali.rice.kew.engine.node.NodeState</class>
+    <class>org.kuali.rice.kew.engine.node.Process</class>
+    <class>org.kuali.rice.kew.edl.bo.EDocLiteStyle</class>
+    <class>org.kuali.rice.kew.edl.bo.EDocLiteDefinition</class>
+    <class>org.kuali.rice.kew.edl.bo.EDocLiteAssociation</class>
+    <!--<class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>-->
+    <!-- 
+    <class>org.kuali.rice.kew.role.QualifiedRole</class>
+    <class>org.kuali.rice.kew.role.QualifiedRoleMember</class>
+    <class>org.kuali.rice.kew.role.QualifiedRoleExtension</class>
+    <class>org.kuali.rice.kew.role.QualifiedRoleExtensionValue</class>
+    <class>org.kuali.rice.kew.role.Role</class>
+    <class>org.kuali.rice.kew.role.RoleAttribute</class>
+    -->
+    <class>org.kuali.rice.kew.edl.extract.Dump</class>
+    <class>org.kuali.rice.kew.edl.extract.Fields</class>
+    <class>org.kuali.rice.kew.documentlink.DocumentLink</class>
+    <class>org.kuali.rice.kew.engine.node.KeyValuePair</class>
+    <class>org.kuali.rice.kew.engine.node.State</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+  </persistence-unit>
+
+</persistence>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2006-2009 The Kuali Foundation
+
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.opensource.org/licenses/ecl2.php
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/jdbc
+                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                           http://www.springframework.org/schema/jee
+                           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+                           http://www.springframework.org/schema/jms
+                           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                           http://www.springframework.org/schema/oxm
+                           http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+                           http://www.springframework.org/schema/task
+                           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<bean id="config" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.ConfigContext.getCurrentContextConfig" />
+	</bean>
+	
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="config" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+
+  <!-- In the case of the data source name, we want to check if
+      the kimDataSource spring bean exists, if it does, we
+      return "kimDataSource", otherwise return null -->
+  <bean id="kimDataSourceNameIfExists" class="org.kuali.rice.kns.util.spring.IfExistsFactoryBean">
+    <property name="beanName" value="kimDataSource"/>
+    <property name="customReturnValue" value="kimDataSource"/>
+  </bean>
+
+  <!-- In the case of the entity manager, we want to check if
+     the "kimEntityManager" bean exists.  If it does, we
+     return that spring bean, otherwise return null -->
+  <bean id="kimEntityManagerIfExists" class="org.kuali.rice.kns.util.spring.IfExistsFactoryBean">
+    <property name="beanName" value="kimEntityManager"/>
+  </bean>
+
+  <bean id="kimModuleConfiguration" parent="kimModuleConfiguration-parentBean"/>
+
+	<bean id="dataDictionaryService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dataDictionaryService" />
+	</bean>
+	
+	<bean id="persistenceServiceOjb"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="persistenceServiceOjb" />
+	</bean>
+
+  <bean id="kimModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
+    <property name="namespaceCode" value="KR-IDM" />
+    <property name="dataSourceName" ref="kimDataSourceNameIfExists" />
+    <property name="entityManager" ref="kimEntityManagerIfExists" />
+    <property name="initializeDataDictionary" value="true"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService" />
+    <property name="persistenceService" ref="persistenceServiceOjb" />
+    <property name="dataDictionaryPackages">
+			<list>
+				<!-- FIXME: RICE MODULARITY  -->
+				<!-- had to combine all the DD files into a single list here to make lookups, inquiry work across modules -->
+				<!-- from KEW -->
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
+			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
+              	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
+              	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocSearchCriteriaDTO.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>
+                
+                <!-- from KIM-->
+                
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleMemberImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentCitizenship.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml</value>
+                
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
+                <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml</value>
+
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmailType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityNameType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/EntityType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml</value>
+                <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeInfo.xml</value>
+                
+                <!-- from kns -->
+                
+                <value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Attachment.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
+				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
+            </list>
+    </property>
+        <property name="packagePrefixes">
+            <list>
+                <value>org.kuali.rice.kim.</value>
+            </list>
+        </property>
+        <property name="externalizableBusinessObjectImplementations">
+            <map>
+             <entry key="org.kuali.rice.kim.bo.Person" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
+             <entry key="org.kuali.rice.kim.bo.Role" value="org.kuali.rice.kim.bo.impl.RoleImpl" />
+             <entry key="org.kuali.rice.kim.bo.Group" value="org.kuali.rice.kim.bo.impl.GroupImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EmailType" value="org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.AddressType" value="org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.AffiliationType" value="org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.CitizenshipStatus" value="org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EmploymentStatus" value="org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EmploymentType" value="org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EntityNameType" value="org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.EntityType" value="org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.ExternalIdentifierType" value="org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl" />
+             <entry key="org.kuali.rice.kim.bo.reference.PhoneType" value="org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl" />
+            </map>
+        </property>
+  </bean>
+
+	<bean id="kualiModuleService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kualiModuleService" />
+	</bean>
+
+  <bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
+        p:moduleConfiguration-ref="kimModuleConfiguration"
+        p:kualiModuleService-ref="kualiModuleService" />
+
+
+  <bean id="kimIdentityManagementService" class="org.kuali.rice.kim.service.impl.IdentityManagementServiceImpl"
+    p:entityPrincipalCacheMaxSize="${kim.cache.entity.max.size}"
+    p:entityPrincipalCacheMaxAgeSeconds="${kim.cache.entity.max.age.seconds}"
+    p:groupCacheMaxSize="${kim.cache.group.max.size}"
+    p:groupCacheMaxAgeSeconds="${kim.cache.group.max.age.seconds}"
+    p:permissionCacheMaxSize="${kim.cache.permission.max.size}"
+    p:permissionCacheMaxAgeSeconds="${kim.cache.permission.max.age.seconds}"
+    p:responsibilityCacheMaxSize="${kim.cache.responsibility.max.size}"
+    p:responsibilityCacheMaxAgeSeconds="${kim.cache.responsibility.max.age.seconds}" />
+
+  <bean id="kimRoleManagementService" class="org.kuali.rice.kim.service.impl.RoleManagementServiceImpl"
+    p:roleCacheMaxSize="${kim.cache.role.max.size}"
+    p:roleCacheMaxAgeSeconds="${kim.cache.role.max.age.seconds}" />
+
+  <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl"
+    p:personCacheMaxSize="${kim.cache.person.max.size}"
+    p:personCacheMaxAgeSeconds="${kim.cache.person.max.age.seconds}">
+    <property name="personEntityTypeCodes">
+      <list>
+        <value>PERSON</value>
+        <value>SYSTEM</value>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl"/>
+  
+</beans>

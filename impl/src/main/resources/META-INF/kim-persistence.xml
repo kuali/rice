@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<persistence 
+    version="1.0" 
+    xmlns="http://java.sun.com/xml/ns/persistence" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  
+  <persistence-unit name="kim-unit" transaction-type="JTA">
+    <mapping-file>META-INF/kim-orm.xml</mapping-file>
+    <class>org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimAttributeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityCitizenshipImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl</class>
+    <class>org.kuali.rice.kim.bo.impl.GroupImpl</class>
+    <class>org.kuali.rice.kim.bo.group.impl.GroupMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.impl.RoleImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RolePermissionImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl</class>
+    <class>org.kuali.rice.kim.document.IdentityManagementKimDocument</class>
+    <class>org.kuali.rice.kim.document.IdentityManagementPersonDocument</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentName</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentAddress</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentEmail</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentPhone</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentRole</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleMember</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentGroup</class>
+    <class>org.kuali.rice.kim.document.IdentityManagementRoleDocument</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRolePermission</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegation</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier</class>
+    <class>org.kuali.rice.kim.document.IdentityManagementGroupDocument</class>
+    <class>org.kuali.rice.kim.bo.ui.GroupDocumentMember</class>
+    <class>org.kuali.rice.kim.bo.ui.GroupDocumentQualifier</class>
+    <class>org.kuali.rice.kim.bo.impl.ReviewResponsibility</class>
+    <class>org.kuali.rice.kim.bo.impl.GenericPermission</class>
+    
+    <!-- mapped superclasses -->
+    <class>org.kuali.rice.kim.bo.entity.impl.KimDefaultableEntityDataBase</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimDefaultableEntityTypeDataBase</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDataBase</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimInactivatableEntityDataBase</class>
+    <class>org.kuali.rice.kim.bo.impl.InactivatableFromToImpl</class>
+    <class>org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.KimCodeBase</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentBoBase</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentBoDefaultBase</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentBoBase</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentBoDefaultBase</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+  </persistence-unit>
+
+</persistence>

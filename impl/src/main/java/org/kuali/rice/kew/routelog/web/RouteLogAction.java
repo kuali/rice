@@ -1,0 +1,561 @@
+/*
+ * Copyright 2005-2007 The Kuali Foundation
+ *
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kew.routelog.web;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.doctype.SecuritySession;
+import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
+import org.kuali.rice.kew.dto.*;
+import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.service.RouteNodeService;
+import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowUtility;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import java.util.*;
+
+
+/**
+ * A Struts Action used to display the routelog.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class RouteLogAction extends KewKualiAction {
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteLogAction.class);
+    private static Comparator<ActionRequestValue> ROUTE_LOG_ACTION_REQUEST_SORTER = new Utilities.RouteLogActionRequestSorter();
+    
+    @Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        RouteLogForm rlForm = (RouteLogForm) form;
+        Long routeHeaderId = null;
+        if (! org.apache.commons.lang.StringUtils.isEmpty(rlForm.getRouteHeaderId())) {
+            routeHeaderId = new Long(rlForm.getRouteHeaderId());
+        } else if (! org.apache.commons.lang.StringUtils.isEmpty(rlForm.getDocId())) {
+            routeHeaderId = new Long(rlForm.getDocId());
+        } else {
+        	throw new WorkflowRuntimeException("No paramater provided to fetch document");
+        }
+
+        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+
+        DocumentSecurityService security = KEWServiceLocator.getDocumentSecurityService();
+        if (!security.routeLogAuthorized(getUserSession(), routeHeader, new SecuritySession(GlobalVariables.getUserSession()))) {
+          return mapping.findForward("NotAuthorized");
+        }
+        
+        fixActionRequestsPositions(routeHeader);
+        populateRouteLogFormActionRequests(rlForm, routeHeader);
+
+        rlForm.setLookFuture(routeHeader.getDocumentType().getLookIntoFuturePolicy().getPolicyValue().booleanValue());
+
+        if (rlForm.isShowFuture()) {
+            try {
+                populateRouteLogFutureRequests(rlForm, routeHeader);
+            } catch (Exception e) {
+                String errorMsg = "Unable to determine Future Action Requests";
+                LOG.info(errorMsg,e);
+                rlForm.setShowFutureError(errorMsg);
+            }
+        }
+        request.setAttribute("routeHeader", routeHeader);
+        
+		// check whether action message logging should be enabled, user must
+		// have KIM permission for doc type 
+        boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
+				.canAddRouteLogMessage(GlobalVariables.getUserSession().getPrincipalId(), routeHeader);
+		if (isAuthorizedToAddRouteLogMessage) {
+			rlForm.setEnableLogAction(true);
+		} else {
+			rlForm.setEnableLogAction(false);
+		}
+        
+        return super.execute(mapping, rlForm, request, response);
+    }
+
+    @SuppressWarnings("unchecked")
+	public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
+        List<ActionRequestValue> rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
+        Collections.sort(rootRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
+        rootRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(rootRequests);
+        int arCount = 0;
+        for ( ActionRequestValue actionRequest : rootRequests ) {
+            if (actionRequest.isPending()) {
+                arCount++;
+
+                if (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
+                    actionRequest.setDisplayStatus("PENDING");
+                } else if (KEWConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
+                    actionRequest.setDisplayStatus("IN ACTION LIST");
+                }
+            }
+        }
+        rlForm.setRootRequests(rootRequests);
+        rlForm.setPendingActionRequestCount(arCount);
+    }
+
+    @SuppressWarnings("unchecked")
+	private ActionRequestValue switchActionRequestPositionIfPrimaryDelegatePresent( ActionRequestValue actionRequest ) {
+    	
+    	/**
+    	 * KULRICE-4756 - The main goal here is to fix the regression of what happened in Rice 1.0.2 with the display
+    	 * of primary delegate requests.  The delegate is displayed at the top-most level correctly on action requests
+    	 * that are "rooted" at a "role" request.
+    	 * 
+    	 * If they are rooted at a principal or group request, then the display of the primary delegator at the top-most
+    	 * level does not happen (instead it shows the delegator and you have to expand the request to see the primary
+    	 * delegate).
+    	 * 
+    	 * Ultimately, the KAI group and Rice BA need to come up with a specification for how the Route Log should
+    	 * display delegate information.  For now, will fix this so that in the non "role" case, it will put the
+    	 * primary delegate as the outermost request *except* in the case where there is more than one primary delegate.
+    	 */
+    	
+    	if (!actionRequest.isRoleRequest()) {
+    		List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
+    		// only display primary delegate request at top if there is only *one* primary delegate request
+    		if ( primaryDelegateRequests.size() != 1) {
+    			return actionRequest;
+    		}
+    		ActionRequestValue primaryDelegateRequest = primaryDelegateRequests.get(0);
+    		actionRequest.getChildrenRequests().remove(primaryDelegateRequest);
+    		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
+    		primaryDelegateRequest.setParentActionRequest(actionRequest.getParentActionRequest());
+    		primaryDelegateRequest.setParentActionRequestId(actionRequest.getParentActionRequestId());
+    		
+    		actionRequest.setChildrenRequests( new ArrayList<ActionRequestValue>(0) );
+    		actionRequest.setParentActionRequest(primaryDelegateRequest);
+    		actionRequest.setParentActionRequestId(primaryDelegateRequest.getActionRequestId());
+    		
+    		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
+    		
+    		for (ActionRequestValue delegateRequest : primaryDelegateRequest.getChildrenRequests()) {
+    			delegateRequest.setParentActionRequest(primaryDelegateRequest);
+    			delegateRequest.setParentActionRequestId(primaryDelegateRequest.getActionRequestId());
+    		}
+    		
+    		return primaryDelegateRequest;
+    	}
+    	
+    	return actionRequest;
+    }
+
+    private List<ActionRequestValue> switchActionRequestPositionsIfPrimaryDelegatesPresent( Collection<ActionRequestValue> actionRequests ) {
+    	List<ActionRequestValue> results = new ArrayList<ActionRequestValue>( actionRequests.size() );
+    	for ( ActionRequestValue actionRequest : actionRequests ) {
+			results.add( switchActionRequestPositionIfPrimaryDelegatePresent(actionRequest) );
+    	}
+    	return results;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void fixActionRequestsPositions(DocumentRouteHeaderValue routeHeader) {
+        for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
+            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), ROUTE_LOG_ACTION_REQUEST_SORTER);
+            actionTaken.setActionRequests( actionTaken.getActionRequests() );
+        }
+    }
+    
+    /**
+     * executes a simulation of the future routing, and sets the futureRootRequests and futureActionRequestCount
+     * properties on the provided RouteLogForm.
+     * 
+     * @param rlForm the RouteLogForm --used in a write-only fashion.
+     * @param document the DocumentRouteHeaderValue for the document whose future routing is being simulated.
+     * @throws Exception
+     */
+    public void populateRouteLogFutureRequests(RouteLogForm rlForm, DocumentRouteHeaderValue document) throws Exception {
+
+        ReportCriteriaDTO reportCriteria = new ReportCriteriaDTO(document.getRouteHeaderId());
+        String serviceNamespace = document.getDocumentType().getServiceNamespace();
+        WorkflowUtility workflowUtility = 
+        	(WorkflowUtility)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
+
+        // gather the IDs for action requests that predate the simulation
+		Set<Long> preexistingActionRequestIds = getActionRequestIds(document);
+        
+		// run the simulation via WorkflowUtility
+        DocumentDetailDTO documentDetail = workflowUtility.routingReport(reportCriteria);
+
+        // fabricate our ActionRequestValueS from the results
+        List<ActionRequestValue> futureActionRequests = 
+        	reconstituteActionRequestValues(documentDetail, preexistingActionRequestIds);
+
+        Collections.sort(futureActionRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
+        
+        futureActionRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(futureActionRequests);
+        
+        int pendingActionRequestCount = 0;
+        for (ActionRequestValue actionRequest: futureActionRequests) {
+            if (actionRequest.isPending()) {
+                pendingActionRequestCount++;
+
+                if (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(actionRequest.getStatus())) {
+                    actionRequest.setDisplayStatus("PENDING");
+                } else if (KEWConstants.ACTION_REQUEST_ACTIVATED.equals(actionRequest.getStatus())) {
+                    actionRequest.setDisplayStatus("IN ACTION LIST");
+                }
+            }
+        }
+
+        rlForm.setFutureRootRequests(futureActionRequests);
+        rlForm.setFutureActionRequestCount(pendingActionRequestCount);
+    }
+
+
+	/**
+	 * This utility method returns a Set of LongS containing the IDs for the ActionRequestValueS associated with 
+	 * this DocumentRouteHeaderValue. 
+	 */
+	@SuppressWarnings("unchecked")
+	private Set<Long> getActionRequestIds(DocumentRouteHeaderValue document) {
+		Set<Long> actionRequestIds = new HashSet<Long>();
+
+		List<ActionRequestValue> actionRequests = 
+			KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+		
+		if (actionRequests != null) {
+			for (ActionRequestValue actionRequest : actionRequests) {
+				if (actionRequest.getActionRequestId() != null) {
+					actionRequestIds.add(actionRequest.getActionRequestId());
+				}
+			}
+		}
+		return actionRequestIds;
+	}
+
+	/**
+	 * This method creates ActionRequestValue objects from the DocumentDetailDTO output from 
+	 * {@link WorkflowUtility#routingReport(ReportCriteriaDTO)}Report()
+	 * 
+	 * @param documentDetail contains the DTOs from which the ActionRequestValues are reconstituted
+	 * @param preexistingActionRequestIds this is a Set of ActionRequest IDs that will not be reconstituted
+	 * @return the ActionRequestValueS that have been created
+	 */
+	private List<ActionRequestValue> reconstituteActionRequestValues(DocumentDetailDTO documentDetail,
+			Set<Long> preexistingActionRequestIds) {
+
+        RouteNodeInstanceFabricator routeNodeInstanceFabricator = 
+    		new RouteNodeInstanceFabricator(KEWServiceLocator.getRouteNodeService());
+
+        if (documentDetail.getNodeInstances() != null && documentDetail.getNodeInstances().length > 0) {
+        	for (RouteNodeInstanceDTO routeNodeInstanceVO : documentDetail.getNodeInstances()) {
+        		routeNodeInstanceFabricator.importRouteNodeInstanceDTO(routeNodeInstanceVO);
+        	}
+		}
+        
+        ActionRequestDTO[] actionRequestVOs = documentDetail.getActionRequests();
+        List<ActionRequestValue> futureActionRequests = new ArrayList<ActionRequestValue>();
+        if (actionRequestVOs != null) {
+			for (ActionRequestDTO actionRequestVO : actionRequestVOs) {
+				if (actionRequestVO != null) {
+					if (!preexistingActionRequestIds.contains(actionRequestVO.getActionRequestId())) {
+						ActionRequestValue converted = DTOConverter.convertActionRequestDTO(actionRequestVO, routeNodeInstanceFabricator);
+						futureActionRequests.add(converted);
+					}
+				}
+			}
+		}
+		return futureActionRequests;
+	}
+    
+    private ActionRequestService getActionRequestService() {
+        return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
+    }
+    
+    private UserSession getUserSession() {
+        return GlobalVariables.getUserSession();
+    }
+    
+    /**
+     * Creates dummy RouteNodeInstances based on imported data from RouteNodeInstanceDTOs.
+     * It is then able to vend those RouteNodeInstanceS back by their IDs.
+     * 
+     * @author Kuali Rice Team (rice.collab@kuali.org)
+     *
+     */
+    private static class RouteNodeInstanceFabricator implements RouteNodeInstanceLoader {
+
+    	private Map<Long,Branch> branches = new HashMap<Long, Branch>();;
+    	private Map<Long,RouteNodeInstance> routeNodeInstances = new HashMap<Long, RouteNodeInstance>();
+    	private Map<Long,RouteNode> routeNodes = new HashMap<Long, RouteNode>();
+    	private Map<Long,NodeState> nodeStates = new HashMap<Long, NodeState>();
+
+    	private RouteNodeService routeNodeService;
+    	
+    	/**
+		 * This constructs a FutureRouteNodeInstanceFabricator, which will generate bogus
+		 * RouteNodeInstances for SimulationEngine results
+		 * 
+		 */
+		public RouteNodeInstanceFabricator(RouteNodeService routeNodeService) {
+			this.routeNodeService = routeNodeService;
+		}
+
+		/**
+		 * 
+		 * This method looks at the given RouteNodeInstanceDTO and imports it (and all it's ancestors)
+		 * as dummy RouteNodeInstanceS
+		 * 
+		 * @param nodeInstanceDTO
+		 */
+		public void importRouteNodeInstanceDTO(RouteNodeInstanceDTO nodeInstanceDTO) {
+			_importRouteNodeInstanceDTO(nodeInstanceDTO);
+		}
+		
+		/**
+		 * helper method for {@link #importRouteNodeInstanceDTO(RouteNodeInstanceDTO)} which does all
+		 * the work.  The public method just wraps this one but hides the returned RouteNodeInstance,
+		 * which is used for the recursive call to populate the nextNodeInstanceS inside our 
+		 * RouteNodeInstanceS.
+		 * 
+		 * @param nodeInstanceDTO
+		 * @return
+		 */
+    	private RouteNodeInstance _importRouteNodeInstanceDTO(RouteNodeInstanceDTO nodeInstanceDTO) {
+    		if (nodeInstanceDTO == null) {
+    			return null;
+    		}
+    		RouteNodeInstance nodeInstance = new RouteNodeInstance();
+    		nodeInstance.setActive(nodeInstanceDTO.isActive());
+
+    		nodeInstance.setComplete(nodeInstanceDTO.isComplete());
+    		nodeInstance.setDocumentId(nodeInstanceDTO.getDocumentId());
+    		nodeInstance.setInitial(nodeInstanceDTO.isInitial());
+
+    		Branch branch = getBranch(nodeInstanceDTO.getBranchId());
+    		nodeInstance.setBranch(branch);
+
+    		if (nodeInstanceDTO.getRouteNodeId() != null) {
+    			RouteNode routeNode = routeNodeService.findRouteNodeById(nodeInstanceDTO.getRouteNodeId());
+
+    			if (routeNode == null) {
+    				routeNode = getRouteNode(nodeInstanceDTO.getRouteNodeId());
+    				routeNode.setNodeType(nodeInstanceDTO.getName());
+    			}
+
+    			nodeInstance.setRouteNode(routeNode);
+
+    			if (routeNode.getBranch() != null) {
+        			branch.setName(routeNode.getBranch().getName());
+        		} 
+    		}
+
+    		RouteNodeInstance process = getRouteNodeInstance(nodeInstanceDTO.getProcessId());
+    		nodeInstance.setProcess(process);
+
+    		nodeInstance.setRouteNodeInstanceId(nodeInstanceDTO.getRouteNodeInstanceId());
+    		DTOConverter.convertState(null);
+
+    		List<NodeState> nodeState = new ArrayList<NodeState>();
+    		if (nodeInstanceDTO.getState() != null) {
+				for (StateDTO stateDTO : nodeInstanceDTO.getState()) {
+					NodeState state = getNodeState(stateDTO.getStateId());
+					if (state != null) {
+						state.setKey(stateDTO.getKey());
+						state.setValue(stateDTO.getValue());
+						state.setStateId(stateDTO.getStateId());
+						state.setNodeInstance(nodeInstance);
+						nodeState.add(state);
+					}
+				}
+			}
+    		nodeInstance.setState(nodeState);
+
+    		List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
+    		nodeInstance.setNextNodeInstances(nextNodeInstances);
+
+    		for (RouteNodeInstanceDTO nextNodeInstanceVO : nodeInstanceDTO.getNextNodes()) {
+    			// recurse to populate nextNodeInstances
+    			nextNodeInstances.add(_importRouteNodeInstanceDTO(nextNodeInstanceVO));
+    		}
+
+    		routeNodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
+    		return nodeInstance;
+    	}
+    	
+		/**
+		 * This method returns a dummy RouteNodeInstance for the given ID, or null if it hasn't
+		 * imported from a RouteNodeInstanceDTO with that ID
+		 * 
+		 * @see org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader#load(java.lang.Long)
+		 */
+		@Override
+		public RouteNodeInstance load(Long routeNodeInstanceID) {
+			return routeNodeInstances.get(routeNodeInstanceID);
+		}
+
+
+    	/**
+    	 * This method creates bogus BranchES as needed
+    	 * 
+    	 * @param branchId
+    	 * @return
+    	 */
+    	private Branch getBranch(Long branchId) {
+    		Branch result = null;
+
+    		if (branchId != null) {
+    			// if branch doesn't exist, create it
+    			if (!branches.containsKey(branchId)) {
+    				result = new Branch();
+    				result.setBranchId(branchId);
+    				branches.put(branchId, result);
+    			} else {
+    				result = branches.get(branchId);
+    			}
+    		}
+    		return result;
+    	}
+
+    	/**
+    	 * This method creates bogus RouteNodeS as needed
+    	 * 
+    	 * @param routeNodeId
+    	 * @return
+    	 */
+    	private RouteNode getRouteNode(Long routeNodeId) {
+    		RouteNode result = null;
+
+    		if (routeNodeId != null) {
+    			// if RouteNode doesn't exist, create it
+    			if (!routeNodes.containsKey(routeNodeId)) {
+    				result = new RouteNode();
+    				result.setRouteNodeId(routeNodeId);
+    				routeNodes.put(routeNodeId, result);
+    			} else {
+    				result = routeNodes.get(routeNodeId);
+    			}
+    		}
+    		return result;
+    	}
+
+    	/**
+    	 * This method creates bogus RouteNodeInstanceS as needed
+    	 * 
+    	 * @param routeNodeInstanceId
+    	 * @return
+    	 */
+    	public RouteNodeInstance getRouteNodeInstance(Long routeNodeInstanceId) {
+    		RouteNodeInstance result = null;
+
+    		if (routeNodeInstanceId != null) {
+    			// if RouteNodeInstance doesn't exist, create it
+    			if (!routeNodeInstances.containsKey(routeNodeInstanceId)) {
+    				result = new RouteNodeInstance();
+    				result.setRouteNodeInstanceId(routeNodeInstanceId);
+    				routeNodeInstances.put(routeNodeInstanceId, result);
+    			} else {
+    				result = routeNodeInstances.get(routeNodeInstanceId);
+    			}
+    		}
+    		return result;
+    	}
+
+    	/**
+    	 * This method creates bogus NodeStateS as needed
+    	 * 
+    	 * @param nodeStateId
+    	 * @return
+    	 */
+    	private NodeState getNodeState(Long nodeStateId) {
+    		NodeState result = null;
+
+    		if (nodeStateId != null) {
+    			// if NodeState doesn't exist, create it
+    			if (!nodeStates.containsKey(nodeStateId)) {
+    				result = new NodeState();
+    				result.setNodeStateId(nodeStateId);
+    				nodeStates.put(nodeStateId, result);
+    			} else {
+    				result = nodeStates.get(nodeStateId);
+    			}
+    		}
+    		return result;
+    	}
+
+    } // end inner class FutureRouteNodeInstanceFabricator
+
+    /**
+     * Logs a new message to the route log for the current document, then refreshes the action taken list to display
+     * back the new message in the route log tab. User must have permission to log a message for the doc type and the
+     * request must be coming from the route log tab display (not the route log page).
+     */
+	public ActionForward logActionMessageInRouteLog(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RouteLogForm routeLogForm = (RouteLogForm) form;
+
+		Long routeHeaderId = null;
+		if (!org.apache.commons.lang.StringUtils.isEmpty(routeLogForm.getRouteHeaderId())) {
+			routeHeaderId = new Long(routeLogForm.getRouteHeaderId());
+		} else if (!org.apache.commons.lang.StringUtils.isEmpty(routeLogForm.getDocId())) {
+			routeHeaderId = new Long(routeLogForm.getDocId());
+		} else {
+			throw new WorkflowRuntimeException("No paramater provided to fetch document");
+		}
+		
+		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+		
+		// check user has permission to add a route log message
+		boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
+				.canAddRouteLogMessage(GlobalVariables.getUserSession().getPrincipalId(), routeHeader);
+
+		if (!isAuthorizedToAddRouteLogMessage) {
+			throw new InvalidActionTakenException("Principal with name '"
+					+ GlobalVariables.getUserSession().getPrincipalName()
+					+ "' is not authorized to add route log messages for documents of type '"
+					+ routeHeader.getDocumentType().getName());
+		}
+
+		LOG.info("Logging new action message for user " + GlobalVariables.getUserSession().getPrincipalName()
+				+ ", route header id " + routeHeader);
+		KEWServiceLocator.getWorkflowDocumentService().logDocumentAction(
+				GlobalVariables.getUserSession().getPrincipalId(), routeHeader,
+				routeLogForm.getNewRouteLogActionMessage());
+
+		routeLogForm.setNewRouteLogActionMessage("");
+
+		// retrieve routeHeader again to pull new action taken
+		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId, true);
+		fixActionRequestsPositions(routeHeader);
+		request.setAttribute("routeHeader", routeHeader);
+
+		return mapping.findForward(getDefaultMapping());
+	}
+    
+}

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/jdbc
+                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+                           http://www.springframework.org/schema/jee
+                           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+                           http://www.springframework.org/schema/jms
+                           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                           http://www.springframework.org/schema/oxm
+                           http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+                           http://www.springframework.org/schema/task
+                           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+	
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+	<bean id="kcbOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>kcbDataSource</value>
+			</list>
+		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/kcb/config/OJB-repository-kcb.xml" />
+	</bean>
+
+
+    <bean id="kcbDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
+        <property name="preferredDataSourceParams">
+            <list>
+                <value>org.kuali.rice.kcb.datasource</value>
+            </list>
+        </property>
+        <property name="preferredDataSourceJndiParams">
+            <list>
+                <value>org.kuali.rice.kcb.datasource.jndi.location</value>
+            </list>
+        </property>
+        <property name="serverDataSource" value="true"/>
+    </bean>
+
+	<bean id="ksbScheduler"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="ksbScheduler" />
+	</bean>
+	
+	<bean id="enServiceInvoker"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
+	</bean>
+
+    <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
+    <bean id="initializer" class="org.kuali.rice.kcb.config.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">
+        <property name="messageProcessingTrigger" ref="periodicMessageProcessingTrigger"/>
+        <property name="messageProcessingJobDetail" ref="messageProcessingJobDetail"/>
+		<property name="scheduler" ref="ksbScheduler"></property>
+    </bean>
+
+    <!-- All of the beans listed in the beanNames/list section are considered transactional -->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <idref bean="matchAllTxInterceptor" />
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <value>messagingService</value>
+                <value>messageService</value>
+                <value>messageDeliveryService</value>
+                <value>messageDelivererRegistryService</value>
+                <value>recipientPreferenceService</value>
+                <value>emailService</value>
+                <value>kenIntegrationService</value>
+                <value>kcbGenericDao</value>
+            </list>
+        </property>
+    </bean>
+    <!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
+
+    <!-- SERVICES -->
+
+    <bean id="messagingService" class="org.kuali.rice.kcb.service.impl.MessagingServiceImpl">
+        <property name="jobName"><value>${kcb.quartz.job.name}</value></property>
+        <property name="jobGroup"><value>${kcb.quartz.group}</value></property>
+        <property name="messageService"><ref local="messageService"/></property>
+        <property name="messageDeliveryService"><ref local="messageDeliveryService"/></property>
+        <property name="recipientPreferenceService"><ref local="recipientPreferenceService"/></property>
+        <property name="synchronous"><value>${kcb.messaging.synchronous}</value></property>
+    </bean>
+
+    <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
+        <property name="genericDao"><ref local="kcbGenericDao"/></property>
+    </bean>
+
+    <bean id="messageDeliveryService" class="org.kuali.rice.kcb.service.impl.MessageDeliveryServiceImpl">
+        <property name="genericDao"><ref local="kcbGenericDao"/></property>
+        <property name="maxProcessAttempts"><value>${kcb.maxProcessAttempts}</value></property>
+    </bean>
+
+    <bean id="messageDelivererRegistryService" class="org.kuali.rice.kcb.service.impl.MessageDelivererRegistryServiceImpl"/>
+
+    <bean id="recipientPreferenceService" class="org.kuali.rice.kcb.service.impl.RecipientPreferenceServiceImpl">
+        <property name="genericDao"><ref local="kcbGenericDao"/></property>
+    </bean>
+
+    <bean id="mailer" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="mailer" />
+    </bean>
+    
+    <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
+        <property name="weburl" value="${ken.url}"/>
+        <property name="mailer" ref="mailer" />
+    </bean>
+
+    <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceDirectImpl">
+        <property name="dataSource" ref="kcbDataSource"/>
+    </bean>
+
+    <!-- END SERVICES -->
+
+    <!-- DAOS -->
+
+    <bean id="kcbGenericDao" class="org.kuali.rice.core.dao.impl.GenericDaoOjb">
+        <property name="jcdAlias">
+            <value>kcbDataSource</value>
+        </property>
+    </bean>
+
+    <!-- END DAOS -->
+
+    <!-- Quartz jobs -->
+
+    <bean id="messageProcessingJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="group" value="${kcb.quartz.group}"/>
+        <property name="name" value="${kcb.quartz.job.name}"/>
+        <property name="description">
+            <value>
+                Job that handles asynchronous delivery and dismissal of MessageDeliveries
+            </value>
+        </property>
+        <property name="jobClass" value="org.kuali.rice.kcb.quartz.MessageProcessingJob" />
+        <property name="durability" value="true"/>
+        <!-- this should result in the job being run after startup if there were any pending triggers -->
+        <property name="requestsRecovery" value="true"/>
+        <!--
+        <property name="jobListenerNames">
+            <list><value>MessageDeletionListener</value></list>
+        </property>
+        -->
+    </bean>
+
+    <bean id="periodicMessageProcessingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="name" value="PeriodicMessageProcessingTrigger"/>
+        <property name="group" value="${kcb.quartz.group}"/>
+        <property name="jobName" value="${kcb.quartz.job.name}"/>
+        <property name="jobGroup" value="${kcb.quartz.group}"/>
+        <property name="description">
+            <value>
+                Trigger that periodically runs the KCB message processing job
+            </value>
+        </property>
+        <property name="startDelay"><value>${kcb.messageprocessing.startDelayMS}</value></property>
+        <property name="repeatInterval"><value>${kcb.messageprocessing.repeatIntervalMS}</value></property>
+    </bean>
+<!--     
+    <bean id="deliveryJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="group" value="KCB-Delivery"/>
+        <property name="targetObject" ref="deliveryJob" />
+        <property name="targetMethod" value="run" />
+        <property name="concurrent" value="false" />
+        <property name="durability" value="true"/>
+        <property name="stateful" value="true"/> --> <!-- not really but we only need one running at a time -->
+        <!-- this should result in the job being run after startup if there were any pending triggers -->
+        <!-- 
+        <property name="requestsRecovery" value="true"/>
+    </bean>
+     -->
+    <!--
+    <bean id="deliveryJob" class="org.kuali.rice.kcb.quartz.DeliveryJob">
+    </bean>
+     -->
+
+   	<bean id="kcbLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
+		<property name="runModePropertyName" value="kcb.mode" />
+		<property name="validRunMode" value="LOCAL" />
+	</bean>
+   
+
+    <!-- export our KCB service -->
+
+    <bean parent="kcbLocalServiceExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+        <property name="serviceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <property name="priority" value="1"/>
+                <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessagingService</value></property>
+                <property name="service"><ref bean="messagingService" /></property>
+                <property name="localServiceName" value="KCB-MessagingService" />
+                <property name="serviceNameSpaceURI" value="KCB"/>
+                <property name="busSecurity" value="false"/>
+            </bean>
+        </property>
+    </bean>
+ 
+    <bean parent="kcbLocalServiceExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+        <property name="serviceDefinition">
+            <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+                <property name="priority" value="1"/>
+                <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessageDelivererRegistryAPI</value></property>
+                <property name="service"><ref bean="messageDelivererRegistryService" /></property>
+                <property name="localServiceName" value="KCB-MessageDelivererRegistryAPI" />
+                <property name="serviceNameSpaceURI" value="KCB"/>
+                <property name="busSecurity" value="false"/>
+            </bean>
+        </property>
+    </bean>
+</beans>

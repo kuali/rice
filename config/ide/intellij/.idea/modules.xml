@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/client-contrib.iml" filepath="$PROJECT_DIR$/client-contrib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kim.iml" filepath="$PROJECT_DIR$/kim.iml" group="kim and modules" />
+      <module fileurl="file://$PROJECT_DIR$/kim-api.iml" filepath="$PROJECT_DIR$/kim-api.iml" group="kim and modules" />
+      <module fileurl="file://$PROJECT_DIR$/kim-impl.iml" filepath="$PROJECT_DIR$/kim-impl.iml" group="kim and modules" />
+      <module fileurl="file://$PROJECT_DIR$/krad.iml" filepath="$PROJECT_DIR$/krad.iml" group="krad and modules" />
+      <module fileurl="file://$PROJECT_DIR$/krad-app-framework.iml" filepath="$PROJECT_DIR$/krad-app-framework.iml" group="krad and modules" />
+      <module fileurl="file://$PROJECT_DIR$/krad-web-framework.iml" filepath="$PROJECT_DIR$/krad-web-framework.iml" group="krad and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice.iml" filepath="$PROJECT_DIR$/rice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-api.iml" filepath="$PROJECT_DIR$/rice-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core.iml" filepath="$PROJECT_DIR$/rice-core.iml" group="rice-core and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-api.iml" filepath="$PROJECT_DIR$/rice-core-api.iml" group="rice-core and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-framework.iml" filepath="$PROJECT_DIR$/rice-core-framework.iml" group="rice-core and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-impl.iml" filepath="$PROJECT_DIR$/rice-core-impl.iml" group="rice-core and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-core-web.iml" group="rice-core and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-development-tools.iml" filepath="$PROJECT_DIR$/rice-development-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-doc.iml" filepath="$PROJECT_DIR$/rice-doc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl.iml" filepath="$PROJECT_DIR$/rice-edl.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl-api.iml" filepath="$PROJECT_DIR$/rice-edl-api.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl-framework.iml" filepath="$PROJECT_DIR$/rice-edl-framework.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl-impl.iml" filepath="$PROJECT_DIR$/rice-edl-impl.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl-remote.iml" filepath="$PROJECT_DIR$/rice-edl-remote.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-edl-web.iml" filepath="$PROJECT_DIR$/rice-edl-web.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-impl.iml" filepath="$PROJECT_DIR$/rice-impl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-impl-test.iml" filepath="$PROJECT_DIR$/rice-impl-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-internal-test-tools.iml" filepath="$PROJECT_DIR$/rice-internal-test-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kcb-test.iml" filepath="$PROJECT_DIR$/rice-kcb-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ken-test.iml" filepath="$PROJECT_DIR$/rice-ken-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kew-test.iml" filepath="$PROJECT_DIR$/rice-kew-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-test.iml" filepath="$PROJECT_DIR$/rice-kim-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kns-test.iml" filepath="$PROJECT_DIR$/rice-kns-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-api.iml" filepath="$PROJECT_DIR$/rice-krms-api.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-framework.iml" filepath="$PROJECT_DIR$/rice-krms-framework.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-krms-impl.iml" filepath="$PROJECT_DIR$/rice-krms-impl.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-ksb-test.iml" filepath="$PROJECT_DIR$/rice-ksb-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-sampleapp.iml" filepath="$PROJECT_DIR$/rice-sampleapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-shareddata.iml" filepath="$PROJECT_DIR$/rice-shareddata.iml" group="rice-shareddata and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-shareddata-api.iml" filepath="$PROJECT_DIR$/rice-shareddata-api.iml" group="rice-shareddata and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-shareddata-framework.iml" filepath="$PROJECT_DIR$/rice-shareddata-framework.iml" group="rice-shareddata and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-shareddata-impl.iml" filepath="$PROJECT_DIR$/rice-shareddata-impl.iml" group="rice-shareddata and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-shareddata-web.iml" filepath="$PROJECT_DIR$/rice-shareddata-web.iml" group="rice-shareddata and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-standalone.iml" filepath="$PROJECT_DIR$/rice-standalone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-test.iml" filepath="$PROJECT_DIR$/rice-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-web.iml" filepath="$PROJECT_DIR$/rice-web.iml" />
+    </modules>
+  </component>
+</project>
+

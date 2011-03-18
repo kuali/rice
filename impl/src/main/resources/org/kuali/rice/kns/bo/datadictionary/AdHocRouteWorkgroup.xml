@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="AdHocRouteWorkgroup" parent="AdHocRouteWorkgroup-parentBean"/>
+
+  <bean id="AdHocRouteWorkgroup-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.AdHocRouteWorkgroup"/>
+    <property name="attributes">
+      <list>
+        <ref bean="AdHocRouteWorkgroup-actionRequested"/>
+        <ref bean="AdHocRouteWorkgroup-id"/>
+        <ref bean="AdHocRouteWorkgroup-versionNumber"/>
+      </list>
+    </property>
+    <property name="objectLabel" value="Ad Hoc Route Workgroup"/>
+  </bean>
+
+<!-- Attribute Definitions -->
+
+
+  <bean id="AdHocRouteWorkgroup-actionRequested" parent="AdHocRouteWorkgroup-actionRequested-parentBean"/>
+
+  <bean id="AdHocRouteWorkgroup-actionRequested-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="true"/>
+    <property name="shortLabel" value="Action Requested"/>
+    <property name="maxLength" value="30"/>
+    <property name="required" value="true"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="32"/>
+    </property>
+    <property name="summary" value="&amp;nbsp;"/>
+    <property name="name" value="actionRequested"/>
+    <property name="label" value="Action Requested"/>
+    <property name="description" value="The set of actions which the recipient is asked to perform: &quot;Approve&quot;, &quot;Acknowledge&quot; (recorded), or &quot;FYI&quot; (unrecorded)."/>
+  </bean>
+  <bean id="AdHocRouteWorkgroup-id" parent="AdHocRouteWorkgroup-id-parentBean"/>
+
+  <bean id="AdHocRouteWorkgroup-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="required" value="true"/>
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Workgroup"/>
+    <property name="maxLength" value="70"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="72"/>
+    </property>
+    <property name="summary" value="&amp;nbsp;"/>
+    <property name="name" value="id"/>
+    <property name="label" value="Workgroup Identifier"/>
+    <property name="description" value="The name of the registered workgroup that receives the document ad hoc for the Action Requested."/>
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" p:lowerCase="true" />
+    </property>
+  </bean>
+  <bean id="AdHocRouteWorkgroup-versionNumber" parent="AdHocRouteWorkgroup-versionNumber-parentBean"/>
+
+  <bean id="AdHocRouteWorkgroup-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+</beans>

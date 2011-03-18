@@ -1,6 +1,0 @@
-changed from display tag 1.0 rc1 to 1.0 (not IU modified); the old tld files are stored in the
-old displaytag-1.0-rc1-iumod folder in workflow_libraries (bin/iu)
-
-TODO: Send a request to drop SIT and AT schemas in production GEN1PRD and GEN2PRD; this will require Change Management representation to drop application schemas in production (SIT,AT)
-
-TODO: Add grant statements for new tables in production - DONE

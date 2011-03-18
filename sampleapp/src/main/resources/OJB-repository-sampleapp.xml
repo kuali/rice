@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!--<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "http://db.apache.org/dtds/1.0/repository.dtd">-->
+
+<descriptor-repository version="1.0">
+
+	<jdbc-connection-descriptor
+		jcd-alias="dataSource"
+		default-connection="false"
+		jdbc-level="3.0"
+		eager-release="false"
+		batch-mode="false"
+		useAutoCommit="0"
+		ignoreAutoCommitExceptions="false">
+        <object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+    	<sequence-manager className="org.kuali.rice.core.ojb.ConfigurableSequenceManager">
+      		<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
+    	</sequence-manager>
+    </jdbc-connection-descriptor>
+
+	<class-descriptor class="edu.sampleu.travel.document.TravelDocument2" table="TRV_DOC_2">
+		<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="traveler" column="traveler" jdbc-type="VARCHAR" />
+		<field-descriptor name="origin" column="org" jdbc-type="VARCHAR" />
+		<field-descriptor name="destination" column="dest" jdbc-type="VARCHAR" />
+
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"/>
+		<!--  object references -->
+		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+		<collection-descriptor name="travelAccounts" element-class-ref="edu.sampleu.travel.bo.TravelAccount" auto-retrieve="true" auto-update="false"
+			auto-delete="false" indirection-table="TRAV_DOC_2_ACCOUNTS">
+			<fk-pointing-to-this-class column="FDOC_NBR" />
+			<fk-pointing-to-element-class column="ACCT_NUM" />
+		</collection-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="edu.sampleu.travel.bo.TravelAccount" table="TRV_ACCT">
+		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
+		<field-descriptor name="foId" column="acct_fo_id" jdbc-type="BIGINT" nullable="false" />
+
+		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer">
+			<foreignkey field-ref="foId" />
+		</reference-descriptor>
+
+		<reference-descriptor name="extension" class-ref="edu.sampleu.travel.bo.TravelAccountExtension" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
+			<foreignkey field-ref="number" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountExtension" table="TRV_ACCT_EXT">
+		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" />
+		<reference-descriptor name="accountType" class-ref="edu.sampleu.travel.bo.TravelAccountType" auto-delete="none" auto-retrieve="true" auto-update="none" proxy="true">
+			<foreignkey field-ref="accountTypeCode" />
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountType" table="TRV_ACCT_TYPE">
+		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="acct_type_name" jdbc-type="VARCHAR" />
+	</class-descriptor>
+	
+	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountUseRate" table="TRV_ACCT_USE_RT_T">
+		<field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" />
+		<field-descriptor name="rate" column="rate" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiPercentFieldConversion"/>
+		<field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
+		<field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+	</class-descriptor>
+
+	<class-descriptor class="edu.sampleu.travel.bo.FiscalOfficer" table="TRV_ACCT_FO">
+		<field-descriptor name="id" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
+		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
+		<field-descriptor name="firstName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
+
+		<collection-descriptor name="accounts" element-class-ref="edu.sampleu.travel.bo.TravelAccount" auto-retrieve="true" auto-update="true" auto-delete="false" >
+			<inverse-foreignkey field-ref="foId" />
+		</collection-descriptor>
+	</class-descriptor>
+	
+</descriptor-repository>

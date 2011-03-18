@@ -1,0 +1,607 @@
+/*
+ * Copyright 2005-2007 The Kuali Foundation
+ *
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.kew.docsearch;
+
+import org.junit.Test;
+import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.service.RuleAttributeService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+
+
+/**
+ * Tests the StandardGenericXMLSearchableAttribute.
+ *
+ * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
+ * searchable attribute.
+ */
+public class SearchableAttributeTest extends DocumentSearchTestBase {
+
+    protected void loadTestData() throws Exception {
+        loadXmlFile("SearchAttributeConfig.xml");
+        loadXmlFile("SearchableTrimTest.xml");
+    }
+
+//    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
+//    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
+//    	String savedKey = key;
+//    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
+//    	Field field = getFieldByFormKey(docType, formKey);
+//    	if (field != null) {
+//        	sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
+//        	sacc.setRangeSearch(field.isMemberOfRange());
+//        	sacc.setAllowWildcards(field.isAllowingWildcards());
+//        	sacc.setAutoWildcardBeginning(field.isAutoWildcardAtBeginning());
+//        	sacc.setAutoWildcardEnd(field.isAutoWildcardAtEnding());
+//        	sacc.setCaseSensitive(field.isCaseSensitive());
+//        	sacc.setSearchInclusive(field.isInclusive());
+//            sacc.setSearchable(field.isSearchable());
+//            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+//    	}
+//    	return sacc;
+//    }
+//
+//    private Field getFieldByFormKey(DocumentType docType, String formKey) {
+//    	if (docType == null) {
+//    		return null;
+//    	}
+//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//			for (Row row : searchableAttribute.getSearchingRows()) {
+//				for (Field field : row.getFields()) {
+//					if (field.getPropertyName().equals(formKey)) {
+//						return field;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//    }
+
+    /**
+     * This tests the ability to get the searchableAttributeValues directly without going through the document.
+     */
+    @Test public void testSearchableAttributeSearch()throws Exception {
+    	String documentTypeName = "SearchDocType";
+        String userNetworkId = "rkirkend";
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("Routing style");
+        workflowDocument.routeDocument("routing this document.");
+
+        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), workflowDocument.getRouteHeaderId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+
+        /*
+        assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
+
+        for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
+            SearchableAttributeValue attributeValue = iter.next();
+            if (attributeValue instanceof SearchableAttributeStringValue) {
+                SearchableAttributeStringValue realValue = (SearchableAttributeStringValue) attributeValue;
+
+                for(String value:getRouteHeaderService().getSearchableAttributeStringValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
+                }
+
+            } else if (attributeValue instanceof SearchableAttributeLongValue) {
+                SearchableAttributeLongValue realValue = (SearchableAttributeLongValue) attributeValue;
+                for(Long value:getRouteHeaderService().getSearchableAttributeLongValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
+                }
+            } else if (attributeValue instanceof SearchableAttributeFloatValue) {
+                SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
+                for(BigDecimal value:getRouteHeaderService().getSearchableAttributeFloatValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
+                }
+
+            } else if (attributeValue instanceof SearchableAttributeDateTimeValue) {
+                SearchableAttributeDateTimeValue realValue = (SearchableAttributeDateTimeValue) attributeValue;
+                assertEquals("The only DateTime attribute that should have been added has key '" + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
+
+                Calendar testDate = Calendar.getInstance();
+                testDate.setTimeInMillis(realValue.getSearchableAttributeValue().getTime());
+                testDate.set(Calendar.SECOND, 0);
+                testDate.set(Calendar.MILLISECOND, 0);
+
+                for(Timestamp value:getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                	Calendar attributeDate = Calendar.getInstance();
+                    attributeDate.setTimeInMillis(value.getTime());
+                    attributeDate.set(Calendar.SECOND, 0);
+                    attributeDate.set(Calendar.MILLISECOND, 0);
+
+                    assertEquals("The month value for the searchable attribute is wrong",testDate.get(Calendar.MONTH),attributeDate.get(Calendar.MONTH));
+                    assertEquals("The date value for the searchable attribute is wrong",testDate.get(Calendar.DATE),attributeDate.get(Calendar.DATE));
+                    assertEquals("The year value for the searchable attribute is wrong",testDate.get(Calendar.YEAR),attributeDate.get(Calendar.YEAR));
+                }
+
+            } else {
+                fail("Searchable Attribute Value base class should be one of the four checked always");
+            }
+        }
+        */
+
+    }
+
+    protected RouteHeaderService getRouteHeaderService(){
+    	RouteHeaderService rRet = KEWServiceLocator.getRouteHeaderService();
+    	return rRet;
+    }
+
+    protected String getPrincipalId(String networkId){
+    	return KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId).getPrincipalId();
+    }
+
+    @Test public void testCustomSearchableAttributesWithDataType() throws Exception {
+        String documentTypeName = "SearchDocType";
+    	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+        String userNetworkId = "rkirkend";
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("Routing style");
+        workflowDocument.routeDocument("routing this document.");
+
+        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), workflowDocument.getRouteHeaderId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        /*assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
+        for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
+            SearchableAttributeValue attributeValue = iter.next();
+            if (attributeValue instanceof SearchableAttributeStringValue) {
+                SearchableAttributeStringValue realValue = (SearchableAttributeStringValue) attributeValue;
+                assertEquals("The only String attribute that should have been added has key '" + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
+                assertEquals("The only String attribute that should have been added has value '" + TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE + "'", TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, realValue.getSearchableAttributeValue());
+            } else if (attributeValue instanceof SearchableAttributeLongValue) {
+                SearchableAttributeLongValue realValue = (SearchableAttributeLongValue) attributeValue;
+                assertEquals("The only Long attribute that should have been added has key '" + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
+                assertEquals("The only Long attribute that should have been added has value '" + TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE + "'", TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE, realValue.getSearchableAttributeValue());
+            } else if (attributeValue instanceof SearchableAttributeFloatValue) {
+                SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
+                assertEquals("The only Float attribute that should have been added has key '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
+                assertTrue("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE + "'", 0 == TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.compareTo(realValue.getSearchableAttributeValue()));
+            } else if (attributeValue instanceof SearchableAttributeDateTimeValue) {
+                SearchableAttributeDateTimeValue realValue = (SearchableAttributeDateTimeValue) attributeValue;
+                assertEquals("The only DateTime attribute that should have been added has key '" + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
+                Calendar testDate = Calendar.getInstance();
+                testDate.setTimeInMillis(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS);
+                testDate.set(Calendar.SECOND, 0);
+                testDate.set(Calendar.MILLISECOND, 0);
+                Calendar attributeDate = Calendar.getInstance();
+                attributeDate.setTimeInMillis(realValue.getSearchableAttributeValue().getTime());
+                attributeDate.set(Calendar.SECOND, 0);
+                attributeDate.set(Calendar.MILLISECOND, 0);
+                assertEquals("The month value for the searchable attribute is wrong",testDate.get(Calendar.MONTH),attributeDate.get(Calendar.MONTH));
+                assertEquals("The date value for the searchable attribute is wrong",testDate.get(Calendar.DATE),attributeDate.get(Calendar.DATE));
+                assertEquals("The year value for the searchable attribute is wrong",testDate.get(Calendar.YEAR),attributeDate.get(Calendar.YEAR));
+            } else {
+                fail("Searchable Attribute Value base class should be one of the four checked always");
+            }
+        }
+		*/
+
+        DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+
+
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, null, docType));
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
+        List searchResults = result.getSearchResults();
+
+        assertEquals("Search results should have one document.", 1, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "fred", null, docType));
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        searchResults = result.getSearchResults();
+
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", null, docType));
+        try {
+            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (WorkflowServiceErrorException e) {}
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString(), null, docType));
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have one document.", 1, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111", null, docType));
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeymcfakefake", "99999999", null, docType));
+        try {
+            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (WorkflowServiceErrorException e) {}
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString(), null, docType));
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have one document.", 1, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548", null, docType));
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeylostington", "9999.9999", null, docType));
+        try {
+            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (WorkflowServiceErrorException e) {}
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)), null, docType));
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should have one document.", 1, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979", null, docType));
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        searchResults = result.getSearchResults();
+        assertEquals("Search results should be empty.", 0, searchResults.size());
+
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("lastingsfakerson", "07/06/2007", null, docType));
+        try {
+            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (WorkflowServiceErrorException e) {}
+    }
+
+    /**
+     * Tests searching documents with searchable attributes
+     * @throws WorkflowException
+     */
+    @Test public void testSearchAttributesAcrossDocumentTypeVersions() throws Exception {
+        // first test searching for an initial version of the doc which does not have a searchable attribute
+        loadXmlFile("testdoc0.xml");
+
+        String documentTypeName = "SearchDoc";
+        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), documentTypeName);
+        DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+        doc.routeDocument("routing");
+
+        DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
+
+        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setFromDateCreated("01/01/2004");
+
+        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
+        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
+        assertEquals(1, result.getSearchResults().size());
+
+        // now upload the new version with a searchable attribute
+        loadXmlFile("testdoc1.xml");
+        docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+
+        // route a new doc
+        doc = new WorkflowDocument(getPrincipalIdForName("arh14"), documentTypeName);
+        doc.routeDocument("routing");
+
+        // with no attribute criteria, both docs should be found
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setFromDateCreated("01/01/2004");
+
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        assertEquals(2, result.getSearchResults().size());
+
+        // search with specific SearchableAttribute value
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setFromDateCreated("01/01/2004");
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "Mock Searchable Attribute", null, docType));
+        criteria.getSearchableAttributes().set(0, createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "MockSearchableAttributeValue", null, docType));
+
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        assertEquals(1, result.getSearchResults().size());
+
+        // search with any SearchableAttribute value
+        criteria = new DocSearchCriteriaDTO();
+        criteria.setDocTypeFullName(documentTypeName);
+        criteria.setFromDateCreated("01/01/2004");
+        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "Mock Searchable Attribute", null, docType));
+        criteria.getSearchableAttributes().set(0, createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "", null, docType));
+
+        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        // should return two because an empty value above will return any value of the 'MockSearchableAttributeKey' key including the previous document
+        // that doesn't even have a record of that field being saved to the database
+        assertEquals(2, result.getSearchResults().size());
+    }
+
+    /**
+     * Tests the usage of wildcards on searchable attributes of varying data types.
+     * Note that the bounds of ".."-related search expressions will not throw an exception if the lower bound is greater than the upper bound;
+     * instead, such an expression will simply return zero results.
+     * @throws Exception
+     */
+    @Test public void testWildcardsOnSearchableAttributes() throws Exception {
+        String documentTypeName = "WildcardTestDocType";
+    	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        String principalName = "rkirkend";
+        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        String[][] searchableAttributeValuesAsStrings = { {"testString", "9984", "38.1357", "06/24/2009"},
+        		{"anotherStr", "33", "80000.65432", "07/08/2010"}, {"MoreText", "432", "-0.765", "12/12/2012"} };
+
+        // Route some documents containing the searchable attribute values given by the above array.
+        for (int i = 0; i < searchableAttributeValuesAsStrings.length; i++) {
+        	WorkflowDocument workflowDocument = new WorkflowDocument(principalId, documentTypeName);
+
+        	// Add the string searchable attribute.
+        	WorkflowAttributeDefinitionDTO wcStringXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardString");
+        	wcStringXMLDef.addProperty("xmlSearchableAttributeWildcardString", searchableAttributeValuesAsStrings[i][0]);
+        	workflowDocument.addSearchableDefinition(wcStringXMLDef);
+        	// Add the long searchable attribute.
+        	WorkflowAttributeDefinitionDTO wcLongXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardLong");
+        	wcLongXMLDef.addProperty("xmlSearchableAttributeWildcardLong", searchableAttributeValuesAsStrings[i][1]);
+        	workflowDocument.addSearchableDefinition(wcLongXMLDef);
+        	// Add the float searchable attribute.
+        	WorkflowAttributeDefinitionDTO wcFloatXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardFloat");
+        	wcFloatXMLDef.addProperty("xmlSearchableAttributeWildcardFloat", searchableAttributeValuesAsStrings[i][2]);
+        	workflowDocument.addSearchableDefinition(wcFloatXMLDef);
+        	// Add the datetime searchable attribute.
+        	WorkflowAttributeDefinitionDTO wcDatetimeXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardDatetime");
+        	wcDatetimeXMLDef.addProperty("xmlSearchableAttributeWildcardDatetime", searchableAttributeValuesAsStrings[i][3]);
+        	workflowDocument.addSearchableDefinition(wcDatetimeXMLDef);
+
+        	workflowDocument.setTitle("Search Def Test Doc " + i);
+        	workflowDocument.routeDocument("routing search def doc " + i);
+        }
+
+        // Ensure that wildcards work on searchable string attributes. Note that this search should be case-insensitive by default.
+        // Also note that this should be the only case where the string-specific wildcards ("!", "?", and "*") should be working, unless
+        // they are being used in a range expression.
+        assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardString",
+        		new String[]  {"TESTSTRING|moretext", "!MoreText"   , "!anotherStr!testString", "!anotherStr&&!MoreText"  , "!SomeString"      ,
+        					"*str*"                 , "More????"    , "*e*n?"                 , "???String"               , "*te*&&!????String", "!test??????"       , "anotherStr..MoreText",
+        					"testString..MoreText"  , ">=testString", "<=anotherStr|>MoreText", "<testString&&!anotherStr", ">abc"             , "<anotherOne&&>text",
+        					">More????"             , "<*test*"},
+        			new int[] {2                    , 2             , 1                       , 1                         , 3                  ,
+        					2                       , 1             , 1                       , 0                         , 1                  , 2                   , 2 /*1*/               ,
+        					0                       , 1             , 2                       , 1                         , 3                  , 0                   ,
+        					2                       , 2});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardString",
+        		new String[][] { {"testString"}, {"anotherStr"}, {"MoreText"}, {"testString", "anotherStr"}, {"testString", "MoreText"}, {"anotherStr", "MoreText"}, {"testString", "anotherStr", "MoreText"}, {"monkey"}, {"monkey", "giraffe"}, {"monkey", "testString"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
+
+        // Ensure that wildcards work on searchable long attributes, and ensure the string-specific wildcards are not being utilized.
+        assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
+        		new String[]  {"99??", "*2"       , "!33"         , "<9984", ">432", "<=33", ">=432", ">33&&<9984", "<=100000&&>=20", ">9984&&<33", "432..9984",
+        					"9999..1", "<432|>432", ">=9000|<=100", "!", ">-76"},
+        			new int[] {-1     , -1          , 1             , 2      , 1     , 1     , 2      , 1           , 3               , 0           , 2 /*1*/    ,
+        					0        , 2          , 2             , -1 , 3});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
+        		new String[][] { {"9984"}, {"33"}, {"432"}, {"9984", "33"}, {"9984", "432"}, {"33", "432"}, {"9984", "33", "432"}, {"7"}, {"7", "4488"}, {"7", "9984"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
+
+        // Ensure that wildcards work on searchable float attributes, and ensure the string-specific wildcards are not being utilized.
+        assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardFloat",
+        		new String[]  {"38.1???", "!-0.765", "*80*"                , "<80000.65432"   , ">0"                  , "<=-0.765", ">=38.1357", "<38.1358", "<-0.5|>0.5", ">=-0.765&&<=-0.765", ">38.1357&&<80000.65432",
+        					"-50..50"   , "100..10", "<=38.1357|>=38.1357" , ">123.4567|<0.11", "-1.1..38.1357&&<3.3"},
+        			new int[] {-1        , 1        , -1                     , 2                , 2                     , 1         , 2          , 2         , 3           , 1                   , 0                       ,
+        					2           , 0        , 3                     , 2                , 1});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardFloat",
+        		new String[][] { {"38.1357"}, {"80000.65432"}, {"-0.765"}, {"38.1357", "80000.65432"}, {"38.1357", "-0.765"}, {"80000.65432", "-0.765"}, {"38.1357", "80000.65432", "-0.765"}, {"3.1415928"}, {"3.1415928", "4488.0"}, {"3.1415928", "38.1357"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
+
+
+        // Ensure that wildcards work on searchable datetime attributes, and ensure the string-specific wildcards are not being utilized.
+        /* 06/24/2009, 07/08/2010, 12/12/2012 */
+        assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardDatetime",
+        		new String[]  {"??/??/20??"            , "12/12/20*"               , "!07/08/2010"           , ">06/24/2009", "<07/08/2010", ">=12/12/2012", "<=05/06/2011", ">06/24/2009&&<=07/08/2010",
+        					">=01/01/2001&&<06/24/2009", "11/29/1990..12/31/2009"  , "12/13/2100..08/09/1997",
+        					"<06/24/2009|>=12/12/2012" , "<=06/24/2009|>07/08/2010", ">02/31/2011"},
+        			new int[] {-1                      , -1                         , -1                      , 2            , 1            , 1             , 2             , 1                          ,
+        					0                          , 1                         , 0                       ,
+        					1                          , 2                         , -1});
+        
+        // ensure multiple values work
+        assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardDatetime",
+        		new String[][] { {"06/24/2009"}, {"07/08/2010"}, {"12/12/2012"}, {"06/24/2009", "07/08/2010"}, {"06/24/2009", "12/12/2012"}, {"07/08/2010", "12/12/2012"}, {"06/24/2009", "07/08/2010", "12/12/2012"}, {"12/20/2012"}, {"12/20/2012", "11/09/2009"}, {"12/20/2012", "12/12/2012"} },
+        			new int[]  {  1,              1,              1,            2,                            2,                          2,                          3,                                        0,          0,                     1                       });
+
+    }
+
+    /**
+     * A convenience method for testing wildcards on searchable attributes.
+     *
+     * @param docType The document type containing the attributes.
+     * @param principalId The ID of the user performing the search.
+     * @param fieldDefKey The name of the field given by the field definition on the searchable attribute.
+     * @param searchValues The wildcard-filled search strings to test.
+     * @param resultSizes The number of expected documents to be returned by the search; use -1 to indicate that an error should have occurred.
+     * @throws Exception
+     */
+    private void assertSearchableAttributeWildcardsWork(DocumentType docType, String principalId, String fieldDefKey, String[] searchValues,
+    		int[] resultSizes) throws Exception {
+    	DocSearchCriteriaDTO criteria = null;
+        DocumentSearchResultComponents result = null;
+        List<DocumentSearchResult> searchResults = null;
+        DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
+        for (int i = 0; i < resultSizes.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setDocTypeFullName(docType.getName());
+        	criteria.addSearchableAttribute(this.createSearchAttributeCriteriaComponent(fieldDefKey, searchValues[i], docType));
+        	try {
+        		result = docSearchService.getList(principalId, criteria);
+        		searchResults = result.getSearchResults();
+        		if (resultSizes[i] < 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
+        		}
+        		if(resultSizes[i] != searchResults.size()){
+        			assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], searchResults.size());
+        		}
+        	} catch (Exception ex) {
+        		if (resultSizes[i] >= 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");
+        		}
+        	}
+        	GlobalVariables.clear();
+        }
+    }
+    
+    /**
+     * A convenience method for testing multiple value fields on searchable attributes.
+     *
+     * @param docType The document type containing the attributes.
+     * @param principalId The ID of the user performing the search.
+     * @param fieldDefKey The name of the field given by the field definition on the searchable attribute.
+     * @param searchValues The wildcard-filled search strings to test.
+     * @param resultSizes The number of expected documents to be returned by the search; use -1 to indicate that an error should have occurred.
+     * @throws Exception
+     */
+    private void assertSearchableAttributeMultiplesWork(DocumentType docType, String principalId, String fieldDefKey, String[][] searchValues,
+    		int[] resultSizes) throws Exception {
+    	DocSearchCriteriaDTO criteria = null;
+        DocumentSearchResultComponents result = null;
+        List<DocumentSearchResult> searchResults = null;
+        DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
+        for (int i = 0; i < resultSizes.length; i++) {
+        	criteria = new DocSearchCriteriaDTO();
+        	criteria.setDocTypeFullName(docType.getName());
+        	criteria.addSearchableAttribute(this.createSearchAttributeCriteriaComponent(fieldDefKey, searchValues[i], docType));
+        	try {
+        		result = docSearchService.getList(principalId, criteria);
+        		searchResults = result.getSearchResults();
+        		if (resultSizes[i] < 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
+        		}
+        		if(resultSizes[i] != searchResults.size()){
+        			assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], searchResults.size());
+        		}
+        	} catch (Exception ex) {
+        		if (resultSizes[i] >= 0) {
+        			fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");
+        		}
+        	}
+        	GlobalVariables.clear();
+        }
+    }
+    
+    
+    
+    /**
+     * Per KULRICE-3681, tests that StandardGenericXMLSearchableAttribute throws no cast class exception when it shouldn't
+     */
+    @Test
+    public void testValidateUserSearchInputsNoCast() {
+    	StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
+    	final RuleAttributeService ruleAttributeService = KEWServiceLocator.getRuleAttributeService();
+    	searchableAttribute.setRuleAttribute(ruleAttributeService.findByName("SearchableAttributeVisible"));
+    	
+    	Map<Object, Object> simpleParamMap = new HashMap<Object, Object>();
+    	simpleParamMap.put("givenname", "test");
+    	List errors = new ArrayList();
+    	Exception caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(simpleParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
+    	
+    	Map<Object, Object> listParamMap = new HashMap<Object, Object>();
+    	List<String> multipleValues = new ArrayList<String>();
+    	multipleValues.add("testone");
+    	multipleValues.add("testtwo");
+    	listParamMap.put("givenname", multipleValues);
+    	errors = new ArrayList();
+    	caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(listParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
+    	
+    	Map<Object, Object> badParamMap = new HashMap<Object, Object>();
+    	badParamMap.put("givenname", new Integer(7));
+    	errors = new ArrayList();
+    	caughtException = null;
+    	try {
+    		errors = searchableAttribute.validateUserSearchInputs(badParamMap, null);
+    	} catch (RuntimeException re) {
+    		caughtException = re;
+    	}
+    	assertNotNull("Found exception "+caughtException, caughtException);
+    	assertTrue("Found errors "+errors, (errors.size() == 0));
+    }
+    
+    @Test
+    public void testSearchableAttributeTrim() {
+    	RuleAttribute trimAttribute = KEWServiceLocator.getRuleAttributeService().findByName("TrimSearchableAttribute");
+    	assert(trimAttribute.getName().equals("TrimSearchableAttribute"));
+    	assert(trimAttribute.getClassName().equals("org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute"));
+    	assert(trimAttribute.getLabel().equals("Unit111"));
+    	assert(trimAttribute.getType().equals("SearchableXmlAttribute"));
+    	assert(trimAttribute.getDescription().equals("Unit111"));
+    	assert(trimAttribute.getServiceNamespace().equals("NSTrimSearchableTest"));
+    	//System.out.println(trimAttribute.getName());
+    }
+}

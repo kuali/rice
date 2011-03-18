@@ -18,14 +18,12 @@ package org.kuali.rice.kew.useroptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.useroptions.dao.ReloadActionListDAO;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserOptionsServiceImpl implements UserOptionsService {
 
     private UserOptionsDAO userOptionsDAO;
-    private Random random = new Random();
+    private ReloadActionListDAO reloadActionListDAO;
 
     private static final Properties defaultProperties = new Properties();
 
@@ -111,19 +109,11 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     }
 
     public boolean refreshActionList(String principalId) {
-        List<UserOptions> options = findByUserQualified(principalId, KEWConstants.RELOAD_ACTION_LIST + "%");
-        boolean refresh = ! options.isEmpty();
-        if (refresh && StringUtils.isNotEmpty(principalId)) {
-            getUserOptionsDAO().deleteByUserQualified(principalId, KEWConstants.RELOAD_ACTION_LIST + "%");
-        }
-        return refresh;
+    	return getReloadActionListDAO().checkAndResetReloadActionListFlag(principalId);
     }
 
     public void saveRefreshUserOption(String principalId) {
-        if (random.nextInt(10) == 0) { // 10% chance of clearing out other RELOAD_ACTION_LIST entries first
-            getUserOptionsDAO().deleteByUserQualified(principalId, KEWConstants.RELOAD_ACTION_LIST + "%");
-        }
-        save(principalId, KEWConstants.RELOAD_ACTION_LIST + new Date().getTime() + getNewOptionIdForActionList(), "true");
+    	getReloadActionListDAO().setReloadActionListFlag(principalId);
     }
 
     public UserOptionsDAO getUserOptionsDAO() {
@@ -133,5 +123,16 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     public void setUserOptionsDAO(UserOptionsDAO optionsDAO) {
         userOptionsDAO = optionsDAO;
     }
+    
+    /**
+	 * @return the reloadActionListDAO
+	 */
+	public ReloadActionListDAO getReloadActionListDAO() {
+		return this.reloadActionListDAO;
+	}
+	
+	public void setReloadActionListDAO(ReloadActionListDAO rald) {
+		this.reloadActionListDAO = rald;
+	}
 
 }

@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Map.Entry;
 
 import org.kuali.rice.kew.useroptions.dao.ReloadActionListDAO;
@@ -34,7 +33,6 @@ public class UserOptionsServiceImpl implements UserOptionsService {
 
     private UserOptionsDAO userOptionsDAO;
     private ReloadActionListDAO reloadActionListDAO;
-    private Random random = new Random();
 
     private static final Properties defaultProperties = new Properties();
 

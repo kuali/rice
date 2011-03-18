@@ -204,13 +204,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          <ref bean="HeaderPage_AccordionReadOnly"/>
       </property>
   </bean>
-     
+
   <bean id="PageLookup" parent="PageLookup-parentBean"/>          
   <bean id="PageLookup-parentBean" abstract="true" parent="Page">
     <property name="renderFooter" value="false"/>
       <property name="header">
-        <ref bean="HeaderPage_NoActions"/>
+        <ref bean="HeaderPage_Lookup"/>
       </property>
   </bean>
-  
+
 </beans>

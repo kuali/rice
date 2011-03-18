@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
@@ -46,8 +47,6 @@ public class LookupForm extends UifFormBase {
 	private String conversionFields;
 	private Map<String, String> fieldConversions;
 	
-	private LookupViewHelperService lookupViewHelperService;
-
 	private Collection<? extends BusinessObject> searchResults;
 
     public LookupForm() {
@@ -77,14 +76,6 @@ public class LookupForm extends UifFormBase {
 
 	public void setCriteriaFieldsForLookup(Map<String, String> criteriaFieldsForLookup) {
     	this.criteriaFieldsForLookup = criteriaFieldsForLookup;
-    }
-
-	public LookupViewHelperService getLookupViewHelperService() {
-    	return this.lookupViewHelperService;
-    }
-
-	public void setLookupViewHelperService(LookupViewHelperService lookupViewHelperService) {
-    	this.lookupViewHelperService = lookupViewHelperService;
     }
 
 	public String getConversionFields() {
@@ -154,14 +145,15 @@ public class LookupForm extends UifFormBase {
 			 * info)
 			 */
 //			localLookupable.setParameters(request.getParameterMap());
+			localLookupViewHelperService.setParameters(request.getParameterMap());
 
 			// check the doc form key is empty before setting so we don't
 			// override a restored lookup form
-//			if (request.getAttribute(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-//				setFormKey((String) request.getAttribute(KNSConstants.DOC_FORM_KEY));
-//			} else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
-//				setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
-//			}
+			if (request.getAttribute(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+				setFormKey((String) request.getAttribute(KNSConstants.DOC_FORM_KEY));
+			} else if (request.getParameter(KNSConstants.DOC_FORM_KEY) != null && StringUtils.isBlank(this.getFormKey())) {
+				setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
+			}
 
 //			if (request.getParameter(KNSConstants.DOC_NUM) != null) {
 //				setDocNum(request.getParameter(KNSConstants.DOC_NUM));
@@ -250,7 +242,7 @@ public class LookupForm extends UifFormBase {
 //				}
 //
 //			}
-//			fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
+			fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
 			fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
 //			if (this.getDocNum() != null) {
 //				fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());
@@ -263,7 +255,7 @@ public class LookupForm extends UifFormBase {
 
 			setFieldConversions(LookupUtils.translateFieldConversions(this.conversionFields));
 			localLookupViewHelperService.setFieldConversions(getFieldConversions());
-			setLookupViewHelperService(localLookupViewHelperService);
+//			setLookupViewHelperService(localLookupViewHelperService);
 			setCriteriaFieldsForLookup(fieldValues);
 
 			// if showMaintenanceLinks is not already true, only show

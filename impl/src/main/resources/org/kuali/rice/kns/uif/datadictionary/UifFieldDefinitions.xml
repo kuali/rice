@@ -185,4 +185,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="QuickFinderImageField" parent="ImageField" p:source="/kr-dev/krad/images/searchicon.gif"
         p:altText="Search Field" p:title="Search Field"/>                                                                            
         
+  <bean id="ActionLinkField_CreateNew" parent="GeneratedField" p:label="Create New" p:renderingMethodToCall="getCreateNewUrl" 
+        p:styleClasses="action"/>
+        
 </beans>        

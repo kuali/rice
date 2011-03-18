@@ -143,6 +143,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Common Groups -->
   
+  <bean id="Group_LookupHeader" parent="GroupBodyOnly">
+      <property name="styleClasses" value="group_expandclose"/>
+      <property name="items">
+         <list> 
+           <bean parent="ActionLinkField_CreateNew"/>
+         </list>
+      </property>
+      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+  </bean>
+  
   <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
       <property name="styleClasses" value="group_expandclose"/>
       <property name="items">

@@ -77,6 +77,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>
   </bean>
   
+  <bean id="HeaderPage_Lookup" parent="HeaderPage">
+     <property name="group">
+       <bean parent="Group_LookupHeader"/>
+     </property>
+  </bean>
+  
   <bean id="HeaderPage_AccordionEdit" parent="HeaderPage">
      <property name="group">
        <bean parent="Group_ExpandCloseActionsRequired"/>

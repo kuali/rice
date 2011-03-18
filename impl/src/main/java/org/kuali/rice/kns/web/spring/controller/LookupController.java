@@ -103,7 +103,8 @@ public class LookupController extends UifControllerBase {
      */
     @RequestMapping(params = "methodToCall=clearValues")
 	public ModelAndView clearValues(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();
+//        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();
+        LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) lookupForm.getView().getViewHelperService();
         lookupForm.setCriteriaFields(lookupViewHelperService.performClear(lookupForm.getCriteriaFieldsForLookup()));
 		return getUIFModelAndView(lookupForm);
     }
@@ -115,7 +116,8 @@ public class LookupController extends UifControllerBase {
 	public ModelAndView search(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 		GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_METHOD);
 
-        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();
+//        LookupViewHelperService lookupViewHelperService = lookupForm.getLookupViewHelperService();
+        LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) lookupForm.getView().getViewHelperService();
         if (lookupViewHelperService == null) {
             LOG.error("LookupViewHelperService is null.");
             throw new RuntimeException("LookupViewHelperService is null.");

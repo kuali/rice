@@ -43,6 +43,11 @@
     </property>
     <property name="resultFields">
       <list>
+        <bean parent="GeneratedField">
+          <property name="label" value="Actions" />
+          <property name="renderingMethodToCall" value="getActionUrlsFromField" />
+          <property name="styleClasses" value="field_attribute"/>
+        </bean>
         <bean parent="AttributeField" p:propertyName="number" /> <!-- p:forceInquiry="true" -->
         <bean parent="AttributeField" p:propertyName="name" /> <!-- p:forceInquiry="true" -->
 <!--

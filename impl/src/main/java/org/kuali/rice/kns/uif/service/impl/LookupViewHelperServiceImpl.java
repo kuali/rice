@@ -24,31 +24,38 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.LookupView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.field.GeneratedField;
 import org.kuali.rice.kns.uif.service.LookupViewHelperService;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
@@ -57,6 +64,9 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.spring.controller.MaintenanceDocumentController;
 
 /**
  * 
@@ -65,11 +75,19 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implements LookupViewHelperService {
 	protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupViewHelperServiceImpl.class);
 
+	protected static final String TITLE_ACTION_URL_PREPENDTEXT_PROPERTY = "title.action.url.value.prependtext";
+	protected static final String ACTION_URLS_CHILDREN_SEPARATOR = "&nbsp;|&nbsp;";
+	protected static final String ACTION_URLS_CHILDREN_STARTER = "&nbsp;[";
+	protected static final String ACTION_URLS_CHILDREN_END = "]";
+	protected static final String ACTION_URLS_SEPARATOR = "&nbsp;&nbsp;";
+	protected static final String ACTION_URLS_EMPTY = "&nbsp;";
+
 	protected LookupService lookupService;
 	protected EncryptionService encryptionService;
 	protected BusinessObjectService businessObjectService;
 	protected BusinessObjectDictionaryService businessObjectDictionaryService;
 	protected BusinessObjectMetaDataService businessObjectMetaDataService;
+	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 	protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
 	protected PersistenceStructureService persistenceStructureService;
 
@@ -79,11 +97,12 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	protected String referencesToRefresh;
 	protected boolean searchUsingOnlyPrimaryKeyValues = false;
 	protected Map<String, String> fieldConversions;
+	protected Map parameters;
 	protected List<String> readOnlyFieldsList;
 	private List<String> defaultSortAttributeNames;
-	// TODO delyea: where to take into account the sort ascending value
+	// TODO delyea: where to take into account the sort ascending value (old KNS appeared to ignore?)
 	protected boolean sortAscending;
-	
+
 	/**
 	 * Default Constructor
 	 * 
@@ -252,7 +271,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 
 		preprocessDateFields(criteriaFieldsForLookup);
 
-		// TODO delyea: switch the bounded flag to be unbounded to match underlying method calls in getSearchResultsWithBounding() 
+		// TODO delyea: switch the bounded flag to be unbounded to match underlying method calls in getSearchResultsWithBounding()
 		displayList = getSearchResultsWithBounding(LookupUtils.forceUppercase(getDataObjectClass(), criteriaFieldsForLookup), !bounded);
 
 		return displayList;
@@ -449,7 +468,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 
 		// sort list if default sort column given
 		List<String> defaultSortColumns = getDefaultSortAttributeNames();
-		if ( (defaultSortColumns != null) && (defaultSortColumns.size() > 0) ) {
+		if ((defaultSortColumns != null) && (defaultSortColumns.size() > 0)) {
 			Collections.sort(searchResults, new BeanPropertyComparator(defaultSortColumns, true));
 		}
 		return searchResults;
@@ -567,94 +586,375 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		return null;
 	}
 
-	public Class getDataObjectClass() {
-    	return this.dataObjectClass;
-    }
+	/**
+	 * Returns the maintenance document type associated with the business object class or null if one does not exist.
+	 * 
+	 * @return String representing the maintenance document type name
+	 */
+	protected String getMaintenanceDocumentTypeName() {
+		MaintenanceDocumentDictionaryService dd = getMaintenanceDocumentDictionaryService();
+		String maintDocTypeName = dd.getDocumentTypeName(getDataObjectClass());
+		return maintDocTypeName;
+	}
 
-	public void setDataObjectClass(Class dataObjectClass) {
-    	this.dataObjectClass = dataObjectClass;
-    }
+	/**
+	 * Determines if underlying lookup bo has associated maintenance document that allows new or copy maintenance actions.
+	 * 
+	 * @return true if bo has maint doc that allows new or copy actions
+	 */
+	public boolean allowsMaintenanceNewOrCopyAction() {
+		boolean allowsNewOrCopy = false;
+
+		String maintDocTypeName = getMaintenanceDocumentTypeName();
+		Class boClass = getDataObjectClass();
+
+		if (StringUtils.isNotBlank(maintDocTypeName)) {
+			allowsNewOrCopy = getBusinessObjectAuthorizationService().canCreate(boClass, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+		}
+		return allowsNewOrCopy;
+	}
+
+	protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
+		boolean allowsEdit = false;
+
+		String maintDocTypeName = getMaintenanceDocumentTypeName();
+
+		if (StringUtils.isNotBlank(maintDocTypeName)) {
+			allowsEdit = getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+		}
+		return allowsEdit;
+	}
+
+	protected boolean allowsMaintenanceDeleteAction(BusinessObject businessObject) {
+
+		boolean allowsMaintain = false;
+		boolean allowsDelete = false;
+
+		String maintDocTypeName = getMaintenanceDocumentTypeName();
+
+		if (StringUtils.isNotBlank(maintDocTypeName)) {
+			allowsMaintain = getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+		}
+
+		allowsDelete = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsRecordDeletion(getDataObjectClass());
+
+		return allowsDelete && allowsMaintain;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.LookupViewHelperService#getCreateNewUrl()
+	 */
+	public String getCreateNewUrl(GeneratedField generatedField) {
+		String url = "";
+
+		if (allowsMaintenanceNewOrCopyAction()) {
+			Properties parameters = new Properties();
+			// TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 5 lines)
+//			parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
+//			parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getDataObjectClass().getName());
+			parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, MaintenanceDocumentController.METHOD_TO_CALL_NEW);
+			parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getDataObjectClass().getName());
+			parameters.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
+
+			// TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 2 lines)
+//			url = UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+			url = UrlFactory.parameterizeUrl(MaintenanceDocumentController.REQUEST_MAPPING_MAINTENANCE, parameters);
+			url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+		}
+
+		return url;
+	}
+
+	public String getActionUrlsFromField(GeneratedField generatedField) {
+		BusinessObject bo = (BusinessObject) generatedField.getContext().get(UifConstants.ContextVariableNames.LINE);
+		if (bo == null) {
+			LOG.error("***************************************************************");
+			LOG.error("**** THERE IS NO BO TO PROCESS - THIS SHOULD NEVER HAPPEN *****");
+			LOG.error("***************************************************************");
+			return "";
+		}
+		String actionUrls = getActionUrls(bo, getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass()), getBusinessObjectAuthorizationService().getLookupResultRestrictions(bo,
+		        GlobalVariables.getUserSession().getPerson()));
+		return (StringUtils.isNotBlank(actionUrls)) ? actionUrls : ACTION_URLS_EMPTY;
+	}
+
+	/**
+	 * This method is called by performLookup method to generate action urls. It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag, and returns
+	 * a formatted/concatenated string of action urls.
+	 * 
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#getActionUrls(org.kuali.rice.kns.bo.BusinessObject)
+	 */
+	protected String getActionUrls(BusinessObject businessObject, List<String> pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
+		StringBuffer actions = new StringBuffer();
+		List<HtmlData> htmlDataList = getCustomActionUrls(businessObject, pkNames);
+		for (HtmlData htmlData : htmlDataList) {
+			if (!actions.toString().isEmpty()) {
+				actions.append(ACTION_URLS_SEPARATOR);
+			}
+			actions.append(getMaintenanceUrl(businessObject, htmlData, pkNames, businessObjectRestrictions));
+			if (htmlData.getChildUrlDataList() != null) {
+				if (htmlData.getChildUrlDataList().size() > 0) {
+					actions.append(ACTION_URLS_CHILDREN_STARTER);
+					for (HtmlData childURLData : htmlData.getChildUrlDataList()) {
+						actions.append(getMaintenanceUrl(businessObject, childURLData, pkNames, businessObjectRestrictions));
+						actions.append(ACTION_URLS_CHILDREN_SEPARATOR);
+					}
+					if (actions.toString().endsWith(ACTION_URLS_CHILDREN_SEPARATOR))
+						actions.delete(actions.length() - ACTION_URLS_CHILDREN_SEPARATOR.length(), actions.length());
+					actions.append(ACTION_URLS_CHILDREN_END);
+				}
+			}
+		}
+//		if (actions.toString().endsWith(ACTION_URLS_SEPARATOR))
+//			actions.delete(actions.length() - ACTION_URLS_SEPARATOR.length(), actions.length());
+		return actions.toString();
+	}
+
+	/**
+	 * Child classes should override this method if they want to return some other action urls.
+	 * 
+	 * @returns This default implementation returns links to edit and copy maintenance action for the current maintenance record if the business object class has an associated maintenance document.
+	 *          Also checks value of allowsNewOrCopy in maintenance document xml before rendering the copy link.
+	 */
+	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List<String> pkNames) {
+		List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
+		// TODO delyea - DOCUMENT THE FOLLOWING CHANGES FROM KNSConstants to UifConstants
+		if (allowsMaintenanceEditAction(businessObject)) {
+//			htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
+			htmlDataList.add(getUrlData(businessObject, MaintenanceDocumentController.METHOD_TO_CALL_EDIT, pkNames));
+		}
+		if (allowsMaintenanceNewOrCopyAction()) {
+//			htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
+			htmlDataList.add(getUrlData(businessObject, MaintenanceDocumentController.METHOD_TO_CALL_COPY, pkNames));
+		}
+		if (allowsMaintenanceDeleteAction(businessObject)) {
+//			htmlDataList.add(getUrlData(businessObject, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL, pkNames));
+			htmlDataList.add(getUrlData(businessObject, MaintenanceDocumentController.METHOD_TO_CALL_DELETE, pkNames));
+		}
+		return htmlDataList;
+	}
+
+	/**
+	 * 
+	 * This method calls its overloaded method with displayText as methodToCall
+	 * 
+	 * @param businessObject
+	 * @param methodToCall
+	 * @param pkNames
+	 * @return
+	 */
+	protected AnchorHtmlData getUrlData(BusinessObject businessObject, String methodToCall, List pkNames) {
+		return getUrlData(businessObject, methodToCall, methodToCall, pkNames);
+	}
+
+	/**
+	 * 
+	 * This method constructs an AnchorHtmlData. This method can be overriden by child classes if they want to construct the html data in a different way. Foe example, if they want different type of
+	 * html tag, like input/image.
+	 * 
+	 * @param businessObject
+	 * @param methodToCall
+	 * @param displayText
+	 * @param pkNames
+	 * @return
+	 */
+	protected AnchorHtmlData getUrlData(BusinessObject businessObject, String methodToCall, String displayText, List pkNames) {
+
+		String href = getActionUrlHref(businessObject, methodToCall, pkNames);
+		// String title = StringUtils.isBlank(href)?"":getActionUrlTitleText(businessObject, displayText, pkNames);
+		AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, methodToCall, displayText);
+		return anchorHtmlData;
+	}
+
+	/**
+	 * 
+	 * This method generates and returns href for the given parameters. This method can be overridden by child classes if they have to generate href differently. For example, refer to
+	 * IntendedIncumbentLookupableHelperServiceImpl
+	 * 
+	 * @param businessObject
+	 * @param methodToCall
+	 * @param pkNames
+	 * @return
+	 */
+	protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames) {
+		Properties parameters = new Properties();
+		parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
+		parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
+		if (StringUtils.isNotBlank(getReturnLocation())) {
+			parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
+		}
+		// TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 3 lines)
+//		parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
+		parameters.put(UifConstants.ViewTypeParameterNames.OBJECT_CLASS_NAME, businessObject.getClass().getName());
+		parameters.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
+		// TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 2 lines)
+//		return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
+		return UrlFactory.parameterizeUrl(MaintenanceDocumentController.REQUEST_MAPPING_MAINTENANCE, parameters);
+	}
+
+	protected Properties getParametersFromPrimaryKey(BusinessObject businessObject, List pkNames) {
+		Properties parameters = new Properties();
+		for (Iterator iter = pkNames.iterator(); iter.hasNext();) {
+			String fieldNm = (String) iter.next();
+
+			Object fieldVal = ObjectUtils.getPropertyValue(businessObject, fieldNm);
+			if (fieldVal == null) {
+				fieldVal = KNSConstants.EMPTY_STRING;
+			}
+			if (fieldVal instanceof java.sql.Date) {
+				String formattedString = "";
+				if (Formatter.findFormatter(fieldVal.getClass()) != null) {
+					Formatter formatter = Formatter.getFormatter(fieldVal.getClass());
+					formattedString = (String) formatter.format(fieldVal);
+					fieldVal = formattedString;
+				}
+			}
+
+			// Encrypt value if it is a secure field
+			if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(getDataObjectClass(), fieldNm)) {
+				try {
+					fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
+				} catch (GeneralSecurityException e) {
+					LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+					throw new RuntimeException(e);
+				}
+
+			}
+
+			parameters.put(fieldNm, fieldVal.toString());
+		}
+		return parameters;
+	}
+
+	/**
+	 * Build a maintenance url.
+	 * 
+	 * @param bo
+	 *            - business object representing the record for maint.
+	 * @param methodToCall
+	 *            - maintenance action
+	 * @return
+	 */
+	final public String getMaintenanceUrl(BusinessObject businessObject, HtmlData htmlData, List<String> pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
+		htmlData.setTitle(getActionUrlTitleText(businessObject, htmlData.getDisplayText(), pkNames, businessObjectRestrictions));
+		return htmlData.constructCompleteHtmlTag();
+	}
+
+	/**
+	 * 
+	 * This method generates and returns title text for action urls. Child classes can override this if they want to generate the title text differently. For example, refer to
+	 * BatchJobStatusLookupableHelperServiceImpl
+	 * 
+	 * @param businessObject
+	 * @param displayText
+	 * @param pkNames
+	 * @return
+	 */
+	protected String getActionUrlTitleText(BusinessObject businessObject, String displayText, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
+		String prependTitleText = displayText + " " + getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(getDataObjectClass().getName()).getObjectLabel() + " "
+		        + KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+		return HtmlData.getTitleText(prependTitleText, businessObject, pkNames, businessObjectRestrictions);
+	}
+
+	/**
+	 * @return a List of the names of fields which are marked in data dictionary as return fields.
+	 */
+	public List getReturnKeys() {
+		List returnKeys;
+		if (fieldConversions != null && !fieldConversions.isEmpty()) {
+			returnKeys = new ArrayList(fieldConversions.keySet());
+		} else {
+			returnKeys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+		}
+
+		return returnKeys;
+	}
+
+	public String getReturnLocation() {
+		return backLocation;
+	}
 
 	public String getBackLocation() {
-    	return this.backLocation;
-    }
+		return this.backLocation;
+	}
 
 	public void setBackLocation(String backLocation) {
-    	this.backLocation = backLocation;
-    }
+		this.backLocation = backLocation;
+	}
+
+    public Class getDataObjectClass() {
+		return this.dataObjectClass;
+	}
+
+	public void setDataObjectClass(Class dataObjectClass) {
+		this.dataObjectClass = dataObjectClass;
+	}
 
 	public String getDocFormKey() {
-    	return this.docFormKey;
-    }
+		return this.docFormKey;
+	}
 
 	public void setDocFormKey(String docFormKey) {
-    	this.docFormKey = docFormKey;
-    }
+		this.docFormKey = docFormKey;
+	}
 
 	public String getReferencesToRefresh() {
-    	return this.referencesToRefresh;
-    }
+		return this.referencesToRefresh;
+	}
 
 	public void setReferencesToRefresh(String referencesToRefresh) {
-    	this.referencesToRefresh = referencesToRefresh;
-    }
+		this.referencesToRefresh = referencesToRefresh;
+	}
 
 	public List<String> getDefaultSortAttributeNames() {
-    	return this.defaultSortAttributeNames;
-    }
+		return this.defaultSortAttributeNames;
+	}
 
 	public void setDefaultSortAttributeNames(List<String> defaultSortAttributeNames) {
-    	this.defaultSortAttributeNames = defaultSortAttributeNames;
-    }
+		this.defaultSortAttributeNames = defaultSortAttributeNames;
+	}
 
 	public boolean isSortAscending() {
-    	return this.sortAscending;
-    }
+		return this.sortAscending;
+	}
 
 	public void setSortAscending(boolean sortAscending) {
-    	this.sortAscending = sortAscending;
-    }
+		this.sortAscending = sortAscending;
+	}
 
-	 /**
-	  * @return a List of the names of fields which are marked in data dictionary as return fields.
-	  */
-	 public List getReturnKeys() {
-		 List returnKeys;
-		 if (fieldConversions != null && !fieldConversions.isEmpty()) {
-			 returnKeys = new ArrayList(fieldConversions.keySet());
-		 }
-		 else {
-			 returnKeys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
-		 }
+	public Map getParameters() {
+		return this.parameters;
+	}
 
-		 return returnKeys;
-	 }
+	public void setParameters(Map parameters) {
+		this.parameters = parameters;
+	}
 
-	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#setFieldConversions(java.util.Map)
-	  */
-	 public void setFieldConversions(Map<String, String> fieldConversions) {
-		 this.fieldConversions = fieldConversions;
-	 }
+	/**
+	 * @see org.kuali.core.lookup.LookupableHelperService#setFieldConversions(java.util.Map)
+	 */
+	public void setFieldConversions(Map<String, String> fieldConversions) {
+		this.fieldConversions = fieldConversions;
+	}
 
-	 /**
-	  * Gets the readOnlyFieldsList attribute.
-	  *
-	  * @return Returns the readOnlyFieldsList.
-	  */
-	 public List<String> getReadOnlyFieldsList() {
-		 return readOnlyFieldsList;
-	 }
+	/**
+	 * Gets the readOnlyFieldsList attribute.
+	 * 
+	 * @return Returns the readOnlyFieldsList.
+	 */
+	public List<String> getReadOnlyFieldsList() {
+		return readOnlyFieldsList;
+	}
 
-
-	 /**
-	  * Sets the readOnlyFieldsList attribute value.
-	  *
-	  * @param readOnlyFieldsList The readOnlyFieldsList to set.
-	  */
-	 public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
-		 this.readOnlyFieldsList = readOnlyFieldsList;
-	 }
+	/**
+	 * Sets the readOnlyFieldsList attribute value.
+	 * 
+	 * @param readOnlyFieldsList
+	 *            The readOnlyFieldsList to set.
+	 */
+	public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
+		this.readOnlyFieldsList = readOnlyFieldsList;
+	}
 
 	protected LookupService getLookupService() {
 		return lookupService != null ? lookupService : KNSServiceLocator.getLookupService();
@@ -744,5 +1044,13 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	public void setBusinessObjectAuthorizationService(BusinessObjectAuthorizationService businessObjectAuthorizationService) {
 		this.businessObjectAuthorizationService = businessObjectAuthorizationService;
 	}
+
+	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+		return maintenanceDocumentDictionaryService != null ? maintenanceDocumentDictionaryService : KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+    }
+
+	public void setMaintenanceDocumentDictionaryService(MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService) {
+    	this.maintenanceDocumentDictionaryService = maintenanceDocumentDictionaryService;
+    }
 
 }

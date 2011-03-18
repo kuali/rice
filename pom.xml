@@ -22,7 +22,7 @@
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<description>The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows both Kuali and non-Kuali applications to be built in an agile fashion, such that developers will be able to react to end-user business requirements in an efficient and productive manner, so that they can produce high quality business applications.</description>
 	<url>http://rice.kuali.org</url>
 	<inceptionYear>2007</inceptionYear>
@@ -129,7 +129,7 @@
         <source.plugin.version>2.1.2</source.plugin.version>
 
         <web.launch.context.path>/kr-dev</web.launch.context.path>
-        <web.launch.spring.file></web.launch.spring.file>
+        <web.launch.spring.file />
 	</properties>
 
 	<build>
@@ -201,7 +201,7 @@
 									<requireMavenVersion>
 										<version>[3.0,4.0)</version>
 									</requireMavenVersion>
-									<DependencyConvergence/>
+									<DependencyConvergence />
 
 									<!-- Maven 3 Migration: This rule is not supported by Maven 3. See:
 										http://jira.codehaus.org/browse/MENFORCER-98 -->
@@ -1825,9 +1825,9 @@
 	</profiles>
 
 	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-1-0-br</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-1-0-br</developerConnection>
-		<url>https://test.kuali.org/fisheye/browse/rice</url>
+		<connection>scm:svn:https://test.kuali.org/svn/rice/trunk</connection>
+		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/trunk</developerConnection>
+		<url>https://test.kuali.org/svn/rice/trunk</url>
 	</scm>
 
 	<distributionManagement>

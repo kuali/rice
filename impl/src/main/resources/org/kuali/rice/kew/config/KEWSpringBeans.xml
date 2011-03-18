@@ -95,6 +95,22 @@
 		</property>
 		<property name="serverDataSource" value="true"/>
     </bean>
+    
+    <bean id="kewNonTransactionalDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+        <property name="nullAllowed" value="true"/>
+        <property name="nonTransactionalDataSource" value="true"/>
+        <property name="preferredDataSourceParams">
+            <list>
+                <value>kew.nonTransactional.datasource</value>
+            </list>
+        </property>
+        <property name="preferredDataSourceJndiParams">
+            <list>
+                <value>kew.nonTransactional.datasource.jndi.location</value>
+            </list>
+        </property>
+        <property name="serverDataSource" value="false"/>
+    </bean>
 
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
@@ -317,6 +333,9 @@
 		<property name="userOptionsDAO">
             <ref bean="enUserOptionsDAO" />
 		</property>
+        <property name="reloadActionListDAO">
+            <ref bean="reloadActionListDAO" />
+        </property>
 	</bean>
 
 
@@ -722,5 +741,11 @@
 	<bean id="enDocumentLinkService" class="org.kuali.rice.kew.documentlink.service.impl.DocumentLinkServiceImpl" lazy-init="true">
 		<property name="documentLinkDAO" ref="enDocumentLinkDAO"/>
 	</bean>
+    
+    <bean id="reloadActionListDAO" class="org.kuali.rice.kew.useroptions.dao.impl.ReloadActionListDaoJdbcImpl">
+         <constructor-arg>
+            <ref bean="kewNonTransactionalDataSource"/>
+         </constructor-arg>
+    </bean>
     
 </beans>

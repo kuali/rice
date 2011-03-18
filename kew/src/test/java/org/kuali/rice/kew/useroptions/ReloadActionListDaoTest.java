@@ -30,7 +30,7 @@ public class ReloadActionListDaoTest extends KEWTestCase {
 	
 	@Test
     public void testReloadActionListDao() {
-    	ReloadActionListDAO rald = (ReloadActionListDAO)KEWServiceLocator.getService("reloadActionListDao");
+    	ReloadActionListDAO rald = (ReloadActionListDAO)KEWServiceLocator.getService("reloadActionListDAO");
     	
     	rald.setReloadActionListFlag("admin");
     	assertTrue(rald.checkAndResetReloadActionListFlag("admin"));

@@ -79,8 +79,6 @@ public class EqualExpressionTest {
 	
 	/**
 	 * Tests that the EqualExpression can be marshalled and unmarshalled properly via JAXB.
-	 * This method ...
-	 *
 	 */
 	@Test
 	public void testJAXB() {
@@ -106,28 +104,5 @@ public class EqualExpressionTest {
 		equalExpression = new EqualExpression("property.path", new CriteriaDateTimeValue(dateTime));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, DATE_TIME_XML, EqualExpression.class);
 	}
-	
-//	protected void assertEqualXmlMarshalUnmarshal(Class<?> jaxbClass, Object object, String expectedXml) {
-//		try {
-//		  JAXBContext jaxbContext = JAXBContext.newInstance(jaxbClass);
-//		  Marshaller marshaller = jaxbContext.createMarshaller();
-//		  
-//		  StringWriter stringWriter = new StringWriter();
-//		  
-//		  marshaller.marshal(object, stringWriter);
-//
-//		  Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-//		  
-//		  System.out.println(stringWriter.toString());
-//		  
-//		  Object actual = unmarshaller.unmarshal(new StringReader(stringWriter.toString()));
-//		  assertEquals("Unmarshalled object should be equal to original object.", object, actual);
-//		  
-//		  Object expected = unmarshaller.unmarshal(new StringReader(expectedXml));
-//		  assertEquals("Unmarshalled objects should be equal.", expected, actual);
-//		} catch (JAXBException e) {
-//			throw new RuntimeException("Failed to marshall/unmarshall with JAXB.  See the nested exception for details.", e);
-//		}
-//	}
 
 }

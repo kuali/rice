@@ -23,30 +23,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * A composite expression which implements "and-ing" of multiple expressions together. 
+ * A composite expression which implements "or-ing" of multiple expressions together. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = And.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = OrExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = And.Constants.TYPE_NAME)
-public final class And extends AbstractCompositeExpression {
+@XmlType(name = OrExpression.Constants.TYPE_NAME)
+public final class OrExpression extends AbstractCompositeExpression {
 	
+	private static final long serialVersionUID = -6575256900578172242L;
+
 	/**
-	 * Used by JAXB for construction.
+	 * Used only by JAXB for construction.
 	 */
-	And() {
-		super(null);
+	@SuppressWarnings("unused")
+	private OrExpression() {
+		super();
 	}
 	
 	/**
-	 * Construct an "And" expression from the given list of expressions.  The given list
+	 * Construct an "Or" expression from the given list of expressions.  The given list
 	 * of expressions can be null or empty.  If the list is null then it will be
 	 * translated internally to an empty list.
 	 * 
 	 * @param expressions the List of expressions to set on the And expression
 	 */
-	And(List<Expression> expressions) {
+	OrExpression(List<Expression> expressions) {
 	    super(expressions);
 	}
 	
@@ -54,8 +57,8 @@ public final class And extends AbstractCompositeExpression {
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "and";
-        final static String TYPE_NAME = "AndType";
+        final static String ROOT_ELEMENT_NAME = "or";
+        final static String TYPE_NAME = "OrType";
     }
 
 }

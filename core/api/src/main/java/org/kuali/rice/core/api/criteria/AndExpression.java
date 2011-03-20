@@ -23,36 +23,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * TODO 
+ * A composite expression which implements "and-ing" of multiple expressions together. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-@XmlRootElement(name = Criteria.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = AndExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Criteria.Constants.TYPE_NAME)
-public final class Criteria extends AbstractCompositeExpression {
-		
-	private static final long serialVersionUID = -8662772314094715831L;
+@XmlType(name = AndExpression.Constants.TYPE_NAME)
+public final class AndExpression extends AbstractCompositeExpression {
+	
+	private static final long serialVersionUID = -6575256900578172242L;
 
 	/**
-	 * Used only by JAXB.
+	 * Used only by JAXB for construction.
 	 */
 	@SuppressWarnings("unused")
-	private Criteria() {
+	private AndExpression() {
 		super();
 	}
 	
-	Criteria(List<Expression> expressions) {
+	/**
+	 * Construct an "And" expression from the given list of expressions.  The given list
+	 * of expressions can be null or empty.  If the list is null then it will be
+	 * translated internally to an empty list.
+	 * 
+	 * @param expressions the List of expressions to set on the And expression
+	 */
+	AndExpression(List<Expression> expressions) {
 	    super(expressions);
 	}
-		
+	
 	/**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "criteria";
-        final static String TYPE_NAME = "CriteriaType";
+        final static String ROOT_ELEMENT_NAME = "and";
+        final static String TYPE_NAME = "AndType";
     }
-	
+
 }

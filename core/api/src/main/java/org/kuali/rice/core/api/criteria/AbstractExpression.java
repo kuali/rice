@@ -25,7 +25,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class AbstractExpression implements Expression {
+abstract class AbstractExpression implements Expression {
 
 	private static final long serialVersionUID = 7035792141358213138L;
 

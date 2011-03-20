@@ -17,10 +17,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
  * 
@@ -28,11 +24,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AbstractCompositeExpression.Constants.TYPE_NAME)
-abstract class AbstractCompositeExpression implements CompositeExpression {
+abstract class AbstractCompositeExpression extends AbstractExpression implements CompositeExpression {
 
-    @XmlElements(value = {
-            @XmlElement(name = And.Constants.ROOT_ELEMENT_NAME, type = And.class, required = true),
-            @XmlElement(name = Or.Constants.ROOT_ELEMENT_NAME, type = Or.class, required = true),
+    private static final long serialVersionUID = 6164560054223588779L;
+    
+	@XmlElements(value = {
+            @XmlElement(name = AndExpression.Constants.ROOT_ELEMENT_NAME, type = AndExpression.class, required = true),
+            @XmlElement(name = OrExpression.Constants.ROOT_ELEMENT_NAME, type = OrExpression.class, required = true),
             @XmlElement(name = EqualExpression.Constants.ROOT_ELEMENT_NAME, type = EqualExpression.class, required = true),
             //@XmlElement(name = NotEqualExpression.Constants.ROOT_ELEMENT_NAME, type = NotEqualExpression.class, required = true),
             @XmlElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME, type = LikeExpression.class, required = true),
@@ -55,7 +53,7 @@ abstract class AbstractCompositeExpression implements CompositeExpression {
 
     AbstractCompositeExpression(final List<Expression> expressions) {
         if (expressions == null) {
-            this.expressions = Collections.emptyList();
+            this.expressions = new ArrayList<Expression>();
         } else {
             this.expressions = new ArrayList<Expression>(expressions);
         }
@@ -63,22 +61,8 @@ abstract class AbstractCompositeExpression implements CompositeExpression {
 
     @Override
     public List<Expression> getExpressions() {
-        return Collections.unmodifiableList(expressions);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        //return Collections.unmodifiableList(expressions);
+    	return expressions;
     }
 
     /**

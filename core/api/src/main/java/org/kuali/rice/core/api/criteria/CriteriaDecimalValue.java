@@ -26,6 +26,8 @@ import javax.xml.bind.annotation.XmlValue;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.mutable.MutableDouble;
+import org.apache.commons.lang.mutable.MutableFloat;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -46,7 +48,34 @@ public final class CriteriaDecimalValue implements CriteriaValue<BigDecimal> {
     }
     
     CriteriaDecimalValue(BigDecimal value) {
+    	validateValue(value);
         this.value = value;
+    }
+    
+    CriteriaDecimalValue(Float value) {
+    	validateValue(value);
+    	this.value = BigDecimal.valueOf(value.doubleValue());
+    }
+    
+    CriteriaDecimalValue(MutableFloat value) {
+    	validateValue(value);
+    	this.value = BigDecimal.valueOf(value.doubleValue());
+    }
+    
+    CriteriaDecimalValue(Double value) {
+    	validateValue(value);
+    	this.value = BigDecimal.valueOf(value.doubleValue());
+    }
+    
+    CriteriaDecimalValue(MutableDouble value) {
+    	validateValue(value);
+    	this.value = BigDecimal.valueOf(value.doubleValue());
+    }
+    
+    private static void validateValue(Object value) {
+    	if (value == null) {
+    		throw new IllegalArgumentException("Value cannot be null.");
+    	}
     }
     
     public BigDecimal getValue() {

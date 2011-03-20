@@ -42,9 +42,12 @@ public final class CriteriaStringValue implements CriteriaValue<String> {
     CriteriaStringValue() {
         this.value = null;
     }
-    
-    CriteriaStringValue(String value) {
-        this.value = value;
+        
+    CriteriaStringValue(CharSequence value) {
+    	if (value == null) {
+    		throw new IllegalArgumentException("Value cannot be null.");
+    	}
+    	this.value = value.toString();
     }
     
     public String getValue() {

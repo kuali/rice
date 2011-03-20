@@ -16,6 +16,8 @@
 package org.kuali.rice.core.api.criteria;
 
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -26,6 +28,9 @@ import javax.xml.bind.annotation.XmlValue;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.lang.mutable.MutableLong;
+import org.apache.commons.lang.mutable.MutableShort;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -46,7 +51,54 @@ public final class CriteriaIntegerValue implements CriteriaValue<BigInteger> {
     }
     
     CriteriaIntegerValue(BigInteger value) {
+    	validateValue(value);
         this.value = value;
+    }
+    
+    CriteriaIntegerValue(Short value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    CriteriaIntegerValue(MutableShort value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    CriteriaIntegerValue(Integer value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    CriteriaIntegerValue(AtomicInteger value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    CriteriaIntegerValue(MutableInt value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    CriteriaIntegerValue(Long value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    CriteriaIntegerValue(AtomicLong value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    CriteriaIntegerValue(MutableLong value) {
+    	validateValue(value);
+    	this.value = BigInteger.valueOf(value.longValue());
+    }
+    
+    private static void validateValue(Object value) {
+    	if (value == null) {
+    		throw new IllegalArgumentException("Value cannot be null.");
+    	}
     }
     
     public BigInteger getValue() {

@@ -44,7 +44,7 @@ abstract class AbstractCompositeExpression extends AbstractExpression implements
             
             
     })
-    protected final List<Expression> expressions;
+    private final List<Expression> expressions;
 
     AbstractCompositeExpression() {
         this(null);

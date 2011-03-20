@@ -46,15 +46,23 @@ public final class CriteriaDateTimeValue implements CriteriaValue<Calendar> {
     }
     
     CriteriaDateTimeValue(Calendar value) {
+    	validateValue(value);
         this.value = value;
     }
     
-    CriteriaDateTimeValue fromDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return new CriteriaDateTimeValue(calendar);
+    CriteriaDateTimeValue(Date value) {
+    	validateValue(value);
+    	Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(value.getTime());
+        this.value = calendar;
     }
     
+    private static void validateValue(Object value) {
+    	if (value == null) {
+    		throw new IllegalArgumentException("Value cannot be null.");
+    	}
+    }
+        
     public Calendar getValue() {
         return value;
     }

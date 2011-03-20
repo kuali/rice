@@ -21,6 +21,20 @@ package org.kuali.rice.core.api.criteria;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PropertyPath<T> {
+public final class PropertyPath<T> {
 
+	private final String propertyPath;
+	
+	private PropertyPath(String propertyPath) {
+		this.propertyPath = propertyPath;
+	}
+	
+	public static <T> PropertyPath<T> newPropertyPath(String propertyPath) {
+		return new PropertyPath<T>(propertyPath);
+	}
+	
+	public String getPropertyPath() {
+		return propertyPath;
+	}
+	
 }

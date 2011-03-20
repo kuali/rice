@@ -17,11 +17,22 @@ package org.kuali.rice.core.api.criteria;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.mutable.MutableDouble;
+import org.apache.commons.lang.mutable.MutableFloat;
+import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.lang.mutable.MutableLong;
+import org.apache.commons.lang.mutable.MutableShort;
 
 /**
  * A class which includes various utilities and constants for use within the criteria API.
@@ -97,6 +108,47 @@ final class CriteriaSupportUtils {
 			}
 		}
 		return null;
+	}
+	
+	static CriteriaValue<?> determineCriteriaValue(Object object) {
+		if (object == null) {
+			throw new IllegalArgumentException("Given criteria value cannot be null.");
+		} else if (object instanceof CharSequence) {
+			return new CriteriaStringValue((CharSequence)object);
+		} else if (object instanceof Calendar) {
+			return new CriteriaDateTimeValue((Calendar)object);
+		} else if (object instanceof Date) {
+			return new CriteriaDateTimeValue((Date)object);
+		} else if (object instanceof BigInteger) {
+			return new CriteriaIntegerValue((BigInteger)object);
+		} else if (object instanceof Short) {
+			return new CriteriaIntegerValue((Short)object);
+		} else if (object instanceof MutableShort) {
+			return new CriteriaIntegerValue((MutableShort)object);
+		} else if (object instanceof Integer) {
+			return new CriteriaIntegerValue((Integer)object);
+		} else if (object instanceof AtomicInteger) {
+			return new CriteriaIntegerValue((AtomicInteger)object);
+		} else if (object instanceof MutableInt) {
+			return new CriteriaIntegerValue((MutableInt)object);
+		} else if (object instanceof Long) {
+			return new CriteriaIntegerValue((Long)object);
+		} else if (object instanceof AtomicLong) {
+			return new CriteriaIntegerValue((AtomicLong)object);
+		} else if (object instanceof MutableLong) {
+			return new CriteriaIntegerValue((MutableLong)object);
+		} else if (object instanceof BigDecimal) {
+			return new CriteriaDecimalValue((BigDecimal)object);
+		} else if (object instanceof Float) {
+			return new CriteriaDecimalValue((Float)object);
+		} else if (object instanceof MutableFloat) {
+			return new CriteriaDecimalValue((MutableFloat)object);
+		} else if (object instanceof Double) {
+			return new CriteriaDecimalValue((Double)object);
+		} else if (object instanceof MutableDouble) {
+			return new CriteriaDecimalValue((MutableDouble)object);
+		}
+		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
 	}
 	
 }

@@ -28,10 +28,9 @@ import org.junit.Test;
 import org.kuali.rice.core.test.JAXBAssert;
 
 /**
- * TODO 
+ * Tests the {@link AndExpression} class. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class AndExpressionTest {
 

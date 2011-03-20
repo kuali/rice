@@ -39,7 +39,7 @@ public final class LikeExpression extends AbstractExpression implements SimpleEx
 	@XmlAttribute(name = SimpleExpression.PROPERTY_PATH)
 	private final String propertyPath;
 	@XmlElements(value = {
-    		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
+    		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true)
     })
 	private final CriteriaValue<?> value;
 	

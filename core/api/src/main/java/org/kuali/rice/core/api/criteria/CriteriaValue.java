@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.mo.ModelObjectComplete;
-
 /**
- * TODO 
+ * This is a description of what this class does - ewestfal don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface Expression extends ModelObjectComplete {
+public interface CriteriaValue<T> {
 
+    public T getValue();
+    
 }

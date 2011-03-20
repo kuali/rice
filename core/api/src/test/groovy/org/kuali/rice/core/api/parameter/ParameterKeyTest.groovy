@@ -16,9 +16,8 @@
 
 package org.kuali.rice.core.api.parameter
 
-import javax.xml.bind.JAXBContext
-import org.junit.Assert
 import org.junit.Test
+import org.kuali.rice.core.test.JAXBAssert
 
 class ParameterKeyTest {
         private static final String XML = """
@@ -107,18 +106,7 @@ class ParameterKeyTest {
 
     @Test
 	public void test_Xml_Marshal_Unmarshal() {
-	  def jc = JAXBContext.newInstance(ParameterKey.class)
-	  def marshaller = jc.createMarshaller()
-	  def sw = new StringWriter()
-
-	  def param = this.create()
-	  marshaller.marshal(param,sw)
-
-	  def unmarshaller = jc.createUnmarshaller();
-	  def actual = unmarshaller.unmarshal(new StringReader(sw.toString()))
-	  def expected = unmarshaller.unmarshal(new StringReader(XML))
-
-	  Assert.assertEquals(expected,actual)
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, ParameterKey.class)
 	}
 
     private create() {

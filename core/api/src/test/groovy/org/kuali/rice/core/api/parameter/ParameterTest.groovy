@@ -24,6 +24,7 @@ package org.kuali.rice.core.api.parameter;
 import javax.xml.bind.JAXBContext
 import org.junit.Assert
 import org.junit.Test
+import org.kuali.rice.core.test.JAXBAssert;
 
 public class ParameterTest {
 
@@ -140,18 +141,7 @@ public class ParameterTest {
 
     @Test
 	public void test_Xml_Marshal_Unmarshal() {
-	  def jc = JAXBContext.newInstance(Parameter.class)
-	  def marshaller = jc.createMarshaller()
-	  def sw = new StringWriter()
-
-	  def param = this.create()
-	  marshaller.marshal(param,sw)
-
-	  def unmarshaller = jc.createUnmarshaller();
-	  def actual = unmarshaller.unmarshal(new StringReader(sw.toString()))
-	  def expected = unmarshaller.unmarshal(new StringReader(XML))
-
-	  Assert.assertEquals(expected,actual)
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Parameter.class)
 	}
     
     private create() {

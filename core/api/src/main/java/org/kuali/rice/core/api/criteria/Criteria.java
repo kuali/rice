@@ -15,14 +15,38 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class Criteria {
-
+@XmlRootElement(name = Criteria.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = Criteria.Constants.TYPE_NAME)
+public final class Criteria extends AbstractCompositeExpression {
+		
+	Criteria() {
+		super();
+	}
 	
+	Criteria(List<Expression> expressions) {
+	    super(expressions);
+	}
+		
+	/**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+        final static String ROOT_ELEMENT_NAME = "criteria";
+        final static String TYPE_NAME = "CriteriaType";
+    }
 	
 }

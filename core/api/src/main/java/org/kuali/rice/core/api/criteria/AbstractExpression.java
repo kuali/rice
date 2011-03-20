@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.mo.ModelObjectComplete;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * TODO 
@@ -23,6 +25,23 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface Expression extends ModelObjectComplete {
+public abstract class AbstractExpression implements Expression {
 
+	private static final long serialVersionUID = 7035792141358213138L;
+
+	@Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+	
 }

@@ -1,0 +1,90 @@
+/*
+ * Copyright 2011 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl1.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.core.api.criteria;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
+@XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = LikeExpression.Constants.TYPE_NAME)
+public final class LikeExpression extends AbstractExpression implements SimpleExpression {
+
+	private static final long serialVersionUID = 6406122080039813800L;
+	
+	@XmlAttribute(name = SimpleExpression.PROPERTY_PATH)
+	private final String propertyPath;
+	@XmlElements(value = {
+    		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
+    })
+	private final CriteriaValue<?> value;
+	
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
+    private LikeExpression() {
+        this.propertyPath = null;
+        this.value = null;
+    }
+    
+    /**
+	 * Constructs a LikeExpression for the given path and value.  LikeExpression supports only the
+	 * {@link CriteriaStringValue}.
+	 * 
+	 * @param propertyPath the property path for the expression, must not be null or blank
+	 * @param value the value to evaluation the path against, must not be null.
+	 * 
+	 * @throws IllegalArgumentException if the propertyPath is null or blank
+	 * @throws IllegalArgumentException if the value is null
+	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
+	 */
+    LikeExpression(String propertyPath, CriteriaValue<?> value) {
+    	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+		this.propertyPath = propertyPath;
+		this.value = value;
+    }
+    
+    @Override
+    public String getPropertyPath() {
+    	return propertyPath;
+    }
+    
+	@Override
+	public CriteriaValue<?> getValue() {
+		return value;
+	}
+
+	/**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+        final static String ROOT_ELEMENT_NAME = "like";
+        final static String TYPE_NAME = "LikeType";
+    }
+    
+}

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.mo.ModelObjectComplete;
 
 /**
  * TODO 
@@ -23,6 +22,14 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface Expression extends ModelObjectComplete {
-
+interface SimpleExpression extends Expression {
+	
+	final static String PROPERTY_PATH = "propertyPath";
+    final static String VALUE = "value";
+    final static String GET_VALUE_METHOD_NAME = "getValue";
+	
+	String getPropertyPath();
+		
+	CriteriaValue<?> getValue();
+    
 }

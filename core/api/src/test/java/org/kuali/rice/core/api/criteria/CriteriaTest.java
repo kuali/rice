@@ -70,9 +70,9 @@ public class CriteriaTest {
 		Date ltBirthDate = new SimpleDateFormat("yyyyMMdd").parse("19801001");
 		// normalize timezone to GMT for purpose of the tests
 		Calendar gtCalendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		gtCalendar.setTime(gtBirthDate);
+		gtCalendar.setTimeInMillis(gtBirthDate.getTime());
 		Calendar ltCalendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-		ltCalendar.setTime(ltBirthDate);
+		ltCalendar.setTimeInMillis(ltBirthDate.getTime());
 		
 		CriteriaBuilder<Person> builder = CriteriaBuilder.newCriteriaBuilder(Person.class);
 		builder.like("display", "*Eric*");

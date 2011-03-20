@@ -71,7 +71,8 @@ public final class CriteriaBuilder<T> {
 	}
 	
 	public void lessThan(String propertyPath, Object value) {
-		
+		LessThanExpression expression = new LessThanExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
+		entries.add(new SimpleEntry(expression));
 	}
 	
 	public void lessThanOrEqual(String propertyPath, Object value) {

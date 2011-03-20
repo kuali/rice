@@ -36,7 +36,7 @@ public final class EqualExpression extends AbstractExpression implements SimpleE
 	
 	private static final long serialVersionUID = 7159459561133496549L;
 	
-	@XmlAttribute(name = SimpleExpression.PROPERTY_PATH)
+	@XmlAttribute(name = PROPERTY_PATH)
 	private final String propertyPath;
 	@XmlElements(value = {
     		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),

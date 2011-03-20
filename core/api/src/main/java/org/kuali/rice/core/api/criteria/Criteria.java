@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * TODO 
+ * TODO - acts as an implicit "AND" on the expressions contained within...
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

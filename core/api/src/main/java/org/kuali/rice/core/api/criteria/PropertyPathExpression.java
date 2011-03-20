@@ -22,11 +22,10 @@ package org.kuali.rice.core.api.criteria;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-interface SimpleExpression extends PropertyPathExpression {
+interface PropertyPathExpression extends Expression {
 	
-    final static String VALUE = "value";
-    final static String GET_VALUE_METHOD_NAME = "getValue";
+	final static String PROPERTY_PATH = "propertyPath";
 	
-	CriteriaValue<?> getValue();
-    
+	String getPropertyPath();
+		    
 }

@@ -160,7 +160,7 @@ public class SimpleExpressionTest {
 
     	private static final long serialVersionUID = -5606375770690671272L;
     	
-		@XmlAttribute(name = SimpleExpression.PROPERTY_PATH)
+		@XmlAttribute(name = PROPERTY_PATH)
     	private final String propertyPath;
     	@XmlElements(value = {
         		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
@@ -205,7 +205,7 @@ public class SimpleExpressionTest {
 
     	private static final long serialVersionUID = 5874946840884110187L;
     	
-		@XmlAttribute(name = SimpleExpression.PROPERTY_PATH)
+		@XmlAttribute(name = PROPERTY_PATH)
     	private final String propertyPath;
     	@XmlElements(value = {
         		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true)

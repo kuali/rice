@@ -127,7 +127,7 @@
 		<surefire.plugin.version>2.8</surefire.plugin.version>
         <failsafe.plugin.version>2.8</failsafe.plugin.version>
         <source.plugin.version>2.1.2</source.plugin.version>
-
+        <assembly.plugin.version>2.2.1</assembly.plugin.version>
         <web.launch.context.path>/kr-dev</web.launch.context.path>
         <web.launch.spring.file />
 	</properties>
@@ -739,6 +739,12 @@
                         </reportPlugins>
                     </configuration>
 				</plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${assembly.plugin.version}</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -822,6 +828,7 @@
         <module>client-contrib</module>
         <module>shareddata</module>
         <module>doc</module>
+        <module>dist</module>
   </modules>
 
 	<repositories>
@@ -1808,9 +1815,15 @@
 								</execution>
 							</executions>
 						</plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-assembly-plugin</artifactId>
+							<version>${assembly.plugin.version}</version>
+                        </plugin>
 					</plugins>
 				</pluginManagement>
 				<plugins>
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
@@ -1819,6 +1832,28 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
 					</plugin>
+
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <configuration>
+                      <descriptors>
+                        <!-- pack all source so it can be referrred to in child modules -->
+                        <descriptor>project.xml</descriptor>
+                      </descriptors>
+                    </configuration>
+                    <executions>
+                      <execution>
+                        <id>make-project-source-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                          <goal>single</goal>
+                        </goals>
+                      </execution>
+                    </executions>
+                    <!-- do NOT do this custom packaging for sub modules.  This is a one time thing -->
+                    <inherited>false</inherited>
+                  </plugin>
 				</plugins>
 			</build>
 		</profile>

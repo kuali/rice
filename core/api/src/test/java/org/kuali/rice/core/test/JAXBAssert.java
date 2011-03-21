@@ -28,8 +28,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.springframework.core.io.Resource;
-
 /**
  * A class with some assertion utilities for JAXB-related operations. 
  * 
@@ -85,9 +83,8 @@ public final class JAXBAssert {
 		}
 	}
 	
-	public static void assertEqualXmlMarshalUnmarshalWithResource(Object objectToMarshal, Resource expectedXmlFile, Class<?> ... classesToBeBound) throws IOException {
-		InputStream inputStream = expectedXmlFile.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+	public static void assertEqualXmlMarshalUnmarshalWithResource(Object objectToMarshal, InputStream expectedXml, Class<?> ... classesToBeBound) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(expectedXml));
 		StringWriter writer = new StringWriter();
 		int data = -1;
 		while ((data = reader.read()) != -1) {

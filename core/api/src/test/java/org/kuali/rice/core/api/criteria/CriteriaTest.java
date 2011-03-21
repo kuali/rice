@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,8 +29,6 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 import org.kuali.rice.core.test.JAXBAssert;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
 
 /**
  * A test for the {@link Criteria} class. 
@@ -40,7 +39,7 @@ import org.springframework.core.io.Resource;
 public class CriteriaTest {
 
 	private static final String XML = "<criteria><like propertyPath=\"display\"><stringValue>*Eric*</stringValue></like><greaterThan propertyPath=\"birthDate\"><dateTimeValue>1980-09-01T00:00:00Z</dateTimeValue></greaterThan><lessThan propertyPath=\"birthDate\"><dateTimeValue>1980-10-01T00:00:00Z</dateTimeValue></lessThan><or><equal propertyPath=\"name.first\"><stringValue>Eric</stringValue></equal><equal propertyPath=\"name.last\"><stringValue>Westfall</stringValue></equal></or></criteria>";
-	private static final String UBER_XML_LOCATION = "classpath:org/kuali/rice/core/api/criteria/UberCriteria.xml";
+	private static final String UBER_XML_LOCATION = "/org/kuali/rice/core/api/criteria/UberCriteria.xml";
 	
 	@Test
 	public void testCriteria() {
@@ -89,9 +88,9 @@ public class CriteriaTest {
 		builder.notIn("pp", Collections.singletonList(epochZero));
 		
 		Criteria criteria = builder.build();
-		DefaultResourceLoader loader = new DefaultResourceLoader();
-		Resource resource = loader.getResource(UBER_XML_LOCATION);
-		JAXBAssert.assertEqualXmlMarshalUnmarshalWithResource(criteria, resource, Criteria.class);
+		InputStream expectedXml = getClass().getResourceAsStream(UBER_XML_LOCATION);
+		assertNotNull("Could not locate XML at: " + UBER_XML_LOCATION, expectedXml);
+		JAXBAssert.assertEqualXmlMarshalUnmarshalWithResource(criteria, expectedXml, Criteria.class);
 	}
 	
 	/**

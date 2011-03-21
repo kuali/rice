@@ -87,5 +87,8 @@ public final class PropositionServiceImpl implements PropositionService {
 		return PropositionBo.to(bo);
 	}
 
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
 
 }

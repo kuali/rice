@@ -145,7 +145,12 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getPropId(), contract.getDescription(), contract.getTypeId(), contract.getPropositionTypeCode(), (List<PropositionParameter.Builder>) contract.getParameters());
+        	List <PropositionParameter.Builder> paramBuilderList = new ArrayList<PropositionParameter.Builder>();
+        	for (PropositionParameterContract paramContract : contract.getParameters()){
+        		PropositionParameter.Builder myBuilder = PropositionParameter.Builder.create(paramContract);
+        		paramBuilderList.add(myBuilder);
+        	}
+            Builder builder =  new Builder(contract.getPropId(), contract.getDescription(), contract.getTypeId(), contract.getPropositionTypeCode(), paramBuilderList);
             return builder;
         }
 

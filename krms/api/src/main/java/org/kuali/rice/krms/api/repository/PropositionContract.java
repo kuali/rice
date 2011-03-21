@@ -27,17 +27,16 @@ public interface PropositionContract {
 	public String getDescription();
 
 	/**
-	 * This is the namespace code. 
+	 * This is the Proposition KrmsType of the proposition.
 	 *
 	 * <p>
 	 * It provides scope of the KRMS type.
 	 * </p>
-	 * @return the namespace code of the KRMS type.
+	 * @return the id of the KRMS type.
 	 */
 	public String getTypeId();
 
 	/**
-	 * This is the Proposition KrmsType of the proposition.
 	 * There are three main types of Propositions:
 	 *   Compound Propositions - a proposition consisting of other propositions 
 	 *   	and a boolean algebra operator (AND, OR) defining how to evaluate 

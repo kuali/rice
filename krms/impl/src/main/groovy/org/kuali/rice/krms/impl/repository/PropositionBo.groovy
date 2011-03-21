@@ -74,7 +74,10 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	   bo.description = im.description
 	   bo.typeId = im.typeId
 	   bo.propositionTypeCode = im.propositionTypeCode
-	   bo.parameters = im.parameters
+	   bo.parameters = new ArrayList<PropositionParameterBo>()
+	   for ( parm in im.parameters){
+		   bo.parameters.add (PropositionParameterBo.from(parm))
+	   }
 
 	   return bo
    }

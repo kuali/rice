@@ -1,0 +1,202 @@
+<!--
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "http://db.apache.org/dtds/1.0/repository.dtd">-->
+
+<descriptor-repository version="1.0">
+
+	<jdbc-connection-descriptor jcd-alias="krmsDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
+		useAutoCommit="0" ignoreAutoCommitExceptions="false">
+		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+        <sequence-manager className="org.kuali.rice.core.ojb.ConfigurableSequenceManager">
+			<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
+		</sequence-manager>
+	</jdbc-connection-descriptor>
+
+
+  <!-- ******************************************************************* -->
+  <!-- Reference Tables -->
+  <!-- ******************************************************************* -->
+
+	<class-descriptor class="org.kuali.rice.krms.impl.repository.KrmsTypeBo" table="KRMS_TYP_T">
+		<field-descriptor name="id" column="TYP_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="serviceName" column="SRVC_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionParameterBo" table="KRMS_PROP_PARM_T">
+		<field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="value" column="PARM_VAL" jdbc-type="VARCHAR" />
+		<field-descriptor name="parameterType" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionBo" table="KRMS_PROP_T">
+		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
+		<field-descriptor name="propositionTypeCode" column="DSCRM_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	    <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.PropositionParameterBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+	      <orderby name="sequenceNumber" sort="ASC" />
+	      <inverse-foreignkey field-ref="propId" />
+	    </collection-descriptor>
+	</class-descriptor>
+
+<!-- below are examples take from OJB-repository-kns
+     
+	<class-descriptor class="org.kuali.rice.core.impl.component.ComponentBo" table="KRNS_PARM_DTL_TYP_T">
+		<field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="code" column="PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.rice.core.impl.parameter.ParameterBo" table="KRNS_PARM_T">
+		<field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true" />
+        <field-descriptor name="componentCode" column="PARM_DTL_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="name" column="PARM_NM" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="value" column="TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="description" column="PARM_DESC_TXT" jdbc-type="VARCHAR" />
+		<field-descriptor name="parameterTypeCode" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="evaluationOperatorCode" column="CONS_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="applicationCode" column="APPL_NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+
+		<reference-descriptor name="component" class-ref="org.kuali.rice.core.impl.component.ComponentBo"
+			auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="namespaceCode" />
+			<foreignkey field-ref="componentCode" target-field-ref="code"/>
+		</reference-descriptor>
+        <reference-descriptor name="parameterType" class-ref="org.kuali.rice.core.impl.parameter.ParameterTypeBo"
+            auto-retrieve="true" auto-update="none" auto-delete="none">
+            <foreignkey field-ref="parameterTypeCode" target-field-ref="code"/>
+        </reference-descriptor>
+		<reference-descriptor name="namespace" class-ref="org.kuali.rice.core.impl.namespace.NamespaceBo"
+			auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="namespaceCode" target-field-ref="code"/>
+		</reference-descriptor>
+	</class-descriptor>
+
+
+	<class-descriptor class="org.kuali.rice.shareddata.impl.campus.CampusBo" table="KRNS_CAMPUS_T">
+		<field-descriptor name="code" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+		<field-descriptor name="name" column="CAMPUS_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="shortName" column="CAMPUS_SHRT_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="campusTypeCode" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+
+		<reference-descriptor name="campusType" class-ref="org.kuali.rice.shareddata.impl.campus.CampusTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none">
+			<foreignkey field-ref="campusTypeCode" target-field-ref="code"/>
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="org.kuali.rice.shareddata.impl.campus.CampusTypeBo" table="KRNS_CMP_TYP_T">
+		<field-descriptor name="code" column="CAMPUS_TYP_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="name" column="CMP_TYP_NM" jdbc-type="VARCHAR" />
+	    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+	</class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.shareddata.impl.country.CountryBo" table="KR_COUNTRY_T">
+	    <field-descriptor name="code" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+	    <field-descriptor name="alternateCode" column="ALT_POSTAL_CNTRY_CD" jdbc-type="VARCHAR" />
+    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    	<field-descriptor name="name" column="POSTAL_CNTRY_NM" jdbc-type="VARCHAR" />
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.shareddata.impl.state.StateBo" table="KR_STATE_T">
+		<field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+    	<field-descriptor name="code" column="POSTAL_STATE_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+    	<field-descriptor name="name" column="POSTAL_STATE_NM" jdbc-type="VARCHAR" />
+    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+
+		<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none">
+        	<foreignkey field-ref="countryCode" target-field-ref="code" />
+    	</reference-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.shareddata.impl.postalcode.PostalCodeBo" table="KR_POSTAL_CODE_T">
+	<field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+    <field-descriptor name="code" column="POSTAL_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+    <field-descriptor name="stateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="cityName" column="POSTAL_CITY_NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+	<field-descriptor name="countyCode" column="COUNTY_CD" jdbc-type="VARCHAR" />
+
+	<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
+        <foreignkey field-ref="countryCode" target-field-ref="code" />
+    </reference-descriptor>
+
+    <reference-descriptor name="state" class-ref="org.kuali.rice.shareddata.impl.state.StateBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
+        <foreignkey field-ref="countryCode" target-field-ref="countryCode" />
+        <foreignkey field-ref="stateCode" target-field-ref="code"/>
+    </reference-descriptor>
+
+	<reference-descriptor name="county" class-ref="org.kuali.rice.shareddata.impl.county.CountyBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
+        <foreignkey field-ref="countryCode" target-field-ref="countryCode" />
+        <foreignkey field-ref="countyCode" target-field-ref="code" />
+        <foreignkey field-ref="stateCode" target-field-ref="stateCode" />
+    </reference-descriptor>
+  </class-descriptor>
+
+
+
+<class-descriptor class="org.kuali.rice.shareddata.impl.county.CountyBo" table="KR_COUNTY_T" >
+	<field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+	<field-descriptor name="code" column="COUNTY_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+	<field-descriptor name="stateCode" column="STATE_CD"  jdbc-type="VARCHAR" primarykey="true" indexed="true" />
+	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+	<field-descriptor name="name" column="COUNTY_NM" jdbc-type="VARCHAR" />
+	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"/>
+
+	<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none">
+        <foreignkey field-ref="countryCode" target-field-ref="code" />
+    </reference-descriptor>
+
+	<reference-descriptor name="state" class-ref="org.kuali.rice.shareddata.impl.state.StateBo" auto-retrieve="true" auto-update="none" auto-delete="none">
+        <foreignkey field-ref="countryCode" target-field-ref="countryCode" />
+        <foreignkey field-ref="stateCode" target-field-ref="code"/>
+    </reference-descriptor>
+</class-descriptor>
+
+-->
+
+</descriptor-repository>

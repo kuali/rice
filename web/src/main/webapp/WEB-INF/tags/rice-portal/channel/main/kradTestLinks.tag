@@ -22,7 +22,7 @@
 	 <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView1&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Test View 2" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView2&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&viewTypeName=INQUIRY&objectClassName=edu.sampleu.travel.bo.TravelAccount"/></li>
-     <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry (KNS Parms)" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount"/></li>
+     <li><portal:portalLink displayTitle="true" title="Fiscal Officer Inquiry (non bo)" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&id=2&viewTypeName=INQUIRY&objectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo"/></li>
      <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (New)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&viewTypeName=MAINTENANCE&objectClassName=edu.sampleu.travel.bo.TravelAccount"/></li> 
      <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (Edit)" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=maintenanceEdit&number=a14&viewTypeName=MAINTENANCE&objectClassName=edu.sampleu.travel.bo.TravelAccount"/></li> 
   </ul>

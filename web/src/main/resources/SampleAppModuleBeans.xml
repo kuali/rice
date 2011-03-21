@@ -22,6 +22,7 @@
         <property name="dataDictionaryPackages">
             <list>
                 <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerInfo.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
@@ -52,6 +53,21 @@
 
     <bean id="sampleAppModuleService" class="org.kuali.rice.kns.service.impl.ModuleServiceBase">
         <property name="moduleConfiguration" ref="sampleAppModuleConfiguration" />
+    </bean>
+    
+    <bean class="org.kuali.rice.core.resourceloader.RiceSpringResourceLoaderConfigurer">
+      <property name="localServiceName" value="SampleAppContext" />
+    </bean>
+    
+    <bean id="fiscalOfficerService" class="edu.sampleu.travel.service.FiscalOfficerServiceImpl" />
+    
+    <bean id="fiscalOfficerInfoInquiryViewHelperService"
+        class="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl">
+      <property name="dataDictionaryService">
+        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+          <property name="serviceName" value="dataDictionaryService" />
+        </bean>
+      </property>
     </bean>
     
 </beans>

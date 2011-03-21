@@ -8,6 +8,7 @@
 package org.kuali.rice.core.api.criteria;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -58,8 +59,7 @@ abstract class AbstractCompositeExpression extends AbstractExpression implements
 
     @Override
     public List<Expression> getExpressions() {
-        //return Collections.unmodifiableList(expressions);
-    	return expressions;
+        return Collections.unmodifiableList(expressions);
     }
 
     /**

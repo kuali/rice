@@ -126,7 +126,7 @@ public class LookupController extends UifControllerBase {
         // validate search parameters
         lookupViewHelperService.validateSearchParameters(lookupForm.getCriteriaFields());
 
-        Collection<? extends BusinessObject> displayList = lookupViewHelperService.performSearch(lookupForm.getCriteriaFieldsForLookup(), true);
+        Collection<? extends BusinessObject> displayList = (Collection<? extends BusinessObject>)lookupViewHelperService.performSearch(lookupForm.getCriteriaFieldsForLookup(), true);
 
         if ( displayList instanceof CollectionIncomplete ){
             request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());

@@ -266,7 +266,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	/**
 	 * @see org.kuali.rice.kns.uif.service.LookupViewHelperService#performSearch(java.util.Map, boolean)
 	 */
-	public Collection<? extends BusinessObject> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded) {
+	public Collection<Object> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded) {
 		Collection<? extends BusinessObject> displayList;
 
 		preprocessDateFields(criteriaFieldsForLookup);
@@ -274,7 +274,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		// TODO delyea: switch the bounded flag to be unbounded to match underlying method calls in getSearchResultsWithBounding()
 		displayList = getSearchResultsWithBounding(LookupUtils.forceUppercase(getDataObjectClass(), criteriaFieldsForLookup), !bounded);
 
-		return displayList;
+		return (Collection<Object>)displayList;
 	}
 
 	/**

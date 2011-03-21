@@ -19,14 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.LookupableHelperService;
 import org.kuali.rice.kns.uif.field.GeneratedField;
-import org.kuali.rice.kns.web.struts.form.LookupForm;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.ResultRow;
 
 /**
  * A ViewHelperService that is specifically used for Lookups
@@ -42,7 +35,7 @@ public interface LookupViewHelperService extends ViewHelperService {
 	 * @param bounded
 	 * @return the list of result BOs, possibly bounded
 	 */
-	public Collection<? extends BusinessObject> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded);
+	public Collection<Object> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded);
 
 	/**
 	 * 

@@ -110,20 +110,24 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 		private String id;
         private String name;
         private String namespace;
-        private String serviceName;
+        private String serviceName = "";
         private boolean active;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String id, String name, String namespace, String serviceName) {
+        private Builder(String id, String name, String namespace) {
             setId(id);
             setName(name);
             setNamespace(namespace);
-            setServiceName(serviceName);
+//            setServiceName(serviceName);
 			setActive(true);
         }
 
+        public Builder serviceName(String serviceName){
+        	this.serviceName = serviceName;
+        	return this;
+        }
         /**
          * Creates a builder from the given parameters.
          * 
@@ -133,8 +137,8 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
          * @return an instance of the builder with the fields already populated
          * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
          */
-        public static Builder create(String id, String name, String namespace, String serviceName) {
-            return new Builder(id, name, namespace, serviceName);
+        public static Builder create(String id, String name, String namespace) {
+            return new Builder(id, name, namespace);
         }
 
         /**
@@ -147,7 +151,8 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getNamespace(), contract.getServiceName());
+            Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getNamespace());
+            builder.setNamespace(contract.getNamespace());
             builder.setActive(contract.isActive());
             return builder;
         }

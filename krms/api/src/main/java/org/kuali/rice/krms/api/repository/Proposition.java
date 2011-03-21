@@ -3,6 +3,7 @@ package org.kuali.rice.krms.api.repository;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -33,6 +34,7 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
 		Proposition.Elements.DESC,
 		Proposition.Elements.TYPE_ID,
 		Proposition.Elements.PROP_TYPE_CODE,
+		Proposition.Elements.PARAMETERS,
 		"_elements"
 })
 public final class Proposition implements PropositionContract, ModelObjectComplete{
@@ -46,8 +48,8 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	private String typeId;
 	@XmlElement(name = Elements.PROP_TYPE_CODE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
 	private String propositionTypeCode;
-//	@XmlElement(name = Elements.PARAMETER, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
-//	private List<PropositionParameter> parameters;
+	@XmlElement(name = Elements.PARAMETERS, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	private List<PropositionParameter> parameters;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -61,7 +63,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
     	this.description = null;
     	this.typeId = null;
     	this.propositionTypeCode = null;
-//    	this.parameters = null;
+    	this.parameters = null;
     }
     
     /**
@@ -75,7 +77,11 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         this.description = builder.getDescription();
         this.typeId = builder.getTypeId();
         this.propositionTypeCode = builder.getPropositionTypeCode();
-//        this.parameters = builder.getParameters();
+        List<PropositionParameter> paramList = new ArrayList<PropositionParameter>();
+        for (PropositionParameter.Builder b : builder.parameters){
+        	paramList.add(b.build());
+        }
+        this.parameters = Collections.unmodifiableList(paramList);
     }
     
 	@Override
@@ -98,10 +104,10 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 		return this.propositionTypeCode; 
 	}
 
-//	@Override
-//	public List<PropositionParameter> getParameters() {
-//		return this.parameters; 
-//	}
+	@Override
+	public List<PropositionParameter> getParameters() {
+		return this.parameters; 
+	}
 
 	/**
      * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
@@ -113,20 +119,22 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         private String description;
         private String typeId;
         private String propositionTypeCode;
-//        private List<PropositionParameter.Builder> parameters;
+        private List<PropositionParameter.Builder> parameters;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String propId, String desc, String typeId, String propTypeCode) {
+        private Builder(String propId, String desc, String typeId, String propTypeCode, List<PropositionParameter.Builder> parameters) {
             setPropId(propId);
             setDescription(desc);
             setTypeId(typeId);
 			setPropositionTypeCode(propTypeCode);
-//			setParameters(list);
+			setParameters(parameters);
         }
 
-
+        public static Builder create(String propId, String desc, String typeId, String propTypeCode, List<PropositionParameter.Builder> parameters){
+        	return new Builder(propId, desc, typeId, propTypeCode, parameters);
+        }
         /**
          * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
          * 
@@ -137,7 +145,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getPropId(), contract.getDescription(), contract.getTypeId(), contract.getPropositionTypeCode());
+            Builder builder =  new Builder(contract.getPropId(), contract.getDescription(), contract.getTypeId(), contract.getPropositionTypeCode(), (List<PropositionParameter.Builder>) contract.getParameters());
             return builder;
         }
 
@@ -177,12 +185,12 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 			this.propositionTypeCode = propTypeCode;
 		}
 		
-//		public void setParameters(List<PropositionParameter.Builder> parameters){
-//			if (parameters == null || parameters.isEmpty()){
-//				throw new IllegalArgumentException("no parameters are specified");
-//			}
-//
-//		}
+		public void setParameters(List<PropositionParameter.Builder> parameters){
+			if (parameters == null || parameters.isEmpty()){
+				throw new IllegalArgumentException("no parameters are specified");
+			}
+			this.parameters = Collections.unmodifiableList(parameters);
+		}
 
 		@Override
 		public String getPropId() {
@@ -204,10 +212,10 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 			return propositionTypeCode;
 		}
 		
-//		@Override
-//		public List<PropositionParameter.Builder> getParameters() {
-//			return parameters;
-//		}
+		@Override
+		public List<PropositionParameter.Builder> getParameters() {
+			return parameters;
+		}
 
 		/**
 		 * Builds an instance of a CampusType based on the current state of the builder.
@@ -254,6 +262,6 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 		final static String DESC = "description";
 		final static String TYPE_ID = "typeId";
 		final static String PROP_TYPE_CODE = "propositionType";
-		final static String PARAMETER = "parameter";
+		final static String PARAMETERS = "parameters";
 	}
 }

@@ -1,9 +1,5 @@
 package org.kuali.rice.krms.api.repository;
 
-import java.util.List;
-
-
-//import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
 public interface PropositionParameterContract {
 	/**

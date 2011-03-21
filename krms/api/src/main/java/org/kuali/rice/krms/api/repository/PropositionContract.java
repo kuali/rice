@@ -61,7 +61,7 @@ public interface PropositionContract {
 	 * @see PropositionParameter
 	 * @return the Parameters related to the proposition
 	 */
-//	public List<? extends PropositionParameterContract> getParameters();
+	public List<? extends PropositionParameterContract> getParameters();
 	
 	// TODO: are these needed at this level or does compound proposition
 	//       implement proposition

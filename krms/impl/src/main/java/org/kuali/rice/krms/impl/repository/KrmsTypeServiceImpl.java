@@ -24,7 +24,7 @@ import org.kuali.rice.krms.api.repository.KrmsTypeService;
 
 import java.util.*;
 
-public final class TypeServiceImpl implements KrmsTypeService {
+public final class KrmsTypeServiceImpl implements KrmsTypeService {
 
     private BusinessObjectService businessObjectService;
 

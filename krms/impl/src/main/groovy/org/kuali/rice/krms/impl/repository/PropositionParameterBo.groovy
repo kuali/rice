@@ -56,6 +56,19 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	   return org.kuali.rice.krms.api.repository.PropositionParameter.Builder.create(bo).build();
    }
 
+	/**
+	* Converts a list of mutable bos to it's immutable counterpart
+	* @param bos the list of smutable business objects
+	* @return and immutable list containing the immutable objects
+	*/
+   static List<PropositionParameter> to(List<PropositionParameterBo> bos) {
+	   if (bos == null) { return null }
+	   List<PropositionParameter> parms = new ArrayList<PropositionParameter>();
+	   for (PropositionParameter p : bos){
+		   parms.add(PropositionParameter.Builder.create(p).build());
+	   }
+	   return Collections.unmodifiableList(parms);
+   }
    /**
 	* Converts a immutable object to it's mutable bo counterpart
 	* @param im immutable object
@@ -72,6 +85,21 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	   bo.sequenceNumber = im.sequenceNumber
 
 	   return bo
+   }
+   
+   static List<PropositionParameterBo> from(List<PropositionParameter> ims){
+	   if (ims == null) {return null }
+	   List<PropositionParameterBo> bos = new ArrayList<PropositionParameterBo>();
+	   for (PropositionParameterBo im : ims){
+		   PropositionParameterBo bo = new PropositionParameterBo()
+		   bo.id = im.id
+		   bo.propId = im.propId
+		   bo.value = im.value
+		   bo.parameterType = im.parameterType
+		   bo.sequenceNumber = im.sequenceNumber
+	   	   bos.add(bo);
+	   }
+	   return Collections.unmodifiableList(bos);
    }
  
 } 

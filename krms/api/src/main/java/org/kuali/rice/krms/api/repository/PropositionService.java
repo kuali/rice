@@ -58,7 +58,7 @@ public interface PropositionService {
     @WebMethod(operationName = "getPropositionById")
     @WebResult(name = "prop")
     Proposition getPropositionById(
-            @WebParam(name = "propId") Long propId);
+            @WebParam(name = "propId") String propId);
 
 
 }

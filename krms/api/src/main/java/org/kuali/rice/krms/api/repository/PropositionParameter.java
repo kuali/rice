@@ -124,6 +124,9 @@ public final class PropositionParameter implements PropositionParameterContract,
 			setSequenceNumber(sequenceNumber);
         }
 
+        public static Builder create(String id, String propId, String value, String parameterType, Integer sequenceNumber) {
+        	return new Builder(id, propId, value, parameterType, sequenceNumber);
+        }
 
         /**
          * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.

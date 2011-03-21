@@ -61,7 +61,31 @@ public interface PropositionParameterService {
     @WebMethod(operationName = "getParameters")
     @WebResult(name = "parameters")
     List<PropositionParameter> getParameters(
-            @WebParam(name = "propId") Long propId);
+            @WebParam(name = "propId") String propId);
 
+    /**
+     * Lookup the proposition parameter based on the id.
+     *
+     * @param id the given proposition id
+     * @return an immutable PropositionParameters associated with the given id.  A null reference is returned if an invalid or
+     *         non-existant id is supplied.
+     */
+    @WebMethod(operationName = "getParameterById")
+    @WebResult(name = "parameter")
+    PropositionParameter getParameterById(
+            @WebParam(name = "id") String id);
+
+    /**
+     * Lookup the proposition parameter based on the proposition id and sequence number.
+     *
+     * @param id the given proposition id
+     * @return an immutable PropositionParameters associated with the given proposition id and sequence number.  A null reference is returned if an invalid or
+     *         non-existant.
+     */
+    @WebMethod(operationName = "getParameterByPropIdAndSequenceNumber")
+    @WebResult(name = "parameter")
+    PropositionParameter getParameterByPropIdAndSequenceNumber(
+            @WebParam(name = "propId") String propId,
+            @WebParam(name = "sequenceNumber")Integer sequenceNumber);
 
 }

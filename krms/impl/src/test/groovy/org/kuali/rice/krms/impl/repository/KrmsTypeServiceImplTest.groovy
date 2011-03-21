@@ -29,7 +29,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants
 import org.kuali.rice.krms.api.repository.KrmsType
 import org.kuali.rice.krms.api.repository.KrmsTypeService
 
-class TypeServiceImplTest {
+class KrmsTypeServiceImplTest {
 
   private final shouldFail = new GroovyTestCase().&shouldFail
 
@@ -39,8 +39,8 @@ class TypeServiceImplTest {
 
   @BeforeClass
   static void createSampleTypeBOs() {
-    KrmsTypeBo defaultBo = new KrmsTypeBo(active: true, id: "1", name: "DEFAULT", namespace: "KRMS_TEST", serviceName: "TypeServiceImpl")
-    KrmsTypeBo studentBo = new KrmsTypeBo(active: true, id: "2", name: "Student", namespace: "KRMS_TEST", serviceName: "TypeServiceImpl")
+    KrmsTypeBo defaultBo = new KrmsTypeBo(active: true, id: "1", name: "DEFAULT", namespace: "KRMS_TEST", serviceName: "KrmsTypeServiceImpl")
+    KrmsTypeBo studentBo = new KrmsTypeBo(active: true, id: "2", name: "Student", namespace: "KRMS_TEST", serviceName: "KrmsTypeServiceImpl")
     KrmsTypeBo ifopalBo = new KrmsTypeBo(active: true, id: "3", name: "IFOPAL", namespace: "KC_TEST", serviceName: null)
     for (bo in [defaultBo, studentBo, ifopalBo]) {
       sampleTypes.put(bo.id, bo)
@@ -62,7 +62,7 @@ class TypeServiceImplTest {
 
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    KrmsTypeService service = new TypeServiceImpl()
+    KrmsTypeService service = new KrmsTypeServiceImpl()
     service.setBusinessObjectService(bos)
     KrmsType myType = service.getTypeById("1")
 
@@ -73,34 +73,34 @@ class TypeServiceImplTest {
   @Test
   public void testGetByPrimaryIdEmptyTypeId() {
       shouldFail(IllegalArgumentException.class) {
-        new TypeServiceImpl().getTypeById("")
+        new KrmsTypeServiceImpl().getTypeById("")
       }
   }
 
   @Test
   public void testGetByPrimaryIdNullTypeId() {
       shouldFail(IllegalArgumentException.class) {
-        new TypeServiceImpl().getTypeById(null)
+        new KrmsTypeServiceImpl().getTypeById(null)
       }
   }
 
-  @Ignore
-  @Test
-  public void testGetByNameAndNamespace() {
-    mockBusinessObjectService.demand.findMatching(1..2) {
-      Class clazz, Map map ->
-      [sampleTypesKeyedByName.get(
-              map.get(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
-    }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-
-    KrmsTypeService service = new TypeServiceImpl()
-    service.setBusinessObjectService(bos)
-    KrmsType myType = service.getTypeByNameAndNamespace("Student","KRMS_TEST")
-
-    Assert.assertEquals(KrmsTypeBo.to(sampleTypesKeyedByName.get("Student")), myType)
-    mockBusinessObjectService.verify(bos)
-  }
+//  @Ignore
+//  @Test
+//  public void testGetByNameAndNamespace() {
+//    mockBusinessObjectService.demand.findMatching(1..2) {
+//      Class clazz, Map map ->
+//      [sampleTypesKeyedByName.get(
+//              map.get(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
+//    }
+//    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+//
+//    KrmsTypeService service = new KrmsTypeServiceImpl()
+//    service.setBusinessObjectService(bos)
+//    KrmsType myType = service.getTypeByNameAndNamespace("Student","KRMS_TEST")
+//
+//    Assert.assertEquals(KrmsTypeBo.to(sampleTypesKeyedByName.get("Student")), myType)
+//    mockBusinessObjectService.verify(bos)
+//  }
 
 //  @Test
 //  public void testGetByIdWhenNoneFound() {
@@ -153,7 +153,7 @@ class TypeServiceImplTest {
       Class clazz, Map map -> [sampleTypes.get("1"), sampleTypes.get("2")]
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-    KrmsTypeService service = new TypeServiceImpl()
+    KrmsTypeService service = new KrmsTypeServiceImpl()
     service.setBusinessObjectService(bos)
     service.findAllTypesByNamespace()
 
@@ -167,7 +167,7 @@ class TypeServiceImplTest {
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    KrmsTypeService service = new TypeServiceImpl()
+    KrmsTypeService service = new KrmsTypeServiceImpl()
     service.setBusinessObjectService(bos)
     service.findAllTypes()
 

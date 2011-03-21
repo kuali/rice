@@ -41,13 +41,24 @@ class KrmsTypeTest {
 
     @Test
     void test_create_only_required() {
-        KrmsType.Builder.create(KrmsType.Builder.create("1", "Default", "KRMS_TEST", null)).build();
+        KrmsType.Builder.create(KrmsType.Builder.create("1", "Default", "KRMS_TEST")).build();
+    }
+
+    @Test
+    void test_create_with_optional() {
+        KrmsType.Builder.create(KrmsType.Builder.create("1", "Default", "KRMS_TEST")).serviceName("MyTestService").build();
     }
 
   @Test
-  public void testTypeBuilderPassedInParams() {
+  public void testKrmsTypeBuilderPassedInParams() {
     //No assertions, just test whether the Builder gives us a KRMS KrmsType object
-    KrmsType myType = KrmsType.Builder.create("1", "Default", "KRMS_TEST", "").build()
+    KrmsType myType = KrmsType.Builder.create("1", "Default", "KRMS_TEST").build()
+  }
+
+  @Test
+  public void testKrmsTypeBuilderPassedInParamsAndServiceName() {
+    //No assertions, just test whether the Builder gives us a KRMS KrmsType object
+    KrmsType myType = KrmsType.Builder.create("1", "Default", "KRMS_TEST").serviceName("MyFictionalService").build()
   }
 
   @Test
@@ -64,13 +75,13 @@ class KrmsTypeTest {
 
   public void testTypeBuilderNullTypeId() {
     shouldFail(IllegalArgumentException.class) {
-      KrmsType.Builder.create(null, "United States", "KRMS_TEST", null)
+      KrmsType.Builder.create(null, "United States", "KRMS_TEST")
     }
   }
 
   public void testTypeBuilderEmptyTypeId() {
     shouldFail(IllegalArgumentException.class) {
-      KrmsType.Builder.create("  ", "United States", "KRMS_TEST", null)
+      KrmsType.Builder.create("", "United States", "KRMS_TEST")
     }
   }
 
@@ -80,7 +91,7 @@ class KrmsTypeTest {
     Marshaller marshaller = jc.createMarshaller()
     StringWriter sw = new StringWriter()
 
-    KrmsType myType = KrmsType.Builder.create("2", "United States", "KRMS_TEST", null).build()
+    KrmsType myType = KrmsType.Builder.create("2", "United States", "KRMS_TEST").build()
     marshaller.marshal(myType, sw)
     String xml = sw.toString()
 
@@ -90,6 +101,7 @@ class KrmsTypeTest {
       <name>United States</name>
       <namespace>KRMS_TEST</namespace>
       <active>true</active>
+      <serviceName></serviceName>
     </KRMSType>
     """
 

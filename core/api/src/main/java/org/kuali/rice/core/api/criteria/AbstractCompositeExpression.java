@@ -33,16 +33,14 @@ abstract class AbstractCompositeExpression extends AbstractExpression implements
             @XmlElement(name = EqualExpression.Constants.ROOT_ELEMENT_NAME, type = EqualExpression.class, required = true),
             @XmlElement(name = NotEqualExpression.Constants.ROOT_ELEMENT_NAME, type = NotEqualExpression.class, required = true),
             @XmlElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME, type = LikeExpression.class, required = true),
-            //@XmlElement(name = InExpression.Constants.ROOT_ELEMENT_NAME, type = InExpression.class, required = true)
-            //@XmlElement(name = NotInExpression.Constants.ROOT_ELEMENT_NAME, type = NotInExpression.class, required = true)
+            @XmlElement(name = InExpression.Constants.ROOT_ELEMENT_NAME, type = InExpression.class, required = true),
+            @XmlElement(name = NotInExpression.Constants.ROOT_ELEMENT_NAME, type = NotInExpression.class, required = true),
             @XmlElement(name = GreaterThanExpression.Constants.ROOT_ELEMENT_NAME, type = GreaterThanExpression.class, required = true),
             @XmlElement(name = GreaterThanOrEqualExpression.Constants.ROOT_ELEMENT_NAME, type = GreaterThanOrEqualExpression.class, required = true),
             @XmlElement(name = LessThanExpression.Constants.ROOT_ELEMENT_NAME, type = LessThanExpression.class, required = true),
             @XmlElement(name = LessThanOrEqualExpression.Constants.ROOT_ELEMENT_NAME, type = LessThanOrEqualExpression.class, required = true),
             @XmlElement(name = NullExpression.Constants.ROOT_ELEMENT_NAME, type = NullExpression.class, required = true),
             @XmlElement(name = NotNullExpression.Constants.ROOT_ELEMENT_NAME, type = NotNullExpression.class, required = true)
-            
-            
     })
     private final List<Expression> expressions;
 

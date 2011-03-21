@@ -45,7 +45,8 @@ public final class CriteriaBuilder<T> {
 	}
 	
 	public void notEqual(String propertyPath, Object value) {
-
+		NotEqualExpression expression = new NotEqualExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
+		entries.add(new SimpleEntry(expression));
 	}
 	
 	public void like(String propertyPath, Object value) {
@@ -54,11 +55,11 @@ public final class CriteriaBuilder<T> {
 	}
 	
 	public void in(String propertyPath, List<Object> values) {
-		
+		throw new UnsupportedOperationException("Implement me!"); // TODO
 	}
 	
 	public void notIn(String propertyPath, List<Object> values) {
-		
+		throw new UnsupportedOperationException("Implement me!"); // TODO
 	}
 	
 	public void greaterThan(String propertyPath, Object value) {
@@ -67,7 +68,8 @@ public final class CriteriaBuilder<T> {
 	}
 	
 	public void greaterThanOrEqual(String propertyPath, Object value) {
-		
+		GreaterThanOrEqualExpression expression = new GreaterThanOrEqualExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
+		entries.add(new SimpleEntry(expression));
 	}
 	
 	public void lessThan(String propertyPath, Object value) {
@@ -76,15 +78,18 @@ public final class CriteriaBuilder<T> {
 	}
 	
 	public void lessThanOrEqual(String propertyPath, Object value) {
-		
+		LessThanOrEqualExpression expression = new LessThanOrEqualExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
+		entries.add(new SimpleEntry(expression));
 	}
 			  
-	public void isNull(String propertyPath, Object value) {
-		
+	public void isNull(String propertyPath) {
+		NullExpression expression = new NullExpression(propertyPath);
+		entries.add(new SimpleEntry(expression));
 	}
 	
-	public void isNotNull(String propertyPath, Object value) {
-		
+	public void isNotNull(String propertyPath) {
+		NotNullExpression expression = new NotNullExpression(propertyPath);
+		entries.add(new SimpleEntry(expression));
 	}
 	
 	public CriteriaBuilder<T> and() {
@@ -115,9 +120,9 @@ public final class CriteriaBuilder<T> {
 	
 	private static final class SimpleEntry implements Entry {
 		
-		private SimpleExpression expression;
+		private Expression expression;
 		
-		SimpleEntry(SimpleExpression expression) {
+		SimpleEntry(Expression expression) {
 			this.expression = expression;
 		}
 		

@@ -39,59 +39,70 @@ public final class CriteriaBuilder<T> {
 		return new CriteriaBuilder<T>();
 	}
 
-	public void equal(String propertyPath, Object value) {
+	public CriteriaBuilder<T> equal(String propertyPath, Object value) {
 		EqualExpression expression = new EqualExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void notEqual(String propertyPath, Object value) {
+	public CriteriaBuilder<T> notEqual(String propertyPath, Object value) {
 		NotEqualExpression expression = new NotEqualExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void like(String propertyPath, Object value) {
+	public CriteriaBuilder<T> like(String propertyPath, Object value) {
 		LikeExpression expression = new LikeExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void in(String propertyPath, List<?> values) {
+	public CriteriaBuilder<T> in(String propertyPath, List<?> values) {
 		InExpression expression = new InExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void notIn(String propertyPath, List<?> values) {
+	public CriteriaBuilder<T> notIn(String propertyPath, List<?> values) {
 		NotInExpression expression = new NotInExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void greaterThan(String propertyPath, Object value) {
+	public CriteriaBuilder<T> greaterThan(String propertyPath, Object value) {
 		GreaterThanExpression expression = new GreaterThanExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void greaterThanOrEqual(String propertyPath, Object value) {
+	public CriteriaBuilder<T> greaterThanOrEqual(String propertyPath, Object value) {
 		GreaterThanOrEqualExpression expression = new GreaterThanOrEqualExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void lessThan(String propertyPath, Object value) {
+	public CriteriaBuilder<T> lessThan(String propertyPath, Object value) {
 		LessThanExpression expression = new LessThanExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void lessThanOrEqual(String propertyPath, Object value) {
+	public CriteriaBuilder<T> lessThanOrEqual(String propertyPath, Object value) {
 		LessThanOrEqualExpression expression = new LessThanOrEqualExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 			  
-	public void isNull(String propertyPath) {
+	public CriteriaBuilder<T> isNull(String propertyPath) {
 		NullExpression expression = new NullExpression(propertyPath);
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
-	public void isNotNull(String propertyPath) {
+	public CriteriaBuilder<T> isNotNull(String propertyPath) {
 		NotNullExpression expression = new NotNullExpression(propertyPath);
 		entries.add(new SimpleEntry(expression));
+		return this;
 	}
 	
 	public CriteriaBuilder<T> and() {

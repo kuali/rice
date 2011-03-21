@@ -17,12 +17,18 @@ package org.kuali.rice.core.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import org.springframework.core.io.Resource;
 
 /**
  * A class with some assertion utilities for JAXB-related operations. 
@@ -77,6 +83,17 @@ public final class JAXBAssert {
 			}
 			throw new RuntimeException("Failed to marshall/unmarshall with JAXB.  See the nested exception for details.", e);
 		}
+	}
+	
+	public static void assertEqualXmlMarshalUnmarshalWithResource(Object objectToMarshal, Resource expectedXmlFile, Class<?> ... classesToBeBound) throws IOException {
+		InputStream inputStream = expectedXmlFile.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		StringWriter writer = new StringWriter();
+		int data = -1;
+		while ((data = reader.read()) != -1) {
+			writer.write(data);
+		}
+		assertEqualXmlMarshalUnmarshal(objectToMarshal, writer.toString(), classesToBeBound);
 	}
 	
 

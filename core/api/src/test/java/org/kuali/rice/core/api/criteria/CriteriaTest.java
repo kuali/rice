@@ -19,13 +19,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
 import org.junit.Test;
 import org.kuali.rice.core.test.JAXBAssert;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 
 /**
  * A test for the {@link Criteria} class. 
@@ -36,6 +40,7 @@ import org.kuali.rice.core.test.JAXBAssert;
 public class CriteriaTest {
 
 	private static final String XML = "<criteria><like propertyPath=\"display\"><stringValue>*Eric*</stringValue></like><greaterThan propertyPath=\"birthDate\"><dateTimeValue>1980-09-01T00:00:00Z</dateTimeValue></greaterThan><lessThan propertyPath=\"birthDate\"><dateTimeValue>1980-10-01T00:00:00Z</dateTimeValue></lessThan><or><equal propertyPath=\"name.first\"><stringValue>Eric</stringValue></equal><equal propertyPath=\"name.last\"><stringValue>Westfall</stringValue></equal></or></criteria>";
+	private static final String UBER_XML_LOCATION = "classpath:org/kuali/rice/core/api/criteria/UberCriteria.xml";
 	
 	@Test
 	public void testCriteria() {
@@ -51,6 +56,42 @@ public class CriteriaTest {
 		
 		assertEquals(1, criteria.getExpressions().size());
 		
+	}
+	
+	/**
+	 * Creates a Criteria object using the CriteriaBuilder which covers as many possible permutations of
+	 * Criteria expressions and values as possible.  Then tests marhsal and unmarshal with JAXB. 
+	 */
+	@Test
+	public void testUberCriteria() throws Exception {
+		
+		Calendar epochZero = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		epochZero.setTimeInMillis(0);
+		// the criteria here is totally wacky and woudl be guaranteed to always return no results, but
+		// it allows us to hit as many of the expressions as possible
+		CriteriaBuilder<Object> builder = CriteriaBuilder.newCriteriaBuilder(Object.class);
+		CriteriaBuilder<Object> orCriteria = builder.or().
+			equal("pp", "val").
+			like("pp", "val*").
+			greaterThan("pp", 100).
+			greaterThanOrEqual("pp", 500.5).
+			isNull("pp");
+		List<BigDecimal> notInList = new ArrayList<BigDecimal>();
+		notInList.add(new BigDecimal("50.1"));
+		notInList.add(new BigDecimal("42"));
+		orCriteria.and().in("pp", Collections.singletonList("val")).
+			notIn("pp", notInList);
+		builder.and().
+			notEqual("pp", epochZero).
+			lessThan("pp", Long.MAX_VALUE).
+			lessThanOrEqual("pp", Short.MAX_VALUE).
+			isNotNull("pp");
+		builder.notIn("pp", Collections.singletonList(epochZero));
+		
+		Criteria criteria = builder.build();
+		DefaultResourceLoader loader = new DefaultResourceLoader();
+		Resource resource = loader.getResource(UBER_XML_LOCATION);
+		JAXBAssert.assertEqualXmlMarshalUnmarshalWithResource(criteria, resource, Criteria.class);
 	}
 	
 	/**

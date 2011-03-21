@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -49,10 +50,19 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 
 	private static final long serialVersionUID = 2210627777648920180L;
 
+	@XmlElement(name = Elements.CRITERIA, required = true)
 	private final Criteria criteria;
+	
+	@XmlElement(name = Elements.START_AT_INDEX, required = false)
 	private final Integer startAtIndex;
+	
+	@XmlElement(name = Elements.END_AT_INDEX, required = false)
 	private final Integer endAtIndex;
+	
+	@XmlElement(name = Elements.MAX_RESULTS, required = false)
 	private final Integer maxResults;
+	
+	@XmlElement(name = Elements.COUNT_FLAG, required = true)
 	private final CountFlag countFlag;
 
 	@SuppressWarnings("unused")
@@ -122,8 +132,8 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		private CountFlag countFlag;
 
 		private Builder(Class<T> queryClass) {
-			this.criteriaBuilder = CriteriaBuilder
-					.newCriteriaBuilder(queryClass);
+			this.criteriaBuilder = CriteriaBuilder.newCriteriaBuilder(queryClass);
+			this.countFlag = CountFlag.NONE;
 		}
 
 		public static <T> Builder<T> create(Class<T> queryClass) {

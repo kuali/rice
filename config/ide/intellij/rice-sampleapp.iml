@@ -33,7 +33,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-1.1.0-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>

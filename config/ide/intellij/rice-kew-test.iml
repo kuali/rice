@@ -26,7 +26,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kew/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kew/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kew/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/kew/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kew/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kew/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kew/target/test-classes" />

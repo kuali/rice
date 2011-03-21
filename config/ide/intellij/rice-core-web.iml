@@ -19,7 +19,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

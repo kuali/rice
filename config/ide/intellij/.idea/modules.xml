@@ -17,12 +17,14 @@
       <module fileurl="file://$PROJECT_DIR$/rice-core-impl.iml" filepath="$PROJECT_DIR$/rice-core-impl.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-core-web.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-development-tools.iml" filepath="$PROJECT_DIR$/rice-development-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../dist/rice-dist.iml" filepath="$PROJECT_DIR$/../../../dist/rice-dist.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-doc.iml" filepath="$PROJECT_DIR$/rice-doc.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl.iml" filepath="$PROJECT_DIR$/rice-edl.iml" group="rice-edl and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl-api.iml" filepath="$PROJECT_DIR$/rice-edl-api.iml" group="rice-edl and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl-framework.iml" filepath="$PROJECT_DIR$/rice-edl-framework.iml" group="rice-edl and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl-impl.iml" filepath="$PROJECT_DIR$/rice-edl-impl.iml" group="rice-edl and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl-remote.iml" filepath="$PROJECT_DIR$/rice-edl-remote.iml" group="rice-edl and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../test/edl/rice-edl-test.iml" filepath="$PROJECT_DIR$/../../../test/edl/rice-edl-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl-web.iml" filepath="$PROJECT_DIR$/rice-edl-web.iml" group="rice-edl and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-impl.iml" filepath="$PROJECT_DIR$/rice-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-impl-test.iml" filepath="$PROJECT_DIR$/rice-impl-test.iml" group="rice-test and modules" />

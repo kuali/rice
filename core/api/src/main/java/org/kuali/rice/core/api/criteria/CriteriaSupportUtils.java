@@ -19,8 +19,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -149,6 +152,19 @@ final class CriteriaSupportUtils {
 			return new CriteriaDecimalValue((MutableDouble)object);
 		}
 		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
+	}
+	
+	static List<CriteriaValue<?>> determineCriteriaValueList(List<? extends Object> values) {
+		if (values == null) {
+			return null;
+		} else if (values.isEmpty()) {
+			return Collections.emptyList();
+		}
+		List<CriteriaValue<?>> criteriaValues = new ArrayList<CriteriaValue<?>>();
+		for (Object value : values) {
+			criteriaValues.add(determineCriteriaValue(value));
+		}
+		return criteriaValues;
 	}
 	
 }

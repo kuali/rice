@@ -54,12 +54,14 @@ public final class CriteriaBuilder<T> {
 		entries.add(new SimpleEntry(expression));
 	}
 	
-	public void in(String propertyPath, List<Object> values) {
-		throw new UnsupportedOperationException("Implement me!"); // TODO
+	public void in(String propertyPath, List<?> values) {
+		InExpression expression = new InExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
+		entries.add(new SimpleEntry(expression));
 	}
 	
-	public void notIn(String propertyPath, List<Object> values) {
-		throw new UnsupportedOperationException("Implement me!"); // TODO
+	public void notIn(String propertyPath, List<?> values) {
+		NotInExpression expression = new NotInExpression(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
+		entries.add(new SimpleEntry(expression));
 	}
 	
 	public void greaterThan(String propertyPath, Object value) {

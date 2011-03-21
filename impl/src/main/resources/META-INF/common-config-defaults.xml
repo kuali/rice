@@ -4,7 +4,7 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="rice.struts.message.resources" override="false">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources</param>
+    <param name="rice.struts.message.resources" override="false">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources,KRAD-ApplicationResources</param>
     <param name="http.port" override="false">8080</param>
     <param name="application.host" override="false">localhost</param>
     <param name="application.http.scheme" override="false">http</param>

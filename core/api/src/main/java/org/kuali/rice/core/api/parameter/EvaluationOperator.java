@@ -13,7 +13,7 @@ public enum EvaluationOperator {
 
 	/**
 	 * Indicates that evaluation will determine if the value being tested in present
-	 * in the set of vlaues defined on the parameter.  If it is present in this set,
+	 * in the set of values defined on the parameter.  If it is present in this set,
 	 * then evaluation will succeed.
 	 */
 	@XmlEnumValue(value="A") ALLOW("A"),

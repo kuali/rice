@@ -21,7 +21,7 @@ import org.kuali.rice.core.test.JAXBAssert
 
 class ParameterKeyTest {
         private static final String XML = """
-        <parameterKey xmlns="http://rice.kuali.org/core/v1_1">
+        <parameterKey xmlns="http://rice.kuali.org/core/v2_0">
             <applicationCode>AC</applicationCode>
             <namespaceCode>NC</namespaceCode>
             <componentCode>CC</componentCode>

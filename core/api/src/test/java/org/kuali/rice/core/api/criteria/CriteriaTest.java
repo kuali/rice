@@ -38,7 +38,7 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class CriteriaTest {
 
-	private static final String XML = "<criteria><like propertyPath=\"display\"><stringValue>*Eric*</stringValue></like><greaterThan propertyPath=\"birthDate\"><dateTimeValue>1980-09-01T00:00:00Z</dateTimeValue></greaterThan><lessThan propertyPath=\"birthDate\"><dateTimeValue>1980-10-01T00:00:00Z</dateTimeValue></lessThan><or><equal propertyPath=\"name.first\"><stringValue>Eric</stringValue></equal><equal propertyPath=\"name.last\"><stringValue>Westfall</stringValue></equal></or></criteria>";
+	private static final String XML = "<criteria xmlns=\"http://rice.kuali.org/core/v2_0\"><like propertyPath=\"display\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>*Eric*</stringValue></like><greaterThan propertyPath=\"birthDate\"><dateTimeValue>1980-09-01T00:00:00Z</dateTimeValue></greaterThan><lessThan propertyPath=\"birthDate\"><dateTimeValue>1980-10-01T00:00:00Z</dateTimeValue></lessThan><or><equal propertyPath=\"name.first\"><stringValue>Eric</stringValue></equal><equal propertyPath=\"name.last\"><stringValue>Westfall</stringValue></equal></or></criteria>";
 	private static final String UBER_XML_LOCATION = "/org/kuali/rice/core/api/criteria/UberCriteria.xml";
 	
 	@Test

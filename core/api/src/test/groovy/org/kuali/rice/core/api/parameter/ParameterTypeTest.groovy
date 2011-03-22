@@ -24,7 +24,7 @@ import org.kuali.rice.core.test.JAXBAssert
 class ParameterTypeTest {
 
     private static final String XML = """
-        <parameterType xmlns="http://rice.kuali.org/core/v1_1">
+        <parameterType xmlns="http://rice.kuali.org/core/v2_0">
             <code>PC</code>
             <name>Config</name>
             <active>true</active>

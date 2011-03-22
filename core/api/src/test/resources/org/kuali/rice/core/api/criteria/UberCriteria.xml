@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<criteria>
+<criteria xmlns="http://rice.kuali.org/core/v2_0">
 	<or>
 		<equal propertyPath="pp">
 			<stringValue>val</stringValue>

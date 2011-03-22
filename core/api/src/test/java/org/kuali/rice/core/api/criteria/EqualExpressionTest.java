@@ -33,10 +33,10 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class EqualExpressionTest {
 
-	private static final String STRING_XML = "<equal propertyPath=\"property.path\"><stringValue>value</stringValue></equal>";
-	private static final String DECIMAL_XML = "<equal propertyPath=\"property.path\"><decimalValue>0</decimalValue></equal>";
-	private static final String INTEGER_XML = "<equal propertyPath=\"property.path\"><integerValue>0</integerValue></equal>";
-	private static final String DATE_TIME_XML = "<equal propertyPath=\"property.path\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></equal>";
+	private static final String STRING_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>value</stringValue></equal>";
+	private static final String DECIMAL_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>0</decimalValue></equal>";
+	private static final String INTEGER_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>0</integerValue></equal>";
+	private static final String DATE_TIME_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></equal>";
 	
 	
 	/**

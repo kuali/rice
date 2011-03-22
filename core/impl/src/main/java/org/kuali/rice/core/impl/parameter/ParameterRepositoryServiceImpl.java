@@ -17,8 +17,10 @@
 package org.kuali.rice.core.impl.parameter;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterKey;
+import org.kuali.rice.core.api.parameter.ParameterQueryResults;
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -168,4 +170,14 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
+
+	@Override
+	public ParameterQueryResults findParameters(QueryByCriteria<Parameter> queryByCriteria) {
+		
+		// TODO - implement this operation
+		
+		throw new UnsupportedOperationException("implement me!");
+	}
+    
+    
 }

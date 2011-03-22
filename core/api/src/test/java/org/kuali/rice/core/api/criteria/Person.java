@@ -15,7 +15,21 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import java.util.Collection;
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 /**
  * A simple class used in Criteria testing. 
@@ -23,12 +37,36 @@ import java.util.Date;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@XmlRootElement(name = "person")
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "PersonType", propOrder = {
+        "name",
+        "displayName",
+        "birthDate",
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 class Person {
 
+	@XmlElement(name = "name", required = true)
 	private final Name name;
+	
+	@XmlElement(name = "displayName", required = false)
 	private final String displayName;
+	
+	@XmlElement(name = "birthDate", required = false)
 	private final Date birthDate;
 
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+    @SuppressWarnings("unused")
+    private Person() {
+    	this.name = null;
+    	this.displayName = null;
+    	this.birthDate = null;
+    }
+    
 	Person(Name name, String displayName, Date birthDate) {
 		this.name = name;
 		this.displayName = displayName;
@@ -47,10 +85,45 @@ class Person {
 		return this.birthDate;
 	}
 	
+	@Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this, new String[] { "_futureElements" });
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this, new String[] { "_futureElements" });
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+	
+	@XmlRootElement(name = "name")
+	@XmlAccessorType(XmlAccessType.NONE)
+	@XmlType(name = "NameType", propOrder = {
+	        "first",
+	        "last",
+	        CoreConstants.CommonElements.FUTURE_ELEMENTS
+	})
 	static final class Name {
 		
+		@XmlElement(name = "first", required = true)
 		private final String first;
+		
+		@XmlElement(name = "last", required = true)
 		private final String last;
+		
+		@SuppressWarnings("unused")
+	    @XmlAnyElement
+	    private final Collection<Element> _futureElements = null;
+		
+		@SuppressWarnings("unused")
+		private Name() {
+			this.first = null;
+			this.last = null;
+		}
 		
 		Name(String first, String last) {
 			this.first = first;
@@ -64,6 +137,21 @@ class Person {
 		public String getLast() {
 			return this.last;
 		}
+		
+		@Override
+	    public int hashCode() {
+	        return HashCodeBuilder.reflectionHashCode(this, new String[] { "_futureElements" });
+	    }
+
+	    @Override
+	    public boolean equals(Object obj) {
+	        return EqualsBuilder.reflectionEquals(obj, this, new String[] { "_futureElements" });
+	    }
+
+	    @Override
+	    public String toString() {
+	        return ToStringBuilder.reflectionToString(this);
+	    }
 		
 	}
 	

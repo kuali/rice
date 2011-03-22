@@ -24,7 +24,7 @@ import org.kuali.rice.core.test.JAXBAssert
 
 class ComponentTest {
     private static final String XML = """
-        <component xmlns="http://rice.kuali.org/core/v1_1">
+        <component xmlns="http://rice.kuali.org/core/v2_0">
             <code>PC</code>
             <name>Config</name>
             <namespaceCode>NSC</namespaceCode>

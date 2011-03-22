@@ -32,7 +32,7 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class LikeExpressionTest {
 
-	private static final String STRING_XML = "<like propertyPath=\"property.path\"><stringValue>value*</stringValue></like>";	
+	private static final String STRING_XML = "<like propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>value*</stringValue></like>";	
 	
 	/**
 	 * Test method for {@link org.kuali.rice.core.api.criteria.LikeExpression#LikeExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.

@@ -41,7 +41,7 @@ public class ParameterTest {
     private static final Long VERSION_NUMBER = new Integer(1);
 
     private static final String XML = """
-    <parameter xmlns="http://rice.kuali.org/core/v1_1">
+    <parameter xmlns="http://rice.kuali.org/core/v2_0">
         <applicationCode>${APPLICATION_CODE}</applicationCode>
         <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
         <componentCode>${COMPONENT_CODE}</componentCode>

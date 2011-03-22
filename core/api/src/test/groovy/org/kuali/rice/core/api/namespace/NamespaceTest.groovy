@@ -21,7 +21,7 @@ import org.kuali.rice.core.test.JAXBAssert
 
 class NamespaceTest {
         private static final String XML = """
-        <namespace xmlns="http://rice.kuali.org/core/v1_1">
+        <namespace xmlns="http://rice.kuali.org/core/v2_0">
             <code>PC</code>
             <applicationCode>AC</applicationCode>
             <name>N</name>

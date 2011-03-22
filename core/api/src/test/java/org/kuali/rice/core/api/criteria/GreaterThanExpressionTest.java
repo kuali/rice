@@ -33,9 +33,9 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class GreaterThanExpressionTest {
 
-	private static final String DECIMAL_XML = "<greaterThan propertyPath=\"property.path\"><decimalValue>0</decimalValue></greaterThan>";
-	private static final String INTEGER_XML = "<greaterThan propertyPath=\"property.path\"><integerValue>0</integerValue></greaterThan>";
-	private static final String DATE_TIME_XML = "<greaterThan propertyPath=\"property.path\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></greaterThan>";
+	private static final String DECIMAL_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>0</decimalValue></greaterThan>";
+	private static final String INTEGER_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>0</integerValue></greaterThan>";
+	private static final String DATE_TIME_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></greaterThan>";
 	
 	/**
 	 * Test method for {@link org.kuali.rice.core.api.criteria.GreaterThanExpression#GreaterThanExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.

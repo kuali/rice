@@ -34,7 +34,7 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class OrExpressionTest {
 
-	private static final String XML = "<or><equal propertyPath=\"property.path\"><stringValue>abcdefg</stringValue></equal><greaterThan propertyPath=\"property.path2\"><decimalValue>100</decimalValue></greaterThan><and><greaterThan propertyPath=\"property.path3\"><integerValue>10000</integerValue></greaterThan><like propertyPath=\"property.path4\"><stringValue>wildcard*</stringValue></like></and></or>"; 
+	private static final String XML = "<or xmlns=\"http://rice.kuali.org/core/v2_0\"><equal propertyPath=\"property.path\"><stringValue>abcdefg</stringValue></equal><greaterThan propertyPath=\"property.path2\"><decimalValue>100</decimalValue></greaterThan><and><greaterThan propertyPath=\"property.path3\"><integerValue>10000</integerValue></greaterThan><like propertyPath=\"property.path4\"><stringValue>wildcard*</stringValue></like></and></or>"; 
 		
 	/**
 	 * Test method for {@link org.kuali.rice.core.api.criteria.OrExpression#OrExpression(java.util.List)}.

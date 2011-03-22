@@ -37,10 +37,10 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class NotInExpressionTest {
 
-	private static final String STRING_XML = "<notIn propertyPath=\"stringValues.path\"><stringValue>abcdefg</stringValue><stringValue>gfedcabc</stringValue><stringValue>should have failed by now!</stringValue></notIn>";
-	private static final String DECIMAL_XML = "<notIn propertyPath=\"decimalValues.path\"><decimalValue>1.0</decimalValue><decimalValue>1.1</decimalValue><decimalValue>2.5</decimalValue></notIn>";
-	private static final String INTEGER_XML = "<notIn propertyPath=\"integerValues.path\"><integerValue>1</integerValue><integerValue>2</integerValue><integerValue>3</integerValue><integerValue>10</integerValue><integerValue>4</integerValue></notIn>";
-	private static final String DATE_TIME_XML = "<notIn propertyPath=\"dateTimeValues.path\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></notIn>";
+	private static final String STRING_XML = "<notIn propertyPath=\"stringValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>abcdefg</stringValue><stringValue>gfedcabc</stringValue><stringValue>should have failed by now!</stringValue></notIn>";
+	private static final String DECIMAL_XML = "<notIn propertyPath=\"decimalValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>1.0</decimalValue><decimalValue>1.1</decimalValue><decimalValue>2.5</decimalValue></notIn>";
+	private static final String INTEGER_XML = "<notIn propertyPath=\"integerValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>1</integerValue><integerValue>2</integerValue><integerValue>3</integerValue><integerValue>10</integerValue><integerValue>4</integerValue></notIn>";
+	private static final String DATE_TIME_XML = "<notIn propertyPath=\"dateTimeValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></notIn>";
 	
 	/**
 	 * Test method for {@link org.kuali.rice.core.api.criteria.NotInExpression#NotInExpression(java.lang.String, java.util.List)}.

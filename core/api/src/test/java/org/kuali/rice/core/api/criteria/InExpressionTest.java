@@ -37,10 +37,10 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class InExpressionTest {
 
-	private static final String STRING_XML = "<in propertyPath=\"stringValues.path\"><stringValue>abcdefg</stringValue><stringValue>gfedcabc</stringValue><stringValue>should have failed by now!</stringValue></in>";
-	private static final String DECIMAL_XML = "<in propertyPath=\"decimalValues.path\"><decimalValue>1.0</decimalValue><decimalValue>1.1</decimalValue><decimalValue>2.5</decimalValue></in>";
-	private static final String INTEGER_XML = "<in propertyPath=\"integerValues.path\"><integerValue>1</integerValue><integerValue>2</integerValue><integerValue>3</integerValue><integerValue>10</integerValue><integerValue>4</integerValue></in>";
-	private static final String DATE_TIME_XML = "<in propertyPath=\"dateTimeValues.path\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></in>";
+	private static final String STRING_XML = "<in propertyPath=\"stringValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>abcdefg</stringValue><stringValue>gfedcabc</stringValue><stringValue>should have failed by now!</stringValue></in>";
+	private static final String DECIMAL_XML = "<in propertyPath=\"decimalValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>1.0</decimalValue><decimalValue>1.1</decimalValue><decimalValue>2.5</decimalValue></in>";
+	private static final String INTEGER_XML = "<in propertyPath=\"integerValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>1</integerValue><integerValue>2</integerValue><integerValue>3</integerValue><integerValue>10</integerValue><integerValue>4</integerValue></in>";
+	private static final String DATE_TIME_XML = "<in propertyPath=\"dateTimeValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></in>";
 	
 	/**
 	 * Test method for {@link org.kuali.rice.core.api.criteria.InExpression#InExpression(java.lang.String, java.util.List)}.

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.List;
 
 /**
  * TODO 
@@ -23,9 +22,12 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+public interface CountAwareQueryResults<T> extends QueryResults<T> {
 
-public interface QueryResults<T> {
-	
-	public List<T> getResults();
+	public Integer getTotalRowCount();
+
+	public boolean isMoreResultsAvailable();
+
+	public boolean isResultsTruncated();
 	
 }

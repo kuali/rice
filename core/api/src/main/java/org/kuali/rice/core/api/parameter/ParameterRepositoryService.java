@@ -16,19 +16,21 @@
 
 package org.kuali.rice.core.api.parameter;
 
-import org.kuali.rice.core.api.CoreConstants;
+import java.util.Collection;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import java.util.Collection;
+
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 /**
  * Service for interacting with {@link Parameter Parameters}.
  */
-@WebService(name = "parameterServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE)
+@WebService(name = "parameterServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ParameterRepositoryService {
 
@@ -249,4 +251,8 @@ public interface ParameterRepositoryService {
     @WebMethod(operationName="getSubParameterValuesAsString")
     @WebResult(name = "values")
     Collection<String> getSubParameterValuesAsString(@WebParam(name = "key") ParameterKey key, @WebParam(name = "subParameterName") String subParameterName);
+    
+    @WebMethod(operationName="findParameters")
+    @WebResult(name = "results")
+    ParameterQueryResults findParameters(@WebParam(name = "query") QueryByCriteria<Parameter> queryByCriteria);
 }

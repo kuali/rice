@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@javax.xml.bind.annotation.XmlSchema(namespace = CoreConstants.Namespaces.CORE_NAMESPACE, elementFormDefault = XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
 package org.kuali.rice.core.api.namespace;
 import org.kuali.rice.core.api.CoreConstants;
 

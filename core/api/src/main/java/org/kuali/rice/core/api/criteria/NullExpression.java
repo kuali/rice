@@ -36,7 +36,7 @@ public final class NullExpression extends AbstractExpression implements Property
 	
 	private static final long serialVersionUID = 2397296074921454859L;
 	
-	@XmlAttribute(name = PROPERTY_PATH)
+	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 	
 	/**

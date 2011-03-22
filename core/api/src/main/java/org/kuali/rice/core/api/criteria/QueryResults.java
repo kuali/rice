@@ -26,6 +26,6 @@ import java.util.List;
 
 public interface QueryResults<T> {
 	
-	public List<T> getResults();
+	List<T> getResults();
 	
 }

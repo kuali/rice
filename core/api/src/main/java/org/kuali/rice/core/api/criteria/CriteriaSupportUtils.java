@@ -48,12 +48,23 @@ final class CriteriaSupportUtils {
 	private CriteriaSupportUtils () {}
 	
     /**
-     * A private class which exposes constants which define the XML element names to use
-     * when instances of {@link SimpleExpression} are marshaled to XML.
+     * Defines various property constants for internal use within the criteria package.
      */
-    static class SimpleExpressionProperties {
+    static class PropertyConstants {
+    	
+    	/**
+    	 * A constant representing the property name for {@link PropertyPathExpression#getPropertyPath()}
+    	 */
         final static String PROPERTY_PATH = "propertyPath";
+        
+    	/**
+    	 * A constant representing the property name for {@link SimpleExpression#getValue()}
+    	 */
         final static String VALUE = "value";
+        
+        /**
+         * A constant representing the method name for {@link SimpleExpression#getValue()}
+         */
         final static String GET_VALUE_METHOD_NAME = "getValue";
     }
 
@@ -91,7 +102,7 @@ final class CriteriaSupportUtils {
 	private static XmlElements findXmlElementsAnnotation(Class<?> simpleExpressionClass) {
 		if (simpleExpressionClass != null) {
 			try{
-				Field valueField = simpleExpressionClass.getDeclaredField(SimpleExpressionProperties.VALUE);
+				Field valueField = simpleExpressionClass.getDeclaredField(PropertyConstants.VALUE);
 				XmlElements elementsAnnotation = valueField.getAnnotation(XmlElements.class);
 				if (elementsAnnotation != null) {
 					return elementsAnnotation;
@@ -100,7 +111,7 @@ final class CriteriaSupportUtils {
 				// ignore, try the method
 			}
 			try {
-				Method valueMethod = simpleExpressionClass.getDeclaredMethod(SimpleExpressionProperties.GET_VALUE_METHOD_NAME, (Class<?>[])null);
+				Method valueMethod = simpleExpressionClass.getDeclaredMethod(PropertyConstants.GET_VALUE_METHOD_NAME, (Class<?>[])null);
 				XmlElements elementsAnnotation = valueMethod.getAnnotation(XmlElements.class);
 				if (elementsAnnotation == null) {
 					return CriteriaSupportUtils.findXmlElementsAnnotation(simpleExpressionClass.getSuperclass());

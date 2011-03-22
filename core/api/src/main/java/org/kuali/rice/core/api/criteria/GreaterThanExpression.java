@@ -36,7 +36,7 @@ public final class GreaterThanExpression extends AbstractExpression implements S
 	    
 	private static final long serialVersionUID = 2576163857285296720L;
 	
-	@XmlAttribute(name = PROPERTY_PATH)
+	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 	@XmlElements(value = {
 			@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),

@@ -36,7 +36,7 @@ public final class LikeExpression extends AbstractExpression implements SimpleEx
 
 	private static final long serialVersionUID = 6406122080039813800L;
 	
-	@XmlAttribute(name = PROPERTY_PATH)
+	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 	@XmlElements(value = {
     		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true)

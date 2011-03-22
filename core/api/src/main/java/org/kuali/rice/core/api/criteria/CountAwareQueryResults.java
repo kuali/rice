@@ -24,10 +24,10 @@ package org.kuali.rice.core.api.criteria;
  */
 public interface CountAwareQueryResults<T> extends QueryResults<T> {
 
-	public Integer getTotalRowCount();
+	Integer getTotalRowCount();
 
-	public boolean isMoreResultsAvailable();
+	boolean isMoreResultsAvailable();
 
-	public boolean isResultsTruncated();
+	boolean isResultsTruncated();
 	
 }

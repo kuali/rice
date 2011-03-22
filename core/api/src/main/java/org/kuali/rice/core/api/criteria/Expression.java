@@ -18,10 +18,13 @@ package org.kuali.rice.core.api.criteria;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 
 /**
- * TODO 
+ * An expression represents some portion of a criteria statement.  The exact
+ * nature of an expression and what it logically represents is defined
+ * by the classes which implement the Expression interface.
+ * 
+ * @see Criteria 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface Expression extends ModelObjectComplete {
 

@@ -23,6 +23,6 @@ package org.kuali.rice.core.api.criteria;
  */
 public interface CriteriaValue<T> {
 
-    public T getValue();
+    T getValue();
     
 }

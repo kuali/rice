@@ -35,7 +35,7 @@ import org.apache.commons.lang.StringUtils;
 public final class NotNullExpression extends AbstractExpression implements PropertyPathExpression {
 	
 	private static final long serialVersionUID = 6723462533500402423L;
-	@XmlAttribute(name = PROPERTY_PATH)
+	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 	
 	/**

@@ -41,7 +41,7 @@ public final class InExpression extends AbstractExpression implements PropertyPa
 	
 	private static final long serialVersionUID = -1888858317314153374L;
 
-	@XmlAttribute(name = PROPERTY_PATH)
+	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 	@XmlElements(value = {
             @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),

@@ -41,7 +41,7 @@ public final class NotInExpression extends AbstractExpression implements Propert
 
 	private static final long serialVersionUID = -7676442296587603655L;
 	
-	@XmlAttribute(name = PROPERTY_PATH)
+	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 	@XmlElements(value = {
             @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),

@@ -31,6 +31,6 @@ public interface CompositeExpression extends Expression {
 	 * 
 	 * @return the list of expressions contained within this composite
 	 */
-	public List<Expression> getExpressions();
+	List<Expression> getExpressions();
 	
 }

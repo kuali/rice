@@ -17,14 +17,14 @@ package org.kuali.rice.core.api.criteria;
 
 
 /**
- * TODO 
+ * An expression which contains a property path.  The property path is used
+ * to identify what portion of an object model that the expression applies
+ * to in the case of a criteria construct.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-interface PropertyPathExpression extends Expression {
-	
-	final static String PROPERTY_PATH = "propertyPath";
+public interface PropertyPathExpression extends Expression {
 	
 	String getPropertyPath();
 		    

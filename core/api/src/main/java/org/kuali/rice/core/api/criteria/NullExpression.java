@@ -24,7 +24,14 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * TODO 
+ * An immutable expression which represents an "is null" statement which is
+ * evaluated the property defined by the property path on this expression.
+ * 
+ * <p>Constructed as part of a {@link Criteria} when built using a
+ * {@link CriteriaBuilder}.
+ * 
+ * @see Criteria
+ * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

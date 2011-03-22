@@ -24,10 +24,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * An immutable expression which represents a "greater than" statement which is
+ * evaluated the {@link CriteriaValue} of this expression.
+ * 
+ * <p>Constructed as part of a {@link Criteria} when built using a
+ * {@link CriteriaBuilder}.
+ * 
+ * @see Criteria
+ * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * 
  */
 @XmlRootElement(name = GreaterThanExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)

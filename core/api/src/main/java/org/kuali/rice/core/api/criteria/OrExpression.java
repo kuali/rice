@@ -26,6 +26,12 @@ import javax.xml.bind.annotation.XmlType;
  * An immutable composite expression which implements "or-ing" of multiple
  * expressions together. 
  * 
+ * <p>Constructed as part of a {@link Criteria} when built using a
+ * {@link CriteriaBuilder}.
+ * 
+ * @see Criteria
+ * @see CriteriaBuilder
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = OrExpression.Constants.ROOT_ELEMENT_NAME)

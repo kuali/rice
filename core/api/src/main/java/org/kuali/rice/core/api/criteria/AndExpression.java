@@ -23,7 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * A composite expression which implements "and-ing" of multiple expressions together. 
+ * An immutable composite expression which implements "and-ing" of multiple
+ * expressions together. 
+ * 
+ * <p>Constructed as part of a {@link Criteria} when built using a
+ * {@link CriteriaBuilder}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

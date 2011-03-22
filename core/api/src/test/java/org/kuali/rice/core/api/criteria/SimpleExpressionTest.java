@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.junit.Test;
 
 /**
- * A test for the {@link SimpleExpression} abstract base class. 
+ * A test for the {@link ValuedExpression} abstract base class. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -44,7 +44,7 @@ import org.junit.Test;
 public class SimpleExpressionTest {
     
     /**
-     * Test method for {@link org.kuali.rice.core.api.criteria.SimpleExpression#SimpleExpression()}.
+     * Test method for {@link org.kuali.rice.core.api.criteria.ValuedExpression#SimpleExpression()}.
      * 
      * This empty constructor should only be invoked by JAXB.  We will invoke to ensure that it doesn't raise an exception.
      */
@@ -58,7 +58,7 @@ public class SimpleExpressionTest {
     }
 
     /**
-     * Test method for {@link org.kuali.rice.core.api.criteria.SimpleExpression#SimpleExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+     * Test method for {@link org.kuali.rice.core.api.criteria.ValuedExpression#SimpleExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
      */
     @Test
     public void testSimpleExpressionStringCriteriaValueOfObject() {
@@ -108,7 +108,7 @@ public class SimpleExpressionTest {
     }
 
     /**
-     * Test method for {@link org.kuali.rice.core.api.criteria.SimpleExpression#supportsCriteriaValue(java.lang.Class, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+     * Test method for {@link org.kuali.rice.core.api.criteria.ValuedExpression#supportsCriteriaValue(java.lang.Class, org.kuali.rice.core.api.criteria.CriteriaValue)}.
      */
     @Test
     public void testSupportsCriteriaValue() {
@@ -130,7 +130,7 @@ public class SimpleExpressionTest {
         }
         
         try {
-        	CriteriaSupportUtils.supportsCriteriaValue(SimpleExpression.class, null);
+        	CriteriaSupportUtils.supportsCriteriaValue(ValuedExpression.class, null);
             fail("IllegalArgumentException should have been thrown.");
         } catch (IllegalArgumentException e) {
             // expected exception
@@ -156,7 +156,7 @@ public class SimpleExpressionTest {
     @XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "AllExpressionType")
-    private static final class AllExpression extends AbstractExpression implements SimpleExpression {
+    private static final class AllExpression extends AbstractExpression implements ValuedExpression {
 
     	private static final long serialVersionUID = -5606375770690671272L;
     	
@@ -201,7 +201,7 @@ public class SimpleExpressionTest {
     @XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "StringOnlyExpressionType")
-    private static final class StringOnlyExpression extends AbstractExpression implements SimpleExpression {
+    private static final class StringOnlyExpression extends AbstractExpression implements ValuedExpression {
 
     	private static final long serialVersionUID = 5874946840884110187L;
     	

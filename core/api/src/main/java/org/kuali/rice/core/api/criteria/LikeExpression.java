@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = LikeExpression.Constants.TYPE_NAME)
-public final class LikeExpression extends AbstractExpression implements SimpleExpression {
+public final class LikeExpression extends AbstractExpression implements ValuedExpression {
 
 	private static final long serialVersionUID = 6406122080039813800L;
 	

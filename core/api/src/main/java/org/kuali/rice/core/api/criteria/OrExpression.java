@@ -23,7 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * A composite expression which implements "or-ing" of multiple expressions together. 
+ * An immutable composite expression which implements "or-ing" of multiple
+ * expressions together. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

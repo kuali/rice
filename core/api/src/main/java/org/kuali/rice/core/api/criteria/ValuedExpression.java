@@ -15,22 +15,19 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.List;
 
 /**
- * An expression that contains other expressions.
+ * Represents an expression which contains some {@link CriteriaValue}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface CompositeExpression extends Expression {
-
-	/**
-	 * Returns an unmodifiable list of expressions contained within
-	 * this composite expression.  This list could be empty but should
-	 * never be null.
-	 * 
-	 * @return the list of expressions contained within this composite
-	 */
-	List<Expression> getExpressions();
+public interface ValuedExpression extends PropertyPathExpression {
 	
+	/**
+	 * Gets the criteria value for this expression.
+	 * 
+	 * @return the criteria value for this expression
+	 */
+	CriteriaValue<?> getValue();
+    
 }

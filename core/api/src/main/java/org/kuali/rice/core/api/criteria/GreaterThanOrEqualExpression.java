@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = GreaterThanOrEqualExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = GreaterThanOrEqualExpression.Constants.TYPE_NAME)
-public final class GreaterThanOrEqualExpression extends AbstractExpression implements SimpleExpression {
+public final class GreaterThanOrEqualExpression extends AbstractExpression implements ValuedExpression {
 	    
 	private static final long serialVersionUID = 2576163857285296720L;
 	

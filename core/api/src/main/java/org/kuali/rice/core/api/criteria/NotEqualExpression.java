@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = NotEqualExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = NotEqualExpression.Constants.TYPE_NAME)
-public final class NotEqualExpression extends AbstractExpression implements SimpleExpression {
+public final class NotEqualExpression extends AbstractExpression implements ValuedExpression {
 	
 	private static final long serialVersionUID = 7159459561133496549L;
 	

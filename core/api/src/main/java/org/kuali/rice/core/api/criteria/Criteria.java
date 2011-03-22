@@ -23,10 +23,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * TODO - acts as an implicit "AND" on the expressions contained within...
+ * Defines a criteria statement which will form part of a query.  The Criteria
+ * is itself a composite expression which represents an implicit "And" on it's
+ * list of expressions.
+ * 
+ * <p>To construct a new Criteria instance, the {@link CriteriaBuilder} should
+ * be used. Once all expressions have been established on the builder, the
+ * {@link CriteriaBuilder#build()} method can be invoked to construct the
+ * Criteria. The resulting Criteria object is both immutable and thread-safe,
+ * along with all expressions contained therein.
+ * 
+ * <p>A criteria itself could be empty.  In which case it is expected that any
+ * query performed using that criteria should produce all records of the target
+ * data being queried.
+ *
+ * @see CriteriaBuilder
+ * @see QueryByCriteria
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 @XmlRootElement(name = Criteria.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -43,6 +57,12 @@ public final class Criteria extends AbstractCompositeExpression {
 		super();
 	}
 	
+	/**
+	 * Constructor meant o be used only by the {@link CriteriaBuilder}
+	 * 
+	 * @param expressions the expressions to use when constructing this criteria, can be null or empty
+	 * @see AbstractCompositeExpression#AbstractCompositeExpression(List)
+	 */
 	Criteria(List<Expression> expressions) {
 	    super(expressions);
 	}

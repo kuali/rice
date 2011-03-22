@@ -20,10 +20,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * TODO 
+ * An abstract class from which all {@link Expression} instances should extend.
+ * This class merely defines standard implementations for hashCode, equals,
+ * and toString.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 abstract class AbstractExpression implements Expression {
 

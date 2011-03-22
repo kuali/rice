@@ -29,15 +29,21 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * TODO 
+ * An immutable expression which represents an "in" statement which is
+ * evaluated against a list of values.
+ * 
+ * <p>Constructed as part of a {@link Criteria} when built using a
+ * {@link CriteriaBuilder}.
+ * 
+ * @see Criteria
+ * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 @XmlRootElement(name = InExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = InExpression.Constants.TYPE_NAME)
-public final class InExpression extends AbstractExpression implements PropertyPathExpression {
+public final class InExpression extends AbstractExpression implements MultiValuedExpression {
 	
 	private static final long serialVersionUID = -1888858317314153374L;
 
@@ -74,34 +80,17 @@ public final class InExpression extends AbstractExpression implements PropertyPa
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
-    	validateValues(values);
+    	CriteriaSupportUtils.validateValuesForMultiValuedExpression(values);
 		this.propertyPath = propertyPath;
 		this.values = values;
     }
     
-    private static void validateValues(List<? extends CriteriaValue<?>> values) {
-    	if (values == null) {
-    		throw new IllegalArgumentException("Criteria values cannot be null.");
-    	} else if (values.isEmpty()) {
-    		throw new IllegalArgumentException("Criteria values cannot be empty.");
-    	}
-    	Class<?> previousType = null;
-    	for (CriteriaValue<?> value : values) {
-    		Class<?> currentType = value.getClass();
-    		if (previousType != null) {
-    			if (!currentType.equals(previousType)) {
-    				throw new IllegalArgumentException("Encountered criteria values which do not match.  One was: " + previousType + " the other was: " + currentType);
-    			}
-    		}
-    		previousType = currentType;
-    	}
-    }
-
     @Override
     public String getPropertyPath() {
     	return propertyPath;
     }
     
+    @Override
     public List<CriteriaValue<?>> getValues() {
     	return new ArrayList<CriteriaValue<?>>(values);
     }

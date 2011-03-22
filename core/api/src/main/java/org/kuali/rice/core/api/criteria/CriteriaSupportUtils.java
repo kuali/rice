@@ -58,17 +58,17 @@ final class CriteriaSupportUtils {
         final static String PROPERTY_PATH = "propertyPath";
         
     	/**
-    	 * A constant representing the property name for {@link SimpleExpression#getValue()}
+    	 * A constant representing the property name for {@link ValuedExpression#getValue()}
     	 */
         final static String VALUE = "value";
         
         /**
-         * A constant representing the method name for {@link SimpleExpression#getValue()}
+         * A constant representing the method name for {@link ValuedExpression#getValue()}
          */
         final static String GET_VALUE_METHOD_NAME = "getValue";
     }
 
-    static void validateSimpleExpressionConstruction(Class<? extends SimpleExpression> simpleExpressionClass, String propertyPath, CriteriaValue<?> value) {
+    static void validateSimpleExpressionConstruction(Class<? extends ValuedExpression> simpleExpressionClass, String propertyPath, CriteriaValue<?> value) {
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
@@ -80,7 +80,7 @@ final class CriteriaSupportUtils {
 		}
     }
 
-	static boolean supportsCriteriaValue(Class<? extends SimpleExpression> simpleExpressionClass, CriteriaValue<?> value) {
+	static boolean supportsCriteriaValue(Class<? extends ValuedExpression> simpleExpressionClass, CriteriaValue<?> value) {
 	    if (simpleExpressionClass == null) {
 	        throw new IllegalArgumentException("simpleExpressionClass was null");
 	    }
@@ -177,5 +177,33 @@ final class CriteriaSupportUtils {
 		}
 		return criteriaValues;
 	}
+	
+	/**
+     * Validates the incoming list of CriteriaValue to ensure they are valid for a
+     * {@link MultiValuedExpression}.  To be valid, the following must be true:
+     * 
+     * <ol>
+     *   <li>The list of values must not be null.</li>
+     *   <li>The list of values must not be empty.</li>
+     *   <li>The list of values must all be of the same parameterized {@link CriteriaValue} type.</li>
+     * </ol>
+     */
+    static void validateValuesForMultiValuedExpression(List<? extends CriteriaValue<?>> values) {
+    	if (values == null) {
+    		throw new IllegalArgumentException("Criteria values cannot be null.");
+    	} else if (values.isEmpty()) {
+    		throw new IllegalArgumentException("Criteria values cannot be empty.");
+    	}
+    	Class<?> previousType = null;
+    	for (CriteriaValue<?> value : values) {
+    		Class<?> currentType = value.getClass();
+    		if (previousType != null) {
+    			if (!currentType.equals(previousType)) {
+    				throw new IllegalArgumentException("Encountered criteria values which do not match.  One was: " + previousType + " the other was: " + currentType);
+    			}
+    		}
+    		previousType = currentType;
+    	}
+    }
 	
 }

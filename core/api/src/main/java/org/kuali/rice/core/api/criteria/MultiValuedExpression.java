@@ -15,15 +15,23 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import java.util.List;
+
 
 /**
- * TODO 
+ * Represents an expression which contains multiple {@link CriteriaValue}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public interface SimpleExpression extends PropertyPathExpression {
+public interface MultiValuedExpression extends PropertyPathExpression {
 	
-	CriteriaValue<?> getValue();
+	/**
+	 * Gets the list of criteria values for this expression.  All values should
+	 * be of the same parameterized CriteriaValue type.  The returned list can
+	 * be empty but should never be null.
+	 * 
+	 * @return the list of criteria values for this expression
+	 */
+	List<CriteriaValue<?>> getValues();
     
 }

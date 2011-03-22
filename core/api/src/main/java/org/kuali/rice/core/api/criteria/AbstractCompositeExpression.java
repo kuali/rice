@@ -18,7 +18,11 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in.
+ * An abstract implementation of a {@link CompositeExpression}.  This class defines all of the JAXB
+ * annotations such that sub-classes should not have to.
+ * 
+ * <p>If a class subclasses this class then it *MUST* be sure to add itself to the JAXB
+ * annotations for {@link #expressions}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -28,6 +32,12 @@ abstract class AbstractCompositeExpression extends AbstractExpression implements
 
     private static final long serialVersionUID = 6164560054223588779L;
     
+    /**
+     * Defines the JAXB annotations for the List of expressions.  All supported expressions *MUST* be
+     * included in this List in order for them to be supported in the XML schema.
+     * 
+     * If a new type of expression is created it *MUST* be added to this list.
+     */
 	@XmlElements(value = {
             @XmlElement(name = AndExpression.Constants.ROOT_ELEMENT_NAME, type = AndExpression.class, required = true),
             @XmlElement(name = OrExpression.Constants.ROOT_ELEMENT_NAME, type = OrExpression.class, required = true),
@@ -45,10 +55,21 @@ abstract class AbstractCompositeExpression extends AbstractExpression implements
     })
     private final List<Expression> expressions;
 
+	/**
+	 * This default constructor exists only to be invoked by sub-classes
+	 * in their default constructors which is used by JAXB. 
+	 */
     AbstractCompositeExpression() {
-        this(null);
+        this.expressions = null;
     }
 
+    /**
+     * When invoked by a subclass, this constructor will set the expressions
+     * to the given list. If the list is null then it will be translated
+     * internally to an empty list.
+     * 
+     * @param expressions the list of expressions to set
+     */
     AbstractCompositeExpression(final List<Expression> expressions) {
         if (expressions == null) {
             this.expressions = new ArrayList<Expression>();

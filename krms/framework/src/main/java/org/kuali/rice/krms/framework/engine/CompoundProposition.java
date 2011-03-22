@@ -3,6 +3,7 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.List;
 
 import org.kuali.rice.krms.api.ExecutionEnvironment;
+import org.kuali.rice.krms.api.LogicalOperator;
 import org.kuali.rice.krms.api.Proposition;
 
 public class CompoundProposition implements Proposition {

@@ -57,13 +57,28 @@ public interface PropositionContract {
 	 * Parameters are listed in Reverse Polish Notation.
 	 * Parameters may be constants, terms, or functions.
 	 * 
+	 * Compound Propositions will have an empty parameter list.
+	 *
 	 * @see PropositionParameter
 	 * @return the Parameters related to the proposition
 	 */
 	public List<? extends PropositionParameterContract> getParameters();
 	
-	// TODO: are these needed at this level or does compound proposition
-	//       implement proposition
-	//public List<Proposition> getCompoundComponents();
-	//public String getCompoundOpCode();
+	/**
+	 * This method returns the op code to be used when evaluating compound
+	 * propositions. 
+	 * 
+	 * @return the compound op code. 
+	 *    valid values are A = and, O = or
+	 */
+	public String getCompoundOpCode();
+
+	/**
+	 * 
+	 * This method returns the propositions which are contained in a
+	 * compound proposition.
+	 * 
+	 * @return
+	 */
+	public List<? extends PropositionContract> getCompoundComponents();
 }

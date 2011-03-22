@@ -25,17 +25,8 @@ import org.kuali.rice.krms.api.repository.PropositionContract
 import org.kuali.rice.krms.api.repository.PropositionParameter
 
 
-@Entity
-@Table(name="KRMS_PROP_T")
-public class PropositionBo extends PersistableBusinessObjectBase implements PropositionContract {
+public class CompoundPropositionBo extends PropositionBo implements PropositionContract {
 
-	@Id
-    @GeneratedValue(generator="KREW_PROP_S")
-	@GenericGenerator(name="KREW_PROP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters=[
-			@Parameter(name="sequence_name",value="KREW_PROP_S"),
-			@Parameter(name="value_column",value="id")
-	])
-	@Column(name="PROP_ID")
 	def String propId;
 	
 	@Column(name="DESC_TXT")
@@ -51,16 +42,12 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	@JoinColumn(name="PROP_ID", referencedColumnName="PROP_ID")
 	def List<PropositionParameterBo> parameters;
 	
-	def String compoundOpCode;
-	
-	def List<PropositionBo> compoundComponents;
-	
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   static Proposition to(PropositionBo bo) {
+   static Proposition to(CompoundPropositionBo bo) {
 	   if (bo == null) { return null }
 	   return org.kuali.rice.krms.api.repository.Proposition.Builder.create(bo).build();
    }
@@ -70,10 +57,10 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static PropositionBo from(Proposition im) {
+   static CompoundPropositionBo from(Proposition im) {
 	   if (im == null) { return null }
 
-	   PropositionBo bo = new PropositionBo()
+	   CompoundPropositionBo bo = new CompoundPropositionBo()
 	   bo.propId = im.propId
 	   bo.description = im.description
 	   bo.typeId = im.typeId
@@ -81,11 +68,6 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	   bo.parameters = new ArrayList<PropositionParameterBo>()
 	   for ( parm in im.parameters){
 		   bo.parameters.add (PropositionParameterBo.from(parm))
-	   }
-	   bo.compoundOpCode = im.compoundOpCode
-	   bo.compoundComponents = new ArrayList<PropositionBo>()
-	   for (prop in im.compoundComponents){
-		   bo.compoundComponents.add (PropositionBo.from(prop))
 	   }
 
 	   return bo

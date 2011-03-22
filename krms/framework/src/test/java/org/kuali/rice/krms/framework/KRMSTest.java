@@ -34,12 +34,8 @@ public class KRMSTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 
 	@Test
-	public void integrationTest() {
+	public void compoundPropositionTest() {
 
-		// build a simple rule
-//		ComparableTerm term1 = new SimpleComparableTerm<Integer>(Integer.valueOf(100));
-//		ResolvableComparableTerm<Integer> resolvableComparableTerm = new ResolvableComparableTerm<Integer>(testResolver.getOutput());
-		
 		Proposition prop1 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostAsset, Integer.valueOf(1));
 		Proposition prop2 = new ComparableTermBasedProposition(ComparisonOperator.LESS_THAN, totalCostAsset, Integer.valueOf(1000));
 		Proposition prop3 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostAsset, Integer.valueOf(1000));
@@ -59,7 +55,7 @@ public class KRMSTest {
 		Context context = new BasicContext(contextQualifiers, Arrays.asList(agenda), testResolvers);
 		ContextProvider contextProvider = new ManualContextProvider(context);
 		
-		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", contextQualifiers, Collections.EMPTY_MAP);
+		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", null, contextQualifiers, Collections.EMPTY_MAP);
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);
@@ -73,23 +69,8 @@ public class KRMSTest {
 		
 	}
 	
-	private static final Asset totalCostAsset = new Asset("totalCost","Integer");
 	
-	private static final AssetResolver<Integer> testResolver = new AssetResolver<Integer>(){
-		
-		@Override
-		public int getCost() { return 1; }
-		
-		@Override
-		public Asset getOutput() { return totalCostAsset; }
-		
-		@Override
-		public Set<Asset> getPrerequisites() { return Collections.emptySet(); }
-		
-		@Override
-		public Integer resolve(Map<Asset, Object> resolvedPrereqs) {
-			return 5;
-		}
-	};
+	private static final Asset totalCostAsset = new Asset("totalCost","Integer");
 
+	private static final AssetResolver<Integer> testResolver = new AssetResolverMock<Integer>(totalCostAsset, 1);
 }

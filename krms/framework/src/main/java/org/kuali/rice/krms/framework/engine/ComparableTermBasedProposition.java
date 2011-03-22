@@ -10,9 +10,9 @@ import org.kuali.rice.krms.framework.engine.result.BasicResult;
 public class ComparableTermBasedProposition<T> implements Proposition {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 
-	private ComparisonOperator operator;
-	private Asset term;
-	private T expectedValue;
+	private final ComparisonOperator operator;
+	private final Asset term;
+	private final T expectedValue;
 	
 	
 	public ComparableTermBasedProposition(ComparisonOperator operator, Asset term, T expectedValue) {
@@ -30,12 +30,31 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 			// TODO Something better than this
 			throw new RuntimeException(e);
 		}
-		// XXX: Unsafe!
-		boolean result = Boolean.valueOf(operator.compare((Comparable<T>)termValue, expectedValue));
+		
+		boolean result = compare(termValue);
+		
 		if (LOG.isEnabled(environment)){
 			LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, result));
 		}
 		return result;
+	}
+
+	/**
+	 * This method does the actual comparison of the term value w/ the expected value
+	 * 
+	 * @param termValue
+	 * @return the boolean result of the comparison
+	 */
+	protected boolean compare(Comparable<T> termValue) {
+		boolean result = Boolean.valueOf(operator.compare(termValue, getExpectedValue()));
+		return result;
+	}
+	
+	/**
+	 * @return the expectedValue
+	 */
+	protected T getExpectedValue() {
+		return this.expectedValue;
 	}
 
 	public String toString(){

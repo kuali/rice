@@ -57,7 +57,7 @@ public class ResultLoggingTest {
 		Context context = new BasicContext(contextQualifiers, Arrays.asList(agenda), testResolvers);
 		ContextProvider contextProvider = new ManualContextProvider(context);
 		
-		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", contextQualifiers, Collections.EMPTY_MAP);
+		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", null, contextQualifiers, Collections.EMPTY_MAP);
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);

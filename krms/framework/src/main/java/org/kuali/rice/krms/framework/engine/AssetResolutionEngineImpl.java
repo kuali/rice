@@ -125,8 +125,8 @@ public class AssetResolutionEngineImpl implements AssetResolutionEngine {
 			
 			Visited parentVisited = visitedByKey.get(visiting.getParentKey());
 			
-			if (resolver == null && parent != destination) throw new RuntimeException("Unable to get AssetResolver by its key");
-			Set<Asset> prereqs = (resolver == null ? Collections.<Asset>emptySet() : resolver.getPrerequisites());
+			if (resolver == null) throw new RuntimeException("Unable to get AssetResolver by its key");
+			Set<Asset> prereqs = resolver.getPrerequisites();
 			// keep track of any prereqs that we already have handy
 			List<Asset> metPrereqs = new LinkedList<Asset>();
 			
@@ -396,7 +396,9 @@ public class AssetResolutionEngineImpl implements AssetResolutionEngine {
 					} else if (i > 1) {
 						sb.append(",");
 					}
-					sb.append(asset.getComparatorHelper());
+					if (asset != null) {
+						sb.append(asset.getComparatorHelper());
+					}
 				}
 				comparatorHelperMemo = sb.toString();
 			}

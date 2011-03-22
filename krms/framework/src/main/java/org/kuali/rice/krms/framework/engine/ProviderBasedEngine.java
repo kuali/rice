@@ -14,6 +14,8 @@ import org.kuali.rice.krms.api.SelectionCriteria;
 import org.kuali.rice.krms.framework.engine.result.TimingResult;
 
 public class ProviderBasedEngine implements Engine {
+
+	private static final Asset effectiveExecutionTimeAsset = new Asset("effectiveExecutionTime", "java.lang.Long");
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ProviderBasedEngine.class);
 	private static final ResultLogger KLog = ResultLogger.getInstance();
@@ -25,6 +27,12 @@ public class ProviderBasedEngine implements Engine {
 		Date start, end;
 		start = new Date();
 		ExecutionEnvironment environment = establishExecutionEnvironment(selectionCriteria, facts, executionOptions);
+		
+		// set execution time
+		Long effectiveExecutionTime = environment.getSelectionCriteria().getEffectiveExecutionTime();
+		if (effectiveExecutionTime == null) { effectiveExecutionTime = System.currentTimeMillis(); }
+		environment.publishFact(effectiveExecutionTimeAsset, effectiveExecutionTime);
+
 		Context context = selectContext(selectionCriteria, facts, executionOptions);
 		if (context == null) {
 			LOG.info("Failed to locate a Context for the given qualifiers, skipping rule engine execution: " + selectionCriteria.getContextQualifiers());

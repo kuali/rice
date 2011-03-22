@@ -21,6 +21,11 @@ public class SayHelloAction implements Action {
 		LOG.info("Hello!  Im executing an action.");
 		KLog.logResult(new BasicResult(ResultEvent.ActionExecuted, this, environment));
 	}
+	
+	@Override
+	public void executeSimulation(ExecutionEnvironment environment) {
+		throw new UnsupportedOperationException();
+	}
 
 	public String toString(){
 		return getClass().getSimpleName();

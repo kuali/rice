@@ -1,13 +1,14 @@
 package org.kuali.rice.krms.framework;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import org.kuali.rice.krms.api.AssetResolver;
 import org.kuali.rice.krms.api.Context;
 import org.kuali.rice.krms.api.ContextProvider;
 import org.kuali.rice.krms.api.EngineResults;
-import org.kuali.rice.krms.api.ExecutionEnvironment;
 import org.kuali.rice.krms.api.ExecutionOptions;
 import org.kuali.rice.krms.api.Proposition;
 import org.kuali.rice.krms.api.Rule;
@@ -31,8 +31,6 @@ import org.kuali.rice.krms.framework.engine.ComparableTermBasedProposition;
 import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
-
-import static junit.framework.Assert.*;
 
 public class AgendaTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
@@ -163,7 +161,7 @@ public class AgendaTest {
 		Context context = new BasicContext(contextQualifiers, Arrays.asList(agenda), testResolvers);
 		ContextProvider contextProvider = new ManualContextProvider(context);
 		
-		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", contextQualifiers, Collections.EMPTY_MAP);
+		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", null, contextQualifiers, Collections.EMPTY_MAP);
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);
@@ -178,51 +176,5 @@ public class AgendaTest {
 	
 	private static final Asset totalCostAsset = new Asset("totalCost","Integer");
 	
-	private static final AssetResolver<Integer> testResolver = new AssetResolver<Integer>(){
-		
-		@Override
-		public int getCost() { return 1; }
-		
-		@Override
-		public Asset getOutput() { return totalCostAsset; }
-		
-		@Override
-		public Set<Asset> getPrerequisites() { return Collections.emptySet(); }
-		
-		@Override
-		public Integer resolve(Map<Asset, Object> resolvedPrereqs) {
-			return 5;
-		}
-	};
-	
-	/**
-	 * Used to help test agendas
-	 * @author gilesp
-	 *
-	 */
-	private static class ActionMock implements Action {
-
-		private static final Set<String> actionsFired = new HashSet<String>();
-		
-		private static void resetActionsFired() {
-			actionsFired.clear();
-		}
-		
-		private static boolean actionFired(String name) {
-			return actionsFired.contains(name);
-		}
-		
-		public ActionMock(String name) {
-			this.name = name;
-		}
-		
-		private final String name;
-		
-		@Override
-		public void execute(ExecutionEnvironment environment) {
-			actionsFired.add(name);
-		}
-		
-	}
-
+	private static final AssetResolver<Integer> testResolver = new AssetResolverMock<Integer>(totalCostAsset, 1); 
 }

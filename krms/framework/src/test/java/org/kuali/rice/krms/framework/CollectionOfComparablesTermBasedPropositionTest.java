@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +47,7 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 
 		// True cases:
 		
-		// this can be read as "for the collection (100, 1000), all elements are greater than 1 
+		// this can be read as "for the collection (100, 1000), all elements are greater than 1"
 		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 1f);
 		
 		assertRuleTrue(Arrays.asList(100f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 1f);
@@ -68,7 +67,7 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 
 		// True cases:
 		
-		// this can be read as "for the collection (100, 1000), one or more elements are greater than 500
+		// this can be read as "for the collection (100, 1000), one or more elements are greater than 500"
 		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 500f);
 		assertRuleTrue(Arrays.asList(1000f, 100f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 500f);
 		assertRuleTrue(Arrays.asList(1000f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 500f);
@@ -86,7 +85,7 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 		
 		// True cases:
 		
-		// this can be read as "for the collection (100, 1000), no elements are greater than 5000
+		// this can be read as "for the collection (100, 1000), none of the elements are greater than 5000"
 		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
 		assertRuleTrue(Arrays.asList(1000f), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
 		assertRuleTrue(Arrays.<Float>asList(), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);

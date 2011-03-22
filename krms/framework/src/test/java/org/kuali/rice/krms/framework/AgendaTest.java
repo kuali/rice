@@ -176,5 +176,5 @@ public class AgendaTest {
 	
 	private static final Asset totalCostAsset = new Asset("totalCost","Integer");
 	
-	private static final AssetResolver<Integer> testResolver = new AssetResolverMock<Integer>(totalCostAsset, 1); 
+	private static final AssetResolver<Integer> testResolver = new AssetResolverMock<Integer>(totalCostAsset, 10); 
 }

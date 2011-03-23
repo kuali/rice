@@ -475,7 +475,7 @@ public final class CriteriaBuilder<T> {
 	 * {@link #build()} method is invoked.
 	 * 
 	 * @return a reference to a {@link CriteriaBuilder} that can be used to
-	 * construct the contents of the and expression
+	 * construct the contents of the or expression
 	 * 
 	 * @see OrExpression
 	 */
@@ -498,9 +498,9 @@ public final class CriteriaBuilder<T> {
 	 * 
 	 * <p>In general practice, this method should only be invoked once, but if
 	 * invoked more than once against the same builder state then it will
-	 * return an equivalent criteria object. 
-	 * @return a reference to a {@link CriteriaBuilder} that can be used to
-	 * construct the contents of the and expression
+	 * return an equivalent criteria object.
+	 * 
+	 * @return a Criteria object built from the expressions defined by this builder
 	 */
 	public Criteria build() {
 		List<Expression> builtExpressions = new ArrayList<Expression>();

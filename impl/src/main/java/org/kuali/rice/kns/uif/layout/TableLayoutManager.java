@@ -67,6 +67,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private List<Field> dataFields;
 
 	private TableTools tableTools;
+	private boolean headerAdded = false;
 
 	public TableLayoutManager() {
 		useShortLabels = true;
@@ -142,7 +143,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		// if add line build table header first
 		// TODO: implement repeat header
-		if (isAddLine) {
+		if (!headerAdded) {
 			headerFields = new ArrayList<LabelField>();
 			dataFields = new ArrayList<Field>();
 
@@ -150,6 +151,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.LINE, currentLine);
 			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.INDEX, new Integer(
 					lineIndex));
+			headerAdded = true;
 		}
 
 		// set label field rendered to true on line fields

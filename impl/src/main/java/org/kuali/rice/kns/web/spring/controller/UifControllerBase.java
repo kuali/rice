@@ -257,7 +257,7 @@ public abstract class UifControllerBase {
 	public ModelAndView navigateToLookup(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 		Properties lookupParameters = form.getActionParametersAsProperties();
-
+		
 		String baseLookupUrl = (String) lookupParameters.get(UifParameters.BASE_LOOKUP_URL);
 		lookupParameters.remove(UifParameters.BASE_LOOKUP_URL);
 		
@@ -266,11 +266,18 @@ public abstract class UifControllerBase {
 		return performRedirect(form, baseLookupUrl, lookupParameters);
 	}
 
-	protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
+	protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {	
+		// If this is an Ajax call only return the redirectURL view with the URL set
+		// This is to avoid automatic redirect when using light boxes
+		if (urlParameters.get("ajaxCall") != null && urlParameters.get("ajaxCall").equals("true")) {
+			urlParameters.remove("ajaxCall");
+			String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
+			ModelAndView modelAndView = new ModelAndView("redirectURL");            
+            modelAndView.addObject("redirectUrl",  redirectUrl);
+            return modelAndView;
+		}
 		String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
-
 		ModelAndView modelAndView = new ModelAndView(REDIRECT_PREFIX + redirectUrl);
-
 		return modelAndView;
 	}
 

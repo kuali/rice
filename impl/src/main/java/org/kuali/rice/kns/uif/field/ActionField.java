@@ -45,7 +45,7 @@ public class ActionField extends FieldBase {
 
 	private Map<String, String> actionParameters;
 	
-	private LightBoxLookup lightBox;
+	private LightBoxLookup lightBoxLookup;
 
 	public ActionField() {
 		clientSideCall = false;
@@ -105,28 +105,52 @@ public class ActionField extends FieldBase {
 		}
 
 		if (!actionParameters.isEmpty()) {
-			String prefixScript = this.getOnClickScript();
-			if (prefixScript == null) {
-				prefixScript = "";
-			}
-
-			String writeParamsScript = "";
-			for (String key : actionParameters.keySet()) {
-				String parameterPath = key;
-				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-					parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
+			
+			// If there is no lightBox then create the on click script
+			if (lightBoxLookup == null) {
+				String prefixScript = this.getOnClickScript();
+				if (prefixScript == null) {
+					prefixScript = "";
 				}
-
-				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
-						+ actionParameters.get(key) + "'); ";
+				String writeParamsScript = "";
+				for (String key : actionParameters.keySet()) {
+					String parameterPath = key;
+					if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+						parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
+					}
+	
+					writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
+							+ actionParameters.get(key) + "'); ";
+				}
+	
+				String postScript = "";
+				if (scriptFormSubmit) {
+					postScript = "submitForm();";
+				}
+	
+				this.setOnClickScript(prefixScript + writeParamsScript + postScript);
+			}else{
+				// When there is a light box - don't add the on click script as it will be prevented from executing
+				// Create a script map object which will be used to build the on click script
+				// Could use eval() instead and just pass the script?
+				StringBuffer sb = new StringBuffer();
+				sb.append("{");
+				for (String key : actionParameters.keySet()) {
+					String optionValue = actionParameters.get(key);
+					if (sb.length() > 1) {
+						sb.append(",");
+					}
+					if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+						sb.append("\"" + UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]" + "\"");
+					}else{
+						sb.append("\"" + key + "\"");
+					}
+					sb.append(":");
+					sb.append("\"" + optionValue + "\"");
+				}
+				sb.append("}");
+				lightBoxLookup.setActionParameterMapString(sb.toString());
 			}
-
-			String postScript = "";
-			if (scriptFormSubmit) {
-				postScript = "submitForm();";
-			}
-
-			this.setOnClickScript(prefixScript + writeParamsScript + postScript);
 		}
 	}
 
@@ -345,15 +369,15 @@ public class ActionField extends FieldBase {
 	/**
 	 * @param lightBox the lightBox to set
 	 */
-	public void setLightBox(LightBoxLookup lightBox) {
-		this.lightBox = lightBox;
+	public void setLightBoxLookup(LightBoxLookup lightBoxLookup) {
+		this.lightBoxLookup = lightBoxLookup;
 	}
 
 	/**
 	 * @return the lightBox
 	 */
-	public LightBoxLookup getLightBox() {
-		return lightBox;
+	public LightBoxLookup getLightBoxLookup() {
+		return lightBoxLookup;
 	}
 
 }

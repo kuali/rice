@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
+import java.util.HashMap;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Used for rendering a lightbox in the UI to display links in dialog popups
  * 
@@ -22,8 +26,66 @@ package org.kuali.rice.kns.uif.widget;
  */
 public class LightBoxLookup extends WidgetBase {
 
+	private String actionParameterMapString;
+	
 	public LightBoxLookup() {
 		super();
 	}
 
+	/**
+	 * Overide to cater for passing functions to fancybox without quotes.
+	 * If this is not be specific to Fancybox it should be moved to ComponentBase
+	 * Builds a string from the underlying <code>Map</code> of component options
+	 * that will export that options as a JavaScript Map for use in js and
+	 * jQuery plugins. 
+	 * 
+	 * @return String of widget options formatted as JS Map
+	 */
+	@Override
+	public String getComponentOptionsJSString() {
+		if (getComponentOptions() == null) {
+			setComponentOptions(new HashMap<String, String>());
+		}
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("{");
+
+		for (String optionKey : getComponentOptions().keySet()) {
+			String optionValue = getComponentOptions().get(optionKey);
+
+			if (sb.length() > 1) {
+				sb.append(",");
+			}
+
+			sb.append(optionKey);
+			sb.append(":");
+
+			//If an option value starts with { or [, it would be a nested value and it should not use quotes around it
+			// If value is a function script do not use quotes
+			if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[") 
+					|| (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}")) ){
+				sb.append(optionValue);
+			}else{
+				sb.append("\"" + optionValue + "\"");
+			}
+		}
+
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * @param dataObjectClassName the dataObjectClassName to set
+	 */
+	public void setActionParameterMapString(String actionParameterMapString) {
+		this.actionParameterMapString = actionParameterMapString;
+	}
+
+	/**
+	 * @return the dataObjectClassName
+	 */
+	public String getActionParameterMapString() {
+		return actionParameterMapString;
+	}	
+	
 }

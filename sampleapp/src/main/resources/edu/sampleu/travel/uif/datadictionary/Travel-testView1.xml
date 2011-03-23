@@ -80,7 +80,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
             </property>
             <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-            <property name="conditionalRender" value="field18 ne 'Dyn Label'"/>
+            <!-- <property name="conditionalRender" value="field18 ne 'Dyn Label'"/>  -->
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:required="true" p:maxLength="25">
             <property name="control">

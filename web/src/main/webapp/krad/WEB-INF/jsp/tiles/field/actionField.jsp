@@ -51,4 +51,6 @@
    </script>
 </c:if>
 
-<krad:template component="${field.lightBox}" componentId="${field.id}"/>
+<c:if test="${(field.lightBoxLookup != null)}">
+		<krad:template component="${field.lightBoxLookup}" componentId="${field.id}"/>
+</c:if>	

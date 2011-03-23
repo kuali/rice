@@ -77,6 +77,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <map>
               <entry key="autoScale" value="false"/>
               <entry key="centerOnScroll" value="false"/>
+              <entry key="type" value="iframe"/>    
+              <entry key="width" value="6"/>
+              <entry key="height" value="6"/>              
+              <!-- <entry key="onClosed" value="function () {}"/>  -->
               <entry key="onComplete" value="function () {var top = parent.document.documentElement.scrollTop;if (top&lt;20){top=20;}else{top=top-20;};jq('#fancybox-wrap').css({ 'top': top + 'px'});jq(window).unbind('resize.fb');}"/>
           </map>
       </property>
@@ -122,7 +126,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/quickFinder.jsp"/>
       <property name="baseLookupUrl" value="http://localhost:8080/kr-dev/spring/lookup"/>
       <property name="quickfinderActionField">
-        <bean parent="ActionField" p:methodToCall="navigateToLookup" p:actionImageField-ref="QuickFinderImageField"/>
+        <bean parent="ActionField" p:methodToCall="navigateToLookup" p:actionImageField-ref="QuickFinderImageField">
+        	<property name="lightBoxLookup">
+        		<ref bean="LightBoxLookup"/>
+      		</property>
+      		 
+      	</bean>        
       </property>
   </bean>  
   

@@ -353,22 +353,34 @@ function createLightBox(controlId, options) {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createLightBoxLookup(controlId, options) {
-    jq(function () {    	
+function createLightBoxLookup(controlId, options, actionParameterMapString) {
+    jq(function () {        	
         jq("#" + controlId).click(function (e) {
-            e.preventDefault();
+        	// Prevent the default submit
+            e.preventDefault();          
+            // Add the ajaxCall parameter so that the controller can avoid the redirect
+            writeHiddenToForm('actionParameters[ajaxCall]' , 'true');
+            // Add the parameters to the form 
+            for (var key in actionParameterMapString) {
+                writeHiddenToForm(key , actionParameterMapString[key]);
+            }
+            // Do the Ajax post using the kualiForm form action send a serialized instance
             jq.ajax({
-        		type		: "POST",
+        		type	: "POST",
         		cache	: false,
-        		url		: "/kr-dev/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount",
-        		data		: jq(this).serializeArray(),
+        		url		: jq("#kualiForm").attr('action'),
+        		data	: jq("#kualiForm").serialize(),
         		success: function(data) {
-        			jq.fancybox(data, options);
+            		// Add the returned URL to the FancyBox href setting
+            		options['href'] = data;
+        			jq.fancybox(options);
         		}
         	});
         });
     });		
 }
+
+
 
 /**
  * Sets up the script necessary to toggle a group as a accordion

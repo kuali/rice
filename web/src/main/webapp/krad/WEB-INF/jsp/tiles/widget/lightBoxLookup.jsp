@@ -23,5 +23,5 @@
  --%>
  
 <script type="text/javascript">
-   createLightBoxLookup('${componentId}', ${widget.componentOptionsJSString});
+   createLightBoxLookup('${componentId}', ${widget.componentOptionsJSString}, ${widget.actionParameterMapString});
 </script>

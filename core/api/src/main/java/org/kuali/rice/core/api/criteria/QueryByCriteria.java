@@ -32,7 +32,26 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 /**
- * TODO
+ * Defines a criteria-based query.  Consists of a {@link Criteria} definition
+ * as well as a set of additional properties which control paging and other
+ * aspects of the results which should be returned from the query.
+ * 
+ * <p>In order to construct a new {@link QueryByCriteria}, the {@link Builder}
+ * should be used.  This contains an internal {@link CriteriaBuilder} which
+ * can be used to define the {@link Criteria} for use by the query.
+ * 
+ * <p>This class specifies nothing regarding how the query will be executed.
+ * It is expected that an instance will be constructed and then passed to code
+ * which understands how to execute the desired query.
+ * 
+ * <p>This class is mapped for use by JAXB and can therefore be used by clients
+ * as part of remotable service definitions.
+ * 
+ * @param <T> the type of the class which is being queried for based on the
+ * specified criteria
+ * 
+ * @see Criteria
+ * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
@@ -42,7 +61,6 @@ import org.w3c.dom.Element;
 @XmlType(name = QueryByCriteria.Constants.TYPE_NAME, propOrder = {
 		QueryByCriteria.Elements.CRITERIA,
 		QueryByCriteria.Elements.START_AT_INDEX,
-		QueryByCriteria.Elements.END_AT_INDEX,
 		QueryByCriteria.Elements.MAX_RESULTS,
 		QueryByCriteria.Elements.COUNT_FLAG,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
@@ -55,10 +73,7 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	
 	@XmlElement(name = Elements.START_AT_INDEX, required = false)
 	private final Integer startAtIndex;
-	
-	@XmlElement(name = Elements.END_AT_INDEX, required = false)
-	private final Integer endAtIndex;
-	
+		
 	@XmlElement(name = Elements.MAX_RESULTS, required = false)
 	private final Integer maxResults;
 	
@@ -72,7 +87,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	private QueryByCriteria() {
 		this.criteria = null;
 		this.startAtIndex = null;
-		this.endAtIndex = null;
 		this.maxResults = null;
 		this.countFlag = null;
 	}
@@ -80,27 +94,55 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	private QueryByCriteria(Builder<T> builder) {
 		this.criteria = builder.getCriteriaBuilder().build();
 		this.startAtIndex = builder.getStartAtIndex();
-		this.endAtIndex = builder.getEndAtIndex();
 		this.maxResults = builder.getMaxResults();
 		this.countFlag = builder.getCountFlag();
 	}
 
+	/**
+	 * Returns the {@link Criteria} which will be used to execute the query.
+	 * 
+	 * @return the criteria defined on the query, should never be null
+	 */
 	public Criteria getCriteria() {
 		return this.criteria;
 	}
 
+	/**
+	 * Returns the optional zero-based "start" index for rows returned.  When
+	 * this query is executed, this property should be read to determine the
+	 * first row which should be returned.  If the given index is beyond the
+	 * end of the result set, then the resulting query should effectively
+	 * return no rows (as opposed to producing an index-based out of bounds
+	 * error).  If the value is null, then the results should start with the
+	 * first row returned from the query.
+	 * 
+	 * @return the starting row index requested by this query, or null if
+	 * the results should start at the beginning of the result set
+	 */
 	public Integer getStartAtIndex() {
 		return this.startAtIndex;
 	}
 
-	public Integer getEndAtIndex() {
-		return this.endAtIndex;
-	}
-
+	/**
+	 * Returns the maximum number of results that this query is requesting
+	 * to receive.  If null, then the query should return all rows, or as
+	 * many as it can.
+	 * 
+	 * @return the maximum number of results to return from the query
+	 */
 	public Integer getMaxResults() {
 		return this.maxResults;
 	}
 
+	/**
+	 * Indicates whether or not a total row count should be returned with the
+	 * query.  See {@link CountFlag} for more information on what each of these
+	 * flags means.  This will never return null and defaults to
+	 * {@link CountFlag#NONE}.
+	 * 
+	 * @return the flag specifying whether or not a total row count should be
+	 * produced by the query
+	 */
 	public CountFlag getCountFlag() {
 		return this.countFlag;
 	}
@@ -126,7 +168,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 
 		private final CriteriaBuilder<T> criteriaBuilder;
 		private Integer startAtIndex;
-		private Integer endAtIndex;
 		private Integer maxResults;
 		private boolean includeCount;
 		private CountFlag countFlag;
@@ -150,14 +191,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 
 		public void setStartAtIndex(Integer startAtIndex) {
 			this.startAtIndex = startAtIndex;
-		}
-
-		public Integer getEndAtIndex() {
-			return this.endAtIndex;
-		}
-
-		public void setEndAtIndex(Integer endAtIndex) {
-			this.endAtIndex = endAtIndex;
 		}
 
 		public Integer getMaxResults() {
@@ -206,7 +239,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	static class Elements {
 		final static String CRITERIA = "criteria";
 		final static String START_AT_INDEX = "startAtIndex";
-		final static String END_AT_INDEX = "endAtIndex";
 		final static String MAX_RESULTS = "maxResults";
 		final static String COUNT_FLAG = "countFlag";
 	}

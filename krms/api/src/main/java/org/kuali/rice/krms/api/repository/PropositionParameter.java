@@ -1,7 +1,9 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,7 +26,7 @@ import org.kuali.rice.core.mo.ModelObjectComplete;
  *
  * @see PropositionParameterContract
  */
-@XmlRootElement(name = PropositionParameter.Constants.ROOT_ELEMENT_NAME, namespace = PropositionParameter.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = PropositionParameter.Constants.ROOT_ELEMENT_NAME, namespace = KrmsType.Constants.KRMSNAMESPACE)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PropositionParameter.Constants.TYPE_NAME, propOrder = {
 		PropositionParameter.Elements.ID,
@@ -53,7 +55,8 @@ public final class PropositionParameter implements PropositionParameterContract,
     private final Collection<org.w3c.dom.Element> _elements = null;
 	
 	 /** 
-     * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
+     * This constructor should never be called.  
+     * It is only present for use during JAXB unmarshalling. 
      */
     private PropositionParameter() {
     	this.id = null;
@@ -64,10 +67,10 @@ public final class PropositionParameter implements PropositionParameterContract,
     }
     
     /**
-	 * Constructs a KRMS KrmsType from the given builder.  This constructor is private and should only
-	 * ever be invoked from the builder.
+	 * Constructs a PropositionParameter from the given builder.  
+	 * This constructor is private and should only ever be invoked from the builder.
 	 * 
-	 * @param builder the Builder from which to construct the KRMS type
+	 * @param builder the Builder from which to construct the PropositionParameter
 	 */
     private PropositionParameter(Builder builder) {
         this.id = builder.getId();
@@ -102,7 +105,8 @@ public final class PropositionParameter implements PropositionParameterContract,
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
+     * This builder is used to construct instances of PropositionParameter.  
+     * It enforces the constraints of the {@link PropositionParameterContract}.
      */
     public static class Builder implements PropositionParameterContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
@@ -171,8 +175,11 @@ public final class PropositionParameter implements PropositionParameterContract,
 		}
 		
 		public void setParameterType(String parameterType) {
-			if (StringUtils.isBlank(parameterType)) {
-	                throw new IllegalArgumentException("parameter type is blank");
+			if (StringUtils.isBlank(parameterType)){
+	                throw new IllegalArgumentException("parameter type is null or blank");
+			}
+			if (!PropositionParameter.ParameterTypes.VALID_TYPE_CODES.contains(parameterType)){
+                throw new IllegalArgumentException("parameter type is invalid");				
 			}
 			// TODO: check against valid values
 			this.parameterType = parameterType;
@@ -211,9 +218,9 @@ public final class PropositionParameter implements PropositionParameterContract,
 		}
 
 		/**
-		 * Builds an instance of a CampusType based on the current state of the builder.
+		 * Builds an instance of a PropositionParameter based on the current state of the builder.
 		 * 
-		 * @return the fully-constructed CampusType
+		 * @return the fully-constructed PropositionParameter
 		 */
         @Override
         public PropositionParameter build() {
@@ -240,7 +247,6 @@ public final class PropositionParameter implements PropositionParameterContract,
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "PropositionParameter";
 		final static String TYPE_NAME = "PropositionParameterType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
@@ -256,5 +262,32 @@ public final class PropositionParameter implements PropositionParameterContract,
 		final static String VALUE = "value";
 		final static String PARM_TYPE = "parameterType";
 		final static String SEQUENCE = "sequenceNumber";
+	}
+	
+	/**
+	 * This enumeration identifies the valid PropositionParameter parameter type codes 
+	 */
+	public enum ParameterTypes {
+		CONSTANT("C"),
+		TERM("T"),
+		FUNCTION("F");
+		
+		private final String code;
+		private ParameterTypes(String code){
+			this.code = code;
+		}
+		public static final Collection<PropositionParameter.ParameterTypes> VALID_TYPES =
+			Collections.unmodifiableCollection(Arrays.asList(CONSTANT, TERM, FUNCTION));
+			
+		public static final Collection<String> VALID_TYPE_CODES =
+			Collections.unmodifiableCollection(Arrays.asList(CONSTANT.code(), TERM.code(), FUNCTION.code()));
+			
+		public String code(){
+			return code;
+		}
+		@Override
+		public String toString() {
+			return code;
+		}		
 	}
 }

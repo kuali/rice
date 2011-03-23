@@ -2,6 +2,7 @@ package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.kuali.rice.core.mo.ModelBuilder;
 import org.kuali.rice.core.mo.ModelObjectComplete;
 
 import org.kuali.rice.krms.api.LogicalOperator;
+import org.kuali.rice.krms.api.repository.PropositionParameter.ParameterTypes;
 
 /**
  * Concrete model object implementation of KRMS Proposition 
@@ -36,9 +38,9 @@ import org.kuali.rice.krms.api.LogicalOperator;
 		Proposition.Elements.DESC,
 		Proposition.Elements.TYPE_ID,
 		Proposition.Elements.PROP_TYPE_CODE,
-		Proposition.Elements.PARAMETERS,
+		"parameters",
 		Proposition.Elements.CMPND_OP_CODE,
-		Proposition.Elements.CMPND_COMPONENTS,
+		"compoundComponents",
 		"_elements"
 })
 public final class Proposition implements PropositionContract, ModelObjectComplete{
@@ -97,8 +99,10 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         this.parameters = Collections.unmodifiableList(paramList);
         this.compoundOpCode = builder.getCompoundOpCode();
         List <Proposition> componentList = new ArrayList<Proposition>();
-        for (Proposition.Builder b : builder.compoundComponents){
-        	componentList.add(b.build());
+        if (builder.compoundComponents != null){
+        	for (Proposition.Builder b : builder.compoundComponents){
+        		componentList.add(b.build());
+        	}
         }
         this.compoundComponents = Collections.unmodifiableList(componentList);
     }
@@ -240,6 +244,9 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 			if (StringUtils.isBlank(propTypeCode)) {
                 throw new IllegalArgumentException("proposition type code is blank");
 			}
+			if (!PropositionTypes.VALID_TYPE_CODES.contains(propTypeCode)) {
+                throw new IllegalArgumentException("invalid proposition type code");
+			}
 			this.propositionTypeCode = propTypeCode;
 		}
 		
@@ -247,7 +254,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 			// compound propositions have empty parameter lists
 			// Simple propositions must have a non-empty parameter list
 			if (parameters == null || parameters.isEmpty()){
-				if (this.propositionTypeCode.equals("C")){
+				if (PropositionTypes.COMPOUND.code().equals( this.propositionTypeCode)){
 					this.parameters = Collections.unmodifiableList(new ArrayList<PropositionParameter.Builder>());
 					return;
 				} else {
@@ -353,9 +360,36 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 		final static String PROP_ID = "propId";
 		final static String DESC = "description";
 		final static String TYPE_ID = "typeId";
-		final static String PROP_TYPE_CODE = "propositionType";
-		final static String PARAMETERS = "parameters";
-		final static String CMPND_OP_CODE = "opCode";
-		final static String CMPND_COMPONENTS = "components";
+		final static String PROP_TYPE_CODE = "propositionTypeCode";
+		final static String PARAMETERS = "parameter";
+		final static String CMPND_OP_CODE = "compoundOpCode";
+		final static String CMPND_COMPONENTS = "proposition";
+	}
+
+	/**
+	 * This enumeration identifies the valid Proposition type codes 
+	 */
+	public enum PropositionTypes {
+		SIMPLE("S"),
+		PARAMETERIZED("P"),
+		COMPOUND("C");
+		
+		private final String code;
+		private PropositionTypes(String code){
+			this.code = code;
+		}
+		public static final Collection<Proposition.PropositionTypes> VALID_TYPES =
+			Collections.unmodifiableCollection(Arrays.asList(SIMPLE, PARAMETERIZED, COMPOUND));
+			
+		public static final Collection<String> VALID_TYPE_CODES =
+			Collections.unmodifiableCollection(Arrays.asList(SIMPLE.code(), PARAMETERIZED.code(), COMPOUND.code()));
+			
+		public String code(){
+			return code;
+		}
+		@Override
+		public String toString() {
+			return code;
+		}		
 	}
 }

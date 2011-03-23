@@ -22,7 +22,7 @@
 
 
 
-package org.kuali.rice.krms.api
+package org.kuali.rice.krms.api.repository
 
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
@@ -73,12 +73,14 @@ class KrmsTypeTest {
     }).build()
   }
 
+  @Test
   public void testTypeBuilderNullTypeId() {
     shouldFail(IllegalArgumentException.class) {
       KrmsType.Builder.create(null, "United States", "KRMS_TEST")
     }
   }
 
+  @Test
   public void testTypeBuilderEmptyTypeId() {
     shouldFail(IllegalArgumentException.class) {
       KrmsType.Builder.create("", "United States", "KRMS_TEST")

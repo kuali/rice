@@ -16,11 +16,13 @@
 package org.kuali.rice.kns.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.CssConstants;
 import org.kuali.rice.kns.uif.CssConstants.Margins;
 import org.kuali.rice.kns.uif.UifConstants.Orientation;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.field.AttributeField;
 
 /**
  * Layout manager that organizes components in a single row (horizontal) or
@@ -43,13 +45,12 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	private String orientation;
 	private String padding;
 
-	private String itemSpanStyle;
+	private String itemStyle;
 
 	public BoxLayoutManager() {
 		super();
 
 		orientation = Orientation.HORIZONTAL;
-		padding = "1px";
 	}
 
 	/**
@@ -65,19 +66,49 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	@Override
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
-
-		if (StringUtils.isBlank(itemSpanStyle)) {
+		
+		if (StringUtils.isBlank(itemStyle) && StringUtils.isNotEmpty(padding)) {
 			if (StringUtils.equals(orientation, Orientation.VERTICAL)) {
-				// set span to block which will cause a line break and margin
+				// set item to block which will cause a line break and margin
 				// bottom for padding
-				itemSpanStyle = CssConstants.Displays.BLOCK;
-				itemSpanStyle += CssConstants.getCssStyle(Margins.MARGIN_BOTTOM, padding);
+				itemStyle += CssConstants.getCssStyle(Margins.MARGIN_BOTTOM, padding);
 			}
 			else {
 				// set margin right for padding
-				itemSpanStyle = CssConstants.getCssStyle(Margins.MARGIN_RIGHT, padding);
+				itemStyle = CssConstants.getCssStyle(Margins.MARGIN_RIGHT, padding);
+				
 			}
 		}
+		else{
+			itemStyle = "";
+		}
+		
+		
+		for(Component c: container.getNestedComponents()){
+			if(c != null){
+				if(StringUtils.equals(orientation, Orientation.HORIZONTAL)){
+					this.addStyleClass("clearfix");
+					this.addStyleClass("fieldLine");
+					c.addStyleClass("boxLayoutHorizontalItem");
+					c.appendToStyle(itemStyle);
+					//in a horizontal box layout errors are placed in a div next to all fields,
+					//set the errorsField to know that we are using an alternate container for them
+					if(c instanceof AttributeField){
+						((AttributeField) c).getErrorsField().setAlternateContainer(true);
+						//((AttributeField) c).getErrorsField().addStyleClass("floatLeft");
+					}
+				}
+				//Vertical case is handled in the JSP
+			}
+		}
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object, org.kuali.rice.kns.uif.container.Container)
+	 */
+	@Override
+	public void performFinalize(View view, Object model, Container container) {
+		super.performFinalize(view, model, container);
 	}
 
 	/**
@@ -131,8 +162,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 * 
 	 * @return String css style string
 	 */
-	public String getItemSpanStyle() {
-		return this.itemSpanStyle;
+	public String getItemStyle() {
+		return this.itemStyle;
 	}
 
 	/**
@@ -140,8 +171,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 * 
 	 * @param itemSpanStyle
 	 */
-	public void setItemSpanStyle(String itemSpanStyle) {
-		this.itemSpanStyle = itemSpanStyle;
+	public void setItemStyle(String itemStyle) {
+		this.itemStyle = itemStyle;
 	}
 
 }

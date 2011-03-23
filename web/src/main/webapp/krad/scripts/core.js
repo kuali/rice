@@ -518,6 +518,14 @@ function coerceValue(name){
 	return value;
 }
 
+function getAttributeId(elementId, elementType){
+	var id = elementId;
+	if(elementType == "radio" || elementType == "checkbox"){
+		id = elementId.replace(/_attribute\S*/, "");
+	}
+	return id;
+}
+
 //sets up the validator with the necessary default settings and methods
 //note the use of onClick and onFocusout for on the fly validation client side
 function setupValidator(){
@@ -531,7 +539,23 @@ function setupValidator(){
 		onfocusout: function(element) {
 			jq(element).valid();
 			dependsOnCheck(element); 
-		}
+		},
+		wrapper: "li",
+		highlight: function(element, errorClass, validClass) {
+			jq(element).addClass(errorClass).removeClass(validClass);
+			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 1, 0, 0, true);
+		},
+		unhighlight: function(element, errorClass, validClass) {
+			jq(element).removeClass(errorClass).addClass(validClass);
+			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
+		},
+		errorPlacement: function(error, element) {
+			var id = getAttributeId(element.attr('id'), element.attr('type'));
+			jq("#" + id + "_errors_div").show();
+			jq("#" + id + "_errors_errorMessages").show();
+			var errorList = jq("#" + id + "_errors_errorMessages ul");
+			error.appendTo(errorList);
+   		}
 	});
 	jQuery.validator.addMethod("minExclusive", function(value, element, param){
 		if (param.length == 1 || param[1]()) {

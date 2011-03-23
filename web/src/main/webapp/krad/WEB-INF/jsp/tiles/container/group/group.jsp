@@ -24,6 +24,7 @@
   
   <%-- group summary text --%>
   <krad:template component="${group.summaryMessageField}"/>
+  <krad:template component="${group.errorsField}"/>
   
   <%-- render items through layout manager --%>
   <tiles:insertTemplate template="${group.layoutManager.template}">

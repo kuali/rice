@@ -157,6 +157,7 @@ form li div label, form li span label {
     padding-right: 5px;
 	border:none;
 	text-align: right;
+	vertical-align: top;
 }
 label.choice {
 	display:block;
@@ -946,4 +947,120 @@ form li.error p.error {
 }
 form li.complex p.error {
 	padding:0 0 9px 0 !important;
+}
+
+/* 
+ * ErrorsField
+*/
+.errorsField{
+    padding-left: 10px;
+	overflow: hidden;
+	*zoom: 1;
+}
+
+.errorsFieldForContainer{
+	float: none;
+	padding-left: 10px;
+	display:inline-block;
+	zoom:1;
+	*display:inline;
+}
+
+.errorMessages{
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+}
+
+.warningMessages{
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+}
+
+.infoMessages{
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+}
+
+.errorsFieldForContainer .errorMessages{
+
+	border: 1px solid red;
+	background-color: #FFE0E9;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+
+.errorsFieldForContainer .warningMessages{
+	border: 1px solid goldenrod;
+	background-color: #F4E271;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+
+.errorsFieldForContainer .infoMessages{
+	border: 1px solid #82CAFA;
+	background-color: #AFDCEC;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+
+.errorsField ul{
+	list-style: none outside none;
+	margin: 0;
+}
+
+.errorsField li{
+	list-style: none outside none;
+	margin-left: 0;
+    padding: 1px 0;
+	line-height: 1.3em;
+}
+
+.errorsField .errorMessages{
+	color: red;
+	font-weight: bold;
+}
+
+span.clientError, div.clientError, tr.clientError, span.serverError, div.serverError, tr.serverError{
+	background-color: #FFE0E9 !important;
+}
+
+span.information, div.information, tr.information{
+	background-color: #AFDCEC;
+}
+
+span.warning, div.warning, tr.warning{
+	background-color: #F4E271;
+}
+
+label.clientError, label.serverError{
+	color: red !important;
+}
+
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+/* IE specific */
+* html .clearfix {height: 1%;}
+
+.boxLayoutHorizontalItem{
+	padding-right: 20px;
+}
+
+.boxLayoutVerticalItem{
+	padding-bottom: 20px;
+	display: block;
 }

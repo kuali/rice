@@ -220,6 +220,13 @@ public interface LayoutManager extends Serializable {
 	 * @param styleClass
 	 */
 	public void setStyleClasses(List<String> styleClasses);
+	
+	/**
+	 * This method adds a single style class to the list of css style classes on this component
+	 * 
+	 * @param style
+	 */
+	public void addStyleClass(String styleClass);
 
 	/**
 	 * Context map for the layout manager

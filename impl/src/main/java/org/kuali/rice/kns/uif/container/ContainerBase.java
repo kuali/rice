@@ -193,6 +193,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#getErrorsField()
 	 */
+	@Override
 	public ErrorsField getErrorsField() {
 		return this.errorsField;
 	}
@@ -200,13 +201,16 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#setErrorsField(org.kuali.rice.kns.uif.field.ErrorsField)
 	 */
+	@Override
 	public void setErrorsField(ErrorsField errorsField) {
+		errorsField.setParentComponent(this);
 		this.errorsField = errorsField;
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#getHelp()
 	 */
+	@Override
 	public Help getHelp() {
 		return this.help;
 	}
@@ -214,6 +218,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#setHelp(org.kuali.rice.kns.uif.widget.Help)
 	 */
+	@Override
 	public void setHelp(Help help) {
 		this.help = help;
 	}
@@ -221,6 +226,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#getItems()
 	 */
+	@Override
 	public abstract List<? extends Component> getItems();
 
 	/**
@@ -255,6 +261,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#getLayoutManager()
 	 */
+	@Override
 	public LayoutManager getLayoutManager() {
 		return this.layoutManager;
 	}
@@ -262,6 +269,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#setLayoutManager(org.kuali.rice.kns.uif.layout.LayoutManager)
 	 */
+	@Override
 	public void setLayoutManager(LayoutManager layoutManager) {
 		this.layoutManager = layoutManager;
 	}
@@ -269,6 +277,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#getHeader()
 	 */
+	@Override
 	public HeaderField getHeader() {
 		return this.header;
 	}
@@ -276,6 +285,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#setHeader(org.kuali.rice.kns.uif.field.HeaderField)
 	 */
+	@Override
 	public void setHeader(HeaderField header) {
 		this.header = header;
 	}
@@ -283,6 +293,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#getFooter()
 	 */
+	@Override
 	public Group getFooter() {
 		return this.footer;
 	}
@@ -290,6 +301,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#setFooter(org.kuali.rice.kns.uif.container.Group)
 	 */
+	@Override
 	public void setFooter(Group footer) {
 		this.footer = footer;
 	}
@@ -353,6 +365,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#getSummaryMessageField()
 	 */
+	@Override
 	public MessageField getSummaryMessageField() {
 		return this.summaryMessageField;
 	}
@@ -360,6 +373,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	/**
 	 * @see org.kuali.rice.kns.uif.container.Container#setSummaryMessageField(org.kuali.rice.kns.uif.field.MessageField)
 	 */
+	@Override
 	public void setSummaryMessageField(MessageField summaryMessageField) {
 		this.summaryMessageField = summaryMessageField;
 	}

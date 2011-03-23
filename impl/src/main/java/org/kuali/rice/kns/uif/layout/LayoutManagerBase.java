@@ -202,6 +202,18 @@ public abstract class LayoutManagerBase implements LayoutManager {
 		String[] classes = StringUtils.split(styleClasses);
 		this.styleClasses = Arrays.asList(classes);
 	}
+	
+	/**
+	 * This method adds a single style to the list of css style classes on this layoutManager
+	 * 
+	 * @param style
+	 */
+	@Override
+	public void addStyleClass(String styleClass){
+		if(!styleClasses.contains(styleClass)){
+			styleClasses.add(styleClass);
+		}
+	}
 
 	/**
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getContext()

@@ -66,6 +66,12 @@ public class UITestForm extends UifFormBase {
 	private boolean field31;
 	private String field32;
 	private String field33;
+	private String vField1;
+	private String vField2;
+	private String vField3;
+	private String hField1;
+	private String hField2;
+	private String hField3;
 
 	private TravelAccount travelAccount1;
 	private TravelAccount travelAccount2;
@@ -366,6 +372,90 @@ public class UITestForm extends UifFormBase {
 
 	public void setTravelAccount3(TravelAccount travelAccount3) {
 		this.travelAccount3 = travelAccount3;
+	}
+
+	/**
+	 * @return the vField1
+	 */
+	public String getvField1() {
+		return this.vField1;
+	}
+
+	/**
+	 * @param vField1 the vField1 to set
+	 */
+	public void setvField1(String vField1) {
+		this.vField1 = vField1;
+	}
+
+	/**
+	 * @return the vField2
+	 */
+	public String getvField2() {
+		return this.vField2;
+	}
+
+	/**
+	 * @param vField2 the vField2 to set
+	 */
+	public void setvField2(String vField2) {
+		this.vField2 = vField2;
+	}
+
+	/**
+	 * @return the vField3
+	 */
+	public String getvField3() {
+		return this.vField3;
+	}
+
+	/**
+	 * @param vField3 the vField3 to set
+	 */
+	public void setvField3(String vField3) {
+		this.vField3 = vField3;
+	}
+
+	/**
+	 * @return the hField1
+	 */
+	public String gethField1() {
+		return this.hField1;
+	}
+
+	/**
+	 * @param hField1 the hField1 to set
+	 */
+	public void sethField1(String hField1) {
+		this.hField1 = hField1;
+	}
+
+	/**
+	 * @return the hField2
+	 */
+	public String gethField2() {
+		return this.hField2;
+	}
+
+	/**
+	 * @param hField2 the hField2 to set
+	 */
+	public void sethField2(String hField2) {
+		this.hField2 = hField2;
+	}
+
+	/**
+	 * @return the hField3
+	 */
+	public String gethField3() {
+		return this.hField3;
+	}
+
+	/**
+	 * @param hField3 the hField3 to set
+	 */
+	public void sethField3(String hField3) {
+		this.hField3 = hField3;
 	}
 
 }

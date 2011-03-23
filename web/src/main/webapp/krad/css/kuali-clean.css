@@ -228,11 +228,24 @@ div.globalbuttons
 	padding-bottom: 5px;	
 }
 
-.field_attribute
+span.field_attribute
 {
-   vertical-align: middle;
+   float: left;
+   padding-top: 0px;		
+}
+
+div.field_attribute
+{
+   float: left;
+   clear: both;
+   padding-top: 0px;		
+}
+
+td.field_attribute
+{
+   vertical-align: top;
    padding-bottom: 5px;	
-   padding-top: 8px;	
+   padding-top: 5px;		
 }
 
 th.infoline {
@@ -249,7 +262,6 @@ th.infoline {
 	font-weight: bold;
 	font-size:95%;
 	display:block;
-	padding-top: 15px;
 	padding-bottom: 5px;
 }
 

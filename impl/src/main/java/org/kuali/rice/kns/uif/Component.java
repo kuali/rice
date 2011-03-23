@@ -369,13 +369,6 @@ public interface Component extends Serializable, Ordered {
 	public void setStyleClasses(List<String> styleClasses);
 
 	/**
-	 * Adds a single style to the list of styles on this component
-	 * 
-	 * @param style
-	 */
-	public void addStyleClass(String styleClass);
-
-	/**
 	 * Number of places the component should take up horizontally in the
 	 * container
 	 * 
@@ -498,13 +491,6 @@ public interface Component extends Serializable, Ordered {
 	public Map<String, String> getComponentOptions();
 
 	/**
-	 * Setter for the widget's options
-	 * 
-	 * @param widgetOptions
-	 */
-	public void setComponentOptions(Map<String, String> componentOptions);
-
-	/**
 	 * <code>ComponentDecorator</code> instance for the component
 	 * 
 	 * <p>
@@ -553,4 +539,24 @@ public interface Component extends Serializable, Ordered {
 	 */
 	public void setOrder(int order);
 
+	/**
+	 * Setter for the widget's options
+	 * 
+	 * @param widgetOptions
+	 */
+	public void setComponentOptions(Map<String, String> componentOptions);
+
+	/**
+	 * This method adds a single style class to the list of css style classes on this component
+	 * 
+	 * @param style
+	 */
+	public void addStyleClass(String styleClass);
+
+	/**
+	 * This method ...
+	 * 
+	 * @param itemStyle
+	 */
+	public void appendToStyle(String itemStyle);
 }

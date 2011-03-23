@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.spring.controller.UifControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -98,7 +99,18 @@ public class UITestController extends UifControllerBase {
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
 	public ModelAndView save(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-
+		//For testing server side errors:
+		if(uiTestForm.getField2().equals("server_error")){
+			GlobalVariables.getMessageMap().putError("field2", "serverTestError");
+			GlobalVariables.getMessageMap().putError("field2", "serverTestError2");
+			GlobalVariables.getMessageMap().putWarning("field2", "serverTestWarning");
+			GlobalVariables.getMessageMap().putInfo("field2", "serverTestInfo");
+			GlobalVariables.getMessageMap().putInfo("field3", "serverTestInfo");
+			GlobalVariables.getMessageMap().putError("field13", "serverTestError");
+			GlobalVariables.getMessageMap().putWarning("field4", "serverTestWarning");
+			//GlobalVariables.getMessageMap().clearErrorMessages();
+			return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), uiTestForm.getPageId());
+		}
 		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page2");
 	}
 	

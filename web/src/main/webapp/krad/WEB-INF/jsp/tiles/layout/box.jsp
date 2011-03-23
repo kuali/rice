@@ -39,9 +39,24 @@
 <%-- render items --%> 
 <div id="${manager.id}" ${style} ${styleClass}>
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-     <%-- wrapping span gives a way to pad items and line break for vertical orientation --%>
-     <span style="${manager.itemSpanStyle}">
-       <krad:template component="${item}"/>
-     </span>  
+	   <c:choose>
+	   	   <c:when test="${manager.orientation=='HORIZONTAL'}">
+	       		<krad:template component="${item}"/>
+	       </c:when>
+	       <c:otherwise>
+	       		<span class="fieldLine boxLayoutVerticalItem clearfix" style="${manager.itemStyle}">
+	       			<krad:template component="${item}"/>
+	       		</span>
+	       </c:otherwise>
+	   </c:choose>
    </c:forEach>
+   <c:if test="${manager.orientation=='HORIZONTAL'}">
+	   <span id="${manager.id}_errors_block" class="errorsField" style="float:left;">
+	   		<c:forEach items="${items}" var="item" varStatus="itemVarStatus">
+		   		<c:if test="${item.class.name =='org.kuali.rice.kns.uif.field.AttributeField'}">
+				  <krad:template component="${item.errorsField}"/>
+				</c:if>
+	   		</c:forEach>
+	   </span>
+   </c:if>
 </div> 

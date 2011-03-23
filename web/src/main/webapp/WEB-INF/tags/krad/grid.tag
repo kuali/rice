@@ -89,7 +89,7 @@
    </c:if>
    <c:if test="${!renderHeaderColumns}">
      <td width="${cellWidth}" colspan="${item.colSpan}" rowspan="${item.rowSpan}"
-         ${style} ${styleClass} ${evenOddClass}">
+         ${style} ${styleClass} ${evenOddClass}>
        <krad:template component="${item}"/>
      </td>
    </c:if>

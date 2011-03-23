@@ -25,6 +25,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.AttributeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/attributeField.jsp"/>
       <property name="styleClasses" value="field_attribute"/>
+	  <property name="errorsField">
+        <bean parent="ErrorsField"/>
+      </property>
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>      
@@ -65,7 +68,67 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="requiredMessageField">
         <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClasses="required"/>
       </property>   
-  </bean>  
+  </bean>
+  
+  <bean id="ErrorsField" abstract="true" parent="ErrorsField-parentBean"/>
+  <bean id="ErrorsField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ErrorsField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/errorsField.jsp"/>
+      <property name="styleClasses" value="errorsField"/>
+      <property name="displayErrorTitle" value="false"/>
+	  <property name="displayWarningTitle" value="false"/> 
+	  <property name="displayInfoTitle" value="false"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="false"/> 
+	  <property name="highlightOnError" value="true"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <property name="displayMessages" value="true"/>
+	  <property name="displayErrorMessages" value="true"/>
+	  <property name="displayWarningMessages" value="true"/>
+	  <property name="displayInfoMessages" value="true"/>
+	  <property name="displayCounts" value="false"/>
+  </bean>
+  
+  <bean id="ErrorsField_Group" abstract="true" parent="ErrorsField">
+      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+      <property name="displayErrorTitle" value="false"/>
+	  <property name="displayWarningTitle" value="false"/> 
+	  <property name="displayInfoTitle" value="false"/> 
+	  <property name="displayFieldLabelWithMessages" value="false"/>
+	  <property name="displayNestedMessages" value="false"/> 
+	  <property name="highlightOnError" value="false"/>
+	  <property name="combineMessages" value="false"/> 
+	  <property name="allowMessageRepeat" value="false"/>
+	  <property name="displayMessages" value="false"/>
+	  <property name="displayErrorMessages" value="false"/>
+	  <property name="displayWarningMessages" value="false"/>
+	  <property name="displayInfoMessages" value="false"/>
+	  <property name="displayCounts" value="false"/>
+  </bean>
+  
+  <bean id="ErrorsField_View" abstract="true" parent="ErrorsField">
+      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+	  <property name="additionalKeysToMatch">
+	  	<list>
+	  		<value>GLOBAL_ERRORS</value>
+			<value>GLOBAL_WARNINGS</value>
+			<value>GLOBAL_INFO</value>
+	  	</list>
+	  </property>
+      <property name="displayErrorTitle" value="true"/>
+	  <property name="displayWarningTitle" value="true"/> 
+	  <property name="displayInfoTitle" value="true"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="true"/> 
+	  <property name="highlightOnError" value="false"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <property name="displayMessages" value="true"/>
+	  <property name="displayErrorMessages" value="true"/>
+	  <property name="displayWarningMessages" value="true"/>
+	  <property name="displayInfoMessages" value="true"/>
+	  <property name="displayCounts" value="true"/>
+  </bean>
   
   <bean id="ActionField" abstract="true" parent="ActionField-parentBean"/>
   <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ActionField" scope="prototype">

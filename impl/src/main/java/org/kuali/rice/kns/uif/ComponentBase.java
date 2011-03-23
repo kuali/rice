@@ -497,15 +497,6 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#addStyleClass(java.lang.String)
-	 */
-	public void addStyleClass(String styleClass) {
-		if (!styleClass.contains(styleClass)) {
-			styleClasses.add(styleClass);
-		}
-	}
-
-	/**
 	 * @see org.kuali.rice.kns.uif.Component#isRender()
 	 */
 	public boolean isRender() {
@@ -638,13 +629,6 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 */
 	public boolean getSupportsOnDocumentReady() {
 		return false;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnDocumentReadyScript()
-	 */
-	public String getOnDocumentReadyScript() {
-		return onDocumentReadyScript;
 	}
 
 	/**
@@ -1081,4 +1065,31 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 		return sb.toString();
 	}
 
+	/**
+	 * This method adds a single style to the list of css style classes on this component
+	 * 
+	 * @param style
+	 */
+	@Override
+	public void addStyleClass(String styleClass){
+		if(!styleClasses.contains(styleClass)){
+			styleClasses.add(styleClass);
+		}
+	}
+
+	/**
+	 * Script to be run when the document is 'ready'
+	 * @return the onDocumentReadyScript
+	 */
+	public String getOnDocumentReadyScript() {
+		return onDocumentReadyScript;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.uif.Component#appendToStyle(java.lang.String)
+	 */
+	@Override
+	public void appendToStyle(String styleRules) {
+		style = style + styleRules; 
+	}
 }

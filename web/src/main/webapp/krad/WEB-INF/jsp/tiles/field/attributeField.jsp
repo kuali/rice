@@ -44,6 +44,7 @@
       <krad:template component="${field.summaryMessageField}"/>
       
       <krad:template component="${field.control}" field="${field}"/>
+      
     </c:otherwise>
   </c:choose>
   
@@ -62,4 +63,7 @@
 
   <%-- render field help --%>
   
-</krad:span>  
+</krad:span>
+<c:if test="${!field.errorsField.alternateContainer}">
+	<krad:template component="${field.errorsField}"/>
+</c:if>

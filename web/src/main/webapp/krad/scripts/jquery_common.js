@@ -456,3 +456,40 @@ function createTable(controlId, options) {
 	})
 }
 
+function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide){
+	var div = jq("#" + errorDivId);
+	var label = jq("#" + errorDivId.replace("errors_div", "label"));
+	var highlightLine = "";
+	//should do layout type check here instead - this may be unreliable (?)
+	if (div.parent().is("td")) {
+		highlightLine = div.closest("td.field_attribute").closest("tr");
+	}
+	else{
+		highlightLine = div.closest(".fieldLine");
+	}
+	if (highlightLine) {
+		if(errorNum && !clientSide){
+			highlightLine.addClass("serverError");
+			label.addClass("serverError");
+		}
+		else if(errorNum){
+			highlightLine.addClass("clientError");
+			label.addClass("clientError");
+		}
+		else if(warningNum){
+			highlightLine.addClass("warning");
+			label.addClass("warning");
+		}
+		else if(infoNum){
+			highlightLine.addClass("information");
+			label.addClass("information");
+		}
+		else{
+			//we are only removing errors client side - no knowledge of warnings/infos
+			highlightLine.removeClass("clientError");
+			label.removeClass("clientError");
+		}
+	}
+	
+}
+

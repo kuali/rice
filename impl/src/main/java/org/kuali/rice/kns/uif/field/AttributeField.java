@@ -130,27 +130,6 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		// update ids so they all match the attribute
-		String id = getId();
-		if (getControl() != null) {
-			getControl().setId(id);
-		}
-		if (getErrorsField() != null) {
-			getErrorsField().setId(id + UifConstants.IdSuffixes.ERRORS);
-		}
-		if (getLabelField() != null) {
-			getLabelField().setId(id + UifConstants.IdSuffixes.LABEL);
-		}
-		if (getSummaryMessageField() != null) {
-			getSummaryMessageField().setId(id + UifConstants.IdSuffixes.SUMMARY);
-		}
-		if (getConstraintMessageField() != null) {
-			getConstraintMessageField().setId(id + UifConstants.IdSuffixes.CONSTRAINT);
-		}
-		if (getFieldLookup() != null) {
-			getFieldLookup().setId(id + UifConstants.IdSuffixes.QUICK_FINDER);
-		}
-		setId(id + UifConstants.IdSuffixes.ATTRIBUTE);
 
 		if (bindingInfo != null) {
 			bindingInfo.setDefaults(view, getPropertyName());
@@ -402,6 +381,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 * @param errorsField
 	 */
 	public void setErrorsField(ErrorsField errorsField) {
+		errorsField.setParentComponent(this);
 		this.errorsField = errorsField;
 	}
 
@@ -559,6 +539,35 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public boolean getSupportsOnLoad() {
 		return true;
 	}
+	
+	/**
+	 * This method sets the ids on all components the attribute field uses so they will all
+	 * contain this attribute's id in their ids.  This is useful for jQuery manipulation.
+	 * 
+	 */
+	private void setupIds(){
+		// update ids so they all match the attribute
+		String id = getId();
+		if (getControl() != null) {
+			getControl().setId(id);
+		}
+		if (getErrorsField() != null) {
+			getErrorsField().setId(id + UifConstants.IdSuffixes.ERRORS);
+		}
+		if (getLabelField() != null) {
+			getLabelField().setId(id + UifConstants.IdSuffixes.LABEL);
+		}
+		if (getSummaryMessageField() != null) {
+			getSummaryMessageField().setId(id + UifConstants.IdSuffixes.SUMMARY);
+		}
+		if (getConstraintMessageField() != null) {
+			getConstraintMessageField().setId(id + UifConstants.IdSuffixes.CONSTRAINT);
+		}
+		if (getFieldLookup() != null) {
+			getFieldLookup().setId(id + UifConstants.IdSuffixes.QUICK_FINDER);
+		}
+		setId(id + UifConstants.IdSuffixes.ATTRIBUTE);
+	}
 
 	/**
 	 * performFinalize in AttributeField sets up the client side validation for
@@ -572,6 +581,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 	public void performFinalize(View view, Object model) {
 		super.performFinalize(view, model);
 
+		setupIds();
+		
 		// Sets message
 		if (StringUtils.isNotBlank(summary)) {
 			summaryMessageField.setMessageText(summary);
@@ -596,9 +607,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 			if (control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
 				((TextControl) control).getDatePicker().getComponentOptions().put("minDate", this.getExclusiveMin());
 			}
-			else {
-				String rule = "jq('[name=\"" + propertyName + "\"]').rules(\"add\", {\n minExclusive: ["
-						+ this.getExclusiveMin() + "]});";
+			else{
+				String rule = "jq('[name=\""+ bindingInfo.getBindingPath() + "\"]').rules(\"add\", {\n minExclusive: ["+ this.getExclusiveMin() + "]});";
 				addScriptToView(view, rule);
 			}
 		}
@@ -607,9 +617,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 			if (control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
 				((TextControl) control).getDatePicker().getComponentOptions().put("maxDate", this.getInclusiveMax());
 			}
-			else {
-				String rule = "jq('[name=\"" + propertyName + "\"]').rules(\"add\", {\n maxInclusive: ["
-						+ this.getInclusiveMax() + "]});";
+			else{
+				String rule = "jq('[name=\""+ bindingInfo.getBindingPath() + "\"]').rules(\"add\", {\n maxInclusive: ["+ this.getInclusiveMax() + "]});";
 				addScriptToView(view, rule);
 			}
 		}
@@ -764,7 +773,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 		}
 
 		if (wc.getConstraint() != null && StringUtils.isNotEmpty(booleanStatement)) {
-			ruleString = createRule(this.getPropertyName(), wc.getConstraint(), booleanStatement, view);
+			ruleString = createRule(bindingInfo.getBindingPath(), wc.getConstraint(), booleanStatement, view);
 		}
 
 		if (StringUtils.isNotEmpty(ruleString)) {
@@ -919,16 +928,15 @@ public class AttributeField extends FieldBase implements DataBinding {
 		// field occurs before case
 		String dependsClass = "dependsOn-" + constraint.getAttributePath();
 		String methodName = "prConstraint" + methodKey;
-		// TODO make it a unique methodName
-		String addClass = "jq('[name=\"" + propertyName + "\"]').addClass('" + dependsClass + "');\n" + "jq('[name=\""
-				+ propertyName + "\"]').addClass('" + methodName + "');\n";
-		String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" + " if("
-				+ booleanStatement + "){ return (this.optional(element) || (coerceValue('"
-				+ constraint.getAttributePath() + "')));}else{return true;} " + "}, \"This field requires "
-				+ constraint.getAttributePath() + "\");";
-
-		String ifStatement = "if(occursBefore('" + constraint.getAttributePath() + "','" + propertyName + "')){"
-				+ addClass + method + "}";
+		//TODO make it a unique methodName
+		String addClass = "jq('[name=\""+ bindingInfo.getBindingPath() + "\"]').addClass('" + dependsClass + "');\n" +
+			"jq('[name=\""+ bindingInfo.getBindingPath() + "\"]').addClass('" + methodName + "');\n";
+		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
+			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + constraint.getAttributePath() + "')));}else{return true;} " +
+			"}, \"This field requires " + constraint.getAttributePath() +"\");";
+		
+		String ifStatement = "if(occursBefore('" + constraint.getAttributePath() + "','" + bindingInfo.getBindingPath() + 
+		"')){" + addClass + method + "}";
 		return ifStatement;
 	}
 
@@ -948,12 +956,13 @@ public class AttributeField extends FieldBase implements DataBinding {
 	private String getPostrequisiteStatement(PrerequisiteConstraint constraint, String booleanStatement) {
 		// field occurs after case
 		String rule = "";
-		String function = "function(element){\n" + "return (coerceValue('" + this.getPropertyName() + "') && "
-				+ booleanStatement + ");}";
-		String postStatement = "\nelse if(occursBefore('" + propertyName + "','" + constraint.getAttributePath()
-				+ "')){\njq('[name=\"" + constraint.getAttributePath() + "\"]').rules(\"add\", { required: \n"
-				+ function + ", \nmessages: {\nrequired: \"Required by field: " + this.getLabel() + "\"}});}\n";
-
+		String function = "function(element){\n" +
+			"return (coerceValue('"+ bindingInfo.getBindingPath() + "') && " + booleanStatement + ");}";
+		String postStatement = "\nelse if(occursBefore('" + bindingInfo.getBindingPath() + "','" + constraint.getAttributePath() + 
+			"')){\njq('[name=\""+ constraint.getAttributePath() + 
+			"\"]').rules(\"add\", { required: \n" + function 
+			+ ", \nmessages: {\nrequired: \"Required by field: "+ this.getLabel() +"\"}});}\n";
+		
 		return postStatement;
 
 	}
@@ -975,11 +984,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 		mustOccurFieldNames = new ArrayList<String>();
 		// TODO make this show the fields its requiring
 		String methodName = "moConstraint" + methodKey;
-		String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" + " if("
-				+ booleanStatement + "){return (this.optional(element) || (" + getMustOccurStatement(mc)
-				+ "));}else{return true;}" + "}, \"This field requires something else" + "" + "\");";
-		String rule = method + "jq('[name=\"" + propertyName + "\"]').rules(\"add\", {\n" + methodName
-				+ ": function(element){return (" + booleanStatement + ");}\n});";
+		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
+		" if(" + booleanStatement + "){return (this.optional(element) || ("+ getMustOccurStatement(mc) + "));}else{return true;}" +
+		"}, \"This field requires something else" + "" +"\");";
+		String rule = method + "jq('[name=\""+ bindingInfo.getBindingPath() + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
 		addScriptToView(view, rule);
 	}
 

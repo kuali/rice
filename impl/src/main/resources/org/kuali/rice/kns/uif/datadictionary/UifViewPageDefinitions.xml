@@ -25,6 +25,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="View-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
       <property name="viewHelperServiceBeanId" value="viewHelperService"/>
       <property name="styleClasses" value="workarea"/>
+	  <property name="errorsField">
+        <bean parent="ErrorsField_View"/>
+      </property>
       <property name="header">
         <bean parent="HeaderView"/>
       </property> 

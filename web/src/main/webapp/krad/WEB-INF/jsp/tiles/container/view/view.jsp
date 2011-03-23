@@ -34,6 +34,7 @@
    
      <!----------------------------------- #VIEW PAGE --------------------------------------->  
      <div id="viewpage_div">
+     	<krad:template component="${view.errorsField}"/>
         <krad:template component="${view.currentPage}"/>
        
         <%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>

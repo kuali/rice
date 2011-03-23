@@ -43,7 +43,6 @@ import org.w3c.dom.Element;
 		ParameterQueryResults.Elements.RESULTS,
 		ParameterQueryResults.Elements.TOTAL_ROW_COUNT,
 		ParameterQueryResults.Elements.MORE_RESULTS_AVAILALBE,
-		ParameterQueryResults.Elements.RESULTS_TRUNCATED,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public class ParameterQueryResults implements CountAwareQueryResults<Parameter> {
 
@@ -56,10 +55,7 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter> 
 	
 	@XmlElement(name = Elements.MORE_RESULTS_AVAILALBE, required = true)
 	private final boolean moreResultsAvailable;
-	
-	@XmlElement(name = Elements.RESULTS_TRUNCATED, required = true)
-	private final boolean resultsTruncated;
-	
+		
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -68,14 +64,12 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter> 
 		this.results = null;
 		this.totalRowCount = null;
 		this.moreResultsAvailable = false;
-		this.resultsTruncated = false;
 	}
 
 	private ParameterQueryResults(Builder builder) {
 		this.results = builder.getResults();
 		this.totalRowCount = builder.getTotalRowCount();
 		this.moreResultsAvailable = builder.isMoreResultsAvailable();
-		this.resultsTruncated = builder.isResultsTruncated();
 	}
 
 	@Override
@@ -93,22 +87,15 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter> 
 		return moreResultsAvailable;
 	}
 
-	@Override
-	public boolean isResultsTruncated() {
-		return resultsTruncated;
-	}
-
 	public static class Builder {
 
 		private List<Parameter> results;
 		private Integer totalRowCount;
 		private boolean moreResultsAvailable;
-		private boolean resultsTruncated;
 		
 		private Builder() {
 			this.results = new ArrayList<Parameter>();
 			this.moreResultsAvailable = false;
-			this.resultsTruncated = false;
 		}
 				
 		public ParameterQueryResults build() {
@@ -138,14 +125,6 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter> 
 		public void setMoreResultsAvailable(boolean moreResultsAvailable) {
 			this.moreResultsAvailable = moreResultsAvailable;
 		}
-
-		public boolean isResultsTruncated() {
-			return this.resultsTruncated;
-		}
-
-		public void setResultsTruncated(boolean resultsTruncated) {
-			this.resultsTruncated = resultsTruncated;
-		}
 		
 	}
 	
@@ -167,7 +146,6 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter> 
 		public final static String PARAMETER = "parameter";
 		public final static String TOTAL_ROW_COUNT = "totalRowCount";
 		public final static String MORE_RESULTS_AVAILALBE = "moreResultsAvailable";
-		public final static String RESULTS_TRUNCATED = "resultsTruncated";
 	}
 	
 }

@@ -6,6 +6,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * Defines possible directives for how a query is requested to produce count values in it's results.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
  */
 @XmlType(name = "CountFlagType")
 @XmlEnum(String.class)
@@ -22,14 +25,14 @@ public enum CountFlag {
 	@XmlEnumValue(value="INCLUDE") INCLUDE("INCLUDE"),
 	
 	/**
-	 * Indicates that the *only* the row count should be returned with the query results.  The
+	 * Indicates that *only* the row count should be returned with the query results.  The
 	 * result should not include the actual rows returned from the query.
 	 */
 	@XmlEnumValue(value="ONLY") ONLY("ONLY");
 	
 	private final String flag;
 	
-	CountFlag(final String flag) {
+	private CountFlag(final String flag) {
 		this.flag = flag;
 	}
 	
@@ -40,18 +43,6 @@ public enum CountFlag {
 	 */
 	public String getFlag() {
 		return flag;
-	}
-	
-	public static CountFlag fromFlag(String flag) {
-		if (flag == null) {
-			return null;
-		}
-		for (CountFlag countFlag : values()) {
-			if (countFlag.flag.equals(flag)) {
-				return countFlag;
-			}
-		}
-		throw new IllegalArgumentException("Failed to locate the CountFlag with the given flag value: " + flag);
 	}
 	
 }

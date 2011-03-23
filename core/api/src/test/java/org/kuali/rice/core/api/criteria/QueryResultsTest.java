@@ -35,9 +35,9 @@ import org.kuali.rice.core.test.JAXBAssert;
  */
 public class QueryResultsTest {
 	
-	private static final String WITH_DEFAULTS_XML = "<personQueryResults xmlns=\"http://rice.kuali.org/core/v2_0\"><results/><moreResultsAvailable>false</moreResultsAvailable><resultsTruncated>false</resultsTruncated></personQueryResults>";
-	private static final String WITH_RESULTS_XML = "<personQueryResults xmlns=\"http://rice.kuali.org/core/v2_0\"><results><person><name><first>first1</first><last>last1</last></name><displayName>first1 last1</displayName></person><person><name><first>first2</first><last>last2</last></name><displayName>first2 last2</displayName></person><person><name><first>first3</first><last>last3</last></name><displayName>first3 last3</displayName></person></results><moreResultsAvailable>false</moreResultsAvailable><resultsTruncated>false</resultsTruncated></personQueryResults>";
-	private static final String WITH_EVERYTHING_XML = "<personQueryResults xmlns=\"http://rice.kuali.org/core/v2_0\"><results><person><name><first>first1</first><last>last1</last></name><displayName>first1 last1</displayName></person><person><name><first>first2</first><last>last2</last></name><displayName>first2 last2</displayName></person><person><name><first>first3</first><last>last3</last></name><displayName>first3 last3</displayName></person></results><totalRowCount>5000</totalRowCount><moreResultsAvailable>true</moreResultsAvailable><resultsTruncated>true</resultsTruncated></personQueryResults>";
+	private static final String WITH_DEFAULTS_XML = "<personQueryResults xmlns=\"http://rice.kuali.org/core/v2_0\"><results/><moreResultsAvailable>false</moreResultsAvailable></personQueryResults>";
+	private static final String WITH_RESULTS_XML = "<personQueryResults xmlns=\"http://rice.kuali.org/core/v2_0\"><results><person><name><first>first1</first><last>last1</last></name><displayName>first1 last1</displayName></person><person><name><first>first2</first><last>last2</last></name><displayName>first2 last2</displayName></person><person><name><first>first3</first><last>last3</last></name><displayName>first3 last3</displayName></person></results><moreResultsAvailable>false</moreResultsAvailable></personQueryResults>";
+	private static final String WITH_EVERYTHING_XML = "<personQueryResults xmlns=\"http://rice.kuali.org/core/v2_0\"><results><person><name><first>first1</first><last>last1</last></name><displayName>first1 last1</displayName></person><person><name><first>first2</first><last>last2</last></name><displayName>first2 last2</displayName></person><person><name><first>first3</first><last>last3</last></name><displayName>first3 last3</displayName></person></results><totalRowCount>5000</totalRowCount><moreResultsAvailable>true</moreResultsAvailable></personQueryResults>";
 
 	@Test
 	public void testBuild_withDefaults() {
@@ -45,7 +45,6 @@ public class QueryResultsTest {
 		assertTrue("results shoudl be empty by default", queryResults.getResults().isEmpty());
 		assertNull("totalRowCount should default to null", queryResults.getTotalRowCount());
 		assertFalse("isMoreResultsAvailable should default to false", queryResults.isMoreResultsAvailable());
-		assertFalse("isResultsTruncated should default to false", queryResults.isResultsTruncated());
 	}
 	
 	@Test
@@ -54,7 +53,6 @@ public class QueryResultsTest {
 		assertEquals("should have 3 results", 3, queryResults.getResults().size());
 		assertNull("totalRowCount should default to null", queryResults.getTotalRowCount());
 		assertFalse("isMoreResultsAvailable should default to false", queryResults.isMoreResultsAvailable());
-		assertFalse("isResultsTruncated should default to false", queryResults.isResultsTruncated());
 		
 		Person person1 = queryResults.getResults().get(0);
 		Person person2 = queryResults.getResults().get(1);
@@ -80,7 +78,6 @@ public class QueryResultsTest {
 		PersonQueryResults queryResults = createWithEverything();
 		assertEquals("totalRowCount should be 5000", new Integer(5000), queryResults.getTotalRowCount());
 		assertTrue("isMoreResultsAvailable should be true", queryResults.isMoreResultsAvailable());
-		assertTrue("isResultsTruncated should be true", queryResults.isResultsTruncated());
 		
 		Person person1 = queryResults.getResults().get(0);
 		Person person2 = queryResults.getResults().get(1);
@@ -133,7 +130,6 @@ public class QueryResultsTest {
 		PersonQueryResults.Builder builder =  PersonQueryResults.Builder.create();
 		builder.setResults(buildMeSomePeeps());
 		builder.setMoreResultsAvailable(true);
-		builder.setResultsTruncated(true);
 		builder.setTotalRowCount(5000);
 		return builder.build();
 	}

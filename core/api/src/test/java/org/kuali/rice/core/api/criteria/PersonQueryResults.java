@@ -45,7 +45,6 @@ import org.w3c.dom.Element;
 		PersonQueryResults.Elements.RESULTS,
 		PersonQueryResults.Elements.TOTAL_ROW_COUNT,
 		PersonQueryResults.Elements.MORE_RESULTS_AVAILALBE,
-		PersonQueryResults.Elements.RESULTS_TRUNCATED,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public class PersonQueryResults implements CountAwareQueryResults<Person> {
 
@@ -58,10 +57,7 @@ public class PersonQueryResults implements CountAwareQueryResults<Person> {
 	
 	@XmlElement(name = Elements.MORE_RESULTS_AVAILALBE, required = true)
 	private final boolean moreResultsAvailable;
-	
-	@XmlElement(name = Elements.RESULTS_TRUNCATED, required = true)
-	private final boolean resultsTruncated;
-	
+		
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -70,14 +66,12 @@ public class PersonQueryResults implements CountAwareQueryResults<Person> {
 		this.results = null;
 		this.totalRowCount = null;
 		this.moreResultsAvailable = false;
-		this.resultsTruncated = false;
 	}
 
 	private PersonQueryResults(Builder builder) {
 		this.results = builder.getResults();
 		this.totalRowCount = builder.getTotalRowCount();
 		this.moreResultsAvailable = builder.isMoreResultsAvailable();
-		this.resultsTruncated = builder.isResultsTruncated();
 	}
 
 	@Override
@@ -95,22 +89,15 @@ public class PersonQueryResults implements CountAwareQueryResults<Person> {
 		return moreResultsAvailable;
 	}
 
-	@Override
-	public boolean isResultsTruncated() {
-		return resultsTruncated;
-	}
-
 	public static class Builder {
 
 		private List<Person> results;
 		private Integer totalRowCount;
 		private boolean moreResultsAvailable;
-		private boolean resultsTruncated;
 		
 		private Builder() {
 			this.results = new ArrayList<Person>();
 			this.moreResultsAvailable = false;
-			this.resultsTruncated = false;
 		}
 		
 		public static Builder create() {
@@ -143,14 +130,6 @@ public class PersonQueryResults implements CountAwareQueryResults<Person> {
 
 		public void setMoreResultsAvailable(boolean moreResultsAvailable) {
 			this.moreResultsAvailable = moreResultsAvailable;
-		}
-
-		public boolean isResultsTruncated() {
-			return this.resultsTruncated;
-		}
-
-		public void setResultsTruncated(boolean resultsTruncated) {
-			this.resultsTruncated = resultsTruncated;
 		}
 		
 	}
@@ -188,7 +167,6 @@ public class PersonQueryResults implements CountAwareQueryResults<Person> {
 		public final static String PERSON = "person";
 		public final static String TOTAL_ROW_COUNT = "totalRowCount";
 		public final static String MORE_RESULTS_AVAILALBE = "moreResultsAvailable";
-		public final static String RESULTS_TRUNCATED = "resultsTruncated";
 	}
 	
 }

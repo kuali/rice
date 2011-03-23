@@ -61,6 +61,7 @@ public final class Criteria extends AbstractCompositeExpression {
 	 * Constructor meant o be used only by the {@link CriteriaBuilder}
 	 * 
 	 * @param expressions the expressions to use when constructing this criteria, can be null or empty
+	 * 
 	 * @see AbstractCompositeExpression#AbstractCompositeExpression(List)
 	 */
 	Criteria(List<Expression> expressions) {

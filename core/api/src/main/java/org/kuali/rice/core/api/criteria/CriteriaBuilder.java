@@ -491,14 +491,16 @@ public final class CriteriaBuilder<T> {
 	 * this builder prior to the invocation of this method.
 	 * 
 	 * <p>The resulting criteria will represent an implicit "and" of all
-	 * expressions included inside of it at the top level.  When inoked, this
+	 * expressions included inside of it at the top level.  When invoked, this
 	 * method will recursively invoke any builders created by the {@link #and()}
 	 * and {@link #or()} and use the expressions on the resulting criteria to
 	 * form the top-level criteria.
 	 * 
 	 * <p>In general practice, this method should only be invoked once, but if
 	 * invoked more than once against the same builder state then it will
-	 * return an equivalent criteria object.
+	 * return an equivalent criteria object.  Additionally, this builder is
+	 * still active after this method has been invoked, so additional
+	 * expressions could be added and a new criteria built at a later time.
 	 * 
 	 * @return a Criteria object built from the expressions defined by this builder
 	 */

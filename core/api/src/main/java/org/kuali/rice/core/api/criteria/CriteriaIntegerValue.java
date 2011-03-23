@@ -28,12 +28,11 @@ import javax.xml.bind.annotation.XmlValue;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.mutable.MutableInt;
 import org.apache.commons.lang.mutable.MutableLong;
-import org.apache.commons.lang.mutable.MutableShort;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A CriteriaValue which stores date and time information in the form of a
+ * {@link BigInteger} value.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -59,23 +58,13 @@ public final class CriteriaIntegerValue implements CriteriaValue<BigInteger> {
     	validateValue(value);
     	this.value = BigInteger.valueOf(value.longValue());
     }
-    
-    CriteriaIntegerValue(MutableShort value) {
-    	validateValue(value);
-    	this.value = BigInteger.valueOf(value.longValue());
-    }
-    
+        
     CriteriaIntegerValue(Integer value) {
     	validateValue(value);
     	this.value = BigInteger.valueOf(value.longValue());
     }
     
     CriteriaIntegerValue(AtomicInteger value) {
-    	validateValue(value);
-    	this.value = BigInteger.valueOf(value.longValue());
-    }
-    
-    CriteriaIntegerValue(MutableInt value) {
     	validateValue(value);
     	this.value = BigInteger.valueOf(value.longValue());
     }
@@ -101,6 +90,7 @@ public final class CriteriaIntegerValue implements CriteriaValue<BigInteger> {
     	}
     }
     
+    @Override
     public BigInteger getValue() {
         return value;
     }

@@ -16,13 +16,26 @@
 package org.kuali.rice.core.api.criteria;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A wrapper for values that are used on a {@link Criteria}.  This wrapper
+ * allows for single parameterized type for all criteria values and
+ * aids primarily in mapping these values to a message format for use on a
+ * remotable service (i.e. with marhaling to XML using JAXB)
+ * 
+ * <p>Has a single method {@link #getValue()} which simply returns the
+ * wrapped value.
+ * 
+ * @param <T> the type of the value stored by this CriteriaValue
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface CriteriaValue<T> {
 
+	/**
+	 * Returns the stored value.  This value should never be null.
+	 * 
+	 * @return the stored value, should never be null
+	 */
     T getValue();
     
 }

@@ -80,7 +80,7 @@ public final class EqualExpression extends AbstractExpression implements ValuedE
 	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
 	 */
     EqualExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }

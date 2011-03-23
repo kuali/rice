@@ -28,7 +28,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A CriteriaValue which stores date and time information in the form of a
+ * {@link Calendar} value.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -62,7 +63,8 @@ public final class CriteriaDateTimeValue implements CriteriaValue<Calendar> {
     		throw new IllegalArgumentException("Value cannot be null.");
     	}
     }
-        
+    
+    @Override
     public Calendar getValue() {
         return value;
     }

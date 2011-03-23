@@ -78,7 +78,7 @@ public final class GreaterThanExpression extends AbstractExpression implements V
 	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
 	 */
     GreaterThanExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }

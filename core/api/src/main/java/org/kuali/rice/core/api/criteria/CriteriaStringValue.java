@@ -26,7 +26,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A CriteriaValue which stores date and time information in the form of a
+ * {@link String} value.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -50,6 +51,7 @@ public final class CriteriaStringValue implements CriteriaValue<String> {
     	this.value = value.toString();
     }
     
+    @Override
     public String getValue() {
         return value;
     }

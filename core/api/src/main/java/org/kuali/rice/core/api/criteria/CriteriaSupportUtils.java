@@ -63,15 +63,26 @@ final class CriteriaSupportUtils {
         final static String GET_VALUE_METHOD_NAME = "getValue";
     }
 
-    static void validateSimpleExpressionConstruction(Class<? extends ValuedExpression> simpleExpressionClass, String propertyPath, CriteriaValue<?> value) {
+    /**
+     * Validates the various properties of a {@link ValuedExpression}. 
+     * 
+     * @param valuedExpressionClass the type of the expression
+     * @param propertyPath the propertyPath which is being configured on the expression
+     * @param value the value which is being configured on the expression
+     * 
+     * @throws IllegalArgumentException if the propertPath is null or blank
+     * @throws IllegalArgumentException if the value is null
+     * @throws IllegalArgumentException if the given {@link ValuedExpression} class does not support the {@link CriteriaValue}
+     */
+    static void validateValuedExpressionConstruction(Class<? extends ValuedExpression> valuedExpressionClass, String propertyPath, CriteriaValue<?> value) {
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
 		if (value == null) {
 		    throw new IllegalArgumentException("CriteriaValue cannot be null.");
 		}
-		if (!CriteriaSupportUtils.supportsCriteriaValue(simpleExpressionClass, value)) {
-		    throw new IllegalArgumentException(simpleExpressionClass.getSimpleName() + " does not support the given CriteriaValue");
+		if (!CriteriaSupportUtils.supportsCriteriaValue(valuedExpressionClass, value)) {
+		    throw new IllegalArgumentException(valuedExpressionClass.getSimpleName() + " does not support the given CriteriaValue");
 		}
     }
 

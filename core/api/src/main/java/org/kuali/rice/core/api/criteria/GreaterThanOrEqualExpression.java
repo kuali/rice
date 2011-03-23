@@ -78,7 +78,7 @@ public final class GreaterThanOrEqualExpression extends AbstractExpression imple
 	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
 	 */
     GreaterThanOrEqualExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }

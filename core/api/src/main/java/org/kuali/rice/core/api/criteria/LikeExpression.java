@@ -72,7 +72,7 @@ public final class LikeExpression extends AbstractExpression implements ValuedEx
 	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
 	 */
     LikeExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }

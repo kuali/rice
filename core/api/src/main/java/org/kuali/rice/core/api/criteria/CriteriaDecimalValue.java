@@ -26,11 +26,10 @@ import javax.xml.bind.annotation.XmlValue;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.mutable.MutableDouble;
-import org.apache.commons.lang.mutable.MutableFloat;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A CriteriaValue which stores date and time information in the form of a
+ * {@link BigDecimal} value.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -56,18 +55,8 @@ public final class CriteriaDecimalValue implements CriteriaValue<BigDecimal> {
     	validateValue(value);
     	this.value = BigDecimal.valueOf(value.doubleValue());
     }
-    
-    CriteriaDecimalValue(MutableFloat value) {
-    	validateValue(value);
-    	this.value = BigDecimal.valueOf(value.doubleValue());
-    }
-    
+        
     CriteriaDecimalValue(Double value) {
-    	validateValue(value);
-    	this.value = BigDecimal.valueOf(value.doubleValue());
-    }
-    
-    CriteriaDecimalValue(MutableDouble value) {
     	validateValue(value);
     	this.value = BigDecimal.valueOf(value.doubleValue());
     }
@@ -78,6 +67,7 @@ public final class CriteriaDecimalValue implements CriteriaValue<BigDecimal> {
     	}
     }
     
+    @Override
     public BigDecimal getValue() {
         return value;
     }

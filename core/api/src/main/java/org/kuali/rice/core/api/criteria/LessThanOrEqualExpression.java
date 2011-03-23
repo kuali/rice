@@ -78,7 +78,7 @@ public final class LessThanOrEqualExpression extends AbstractExpression implemen
 	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
 	 */
     LessThanOrEqualExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }

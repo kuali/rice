@@ -176,7 +176,7 @@ public class SimpleExpressionTest {
         }
         
         public AllExpression(String propertyPath, CriteriaValue<?> value) {
-        	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+        	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
     		this.propertyPath = propertyPath;
     		this.value = value;
         }
@@ -218,7 +218,7 @@ public class SimpleExpressionTest {
         }
         
         public StringOnlyExpression(String propertyPath, CriteriaValue<?> value) {
-        	CriteriaSupportUtils.validateSimpleExpressionConstruction(getClass(), propertyPath, value);
+        	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
     		this.propertyPath = propertyPath;
     		this.value = value;
         }

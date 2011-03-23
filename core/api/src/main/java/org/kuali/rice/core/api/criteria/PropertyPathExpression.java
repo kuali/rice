@@ -19,7 +19,7 @@ package org.kuali.rice.core.api.criteria;
 /**
  * An expression which contains a property path.  The property path is used
  * to identify what portion of an object model that the expression applies
- * to in the case of a criteria construct.
+ * to in the case of a {@link Criteria} construct.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

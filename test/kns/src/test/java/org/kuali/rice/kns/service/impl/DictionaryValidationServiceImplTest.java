@@ -35,7 +35,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersCo
 import org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider;
 import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider;
-import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider;
+import org.kuali.rice.kns.datadictionary.validation.constraint.provider.DataObjectEntryConstraintProvider;
 import org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor;
@@ -82,7 +82,7 @@ public class DictionaryValidationServiceImplTest {
 	private static final ConstraintProvider[] DEFAULT_CONSTRAINT_PROVIDERS = 
     {
     	new AttributeDefinitionConstraintProvider(),
-    	new ObjectDictionaryEntryConstraintProvider()
+    	new DataObjectEntryConstraintProvider()
     };
     
 	@SuppressWarnings("rawtypes")

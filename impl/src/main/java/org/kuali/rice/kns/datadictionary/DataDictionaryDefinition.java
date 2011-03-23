@@ -32,7 +32,7 @@ public interface DataDictionaryDefinition extends Serializable {
      * @param otherBusinessObjectClass other stuff required to complete validation
      * @throws org.kuali.rice.kns.datadictionary.exception.CompletionException if a problem arises during validation-completion
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass);
+    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass);
     
     public String getId();
 }

@@ -598,7 +598,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		// give the option to declare primary keys in the dd.
 		// this is primarly used for transient objects that lack db persistence.
 		List<String> pks = dataDictionaryService.getDataDictionary()
-			.getBusinessObjectEntry(clazz.getName()).getPrimaryKeys();
+			.getDataObjectEntry(clazz.getName()).getPrimaryKeys();
 		if(pks != null && !pks.isEmpty())
 			return pks;
 

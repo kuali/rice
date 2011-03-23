@@ -292,7 +292,7 @@ That covers ConstraintProcessors then.  How are they called then?  Just as alway
 62.	          </map>
 63.	        </property>
 64.	      </bean>
-65.       <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider">
+65.       <bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.DataObjectEntryConstraintProvider">
 66.         <!-- 
 67.			    individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
 68.			    resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above

@@ -17,7 +17,7 @@ package org.kuali.rice.kns.datadictionary.validation.constraint.provider;
 
 import java.util.HashMap;
 
-import org.kuali.rice.kns.datadictionary.ObjectDictionaryEntry;
+import org.kuali.rice.kns.datadictionary.DataObjectEntry;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.ConstraintResolver;
@@ -30,13 +30,13 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.resolver.MustOccu
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ObjectDictionaryEntryConstraintProvider extends BaseConstraintProvider<ObjectDictionaryEntry> {
+public class DataObjectEntryConstraintProvider extends BaseConstraintProvider<DataObjectEntry> {
 
 
 	@Override
 	public void init() {
-		resolverMap = new HashMap<String, ConstraintResolver<ObjectDictionaryEntry>>();
-		resolverMap.put(MustOccurConstraint.class.getName(), new MustOccurConstraintsResolver<ObjectDictionaryEntry>());
+		resolverMap = new HashMap<String, ConstraintResolver<DataObjectEntry>>();
+		resolverMap.put(MustOccurConstraint.class.getName(), new MustOccurConstraintsResolver<DataObjectEntry>());
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class ObjectDictionaryEntryConstraintProvider extends BaseConstraintProvi
 	@Override
 	public boolean isSupported(Constrainable definition) {
 		
-		if (definition instanceof ObjectDictionaryEntry)
+		if (definition instanceof DataObjectEntry)
 			return true;
 		
 		return false;

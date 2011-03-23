@@ -49,7 +49,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 2946722646095412576L;
     
 	protected String objectAttributeName; //Same as parentAttributeName of BusinessObjectRelationship
-    protected Class<? extends BusinessObject> sourceClass; //parentClass
+    protected Class<?> sourceClass; //parentClass
     /**
      * For 1:1 relationships, this class represents the type of the reference class.  For 1:n references, this class represents the type of the element
      * of the collection
@@ -60,13 +60,11 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     protected List<SupportAttributeDefinition> supportAttributes = new ArrayList<SupportAttributeDefinition>(); //parentToChildReferences
 
 
-    public RelationshipDefinition() {}
-
     public String getObjectAttributeName() {
         return objectAttributeName;
     }
 
-    public Class<? extends BusinessObject> getSourceClass() {
+    public Class<?> getSourceClass() {
         return sourceClass;
     }
 
@@ -209,7 +207,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 	/**
 	 * @param sourceClass the sourceClass to set
 	 */
-	public void setSourceClass(Class<? extends BusinessObject> sourceClass) {
+	public void setSourceClass(Class<?> sourceClass) {
 		this.sourceClass = sourceClass;
 	}
 }

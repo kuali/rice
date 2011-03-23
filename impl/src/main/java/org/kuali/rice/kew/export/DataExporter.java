@@ -30,7 +30,6 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -55,42 +54,42 @@ public class DataExporter implements Exporter {
 	/**
 	 * Export the given List of BusinessObjects of the specified type to XML.
 	 */
-	public void export(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects, String exportFormat, OutputStream outputStream) throws IOException {
+	public void export(Class<?> dataObjectClass, List<? extends Object> dataObjects, String exportFormat, OutputStream outputStream) throws IOException {
 		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
 			throw new ExportNotSupportedException("The given export format of " + exportFormat + " is not supported by the KEW XML Exporter!");
 		}
-		ExportDataSet dataSet = buildExportDataSet(businessObjectClass, businessObjects);
+		ExportDataSet dataSet = buildExportDataSet(dataObjectClass, dataObjects);
 		outputStream.write(KEWServiceLocator.getXmlExporterService().export(dataSet));
 	}
 
-	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass) {
+	public List<String> getSupportedFormats(Class<?> dataObjectClass) {
 		return supportedFormats;
 	}
 
 	/**
 	 * Builds the ExportDataSet based on the BusinessObjects passed in.
 	 */
-	protected ExportDataSet buildExportDataSet(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects) {
+	protected ExportDataSet buildExportDataSet(Class<?> dataObjectClass, List<? extends Object> dataObjects) {
 		ExportDataSet dataSet = new ExportDataSet();
-		for (BusinessObject businessObject : businessObjects) {
-			if (businessObjectClass.equals(RuleAttribute.class)) {
-				dataSet.getRuleAttributes().add((RuleAttribute)businessObject);
-			} else if (businessObjectClass.equals(RuleTemplate.class)) {
-				dataSet.getRuleTemplates().add((RuleTemplate)businessObject);
-			} else if (businessObjectClass.equals(DocumentType.class)) {
-				dataSet.getDocumentTypes().add((DocumentType)businessObject);
-			} else if (businessObjectClass.equals(EDocLiteAssociation.class)) {
-				dataSet.getEdocLites().add((EDocLiteAssociation)businessObject);
-			} else if (businessObjectClass.equals(HelpEntry.class)) {
-				dataSet.getHelp().add((HelpEntry)businessObject);
-			} else if (businessObjectClass.equals(RuleBaseValues.class)) {
-				dataSet.getRules().add((RuleBaseValues)businessObject);
-			} else if (businessObjectClass.equals(RuleDelegation.class)) {
-				dataSet.getRuleDelegations().add((RuleDelegation)businessObject);
-			} else if (businessObjectClass.equals(EDocLiteStyle.class)) {
-				dataSet.getStyles().add((EDocLiteStyle)businessObject);
-			} else if (businessObjectClass.equals(GroupImpl.class)) {
-				dataSet.getGroups().add((GroupImpl)businessObject);
+		for (Object dataObject : dataObjects) {
+			if (dataObjectClass.equals(RuleAttribute.class)) {
+				dataSet.getRuleAttributes().add((RuleAttribute)dataObject);
+			} else if (dataObjectClass.equals(RuleTemplate.class)) {
+				dataSet.getRuleTemplates().add((RuleTemplate)dataObject);
+			} else if (dataObjectClass.equals(DocumentType.class)) {
+				dataSet.getDocumentTypes().add((DocumentType)dataObject);
+			} else if (dataObjectClass.equals(EDocLiteAssociation.class)) {
+				dataSet.getEdocLites().add((EDocLiteAssociation)dataObject);
+			} else if (dataObjectClass.equals(HelpEntry.class)) {
+				dataSet.getHelp().add((HelpEntry)dataObject);
+			} else if (dataObjectClass.equals(RuleBaseValues.class)) {
+				dataSet.getRules().add((RuleBaseValues)dataObject);
+			} else if (dataObjectClass.equals(RuleDelegation.class)) {
+				dataSet.getRuleDelegations().add((RuleDelegation)dataObject);
+			} else if (dataObjectClass.equals(EDocLiteStyle.class)) {
+				dataSet.getStyles().add((EDocLiteStyle)dataObject);
+			} else if (dataObjectClass.equals(GroupImpl.class)) {
+				dataSet.getGroups().add((GroupImpl)dataObject);
 			}    
 		}
 		return dataSet;

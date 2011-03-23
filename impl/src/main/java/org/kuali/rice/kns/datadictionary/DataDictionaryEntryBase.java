@@ -50,7 +50,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
     }
     
     /* Returns the given entry class (bo class or document class) */
-    public abstract Class getEntryClass();
+    public abstract Class<?> getEntryClass();
     
     /**
      * @param attributeName
@@ -60,7 +60,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
-        return (AttributeDefinition) attributeMap.get(attributeName);
+        return attributeMap.get(attributeName);
     }
 
     /**
@@ -78,7 +78,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
         if (StringUtils.isBlank(collectionName)) {
             throw new IllegalArgumentException("invalid (blank) collectionName");
         }
-        return (CollectionDefinition) collectionMap.get(collectionName);
+        return collectionMap.get(collectionName);
     }
 
     /**
@@ -96,7 +96,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
         if (StringUtils.isBlank(relationshipName)) {
             throw new IllegalArgumentException("invalid (blank) relationshipName");
         }
-        return (RelationshipDefinition) relationshipMap.get(relationshipName);
+        return relationshipMap.get(relationshipName);
     }
 
     /**

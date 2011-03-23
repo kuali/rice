@@ -17,16 +17,19 @@ package org.kuali.rice.kns.datadictionary;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.bo.Exporter;
+import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 
 /**
  * This is a generic dictionary entry for an object that does not have to implement BusinessObject. It provides support
- * for general objects as required by Kuali Student. 
+ * for general objects. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements MustOccurConstrainable {
+public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccurConstrainable {
 
 	protected String name;
 	protected Class<?> objectClass;
@@ -36,17 +39,29 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements Mu
     protected String objectDescription;
 
     protected List<String> primaryKeys;
+    protected Class<? extends Exporter> exporterClass;
     
 	protected List<MustOccurConstraint> mustOccurConstraints;
 	
-    protected InquiryDefinition inquiryDefinition;
-    protected LookupDefinition lookupDefinition;
+    
     protected HelpDefinition helpDefinition;
-	       
-	/**
+	
+    
+	@Override
+    public void completeValidation() {
+	    //KFSMI-1340 - Object label should never be blank
+        if (StringUtils.isBlank(getObjectLabel())) {
+            throw new AttributeValidationException("Object label cannot be blank for class " + objectClass.getName());
+        }
+        
+        super.completeValidation();
+    }
+
+    /**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getJstlKey()
      */
-	@Override public String getJstlKey() {
+	@Override
+	public String getJstlKey() {
         if (objectClass == null) {
             throw new IllegalStateException("cannot generate JSTL key: objectClass is null");
         }
@@ -57,14 +72,16 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements Mu
     /**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getFullClassName()
      */
-    @Override public String getFullClassName() {
+    @Override
+    public String getFullClassName() {
         return objectClass.getName();
     }
 
     /**
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#getEntryClass()
      */
-    @Override public Class<?> getEntryClass() {
+    @Override
+    public Class<?> getEntryClass() {
         return objectClass;
     }
 
@@ -130,74 +147,9 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements Mu
         this.objectDescription = objectDescription;
     }
 	
-    /**
-     * @return true if this instance has an inquiryDefinition
-     */
-    public boolean hasInquiryDefinition() {
-        return (inquiryDefinition != null);
-    }
+    
 
-    /**
-     * @return current inquiryDefinition for this BusinessObjectEntry, or null if there is none
-     */
-    public InquiryDefinition getInquiryDefinition() {
-        return inquiryDefinition;
-    }
-
-    /**
-           The inquiry element is used to specify the fields that will be displayed on the
-            inquiry screen for this business object and the order in which they will appear.
-
-            DD: See InquiryDefinition.java
-
-            JSTL: The inquiry element is a Map which is accessed using
-            a key of "inquiry".  This map contains the following keys:
-                * title (String)
-                * inquiryFields (Map)
-
-            See InquiryMapBuilder.java
-     */
-    public void setInquiryDefinition(InquiryDefinition inquiryDefinition) {
-        this.inquiryDefinition = inquiryDefinition;
-    }
-
-    /**
-     * @return true if this instance has a lookupDefinition
-     */
-    public boolean hasLookupDefinition() {
-        return (lookupDefinition != null);
-    }
-
-    /**
-     * @return current lookupDefinition for this BusinessObjectEntry, or null if there is none
-     */
-    public LookupDefinition getLookupDefinition() {
-        return lookupDefinition;
-    }
-
-    /**
-            The lookup element is used to specify the rules for "looking up"
-            a business object.  These specifications define the following:
-            * How to specify the search criteria used to locate a set of business objects
-            * How to display the search results
-
-            DD: See LookupDefinition.java
-
-            JSTL: The lookup element is a Map which is accessed using
-            a key of "lookup".  This map contains the following keys:
-            * lookupableID (String, optional)
-            * title (String)
-            * menubar (String, optional)
-            * defaultSort (Map, optional)
-            * lookupFields (Map)
-            * resultFields (Map)
-            * resultSetLimit (String, optional)
-
-            See LookupMapBuilder.java
-     */
-    public void setLookupDefinition(LookupDefinition lookupDefinition) {
-        this.lookupDefinition = lookupDefinition;
-    }
+    
 	
     /**
      * Gets the helpDefinition attribute.
@@ -227,8 +179,9 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements Mu
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
-        return "ObjectDictionaryEntry for " + getObjectClass();
+        return "DataObjectEntry for " + getObjectClass();
     }
 
 	/**
@@ -278,5 +231,13 @@ public class ObjectDictionaryEntry extends DataDictionaryEntryBase implements Mu
 	 */
 	public void setPrimaryKeys(List<String> primaryKeys) {
 		this.primaryKeys = primaryKeys;
-	}	
+	}
+	
+	public Class<? extends Exporter> getExporterClass() {
+        return this.exporterClass;
+    }
+
+    public void setExporterClass(Class<? extends Exporter> exporterClass) {
+        this.exporterClass = exporterClass;
+    }
 }

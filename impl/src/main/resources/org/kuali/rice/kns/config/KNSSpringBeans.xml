@@ -684,7 +684,7 @@
 						</map>
 					</property>
 				</bean>
-				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider">
+				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.DataObjectEntryConstraintProvider">
 					<!-- 
 						individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
 						resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above

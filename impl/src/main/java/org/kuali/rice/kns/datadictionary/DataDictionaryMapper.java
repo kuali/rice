@@ -38,22 +38,41 @@ public interface DataDictionaryMapper {
 	 * @param className
 	 * @return
 	 */
+    @Deprecated
 	public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(DataDictionaryIndex index, String className);
 	
 	/**
+     * This method gets the DataOjectEntry (or subclass) for a concrete class
+     * 
+     * @param className
+     * @return the DataObjectEntry for the class or null if not found
+     */
+    public DataObjectEntry getDataObjectEntryForConcreteClass(DataDictionaryIndex index, String className);
+    
+    
+	/**
 	 * @return List of businessObject classnames
 	 */
+    @Deprecated
 	public List<String> getBusinessObjectClassNames(DataDictionaryIndex index);
 
 	/**
 	 * @param className
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
+	@Deprecated
 	public BusinessObjectEntry getBusinessObjectEntry(DataDictionaryIndex index, String className );
+	
+	/**
+     * @param className
+     * @return DataObjectEntry for the named class, or null if none exists
+     */
+    public DataObjectEntry getDataObjectEntry(DataDictionaryIndex index, String className );
 
 	/**
 	 * @return Map of (classname, BusinessObjectEntry) pairs
 	 */
+    @Deprecated
 	public Map<String, BusinessObjectEntry> getBusinessObjectEntries(DataDictionaryIndex index);
 	
 	/**
@@ -90,11 +109,11 @@ public interface DataDictionaryMapper {
 	 * @return DocumentEntry associated with the given Class, or null if there
 	 *         is none
 	 */
-	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(DataDictionaryIndex index, Class businessObjectClass);
+	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(DataDictionaryIndex index, Class<?> businessObjectClass);
 		
 	public Map<String, DocumentEntry> getDocumentEntries(DataDictionaryIndex index);
 
-	public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(DataDictionaryIndex index, Class blockedClass);
+	public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(DataDictionaryIndex index, Class<?> blockedClass);
 	
 	/**
 	 * Returns mapped document type based on the given document type.

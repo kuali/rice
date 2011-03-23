@@ -410,19 +410,22 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#completeValidation()
 	 */
 	@Override
-	public void completeValidation(Class rootObjectClass, Class otherObjectClass) {
+	public void completeValidation(Class<?> rootObjectClass, Class<?> otherObjectClass) {
 		try {
 			if (!DataDictionary.isPropertyOf(rootObjectClass, getName())) {
 				throw new AttributeValidationException("property '" + getName() + "' is not a property of class '"
 						+ rootObjectClass.getName() + "' (" + "" + ")");
 			}
 
-			if (getControl() == null) {
+			//TODO currently requiring a control or controlField, but this should not be case (AttrField should probably do the check)
+			if (getControl() == null && getControlField() == null) {
 				throw new AttributeValidationException("property '" + getName() + "' in class '"
 						+ rootObjectClass.getName() + " does not have a control defined");
 			}
-
-			getControl().completeValidation(rootObjectClass, otherObjectClass);
+			
+			if(getControl() != null) {
+			    getControl().completeValidation(rootObjectClass, otherObjectClass);
+			}
 
 			if (attributeSecurity != null) {
 				attributeSecurity.completeValidation(rootObjectClass, otherObjectClass);

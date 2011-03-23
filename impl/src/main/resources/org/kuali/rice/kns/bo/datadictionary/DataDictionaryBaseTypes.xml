@@ -122,7 +122,7 @@
 		abstract="true" />
 	<bean id="BusinessObjectEntry" class="org.kuali.rice.kns.datadictionary.BusinessObjectEntry"
 		abstract="true" />
-	<bean id="DataObjectEntry" class="org.kuali.rice.kns.datadictionary.ObjectDictionaryEntry"
+	<bean id="DataObjectEntry" class="org.kuali.rice.kns.datadictionary.DataObjectEntry"
 		abstract="true" />
 	<bean id="Mask" class="org.kuali.rice.kns.datadictionary.mask.Mask"
 		abstract="true" />

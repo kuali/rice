@@ -20,8 +20,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.Exporter;
-import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 
 /**
@@ -51,24 +49,25 @@ import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
  */
-public class BusinessObjectEntry extends ObjectDictionaryEntry {
+public class BusinessObjectEntry extends DataObjectEntry {
     // logger
     //private static Log LOG = LogFactory.getLog(BusinessObjectEntry.class);
 
     protected Class<? extends BusinessObject> businessObjectClass;
     protected Class<? extends BusinessObject> baseBusinessObjectClass;
-    protected Class<? extends Exporter> exporterClass;
-
+    protected InquiryDefinition inquiryDefinition;
+    protected LookupDefinition lookupDefinition;
+    
     protected boolean boNotesEnabled = false;
 
     protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
     
     protected List<String> groupByAttributesForEffectiveDating;
 
-    public BusinessObjectEntry() {}
 
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         super.setObjectClass(businessObjectClass);
+        
         if (businessObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) businessObjectClass");
         }
@@ -93,21 +92,12 @@ public class BusinessObjectEntry extends ObjectDictionaryEntry {
      */
 
     public void setBaseBusinessObjectClass(Class<? extends BusinessObject> baseBusinessObjectClass) {
-
         this.baseBusinessObjectClass = baseBusinessObjectClass;
     }
 
     public Class<? extends BusinessObject> getBaseBusinessObjectClass() {
         return baseBusinessObjectClass;
     }
-
-    public Class<? extends Exporter> getExporterClass() {
-		return this.exporterClass;
-	}
-
-	public void setExporterClass(Class<? extends Exporter> exporterClass) {
-		this.exporterClass = exporterClass;
-	}
 
 	public boolean isBoNotesEnabled() {
         return boNotesEnabled;
@@ -132,10 +122,6 @@ public class BusinessObjectEntry extends ObjectDictionaryEntry {
     @Override
     public void completeValidation() {
         try {
-	    	//KFSMI-1340 - Object label should never be blank
-	        if (StringUtils.isBlank(getObjectLabel())) {
-	            throw new AttributeValidationException("Object label cannot be blank for class " + businessObjectClass.getName());
-	        }
 
 	        if (baseBusinessObjectClass != null && !baseBusinessObjectClass.isAssignableFrom(businessObjectClass)) {
 	        	throw new ClassValidationException("The baseBusinessObjectClass " + baseBusinessObjectClass.getName() +
@@ -163,24 +149,6 @@ public class BusinessObjectEntry extends ObjectDictionaryEntry {
         } catch ( Exception ex ) {
         	throw new DataDictionaryException( "Exception validating " + this, ex);
         }
-    }
-
-    /**
-     * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#getEntryClass()
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-	public Class getEntryClass() {
-        return businessObjectClass;
-    }
-
-
-    /**
-     * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#getFullClassName()
-     */
-    @Override
-	public String getFullClassName() {
-        return businessObjectClass.getName();
     }
 
     /**
@@ -224,6 +192,75 @@ public class BusinessObjectEntry extends ObjectDictionaryEntry {
 	    		ibd.setBlockingReferenceBusinessObjectClass(getBusinessObjectClass());
 	    	}
     	}
+    }
+    
+    /**
+     * @return true if this instance has an inquiryDefinition
+     */
+    public boolean hasInquiryDefinition() {
+        return (inquiryDefinition != null);
+    }
+
+    /**
+     * @return current inquiryDefinition for this BusinessObjectEntry, or null if there is none
+     */
+    public InquiryDefinition getInquiryDefinition() {
+        return inquiryDefinition;
+    }
+
+    /**
+           The inquiry element is used to specify the fields that will be displayed on the
+            inquiry screen for this business object and the order in which they will appear.
+
+            DD: See InquiryDefinition.java
+
+            JSTL: The inquiry element is a Map which is accessed using
+            a key of "inquiry".  This map contains the following keys:
+                * title (String)
+                * inquiryFields (Map)
+
+            See InquiryMapBuilder.java
+     */
+    public void setInquiryDefinition(InquiryDefinition inquiryDefinition) {
+        this.inquiryDefinition = inquiryDefinition;
+    }
+    
+    /**
+     * @return true if this instance has a lookupDefinition
+     */
+    public boolean hasLookupDefinition() {
+        return (lookupDefinition != null);
+    }
+
+    /**
+     * @return current lookupDefinition for this BusinessObjectEntry, or null if there is none
+     */
+    public LookupDefinition getLookupDefinition() {
+        return lookupDefinition;
+    }
+
+    /**
+            The lookup element is used to specify the rules for "looking up"
+            a business object.  These specifications define the following:
+            * How to specify the search criteria used to locate a set of business objects
+            * How to display the search results
+
+            DD: See LookupDefinition.java
+
+            JSTL: The lookup element is a Map which is accessed using
+            a key of "lookup".  This map contains the following keys:
+            * lookupableID (String, optional)
+            * title (String)
+            * menubar (String, optional)
+            * defaultSort (Map, optional)
+            * lookupFields (Map)
+            * resultFields (Map)
+            * resultSetLimit (String, optional)
+
+            See LookupMapBuilder.java
+     */
+    public void setLookupDefinition(LookupDefinition lookupDefinition) {
+        this.lookupDefinition = lookupDefinition;
     }
 
 }

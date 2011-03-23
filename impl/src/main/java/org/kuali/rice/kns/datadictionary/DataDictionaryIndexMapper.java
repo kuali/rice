@@ -40,7 +40,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getAllInactivationBlockingMetadatas(org.kuali.rice.kns.datadictionary.DataDictionaryIndex, java.lang.Class)
 	 */
-	public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(DataDictionaryIndex index, Class blockedClass) {
+	public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(DataDictionaryIndex index, Class<?> blockedClass) {
         return index.getInactivationBlockersForClass().get(blockedClass);
 	}
 
@@ -62,6 +62,26 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	}
 
 	/**
+     * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getDataObjectEntryForConcreteClass(org.kuali.rice.kns.datadictionary.DataDictionaryIndex, java.lang.String)
+     */
+	@Override
+    public DataObjectEntry getDataObjectEntryForConcreteClass(DataDictionaryIndex ddIndex, String className) {
+	    if (StringUtils.isBlank(className)) {
+            throw new IllegalArgumentException("invalid (blank) className");
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("calling getDataObjectEntry '" + className + "'");
+        }
+        
+        String trimmedClassName = className;
+        int index = className.indexOf("$$");
+        if (index >= 0) {
+            trimmedClassName = className.substring(0, index);
+        }
+        return ddIndex.getDataObjectEntries().get(trimmedClassName);
+    }
+
+    /**
 	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getBusinessObjectEntryForConcreteClass(java.lang.String)
 	 */
 	public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(DataDictionaryIndex ddIndex, String className) {
@@ -95,13 +115,10 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 
 		// look in the JSTL key cache
 		DataDictionaryEntry entry = ddIndex.getEntriesByJstlKey().get(className);
-		// check the BO list
-		if ( entry == null ) {
-		    entry = getBusinessObjectEntry(ddIndex, className);
-		}
+		
 		// check the Object list
 		if (entry == null){
-			entry = ddIndex.getObjectEntries().get(className);
+			entry = ddIndex.getDataObjectEntries().get(className);
 		}
 		// check the document list
 		if ( entry == null ) {
@@ -110,7 +127,30 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		return entry;
 	}
 
-	public BusinessObjectEntry getBusinessObjectEntry(DataDictionaryIndex index, String className ) {
+	/**
+     * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getDataObjectEntry(org.kuali.rice.kns.datadictionary.DataDictionaryIndex, java.lang.String)
+     */
+	@Override
+    public DataObjectEntry getDataObjectEntry(DataDictionaryIndex index, String className) {
+	    DataObjectEntry entry = getDataObjectEntryForConcreteClass(index, className);
+	    
+        if (entry == null) {
+            Class<?> boClass = null;
+            try{
+                boClass = Class.forName(className);
+                ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+                if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)) {
+                    entry = responsibleModuleService.getExternalizableBusinessObjectDictionaryEntry(boClass);
+                }
+            } catch(ClassNotFoundException cnfex){
+                // swallow so we can return null
+            }
+        }
+        
+        return entry;
+    }
+
+    public BusinessObjectEntry getBusinessObjectEntry(DataDictionaryIndex index, String className ) {
 		BusinessObjectEntry entry = getBusinessObjectEntryForConcreteClass(index, className);
 		if (entry == null) {
 			Class boClass = null;
@@ -128,6 +168,8 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 			return entry;
 		}
 	}
+	
+	
 	
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getDocumentEntries(org.kuali.rice.kns.datadictionary.DataDictionaryIndex)
@@ -152,7 +194,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		
 		if ( de == null ) {
 		    try {
-    		    Class clazz = Class.forName( documentTypeDDKey );
+    		    Class<?> clazz = Class.forName( documentTypeDDKey );
     		    de = index.getDocumentEntriesByBusinessObjectClass().get(clazz);
     		    if ( de == null ) {
     		        de = index.getDocumentEntriesByMaintainableClass().get(clazz);
@@ -177,7 +219,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getMaintenanceDocumentEntryForBusinessObjectClass(org.kuali.rice.kns.datadictionary.DataDictionaryIndex, java.lang.Class)
 	 */
-	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(DataDictionaryIndex index, Class businessObjectClass) {
+	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(DataDictionaryIndex index, Class<?> businessObjectClass) {
 		if (businessObjectClass == null) {
 			throw new IllegalArgumentException("invalid (null) businessObjectClass");
 		}

@@ -79,9 +79,6 @@ public class DataDictionary  {
 
 	protected List<String> configFileLocations = new ArrayList<String>();
 	
-
-	public DataDictionary() {
-	}
     
 	public List<String> getConfigFileLocations() {
         return this.configFileLocations;
@@ -192,8 +189,8 @@ public class DataDictionary  {
     
     public void validateDD( boolean validateEbos ) {
     	DataDictionary.validateEBOs = validateEbos;
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
+    	Map<String,DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
+        for ( DataObjectEntry entry : doBeans.values() ) {
             entry.completeValidation();
         }
         Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
@@ -203,24 +200,25 @@ public class DataDictionary  {
     }
     
     public void validateDD() {
-    	DataDictionary.validateEBOs = true;
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
-            entry.completeValidation();
-        }
-        Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
-        for ( DocumentEntry entry : docBeans.values() ) {
-            entry.completeValidation();
-        }
+    	validateDD(true);
     }
 
 	/**
 	 * @param className
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
+    @Deprecated
 	public BusinessObjectEntry getBusinessObjectEntry(String className ) {
 		return ddMapper.getBusinessObjectEntry(ddIndex, className);
 	}
+	
+	/**
+     * @param className
+     * @return BusinessObjectEntry for the named class, or null if none exists
+     */
+    public DataObjectEntry getDataObjectEntry(String className ) {
+        return ddMapper.getDataObjectEntry(ddIndex, className);
+    }
 
 	/**
 	 * This method gets the business object entry for a concrete class
@@ -284,7 +282,7 @@ public class DataDictionary  {
 	 * @return DocumentEntry associated with the given Class, or null if there
 	 *         is none
 	 */
-	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(Class businessObjectClass) {
+	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(Class<?> businessObjectClass) {
 		return ddMapper.getMaintenanceDocumentEntryForBusinessObjectClass(ddIndex, businessObjectClass);
 	}
 

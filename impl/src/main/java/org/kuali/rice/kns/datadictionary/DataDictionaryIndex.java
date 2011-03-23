@@ -38,7 +38,7 @@ public class DataDictionaryIndex implements Runnable {
 	
 	// keyed by BusinessObject class
 	private Map<String, BusinessObjectEntry> businessObjectEntries;
-	private Map<String, ObjectDictionaryEntry> objectEntries;
+	private Map<String, DataObjectEntry> objectEntries;
 	
 	// keyed by documentTypeName
 	private Map<String, DocumentEntry> documentEntries;
@@ -58,7 +58,7 @@ public class DataDictionaryIndex implements Runnable {
 		return this.businessObjectEntries;
 	}
 
-	public Map<String, ObjectDictionaryEntry> getObjectEntries() {
+	public Map<String, DataObjectEntry> getDataObjectEntries() {
 		return this.objectEntries;
 	}
 
@@ -85,7 +85,7 @@ public class DataDictionaryIndex implements Runnable {
 	private void buildDDIndicies() {
         // primary indices
         businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
-        objectEntries = new HashMap<String, ObjectDictionaryEntry>();
+        objectEntries = new HashMap<String, DataObjectEntry>();
         documentEntries = new HashMap<String, DocumentEntry>();
 
         // alternate indices
@@ -94,10 +94,10 @@ public class DataDictionaryIndex implements Runnable {
         entriesByJstlKey = new HashMap<String, DataDictionaryEntry>();
         
         // loop over all beans in the context
-        Map<String, ObjectDictionaryEntry> boBeans = ddBeans.getBeansOfType(ObjectDictionaryEntry.class);
-        for ( ObjectDictionaryEntry entry : boBeans.values() ) {
+        Map<String, DataObjectEntry> boBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
+        for ( DataObjectEntry entry : boBeans.values() ) {
         	
-            ObjectDictionaryEntry indexedEntry = objectEntries.get(entry.getJstlKey());
+            DataObjectEntry indexedEntry = objectEntries.get(entry.getJstlKey());
             if (indexedEntry == null){
             	indexedEntry = businessObjectEntries.get(entry.getJstlKey());
             }
@@ -106,6 +106,11 @@ public class DataDictionaryIndex implements Runnable {
                 throw new DataDictionaryException(new StringBuffer("Two object classes may not share the same jstl key: this=").append(entry.getObjectClass()).append(" / existing=").append(indexedEntry.getObjectClass()).toString());
             }
 
+        	// put all BO and DO entries in the objectEntries map
+        	objectEntries.put(entry.getObjectClass().getName(), entry);
+            objectEntries.put(entry.getObjectClass().getSimpleName(), entry);
+            
+            // keep a separate map of BO entries for now
         	if (entry instanceof BusinessObjectEntry){
         		BusinessObjectEntry boEntry = (BusinessObjectEntry)entry; 
 		
@@ -116,9 +121,6 @@ public class DataDictionaryIndex implements Runnable {
 	                businessObjectEntries.put(boEntry.getBaseBusinessObjectClass().getName(), boEntry);
 	                businessObjectEntries.put(boEntry.getBaseBusinessObjectClass().getSimpleName(), boEntry);
 	            }
-        	} else {
-	            objectEntries.put(entry.getObjectClass().getName(), entry);
-	            objectEntries.put(entry.getObjectClass().getSimpleName(), entry);       		
         	}
             
         	entriesByJstlKey.put(entry.getJstlKey(), entry);

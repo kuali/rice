@@ -30,8 +30,6 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
     
 	protected String id;
     
-    public DataDictionaryDefinitionBase() {
-    }
 
     public String getId() {
         return this.id;
@@ -47,5 +45,7 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
     /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
-    public void afterPropertiesSet() throws Exception {}
+    public void afterPropertiesSet() throws Exception {
+        // empty to allow sub classes to not have to implement
+    }
 }

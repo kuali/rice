@@ -26,9 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.Exporter;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
-import org.kuali.rice.kns.datadictionary.ObjectDictionaryEntry;
+import org.kuali.rice.kns.datadictionary.DataObjectEntry;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
@@ -215,12 +213,12 @@ public class InquiryForm extends UifFormBase {
 		try {
 			DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
 
-			DataDictionaryEntry dictionaryObjectEntry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(boClassName);
 			
-			@SuppressWarnings("unchecked")
-			Class inquiryObjectClass =  Class.forName(boClassName);
+			Class<?> inquiryObjectClass =  Class.forName(boClassName);
 
-			List<String> primaryKeys = ((ObjectDictionaryEntry)dictionaryObjectEntry).getPrimaryKeys();			
+			BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator
+            .getBusinessObjectMetaDataService();
+			List<String> primaryKeys  = businessObjectMetaDataService.listPrimaryKeyFieldNames(inquiryObjectClass);
 						
 			final List<List<String>> altKeys = this.getAltkeys(inquiryObjectClass);
 
@@ -287,13 +285,13 @@ public class InquiryForm extends UifFormBase {
 	 */
 	protected void populateExportCapabilities(String boClassName) {
 		setCanExport(false);
-		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary()
-				.getBusinessObjectEntry(boClassName);
-		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
+		DataObjectEntry dataObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary()
+				.getDataObjectEntry(boClassName);
+		Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
 		if (exporterClass != null) {
 			try {
 				Exporter exporter = exporterClass.newInstance();
-				if (exporter.getSupportedFormats(businessObjectEntry.getBusinessObjectClass()).contains(
+				if (exporter.getSupportedFormats(dataObjectEntry.getObjectClass()).contains(
 						KNSConstants.XML_FORMAT)) {
 					setCanExport(true);
 				}

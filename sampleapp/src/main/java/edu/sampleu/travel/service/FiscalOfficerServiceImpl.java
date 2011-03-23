@@ -42,6 +42,7 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
     @Override
     public List<FiscalOfficerInfo> lookupFiscalOfficer(Map<String, String> criteria) {
         LookupService service = KNSServiceLocator.getLookupService();
+        @SuppressWarnings("unchecked")
         Collection<FiscalOfficer> temp = service.findCollectionBySearch(FiscalOfficer.class, criteria);
         List<FiscalOfficerInfo> results = new ArrayList<FiscalOfficerInfo>();
         if(temp != null) {

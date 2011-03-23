@@ -266,7 +266,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	/**
 	 * @see org.kuali.rice.kns.uif.service.LookupViewHelperService#performSearch(java.util.Map, boolean)
 	 */
-	public Collection<Object> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded) {
+	public Collection<? extends Object> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded) {
 		Collection<? extends BusinessObject> displayList;
 
 		preprocessDateFields(criteriaFieldsForLookup);

@@ -158,11 +158,6 @@ public class CriteriaBuilderTest {
 		create().like("propertyPath", null);
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testLike_illegalValue() {
-		create().like("pp", 100);
-	}
-	
 	@Test
 	public void testLike() {
 		create().like("pp", "val*");

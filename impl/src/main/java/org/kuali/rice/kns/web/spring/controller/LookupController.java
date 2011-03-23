@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.web.spring.controller;
 
 import java.util.Collection;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,8 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.service.LookupViewHelperService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -90,12 +93,12 @@ public class LookupController extends UifControllerBase {
      * Just returns as if return with no value was selected.
      */
     @RequestMapping(params = "methodToCall=cancel")
-	public String cancel(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-    	// TODO delyea - how should we setup the backlocation url stuff
-//        String backUrl = lookupForm.getBackLocation() + "?methodToCall=refresh&docFormKey=" + lookupForm.getFormKey()+"&docNum="+lookupForm.getDocNum();
-        String backUrl = lookupForm.getBackLocation() + "?methodToCall=refresh&docFormKey=" + lookupForm.getFormKey();
-//        response.sendRedirect(backUrl);
-		return "redirect:" + backUrl;
+	public ModelAndView cancel(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    	Properties props = new Properties();
+    	props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
+    	props.put("docFormKey", lookupForm.getFormKey());
+    	props.put("docNum", lookupForm.getDocNum());
+    	return performRedirect(lookupForm, lookupForm.getBackLocation(), props);
     }
 
     /**

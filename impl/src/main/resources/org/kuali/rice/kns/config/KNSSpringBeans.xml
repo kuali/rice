@@ -1401,9 +1401,6 @@
       <property name="lookupService">
           <ref bean="lookupService" />
       </property>
-      <property name="businessObjectService">
-          <ref bean="businessObjectService" />
-      </property>
       <property name="businessObjectDictionaryService">
           <ref bean="businessObjectDictionaryService" />
       </property>

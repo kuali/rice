@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -34,7 +33,7 @@ import org.kuali.rice.kns.inquiry.InquiryRestrictions;
  */
 public interface BusinessObjectAuthorizationService {
 	public BusinessObjectRestrictions getLookupResultRestrictions(
-			BusinessObject businessObject, Person user);
+			Object dataObject, Person user);
 
 	public InquiryRestrictions getInquiryRestrictions(
 			BusinessObject businessObject, Person user);
@@ -42,15 +41,15 @@ public interface BusinessObjectAuthorizationService {
 	public MaintenanceDocumentRestrictions getMaintenanceDocumentRestrictions(
 			MaintenanceDocument maintenanceDocument, Person user);
 
-	public <T extends BusinessObject> boolean canFullyUnmaskField(Person user,
-			Class<T> businessObjectClass, String fieldName, Document document);
+	public boolean canFullyUnmaskField(Person user,
+			Class<?> dataObjectClass, String fieldName, Document document);
 
-	public <T extends BusinessObject> boolean canPartiallyUnmaskField(
-			Person user, Class<T> businessObjectClass, String fieldName, Document document);
+	public boolean canPartiallyUnmaskField(
+			Person user, Class<?> businessObjectClass, String fieldName, Document document);
 	
 	public <T extends BusinessObject> boolean canCreate(Class<T> boClass, Person user, String docTypeName);
 	
-	public boolean canMaintain(BusinessObject businessObject, Person user, String docTypeName);
+	public boolean canMaintain(Object dataObject, Person user, String docTypeName);
 	
-	public boolean attributeValueNeedsToBeEncryptedOnFormsAndLinks(Class<? extends BusinessObject> businessObjectClass, String attributeName);
+	public boolean attributeValueNeedsToBeEncryptedOnFormsAndLinks(Class<?> businessObjectClass, String attributeName);
 }

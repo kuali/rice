@@ -32,7 +32,7 @@ public interface BusinessObjectAuthorizer {
 			Map<String, String> additionalPermissionDetails,
 			Map<String, String> additionalRoleQualifiers);
 
-	public boolean isAuthorizedByTemplate(BusinessObject businessObject,
+	public boolean isAuthorizedByTemplate(Object dataObject,
 			String namespaceCode, String permissionTemplateName,
 			String principalId,
 			Map<String, String> additionalPermissionDetails,

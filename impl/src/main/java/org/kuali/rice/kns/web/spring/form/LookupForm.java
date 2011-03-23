@@ -42,6 +42,7 @@ public class LookupForm extends UifFormBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryForm.class);
 
 	private String dataObjectClassName;
+	private String docNum;
 	private Map<String, String> criteriaFields;
 	private Map<String, String> criteriaFieldsForLookup;
 	private String conversionFields;
@@ -60,6 +61,14 @@ public class LookupForm extends UifFormBase {
 
 	public void setDataObjectClassName(String dataObjectClassName) {
     	this.dataObjectClassName = dataObjectClassName;
+    }
+
+	public String getDocNum() {
+    	return this.docNum;
+    }
+
+	public void setDocNum(String docNum) {
+    	this.docNum = docNum;
     }
 
 	public Map<String, String> getCriteriaFields() {
@@ -155,9 +164,9 @@ public class LookupForm extends UifFormBase {
 				setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
 			}
 
-//			if (request.getParameter(KNSConstants.DOC_NUM) != null) {
-//				setDocNum(request.getParameter(KNSConstants.DOC_NUM));
-//			}
+			if (request.getParameter(KNSConstants.DOC_NUM) != null) {
+				setDocNum(request.getParameter(KNSConstants.DOC_NUM));
+			}
 
 			if (request.getParameter("returnLocation") != null) {
 				setBackLocation(request.getParameter("returnLocation"));
@@ -244,9 +253,9 @@ public class LookupForm extends UifFormBase {
 //			}
 			fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
 			fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
-//			if (this.getDocNum() != null) {
-//				fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());
-//			}
+			if (this.getDocNum() != null) {
+				fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());
+			}
 //			if (StringUtils.isNotBlank(getReferencesToRefresh())) {
 //				fieldValues.put(KNSConstants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
 //			}

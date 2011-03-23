@@ -54,9 +54,9 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 *            role qualifiers will be added to this map
 	 */
 	protected void addRoleQualification(
-			BusinessObject primaryBusinessObjectOrDocument,
+			Object primaryDataObjectOrDocument,
 			Map<String, String> attributes) {
-		addStandardAttributes(primaryBusinessObjectOrDocument, attributes);
+		addStandardAttributes(primaryDataObjectOrDocument, attributes);
 	}
 
 	/**
@@ -70,9 +70,9 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 *            permission details will be added to this map
 	 */
 	protected void addPermissionDetails(
-			BusinessObject primaryBusinessObjectOrDocument,
+			Object primaryDataObjectOrDocument,
 			Map<String, String> attributes) {
-		addStandardAttributes(primaryBusinessObjectOrDocument, attributes);
+		addStandardAttributes(primaryDataObjectOrDocument, attributes);
 	}
 
 	/**
@@ -84,11 +84,11 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 *            will be added to this map
 	 */
 	private void addStandardAttributes(
-			BusinessObject primaryBusinessObjectOrDocument,
+			Object primaryDataObjectOrDocument,
 			Map<String, String> attributes) {
 		attributes
 				.putAll(KimCommonUtils
-						.getNamespaceAndComponentSimpleName(primaryBusinessObjectOrDocument
+						.getNamespaceAndComponentSimpleName(primaryDataObjectOrDocument
 								.getClass()));
 	}
 
@@ -130,13 +130,13 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 				new AttributeSet(getRoleQualification(businessObject, principalId)));
 	}
 
-	public final boolean isAuthorizedByTemplate(BusinessObject businessObject,
+	public final boolean isAuthorizedByTemplate(BusinessObject dataObject,
 			String namespaceCode, String permissionTemplateName,
 			String principalId) {
 		return getIdentityManagementService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
-				new AttributeSet(getPermissionDetailValues(businessObject)),
-				new AttributeSet(getRoleQualification(businessObject, principalId)));
+				new AttributeSet(getPermissionDetailValues(dataObject)),
+				new AttributeSet(getRoleQualification(dataObject, principalId)));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
@@ -166,15 +166,15 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 				roleQualifiers);
 	}
 
-	public final boolean isAuthorizedByTemplate(BusinessObject businessObject,
+	public final boolean isAuthorizedByTemplate(Object dataObject,
 			String namespaceCode, String permissionTemplateName,
 			String principalId,
 			Map<String, String> collectionOrFieldLevelPermissionDetails,
 			Map<String, String> collectionOrFieldLevelRoleQualification) {
 		AttributeSet roleQualifiers = new AttributeSet(
-				getRoleQualification(businessObject, principalId));
+				getRoleQualification(dataObject, principalId));
 		AttributeSet permissionDetails = new AttributeSet(
-				getPermissionDetailValues(businessObject));
+				getPermissionDetailValues(dataObject));
 		if (collectionOrFieldLevelRoleQualification != null) {
 			roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
 		}
@@ -202,9 +202,9 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	}
 	
 	protected final Map<String, String> getRoleQualification(
-			BusinessObject primaryBusinessObjectOrDocument, String principalId) {
+			Object primaryDataObjectOrDocument, String principalId) {
 			Map<String, String> roleQualification = new HashMap<String, String>();
-			addRoleQualification(primaryBusinessObjectOrDocument,
+			addRoleQualification(primaryDataObjectOrDocument,
 					roleQualification);
 			roleQualification.put(KimAttributes.PRINCIPAL_ID, principalId);
 		return roleQualification;
@@ -237,9 +237,9 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 * @return a Map containing permission details
 	 */
 	protected final Map<String, String> getPermissionDetailValues(
-			BusinessObject businessObject) {
+			Object dataObject) {
 		Map<String, String> permissionDetails = new HashMap<String, String>();
-		addPermissionDetails(businessObject, permissionDetails);
+		addPermissionDetails(dataObject, permissionDetails);
 		return permissionDetails;
 	}
 

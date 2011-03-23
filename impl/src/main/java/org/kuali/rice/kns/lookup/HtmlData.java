@@ -174,7 +174,7 @@ public abstract class HtmlData implements Serializable {
 	 * @param returnKeys
 	 * @return title text
 	 */
-	public static String getTitleText(String prependText, BusinessObject bo, List keys, BusinessObjectRestrictions businessObjectRestrictions) {
+	public static String getTitleText(String prependText, Object bo, List keys, BusinessObjectRestrictions businessObjectRestrictions) {
 		if (bo == null)
 			return KNSConstants.EMPTY_STRING;
 
@@ -234,6 +234,8 @@ public abstract class HtmlData implements Serializable {
 		public static final String TARGET_BLANK = "_blank";
 		protected String href = "";
 		protected String target = "";
+		protected String style = "";
+		protected String styleClass ="";
 
 		/**
 		 * Needed by inquiry framework
@@ -278,6 +280,10 @@ public abstract class HtmlData implements Serializable {
 						+ " href=\""
 						+ getHref()
 						+ "\""
+						+ getStyle()
+						+ " "
+						+ getStyleClass()
+						+ " "
 						+ (StringUtils.isEmpty(getTarget()) ? "" : " target=\""
 								+ getTarget() + "\" ") + ">" + getDisplayText()
 						+ "</a>" + getAppendDisplayText();
@@ -298,6 +304,34 @@ public abstract class HtmlData implements Serializable {
 		public void setTarget(String target) {
 			this.target = target;
 		}
+
+		/**
+         * @return the style
+         */
+        public String getStyle() {
+        	return this.style;
+        }
+
+		/**
+         * @param style the style to set
+         */
+        public void setStyle(String style) {
+        	this.style = style;
+        }
+
+		/**
+         * @return the styleClass
+         */
+        public String getStyleClass() {
+        	return this.styleClass;
+        }
+
+		/**
+         * @param styleClass the styleClass to set
+         */
+        public void setStyleClass(String styleClass) {
+        	this.styleClass = styleClass;
+        }
 
 		/**
 		 * @return the href

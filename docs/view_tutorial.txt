@@ -1,0 +1,136 @@
+{toc}
+
+This tutorial is designed to start with the concept of a page in a KRAD application and build all of the configuration to turn that page into an actual View. In this example, we'll build a conference reservation form, starting with a sketch of what we want the form to look like and then building up the pieces of the configuration.
+
+First, we look at the Java classes we need to create to handle data mapping for our page: a form, a controller, and a view.  Then we build the configuration which maps the data objects we want to populate with data to the view - first splitting the page into major groups and then associating fields with properties.
+
+h1. Views, Controllers, and Forms
+
+KRAD uses Spring MVC to interact with the web, and so it makes a lot of sense that the first design decisions in building a KRAD page all have to do with the M, the V, and the C: the Model (called, in KRAD, a Form); the View; and the Controller.
+
+The Form is an excellent place to start.  Looking back at our page, we have to expect that several data objects already exist to put data into the database.  There must be a Contact business object, as well as a ConferenceGuest that we have a collection of.  Some wise developer likely created a single record, ConferenceParty, to meld that information together.  ConferenceParty then has a many-to-many relationship with ConferenceTracks to hold the "Interests" section, and there's likely an optional AcademicInstitution object.  In short, the classes probably look like this:
+
+{code:java}
+class Contact {
+    protected Integer contactId;
+    protected String companyName;
+    protected String contactName;
+    protected String contactEmail;
+    protected String contactPhone;
+    protected String addressLine1;
+    protected String addressLine2;
+    protected String city;
+    protected String state;
+    
+    // getters and setters for all!
+}
+
+class ConferenceGuest {
+    protected Integer conferencePartyId;
+    protected Integer partySequenceNumber;
+    protected String name;
+    protected String email;
+    protected String phone;
+    
+    // getters, setters
+}
+
+class ConferenceTrack {
+    protected String trackCode;
+    protected String trackName;
+    protected String sortCode;
+    
+    public final static String SORT_PROPERTY = "sortCode";
+    
+    // getters and setters
+}
+
+class AcademicInstitutionInformation {
+    protected Integer institutionInformationId;
+    protected String institutionFundingTypeCode;
+    protected String name;
+    protected Integer numberOfStudents;
+    
+    // getters and setters
+}
+
+class ConferencePartyInterests {
+    protected Integer conferencePartyId;
+    protected String trackCode;
+    
+    // setters and getters
+}
+
+class ConferenceParty {
+    protected Integer conferencePartyId;
+    protected Integer contactId;
+    
+    protected Contact contact;
+    protected List<ConferenceGuest> guests;
+    protected List<ConferencePartyInterests> interests; // sorted by ConferenceTrack.sortCode
+    protected AcademicInstitutionInformation academicInstitutionInformation;
+    
+    // these need getters and setters
+}
+{code}
+
+All of these classes are instrumented either with JPA annotations or OJB metadata, and they likely have more relationships than spelled out here.  Still: this is an excellent start to the data model.
+
+A KRAD form is simply a class which extends org.kuali.rice.kns.web.spring.form.UifFormBase.  The form wraps the data model into an convenient object associated with the page.  In this case, our form will definitely need to hold a ConferenceParty data object since that is the data that the page is meant to populate.
+
+This particular form, though, needs to hold more than that.  Any data exposed on the View should exist on the form.  What other data is there?  First, there's that "Academic Institution" check box, which determines if the Academic Institution group is visible or not.  This isn't held by any of the data objects above, but it needs to be held somewhere.
+
+There's also the case of lists shown on the screen.  In the case of "State," there should be a values finder which will provide the state codes; a similar situation exists with the funding type for the Academic Institution.  However, in the case of Interests, we need to hold a list of all the ConferenceTrack objects sorted.  [JAMES - TRUE THAT? COULD THIS BE A VALUES FINDER AS WELL?]  This List will be held on the form as well.
+
+Given that, our form should look something like:
+
+{code:java}
+ 1. class ConferenceSignupForm extends UifFormBase {
+ 2.    protected ConferenceParty conferenceParty;
+ 3.    protected List<ConferenceTrack> conferenceTracks;
+ 4.    protected boolean academicInstitution;
+ 5.    protected BusinessObjectService businessObjectService;
+ 6.
+ 7.    /** Always Javadoc! */
+ 8.    public ConferenceParty getConferenceParty() {
+ 9.      return conferenceParty;
+10.    }
+11.
+12.    public void setConferenceParty(ConferenceParty conferenceParty) {
+13.      this.conferenceParty = conferenceParty;
+14.    }
+15.
+16.    public boolean isAcademicInstitution() {
+17.      return academicInstitution;
+18.    }
+19.
+20.    public void setAcademicInstitution(boolean academicInstitution) {
+21.      this.academicInstitution = academicInstitution;
+22.    }
+23.
+24.    public List<ConferenceTrack> getConferenceTracks() {
+25.      if (conferenceTracks == null) {
+26.        conferenceTracks = (List<ConferenceTrack>)businessObjectService.findAllOrderBy(ConferenceTrack.class, ConferenceTrack.SORT_PROPERTY, true);
+27.      }
+28.      return conferenceTracks;
+29.    }
+30.
+31.    public BusinessObjectService getBusinessObjectService() {
+32.      return businessObjectService;
+33.    }
+34.
+35.    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+36.      this.businessObjectService = businessObjectService;
+37.    }
+38. }
+{code}
+
+Not hard at all, but it holds all the data needed to properly render the View.  [FORMS ARE SPRING BEANS, RIGHT?  HOW TO INJECT SERVICES?  WHY DOES DOCUMENT CONTROLLER USE KNSLOCATOR?]
+
+[IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]
+h1. Splitting into Groups
+h1. Fields
+h1. Common Cases
+h2. Inquiry
+h2. Lookup
+h2. Document

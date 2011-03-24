@@ -74,7 +74,7 @@ class ConferenceParty {
 }
 {code}
 
-All of these classes are instrumented either with JPA annotations or OJB metadata, and they likely have more relationships than spelled out here.  Still: this is an excellent start to the data model.
+All of these classes are instrumented either with JPA annotations or OJB metadata, and they likely have more relationships than spelled out here.  Also, data dictionary entries should be created for each of these data objects.  [ANY NEED TO SHOW THESE CONFIGURATIONS?]  Still: this is an excellent start to the data model.
 
 A KRAD form is simply a class which extends org.kuali.rice.kns.web.spring.form.UifFormBase.  The form wraps the data model into an convenient object associated with the page.  In this case, our form will definitely need to hold a ConferenceParty data object since that is the data that the page is meant to populate.
 
@@ -127,10 +127,85 @@ Given that, our form should look something like:
 
 Not hard at all, but it holds all the data needed to properly render the View.  [FORMS ARE SPRING BEANS, RIGHT?  HOW TO INJECT SERVICES?  WHY DOES DOCUMENT CONTROLLER USE KNSLOCATOR?]
 
-[IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]
+Next is our controller.  In this case, we extend org.kuali.rice.kns.web.spring.controller.UifControllerBase.  Unlike with UifFormBase, UifControllerBase has an abstract method which we are forced to override: createInitialForm.  This method takes in the request as a parameter and returns a child of UifFormBase.  Since ConferenceSignupForm is already complete, this shouldn't be any problem.
+
+UifControllerBase also has a number of methods which we can call from our View.  For instance, it has an addLine method which it would be helpful to call for adding guests to that collection.  However, it does not contain methods which respond to our submit, save, and cancel buttons.  Basically, any element on our View which could initiate a post back to the server should have a method on the controller for it.  The names for these methods change but they all have:
+* a standard annotation associated with the method: @RequestMapping, which takes a method (the HTTP method to use), and params, which should include the "methodToCall" parameter which should initiate a call to the given controller method
+* a standard return type - controller methods responding to View actions should always return an instance of org.springframework.web.servlet.ModelAndView
+* a set of standard parameters: one for the form, for the BindingResult, and for the request and response.  The form parameter should be annotated with @ModelAttribute("KualiForm"), which means that the form will be pulled from either the request via the key "KualiForm" [JERRY - TRUE THAT?]
+
+Finally, a Spring MVC controller class must have the @Controller annotation assigned to it as well as a class-wide @RequestMapping parameter which gives the URL (or at least, the portion of the URL after the server name) which will result in calls to the controller class.  This can be configured in Spring XML as well, but throughout Rice, annotations have been used.
+
+Given that, let's take a look at our controller:
+
+{code:java}
+ 1  @Controller
+ 2. @RequestMapping(value = "/conferenceSignup")
+ 3. class ConferenceSignupController extends UifControllerBase {
+ 4.   public UifFormBase createInitialForm(HttpServletRequest request) {
+ 5.     return new ConferenceSignupForm();
+ 6.   }
+ 7.  
+ 8.   @RequestMapping(method=RequestMethod.POST, params="methodToCall=submit")
+ 9.   public ModelAndView submit(@ModelAttribute UifFormBase uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+10.     // do submit stuff...
+11.     return getUIFModelAndView(uifForm);
+12.   }
+13.  
+14.   @RequestMapping(method=RequestMethod.POST, params="methodToCall=save")
+15.   public ModelAndView save(@ModelAttribute UifFormBase uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+16.     // do save stuff...
+17.     return getUIFModelAndView(uifForm);
+18.   }
+19.  
+20.   @RequestMapping(method=RequestMethod.POST, params="methodToCall=cancel")
+21.   public ModelAndView cancel(@ModelAttribute UifFormBase uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+22.     // do cancel stuff...
+23.     return getUIFModelAndView(uifForm);
+24.   }
+25. }
+{code}
+
+[WHAT ABOUT START METHOD THAT INQUIRY CONTROLLER USES?  IS THERE A BASE "GET" METHOD DEFINED, WITH NO METHODTOCALL PARAM?]
+
+Of course, in practice, this code would have thorough documentation; the controller, as well, would likely delegate most of the work for the submit, save, and cancel methods out to a separate service defined in Spring [JERRY, ARE WE STILL RECOMMENDING THIS NOW THAT THE CONTROLLER LIVES IN SPRING?  I'M GUESSING SO JUST FOR THE SAKE OF GRANULARITY]  However, this code, while incomplete, does offer several interesting features.  First, on line 1, the @Controller annotation lets Spring know that this class is a controller, and on line 2, the @RequestMapping tells Spring that any request which goes to /conferenceSignup should be calling methods on an instance of this controller class.
+
+As can be seen from lines 6-7, lines 12-13, and lines 18-19, each method defined has the @RequestMapping annotation, they all return ModelAndView objects, and they have the standard set of parameters.  The params portion of the @RequestMapping on those lines is very important.  No matter which button is pushed, it will always route to the same URL: /cofnerenceSignup.  There needs to be some way for the button to differentiate precisely which controller method it wants to use.  KRAD's ActionField will do that by rendering a query parameter with a methodToCall value.  For instance, the "Submit" button will route to "/conferenceSignup?methodToCall=submit".  That will match the @RequestMapping's params value, and the submit method will be called.
+
+On lines 9, 15, and 21, that UifControllerBase provides a convenience method, getUIFModelAndView, which takes the UifFormBase and builds the ModelAndView object to return. 
+
+That completes the controller.  Finally, we turn to View. [IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]
+
 h1. Splitting into Groups
+
+To complete View configuration, though, the visual design is going to have to be split into group configurations.
+
+There are three big identifiers that a section of a View should be separated into its own Group.  First, if a section has its own header and/or footer, then that visual section needs to be configured into its own Group.  In the page sketch above, we can see there this covers four visual sections: the one labeled Contact Info, the one labeled Members of Party, the one labeled Interests, and the one labeled Academic Institution.  Each has a big header text to separate it from everything else - that's the easiest way to tell that a visual section should be its own group.
+
+The second identifier is if a major visual section may or may not be present on the page.  It has already been decided that "Academic Institution" will be its own group, but too: it is conditional if that Group will be rendered, based on if the Academic Institution checkbox is checked.  Twice over, "Academic Institution" needs to be its own Group.
+
+Finally, Groups have their own autonomous layout.  If a layout drastically changes within a visual section, that's an indicator that a sub-group needs to be created there.  These sub-groups typically lack headers and footers, and therefore, they are added via GroupFields.  In the page sketch, note that the fields for Contact Address break the label on the left, control on the right layout of the rest of the Contact Info Group (the "City" and "State" fields especially).  Therefore, Contact Address is going to have to live within its own GroupField.
+
+What about the buttons at the bottom?  The buttons are special because a View, too, has a header and footer.  The "Submit", "Save", and "Cancel" buttons will all be part of the View's footer.  [IS THIS IN FACT ANOTHER GROUP?]
+
+The Groups have been identified.  Which layout should be used for each Group?  [JERRY - SUGGESTED LAYOUTS?  HERE JAMES]
+
+Here's what the View configuration looks like now that the Groups have been added. [HERE JAMES] Still...there's no fields yet save for the GroupField for Contact Address.
+
 h1. Fields
+
+For every label and control, an AttributeField needs to be configured.  Thankfully, if the property the AttributeField maps to an AttributeDefinition within the data object's data dictionary entry, fields can be incredibly easy to configure.  [HERE JAMES]
+
+However, what if the attribute field needs to be overridden?  For instance, the AttributeDefinition for State Code may be a text field, but our visual diagram seems to indicate that should be a select box.  Thankfully, in KRAD, any property set in an AttributeDefinition can be overridden at the AttributeField level. [HERE JAMES]
+
+Here's the configuration once the fields are added.  [HERE JAMES]
+
+And with that, a new KRAD View has been created!  [JERRY - TRUE THAT?]
+
 h1. Common Cases
+
+Some Views have a common look throughout all KRAD applications.  These views can be overridden, of course, but in most cases, the "out of the box" version of the View will be all a client application needs.  Let's explore each of these common views and how to configure them.
+
 h2. Inquiry
 h2. Lookup
 h2. Document

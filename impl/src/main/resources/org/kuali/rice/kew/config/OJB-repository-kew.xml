@@ -867,7 +867,7 @@
   </class-descriptor>
 
 
-  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteStyle" table="KREW_STYLE_T">
+  <class-descriptor class="org.kuali.rice.edl.impl.bo.EDocLiteStyle" table="KREW_STYLE_T">
     <field-descriptor column="STYLE_ID" name="edocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
@@ -876,7 +876,7 @@
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteDefinition" table="KREW_EDL_DEF_T">
+  <class-descriptor class="org.kuali.rice.edl.impl.bo.EDocLiteDefinition" table="KREW_EDL_DEF_T">
     <field-descriptor column="EDOCLT_DEF_ID" name="eDocLiteDefId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
@@ -885,7 +885,7 @@
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.edl.bo.EDocLiteAssociation" table="KREW_EDL_ASSCTN_T">
+  <class-descriptor class="org.kuali.rice.edl.impl.bo.EDocLiteAssociation" table="KREW_EDL_ASSCTN_T">
     <field-descriptor column="EDOCLT_ASSOC_ID" name="edocLiteAssocId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
     <field-descriptor column="DOC_TYP_NM" name="edlName" jdbc-type="VARCHAR"/>
     <field-descriptor column="EDL_DEF_NM" name="definition" jdbc-type="VARCHAR"/>
@@ -895,7 +895,7 @@
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
-    <class-descriptor class="org.kuali.rice.kew.edl.extract.Dump" table="KREW_EDL_DMP_T">
+    <class-descriptor class="org.kuali.rice.edl.impl.extract.Dump" table="KREW_EDL_DMP_T">
     <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT" primarykey="true" />
     <field-descriptor column="DOC_TYP_NM" name="docTypeName" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_STAT_CD" name="docRouteStatusCode" jdbc-type="VARCHAR" />
@@ -905,18 +905,18 @@
     <field-descriptor column="DOC_HDR_INITR_PRNCPL_ID" name="docInitiatorId" jdbc-type="VARCHAR" />
     <field-descriptor column="CRNT_NODE_NM" name="docCurrentNodeName" jdbc-type="VARCHAR" />
     <field-descriptor column="VER_NBR" name="lockVerNbr"  jdbc-type="INTEGER" locking="true" />
-  <collection-descriptor name="fields" element-class-ref="org.kuali.rice.kew.edl.extract.Fields" auto-retrieve="true" auto-delete="true" auto-update="true">
+  <collection-descriptor name="fields" element-class-ref="org.kuali.rice.edl.impl.extract.Fields" auto-retrieve="true" auto-delete="true" auto-update="true">
     <inverse-foreignkey field-ref="docId"/>
   </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.edl.extract.Fields" table="KREW_EDL_FLD_DMP_T">
+  <class-descriptor class="org.kuali.rice.edl.impl.extract.Fields" table="KREW_EDL_FLD_DMP_T">
     <field-descriptor column="EDL_FIELD_DMP_ID" name="fieldId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_FLD_DMP_S" />
     <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT"/>
     <field-descriptor column="FLD_NM" name="fieldName" jdbc-type="VARCHAR"/>
     <field-descriptor column="FLD_VAL" name="fieldValue" jdbc-type="VARCHAR"/>
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor name="dump" class-ref="org.kuali.rice.kew.edl.extract.Dump" auto-retrieve="true" auto-delete="false" auto-update="false">
+    <reference-descriptor name="dump" class-ref="org.kuali.rice.edl.impl.extract.Dump" auto-retrieve="true" auto-delete="false" auto-update="false">
       <foreignkey field-ref="docId"/>
     </reference-descriptor>
   </class-descriptor>

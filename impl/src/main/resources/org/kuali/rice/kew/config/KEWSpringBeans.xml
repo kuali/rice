@@ -274,7 +274,7 @@
 
 
   <!--  EDL Extract Service -->
-  <bean id="enExtractService" class="org.kuali.rice.kew.edl.extract.ExtractServiceImpl">
+  <bean id="enExtractService" class="org.kuali.rice.edl.impl.extract.ExtractServiceImpl">
     <property name="extractDAO">
       <ref bean="enExtractDAO"/>
     </property>
@@ -443,12 +443,12 @@
 
     <bean id="enXmlDigesterService" class="org.kuali.rice.kew.batch.XmlDigesterServiceImpl"  lazy-init="true"/>
 
-    <bean id="enEDocLiteService" class="org.kuali.rice.kew.edl.service.impl.EDocLiteServiceImpl" lazy-init="true">
+    <bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl" lazy-init="true">
         <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
         <property name="styleService" ref="enStyleService"/>
     </bean>
 
-    <bean id="enStyleService" class="org.kuali.rice.kew.edl.service.impl.StyleServiceImpl" lazy-init="true">
+    <bean id="enStyleService" class="org.kuali.rice.edl.impl.service.impl.StyleServiceImpl" lazy-init="true">
         <property name="styleDAO" ref="enEDocLiteDAO"/>
     </bean>
 

@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.actions;
 
 import org.junit.Test;
-import org.kuali.rice.kew.edl.WorkflowFunctions;
+import org.kuali.rice.edl.impl.WorkflowFunctions;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kns.UserSession;

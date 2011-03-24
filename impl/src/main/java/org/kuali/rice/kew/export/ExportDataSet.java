@@ -19,9 +19,9 @@ package org.kuali.rice.kew.export;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
+import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
-import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;

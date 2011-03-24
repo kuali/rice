@@ -61,9 +61,9 @@
     <class>org.kuali.rice.kew.engine.node.BranchState</class>
     <class>org.kuali.rice.kew.engine.node.NodeState</class>
     <class>org.kuali.rice.kew.engine.node.Process</class>
-    <class>org.kuali.rice.kew.edl.bo.EDocLiteStyle</class>
-    <class>org.kuali.rice.kew.edl.bo.EDocLiteDefinition</class>
-    <class>org.kuali.rice.kew.edl.bo.EDocLiteAssociation</class>
+    <class>org.kuali.rice.edl.impl.bo.EDocLiteStyle</class>
+    <class>org.kuali.rice.edl.impl.bo.EDocLiteDefinition</class>
+    <class>org.kuali.rice.edl.impl.bo.EDocLiteAssociation</class>
     <!--<class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>-->
     <!-- 
     <class>org.kuali.rice.kew.role.QualifiedRole</class>
@@ -73,8 +73,8 @@
     <class>org.kuali.rice.kew.role.Role</class>
     <class>org.kuali.rice.kew.role.RoleAttribute</class>
     -->
-    <class>org.kuali.rice.kew.edl.extract.Dump</class>
-    <class>org.kuali.rice.kew.edl.extract.Fields</class>
+    <class>org.kuali.rice.edl.impl.extract.Dump</class>
+    <class>org.kuali.rice.edl.impl.extract.Fields</class>
     <class>org.kuali.rice.kew.documentlink.DocumentLink</class>
     <class>org.kuali.rice.kew.engine.node.KeyValuePair</class>
     <class>org.kuali.rice.kew.engine.node.State</class>

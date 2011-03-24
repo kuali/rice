@@ -20,7 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
+import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;

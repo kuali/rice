@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
+import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.xml.XmlRenderer;
 
@@ -32,7 +32,7 @@ import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**
  * Exports Style definitions to XML.
  *
- * @see org.kuali.rice.kew.edl.service.StyleService
+ * @see org.kuali.rice.edl.impl.service.StyleService
  * @see org.kuali.rice.kew.xml.StyleXmlParser
  * @see EDocLiteStyle
  *

@@ -30,7 +30,7 @@
 			<name>PPTestChild2</name>
 			<parent>PPTestParent1</parent>
 			<label>PPTestChild2</label>
-			<postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
+			<postProcessorName>org.kuali.rice.edl.impl.EDocLitePostProcessor</postProcessorName>
 		</documentType>
 		<documentType>
 			<name>PPTestParent2</name>

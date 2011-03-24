@@ -18,7 +18,7 @@
   <bean id="EDocLiteStyle" parent="EDocLiteStyle-parentBean"/>
 
   <bean id="EDocLiteStyle-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.edl.bo.EDocLiteStyle"/>
+    <property name="businessObjectClass" value="org.kuali.rice.edl.impl.bo.EDocLiteStyle"/>
     <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
     <property name="objectLabel" value="Stylesheet"/>
     <property name="inquiryDefinition">

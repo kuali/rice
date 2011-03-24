@@ -81,10 +81,10 @@
     class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOJpaImpl" />
 
   <bean id="enEDocLiteDAO" parent="kewJpaParent"
-    class="org.kuali.rice.kew.edl.dao.impl.EDocLiteDAOJpaImpl" />
+    class="org.kuali.rice.edl.impl.dao.impl.EDocLiteDAOJpaImpl" />
 
   <bean id="enExtractDAO" parent="kewJpaParent"
-    class="org.kuali.rice.kew.edl.extract.dao.impl.ExtractDAOJpaImpl" />
+    class="org.kuali.rice.edl.impl.extract.dao.impl.ExtractDAOJpaImpl" />
 
   <bean id="enHelpDAO" parent="kewJpaParent"
     class="org.kuali.rice.kew.help.dao.impl.HelpDaoJpaImpl" />

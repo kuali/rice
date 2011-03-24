@@ -18,7 +18,7 @@
   <bean id="EDocLiteDefinition" parent="EDocLiteDefinition-parentBean"/>
 
   <bean id="EDocLiteDefinition-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.kew.edl.bo.EDocLiteDefinition"/>
+    <property name="businessObjectClass" value="org.kuali.rice.edl.impl.bo.EDocLiteDefinition"/>
     <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
     <property name="objectLabel" value="eDoc Lite Definition"/>
     <property name="inquiryDefinition">

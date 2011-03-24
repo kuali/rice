@@ -219,7 +219,7 @@
 
 	<servlet>
 		<servlet-name>edoclite</servlet-name>
-		<servlet-class>org.kuali.rice.kew.edl.EDLServlet</servlet-class>
+		<servlet-class>org.kuali.rice.edl.impl.EDLServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

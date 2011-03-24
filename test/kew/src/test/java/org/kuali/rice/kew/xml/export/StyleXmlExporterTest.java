@@ -19,7 +19,7 @@ import org.jdom.Document;
 import org.junit.Test;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
+import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;

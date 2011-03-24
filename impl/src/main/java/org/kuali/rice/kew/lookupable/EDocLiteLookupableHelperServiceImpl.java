@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.edl.UserAction;
-import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
+import org.kuali.rice.edl.impl.UserAction;
+import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;

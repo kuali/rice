@@ -6,7 +6,7 @@
             <name>PCITestChild2</name>
             <parent>PCITestParent1</parent>
             <label>PCITestChild2</label>
-            <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.edl.impl.EDocLitePostProcessor</postProcessorName>
         </documentType>
         <documentType>
             <name>PCITestChild4</name>

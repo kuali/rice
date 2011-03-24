@@ -21,7 +21,7 @@
       <parent>OfficeOfAffirmativeAction</parent>
       <description>Search Status</description>
       <label>Search Status</label>
-      <postProcessorName>org.kuali.rice.kew.edl.EDocLitePostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.edl.impl.EDocLitePostProcessor</postProcessorName>
       <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
       <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
       <docHandler>${workflow.url}/EDocLite</docHandler>

@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.uif.UifConstants;
@@ -127,14 +126,15 @@ public class LookupController extends UifControllerBase {
         }
 
         // validate search parameters
-        lookupViewHelperService.validateSearchParameters(lookupForm.getCriteriaFields());
+        // TODO this is turned off until we have a way to query the view lookup definition
+//        lookupViewHelperService.validateSearchParameters(lookupForm.getCriteriaFields());
 
-        Collection<? extends BusinessObject> displayList = (Collection<? extends BusinessObject>)lookupViewHelperService.performSearch(lookupForm.getCriteriaFieldsForLookup(), true);
+        Collection<?> displayList = lookupViewHelperService.performSearch(lookupForm.getCriteriaFieldsForLookup(), true);
 
-        if ( displayList instanceof CollectionIncomplete ){
-            request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete) displayList).getActualSizeIfTruncated());
+        if ( displayList instanceof CollectionIncomplete<?> ){
+            request.setAttribute("reqSearchResultsActualSize", ((CollectionIncomplete<?>) displayList).getActualSizeIfTruncated());
         } else {
-            request.setAttribute("reqSearchResultsActualSize", displayList.size() );
+            request.setAttribute("reqSearchResultsActualSize", new Integer(displayList.size()) );
         }
 
         lookupForm.setSearchResults(displayList);

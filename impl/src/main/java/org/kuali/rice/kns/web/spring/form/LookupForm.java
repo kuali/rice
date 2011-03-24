@@ -23,7 +23,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.container.View;
@@ -48,7 +47,7 @@ public class LookupForm extends UifFormBase {
 	private String conversionFields;
 	private Map<String, String> fieldConversions;
 	
-	private Collection<? extends BusinessObject> searchResults;
+	private Collection<?> searchResults;
 
     public LookupForm() {
     	super();
@@ -103,11 +102,11 @@ public class LookupForm extends UifFormBase {
     	this.fieldConversions = fieldConversions;
     }
 
-	public Collection<? extends BusinessObject> getSearchResults() {
+	public Collection<?> getSearchResults() {
     	return this.searchResults;
     }
 
-	public void setSearchResults(Collection<? extends BusinessObject> searchResults) {
+	public void setSearchResults(Collection<?> searchResults) {
     	this.searchResults = searchResults;
     }
 

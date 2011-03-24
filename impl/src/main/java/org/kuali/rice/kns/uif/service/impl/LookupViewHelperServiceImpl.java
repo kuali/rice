@@ -42,7 +42,6 @@ import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -51,7 +50,6 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
-import org.kuali.rice.kns.uif.UifConstants.ViewTypeParameterNames;
 import org.kuali.rice.kns.uif.container.LookupView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
@@ -266,8 +264,8 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	/**
 	 * @see org.kuali.rice.kns.uif.service.LookupViewHelperService#performSearch(java.util.Map, boolean)
 	 */
-	public Collection<? extends Object> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded) {
-		Collection<? extends Object> displayList;
+	public Collection<?> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded) {
+		Collection<?> displayList;
 
 		preprocessDateFields(criteriaFieldsForLookup);
 

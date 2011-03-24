@@ -35,7 +35,7 @@ public interface LookupViewHelperService extends ViewHelperService {
 	 * @param bounded
 	 * @return the list of result BOs, possibly bounded
 	 */
-	public Collection<? extends Object> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded);
+	public Collection<?> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded);
 
 	/**
 	 * 

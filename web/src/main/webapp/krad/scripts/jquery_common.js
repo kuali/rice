@@ -357,19 +357,13 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
     jq(function () {        	
         jq("#" + controlId).click(function (e) {
         	// Prevent the default submit
-            e.preventDefault();          
+            e.preventDefault();                      
             // Add the ajaxCall parameter so that the controller can avoid the redirect
-            writeHiddenToForm('actionParameters[ajaxCall]' , 'true');
-            // Add the parameters to the form 
-            for (var key in actionParameterMapString) {
-                writeHiddenToForm(key , actionParameterMapString[key]);
-            }
-            // Do the Ajax post using the kualiForm form action send a serialized instance
-            jq.ajax({
-        		type	: "POST",
-        		cache	: false,
-        		url		: jq("#kualiForm").attr('action'),
-        		data	: jq("#kualiForm").serialize(),
+            actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
+            // Do the Ajax submit on the kualiForm form
+            jq("#kualiForm").ajaxSubmit({  
+            	// The additional data ie. baseLookupURL, bussObject
+            	data: actionParameterMapString,
         		success: function(data) {
             		// Add the returned URL to the FancyBox href setting
             		options['href'] = data;

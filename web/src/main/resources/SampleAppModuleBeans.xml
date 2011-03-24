@@ -132,11 +132,6 @@
           <property name="serviceName" value="lookupService" />
         </bean>
       </property>
-      <property name="businessObjectService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="businessObjectService" />
-        </bean>
-      </property>
       <property name="businessObjectDictionaryService">
         <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
           <property name="serviceName" value="businessObjectDictionaryService" />

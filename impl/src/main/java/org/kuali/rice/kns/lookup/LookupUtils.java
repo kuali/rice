@@ -106,13 +106,13 @@ public class LookupUtils {
      * This method uses the DataDictionary to determine whether to force uppercase the value, and if it should, then it does the
      * uppercase, and returns the upper-cased value.
      *
-     * @param boClass Parent BO class that the fieldName is a member of.
+     * @param dataObjectClass Parent DO class that the fieldName is a member of.
      * @param fieldName Name of the field to be forced to uppercase.
      * @param fieldValue Value of the field that may be uppercased.
      * @return The correctly uppercased fieldValue if it should be uppercased, otherwise fieldValue is returned unchanged.
      *
      */
-    public static String forceUppercase(Class boClass, String fieldName, String fieldValue) {
+    public static String forceUppercase(Class<?> dataObjectClass, String fieldName, String fieldValue) {
 
         // short-circuit to exit if there isnt enough information to do the forceUppercase
         if (StringUtils.isBlank(fieldValue)) {
@@ -120,27 +120,25 @@ public class LookupUtils {
         }
 
         // parameter validation
-        if (boClass == null) {
-            throw new IllegalArgumentException("Parameter boClass passed in with null value.");
+        if (dataObjectClass == null) {
+            throw new IllegalArgumentException("Parameter dataObjectClass passed in with null value.");
         }
-        else if (!BusinessObject.class.isAssignableFrom(boClass)) {
-            throw new IllegalArgumentException("Parameter boClass value passed in [" + boClass.getName() + "] " + "was not a descendent of BusinessObject.");
-        }
+        
         if (StringUtils.isBlank(fieldName)) {
             throw new IllegalArgumentException("Parameter fieldName passed in with empty value.");
         }
 
-        if (!dataDictionaryService.isAttributeDefined(boClass, fieldName)) {
+        if (!dataDictionaryService.isAttributeDefined(dataObjectClass, fieldName).booleanValue()) {
             return fieldValue;
         }
 
 
         boolean forceUpperCase = false;
         try {
-            forceUpperCase = dataDictionaryService.getAttributeForceUppercase(boClass, fieldName).booleanValue();
+            forceUpperCase = dataDictionaryService.getAttributeForceUppercase(dataObjectClass, fieldName).booleanValue();
         }
         catch (UnknownBusinessClassAttributeException ubae) {
-            // do nothing, dont alter the fieldValue
+            // do nothing, don't alter the fieldValue
         }
         if (forceUpperCase && !fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
             return fieldValue.toUpperCase();
@@ -153,24 +151,22 @@ public class LookupUtils {
      * This method uses the DataDictionary to determine whether to force uppercase the values, and if it should, then it does the
      * uppercase, and returns the upper-cased Map of fieldname/fieldValue pairs.
      *
-     * @param boClass Parent BO class that the fieldName is a member of.
+     * @param dataObjectClass Parent DO class that the fieldName is a member of.
      * @param fieldValues A Map<String,String> where the key is the fieldName and the value is the fieldValue.
      * @return The same Map is returned, with the appropriate values uppercased (if any).
      *
      */
-    public static Map<String, String> forceUppercase(Class boClass, Map<String, String> fieldValues) {
-        if (boClass == null) {
+    public static Map<String, String> forceUppercase(Class<?> dataObjectClass, Map<String, String> fieldValues) {
+        if (dataObjectClass == null) {
             throw new IllegalArgumentException("Parameter boClass passed in with null value.");
         }
-        else if (!BusinessObject.class.isAssignableFrom(boClass)) {
-            throw new IllegalArgumentException("Parameter boClass value passed in [" + boClass.getName() + "] " + "was not a descendent of BusinessObject.");
-        }
+        
         if (fieldValues == null) {
             throw new IllegalArgumentException("Parameter fieldValues passed in with null value.");
         }
 
         for (String fieldName : fieldValues.keySet()) {
-            fieldValues.put(fieldName, LookupUtils.forceUppercase(boClass, fieldName, (String) fieldValues.get(fieldName)));
+            fieldValues.put(fieldName, LookupUtils.forceUppercase(dataObjectClass, fieldName, (String) fieldValues.get(fieldName)));
         }
         return fieldValues;
     }

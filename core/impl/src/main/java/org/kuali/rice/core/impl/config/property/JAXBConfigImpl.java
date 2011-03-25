@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.util.ImmutableProperties;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;

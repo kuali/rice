@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.util.ImmutableProperties;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -479,7 +480,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      */
     protected void resolveRawToCache() {
     	if(rawProperties.size() > 0) {
-    		Properties oldProps = new Properties(new ImmutableProperties(resolvedProperties));  
+    		Properties oldProps = new Properties(new ImmutableProperties(resolvedProperties));
     		//oldProps.putAll(new ImmutableProperties(resolvedProperties));
     		resolvedProperties.clear();
     		

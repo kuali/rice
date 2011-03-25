@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.dao.HelpDAO;
 import org.kuali.rice.kew.help.service.HelpService;
@@ -172,5 +172,9 @@ public class HelpServiceImpl implements HelpService {
 		return exporter.export(dataSet);
 	}
 
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
 
 }

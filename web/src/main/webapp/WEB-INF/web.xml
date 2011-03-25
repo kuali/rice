@@ -130,6 +130,10 @@
           <param-name>config</param-name>
           <param-value>/WEB-INF/struts-config.xml</param-value>
         </init-param>
+        <init-param>
+          <param-name>config/core</param-name>
+          <param-value>/core/WEB-INF/struts-config.xml</param-value>
+        </init-param>
 		<init-param>
 			<param-name>debug</param-name>
 			<param-value>3</param-value>
@@ -204,7 +208,7 @@
 
 	<servlet>
 		<servlet-name>export</servlet-name>
-		<servlet-class>org.kuali.rice.kew.export.web.ExportServlet</servlet-class>
+		<servlet-class>org.kuali.rice.core.web.impex.ExportServlet</servlet-class>
 	</servlet>
 
 	<servlet>

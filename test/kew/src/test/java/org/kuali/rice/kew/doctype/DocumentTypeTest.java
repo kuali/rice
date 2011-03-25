@@ -15,20 +15,34 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import mocks.MockPostProcessor;
+
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.edl.impl.EDocLitePostProcessor;
+import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -42,14 +56,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.test.BaselineTestCase;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentTypeTest extends KEWTestCase {
@@ -180,11 +186,11 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Wrong su workgroup", "TestWorkgroup", parsedDocument.getSuperUserWorkgroup().getGroupName());
         // roundabout way of testing to see if the exception workgroup has been processed properly
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
-        ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getDocumentTypes().add(parsedDocument);
         String regex = "(?s).*<defaultExceptionGroupName namespace=\"" + KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE + "\">TestWorkgroup</defaultExceptionGroupName>.*";
         LOG.warn("Using regex: " + regex);
-        assertTrue(XmlJotter.jotNode(exporter.export(dataSet)).matches(regex));
+        assertTrue(XmlJotter.jotNode(exporter.export(dataSet.createExportDataSet())).matches(regex));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());
         //assertEquals("Wrong default exception workgroup", "TestWorkgroup", parsedDocument.getDefaultExceptionWorkgroup().getDisplayName());
         assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());

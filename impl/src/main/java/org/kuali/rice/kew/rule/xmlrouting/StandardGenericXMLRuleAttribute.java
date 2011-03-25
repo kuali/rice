@@ -321,7 +321,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             NodeList xPathExpressions = (NodeList) xpath.evaluate(findFieldExpressions, configXml, XPathConstants.NODESET);
             for (int index = 0; index < xPathExpressions.getLength(); index++) {
                 Element expressionElement = (Element) xPathExpressions.item(index);
-                String expression = XmlJotter.jotNode(expressionElement);
+                String expression = expressionElement.getTextContent();
                 if (!isEvaluateForMissingExtensions()) {
                     Node parentNode = expressionElement.getParentNode().getParentNode();
                     Node fieldAttribute = parentNode.getAttributes().getNamedItem("name");

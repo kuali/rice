@@ -16,8 +16,15 @@
  */
 package org.kuali.rice.kew.doctype.service.impl;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
@@ -26,19 +33,12 @@ import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kns.util.ObjectUtils;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -449,6 +449,11 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         DocumentTypeXmlExporter exporter = new DocumentTypeXmlExporter();
         return exporter.export(dataSet);
     }
+    
+    @Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
 
     public List getChildDocumentTypes(Long documentTypeId) {
     	List childDocumentTypes = new ArrayList();

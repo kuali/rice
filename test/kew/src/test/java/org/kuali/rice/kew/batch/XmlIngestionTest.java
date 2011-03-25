@@ -16,18 +16,8 @@
 package org.kuali.rice.kew.batch;
 
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.util.FileCopyUtils;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +29,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.util.FileCopyUtils;
 
 /**
  * Tests XML "ingestion" pipeline
@@ -124,13 +127,13 @@ public class XmlIngestionTest extends KEWTestCase {
         // ingest the collection and save it to the database
         Collection<XmlDocCollection> ingestedXmlFile = null;
         try {
-            ingestedXmlFile = KEWServiceLocator.getXmlIngesterService().ingest(collections);
+            ingestedXmlFile = CoreApiServiceLocator.getXmlIngesterService().ingest(collections);
         } catch (Exception e) {
             LOG.error("Error ingesting data", e);
             //throw new RuntimeException(e);
         }
 
-        ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
 
         //Cast this for now
         List<EDocLiteAssociation> edla = KEWServiceLocator.getEDocLiteService().getEDocLiteAssociations();     
@@ -144,7 +147,7 @@ public class XmlIngestionTest extends KEWTestCase {
             }
         }
         
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         // now export that xml into a file
         File reingestFile = File.createTempFile("widgetsTestOutput", ".xml");		
         FileUtils.writeByteArrayToFile(reingestFile, xmlBytes);

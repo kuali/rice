@@ -45,7 +45,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.kuali.rice.kew.xml.XmlConstants.*;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 /**
  * Parses {@link RuleTemplate}s from XML.
  *

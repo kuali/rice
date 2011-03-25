@@ -16,19 +16,24 @@
  */
 package mocks;
 
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.util.*;
 
 
 
@@ -198,6 +203,10 @@ public class MockRuleServiceImpl implements RuleService {
     public Element export(ExportDataSet dataSet) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
 	public void notifyCacheOfDocumentTypeChange(DocumentType documentType) {
 
 	}

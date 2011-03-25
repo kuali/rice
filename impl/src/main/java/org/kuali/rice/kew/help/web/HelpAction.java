@@ -26,8 +26,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.export.web.ExportServlet;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.web.impex.ExportServlet;
+import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -158,10 +159,11 @@ public class HelpAction extends KewKualiAction {
         if(searchResults == null) {
         	searchResults = new ArrayList();
         }
-        ExportDataSet dataSet = new ExportDataSet();
+        //ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getHelp().addAll(searchResults);
         request.getSession().setAttribute(ExportServlet.EXPORT_DATA_SET_KEY, dataSet);
-        return new ActionForward(ExportServlet.generateExportPath(request, dataSet), true);
+        return new ActionForward(ExportServlet.generateExportPath(request, dataSet.createExportDataSet()), true);
     }
 
 }

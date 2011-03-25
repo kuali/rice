@@ -16,8 +16,21 @@
  */
 package org.kuali.rice.kew.rule;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
@@ -28,13 +41,6 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.RuleXmlParser;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 
 public class RuleXmlParserTest extends KEWTestCase {
@@ -54,7 +60,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         //going to hit the rules xml parser
         InputStream xmlFile = TestUtilities.loadResource(this.getClass(), "RulesToImport.xml");
         collections.add(KEWXmlDataLoader.getFileXmlDocCollection(xmlFile, "WorkflowUnitTestTemp"));
-        KEWServiceLocator.getXmlIngesterService().ingest(collections, null);
+        CoreApiServiceLocator.getXmlIngesterService().ingest(collections, null);
 
         Thread.sleep(5000);//give cache time to reload;
         int newRuleSize = ruleService.fetchAllCurrentRulesForTemplateDocCombination("TestRuleTemplate", "TestDocumentType").size();

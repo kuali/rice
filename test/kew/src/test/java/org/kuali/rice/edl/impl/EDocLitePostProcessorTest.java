@@ -18,7 +18,7 @@ package org.kuali.rice.edl.impl;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.edl.impl.EDocLitePostProcessor;
+import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 import static org.junit.Assert.assertTrue;

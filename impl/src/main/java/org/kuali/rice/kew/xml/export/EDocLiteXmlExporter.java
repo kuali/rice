@@ -16,23 +16,34 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.apache.log4j.Logger;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.kuali.rice.core.util.XmlHelper;
-import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.xml.XmlRenderer;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_ACTIVE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_ASSOCIATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_DEFINITION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_DOC_TYPE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_EDOCLITE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_SCHEMA_LOCATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_STYLE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
 
 import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.kuali.rice.kew.xml.XmlConstants.*;
+import org.apache.log4j.Logger;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
+import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
+import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
+import org.kuali.rice.edl.impl.service.EDocLiteService;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.xml.XmlRenderer;
 /**
  * Exports EDocLite definitions to XML.
  *
@@ -46,7 +57,13 @@ public class EDocLiteXmlExporter implements XmlExporter {
 
 	private XmlRenderer renderer = new XmlRenderer(EDL_NAMESPACE);
 
-	public Element export(ExportDataSet dataSet) {
+	@Override
+	public boolean supportPrettyPrint() {
+		return false;
+	}
+	
+	public Element export(ExportDataSet exportDataSet) {
+		KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
 		if (!dataSet.getEdocLites().isEmpty()) {
 			Element rootElement = renderer.renderElement(null, EDL_EDOCLITE);
 			rootElement.setAttribute(SCHEMA_LOCATION_ATTR, EDL_SCHEMA_LOCATION, SCHEMA_NAMESPACE);

@@ -16,12 +16,26 @@
  */
 package org.kuali.rice.kew.batch;
 
-import org.kuali.rice.kew.service.KEWServiceLocator;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.kuali.rice.core.api.impex.xml.DirectoryXmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
+import org.kuali.rice.core.api.impex.xml.ZipXmlDocCollection;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 
 
 /**
@@ -138,7 +152,7 @@ public class XmlPollerServiceImpl implements XmlPollerService {
         // now ingest the containers
         Collection failed = null;
         try {
-            failed = KEWServiceLocator.getXmlIngesterService().ingest(collections);
+            failed = CoreApiServiceLocator.getXmlIngesterService().ingest(collections);
         } catch (Exception e) {
             LOG.error("Error ingesting data", e);
             //throw new RuntimeException(e);

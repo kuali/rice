@@ -16,12 +16,19 @@
 
 package org.kuali.rice.kew.rule.service.impl;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
@@ -36,13 +43,6 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -158,6 +158,11 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
 	public Element export(ExportDataSet dataSet) {
 		RuleDelegationXmlExporter exporter = new RuleDelegationXmlExporter();
 		return exporter.export(dataSet);
+	}
+	
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
 	}
 
 	private IdentityManagementService getIdentityManagementService() {

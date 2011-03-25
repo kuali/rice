@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kew.service;
 
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.NodeSettings;
@@ -29,8 +35,6 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.ActionRegistry;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
-import org.kuali.rice.kew.batch.XmlDigesterService;
-import org.kuali.rice.kew.batch.XmlIngesterService;
 import org.kuali.rice.kew.batch.XmlPollerService;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
@@ -62,15 +66,8 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.xml.export.XmlExporterService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import javax.xml.namespace.QName;
 
 
 /**
@@ -180,21 +177,6 @@ public final class KEWServiceLocator {
 	 * Polls for xml files on disk
 	 */
 	public static final String XML_POLLER_SERVICE = "enXmlPollerService";
-
-	/**
-	 * Ingests xml docs containers
-	 */
-	public static final String XML_INGESTER_SERVICE = "enXmlIngesterService";
-
-	/**
-	 * Delegates xml doc parsing
-	 */
-	public static final String XML_DIGESTER_SERVICE = "enXmlDigesterService";
-
-	/**
-	 * Exports xml data
-	 */
-	public static final String XML_EXPORTER_SERVICE = "enXmlExporterService";
 
 	public static final String DB_TABLES_LOADER = "enDbTablesLoader";
 
@@ -351,18 +333,6 @@ public final class KEWServiceLocator {
 
 	public static XmlPollerService getXmlPollerService() {
 		return (XmlPollerService) getBean(XML_POLLER_SERVICE);
-	}
-
-	public static XmlIngesterService getXmlIngesterService() {
-		return (XmlIngesterService) getBean(XML_INGESTER_SERVICE);
-	}
-
-	public static XmlDigesterService getXmlDigesterService() {
-		return (XmlDigesterService) getBean(XML_DIGESTER_SERVICE);
-	}
-
-	public static XmlExporterService getXmlExporterService() {
-		return (XmlExporterService) getBean(XML_EXPORTER_SERVICE);
 	}
 
 	public static UserOptionsService getUserOptionsService() {

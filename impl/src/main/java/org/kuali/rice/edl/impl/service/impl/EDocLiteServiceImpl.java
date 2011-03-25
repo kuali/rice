@@ -16,11 +16,31 @@
  */
 package org.kuali.rice.edl.impl.service.impl;
 
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.edl.impl.*;
+import org.kuali.rice.edl.impl.EDLController;
+import org.kuali.rice.edl.impl.EDLControllerFactory;
+import org.kuali.rice.edl.impl.EDLGlobalConfig;
+import org.kuali.rice.edl.impl.EDLGlobalConfigFactory;
+import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
@@ -30,7 +50,6 @@ import org.kuali.rice.edl.impl.service.StyleService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -42,20 +61,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -364,4 +369,9 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 		return new EDocLiteXmlExporter().export(dataSet);
 	}
 
+	@Override
+	public boolean supportPrettyPrint() {
+		return false;
+	}
+	
 }

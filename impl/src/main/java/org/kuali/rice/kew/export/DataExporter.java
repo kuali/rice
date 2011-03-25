@@ -20,6 +20,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -28,7 +30,6 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
@@ -60,7 +61,8 @@ public class DataExporter implements Exporter {
 			throw new ExportNotSupportedException("The given export format of " + exportFormat + " is not supported by the KEW XML Exporter!");
 		}
 		ExportDataSet dataSet = buildExportDataSet(businessObjectClass, businessObjects);
-		outputStream.write(KEWServiceLocator.getXmlExporterService().export(dataSet));
+		outputStream.write(CoreApiServiceLocator.getXmlExporterService().export(dataSet));
+		outputStream.flush();
 	}
 
 	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass) {
@@ -71,7 +73,7 @@ public class DataExporter implements Exporter {
 	 * Builds the ExportDataSet based on the BusinessObjects passed in.
 	 */
 	protected ExportDataSet buildExportDataSet(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects) {
-		ExportDataSet dataSet = new ExportDataSet();
+		KewExportDataSet dataSet = new KewExportDataSet();
 		for (BusinessObject businessObject : businessObjects) {
 			if (businessObjectClass.equals(RuleAttribute.class)) {
 				dataSet.getRuleAttributes().add((RuleAttribute)businessObject);
@@ -93,7 +95,9 @@ public class DataExporter implements Exporter {
 				dataSet.getGroups().add((GroupImpl)businessObject);
 			}    
 		}
-		return dataSet;
+		ExportDataSet exportDataSet = new ExportDataSet();
+		dataSet.populateExportDataSet(exportDataSet);
+		return exportDataSet;
 	}
 
 }

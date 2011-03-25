@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.xml;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;

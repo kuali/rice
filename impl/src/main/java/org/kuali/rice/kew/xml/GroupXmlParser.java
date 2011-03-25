@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.kew.xml;
 
-import static org.kuali.rice.kew.xml.XmlConstants.ACTIVE;
-import static org.kuali.rice.kew.xml.XmlConstants.ATTRIBUTES;
-import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUPS;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP_ID;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.ID;
-import static org.kuali.rice.kew.xml.XmlConstants.KEY;
-import static org.kuali.rice.kew.xml.XmlConstants.MEMBERS;
-import static org.kuali.rice.kew.xml.XmlConstants.NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_ID;
-import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.TYPE;
-import static org.kuali.rice.kew.xml.XmlConstants.VALUE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUPS;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_ID;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ID;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.KEY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.MEMBERS;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_ID;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.VALUE;
 
 import java.io.IOException;
 import java.io.InputStream;

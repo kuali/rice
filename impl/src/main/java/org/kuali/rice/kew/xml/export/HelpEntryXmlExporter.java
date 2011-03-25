@@ -16,20 +16,22 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.kew.xml.XmlConstants.HELP_ENTRIES;
-import static org.kuali.rice.kew.xml.XmlConstants.HELP_ENTRY;
-import static org.kuali.rice.kew.xml.XmlConstants.HELP_KEY;
-import static org.kuali.rice.kew.xml.XmlConstants.HELP_NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.HELP_NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.HELP_SCHEMA_LOCATION;
-import static org.kuali.rice.kew.xml.XmlConstants.HELP_TEXT;
-import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_ENTRIES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_ENTRY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_KEY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_SCHEMA_LOCATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_TEXT;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
 
 import java.util.Iterator;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.xml.XmlRenderer;
 /**
@@ -45,7 +47,13 @@ public class HelpEntryXmlExporter implements XmlExporter {
     
     private XmlRenderer renderer = new XmlRenderer(HELP_NAMESPACE);
     
-    public Element export(ExportDataSet dataSet) {
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
+    
+    public Element export(ExportDataSet exportDataSet) {
+    	KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
         if (!dataSet.getHelp().isEmpty()) {
             Element rootElement = renderer.renderElement(null, HELP_ENTRIES);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, HELP_SCHEMA_LOCATION, SCHEMA_NAMESPACE);

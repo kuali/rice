@@ -129,7 +129,7 @@
       </fieldDef>
     </edl>
     <style name="OfferRequestStyle">
-      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:my-class="xalan://org.kuali.rice.edl.impl.WorkflowFunctions" version="1.0">
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:my-class="xalan://org.kuali.rice.edl.framework.util.EDLFunctionstionstions" version="1.0">
         <xsl:include href="widgets" />
         <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="yes" method="html" omit-xml-declaration="yes" />
         <xsl:param name="overrideMain" select="'false'" />

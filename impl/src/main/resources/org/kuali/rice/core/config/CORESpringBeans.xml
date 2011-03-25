@@ -54,12 +54,43 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+                <idref local="xmlDigesterService" />
+			</list>
+		</property>
+	</bean>
+
 	<!-- Mail Sender Factory -->
 	<bean id="mailSender" class="org.kuali.rice.core.mail.MailSenderFactoryBean" />
 
 	<!-- Mailer -->
 	<bean id="mailer" class="org.kuali.rice.core.mail.Mailer">
 	   <property name="mailSender" ref="mailSender" />
+	</bean>
+	
+	<bean id="xmlImpexRegistry" class="org.kuali.rice.core.impl.impex.xml.XmlImpexRegistryImpl" />
+	
+	<bean id="xmlIngesterService" class="org.kuali.rice.core.impl.impex.xml.XmlIngesterServiceImpl">
+        <property name="xmlDigesterService" ref="xmlDigesterService" />
+        <property name="validate">
+            <value>true</value>
+        </property>
+        <property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
+     </bean>
+
+    <bean id="xmlDigesterService" class="org.kuali.rice.core.impl.impex.xml.XmlDigesterServiceImpl"/>
+	    
+	<bean id="xmlExporterService" class="org.kuali.rice.core.impl.impex.xml.XmlExporterServiceImpl">
+		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
 	</bean>
 	    
 </beans>

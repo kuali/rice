@@ -15,18 +15,21 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.junit.Test;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.help.HelpEntry;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.help.HelpEntry;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class HelpEntryXmlExporterTest extends XmlExporterTestCase {
@@ -54,9 +57,9 @@ public class HelpEntryXmlExporterTest extends XmlExporterTestCase {
     	entry.setHelpName("");
     	entry.setHelpText("");
         List oldHelpEntries = KEWServiceLocator.getHelpService().search(entry);
-        ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getHelp().addAll(oldHelpEntries);
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
         
         // import the exported xml

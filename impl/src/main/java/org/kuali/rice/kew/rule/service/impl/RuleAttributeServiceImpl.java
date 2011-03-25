@@ -23,9 +23,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.dao.RuleAttributeDAO;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
@@ -124,6 +124,11 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
         RuleAttributeXmlExporter exporter = new RuleAttributeXmlExporter();
         return exporter.export(dataSet);
     }
+    
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
 
 	public RuleAttribute findByClassName(String className) {
 		return this.ruleAttributeDAO.findByClassName(className);

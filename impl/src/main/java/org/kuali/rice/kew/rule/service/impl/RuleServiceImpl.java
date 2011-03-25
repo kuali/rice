@@ -16,10 +16,29 @@
 
 package org.kuali.rice.kew.rule.service.impl;
 
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.CollectionUtils;
 import org.kuali.rice.core.util.RiceConstants;
@@ -30,7 +49,6 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -58,7 +76,6 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -68,22 +85,6 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-
-import javax.xml.namespace.QName;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 
 public class RuleServiceImpl implements RuleService {
@@ -1244,6 +1245,11 @@ public class RuleServiceImpl implements RuleService {
         RuleXmlExporter exporter = new RuleXmlExporter(XmlConstants.RULE_NAMESPACE);
         return exporter.export(dataSet);
     }
+    
+    @Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
 
     protected List<RuleBaseValues> loadRules(List<Long> ruleIds) {
         List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();

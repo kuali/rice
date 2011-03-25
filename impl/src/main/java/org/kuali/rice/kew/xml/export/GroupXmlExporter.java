@@ -15,29 +15,31 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.kew.xml.XmlConstants.ACTIVE;
-import static org.kuali.rice.kew.xml.XmlConstants.ATTRIBUTE;
-import static org.kuali.rice.kew.xml.XmlConstants.ATTRIBUTES;
-import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUPS;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.GROUP_SCHEMA_LOCATION;
-import static org.kuali.rice.kew.xml.XmlConstants.KEY;
-import static org.kuali.rice.kew.xml.XmlConstants.MEMBERS;
-import static org.kuali.rice.kew.xml.XmlConstants.NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.TYPE;
-import static org.kuali.rice.kew.xml.XmlConstants.VALUE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUPS;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_SCHEMA_LOCATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.KEY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.MEMBERS;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.VALUE;
 
 import java.util.Iterator;
 
 import org.jdom.Element;
-import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -55,12 +57,18 @@ public class GroupXmlExporter implements XmlExporter {
 
     private XmlRenderer renderer = new XmlRenderer(GROUP_NAMESPACE);
 
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
+    
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.kew.xml.export.XmlExporter#export(org.kuali.rice.kew.export.ExportDataSet)
+     * @see org.kuali.rice.core.framework.impex.xml.XmlExporter#export(org.kuali.rice.core.api.impex.ExportDataSet)
      */
-    public Element export(ExportDataSet dataSet) {
+    public Element export(ExportDataSet exportDataSet) {
+    	KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
         if (!dataSet.getGroups().isEmpty()) {
             Element rootElement = renderer.renderElement(null, GROUPS);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, GROUP_SCHEMA_LOCATION, SCHEMA_NAMESPACE);

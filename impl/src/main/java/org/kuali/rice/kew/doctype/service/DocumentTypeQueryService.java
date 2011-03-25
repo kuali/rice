@@ -18,8 +18,8 @@ package org.kuali.rice.kew.doctype.service;
 
 import java.util.Collection;
 
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.xml.XmlLoader;
 
 
 /**

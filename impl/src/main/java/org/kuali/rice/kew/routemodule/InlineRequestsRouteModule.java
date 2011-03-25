@@ -19,6 +19,7 @@ package org.kuali.rice.kew.routemodule;
 import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.XmlHelper;
@@ -36,7 +37,6 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.RuleXmlParser;
-import org.kuali.rice.kew.xml.XmlConstants;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;

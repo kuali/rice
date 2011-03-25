@@ -20,9 +20,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.xml.XmlLoader;
-import org.kuali.rice.kew.xml.export.XmlExporter;
 
 /**
  * A service providing data access for {@link RuleDelegation}s.

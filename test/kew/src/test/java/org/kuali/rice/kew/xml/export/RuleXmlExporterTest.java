@@ -15,19 +15,10 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.junit.Test;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.web.WebRuleUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -39,7 +30,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.junit.Test;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.web.WebRuleUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 
 
 /**
@@ -74,13 +78,13 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         List oldRuleDelegations = KEWServiceLocator.getRuleDelegationService().findAllCurrentRuleDelegations();
         assertAllRuleDelegationsHaveUniqueNames(oldRuleDelegations);
 
-        ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getRules().addAll(oldRules);
         dataSet.getRuleDelegations().addAll(oldRuleDelegations);
         dataSet.getDocumentTypes().addAll(KEWServiceLocator.getDocumentTypeService().findAllCurrent());
         dataSet.getRuleTemplates().addAll(KEWServiceLocator.getRuleTemplateService().findAll());
         dataSet.getRuleAttributes().addAll(KEWServiceLocator.getRuleAttributeService().findAll());
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
         
         // now clear the tables
@@ -123,18 +127,18 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
     protected void assertRuleBaseValuesStateIndependence() throws Exception {
     	for (Object o : KEWServiceLocator.getRuleService().fetchAllRules(true)) {
         	RuleBaseValues rule = (RuleBaseValues)o;
-        	ExportDataSet dataSet = new ExportDataSet();
+        	KewExportDataSet dataSet = new KewExportDataSet();
         	dataSet.getRules().add(rule);
         	
         	// first, do a conversion in the just-loaded state:
-        	byte[] saveXmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        	byte[] saveXmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         	String saveStr = new String(saveXmlBytes);
         	
         	// now, convert for render:
         	WebRuleUtils.populateRuleMaintenanceFields(rule);
         	
         	// do another conversion in the ready-for-render state:
-        	byte[] loadXmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        	byte[] loadXmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         	String loadStr = new String(loadXmlBytes);
         	
         	// check that the results are identical:

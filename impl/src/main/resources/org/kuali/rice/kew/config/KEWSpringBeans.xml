@@ -146,7 +146,6 @@
                 <idref local="enHelpService" />
                 <idref local="enEDocLiteService" />
                 <idref local="enStyleService" />
-                <idref local="enXmlDigesterService" />
                 <idref local="enStatsService" />
                 <idref local="enNoteService" />
                 <idref local="enDocumentRoutingService" />
@@ -418,31 +417,36 @@
 
     <!-- some beans shared by client and server -->
 
-    <bean id="enXmlIngesterService" class="org.kuali.rice.kew.batch.XmlIngesterServiceImpl" lazy-init="true">
-        <property name="xmlDigesterService">
-          <ref bean="enXmlDigesterService"/>
-        </property>
-        <property name="validate">
-            <value>true</value>
-        </property>
-        <property name="serviceOrder">
-            <list>
-                <value>enUserXmlService</value>
-                <value>enRuleAttributeService</value>
-                <value>enGroupXmlService</value>
-                <value>enRuleTemplateService</value>
-                <value>enDocumentTypeService</value>
-                <value>enRuleService</value>
-                <value>enRuleDelegationService</value>
-                <value>enHelpService</value>
-                <value>enEDocLiteService</value>
-                <value>enStyleService</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="enXmlDigesterService" class="org.kuali.rice.kew.batch.XmlDigesterServiceImpl"  lazy-init="true"/>
-
+	<bean id="kewImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
+		<property name="xmlLoadersToRegister">
+		   <list>
+		     <ref local="enUserXmlService" />
+             <ref local="enRuleAttributeService" />
+             <ref local="enGroupXmlService" />
+             <ref local="enRuleTemplateService" />
+             <ref local="enDocumentTypeService" />
+             <ref local="enRuleService" />
+             <ref local="enRuleDelegationService" />
+             <ref local="enHelpService" />
+             <ref local="enEDocLiteService" />
+             <ref local="enStyleService" />
+		   </list>
+		</property>
+		<property name="xmlExportersToRegister">
+		   <list>
+             <ref local="enRuleAttributeService" />
+             <ref local="enGroupXmlService" />
+             <ref local="enRuleTemplateService" />
+             <ref local="enDocumentTypeService" />
+             <ref local="enRuleService" />
+             <ref local="enRuleDelegationService" />
+             <ref local="enHelpService" />
+             <ref local="enEDocLiteService" />
+             <ref local="enStyleService" />
+		   </list>
+		</property>
+	</bean>
+   
     <bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl" lazy-init="true">
         <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
         <property name="styleService" ref="enStyleService"/>
@@ -491,6 +495,10 @@
 
   <bean id="enWorkflowDocumentActionsService" class="org.kuali.rice.kew.service.impl.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
 
+  <bean id="xmlIngesterService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="xmlIngesterService" />
+	</bean>
 
   <bean id="enXmlPollerService" class="org.kuali.rice.kew.batch.XmlPollerServiceImpl">
     <property name="xmlPendingLocation">
@@ -512,24 +520,6 @@
       <value>${initialDelaySecs}</value>
     </property>
   </bean>
-
-  <bean id="enXmlExporterService" class="org.kuali.rice.kew.xml.export.XmlExporterServiceImpl" lazy-init="true">
-    <property name="serviceOrder">
-      <list>
-		<value>enGroupXmlService</value>
-        <value>enRuleAttributeService</value>
-        <value>enDocumentTypeService</value>
-        <value>enRuleTemplateService</value>
-        <value>enRuleService</value>
-        <value>enRuleDelegationService</value>
-        <value>enHelpService</value>
-        <value>enEDocLiteService</value>
-        <value>enStyleService</value>
-      </list>
-    </property>
-  </bean>
-
-
 
   <!--  StatsService -->
   <bean id="enStatsService" class="org.kuali.rice.kew.stats.service.impl.StatsServiceImpl">

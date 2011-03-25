@@ -18,13 +18,14 @@ package org.kuali.rice.kew.xml;
 import java.io.InputStream;
 
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.GroupXmlExporter;
-import org.kuali.rice.kew.xml.export.XmlExporter;
 
 public class GroupXmlServiceImpl implements XmlLoader, XmlExporter{
-
+	
 	public void loadXml(InputStream inputStream, String principalId) {
         GroupXmlParser parser = new GroupXmlParser();
         try {
@@ -34,10 +35,15 @@ public class GroupXmlServiceImpl implements XmlLoader, XmlExporter{
         }
     }
 
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
+	
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.kew.xml.export.XmlExporter#export(org.kuali.rice.kew.export.ExportDataSet)
+     * @see org.kuali.rice.core.framework.impex.xml.XmlExporter#export(org.kuali.rice.core.api.impex.ExportDataSet)
      */
     public Element export(ExportDataSet dataSet) {
         GroupXmlExporter exporter = new GroupXmlExporter();

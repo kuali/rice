@@ -15,17 +15,12 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.apache.log4j.Logger;
-import org.junit.Test;
-import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.node.BranchPrototype;
-import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -34,7 +29,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.BranchPrototype;
+import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.test.BaselineTestCase;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
@@ -51,9 +57,9 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         List documentTypes = KEWServiceLocator.getDocumentTypeService().findAllCurrent();
         for (Iterator iterator = documentTypes.iterator(); iterator.hasNext();) {
             DocumentType existingDocType = (DocumentType) iterator.next();
-            ExportDataSet dataSet = new ExportDataSet();
+            KewExportDataSet dataSet = new KewExportDataSet();
             dataSet.getDocumentTypes().add(existingDocType);
-            byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+            byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
             assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
             loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));
             DocumentType newDocType = KEWServiceLocator.getDocumentTypeService().findByName(existingDocType.getName());

@@ -15,16 +15,23 @@
  */
 package org.kuali.rice.kew.batch;
 
-import org.apache.commons.io.IOUtils;
-import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.XmlDoc;
+import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 
 
 /**
@@ -137,7 +144,7 @@ public class KEWXmlDataLoader {
         XmlDocCollection docCollection = getFileXmlDocCollection(xmlStream, "UnitTestTemp");
         //XmlDocCollection docCollection = new StreamXmlDocCollection(xmlStream);
         xmlFiles.add(docCollection);
-        KEWServiceLocator.getXmlIngesterService().ingest(xmlFiles);
+        CoreApiServiceLocator.getXmlIngesterService().ingest(xmlFiles);
         for (XmlDoc doc: docCollection.getXmlDocs()) {
             if (!doc.isProcessed()) {
                 throw new RuntimeException("Failed to ingest xml doc: " + doc.getName());

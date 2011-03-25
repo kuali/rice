@@ -18,10 +18,10 @@ package org.kuali.rice.kew.doctype.service;
 
 import java.util.List;
 
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.xml.export.XmlExporter;
 
 
 /**

@@ -18,9 +18,9 @@ package org.kuali.rice.kew.help.service;
 
 import java.util.List;
 
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.help.HelpEntry;
-import org.kuali.rice.kew.xml.XmlLoader;
-import org.kuali.rice.kew.xml.export.XmlExporter;
 
 
 /**

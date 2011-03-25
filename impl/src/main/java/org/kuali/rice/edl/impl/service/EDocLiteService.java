@@ -22,12 +22,12 @@ import java.util.List;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.edl.impl.EDLController;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.kew.xml.XmlLoader;
-import org.kuali.rice.kew.xml.export.XmlExporter;
 import org.w3c.dom.Document;
 
 

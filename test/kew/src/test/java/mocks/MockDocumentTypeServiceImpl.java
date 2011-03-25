@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
@@ -133,7 +133,11 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
     public Element export(ExportDataSet dataSet) {
         return null;
     }
-    public List findAllCurrent() {
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
+	public List findAllCurrent() {
         return null;
     }
 	public List getChildDocumentTypes(Long documentTypeId) {

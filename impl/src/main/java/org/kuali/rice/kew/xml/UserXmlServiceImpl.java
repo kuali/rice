@@ -18,6 +18,7 @@ package org.kuali.rice.kew.xml;
 import java.io.InputStream;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 
 public class UserXmlServiceImpl implements XmlLoader {
 	

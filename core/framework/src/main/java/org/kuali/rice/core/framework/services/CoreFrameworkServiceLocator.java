@@ -16,12 +16,14 @@
 
 package org.kuali.rice.core.framework.services;
 
+import org.kuali.rice.core.framework.impex.xml.XmlImpexRegistry;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 public class CoreFrameworkServiceLocator {
 
     public static final String PARAMETER_SERVICE = "parameterService";
+    public static final String XML_IMPEX_REGISTRY = "xmlImpexRegistry";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -29,5 +31,9 @@ public class CoreFrameworkServiceLocator {
 
     public static ParameterService getParameterService() {
         return getService(PARAMETER_SERVICE);
+    }
+    
+    public static XmlImpexRegistry getXmlImpexRegistry() {
+    	return getService(XML_IMPEX_REGISTRY);
     }
 }

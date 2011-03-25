@@ -15,14 +15,8 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.jdom.Document;
-import org.junit.Test;
-import org.kuali.rice.core.util.XmlHelper;
-import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -30,8 +24,15 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.jdom.Document;
+import org.junit.Test;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 
 /**
@@ -62,10 +63,10 @@ public class StyleXmlExporterTest extends XmlExporterTestCase {
 
         System.err.println("Styles: " + oldStyles.size());
 
-        ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getStyles().addAll(oldStyles);
 
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
         // quick check to verify that not only is the XML non-empty, but that it might actually contain an attempt at an exported style
         // (otherwise the XML could not contain any styles, and the test would pass with a false positive even though the export never

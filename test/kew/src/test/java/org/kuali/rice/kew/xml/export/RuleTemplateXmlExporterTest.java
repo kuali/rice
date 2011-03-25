@@ -15,21 +15,25 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.junit.Test;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
@@ -42,10 +46,10 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
     protected void assertExport() throws Exception {
         // export all existing rule templates and their dependencies (rule attributes)
         List oldRuleTemplates = KEWServiceLocator.getRuleTemplateService().findAll();
-        ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getRuleTemplates().addAll(oldRuleTemplates);
         dataSet.getRuleAttributes().addAll(KEWServiceLocator.getRuleAttributeService().findAll());
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
 
         // now clear the tables

@@ -16,18 +16,25 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.apache.log4j.Logger;
-import org.jdom.Element;
-import org.kuali.rice.core.util.XmlHelper;
-import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.xml.XmlRenderer;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_SCHEMA_LOCATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_STYLE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_STYLES;
 
 import java.io.StringReader;
 import java.util.Iterator;
 
-import static org.kuali.rice.kew.xml.XmlConstants.*;
+import org.apache.log4j.Logger;
+import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.xml.XmlRenderer;
 
 /**
  * Exports Style definitions to XML.
@@ -43,7 +50,13 @@ public class StyleXmlExporter implements XmlExporter {
 
 	private XmlRenderer renderer = new XmlRenderer(STYLE_NAMESPACE);
 	
-	public Element export(ExportDataSet dataSet) {
+	@Override
+	public boolean supportPrettyPrint() {
+		return false;
+	}
+
+	public Element export(ExportDataSet exportDataSet) {
+		KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
 		if (!dataSet.getStyles().isEmpty()) {
 			Element rootElement = renderer.renderElement(null, STYLE_STYLES);
 			rootElement.setAttribute(SCHEMA_LOCATION_ATTR, STYLE_SCHEMA_LOCATION, SCHEMA_NAMESPACE);

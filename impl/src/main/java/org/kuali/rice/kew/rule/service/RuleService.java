@@ -16,18 +16,18 @@
  */
 package org.kuali.rice.kew.rule.service;
 
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.xml.XmlLoader;
-import org.kuali.rice.kew.xml.export.XmlExporter;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
 /**

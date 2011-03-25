@@ -16,6 +16,41 @@
  */
 package org.kuali.rice.kew.xml.export;
 
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTION_REQUESTED;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPROVE_POLICY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATION_TYPE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.EXPRESSION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.FORCE_ACTION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.FROM_DATE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.KEY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT_RESPONSIBILITY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT_RULE_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRIORITY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RESPONSIBILITIES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RESPONSIBILITY;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RESPONSIBILITY_ID;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROLE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_DELEGATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_EXTENSION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_EXTENSIONS;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_EXTENSION_VALUE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_EXTENSION_VALUES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_SCHEMA_LOCATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.TO_DATE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.VALUE;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,9 +61,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.export.ExportDataSet;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
@@ -38,9 +76,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kew.rule.RuleDelegation;
-
-import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**
  * Exports rules to XML.
  *
@@ -58,7 +93,13 @@ public class RuleXmlExporter implements XmlExporter {
     	this.renderer = new XmlRenderer(namespace);
     }
     
-    public Element export(ExportDataSet dataSet) {
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
+
+    public Element export(ExportDataSet exportDataSet) {
+    	KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
         if (!dataSet.getRules().isEmpty()) {
             Element rootElement = renderer.renderElement(null, RULES);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, RULE_SCHEMA_LOCATION, SCHEMA_NAMESPACE);

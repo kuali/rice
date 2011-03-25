@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.actions;
 
 import org.junit.Test;
-import org.kuali.rice.edl.impl.WorkflowFunctions;
+import org.kuali.rice.edl.framework.util.EDLFunctions;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kns.UserSession;
@@ -35,7 +35,7 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
     }
 
 	/**
-     * Tests WorkflowFunctions.isUserRouteLogAuthenticated
+     * Tests EDLFunctions.isUserRouteLogAuthenticated
      */
     @Test public void testUserRouteLogAuthenticated() throws Exception {
     	String user1PrincipalId = getPrincipalIdForName("user1");
@@ -47,17 +47,17 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
     	GlobalVariables.setUserSession(null);
 
         // false because we didn't set up the user session properly
-        assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertFalse(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
 
         // these two should be in the route log
         GlobalVariables.setUserSession(new UserSession("user1"));
-        assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertTrue(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
         GlobalVariables.setUserSession(new UserSession("bmcgough"));
-        assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertTrue(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
 
         // user2 should NOT be in the route log
         GlobalVariables.setUserSession(new UserSession("user2"));
-        assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertFalse(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
     }
 
 }

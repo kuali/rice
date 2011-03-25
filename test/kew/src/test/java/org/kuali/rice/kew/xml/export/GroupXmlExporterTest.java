@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
-
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -45,9 +45,9 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         List<? extends Group> oldGroups = identityManagementService.getGroupsForPrincipal(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
 
-        ExportDataSet dataSet = new ExportDataSet();
+        KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getGroups().addAll(oldGroups);
-        byte[] xmlBytes = KEWServiceLocator.getXmlExporterService().export(dataSet);
+        byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
 
         StringBuffer output = new StringBuffer();

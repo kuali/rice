@@ -16,19 +16,32 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
-import org.kuali.rice.core.util.XmlHelper;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.xml.XmlRenderer;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.CLASS_NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.LABEL;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTES;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE_SCHEMA_LOCATION;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.SERVICE_NAMESPACE;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
 
 import java.io.StringReader;
 import java.util.Iterator;
 
-import static org.kuali.rice.kew.xml.XmlConstants.*;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.xml.XmlRenderer;
 
 /**
  * Exports {@link RuleAttribute}s to XML.
@@ -43,7 +56,13 @@ public class RuleAttributeXmlExporter implements XmlExporter {
     
     private XmlRenderer renderer = new XmlRenderer(RULE_ATTRIBUTE_NAMESPACE);
     
-    public Element export(ExportDataSet dataSet) {
+	@Override
+	public boolean supportPrettyPrint() {
+		return true;
+	}
+
+    public Element export(ExportDataSet exportDataSet) {
+    	KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
         if (!dataSet.getRuleAttributes().isEmpty()) {
             Element rootElement = renderer.renderElement(null, RULE_ATTRIBUTES);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, RULE_ATTRIBUTE_SCHEMA_LOCATION, SCHEMA_NAMESPACE);

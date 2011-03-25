@@ -829,7 +829,7 @@
         <module>shareddata</module>
         <module>doc</module>
         <module>dist</module>
-        <module>rice-kew</module>
+        <module>kew</module>
 	</modules>
 
 	<repositories>

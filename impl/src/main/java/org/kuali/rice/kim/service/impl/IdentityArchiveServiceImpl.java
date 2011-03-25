@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kim.service.impl;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
+import org.kuali.rice.kim.service.IdentityArchiveService;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,25 +51,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.service.KualiConfigurationService;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
-import org.kuali.rice.kim.service.IdentityArchiveService;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
-
 /**
  * This is the default implementation for the IdentityArchiveService.
  * @see IdentityArchiveService
@@ -60,7 +61,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	private static final Logger LOG = Logger.getLogger( IdentityArchiveServiceImpl.class );
 
 	private BusinessObjectService businessObjectService;
-	private KualiConfigurationService kualiConfigurationService;
+	private ConfigurationService kualiConfigurationService;
 
 	private static final String EXEC_INTERVAL_SECS = "kim.identityArchiveServiceImpl.executionIntervalSeconds";
 	private static final String MAX_WRITE_QUEUE_SIZE = "kim.identityArchiveServiceImpl.maxWriteQueueSize";
@@ -141,12 +142,12 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 		this.businessObjectService = businessObjectService;
 	}
 
-	public KualiConfigurationService getKualiConfigurationService() {
+	public ConfigurationService getKualiConfigurationService() {
 		return this.kualiConfigurationService;
 	}
 
 	public void setKualiConfigurationService(
-			KualiConfigurationService kualiConfigurationService) {
+			ConfigurationService kualiConfigurationService) {
 		this.kualiConfigurationService = kualiConfigurationService;
 	}
     

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KNSConfigurer extends ModuleConfigurer {
 
@@ -84,7 +84,7 @@ public class KNSConfigurer extends ModuleConfigurer {
    /**
      * Returns true - KNS UI should always be included.
      *
-     * @see org.kuali.rice.core.config.ModuleConfigurer#shouldRenderWebInterface()
+     * @see org.kuali.rice.core.api.config.ModuleConfigurer#shouldRenderWebInterface()
      */
     @Override
     public boolean shouldRenderWebInterface() {

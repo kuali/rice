@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ksb.security.admin.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.springframework.beans.factory.InitializingBean;
@@ -27,9 +28,21 @@ import org.springframework.beans.factory.InitializingBean;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.*;
+import java.security.GeneralSecurityException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Security;
+import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * This is an implementation of the {@link JavaSecurityManagementService} interface used by the KSB module 

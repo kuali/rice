@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ksb.messaging.objectremoting;
 
 import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.junit.Test;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;

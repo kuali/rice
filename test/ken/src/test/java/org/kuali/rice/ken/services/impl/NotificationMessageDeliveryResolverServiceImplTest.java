@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
-import org.kuali.rice.core.dao.GenericDao;
+import org.kuali.rice.core.framework.dao.GenericDao;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.service.*;
+import org.kuali.rice.ken.service.NotificationMessageDeliveryResolverService;
+import org.kuali.rice.ken.service.NotificationRecipientService;
+import org.kuali.rice.ken.service.NotificationService;
+import org.kuali.rice.ken.service.ProcessingResult;
+import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;

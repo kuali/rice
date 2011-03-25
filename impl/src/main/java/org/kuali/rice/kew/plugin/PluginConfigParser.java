@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2009 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.plugin;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,7 +21,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.xml.XmlException;
 
 import java.io.File;

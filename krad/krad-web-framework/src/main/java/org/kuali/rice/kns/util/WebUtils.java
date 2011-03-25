@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.util;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -27,10 +28,10 @@ import org.apache.struts.upload.CommonsMultipartRequestHandler;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -94,7 +95,7 @@ public final class WebUtils {
         throw new UnsupportedOperationException("do not call");
     }
 
-    private static KualiConfigurationService configurationService;
+    private static ConfigurationService configurationService;
 
     /**
      * Checks for methodToCall parameter, and picks off the value using set dot notation. Handles the problem of image submits.
@@ -766,9 +767,9 @@ public final class WebUtils {
     }
 
     /**
-     * @return an implementation of the KualiConfigurationService
+     * @return an implementation of the ConfigurationService
      */
-    public static KualiConfigurationService getKualiConfigurationService() {
+    public static ConfigurationService getKualiConfigurationService() {
         if (configurationService == null) {
             configurationService = KNSServiceLocator.getKualiConfigurationService();
         }

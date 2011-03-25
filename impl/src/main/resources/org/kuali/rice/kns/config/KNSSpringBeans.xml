@@ -338,7 +338,7 @@
 		</property>
 	</bean>
 
-	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.KualiConfigurationServiceImpl" />
+	<bean id="kualiConfigurationService" class="org.kuali.rice.kns.service.impl.ConfigurationServiceImpl" />
 
 	<bean id="kualiModuleService" class="org.kuali.rice.kns.service.impl.KualiModuleServiceImpl" />
 
@@ -563,7 +563,7 @@
 
 	<bean id="encryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl">
 		<property name="secretKey">
-			<bean class="org.kuali.rice.core.config.spring.ConfigPropertyFactoryBean">
+			<bean class="org.kuali.rice.core.impl.config.property.ConfigPropertyFactoryBean">
 				<property name="name" value="encryption.key"/>
 			</bean>
 		</property>

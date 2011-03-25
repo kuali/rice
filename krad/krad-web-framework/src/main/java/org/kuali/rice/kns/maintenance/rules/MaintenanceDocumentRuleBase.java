@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.maintenance.rules;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+package org.kuali.rice.kns.maintenance.rules;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.DateTimeService;
-import org.kuali.rice.core.service.KualiConfigurationService;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -44,7 +36,18 @@ import org.kuali.rice.kns.rule.AddCollectionLineRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.rules.MaintenanceDocumentRule;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.PersistenceService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -52,10 +55,19 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
+import org.springframework.util.AutoPopulatingList;
+
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -81,7 +93,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected BusinessObjectService boService;
     protected BusinessObjectDictionaryService boDictionaryService;
     protected DictionaryValidationService dictionaryValidationService;
-    protected KualiConfigurationService configService;
+    protected ConfigurationService configService;
     protected MaintenanceDocumentDictionaryService maintDocDictionaryService;
     protected WorkflowDocumentService workflowDocumentService;
     protected org.kuali.rice.kim.service.PersonService personService;
@@ -1277,7 +1289,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      *
      * @return Returns the configService.
      */
-    protected final KualiConfigurationService getConfigService() {
+    protected final ConfigurationService getConfigService() {
         return configService;
     }
 
@@ -1286,7 +1298,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      *
      * @param configService The configService to set.
      */
-    public final void setConfigService(KualiConfigurationService configService) {
+    public final void setConfigService(ConfigurationService configService) {
         this.configService = configService;
     }
 

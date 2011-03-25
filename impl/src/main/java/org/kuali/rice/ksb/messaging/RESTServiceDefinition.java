@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ksb.messaging;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.Path;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
-import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+
+import javax.ws.rs.Path;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Service definition for RESTful services.  A JAX-WS service has a resource class, which is the class or

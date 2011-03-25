@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.service;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.NodeSettings;
-import org.kuali.rice.core.config.RunMode;
+import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
@@ -68,6 +62,12 @@ import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -158,8 +158,6 @@ public final class KEWServiceLocator {
 	public static final String BRANCH_SERVICE = "enBranchService";
 
 	public static final String WORKFLOW_MBEAN = "workflowMBean";
-
-	public static final String NODE_SETTINGS = "nodeSettings";
 
 	public static final String APPLICATION_CONSTANTS_CACHE = "applicationConstantsCache";
 
@@ -397,10 +395,6 @@ public final class KEWServiceLocator {
 
 	public static ActionRegistry getActionRegistry() {
 		return (ActionRegistry) getBean(ACTION_REGISTRY);
-	}
-
-	public static NodeSettings getNodeSettings() {
-		return (NodeSettings) getBean(NODE_SETTINGS);
 	}
 
 	public static RiceCacheAdministrator getCacheAdministrator() {

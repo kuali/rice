@@ -18,9 +18,9 @@ package org.kuali.rice.kns.service;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.core.service.KualiConfigurationService;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -71,7 +71,7 @@ public class KNSServiceLocator {
         return getService(CoreConstants.Services.ENCRYPTION_SERVICE);
     }
 
-    public static KualiConfigurationService getKualiConfigurationService() {
+    public static ConfigurationService getKualiConfigurationService() {
         return getService(KUALI_CONFIGURATION_SERVICE);
     }
 

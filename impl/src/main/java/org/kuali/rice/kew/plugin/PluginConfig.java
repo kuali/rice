@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2009 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.plugin;
+
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.impl.config.property.BaseConfig;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -24,9 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import org.kuali.rice.core.config.BaseConfig;
-import org.kuali.rice.core.config.Config;
 
 /**
  * Class representing a plugin's config, containing configuration

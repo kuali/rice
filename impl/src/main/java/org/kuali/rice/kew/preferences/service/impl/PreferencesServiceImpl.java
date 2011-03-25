@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.preferences.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -33,7 +27,11 @@ import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.core.service.KualiConfigurationService;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -93,7 +91,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         	optionMap.put(option.getOptionId(), option);
         }
         
-        KualiConfigurationService kcs = KNSServiceLocator.getKualiConfigurationService();
+        ConfigurationService kcs = KNSServiceLocator.getKualiConfigurationService();
         
         String stagingDirectory = kcs.getPropertyString("staging.directory");                                                    
                                                                                                     

@@ -416,36 +416,6 @@
 	<bean id="enActionRegistry" class="org.kuali.rice.kew.actions.ActionRegistryImpl" lazy-init="true"/>
 
     <!-- some beans shared by client and server -->
-
-	<bean id="kewImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
-		<property name="xmlLoadersToRegister">
-		   <list>
-		     <ref local="enUserXmlService" />
-             <ref local="enRuleAttributeService" />
-             <ref local="enGroupXmlService" />
-             <ref local="enRuleTemplateService" />
-             <ref local="enDocumentTypeService" />
-             <ref local="enRuleService" />
-             <ref local="enRuleDelegationService" />
-             <ref local="enHelpService" />
-             <ref local="enEDocLiteService" />
-             <ref local="enStyleService" />
-		   </list>
-		</property>
-		<property name="xmlExportersToRegister">
-		   <list>
-             <ref local="enRuleAttributeService" />
-             <ref local="enGroupXmlService" />
-             <ref local="enRuleTemplateService" />
-             <ref local="enDocumentTypeService" />
-             <ref local="enRuleService" />
-             <ref local="enRuleDelegationService" />
-             <ref local="enHelpService" />
-             <ref local="enEDocLiteService" />
-             <ref local="enStyleService" />
-		   </list>
-		</property>
-	</bean>
    
     <bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl" lazy-init="true">
         <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
@@ -464,7 +434,7 @@
     <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
 	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
 		<property name="secretKey">
-			<bean class="org.kuali.rice.core.config.spring.ConfigPropertyFactoryBean">
+			<bean class="org.kuali.rice.core.impl.config.property.ConfigPropertyFactoryBean">
 				<property name="name" value="encryption.key"/>
 			</bean>
 		</property>
@@ -737,5 +707,42 @@
             <ref bean="kewNonTransactionalDataSource"/>
          </constructor-arg>
     </bean>
+
+    <bean id="xmlImpexRegistry"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="xmlImpexRegistry" />
+	</bean>
+
+    <bean id="kewImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
+		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
+        
+        <property name="xmlLoadersToRegister">
+		   <list>
+		     <ref local="enUserXmlService" />
+             <ref local="enRuleAttributeService" />
+             <ref local="enGroupXmlService" />
+             <ref local="enRuleTemplateService" />
+             <ref local="enDocumentTypeService" />
+             <ref local="enRuleService" />
+             <ref local="enRuleDelegationService" />
+             <ref local="enHelpService" />
+             <ref local="enEDocLiteService" />
+             <ref local="enStyleService" />
+		   </list>
+		</property>
+		<property name="xmlExportersToRegister">
+		   <list>
+             <ref local="enRuleAttributeService" />
+             <ref local="enGroupXmlService" />
+             <ref local="enRuleTemplateService" />
+             <ref local="enDocumentTypeService" />
+             <ref local="enRuleService" />
+             <ref local="enRuleDelegationService" />
+             <ref local="enHelpService" />
+             <ref local="enEDocLiteService" />
+             <ref local="enStyleService" />
+		   </list>
+		</property>
+	</bean>
     
 </beans>

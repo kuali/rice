@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.docsearch.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
@@ -76,7 +77,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
 	private static DictionaryValidationService dictionaryValidationService;
 	private static DataDictionaryService dataDictionaryService;
-	private static KualiConfigurationService kualiConfigurationService;
+	private static ConfigurationService kualiConfigurationService;
 
 	private DocumentSearchDAO docSearchDao;
 	private UserOptionsService userOptionsService;
@@ -823,7 +824,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return dataDictionaryService;
 	}
 
-	public static KualiConfigurationService getKualiConfigurationService() {
+	public static ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ksb.messaging.bam.service.impl;
 
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.BAMParam;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.bam.dao.BAMDAO;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
+
+import javax.xml.namespace.QName;
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.util.List;
 
 
 public class BAMServiceImpl implements BAMService {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.web.struts.action;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
@@ -40,8 +30,18 @@ import org.apache.commons.beanutils.converters.ShortConverter;
 import org.apache.commons.collections.iterators.IteratorEnumeration;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class KualiActionServlet extends ActionServlet {
     private static final Logger LOG = Logger.getLogger(KualiActionServlet.class);

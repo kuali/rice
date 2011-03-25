@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright 2006-2011 The Kuali Foundation
   ~
@@ -14,6 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xmlns:p="http://www.springframework.org/schema/p" 
@@ -54,7 +56,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="bootstrapConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+	<bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/ksb-test-config.xml</value>
@@ -63,19 +65,14 @@
 	</bean>
 
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
 		<property name="arguments">
 			<list><ref bean="bootstrapConfig"/></list>
 		</property>
 	</bean>
 
-	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="bootstrapConfig" />
-		<property name="targetMethod" value="getProperties" />
-	</bean>
-
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties" ref="configProperties" />
+		<property name="properties" value="#{bootstrapConfig.getProperties()}" />
 	</bean>
 
 	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
@@ -114,7 +111,7 @@
 
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
 
-    <bean id="coreConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+    <bean id="coreConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:org/kuali/rice/core/config/core-config-defaults.xml</value>
@@ -123,13 +120,13 @@
 	</bean>
 	
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
 		<property name="arguments">
 			<list><ref bean="coreConfig"/></list>
 		</property>
 	</bean>
 	
-	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
+	<bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
 		<property name="moduleName" value="CORE" />
 		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">

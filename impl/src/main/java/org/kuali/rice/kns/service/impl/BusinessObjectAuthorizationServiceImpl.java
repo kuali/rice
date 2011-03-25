@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -48,15 +44,31 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.document.authorization.*;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictionsBase;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
-import org.kuali.rice.kns.service.*;
-import org.kuali.rice.core.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class BusinessObjectAuthorizationServiceImpl implements
 		BusinessObjectAuthorizationService {
@@ -65,7 +77,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	private BusinessObjectDictionaryService businessObjectDictionaryService;
 	private DocumentHelperService documentHelperService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-	private KualiConfigurationService kualiConfigurationService;
+	private ConfigurationService kualiConfigurationService;
 	
 	public BusinessObjectRestrictions getLookupResultRestrictions(
 			BusinessObject businessObject, Person user) {
@@ -685,7 +697,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 		return maintenanceDocumentDictionaryService;
 	}
 
-	private KualiConfigurationService getKualiConfigurationService() {
+	private ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}

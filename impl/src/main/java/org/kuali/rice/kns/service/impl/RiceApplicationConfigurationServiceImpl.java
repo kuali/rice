@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.service.impl;
 
 import org.kuali.rice.core.api.component.Component;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -45,7 +46,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     
     protected List<Component> components = new ArrayList<Component>();
     protected List<String> packagePrefixes = new ArrayList<String>();
-    private KualiConfigurationService kualiConfigurationService;
+    private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
     private DataDictionaryService dataDictionaryService;
     
@@ -153,7 +154,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
         throw new IllegalArgumentException("The getDetailTypeName method of ParameterRepositoryServiceImpl requires TransactionalDocument, BusinessObject, or Step class. Was: " + documentOrStepClass.getName() );
     }
     
-    protected KualiConfigurationService getKualiConfigurationService() {
+    protected ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}

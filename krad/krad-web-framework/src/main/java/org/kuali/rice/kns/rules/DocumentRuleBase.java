@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -63,7 +64,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static PersonService personService;
     private static DictionaryValidationService dictionaryValidationService;
     private static KualiWorkflowInfo workflowInfoService;
-    private static KualiConfigurationService kualiConfigurationService;
+    private static ConfigurationService kualiConfigurationService;
     private static DocumentHelperService documentHelperService;
     private static IdentityManagementService identityManagementService;
     private static DataDictionaryService dataDictionaryService;
@@ -108,7 +109,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         return workflowInfoService;
     }
 
-    protected KualiConfigurationService getKualiConfigurationService() {
+    protected ConfigurationService getKualiConfigurationService() {
         if ( kualiConfigurationService == null ) {
             kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         }

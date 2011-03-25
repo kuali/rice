@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service.impl;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
+package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.service.KualiConfigurationService;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
@@ -45,17 +35,28 @@ import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
+import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
-import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and
@@ -68,7 +69,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private DataDictionary dataDictionary;
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
-    private KualiConfigurationService kualiConfigurationService;
+    private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
     private KualiWorkflowInfo workflowInfoService;
 
@@ -864,11 +865,11 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return dataDictionaryMap;
     }
 
-    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+    public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
 
-    public KualiConfigurationService getKualiConfigurationService() {
+    public ConfigurationService getKualiConfigurationService() {
         return kualiConfigurationService;
     }
 

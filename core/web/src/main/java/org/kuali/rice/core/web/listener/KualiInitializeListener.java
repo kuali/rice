@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.core.web.listener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.JAXBConfigImpl;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 

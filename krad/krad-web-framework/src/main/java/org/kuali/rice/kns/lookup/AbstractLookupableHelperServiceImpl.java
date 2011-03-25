@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.cache.CopiedObject;
 import org.kuali.rice.core.util.type.TypeUtils;
@@ -106,7 +107,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected BusinessObjectService businessObjectService;
     protected LookupResultsService lookupResultsService;
     protected String docNum;
-    protected KualiConfigurationService configurationService;
+    protected ConfigurationService configurationService;
     protected ParameterService parameterService;
     protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
 
@@ -292,14 +293,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
 
-    public KualiConfigurationService getKualiConfigurationService() {
+    public ConfigurationService getKualiConfigurationService() {
         if (configurationService == null) {
             configurationService = KNSServiceLocator.getKualiConfigurationService();
         }
         return configurationService;
     }
 
-    public void setParameterService(KualiConfigurationService configurationService) {
+    public void setParameterService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 

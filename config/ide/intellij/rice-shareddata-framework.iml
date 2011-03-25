@@ -13,6 +13,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-framework/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-framework/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

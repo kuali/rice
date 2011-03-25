@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ksb.config.xfire;
 
-import java.util.Properties;
-
-import org.apache.log4j.Logger;
-import org.apache.ws.security.components.crypto.Crypto;
-import org.apache.ws.security.components.crypto.Merlin;
-import org.apache.ws.security.handler.RequestData;
-import org.apache.ws.security.handler.WSHandlerConstants;
 /*
 import org.codehaus.xfire.MessageContext;
 import org.codehaus.xfire.fault.XFireFault;
 import org.codehaus.xfire.security.wss4j.WSS4JInHandler;
 */
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 
 /**

@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ken.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.framework.dao.GenericDao;
 import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.util.NotificationConstants;
+
+import java.sql.Timestamp;
+import java.util.Collection;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -38,7 +39,7 @@ public class NotificationDaoJpa implements NotificationDao{
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotifications(java.sql.Timestamp, org.kuali.rice.core.dao.GenericDao)
+	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotifications(java.sql.Timestamp, org.kuali.rice.core.framework.dao.GenericDao)
 	 */
 	@Override
 	public Collection findMatchedNotificationsForResolution(Timestamp tm, GenericDao dao) {
@@ -58,7 +59,7 @@ public class NotificationDaoJpa implements NotificationDao{
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotificationsForUnlock(java.sql.Timestamp, org.kuali.rice.core.dao.GenericDao)
+	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotificationsForUnlock(java.sql.Timestamp, org.kuali.rice.core.framework.dao.GenericDao)
 	 */
 	@Override
 	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao) {

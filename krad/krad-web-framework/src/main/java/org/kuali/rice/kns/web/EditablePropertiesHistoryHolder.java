@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.web;
+
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,9 +26,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
-
-import org.kuali.rice.core.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -39,7 +40,7 @@ public class EditablePropertiesHistoryHolder implements java.io.Serializable {
 	private Integer maxLength = null;
 	private Queue<String> historyOrder;
 	private static final String EDITABLE_PROPERTIES_HISTORY_SIZE_PROPERTY_NAME = "kns.editable.properties.history.size";
-	private transient KualiConfigurationService configurationService;
+	private transient ConfigurationService configurationService;
 	
 	/**
 	 * Constructs the EditablePropertiesHistoryHolder
@@ -136,9 +137,9 @@ public class EditablePropertiesHistoryHolder implements java.io.Serializable {
 	}
 	
 	/**
-	 * @return an implementation of the KualiConfigurationService
+	 * @return an implementation of the ConfigurationService
 	 */
-	protected KualiConfigurationService getConfigurationService() {
+	protected ConfigurationService getConfigurationService() {
 		if (configurationService == null) {
 			configurationService = KNSServiceLocator.getKualiConfigurationService();
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 package org.kuali.rice.kns.datadictionary;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.service.KualiConfigurationService;
-import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Contains lookup-related information relating to the parent BusinessObject.
@@ -155,7 +155,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
             throw new IllegalArgumentException("invalid (blank) menubar");
         }
         // TODO: catch exception if service locator call fails
-        KualiConfigurationService kualiConfigurationservice = KNSServiceLocator.getKualiConfigurationService();
+        ConfigurationService kualiConfigurationservice = KNSServiceLocator.getKualiConfigurationService();
         this.menubar = menubar.replace("${kr.externalizable.images.url}",
                 kualiConfigurationservice.getPropertyString(KNSConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}",
                 kualiConfigurationservice.getPropertyString(KNSConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.dao.proxy;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.dao.impl.LookupDaoJpa;
 import org.kuali.rice.kns.dao.impl.LookupDaoOjb;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Transactional
 public class LookupDaoProxy implements LookupDao {

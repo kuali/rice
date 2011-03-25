@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.web.struts.action;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -60,7 +61,7 @@ public class KualiHelpAction extends KualiAction {
     static final String DEFAULT_LOOKUP_HELP_TEXT_RESOURCE_KEY = "lookupHelpText";
     
     private static DataDictionaryService dataDictionaryService;
-    private static KualiConfigurationService kualiConfigurationService;
+    private static ConfigurationService kualiConfigurationService;
     private static ParameterService parameterService;
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
@@ -70,7 +71,7 @@ public class KualiHelpAction extends KualiAction {
         }
         return dataDictionaryService;
     }
-    private KualiConfigurationService getConfigurationService() {
+    private ConfigurationService getConfigurationService() {
         if ( kualiConfigurationService == null ) {
             kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         }

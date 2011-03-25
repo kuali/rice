@@ -19,10 +19,10 @@ package org.kuali.rice.kns.lookup;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
@@ -420,7 +420,7 @@ public class LookupUtils {
     private static String BASE_INQUIRY_ACTION_URL = null;
     
     public static String getBaseLookupUrl(boolean isMultipleValue) {
-        KualiConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+        ConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
     	if ( isMultipleValue ) {
     		if ( BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL == null ) {
     			String lookupUrl = kualiConfigurationService.getPropertyString(KNSConstants.APPLICATION_URL_KEY);

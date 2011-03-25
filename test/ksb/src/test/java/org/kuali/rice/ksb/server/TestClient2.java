@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.server;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.BaseTestServer;
 
 import java.util.HashMap;

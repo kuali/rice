@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.web.struts.action;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -135,16 +133,6 @@ public abstract class KualiAction extends DispatchAction {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug("'" + methodToCall + "' is exempt from auth checks." );
         	}
-        }
-
-        // check if demonstration encryption is enabled
-        if ( LOG.isEnabledFor(Level.WARN) ) {
-	        if ( OUTPUT_ENCRYPTION_WARNING == null ) {
-	        	OUTPUT_ENCRYPTION_WARNING = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration;
-	        }
-	        if ( OUTPUT_ENCRYPTION_WARNING.booleanValue() ) {
-	            LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
-	        }
         }
 
         // Add the ActionForm to GlobalVariables

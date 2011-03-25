@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.web.struts.action;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -22,10 +23,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
@@ -122,7 +123,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private DataDictionaryService dataDictionaryService;
     private DocumentHelperService documentHelperService;
     private DocumentService documentService;
-    private KualiConfigurationService kualiConfigurationService;
+    private ConfigurationService kualiConfigurationService;
     private ParameterService parameterService;
     private PessimisticLockService pessimisticLockService;
     private KualiRuleService kualiRuleService;
@@ -1751,7 +1752,7 @@ public class KualiDocumentActionBase extends KualiAction {
         return this.documentService;
     }
 
-    protected KualiConfigurationService getKualiConfigurationService() {
+    protected ConfigurationService getKualiConfigurationService() {
         if (kualiConfigurationService == null) {
             kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         }

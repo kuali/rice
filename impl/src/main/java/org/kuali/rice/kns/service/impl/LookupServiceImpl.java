@@ -1,32 +1,36 @@
 /*
- * Copyright 2005-2008 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.service.impl;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.dao.LookupDao;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.util.KNSConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.dao.LookupDao;
-import org.kuali.rice.kns.service.*;
-import org.kuali.rice.core.service.KualiConfigurationService;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This class is the service implementation for the Lookup structure. It Provides a generic search mechanism against Business
@@ -37,7 +41,7 @@ public class LookupServiceImpl implements LookupService {
     private static final Collection EMPTY_COLLECTION = new ArrayList(0);
 
     private LookupDao lookupDao;
-    private KualiConfigurationService kualiConfigurationService;
+    private ConfigurationService kualiConfigurationService;
     private DataDictionaryService dataDictionaryService;
     private PersistenceStructureService persistenceStructureService;
     
@@ -114,11 +118,11 @@ public class LookupServiceImpl implements LookupService {
         this.lookupDao = lookupDao;
     }
 
-    public KualiConfigurationService getKualiConfigurationService() {
+    public ConfigurationService getKualiConfigurationService() {
         return kualiConfigurationService;
     }
 
-    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+    public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
 

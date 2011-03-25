@@ -1,6 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
- *
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.plugin;
 
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
+
+import javax.xml.namespace.QName;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,14 +35,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 
 /**
  * A PluginRegistry implementation which loads plugins from the file system on the server.

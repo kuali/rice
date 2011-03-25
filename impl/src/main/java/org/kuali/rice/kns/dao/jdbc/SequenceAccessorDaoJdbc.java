@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.dao.jdbc;
 
-import javax.persistence.EntityManager;
+package org.kuali.rice.kns.dao.jdbc;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PBKey;
 import org.apache.ojb.broker.PersistenceBroker;
-import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentHeader;
@@ -30,6 +29,8 @@ import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
+
+import javax.persistence.EntityManager;
 
 /**
  * This class uses the KualiDBPlatform to get the next number from a given sequence.

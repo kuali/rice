@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kew.web;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -59,7 +60,7 @@ public class UserLoginFilter implements Filter {
 	private static final String MDC_USER = "user";
 	
 	private IdentityManagementService identityManagementService;
-	private KualiConfigurationService kualiConfigurationService;
+	private ConfigurationService kualiConfigurationService;
 	private ParameterService parameterService;
 	
 	private FilterConfig filterConfig;
@@ -198,7 +199,7 @@ public class UserLoginFilter implements Filter {
     	return this.identityManagementService;
     }
     
-    private KualiConfigurationService getKualiConfigurationService() {
+    private ConfigurationService getKualiConfigurationService() {
     	if (this.kualiConfigurationService == null) {
     		this.kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
     	}

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<config>
-	<!-- The following line has a new line to test the trimming of this field -->
-    <param name="config.location">classpath:org/kuali/rice/core/config/jaxb-test-config.xml
-    </param>
-    <param name="config.location">classpath:org/kuali/rice/core/config/jaxb-test-override.xml</param>
-</config>

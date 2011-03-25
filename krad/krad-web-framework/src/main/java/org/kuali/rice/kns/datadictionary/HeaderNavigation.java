@@ -1,18 +1,19 @@
 /*
- * Copyright 2006-2008 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.datadictionary;
 
 import java.io.Serializable;
@@ -95,7 +96,7 @@ public class HeaderNavigation extends DataDictionaryDefinitionBase implements Se
                     On document JSP pages, a help icon may be rendered.  If this tag is specified, then
                     the filename of this page will be located in the value of the parameter specified by the namespace, detail type, and name.
 
-                    The value of the parameter is relative to the value of the "externalizable.help.url" property in KualiConfigurationService (see KualiHelpAction).
+                    The value of the parameter is relative to the value of the "externalizable.help.url" property in ConfigurationService (see KualiHelpAction).
                     parameterNamespace: namespace of the parameter that has the path to the help page
                     parameterName: name of the parameter that has the path to the help page
                     parameterDetailType: detail type of the parameter that has the path to the help page

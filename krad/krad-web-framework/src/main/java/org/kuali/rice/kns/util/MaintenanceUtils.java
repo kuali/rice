@@ -1,32 +1,23 @@
 /*
- * Copyright 2007 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.kns.util;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.service.KualiConfigurationService;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -54,12 +45,22 @@ import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 public final class MaintenanceUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);
 
     private static MaintenanceDocumentService maintenanceDocumentService;
     private static WorkflowDocumentService workflowDocumentService;
-    private static KualiConfigurationService kualiConfigurationService;
+    private static ConfigurationService kualiConfigurationService;
     private static KualiExceptionIncidentService kualiExceptionIncidentService;
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
     private static DataDictionaryService dataDictionaryService;
@@ -452,7 +453,7 @@ public final class MaintenanceUtils {
         return workflowDocumentService;
     }
 
-    private static KualiConfigurationService getKualiConfigurationService() {
+    private static ConfigurationService getKualiConfigurationService() {
         if (kualiConfigurationService == null) {
             kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         }

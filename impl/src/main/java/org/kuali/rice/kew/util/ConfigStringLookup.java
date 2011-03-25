@@ -18,7 +18,7 @@ package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrLookup;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;

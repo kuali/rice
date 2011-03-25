@@ -13,14 +13,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties" ref="configProperties" />
+		<property name="properties" value="#{bootstrapConfig.getProperties()}" />
 	</bean>
 
-	<bean id="bootstrapConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+	<bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/sample-app-config.xml</value>
@@ -29,15 +30,10 @@
 	</bean>
 	
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
 		<property name="arguments">
 			<list><ref bean="bootstrapConfig"/></list>
 		</property>
-	</bean>
-	
-	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="bootstrapConfig" />
-		<property name="targetMethod" value="getProperties" />
 	</bean>
 	
 	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>

@@ -31,6 +31,8 @@
       <module fileurl="file://$PROJECT_DIR$/rice-internal-test-tools.iml" filepath="$PROJECT_DIR$/rice-internal-test-tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-kcb-test.iml" filepath="$PROJECT_DIR$/rice-kcb-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ken-test.iml" filepath="$PROJECT_DIR$/rice-ken-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../kew/rice-kew.iml" filepath="$PROJECT_DIR$/../../../kew/rice-kew.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../kew/framework/rice-kew-framework.iml" filepath="$PROJECT_DIR$/../../../kew/framework/rice-kew-framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-kew-test.iml" filepath="$PROJECT_DIR$/rice-kew-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-test.iml" filepath="$PROJECT_DIR$/rice-kim-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kns-test.iml" filepath="$PROJECT_DIR$/rice-kns-test.iml" group="rice-test and modules" />

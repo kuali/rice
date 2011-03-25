@@ -1,27 +1,22 @@
 /*
- * Copyright 2007 The Kuali Foundation
- * 
+ * Copyright 2006-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.ken.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-
-import org.kuali.rice.core.dao.GenericDao;
+import org.kuali.rice.core.framework.dao.GenericDao;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.deliverer.NotificationMessageDeliverer;
 import org.kuali.rice.ken.deliverer.impl.KEWActionListMessageDeliverer;
@@ -31,6 +26,12 @@ import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Auto removes expired message deliveries.
@@ -47,7 +48,7 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
      * @param executor
      * @param messageDeliveryRegistryService
      */
-    public NotificationMessageDeliveryAutoRemovalServiceImpl(GenericDao businessObjectDao, PlatformTransactionManager txManager, 
+    public NotificationMessageDeliveryAutoRemovalServiceImpl(GenericDao businessObjectDao, PlatformTransactionManager txManager,
 	    ExecutorService executor, NotificationMessageDeliveryService messageDeliveryService) {
         super(txManager, executor);
         this.messageDeliveryService = messageDeliveryService;

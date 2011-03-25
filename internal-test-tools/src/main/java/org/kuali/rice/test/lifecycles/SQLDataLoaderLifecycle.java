@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.test.lifecycles;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
 
@@ -43,7 +44,7 @@ public class SQLDataLoaderLifecycle extends BaseLifecycle {
     }
 
     public void start() throws Exception {
-        String useSqlDataLoaderLifecycle = ConfigContext.getCurrentContextConfig().getProperty("use.sqlDataLoaderLifecycle"); 
+        String useSqlDataLoaderLifecycle = ConfigContext.getCurrentContextConfig().getProperty("use.sqlDataLoaderLifecycle");
         if (useSqlDataLoaderLifecycle != null && !Boolean.valueOf(useSqlDataLoaderLifecycle)) {
             LOG.debug("Skipping SQLDataLoaderLifecycle due to property: use.sqlDataLoaderLifecycle=" + useSqlDataLoaderLifecycle);
             return;

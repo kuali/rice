@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.inquiry;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+package org.kuali.rice.kns.inquiry;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -41,7 +32,15 @@ import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -50,6 +49,16 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
+
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Kuali inquirable implementation. Implements methods necessary to retrieve the business object and render the ui.
@@ -66,7 +75,7 @@ public class KualiInquirableImpl implements Inquirable {
     protected PersistenceStructureService persistenceStructureService;
     protected DataDictionaryService dataDictionaryService;
     protected EncryptionService encryptionService;
-    protected KualiConfigurationService kualiConfigurationService;
+    protected ConfigurationService kualiConfigurationService;
     protected static BusinessObjectService businessObjectService;
 
     protected Class businessObjectClass;
@@ -480,19 +489,19 @@ public class KualiInquirableImpl implements Inquirable {
     }
 
     /**
-     * Retrieves the {@link KualiConfigurationService}.  In the event that instances of this class are not created as Spring beans,
+     * Retrieves the {@link org.kuali.rice.core.api.config.property.ConfigurationService}.  In the event that instances of this class are not created as Spring beans,
      * override this method to return an instance from the service locator.
      *
      * @return
      */
-    protected KualiConfigurationService getKualiConfigurationService() {
+    protected ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}
         return this.kualiConfigurationService;
     }
 
-    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+    public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
 

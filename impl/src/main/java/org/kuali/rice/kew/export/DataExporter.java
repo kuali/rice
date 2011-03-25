@@ -61,6 +61,7 @@ public class DataExporter implements Exporter {
 		}
 		ExportDataSet dataSet = buildExportDataSet(businessObjectClass, businessObjects);
 		outputStream.write(KEWServiceLocator.getXmlExporterService().export(dataSet));
+		outputStream.flush();
 	}
 
 	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass) {

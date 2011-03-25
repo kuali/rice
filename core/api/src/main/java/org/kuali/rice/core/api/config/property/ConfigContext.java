@@ -16,9 +16,7 @@
 
 package org.kuali.rice.core.api.config.property;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 
 import java.util.ArrayList;
@@ -84,19 +82,6 @@ public class ConfigContext {
     public static ContextualConfigLock getInitializedCondition() {
         return initialized;
     }
-
-    /**
-     * Runs a series of validation checks against the core configuration to ensure that required properties
-     * are present.  For now, this just validates the service namespace.
-     */
-    public static void validateCoreConfiguration() {
-    	Config config = getCurrentContextConfig();
-    	if (StringUtils.isEmpty(config.getServiceNamespace())) {
-    		throw new ConfigurationException("The " + Config.SERVICE_NAMESPACE + " configuration parameter is required.");
-    	}
-    }
-
-
 
     /**
      * Utility method that all code should call to obtain its appropriate Config object.

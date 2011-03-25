@@ -26,6 +26,7 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 
+
 /**
  * A collection of handy workflow queries to be used from style sheets.
  *

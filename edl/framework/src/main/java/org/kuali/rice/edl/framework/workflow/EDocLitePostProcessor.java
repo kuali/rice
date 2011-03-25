@@ -25,6 +25,7 @@ import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,14 +39,13 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
-import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessorRemote;
+import org.kuali.rice.kew.service.WorkflowInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -55,7 +55,7 @@ import org.xml.sax.InputSource;
  * PostProcessor responsible for posting events to a url defined in the EDL doc definition.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EDocLitePostProcessor extends DefaultPostProcessor {
+public class EDocLitePostProcessor extends DefaultPostProcessorRemote {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessor.class);
     private static final Timer TIMER = new Timer();
     public static final int SUBMIT_URL_MILLISECONDS_WAIT = 60000;
@@ -158,92 +158,107 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         }
     }
 
-    protected static void postEvent(Long docId, Object event, String eventName) throws Exception {
-        DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
-        Document doc = getEDLContent(val);
-        if(LOG.isDebugEnabled()){
-        	LOG.debug("Submitting doc: " + XmlJotter.jotNode(doc));
-        }
+    protected static void postEvent(Long docId, Object event, String eventName) {
+    	try {
+    		Document doc = getEDLContent(docId);
+    		if(LOG.isDebugEnabled()){
+    			LOG.debug("Submitting doc: " + XmlJotter.jotNode(doc));
+    		}
 
-        String urlstring = getURL(doc);
-        if (org.apache.commons.lang.StringUtils.isEmpty(urlstring)) {
-            LOG.warn("No eventNotificationURL defined in EDLContent");
-            return;
-        }
+    		String urlstring = getURL(doc);
+    		if (org.apache.commons.lang.StringUtils.isEmpty(urlstring)) {
+    			LOG.warn("No eventNotificationURL defined in EDLContent");
+    			return;
+    		}
 
-        Document eventDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-        Element eventE = eventDoc.createElement("event");
-        eventE.setAttribute("type", eventName);
-        eventDoc.appendChild(eventE);
+    		Document eventDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    		Element eventE = eventDoc.createElement("event");
+    		eventE.setAttribute("type", eventName);
+    		eventDoc.appendChild(eventE);
 
-        Element infoE = (Element) eventDoc.importNode(propertiesToXml(event, "info"), true);
-        Element docIdE = eventDoc.createElement("docId");
-        docIdE.appendChild(eventDoc.createTextNode(String.valueOf(docId)));
-        infoE.appendChild(docIdE);
+    		Element infoE = (Element) eventDoc.importNode(propertiesToXml(event, "info"), true);
+    		Element docIdE = eventDoc.createElement("docId");
+    		docIdE.appendChild(eventDoc.createTextNode(String.valueOf(docId)));
+    		infoE.appendChild(docIdE);
 
-        eventE.appendChild(infoE);
-        eventE.appendChild(eventDoc.importNode(doc.getDocumentElement(), true));
+    		eventE.appendChild(infoE);
+    		eventE.appendChild(eventDoc.importNode(doc.getDocumentElement(), true));
 
-        String query = "docId=" + docId;
-        if (urlstring.indexOf('?') != -1) {
-            urlstring += "&" + query;
-        } else {
-            urlstring += "?" + query;
-        }
+    		String query = "docId=" + docId;
+    		if (urlstring.indexOf('?') != -1) {
+    			urlstring += "&" + query;
+    		} else {
+    			urlstring += "?" + query;
+    		}
 
-        final String _urlstring = urlstring;
-        final Document _eventDoc = eventDoc;
-        // a super cheesy way to enforce asynchronicity/timeout follows:
-        final Thread t = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    LOG.debug("Post Event calling url: " + _urlstring);
-                    submitURL(_urlstring, _eventDoc);
-                    LOG.debug("Post Event done calling url: " + _urlstring);
-                } catch (Exception e) {
-                    LOG.error(e);
-                }
-            }
-        });
-        t.setDaemon(true);
-        t.start();
+    		final String _urlstring = urlstring;
+    		final Document _eventDoc = eventDoc;
+    		// a super cheesy way to enforce asynchronicity/timeout follows:
+    		final Thread t = new Thread(new Runnable() {
+    			public void run() {
+    				try {
+    					LOG.debug("Post Event calling url: " + _urlstring);
+    					submitURL(_urlstring, _eventDoc);
+    					LOG.debug("Post Event done calling url: " + _urlstring);
+    				} catch (Exception e) {
+    					LOG.error(e);
+    				}
+    			}
+    		});
+    		t.setDaemon(true);
+    		t.start();
 
-        // kill the submission thread if it hasn't completed after 1 minute
-        TIMER.schedule(new TimerTask() {
-            public void run() {
-                t.interrupt();
-            }
-        }, SUBMIT_URL_MILLISECONDS_WAIT);
+    		// kill the submission thread if it hasn't completed after 1 minute
+    		TIMER.schedule(new TimerTask() {
+    			public void run() {
+    				t.interrupt();
+    			}
+    		}, SUBMIT_URL_MILLISECONDS_WAIT);
+    	} catch (Exception e) {
+    		if (e instanceof RuntimeException) {
+    			throw (RuntimeException)e;
+    		}
+    		throw new RuntimeException(e);
+    	}
     }
 
-    public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange event) throws Exception {
+    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO event) throws RemoteException {
         LOG.debug("doRouteStatusChange: " + event);
         postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ROUTE_STATUS_CHANGE);
-        return super.doRouteStatusChange(event);
+        return true;
     }
 
-    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
+    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         LOG.debug("doActionTaken: " + event);
         postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ACTION_TAKEN);
-        return super.doActionTaken(event);
+        return true;
     }
 
-    public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
+    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
         LOG.debug("doDeleteRouteHeader: " + event);
         postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_DELETE_ROUTE_HEADER);
-        return super.doDeleteRouteHeader(event);
+        return false;
     }
 
-    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange event) throws Exception {
+    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO event) throws RemoteException {
         LOG.debug("doRouteLevelChange: " + event);
         postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ROUTE_LEVEL_CHANGE);
-        return super.doRouteLevelChange(event);
+        return true;
     }
 
-    public static Document getEDLContent(DocumentRouteHeaderValue routeHeader) throws Exception {
-        String content = routeHeader.getDocContent();
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(content)));
-        return doc;
+    public static Document getEDLContent(Long documentId) {
+    	try {
+    		WorkflowInfo workflowInfo = new WorkflowInfo();
+    		DocumentContentDTO documentContent = workflowInfo.getDocumentContent(documentId);
+    		String content = documentContent.getFullContent();
+    		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(content)));
+    		return doc;
+    	} catch (Exception e) {
+    		if (e instanceof RuntimeException) {
+    			throw (RuntimeException)e;
+    		}
+    		throw new RuntimeException(e);
+    	}
     }
 
     public static DocumentBuilder getDocumentBuilder() throws Exception {

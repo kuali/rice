@@ -829,7 +829,8 @@
         <module>shareddata</module>
         <module>doc</module>
         <module>dist</module>
-  </modules>
+        <module>rice-kew</module>
+	</modules>
 
 	<repositories>
 		<repository>

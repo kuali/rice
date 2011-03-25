@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.edl.impl.extract;
+package org.kuali.rice.edl.framework.extract;
+
 
 
 public interface ExtractService {
 	
-    public void saveDump(Dump dump);
+    public void saveDump(DumpDTO dump);
     public void deleteDump(Long docId);
-	public Dump getDumpByDocumentId(Long noteId);
+	public DumpDTO getDumpByDocumentId(Long noteId);
 
 }

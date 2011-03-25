@@ -37,6 +37,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.edl.framework.extract.DumpDTO;
+import org.kuali.rice.edl.framework.extract.FieldDTO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -164,6 +166,50 @@ public class Dump {
 
 	public void setFields(final List<Fields> fields) {
 		this.fields = fields;
+	}
+	
+	public static DumpDTO to(Dump dump) {
+		if (dump == null) {
+			return null;
+		}
+		DumpDTO dumpDTO = new DumpDTO();
+		dumpDTO.setDocCreationDate(dump.getDocCreationDate());
+		dumpDTO.setDocCurrentNodeName(dump.getDocCurrentNodeName());
+		dumpDTO.setDocDescription(dump.getDocDescription());
+		dumpDTO.setDocId(dump.getDocId());
+		dumpDTO.setDocInitiatorId(dump.getDocInitiatorId());
+		dumpDTO.setDocModificationDate(dump.getDocModificationDate());
+		dumpDTO.setDocRouteStatusCode(dump.getDocRouteStatusCode());
+		dumpDTO.setDocTypeName(dump.getDocTypeName());
+		dumpDTO.setLockVerNbr(dump.getLockVerNbr());
+		List<FieldDTO> fields = new ArrayList<FieldDTO>();
+		for (Fields field : dump.getFields()) {
+			fields.add(Fields.to(field));
+		}
+		dumpDTO.setFields(fields);
+		return dumpDTO;
+	}
+	
+	public static Dump from(DumpDTO dumpDTO) {
+		if (dumpDTO == null) {
+			return null;
+		}
+		Dump dump = new Dump();
+		dump.setDocCreationDate(dumpDTO.getDocCreationDate());
+		dump.setDocCurrentNodeName(dumpDTO.getDocCurrentNodeName());
+		dump.setDocDescription(dumpDTO.getDocDescription());
+		dump.setDocId(dumpDTO.getDocId());
+		dump.setDocInitiatorId(dumpDTO.getDocInitiatorId());
+		dump.setDocModificationDate(dumpDTO.getDocModificationDate());
+		dump.setDocRouteStatusCode(dumpDTO.getDocRouteStatusCode());
+		dump.setDocTypeName(dumpDTO.getDocTypeName());
+		dump.setLockVerNbr(dumpDTO.getLockVerNbr());
+		List<Fields> fields = new ArrayList<Fields>();
+		for (FieldDTO fieldDTO : dumpDTO.getFields()) {
+			fields.add(Fields.from(fieldDTO, dump));
+		}
+		dump.setFields(fields);
+		return dump;
 	}
 
 }

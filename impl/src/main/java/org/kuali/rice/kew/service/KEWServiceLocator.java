@@ -28,7 +28,7 @@ import org.kuali.rice.core.config.RunMode;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.edl.impl.extract.ExtractService;
+import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.service.StyleService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;

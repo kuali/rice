@@ -7,4 +7,28 @@
   </parent>
   <artifactId>rice-edl-framework</artifactId>
   <name>rice-edl-framework</name>
+  
+  <dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>krad-app-framework</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>krad-web-framework</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-kew-framework</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+  </dependencies>
+  
 </project>

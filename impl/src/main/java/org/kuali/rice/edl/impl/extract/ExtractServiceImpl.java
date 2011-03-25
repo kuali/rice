@@ -17,6 +17,8 @@ package org.kuali.rice.edl.impl.extract;
 
 import java.util.Iterator;
 
+import org.kuali.rice.edl.framework.extract.DumpDTO;
+import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.edl.impl.extract.dao.ExtractDAO;
 
 
@@ -26,12 +28,13 @@ public class ExtractServiceImpl implements ExtractService {
 
 	private ExtractDAO extractDAO;
 
-	public Dump getDumpByDocumentId(Long noteId) {
-		return getExtractDAO().getDumpByRouteHeaderId(noteId);
+	public DumpDTO getDumpByDocumentId(Long noteId) {
+		return Dump.to(getExtractDAO().getDumpByRouteHeaderId(noteId));
 	}
 
-	public void saveDump(Dump dump) {
+	public void saveDump(DumpDTO dumpDTO) {
 		try {
+			Dump dump = Dump.from(dumpDTO);
 			getExtractDAO().saveDump(dump);
 			if (! dump.getFields().isEmpty()){
 				for (Iterator iter = dump.getFields().iterator(); iter.hasNext();) {

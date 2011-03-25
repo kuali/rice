@@ -30,6 +30,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.edl.framework.extract.FieldDTO;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
@@ -106,6 +107,31 @@ public class Fields {
 	}
 	public void setDump(final Dump dump) {
 		this.dump = dump;
+	}
+	
+	public static FieldDTO to(Fields field) {
+		if (field == null) {
+			return null;
+		}
+		FieldDTO fieldDTO = new FieldDTO();
+		fieldDTO.setDocId(field.getDocId());
+		fieldDTO.setFieldName(field.getFiledName());
+		fieldDTO.setFieldValue(field.getFieldValue());
+		fieldDTO.setLockVerNbr(field.getLockVerNbr());
+		return fieldDTO;
+	}
+	
+	public static Fields from(FieldDTO fieldDTO, Dump dump) {
+		if (fieldDTO == null) {
+			return null;
+		}
+		Fields fields = new Fields();
+		fields.setDump(dump);
+		fields.setDocId(fieldDTO.getDocId());
+		fields.setFieldName(fieldDTO.getFiledName());
+		fields.setFieldValue(fieldDTO.getFieldValue());
+		fields.setLockVerNbr(fieldDTO.getLockVerNbr());
+		return fields;
 	}
 }
 

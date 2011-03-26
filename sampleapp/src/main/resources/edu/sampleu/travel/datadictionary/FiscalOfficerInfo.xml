@@ -113,6 +113,37 @@
     </property>
   </bean>
   
-
+  <bean id="FiscalOfficerInfo-MaintenanceView" parent="MaintenanceView">
+    <property name="title" value="Fiscal Officer Maintenance" />
+    <property name="objectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
+    <property name="items">
+      <list merge="true">
+        <bean parent="GroupSectionGridLayout_Accordion">
+          <property name="layoutManager.numberOfColumns" value="4" />
+          <property name="layoutManager.renderLabelFieldsSeparately"
+            value="false" />
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="id" />
+              <bean parent="AttributeField" p:propertyName="userName" />
+            </list>
+          </property>
+          <property name="title" value="Fiscal Officer Information" />
+          <property name="componentModifiers">
+            <list merge="true">
+              <ref bean="MaintenanceCompareModifier" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="FiscalOfficerInfoMaintenanceDocument" parent="MaintenanceDocumentEntry">
+    <property name="businessObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
+    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="documentTypeName" value="FiscalOfficerInfoMaintenanceDocument"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+  </bean>
 
 </beans>

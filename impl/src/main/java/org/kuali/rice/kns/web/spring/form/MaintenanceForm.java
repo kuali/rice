@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.web.spring.form;
 
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.uif.UifConstants.ViewType;
 
 /**
  * Form class for <code>MaintenanceView</code> screens
@@ -30,6 +31,7 @@ public class MaintenanceForm extends DocumentFormBase {
 
 	public MaintenanceForm() {
 		super();
+		setViewTypeName(ViewType.MAINTENANCE);
 	}
 
 	@Override

@@ -8,6 +8,8 @@ h1. Views, Controllers, and Forms
 
 KRAD uses Spring MVC to interact with the web, and so it makes a lot of sense that the first design decisions in building a KRAD page all have to do with the M, the V, and the C: the Model (called, in KRAD, a Form); the View; and the Controller.
 
+h2. Base Data Model and Forms
+
 The Form is an excellent place to start.  Looking back at our page, we have to expect that several data objects already exist to put data into the database.  There must be a Contact business object, as well as a ConferenceGuest that we have a collection of.  Some wise developer likely created a single record, ConferenceParty, to meld that information together.  ConferenceParty then has a many-to-many relationship with ConferenceTracks to hold the "Interests" section, and there's likely an optional AcademicInstitution object.  In short, the classes probably look like this:
 
 {code:java}
@@ -84,7 +86,7 @@ There's also the case of lists shown on the screen.  In the case of "State," the
 
 Given that, our form should look something like:
 
-{code:java}
+{code:java, title=edu.sampleu.conferencesignup.web.spring.form.ConferenceSignupForm}
  1. class ConferenceSignupForm extends UifFormBase {
  2.    protected ConferenceParty conferenceParty;
  3.    protected List<ConferenceTrack> conferenceTracks;
@@ -127,7 +129,9 @@ Given that, our form should look something like:
 
 Not hard at all, but it holds all the data needed to properly render the View.  [FORMS ARE SPRING BEANS, RIGHT?  HOW TO INJECT SERVICES?  WHY DOES DOCUMENT CONTROLLER USE KNSLOCATOR?]
 
-Next is our controller.  In this case, we extend org.kuali.rice.kns.web.spring.controller.UifControllerBase.  Unlike with UifFormBase, UifControllerBase has an abstract method which we are forced to override: createInitialForm.  This method takes in the request as a parameter and returns a child of UifFormBase.  Since ConferenceSignupForm is already complete, this shouldn't be any problem.
+h2. Controllers
+
+Next is the controller.  In this case, we extend org.kuali.rice.kns.web.spring.controller.UifControllerBase.  Unlike with UifFormBase, UifControllerBase has an abstract method which we are forced to override: createInitialForm.  This method takes in the request as a parameter and returns a child of UifFormBase.  Since ConferenceSignupForm is already complete, this shouldn't be any problem.
 
 UifControllerBase also has a number of methods which we can call from our View.  For instance, it has an addLine method which it would be helpful to call for adding guests to that collection.  However, it does not contain methods which respond to our submit, save, and cancel buttons.  Basically, any element on our View which could initiate a post back to the server should have a method on the controller for it.  The names for these methods change but they all have:
 * a standard annotation associated with the method: @RequestMapping, which takes a method (the HTTP method to use), and params, which should include the "methodToCall" parameter which should initiate a call to the given controller method
@@ -138,7 +142,7 @@ Finally, a Spring MVC controller class must have the @Controller annotation assi
 
 Given that, let's take a look at our controller:
 
-{code:java}
+{code:java,title=edu.sampleu.conferencesignup.web.spring.controller.ConferenceSignupController}
  1  @Controller
  2. @RequestMapping(value = "/conferenceSignup")
  3. class ConferenceSignupController extends UifControllerBase {
@@ -174,7 +178,56 @@ As can be seen from lines 6-7, lines 12-13, and lines 18-19, each method defined
 
 On lines 9, 15, and 21, that UifControllerBase provides a convenience method, getUIFModelAndView, which takes the UifFormBase and builds the ModelAndView object to return. 
 
-That completes the controller.  Finally, we turn to View. [IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]
+That completes the controller.  Finally, we turn to View: the easiest of all, since only Spring configuration is needed to set the View up.
+
+h2. Views
+
+When a Rice application is created, there are typically three directories for each module which hold data dictionary files: one for data object definitions including business objects; one for document definitions; and one for UIF definitions.  In the UIF definitions' folder, a new file should be created - ConferenceSignupView.xml.  In that, a bean will be created which defines the "look" of the page, as well as mapping it to ConferenceSignupView as well as the url that ConferenceSignupController responds to.
+
+{code:xml,title=ConferenceSignupView.xml}
+ 1. <?xml version="1.0" encoding="UTF-8"?>
+ 2. <beans xmlns="http://www.springframework.org/schema/beans"
+ 3.   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ 4.   xmlns:p="http://www.springframework.org/schema/p" 
+ 5.   xsi:schemaLocation="http://www.springframework.org/schema/beans         
+ 6.                       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 7.
+ 8.  <bean id="CondferenceSignupView" parent="ConferenceSignupView-parentBean" />
+ 9.  <bean id="ConferenceSignupView-parentBean" abstract="true" parent="FormView">
+10.    <property name="id" value="ConferenceSignupView" />
+11.    <property name="title" value="Conference Signup" />
+12.    <property name="items">
+13.      <list>
+14.        <!-- this will be filled in over time -->
+15.      </list>
+16.    </property>
+17.    <property name="formClass" value="edu.sampleu.conferencesignup.web.spring.form.ConferenceSignupForm" />
+18.    <property name="controllerRequestMapping" value="conferenceSignup" />
+19.    <property name="footer">
+20.      <!-- This will be filled in -->
+21.    </property>
+22.    <property name="singlePageView" value="true"/>
+23.    <property name="viewName" value="default"/>
+24.  </bean>                           
+25.
+26. </beans>
+{code}
+
+As promised, in line 17, the View is associated with the ConferenceSignupForm created earlier.  On line 18, the View is associated with the controllerRequestMapping of "conferenceSignup" - which matches the "/conferenceSignup" url we specified in the controller.
+
+On line 10, the view is also given an id.  This id should be unique among all views in the system.  It is used for a number of purposes: it is worked into the actual html "id" attribute for all rendered elements on the page.  Also, if a data model has different views, the viewId can be passed as a url parameter with the id value and override the default view of the form and controller combination:
+
+{code}
+/conferenceSignup?viewId=DifferentConferenceSignupView
+{code}
+
+This would have the ConferenceSignup form and controller show the page configured by DifferentConferenceSignupView instead. [ JERRY - TRUE THAT? ]  Also, on line 23, the viewName for this View is set to "default", which tells KRAD that ConferenceSignupView is the default View to associated with the ConferenceSignup form and controller [ JERRY - TRUE THAT? ]
+
+On line 11, the title for the page is specified, and on line 22, KRAD is notified that there is only one page associated with this View.
+
+Since this was a one-off page, ConferenceSignupView-parentView, on line 9, extends FormView, the Chronos-like parent bean of all View beans.  Sometimes common View information is shared among many pages - for instance, Inquiries or Lookups.  Further information about how to set up custom view classes is in the [Custom Views|Custom Views] section.
+
+That leaves lines 12-16 and 19-21 - which the developer has, in comments, promised will be filled in over time.  These are the properties which get the groups which actually display text, buttons, and controls on the page.  Very important properties indeed!  The next section covers what beans will go into those properties.
 
 h1. Splitting into Groups
 
@@ -209,3 +262,6 @@ Some Views have a common look throughout all KRAD applications.  These views can
 h2. Inquiry
 h2. Lookup
 h2. Document
+h2. {anchor}Custom Views{anchor}
+h2. View Helper Services
+[IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]

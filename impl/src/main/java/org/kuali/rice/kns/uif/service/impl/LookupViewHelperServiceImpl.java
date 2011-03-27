@@ -318,7 +318,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		setBackLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
 		setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
 		setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
-		List<? extends Object> searchResults;
+		List<?> searchResults;
 		Map<String, String> nonBlankFieldValues = new HashMap<String, String>();
 		for (String fieldName : fieldValues.keySet()) {
 			String fieldValue = fieldValues.get(fieldName);
@@ -455,9 +455,9 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 			}
 			// add those results as criteria
 			// run the normal search (but with the EBO critieria added)
-			searchResults = (List<Object>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(), nonEboFieldValues, unbounded);
+			searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(), nonEboFieldValues, unbounded);
 		} else {
-			searchResults = (List<Object>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(), nonBlankFieldValues, unbounded);
+			searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(), nonBlankFieldValues, unbounded);
 		}
 
 		if (searchResults == null) {
@@ -847,7 +847,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	 * @return
 	 */
 	protected String getActionUrlTitleText(Object dataObject, String displayText, List pkNames, BusinessObjectRestrictions dataObjectRestrictions) {
-		String prependTitleText = displayText + " " + getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(getDataObjectClass().getName()).getObjectLabel() + " "
+		String prependTitleText = displayText + " " + getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClass().getName()).getObjectLabel() + " "
 		        + KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
 		return HtmlData.getTitleText(prependTitleText, dataObject, pkNames, dataObjectRestrictions);
 	}

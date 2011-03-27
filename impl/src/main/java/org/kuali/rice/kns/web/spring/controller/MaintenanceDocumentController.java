@@ -18,6 +18,7 @@ package org.kuali.rice.kns.web.spring.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.PersistableAttachment;
@@ -63,11 +64,30 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	/**
 	 * After the document is loaded calls method to setup the maintenance object
 	 */
+	@Override
 	@RequestMapping(params = "methodToCall=docHandler")
-	public ModelAndView docHandler(@ModelAttribute("KualiForm") MaintenanceForm form, HttpServletRequest request,
+	public ModelAndView docHandler(@ModelAttribute("KualiForm") DocumentFormBase formBase, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		super.docHandler(form, request, response);
 
+		// TODO getting double view if we call base, not sure how to handle
+	    // so pasting in superclass code
+		// super.docHandler(formBase, request, response);
+		// * begin copy/paste from the base
+	    MaintenanceForm form = (MaintenanceForm)formBase;
+	    
+		// in all of the following cases we want to load the document
+        if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, form.getCommand()) && form.getDocId() != null) {
+            loadDocument(form);
+        }
+        else if (KEWConstants.INITIATE_COMMAND.equals(form.getCommand())) {
+            createDocument(form);
+        }
+        else {
+            LOG.error("docHandler called with invalid parameters");
+            throw new IllegalStateException("docHandler called with invalid parameters");
+        }
+		// * end copy/paste from the base
+        
 		if (KEWConstants.ACTIONLIST_COMMAND.equals(form.getCommand())
 				|| KEWConstants.DOCSEARCH_COMMAND.equals(form.getCommand())
 				|| KEWConstants.SUPERUSER_COMMAND.equals(form.getCommand())

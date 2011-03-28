@@ -17,15 +17,19 @@ package edu.sampleu.travel.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
+import org.springframework.beans.BeanUtils;
 
 import edu.sampleu.travel.bo.FiscalOfficer;
+import edu.sampleu.travel.bo.TravelAccount;
 import edu.sampleu.travel.dto.FiscalOfficerInfo;
+import edu.sampleu.travel.dto.TravelAccountInfo;
 
 /**
  * 
@@ -33,17 +37,24 @@ import edu.sampleu.travel.dto.FiscalOfficerInfo;
  */
 public class FiscalOfficerServiceImpl implements FiscalOfficerService {
 
+    protected BusinessObjectService businessObjectService;
+    protected LookupService lookupService;
+    
     @Override
     public FiscalOfficerInfo createFiscalOfficer(FiscalOfficerInfo fiscalOfficerInfo) {
-        // TODO swgibson - THIS METHOD NEEDS JAVADOCS
-        return null;
+        getBusinessObjectService().save(toFiscalOfficer(fiscalOfficerInfo));
+        
+        Map<String, Object> criteria = new HashMap<String, Object>();
+        criteria.put("id", fiscalOfficerInfo.getId());
+        FiscalOfficer fiscalOfficer = getBusinessObjectService().findByPrimaryKey(FiscalOfficer.class, criteria);
+        return toFiscalOfficerInfo(fiscalOfficer);
     }
 
     @Override
     public List<FiscalOfficerInfo> lookupFiscalOfficer(Map<String, String> criteria) {
-        LookupService service = KNSServiceLocator.getLookupService();
         @SuppressWarnings("unchecked")
-        Collection<FiscalOfficer> temp = service.findCollectionBySearch(FiscalOfficer.class, criteria);
+        Collection<FiscalOfficer> temp = getLookupService().findCollectionBySearch(FiscalOfficer.class, criteria);
+        
         List<FiscalOfficerInfo> results = new ArrayList<FiscalOfficerInfo>();
         if(temp != null) {
             for(FiscalOfficer fiscalOfficer : temp) {
@@ -56,16 +67,41 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
 
     @Override
     public FiscalOfficerInfo retrieveFiscalOfficer(Long id) {
-        BusinessObjectService service = KNSServiceLocator.getBusinessObjectService();
-        FiscalOfficer temp = service.findBySinglePrimaryKey(FiscalOfficer.class, id);
+        FiscalOfficer temp = getBusinessObjectService().findBySinglePrimaryKey(FiscalOfficer.class, id);
         FiscalOfficerInfo result = toFiscalOfficerInfo(temp);
         return result;
     }
 
     @Override
     public FiscalOfficerInfo updateFiscalOfficer(FiscalOfficerInfo fiscalOfficerInfo) {
-        // TODO swgibson - THIS METHOD NEEDS JAVADOCS
-        return null;
+        FiscalOfficer fiscalOfficer = getBusinessObjectService().findBySinglePrimaryKey(FiscalOfficer.class, fiscalOfficerInfo.getId());
+        
+        if(fiscalOfficer != null) {
+            getBusinessObjectService().save(toFiscalOfficerUpdate(fiscalOfficerInfo, fiscalOfficer));
+            fiscalOfficer = getBusinessObjectService().findBySinglePrimaryKey(FiscalOfficer.class, fiscalOfficerInfo.getId());
+        }
+        
+        return toFiscalOfficerInfo(fiscalOfficer);
+    }
+    
+    /**
+     * This method only copies fields from the dto to the ojb bean that should be copied
+     * on an update call.
+     * 
+     * @param fiscalOfficerInfo dto to convert to ojb bean
+     * @param fiscalOfficer target ojb bean to update from info
+     * @return
+     */
+    protected FiscalOfficer toFiscalOfficerUpdate(FiscalOfficerInfo fiscalOfficerInfo,
+            FiscalOfficer fiscalOfficer) {
+        
+        fiscalOfficer.setFirstName(fiscalOfficerInfo.getFirstName());
+        fiscalOfficer.setId(fiscalOfficerInfo.getId());
+        fiscalOfficer.setUserName(fiscalOfficerInfo.getUserName());
+        fiscalOfficer.setObjectId(fiscalOfficerInfo.getObjectId());
+        fiscalOfficer.setVersionNumber(fiscalOfficerInfo.getVersionNumber());
+        
+        return fiscalOfficer;
     }
     
     protected FiscalOfficer toFiscalOfficer(FiscalOfficerInfo fiscalOfficerInfo) {
@@ -76,6 +112,14 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
         fiscalOfficer.setUserName(fiscalOfficerInfo.getUserName());
         fiscalOfficer.setObjectId(fiscalOfficerInfo.getObjectId());
         fiscalOfficer.setVersionNumber(fiscalOfficerInfo.getVersionNumber());
+        
+        if(fiscalOfficerInfo.getAccounts() != null) {
+            for(TravelAccountInfo accountInfo : fiscalOfficerInfo.getAccounts()) {
+                TravelAccount travelAccount = new TravelAccount();
+                BeanUtils.copyProperties(accountInfo, travelAccount);
+                fiscalOfficer.getAccounts().add(travelAccount);
+            }
+        }
         
         return fiscalOfficer;
     }
@@ -91,9 +135,53 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
             fiscalOfficerInfo.setUserName(fiscalOfficer.getUserName());
             fiscalOfficerInfo.setObjectId(fiscalOfficer.getObjectId());
             fiscalOfficerInfo.setVersionNumber(fiscalOfficer.getVersionNumber());
+            
+            if(fiscalOfficer.getAccounts() != null) {
+                List<TravelAccountInfo> accountInfoList = new ArrayList<TravelAccountInfo>();
+                
+                for(TravelAccount travelAccount : fiscalOfficer.getAccounts()) {
+                    accountInfoList.add(toTravelAccountInfo(travelAccount));
+                }
+                
+                fiscalOfficerInfo.setAccounts(accountInfoList);
+            }
         }
         
         return fiscalOfficerInfo;
+    }
+    
+    protected TravelAccountInfo toTravelAccountInfo(TravelAccount travelAccount) {
+        TravelAccountInfo travelAccountInfo = new TravelAccountInfo();
+        
+        travelAccountInfo.setCreateDate(travelAccount.getCreateDate());
+        travelAccountInfo.setName(travelAccount.getName());
+        travelAccountInfo.setNumber(travelAccount.getNumber());
+        travelAccountInfo.setObjectId(travelAccount.getObjectId());
+        travelAccountInfo.setVersionNumber(travelAccount.getVersionNumber());
+        
+        return travelAccountInfo;
+    }
+
+    protected BusinessObjectService getBusinessObjectService() {
+        if(businessObjectService == null) {
+            businessObjectService = KNSServiceLocator.getBusinessObjectService();
+        }
+        return this.businessObjectService;
+    }
+
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
+    protected LookupService getLookupService() {
+        if(lookupService == null) {
+            lookupService = KNSServiceLocator.getLookupService();
+        }
+        return this.lookupService;
+    }
+
+    public void setLookupService(LookupService lookupService) {
+        this.lookupService = lookupService;
     }
 
 }

@@ -16,6 +16,7 @@
 package edu.sampleu.travel.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,6 +58,9 @@ public class FiscalOfficerInfo implements Serializable {
     }
 
     public List<TravelAccountInfo> getAccounts() {
+        if(accounts == null) {
+            accounts = new ArrayList<TravelAccountInfo>();
+        }
         return this.accounts;
     }
 

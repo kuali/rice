@@ -160,8 +160,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
-     <property name="defaultBindingObjectPath" value="document.newMaintainableObject.businessObject"/>
-     <property name="oldObjectBindingPath" value="document.oldMaintainableObject.businessObject"/>
+     <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
+     <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
      <property name="controllerRequestMapping" value="maintenance"/>  
      <property name="singlePageView" value="true"/>
      <property name="header">

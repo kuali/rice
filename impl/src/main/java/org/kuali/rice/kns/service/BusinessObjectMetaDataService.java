@@ -31,7 +31,7 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
  * of BO it will retrieve the data it needs from either the DataDictionary or through the
  * PersistenceStructureService
  */
-public interface BusinessObjectMetaDataService {
+public interface BusinessObjectMetaDataService extends DataObjectMetaDataService {
 
     public BusinessObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference, BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly );
     public RelationshipDefinition getBusinessObjectRelationshipDefinition(Class c, String attributeName);
@@ -172,14 +172,7 @@ public interface BusinessObjectMetaDataService {
      */
     public Map<String, Class> getReferencesForForeignKey(BusinessObject businessObject, String attributeName);
 
-    /**
-     *
-     * This method returns a list of primary keys for the passed in class.
-     *
-     * @param clazz
-     * @return
-     */
-    public List<String> listPrimaryKeyFieldNames(Class<?> clazz);
+    
 
     /**
      *

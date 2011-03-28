@@ -64,6 +64,7 @@
                 <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountInfo.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml</value>
@@ -145,6 +146,17 @@
       <property name="businessObjectAuthorizationService">
         <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
           <property name="serviceName" value="businessObjectAuthorizationService" />
+        </bean>
+      </property>
+    </bean>
+    
+    <bean id="fiscalOfficerInfoMaintainable"
+        class="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"
+        scope="prototype">
+        
+      <property name="dataDictionaryService">
+        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+          <property name="serviceName" value="dataDictionaryService" />
         </bean>
       </property>
     </bean>

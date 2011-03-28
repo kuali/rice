@@ -129,27 +129,27 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			MaintenanceDocument maintenanceDocument, Person user) {
 
 		MaintenanceDocumentRestrictions maintenanceDocumentRestrictions = new MaintenanceDocumentRestrictionsBase();
-		BusinessObjectEntry businessObjectEntry = getDataDictionaryService()
-				.getDataDictionary().getBusinessObjectEntry(
+		DataObjectEntry dataObjectEntry = getDataDictionaryService()
+				.getDataDictionary().getDataObjectEntry(
 						maintenanceDocument.getNewMaintainableObject()
-								.getBusinessObject().getClass().getName());
+								.getDataObject().getClass().getName());
 		MaintenanceDocumentPresentationController maintenanceDocumentPresentationController = (MaintenanceDocumentPresentationController) getDocumentHelperService()
 				.getDocumentPresentationController(maintenanceDocument);
 		MaintenanceDocumentAuthorizer maintenanceDocumentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentHelperService()
 				.getDocumentAuthorizer(maintenanceDocument);
 		considerBusinessObjectFieldUnmaskAuthorization(maintenanceDocument
-				.getNewMaintainableObject().getBusinessObject(), user,
+				.getNewMaintainableObject().getDataObject(), user,
 				maintenanceDocumentRestrictions, "", maintenanceDocument );
-		considerBusinessObjectFieldViewAuthorization(businessObjectEntry,
-				maintenanceDocument.getNewMaintainableObject().getBusinessObject(),
+		considerBusinessObjectFieldViewAuthorization(dataObjectEntry,
+				maintenanceDocument.getNewMaintainableObject().getDataObject(),
 				null, user, maintenanceDocumentAuthorizer,
 				maintenanceDocumentRestrictions, "");
-		considerBusinessObjectFieldModifyAuthorization(businessObjectEntry,
-				maintenanceDocument.getNewMaintainableObject().getBusinessObject(),
+		considerBusinessObjectFieldModifyAuthorization(dataObjectEntry,
+				maintenanceDocument.getNewMaintainableObject().getDataObject(),
 				null, user, maintenanceDocumentAuthorizer,
 				maintenanceDocumentRestrictions, "");
-		considerCustomButtonFieldAuthorization(businessObjectEntry,
-				maintenanceDocument.getNewMaintainableObject().getBusinessObject(),
+		considerCustomButtonFieldAuthorization(dataObjectEntry,
+				maintenanceDocument.getNewMaintainableObject().getDataObject(),
 				null, user, maintenanceDocumentAuthorizer,
 				maintenanceDocumentRestrictions, "");
 		considerInquiryOrMaintenanceDocumentPresentationController(
@@ -191,9 +191,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 
 	/**
-	 * @param businessObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
+	 * @param dataObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
 	 * Otherwise, it is the entry for primaryBusinessObject
-	 * @param primaryBusinessObject the top-level BO that is being inquiried or maintained
+	 * @param primaryDataObject the top-level BO that is being inquiried or maintained
 	 * @param collectionItemBusinessObject an element of a collection under the primaryBusinessObject that we are evaluating view auths for
 	 * @param user the logged in user
 	 * @param businessObjectAuthorizer
@@ -201,15 +201,15 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	 * @param propertyPrefix
 	 */
 	protected void considerBusinessObjectFieldViewAuthorization(
-			BusinessObjectEntry businessObjectEntry,
-			BusinessObject primaryBusinessObject,
+			DataObjectEntry dataObjectEntry,
+			Object primaryDataObject,
 			BusinessObject collectionItemBusinessObject,
 			Person user,
 			BusinessObjectAuthorizer businessObjectAuthorizer,
 			InquiryOrMaintenanceDocumentRestrictions inquiryOrMaintenanceDocumentRestrictions,
 			String propertyPrefix) {
-		for (String attributeName : businessObjectEntry.getAttributeNames()) {
-			AttributeDefinition attributeDefinition = businessObjectEntry
+		for (String attributeName : dataObjectEntry.getAttributeNames()) {
+			AttributeDefinition attributeDefinition = dataObjectEntry
 					.getAttributeDefinition(attributeName);
 			if (attributeDefinition.getAttributeSecurity() != null) {
 				if (attributeDefinition.getAttributeSecurity().isHide()) {
@@ -223,11 +223,11 @@ public class BusinessObjectAuthorizationServiceImpl implements
 								getCollectionItemRoleQualifications(collectionItemBusinessObject));
 					}
 					else {
-						collectionItemPermissionDetails.putAll(getFieldPermissionDetails(primaryBusinessObject, attributeName));
+						collectionItemPermissionDetails.putAll(getFieldPermissionDetails(primaryDataObject, attributeName));
 					}
 					if (!businessObjectAuthorizer
 							.isAuthorizedByTemplate(
-									primaryBusinessObject,
+									primaryDataObject,
 									KNSConstants.KNS_NAMESPACE,
 									KimConstants.PermissionTemplateNames.VIEW_FIELD,
 									user.getPrincipalId(),
@@ -242,9 +242,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 
 	/**
-	 * @param businessObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
+	 * @param dataObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
 	 * Otherwise, it is the entry for primaryBusinessObject
-	 * @param primaryBusinessObject the top-level BO that is being inquiried or maintained
+	 * @param primaryDataObject the top-level BO that is being inquiried or maintained
 	 * @param collectionItemBusinessObject an element of a collection under the primaryBusinessObject that we are evaluating view auths for
 	 * @param user the logged in user
 	 * @param businessObjectAuthorizer
@@ -252,14 +252,14 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	 * @param propertyPrefix
 	 */
 	protected void considerBusinessObjectFieldModifyAuthorization(
-			BusinessObjectEntry businessObjectEntry,
-			BusinessObject primaryBusinessObject,
+			DataObjectEntry dataObjectEntry,
+			Object primaryDataObject,
 			BusinessObject collectionItemBusinessObject, Person user,
 			BusinessObjectAuthorizer businessObjectAuthorizer,
 			MaintenanceDocumentRestrictions maintenanceDocumentRestrictions,
 			String propertyPrefix) {
-		for (String attributeName : businessObjectEntry.getAttributeNames()) {
-			AttributeDefinition attributeDefinition = businessObjectEntry
+		for (String attributeName : dataObjectEntry.getAttributeNames()) {
+			AttributeDefinition attributeDefinition = dataObjectEntry
 					.getAttributeDefinition(attributeName);
 			if (attributeDefinition.getAttributeSecurity() != null) {
 				AttributeSet collectionItemPermissionDetails = new AttributeSet();
@@ -272,12 +272,12 @@ public class BusinessObjectAuthorizationServiceImpl implements
 							getCollectionItemRoleQualifications(collectionItemBusinessObject));
 				}
 				else {
-					collectionItemPermissionDetails.putAll(getFieldPermissionDetails(primaryBusinessObject, attributeName));
+					collectionItemPermissionDetails.putAll(getFieldPermissionDetails(primaryDataObject, attributeName));
 				}
 				if (attributeDefinition.getAttributeSecurity().isReadOnly()) {
 					if (!businessObjectAuthorizer
 								.isAuthorizedByTemplate(
-										primaryBusinessObject,
+										primaryDataObject,
 										KNSConstants.KNS_NAMESPACE,
 										KimConstants.PermissionTemplateNames.MODIFY_FIELD,
 										user.getPrincipalId(),
@@ -292,9 +292,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 	
 	/**
-	 * @param businessObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
+	 * @param dataObjectEntry if collectionItemBusinessObject is not null, then it is the DD entry for collectionItemBusinessObject.
 	 * Otherwise, it is the entry for primaryBusinessObject
-	 * @param primaryBusinessObject the top-level BO that is being inquiried or maintained
+	 * @param primaryDataObject the top-level BO that is being inquiried or maintained
 	 * @param collectionItemBusinessObject an element of a collection under the primaryBusinessObject that we are evaluating view auths for
 	 * @param user the logged in user
 	 * @param businessObjectAuthorizer
@@ -302,17 +302,19 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	 * @param propertyPrefix
 	 */
 	protected void considerCustomButtonFieldAuthorization(
-			BusinessObjectEntry businessObjectEntry,
-			BusinessObject primaryBusinessObject,
+			DataObjectEntry dataObjectEntry,
+			Object primaryDataObject,
 			BusinessObject collectionItemBusinessObject,
 			Person user,
 			BusinessObjectAuthorizer businessObjectAuthorizer,
 			MaintenanceDocumentRestrictions maintenanceDocumentRestrictions,
 			String propertyPrefix) {
-		for (String attributeName : businessObjectEntry.getAttributeNames()) {
-			AttributeDefinition attributeDefinition = businessObjectEntry
+		for (String attributeName : dataObjectEntry.getAttributeNames()) {
+			AttributeDefinition attributeDefinition = dataObjectEntry
 					.getAttributeDefinition(attributeName);
-			if (attributeDefinition.getControl().isButton()) {
+			// TODO what is the equivalent of control.isButton in KRAD
+			if (attributeDefinition.getControl() != null &&
+			        attributeDefinition.getControl().isButton()) {
 				AttributeSet collectionItemPermissionDetails = new AttributeSet();
 				AttributeSet collectionItemRoleQualifications = null;
 				if (ObjectUtils.isNotNull(collectionItemBusinessObject)) {
@@ -323,12 +325,12 @@ public class BusinessObjectAuthorizationServiceImpl implements
 							getCollectionItemRoleQualifications(collectionItemBusinessObject));
 				}
 				else {
-					getButtonFieldPermissionDetails(primaryBusinessObject, attributeName);
+					getButtonFieldPermissionDetails(primaryDataObject, attributeName);
 				}
 				
 				if (!businessObjectAuthorizer
 						.isAuthorizedByTemplate(
-								primaryBusinessObject,
+								primaryDataObject,
 								KNSConstants.KNS_NAMESPACE,
 								KimConstants.PermissionTemplateNames.PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION,
 								user.getPrincipalId(),
@@ -635,7 +637,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	}
 	
 	protected Map<String, String> getButtonFieldPermissionDetails(
-			BusinessObject businessObject, String attributeName) {
+			Object businessObject, String attributeName) {
 		Map<String, String> permissionDetails = new AttributeSet();
 		if (attributeName.contains(".")) {
 			permissionDetails.put(KimAttributes.BUTTON_NAME, attributeName);

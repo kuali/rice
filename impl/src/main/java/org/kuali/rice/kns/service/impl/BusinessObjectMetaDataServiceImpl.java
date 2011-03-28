@@ -38,7 +38,6 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -52,16 +51,13 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * @see DataDictionaryService
  * @see PersistenceStructureService
  */
-public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaDataService {
+public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataServiceImpl implements BusinessObjectMetaDataService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger .getLogger(BusinessObjectMetaDataServiceImpl.class);
 
 	private BusinessObjectDictionaryService businessObjectDictionaryService;
-	private DataDictionaryService dataDictionaryService;
-	private PersistenceStructureService persistenceStructureService;
-	private KualiModuleService kualiModuleService;
 
 	public Collection<String> getCollectionNames(BusinessObject bo) {
-		return dataDictionaryService.getDataDictionary()
+		return getDataDictionaryService().getDataDictionary()
 				.getBusinessObjectEntry(bo.getClass().getName())
 				.getCollectionNames();
 	}
@@ -148,7 +144,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	public boolean isInquirable(Class boClass) {
 		boolean inquirable = false;
-		ModuleService moduleService = kualiModuleService
+		ModuleService moduleService = getKualiModuleService()
 				.getResponsibleModuleService(boClass);
 		if (moduleService != null && moduleService.isExternalizable(boClass)) {
 			inquirable = moduleService
@@ -188,7 +184,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	public boolean isLookupable(Class boClass) {
 		boolean lookupable = false;
-		ModuleService moduleService = kualiModuleService
+		ModuleService moduleService = getKualiModuleService()
 				.getResponsibleModuleService(boClass);
 		if (moduleService != null && moduleService.isExternalizable(boClass)) {
 			lookupable = moduleService
@@ -284,8 +280,8 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}
 		int maxSize = Integer.MAX_VALUE;
 		// try persistable reference first
-		if (PersistableBusinessObject.class.isAssignableFrom(boClass) && persistenceStructureService.isPersistable(boClass) ) {
-			Map<String, BusinessObjectRelationship> rels = persistenceStructureService
+		if (PersistableBusinessObject.class.isAssignableFrom(boClass) && getPersistenceStructureService().isPersistable(boClass) ) {
+			Map<String, BusinessObjectRelationship> rels = getPersistenceStructureService()
 					.getRelationshipMetadata(boClass, attributeName,
 							attributePrefix);
 			if (rels.size() > 0) {
@@ -358,26 +354,6 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 	}
 
 	/**
-	 * Gets the dataDictionaryService attribute.
-	 *
-	 * @return Returns the dataDictionaryService.
-	 */
-	public DataDictionaryService getDataDictionaryService() {
-		return dataDictionaryService;
-	}
-
-	/**
-	 * Sets the dataDictionaryService attribute value.
-	 *
-	 * @param dataDictionaryService
-	 *            The dataDictionaryService to set.
-	 */
-	public void setDataDictionaryService(
-			DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
-	}
-
-	/**
 	 * Gets the businessObjectDictionaryService attribute.
 	 *
 	 * @return Returns the businessObjectDictionaryService.
@@ -395,26 +371,6 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 	public void setBusinessObjectDictionaryService(
 			BusinessObjectDictionaryService businessObjectDictionaryService) {
 		this.businessObjectDictionaryService = businessObjectDictionaryService;
-	}
-
-	/**
-	 * Gets the persistenceStructureService attribute.
-	 *
-	 * @return Returns the persistenceStructureService.
-	 */
-	public PersistenceStructureService getPersistenceStructureService() {
-		return persistenceStructureService;
-	}
-
-	/**
-	 * Sets the persistenceStructureService attribute value.
-	 *
-	 * @param persistenceStructureService
-	 *            The persistenceStructureService to set.
-	 */
-	public void setPersistenceStructureService(
-			PersistenceStructureService persistenceStructureService) {
-		this.persistenceStructureService = persistenceStructureService;
 	}
 
 	/**
@@ -463,7 +419,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 
 	public RelationshipDefinition getDDRelationship(Class c,
 			String attributeName) {
-		DataDictionaryEntry entryBase = dataDictionaryService
+		DataDictionaryEntry entryBase = getDataDictionaryService()
 				.getDataDictionary().getDictionaryObjectEntry(c.getName());
 		if (entryBase == null) {
 			return null;
@@ -530,7 +486,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		if (PersistableBusinessObject.class.isAssignableFrom( boClass ) && getPersistenceStructureService().isPersistable(boClass)) {
 			referenceClasses = getPersistenceStructureService().listReferenceObjectFields(boClass);
 		}
-		DataDictionaryEntry ddEntry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry(boClass.getName());
+		DataDictionaryEntry ddEntry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(boClass.getName());
 		List<RelationshipDefinition> ddRelationships = (ddEntry == null ? new ArrayList<RelationshipDefinition>() : ddEntry.getRelationships());
 		List<BusinessObjectRelationship> relationships = new ArrayList<BusinessObjectRelationship>();
 
@@ -538,7 +494,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		if (referenceClasses != null) {
 			for (Map.Entry<String, Class> entry : referenceClasses.entrySet()) {
 				if (isLookupable(entry.getValue())) {
-					Map<String, String> fkToPkRefs = persistenceStructureService.getForeignKeysForReference(boClass, entry.getKey());
+					Map<String, String> fkToPkRefs = getPersistenceStructureService().getForeignKeysForReference(boClass, entry.getKey());
 					BusinessObjectRelationship rel = new BusinessObjectRelationship( boClass, entry.getKey(), entry.getValue() );
 					for (Map.Entry<String, String> ref : fkToPkRefs.entrySet()) {
 						rel.getParentToChildReferences().put(ref.getKey(), ref.getValue());
@@ -580,41 +536,6 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 			}
 		}
 		return referencesForForeignKey;
-	}
-
-	/***
-	 * @see org.kuali.core.service.BusinessObjectMetaDataService#listPrimaryKeyFieldNames(java.lang.Class)
-	 */
-	public List<String> listPrimaryKeyFieldNames(Class<?> clazz) {
-		if (persistenceStructureService.isPersistable(clazz)) {
-			return persistenceStructureService.listPrimaryKeyFieldNames(clazz);
-		}
-		ModuleService responsibleModuleService = getKualiModuleService()
-				.getResponsibleModuleService(clazz);
-		if (responsibleModuleService != null
-				&& responsibleModuleService.isExternalizable(clazz))
-			return responsibleModuleService.listPrimaryKeyFieldNames(clazz);
-
-		// give the option to declare primary keys in the dd.
-		// this is primarly used for transient objects that lack db persistence.
-		List<String> pks = dataDictionaryService.getDataDictionary()
-			.getDataObjectEntry(clazz.getName()).getPrimaryKeys();
-		if(pks != null && !pks.isEmpty())
-			return pks;
-
-		return new ArrayList<String>();
-
-
-
-
-	}
-
-	public KualiModuleService getKualiModuleService() {
-		return this.kualiModuleService;
-	}
-
-	public void setKualiModuleService(KualiModuleService kualiModuleService) {
-		this.kualiModuleService = kualiModuleService;
 	}
 
 	public BusinessObjectRelationship getRelationshipMetadata(

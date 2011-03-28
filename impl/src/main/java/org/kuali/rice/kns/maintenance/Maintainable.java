@@ -54,7 +54,13 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable, S
 	/**
 	 * Returns instance of the business object that is being maintained.
 	 */
+	@Deprecated
 	public PersistableBusinessObject getBusinessObject();
+	
+	/**
+     * Returns instance of the data object that is being maintained.
+     */
+    public Object getDataObject();
 
 	/**
 	 * @return the locking representation(s) of this document, which are
@@ -75,7 +81,13 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable, S
 	/**
 	 * Sets an instance of a business object to be maintained.
 	 */
+	@Deprecated
 	public void setBusinessObject(PersistableBusinessObject object);
+	
+	/**
+     * Sets an instance of a data object to be maintained.
+     */
+    public void setDataObject(Object object);
 
 	/**
 	 * Sets the maintenance action - new, edit, or copy
@@ -133,6 +145,20 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable, S
 	 * 
 	 */
 	public void processAfterPost(MaintenanceDocument document, Map<String, String[]> requestParameters);
+	
+	/**
+	 * Called during setupMaintenanceObject to retrieve the original dataObject that is being
+	 * edited or copied.  Override this method for non BusinessObject external persistence,
+	 * Maintainable objects that extend BO should override isExternalBusinessObject and
+	 * prepareBusinessObject instead.
+	 * 
+	 * Do not override this method and isExternalBusinessObject.
+	 * 
+	 * @param document document instance for the maintenance object
+	 * @param dataObjectKeys Map of keys for the requested object
+	 * @return the object identified by the dataObjectKeys
+	 */
+	public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys);
 
 	/**
 	 * 

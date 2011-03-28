@@ -183,9 +183,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="comparables">
          <list>
             <bean parent="ComparableInfo" p:readOnly="true" p:headerText="Old"
-                  p:bindingObjectPath="document.oldMaintainableObject.businessObject"/>
+                  p:bindingObjectPath="document.oldMaintainableObject.dataObject"/>
             <bean parent="ComparableInfo" p:headerText="New"
-                  p:bindingObjectPath="document.newMaintainableObject.businessObject"/>                            
+                  p:bindingObjectPath="document.newMaintainableObject.dataObject"/>                            
          </list>
       </property>
   </bean>

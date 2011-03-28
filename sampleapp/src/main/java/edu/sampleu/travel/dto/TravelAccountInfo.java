@@ -33,6 +33,8 @@ public class TravelAccountInfo implements Serializable {
     private KualiPercent subsidizedPercent;
     private Date createDate;
     private Long foId;
+    private String objectId;
+    private Long versionNumber;
     
     
     public String getNumber() {
@@ -89,6 +91,22 @@ public class TravelAccountInfo implements Serializable {
     
     public void setFoId(Long foId) {
         this.foId = foId;
+    }
+
+    public String getObjectId() {
+        return this.objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
+    public Long getVersionNumber() {
+        return this.versionNumber;
+    }
+
+    public void setVersionNumber(Long versionNumber) {
+        this.versionNumber = versionNumber;
     }
     
 }

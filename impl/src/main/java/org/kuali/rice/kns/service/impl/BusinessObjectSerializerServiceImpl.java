@@ -35,7 +35,7 @@ public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase i
      * 
      * @see org.kuali.rice.kns.service.DocumentSerializerService#serializeDocumentToXml(org.kuali.rice.kns.document.Document)
      */
-    public String serializeBusinessObjectToXml(BusinessObject businessObject) {
+    public String serializeBusinessObjectToXml(Object businessObject) {
         PropertySerializabilityEvaluator propertySerizabilityEvaluator = getPropertySerizabilityEvaluator(businessObject);
         evaluators.set(propertySerizabilityEvaluator);
         SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
@@ -55,7 +55,7 @@ public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase i
         return xml;
     }
 
-    public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(BusinessObject businessObject) {
+    public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object businessObject) {
         MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = 
         	KNSServiceLocator.getMaintenanceDocumentDictionaryService();
         String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(businessObject.getClass());

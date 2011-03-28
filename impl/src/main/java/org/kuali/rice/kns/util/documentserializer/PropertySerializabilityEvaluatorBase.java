@@ -34,7 +34,7 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
 		
 	}
 	
-	public void initializeEvaluator(BusinessObject businessObject){
+	public void initializeEvaluator(Object businessObject){
 		
 	}
 	

@@ -92,6 +92,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintainableImpl.class);
 
 	protected String documentNumber;
+	protected Object dataObject;
 	protected PersistableBusinessObject businessObject;
 	protected Class boClass;
 	protected String maintenanceAction;
@@ -127,6 +128,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	public KualiMaintainableImpl(PersistableBusinessObject businessObject) {
 		this();
 		this.businessObject = businessObject;
+		this.dataObject = businessObject;
 	}
 
 	/**
@@ -172,7 +174,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 		StringBuffer lockRepresentation = new StringBuffer(boClass.getName());
 		lockRepresentation.append(KNSConstants.Maintenance.AFTER_CLASS_DELIM);
 
-		PersistableBusinessObject bo = getBusinessObject();
+		Object bo = getDataObject();
 		List keyFieldNames = getMaintenanceDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
 
 		for (Iterator i = keyFieldNames.iterator(); i.hasNext();) {
@@ -709,21 +711,36 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 		return getMaintenanceDocumentDictionaryService().getDocumentTypeName(boClass);
 	}
 
-	/**
-	 * @return Returns the instance of the business object being maintained.
-	 */
-	public PersistableBusinessObject getBusinessObject() {
-		return businessObject;
-	}
+	@Override
+    public Object getDataObject() {
+        return dataObject;
+    }
 
-	/**
-	 * @param businessObject
-	 *            Sets the instance of a business object that will be
-	 *            maintained.
-	 */
-	public void setBusinessObject(PersistableBusinessObject businessObject) {
-		this.businessObject = businessObject;
-	}
+    @Override
+    public void setDataObject(Object object) {
+        this.dataObject = object;
+        
+        if(object instanceof PersistableBusinessObject) {
+            this.businessObject = (PersistableBusinessObject)object;
+        }
+    }
+
+    /**
+     * @return Returns the instance of the business object being maintained.
+     */
+    public PersistableBusinessObject getBusinessObject() {
+        return businessObject;
+    }
+
+    /**
+     * @param businessObject
+     *            Sets the instance of a business object that will be
+     *            maintained.
+     */
+    public void setBusinessObject(PersistableBusinessObject businessObject) {
+        this.businessObject = businessObject;
+        this.dataObject = businessObject;
+    }
 
 	/**
 	 * @return Returns the boClass.
@@ -1600,8 +1617,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 
 			// TODO should we be using ObjectUtils? also, this needs dictionary
 			// enhancement to indicate fields to/not to copy
-			PersistableBusinessObject newBusinessObject = (PersistableBusinessObject) ObjectUtils
-					.deepCopy((Serializable) oldBusinessObject);
+			Object newBusinessObject = ObjectUtils.deepCopy((Serializable) oldBusinessObject);
 
 			// process further object preparations for copy action
 			if (KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
@@ -1612,17 +1628,18 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 			}
 
 			// set object instance for editing
-			document.getOldMaintainableObject().setBusinessObject((PersistableBusinessObject) oldBusinessObject);
-			document.getNewMaintainableObject().setBusinessObject(newBusinessObject);
+			document.getOldMaintainableObject().setDataObject(oldBusinessObject);
+			document.getNewMaintainableObject().setDataObject(newBusinessObject);
 		}
 
-		// if new with existing we need to populate we need to populate with
-		// passed in parameters
+		// if new with existing we need to populate with passed in parameters
 		if (KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
-			PersistableBusinessObject newBO = document.getNewMaintainableObject().getBusinessObject();
+			Object newBO = document.getNewMaintainableObject().getDataObject();
 			Map<String, String> parameters = buildKeyMapFromRequest(requestParameters);
 			ObjectPropertyUtils.copyPropertiesToObject(parameters, newBO);
-			newBO.refresh();
+			if(newBO instanceof PersistableBusinessObject) {
+			    ((PersistableBusinessObject)newBO).refresh();
+			}
 
 			setupNewFromExisting(document, requestParameters);
 		}
@@ -1648,7 +1665,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 			Map<String, String[]> requestParameters) {
 		if (KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
 			boolean allowsEdit = getBusinessObjectAuthorizationService().canMaintain(
-					(BusinessObject) oldBusinessObject, GlobalVariables.getUserSession().getPerson(),
+					oldBusinessObject, GlobalVariables.getUserSession().getPerson(),
 					document.getDocumentHeader().getWorkflowDocument().getDocumentType());
 			if (!allowsEdit) {
 				LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentType()
@@ -1693,19 +1710,18 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	 * @return Object the retrieved old object
 	 */
 	protected Object retrieveObjectForMaintenance(MaintenanceDocument document, Map<String, String[]> requestParameters) {
-		PersistableBusinessObject oldBusinessObject = null;
+	    // TODO the logic in this method is very odd, but I don't know how clients
+	    // are extending this impl.  It seems like clients made non persistent objects
+	    // extend PBO in order to not break the framework which requires PBO everywhere,
+	    // KRAD is fixing that.
+	    //
+	    // Would like to see this method get passed keys already parsed from request,
+	    // it seems odd to have entire http request map passed this deep
 
-		try {
-			Map<String, String> keyMap = buildKeyMapFromRequest(requestParameters);
-			oldBusinessObject = (PersistableBusinessObject) getLookupService().findObjectBySearch(getBoClass(), keyMap);
-		}
-		catch (ClassNotPersistenceCapableException ex) {
-			if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
-				throw new RuntimeException("BO Class: " + getBoClass()
-						+ " is not persistable and is not externalizable - configuration error");
-			}
-			// otherwise, let fall through
-		}
+		Map<String, String> keyMap = buildKeyMapFromRequest(requestParameters);
+		
+		Object oldBusinessObject = retrieveObjectForEditOrCopy(document, keyMap);
+		
 		if (oldBusinessObject == null && !document.getOldMaintainableObject().isExternalBusinessObject()) {
 			throw new RuntimeException(
 					"Cannot retrieve old record for maintenance document, incorrect parameters passed on maint url: "
@@ -1715,7 +1731,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 		if (document.getOldMaintainableObject().isExternalBusinessObject()) {
 			if (oldBusinessObject == null) {
 				try {
-					oldBusinessObject = (PersistableBusinessObject) document.getOldMaintainableObject().getBoClass()
+					oldBusinessObject = document.getOldMaintainableObject().getBoClass()
 							.newInstance();
 				}
 				catch (Exception ex) {
@@ -1727,14 +1743,38 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 
 			populateMaintenanceObjectWithCopyKeyValues(WebUtils.translateRequestParameterMap(requestParameters),
 					oldBusinessObject, document.getOldMaintainableObject());
-			document.getOldMaintainableObject().prepareBusinessObject(oldBusinessObject);
-			oldBusinessObject = document.getOldMaintainableObject().getBusinessObject();
+			document.getOldMaintainableObject().prepareBusinessObject((PersistableBusinessObject)oldBusinessObject);
+			oldBusinessObject = document.getOldMaintainableObject().getDataObject();
 		}
 
 		return oldBusinessObject;
 	}
+	
 
 	/**
+	 * @see org.kuali.rice.kns.maintenance.Maintainable#retrieveObjectForEditOrCopy(java.util.Map)
+	 */
+	@Override
+    public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
+	    Object dataObject = null;
+	    
+	    try {
+            if(dataObject instanceof PersistableBusinessObject) {
+                dataObject = getLookupService().findObjectBySearch(getBoClass(), dataObjectKeys);
+            }
+        }
+        catch (ClassNotPersistenceCapableException ex) {
+            if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
+                throw new RuntimeException("BO Class: " + getBoClass()
+                        + " is not persistable and is not externalizable - configuration error");
+            }
+            // otherwise, let fall through
+        }
+        
+        return dataObject;
+    }
+
+    /**
 	 * For the copy action clears out primary key values for the old record and
 	 * does authorization checks on the remaining fields. Also invokes the
 	 * custom processing method on the <code>Maintainble</code>

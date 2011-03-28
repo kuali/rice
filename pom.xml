@@ -830,6 +830,7 @@
         <module>doc</module>
         <module>dist</module>
         <module>kew</module>
+        <module>ksb</module>
 	</modules>
 
 	<repositories>

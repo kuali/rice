@@ -18,7 +18,7 @@ package org.kuali.rice.devtools.pdle;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversionDefaultImpl;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.service.BusinessObjectService;

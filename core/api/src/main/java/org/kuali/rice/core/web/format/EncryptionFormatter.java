@@ -18,8 +18,8 @@ package org.kuali.rice.core.web.format;
 import java.security.GeneralSecurityException;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.service.EncryptionService;
 
 /**
  * This formatter calls the encryption service to encrypt/decrypt values.

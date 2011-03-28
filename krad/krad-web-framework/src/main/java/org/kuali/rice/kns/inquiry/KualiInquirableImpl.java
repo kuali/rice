@@ -20,7 +20,7 @@ import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;

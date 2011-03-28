@@ -18,9 +18,9 @@ package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.cache.CopiedObject;
 import org.kuali.rice.core.util.type.TypeUtils;

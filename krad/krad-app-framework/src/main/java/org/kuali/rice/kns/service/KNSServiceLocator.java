@@ -19,8 +19,8 @@ package org.kuali.rice.kns.service;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.service.EncryptionService;
 
 import javax.persistence.EntityManagerFactory;
 

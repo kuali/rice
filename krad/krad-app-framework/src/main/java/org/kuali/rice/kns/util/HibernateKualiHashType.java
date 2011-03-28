@@ -24,7 +24,7 @@ import java.sql.Types;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**

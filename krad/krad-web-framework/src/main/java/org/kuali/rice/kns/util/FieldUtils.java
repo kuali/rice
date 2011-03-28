@@ -17,7 +17,7 @@ package org.kuali.rice.kns.util;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.util.KEWConstants;

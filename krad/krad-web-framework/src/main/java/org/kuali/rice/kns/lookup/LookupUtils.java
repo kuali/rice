@@ -22,7 +22,7 @@ import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.service;
+package org.kuali.rice.core.api.encryption;
 
 import java.security.GeneralSecurityException;
 

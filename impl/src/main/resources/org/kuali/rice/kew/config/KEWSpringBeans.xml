@@ -432,7 +432,7 @@
 
 
     <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
-	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
+	<bean id="enEncryptionService" class="org.kuali.rice.core.impl.encryption.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
 		<property name="secretKey">
 			<bean class="org.kuali.rice.core.impl.config.property.ConfigPropertyFactoryBean">
 				<property name="name" value="encryption.key"/>

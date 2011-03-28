@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.service.impl;
+package org.kuali.rice.core.impl.encryption;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 
 import java.security.GeneralSecurityException;
 
@@ -61,7 +61,7 @@ public class NoEncryptionEncryptionServiceImpl implements EncryptionService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.core.service.EncryptionService#decryptBytes(byte[])
+     * @see org.kuali.rice.core.api.encryption.EncryptionService#decryptBytes(byte[])
      */
     public byte[] decryptBytes(byte[] ciphertext)
     		throws GeneralSecurityException {
@@ -71,7 +71,7 @@ public class NoEncryptionEncryptionServiceImpl implements EncryptionService {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.core.service.EncryptionService#encryptBytes(byte[])
+     * @see org.kuali.rice.core.api.encryption.EncryptionService#encryptBytes(byte[])
      */
     public byte[] encryptBytes(byte[] valueToHide)
     		throws GeneralSecurityException {

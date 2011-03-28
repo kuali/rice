@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.service.impl;
+package org.kuali.rice.core.impl.encryption;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

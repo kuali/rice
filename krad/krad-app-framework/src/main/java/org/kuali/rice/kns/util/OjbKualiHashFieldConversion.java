@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 

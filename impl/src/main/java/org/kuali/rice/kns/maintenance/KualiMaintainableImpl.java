@@ -1759,9 +1759,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 	    Object dataObject = null;
 	    
 	    try {
-            if(dataObject instanceof PersistableBusinessObject) {
-                dataObject = getLookupService().findObjectBySearch(getBoClass(), dataObjectKeys);
-            }
+            dataObject = getLookupService().findObjectBySearch(getBoClass(), dataObjectKeys);
         }
         catch (ClassNotPersistenceCapableException ex) {
             if (!document.getOldMaintainableObject().isExternalBusinessObject()) {

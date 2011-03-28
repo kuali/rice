@@ -225,7 +225,7 @@ This would have the ConferenceSignup form and controller show the page configure
 
 On line 11, the title for the page is specified, and on line 22, KRAD is notified that there is only one page associated with this View.
 
-Since this was a one-off page, ConferenceSignupView-parentView, on line 9, extends FormView, the Chronos-like parent bean of all View beans.  Sometimes common View information is shared among many pages - for instance, Inquiries or Lookups.  Further information about how to set up custom view classes is in the [Custom Views|Custom Views] section.
+Since this was a one-off page, ConferenceSignupView-parentView, on line 9, extends FormView, the Chronos-like parent bean of all View beans.  Sometimes common View information is shared among many pages - for instance, Inquiries or Lookups.  Further information about how to set up custom view classes is in the [Custom Views|#Custom Views] section.
 
 That leaves lines 12-16 and 19-21 - which the developer has, in comments, promised will be filled in over time.  These are the properties which get the groups which actually display text, buttons, and controls on the page.  Very important properties indeed!  The next section covers what beans will go into those properties.
 
@@ -239,21 +239,122 @@ The second identifier is if a major visual section may or may not be present on 
 
 Finally, Groups have their own autonomous layout.  If a layout drastically changes within a visual section, that's an indicator that a sub-group needs to be created there.  These sub-groups typically lack headers and footers, and therefore, they are added via GroupFields.  In the page sketch, note that the fields for Contact Address break the label on the left, control on the right layout of the rest of the Contact Info Group (the "City" and "State" fields especially).  Therefore, Contact Address is going to have to live within its own GroupField.
 
-What about the buttons at the bottom?  The buttons are special because a View, too, has a header and footer.  The "Submit", "Save", and "Cancel" buttons will all be part of the View's footer.  [IS THIS IN FACT ANOTHER GROUP?]
+What about the buttons at the bottom?  The buttons are special because a View, too, has a header and footer.  The "Submit", "Save", and "Cancel" buttons will all be part of the View's footer.  And it just so happens that the Footer will the the last group which needs to be defined for the page.
 
-The Groups have been identified.  Which layout should be used for each Group?  [JERRY - SUGGESTED LAYOUTS?  HERE JAMES]
+[ JERRY - SUGGESTED LAYOUTS? ]
+The Groups have been identified.  Next, two determinations need to be made.  First, is the Group a common Group that a definition already exists for?  For instance, common tabs that appear across KRAD documents have Groups already defined in impl/src/main/resources/org/kuali/rice/kns/uif/datadictionary/UifGroupDefinitions.xml, such as Group_DocumentRouteLog (the tab which shows past, current, and future KEW action requests on a document); Group_DocumentNotes (the notes tab); Group_DocumentOverview and Group_DocumentHeader which display the top portions of a document.  More common Group definitions are sure to be created as more functionality is added to KRAD.
 
-Here's what the View configuration looks like now that the Groups have been added. [HERE JAMES] Still...there's no fields yet save for the GroupField for Contact Address.
+Also, there are Groups defined which have certain layouts and certain decorators already applied.  For example, GroupSection_Accordion applies to AccordionDecorator to a Group, making the Group collapsible.  In this case, the user should really be filling everything out, so the collapsible behavior won't be used.  There's also CollectionGroup, a pre-configured Group which provides, for instance, the add line button and correctly labels the add line, and there is CollectionGroupTableLayout which will display a collection in a table layout.  That sounds just great for the "Members of Party" Group.  GroupGridLayout configures a basic grid layout; since the "Contact Information" has two columns of fields, GroupGridLayout is probably necessary there (it isn't configured but the default GridLayout uses two columns).  The Address field, too, has two columns, though the top two address fields span both columns; in any case, this is still GridLayout.  Finally, plainly named GroupSection provides a simple VERTICAL box layout - most of the other Groups need that layout.  The only Group left will be the buttons in the footer; in that case, the layout - a HORIZONTAL box layout - will have be configured manually.  Aw.  However, it will extend the abstract bean definition for Group which does a lot of configuration for every Group that exists in KRAD.
+
+Here's what the View configuration looks like now that the Groups have been added.
+
+{code:xml,title=ConferenceSignupView.xml}
+ 1. <?xml version="1.0" encoding="UTF-8"?>
+ 2. <beans xmlns="http://www.springframework.org/schema/beans"
+ 3.   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ 4.   xmlns:p="http://www.springframework.org/schema/p" 
+ 5.   xsi:schemaLocation="http://www.springframework.org/schema/beans         
+ 6.                       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 7.
+ 8.  <bean id="CondferenceSignupView" parent="ConferenceSignupView-parentBean" />
+ 9.  <bean id="ConferenceSignupView-parentBean" abstract="true" parent="FormView">
+10.    <property name="id" value="ConferenceSignupView" />
+11.    <property name="title" value="Conference Signup" />
+12.    <property name="items">
+13.      <list>
+14.       <bean parent="ConferenceSignupView-ContactInformationGroup" /> 
+15.       <bean parent="ConferenceSignupView-PartyMembersGroup" />
+16.       <bean parent="ConferenceSignupView-InterestsGroup" />
+17.       <bean parent="ConferenceSignupView-AcademicInformation" /> <!-- eventually, this needs to be conditional -->
+18.      </list>
+19.    </property>
+20.    <property name="renderHeader" value="false" />
+21.    <property name="formClass" value="edu.sampleu.conferencesignup.web.spring.form.ConferenceSignupForm" />
+22.    <property name="controllerRequestMapping" value="conferenceSignup" />
+23.    <property name="footer">
+24.      <bean parent="ConferenceSignupView-Footer" />
+25.    </property>
+26.    <property name="singlePageView" value="true"/>
+27.    <property name="viewName" value="default"/>
+28.  </bean>                           
+29.
+30. <bean id="ConferenceSignupView-ContactInformationGroup" parent="GroupGridLayout">
+31.   <property name="header.headerText" value="Contact Information" />
+32.   <property name="layoutManager.numberOfColumns" value="2" />
+33.   <property name="items">
+34.     <list>
+35.       <!-- this will be filled in in the Fields section -->
+36.     </list>
+37.   </property>
+38. </bean>
+39.
+40. <bean id="ConferenceSignupView-PartyMembersGroup" parent="CollectionGroupTableLayout">
+41.   <property name="header.headerText" value="Members of Party" />
+42.   <property name="propertyName" value="conferenceParty.guests" />
+43.   <property name="layoutManager.renderSequenceField" value="true" />
+44.   <property name="renderAddLine" value="true" />
+45.   <property name="collectionObjectClass" value="edu.sampleu.conferencesignup.businessobject.ConferenceGuest" />
+46.   <property name="items">
+47.     <list>
+48.       <!-- this will be filled in in the Fields section -->
+49.     </list>
+50.   </property>
+51. </bean>
+52. 
+53. <bean id="ConferenceSignupView-InterestsGroup" parent="GroupSection">
+54.   <property name="header.headerText" value="Interests" />
+55.   <property name="items">
+56.     <list>
+57.       <!-- this will be filled in in the Fields section -->
+58.     </list>
+59.   </property>
+60. </bean>
+61. 
+62. <bean id="ConferenceSignupView-AcademicInstitution" parent="GroupSection">
+63.   <property name="header.headerText" value="Academic Institution" />
+64.   <property name="items">
+65.     <list>
+66.       <!-- this will be filled in in the Fields section -->
+67.    </list>
+68.   </property>
+69. </bean>
+70. 
+71. <bean id="ConferenceSignupView-Footer" parent="Group">
+72.   <property name="styleClasses" value="wrap" />
+73.   <property name="layoutManager">
+74.   </property>
+75.   <property name="items">
+76.     <list>
+77.       <!-- this still needs to be filled in! -->
+78.     </list>
+79.   </property>
+80. </bean>
+81. 
+82. <bean id="ConferenceSignupView-AddressField-Group" parent="GroupGridLayout">
+83.   <property name="items">
+84.     <list>
+85.       <!-- this still needs to be filled in! -->
+86.     </list>
+87.   </property>
+88. </bean>
+89. </beans>
+{code}
+
+[ JERRY - BEST PRACTICE SPECIFYING TITLES? ]
+
+[ HERE JAMES - EXPLAIN LINES ]
+
+Still...there's no fields yet save for the GroupField for Contact Address.
 
 h1. Fields
 
-For every label and control, an AttributeField needs to be configured.  Thankfully, if the property the AttributeField maps to an AttributeDefinition within the data object's data dictionary entry, fields can be incredibly easy to configure.  [HERE JAMES]
+For every label and control, an AttributeField needs to be configured.  Thankfully, if the property the AttributeField maps to an AttributeDefinition within the data object's data dictionary entry, fields can be incredibly easy to configure.  [ HERE JAMES ]
 
-However, what if the attribute field needs to be overridden?  For instance, the AttributeDefinition for State Code may be a text field, but our visual diagram seems to indicate that should be a select box.  Thankfully, in KRAD, any property set in an AttributeDefinition can be overridden at the AttributeField level. [HERE JAMES]
+However, what if the attribute field needs to be overridden?  For instance, the AttributeDefinition for State Code may be a text field, but our visual diagram seems to indicate that should be a select box.  Thankfully, in KRAD, any property set in an AttributeDefinition can be overridden at the AttributeField level. [ HERE JAMES ]
 
-Here's the configuration once the fields are added.  [HERE JAMES]
+Here's the configuration once the fields are added.  [ HERE JAMES ]
 
-And with that, a new KRAD View has been created!  [JERRY - TRUE THAT?]
+And with that, a new KRAD View has been created!  [ JERRY - TRUE THAT? ]
 
 h1. Common Cases
 

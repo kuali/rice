@@ -78,12 +78,12 @@
 				</plugins>
 			</build>
 					 -->
-    <dependencies>             
-    	<dependency>
+	<dependencies>
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-core-api</artifactId>
 			<version>${project.version}</version>
-		</dependency>       
+		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
@@ -100,5 +100,5 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
-    </dependencies>
+	</dependencies>
 </project>

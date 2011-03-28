@@ -17,8 +17,9 @@
 package org.kuali.rice.kew.lifecycle;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseCompositeLifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.kew.mail.EmailReminderLifecycle;
 
 import java.util.LinkedList;

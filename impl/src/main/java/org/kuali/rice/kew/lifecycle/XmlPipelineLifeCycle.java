@@ -17,7 +17,8 @@
 package org.kuali.rice.kew.lifecycle;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.kew.batch.XmlPollerService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 

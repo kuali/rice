@@ -20,8 +20,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceKeyConstants;
 

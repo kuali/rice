@@ -157,6 +157,8 @@
     <orderEntry type="module" module-name="rice-shareddata-framework" />
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
+    <orderEntry type="module" module-name="rice-ksb-api" />
+    <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />

@@ -28,8 +28,8 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;

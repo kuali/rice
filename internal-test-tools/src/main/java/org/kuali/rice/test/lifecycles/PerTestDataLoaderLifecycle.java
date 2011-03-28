@@ -12,7 +12,8 @@
  */
 package org.kuali.rice.test.lifecycles;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestDataUtils;

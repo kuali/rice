@@ -17,7 +17,8 @@
 package org.kuali.rice.ksb.test;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;

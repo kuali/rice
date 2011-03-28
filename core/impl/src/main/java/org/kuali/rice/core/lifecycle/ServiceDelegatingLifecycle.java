@@ -17,7 +17,8 @@ package org.kuali.rice.core.lifecycle;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 /**

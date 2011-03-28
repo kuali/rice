@@ -18,7 +18,7 @@ package org.kuali.rice.kew.bo.lookup;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceKeyConstants;

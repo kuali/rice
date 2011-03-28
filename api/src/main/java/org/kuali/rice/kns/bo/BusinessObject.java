@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.bo;
 
-import org.kuali.rice.core.mo.ModelObjectBasic;
+import org.kuali.rice.core.api.mo.ModelObjectBasic;
 
 /*
  * Defines methods a business object should implement.

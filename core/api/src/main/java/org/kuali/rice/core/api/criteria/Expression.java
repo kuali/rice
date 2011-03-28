@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 /**
  * An expression represents some portion of a criteria statement.  The exact

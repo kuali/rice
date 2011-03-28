@@ -16,7 +16,8 @@
  */
 package org.kuali.rice.ksb.cache;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 /**
  * Service for accessing and managing KEW primary cache

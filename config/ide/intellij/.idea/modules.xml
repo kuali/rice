@@ -40,7 +40,12 @@
       <module fileurl="file://$PROJECT_DIR$/rice-krms-api.iml" filepath="$PROJECT_DIR$/rice-krms-api.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms-framework.iml" filepath="$PROJECT_DIR$/rice-krms-framework.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms-impl.iml" filepath="$PROJECT_DIR$/rice-krms-impl.iml" group="rice-krms and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../ksb/rice-ksb.iml" filepath="$PROJECT_DIR$/../../../ksb/rice-ksb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../ksb/api/rice-ksb-api.iml" filepath="$PROJECT_DIR$/../../../ksb/api/rice-ksb-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../ksb/framework/rice-ksb-framework.iml" filepath="$PROJECT_DIR$/../../../ksb/framework/rice-ksb-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../ksb/impl/rice-ksb-impl.iml" filepath="$PROJECT_DIR$/../../../ksb/impl/rice-ksb-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-ksb-test.iml" filepath="$PROJECT_DIR$/rice-ksb-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../ksb/web/rice-ksb-web.iml" filepath="$PROJECT_DIR$/../../../ksb/web/rice-ksb-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-sampleapp.iml" filepath="$PROJECT_DIR$/rice-sampleapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-shareddata.iml" filepath="$PROJECT_DIR$/rice-shareddata.iml" group="rice-shareddata and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-shareddata-api.iml" filepath="$PROJECT_DIR$/rice-shareddata-api.iml" group="rice-shareddata and modules" />

@@ -16,7 +16,8 @@
 
 package org.kuali.rice.core.api.config.module;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 import java.util.List;
 

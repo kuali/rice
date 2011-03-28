@@ -23,7 +23,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.kew.util.SimpleEnumeration;
 
 

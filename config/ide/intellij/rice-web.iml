@@ -160,6 +160,8 @@
     <orderEntry type="module" module-name="rice-shareddata-framework" />
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
+    <orderEntry type="module" module-name="rice-ksb-api" />
+    <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />

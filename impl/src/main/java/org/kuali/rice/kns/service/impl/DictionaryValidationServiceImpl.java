@@ -18,7 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.LogicalOperator;
+import org.kuali.rice.core.LogicalOperator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.core.util.type.TypeUtils;

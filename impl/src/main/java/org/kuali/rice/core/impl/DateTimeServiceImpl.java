@@ -18,8 +18,8 @@ package org.kuali.rice.core.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -49,21 +49,21 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 
 		
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#toDateString(java.util.Date)
+	 * @see org.kuali.rice.core.DateTimeService#toDateString(java.util.Date)
 	 */
 	public String toDateString(Date date) {
 		return toString(date, dateToStringFormatForUserInterface);
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#toDateTimeString(java.util.Date)
+	 * @see org.kuali.rice.core.DateTimeService#toDateTimeString(java.util.Date)
 	 */
 	public String toDateTimeString(Date date) {
 		return toString(date, timestampToStringFormatForUserInterface);
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#toString(java.util.Date,
+	 * @see org.kuali.rice.core.DateTimeService#toString(java.util.Date,
 	 *      java.lang.String)
 	 */
 	public String toString(Date date, String pattern) {
@@ -73,7 +73,7 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentDate()
+	 * @see org.kuali.rice.core.DateTimeService#getCurrentDate()
 	 */
 	public Date getCurrentDate() {
 		Calendar c = Calendar.getInstance();
@@ -82,21 +82,21 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentTimestamp()
+	 * @see org.kuali.rice.core.DateTimeService#getCurrentTimestamp()
 	 */
 	public Timestamp getCurrentTimestamp() {
 		return new java.sql.Timestamp(getCurrentDate().getTime());
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentSqlDate()
+	 * @see org.kuali.rice.core.DateTimeService#getCurrentSqlDate()
 	 */
 	public java.sql.Date getCurrentSqlDate() {
 		return new java.sql.Date(getCurrentDate().getTime());
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentSqlDateMidnight()
+	 * @see org.kuali.rice.core.DateTimeService#getCurrentSqlDateMidnight()
 	 */
 	public java.sql.Date getCurrentSqlDateMidnight() {
 		// simple and not unduely inefficient way to truncate the time component
@@ -104,14 +104,14 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentCalendar()
+	 * @see org.kuali.rice.core.DateTimeService#getCurrentCalendar()
 	 */
 	public Calendar getCurrentCalendar() {
 		return getCalendar(getCurrentDate());
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#getCalendar
+	 * @see org.kuali.rice.core.DateTimeService#getCalendar
 	 */
 	public Calendar getCalendar(Date date) {
 		if (date == null) {
@@ -127,14 +127,14 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	/**
 	 * Formats strings into dates using the format string in the KR-NS/All/STRING_TO_DATE_FORMATS parameter
 	 *
-	 * @see org.kuali.rice.core.api.DateTimeService#convertToDate(java.lang.String)
+	 * @see org.kuali.rice.core.DateTimeService#convertToDate(java.lang.String)
 	 */
 	public Date convertToDate(String dateString) throws ParseException {
 		return parseAgainstFormatArray(dateString, stringToDateFormats);
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#convertToDateTime(java.lang.String)
+	 * @see org.kuali.rice.core.DateTimeService#convertToDateTime(java.lang.String)
 	 */
 	public Date convertToDateTime(String dateTimeString) throws ParseException {
 		if (StringUtils.isBlank(dateTimeString)) {
@@ -144,7 +144,7 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#convertToSqlTimestamp(java.lang.String)
+	 * @see org.kuali.rice.core.DateTimeService#convertToSqlTimestamp(java.lang.String)
 	 */
 	public java.sql.Timestamp convertToSqlTimestamp(String timeString)
 			throws ParseException {
@@ -155,7 +155,7 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#convertToSqlDate(java.lang.String)
+	 * @see org.kuali.rice.core.DateTimeService#convertToSqlDate(java.lang.String)
 	 */
 	public java.sql.Date convertToSqlDate(String dateString)
 			throws ParseException {
@@ -186,7 +186,7 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 
 	/**
 	 * @throws ParseException
-	 * @see org.kuali.rice.core.api.DateTimeService#convertToSqlDate(java.sql.Timestamp)
+	 * @see org.kuali.rice.core.DateTimeService#convertToSqlDate(java.sql.Timestamp)
 	 */
 	public java.sql.Date convertToSqlDate(Timestamp timestamp)
 			throws ParseException {
@@ -259,7 +259,7 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#toDateStringForFilename(java.util.Date)
+	 * @see org.kuali.rice.core.DateTimeService#toDateStringForFilename(java.util.Date)
 	 */
 	public String toDateStringForFilename(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(dateToStringFormatForFileName);
@@ -267,7 +267,7 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.DateTimeService#toDateTimeStringForFilename(java.util.Date)
+	 * @see org.kuali.rice.core.DateTimeService#toDateTimeStringForFilename(java.util.Date)
 	 */
 	public String toDateTimeStringForFilename(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(timestampToStringFormatForFileName);

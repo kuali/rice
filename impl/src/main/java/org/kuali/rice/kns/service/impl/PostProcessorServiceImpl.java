@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;

@@ -18,7 +18,7 @@ package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;

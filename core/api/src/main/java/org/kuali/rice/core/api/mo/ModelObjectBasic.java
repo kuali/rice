@@ -1,4 +1,4 @@
-package org.kuali.rice.core.mo;
+package org.kuali.rice.core.api.mo;
 
 import java.io.Serializable;
 

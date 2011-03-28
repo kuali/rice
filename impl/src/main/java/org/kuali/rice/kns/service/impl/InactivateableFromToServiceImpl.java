@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.InactivateableFromTo;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;

@@ -16,8 +16,9 @@
 
 package org.kuali.rice.kim.test;
 
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;

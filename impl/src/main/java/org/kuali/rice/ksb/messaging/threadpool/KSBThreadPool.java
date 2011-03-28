@@ -20,7 +20,7 @@ package org.kuali.rice.ksb.messaging.threadpool;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 /**
  * A thread pool which can be used to schedule asynchronous tasks.

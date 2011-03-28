@@ -22,9 +22,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.DateTimeService;
+import org.kuali.rice.core.LogicalOperator;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.DateTimeService;
-import org.kuali.rice.core.api.LogicalOperator;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jdbc.criteria.Criteria;

@@ -17,7 +17,7 @@ package org.kuali.rice.kcb.test;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.KCBServiceLocator;

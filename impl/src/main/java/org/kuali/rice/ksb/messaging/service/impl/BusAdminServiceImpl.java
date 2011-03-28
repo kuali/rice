@@ -17,7 +17,8 @@
 package org.kuali.rice.ksb.messaging.service.impl;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;

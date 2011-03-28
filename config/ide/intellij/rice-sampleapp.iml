@@ -35,7 +35,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -169,6 +168,8 @@
     <orderEntry type="module" module-name="rice-shareddata-framework" />
     <orderEntry type="module" module-name="rice-shareddata-impl" />
     <orderEntry type="module" module-name="rice-shareddata-web" />
+    <orderEntry type="module" module-name="rice-ksb-api" />
+    <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="module" module-name="rice-edl-framework" />
   </component>
 </module>

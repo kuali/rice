@@ -141,6 +141,8 @@
     <orderEntry type="module" module-name="rice-shareddata-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-web" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-internal-test-tools" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.3.1.v20110307" level="project" />

@@ -17,7 +17,7 @@
 package org.kuali.rice.kns.maintenance.rules;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;

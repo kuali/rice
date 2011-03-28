@@ -18,7 +18,8 @@ package org.kuali.rice.core.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 /**
  * Uses to locate services for the given service name.

@@ -17,7 +17,7 @@
 package org.kuali.rice.ksb;
 
 import org.eclipse.jetty.server.Server;
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 /**
  * Abstract class to provide convenience methods for starting and stopping a

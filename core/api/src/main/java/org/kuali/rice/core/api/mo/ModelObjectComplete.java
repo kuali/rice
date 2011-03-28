@@ -1,4 +1,4 @@
-package org.kuali.rice.core.mo;
+package org.kuali.rice.core.api.mo;
 
 /**
  * Complete model objects in rice override {@link #equals(Object)}, {@link #hashCode()},

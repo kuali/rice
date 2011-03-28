@@ -26,7 +26,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/ken/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/ken/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/ken/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../test/ken/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/ken/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/ken/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/ken/target/test-classes" />
@@ -170,6 +169,8 @@
     <orderEntry type="module" module-name="rice-shareddata-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-web" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-internal-test-tools" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.3.1.v20110307" level="project" />

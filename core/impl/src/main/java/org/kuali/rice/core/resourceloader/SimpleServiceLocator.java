@@ -20,7 +20,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.resourceloader.ServiceLocator;
 
 /**

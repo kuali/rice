@@ -162,7 +162,13 @@
           <element id="archive" name="rice-shareddata-web-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-web" />
           </element>
-          <element id="archive" name="rice-edl-2.0.0-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-api-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ksb-api" />
+          </element>
+          <element id="archive" name="rice-ksb-framework-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ksb-framework" />
+          </element>
+          <element id="archive" name="rice-edl-framework-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
           </element>
         </element>

@@ -14,8 +14,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.mo.ModelBuilder;
-import org.kuali.rice.core.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 /**
  * Concrete model object implementation of KRMS KrmsType. 

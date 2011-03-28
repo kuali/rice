@@ -16,7 +16,7 @@
 package org.kuali.rice.ksb.messaging.threadpool;
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 public interface KSBScheduledPool extends ScheduledExecutorService, Lifecycle {
 

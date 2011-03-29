@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.uif;
+package org.kuali.rice.kns.uif.core;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
-import org.kuali.rice.kns.uif.decorator.DecoratorChain;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 
@@ -170,8 +168,10 @@ public interface Component extends Serializable, Ordered {
 	 *            - view instance that should be finalized for rendering
 	 * @param model
 	 *            - top level object containing the data
+	 * @param parent
+	 *            - parent component
 	 */
-	public void performFinalize(View view, Object model);
+	public void performFinalize(View view, Object model, Component parent);
 
 	/**
 	 * List of components that are contained within the component
@@ -369,6 +369,20 @@ public interface Component extends Serializable, Ordered {
 	public void setStyleClasses(List<String> styleClasses);
 
 	/**
+	 * Adds a single style to the list of styles on this component
+	 * 
+	 * @param style
+	 */
+	public void addStyleClass(String styleClass);
+	
+	/**
+	 * TODO: javadoc
+	 * 
+	 * @param itemStyle
+	 */
+	public void appendToStyle(String itemStyle);
+
+	/**
 	 * Number of places the component should take up horizontally in the
 	 * container
 	 * 
@@ -466,8 +480,8 @@ public interface Component extends Serializable, Ordered {
 	public void pushObjectToContext(String objectName, Object object);
 
 	/**
-	 * List of <code>PropertyReplacer</code> instances that will be
-	 * evaluated during the view lifecycle to conditional set properties on the
+	 * List of <code>PropertyReplacer</code> instances that will be evaluated
+	 * during the view lifecycle to conditional set properties on the
 	 * <code>Component</code> based on expression evaluations
 	 * 
 	 * @return List<PropertyReplacer> replacers to evaluate
@@ -491,36 +505,11 @@ public interface Component extends Serializable, Ordered {
 	public Map<String, String> getComponentOptions();
 
 	/**
-	 * <code>ComponentDecorator</code> instance for the component
+	 * Setter for the widget's options
 	 * 
-	 * <p>
-	 * Decorators can be used to wrap the given component with content
-	 * (providing content before and after the component output). Multiple
-	 * decorators can be applied by continually setting the decorator property
-	 * (decorator for decorator). A <code>DecoratorChain</code> will be built up
-	 * to render the decorators in the correct order
-	 * </p>
-	 * 
-	 * @return ComponentDecorator instance
-	 * @see org.kuali.rice.kns.uif.decorator.ComponentDecorator
+	 * @param widgetOptions
 	 */
-	public ComponentDecorator getDecorator();
-
-	/**
-	 * Setter for the components decorator
-	 * 
-	 * @param decorator
-	 */
-	public void setDecorator(ComponentDecorator decorator);
-
-	/**
-	 * Returns the <code>DecoratorChain</code> instance that will return the
-	 * <code>ComponentDecorator</code> instances for the component in the
-	 * correct order for rendering
-	 * 
-	 * @return DecoratorChain instance
-	 */
-	public DecoratorChain getDecoratorChain();
+	public void setComponentOptions(Map<String, String> componentOptions);
 
 	/**
 	 * Can be used to order a component within a List of other components, lower
@@ -539,24 +528,4 @@ public interface Component extends Serializable, Ordered {
 	 */
 	public void setOrder(int order);
 
-	/**
-	 * Setter for the widget's options
-	 * 
-	 * @param widgetOptions
-	 */
-	public void setComponentOptions(Map<String, String> componentOptions);
-
-	/**
-	 * This method adds a single style class to the list of css style classes on this component
-	 * 
-	 * @param style
-	 */
-	public void addStyleClass(String styleClass);
-
-	/**
-	 * This method ...
-	 * 
-	 * @param itemStyle
-	 */
-	public void appendToStyle(String itemStyle);
 }

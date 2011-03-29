@@ -582,6 +582,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @param propertyName the property which links to an inquirable
 	  * @return String url to inquiry
 	  */
+	 @Deprecated
 	 public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		 HtmlData inquiryUrl = new AnchorHtmlData();
 

@@ -18,10 +18,10 @@ package org.kuali.rice.kns.uif.field;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.ComponentBase;
 import org.kuali.rice.kns.uif.UifConstants.Position;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.ComponentBase;
 
 /**
  * Base class for <code>Field</code> implementations
@@ -60,7 +60,7 @@ public class FieldBase extends ComponentBase implements Field {
 	 * <ul>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
 	@Override
 	public void performInitialization(View view) {
@@ -79,12 +79,12 @@ public class FieldBase extends ComponentBase implements Field {
 	 * <li>If label placement is right, set render colon to false</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
 	 */
 	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
+	public void performFinalize(View view, Object model, Component parent) {
+		super.performFinalize(view, model, parent);
 
 		if (labelField != null) {
 			labelField.setLabelForComponentId(this.getId());
@@ -104,7 +104,7 @@ public class FieldBase extends ComponentBase implements Field {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentTypeName()
+	 * @see org.kuali.rice.kns.uif.core.Component#getComponentTypeName()
 	 */
 	@Override
 	public final String getComponentTypeName() {
@@ -112,7 +112,7 @@ public class FieldBase extends ComponentBase implements Field {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {

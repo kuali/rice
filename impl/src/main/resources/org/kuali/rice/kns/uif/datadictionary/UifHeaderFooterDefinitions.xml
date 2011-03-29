@@ -62,11 +62,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClasses" value="page_header"/>
   </bean>  
   
-  <bean id="Header_Accordion" parent="Header_Accordion-parentBean"/>
-  <bean id="Header_Accordion-parentBean" abstract="true" parent="Header">
-      <property name="styleClasses" value="grouping-header-expandable"/>
-  </bean>
-
   <!-- Common Headers --> 
   <bean id="HeaderPage_NoActions" parent="HeaderPage">
     <property name="group">

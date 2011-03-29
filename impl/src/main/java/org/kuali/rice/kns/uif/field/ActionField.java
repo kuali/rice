@@ -23,6 +23,7 @@ import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.widget.LightBoxLookup;
 
 /**
@@ -63,7 +64,7 @@ public class ActionField extends FieldBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
 	@Override
 	public void performInitialization(View view) {
@@ -84,12 +85,12 @@ public class ActionField extends FieldBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
 	 */
 	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
+	public void performFinalize(View view, Object model, Component parent) {
+		super.performFinalize(view, model, parent);
 
 		if (StringUtils.isNotBlank(navigateToPageId)) {
 			actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
@@ -108,27 +109,28 @@ public class ActionField extends FieldBase {
 			
 			// If there is no lightBox then create the on click script
 			if (lightBoxLookup == null) {
-				String prefixScript = this.getOnClickScript();
-				if (prefixScript == null) {
-					prefixScript = "";
+			String prefixScript = this.getOnClickScript();
+			if (prefixScript == null) {
+				prefixScript = "";
+			}
+
+			String writeParamsScript = "";
+			for (String key : actionParameters.keySet()) {
+				String parameterPath = key;
+				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+					parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
 				}
-				String writeParamsScript = "";
-				for (String key : actionParameters.keySet()) {
-					String parameterPath = key;
-					if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-						parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
-					}
-	
-					writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
-							+ actionParameters.get(key) + "'); ";
-				}
-	
-				String postScript = "";
-				if (scriptFormSubmit) {
-					postScript = "submitForm();";
-				}
-	
-				this.setOnClickScript(prefixScript + writeParamsScript + postScript);
+
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
+						+ actionParameters.get(key) + "'); ";
+			}
+
+			String postScript = "";
+			if (scriptFormSubmit) {
+				postScript = "submitForm();";
+			}
+
+			this.setOnClickScript(prefixScript + writeParamsScript + postScript);
 			}else{
 				// When there is a light box - don't add the on click script as it will be prevented from executing
 				// Create a script map object which will be used to build the on click script
@@ -359,7 +361,7 @@ public class ActionField extends FieldBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnClick()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnClick()
 	 */
 	@Override
 	public boolean getSupportsOnClick() {

@@ -40,6 +40,7 @@ import org.kuali.rice.kns.uif.service.ViewService;
 public class UifFormBase implements Serializable {
 	private static final long serialVersionUID = 8432543267099454434L;
 
+	// current view
 	protected String viewId;
 	protected String viewName;
 	protected String viewTypeName;
@@ -47,15 +48,25 @@ public class UifFormBase implements Serializable {
 	protected String methodToCall;
 	protected String formKey;
 
+	protected String formPostUrl;
+
 	protected View view;
+	protected Map<String, String> viewRequestParameters;
 
 	protected Map<String, Object> newCollectionLines;
-
 	protected Map<String, String> actionParameters;
+
+	// navigation
+	protected String returnLocation;
+	protected String returnFormKey;
+	protected String hubLocation;
+	protected String hubFormKey;
+	protected String homeLocation;
 
 	public UifFormBase() {
 		formKey = generateFormKey();
 
+		viewRequestParameters = new HashMap<String, String>();
 		newCollectionLines = new HashMap<String, Object>();
 		actionParameters = new HashMap<String, String>();
 	}
@@ -78,7 +89,8 @@ public class UifFormBase implements Serializable {
 	 *            - request object containing the query parameters
 	 */
 	public void postBind(HttpServletRequest request) {
-		// do nothing
+		// default form post URL to request URL
+		formPostUrl = request.getRequestURL().toString();
 	}
 
 	/**
@@ -160,6 +172,54 @@ public class UifFormBase implements Serializable {
 		this.pageId = pageId;
 	}
 
+	public String getFormPostUrl() {
+		return this.formPostUrl;
+	}
+
+	public void setFormPostUrl(String formPostUrl) {
+		this.formPostUrl = formPostUrl;
+	}
+
+	public String getReturnLocation() {
+		return this.returnLocation;
+	}
+
+	public void setReturnLocation(String returnLocation) {
+		this.returnLocation = returnLocation;
+	}
+
+	public String getReturnFormKey() {
+		return this.returnFormKey;
+	}
+
+	public void setReturnFormKey(String returnFormKey) {
+		this.returnFormKey = returnFormKey;
+	}
+
+	public String getHubLocation() {
+		return this.hubLocation;
+	}
+
+	public void setHubLocation(String hubLocation) {
+		this.hubLocation = hubLocation;
+	}
+
+	public String getHubFormKey() {
+		return this.hubFormKey;
+	}
+
+	public void setHubFormKey(String hubFormKey) {
+		this.hubFormKey = hubFormKey;
+	}
+
+	public String getHomeLocation() {
+		return this.homeLocation;
+	}
+
+	public void setHomeLocation(String homeLocation) {
+		this.homeLocation = homeLocation;
+	}
+
 	/**
 	 * Identifies the controller method that should be invoked to fulfill a
 	 * request. The value will be matched up against the 'params' setting on the
@@ -178,6 +238,26 @@ public class UifFormBase implements Serializable {
 	 */
 	public void setMethodToCall(String methodToCall) {
 		this.methodToCall = methodToCall;
+	}
+
+	/**
+	 * Map of parameters that was used to configured the <code>View</code>.
+	 * Maintained on the form to rebuild the view on posts and session timeout
+	 * 
+	 * @return Map<String, String> view parameters
+	 * @see org.kuali.rice.kns.uif.container.View.getViewRequestParameters()
+	 */
+	public Map<String, String> getViewRequestParameters() {
+		return this.viewRequestParameters;
+	}
+
+	/**
+	 * Setter for the view's request parameter map
+	 * 
+	 * @param viewRequestParameters
+	 */
+	public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
+		this.viewRequestParameters = viewRequestParameters;
 	}
 
 	/**

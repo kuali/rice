@@ -40,10 +40,9 @@
     </property>
     <property name="formClass"
       value="org.kuali.rice.kns.web.struts.form.InquiryForm" />
-    <property name="controllerRequestMapping" value="inquiry" />
   </bean>
 
-  <bean id="FiscalOfficer-InquiryView-Section1" parent="GroupSectionGridLayout_Accordion">
+  <bean id="FiscalOfficer-InquiryView-Section1" parent="GroupSectionGridLayout">
     <property name="id" value="FiscalOfficer-InquiryView-Section1" />
     <property name="title" value="Fiscal Officer" />
     <property name="summary" value="A Fiscal Officer." />

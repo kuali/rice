@@ -19,8 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 
@@ -49,7 +49,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 
 	/**
 	 * @see org.kuali.rice.kns.uif.modifier.ComponentModifier#performModification(org.kuali.rice.kns.uif.container.View,
-	 *      org.kuali.rice.kns.uif.Component)
+	 *      org.kuali.rice.kns.uif.core.Component)
 	 */
 	@Override
 	public void performModification(View view, Component component) {

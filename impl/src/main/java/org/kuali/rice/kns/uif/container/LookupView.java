@@ -18,8 +18,10 @@ package org.kuali.rice.kns.uif.container;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.rice.kns.uif.Component;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.core.Component;
 
 /**
  * TODO delyea: Fill in javadocs here
@@ -63,7 +65,10 @@ public class LookupView extends FormView {
 		}
 		super.performInitialization(view);
 
-		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+        getAbstractTypeClasses().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
+        if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {
+            getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+        }
 	}
 
 	protected void initializeGroups() {

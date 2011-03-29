@@ -18,7 +18,7 @@ package org.kuali.rice.kns.uif.container;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.ActionField;
 
 /**

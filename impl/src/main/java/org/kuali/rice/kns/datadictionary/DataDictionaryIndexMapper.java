@@ -150,7 +150,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
         return entry;
     }
 
-    public BusinessObjectEntry getBusinessObjectEntry(DataDictionaryIndex index, String className ) {
+	public BusinessObjectEntry getBusinessObjectEntry(DataDictionaryIndex index, String className ) {
 		BusinessObjectEntry entry = getBusinessObjectEntryForConcreteClass(index, className);
 		if (entry == null) {
 			Class boClass = null;
@@ -168,8 +168,6 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 			return entry;
 		}
 	}
-	
-	
 	
 	/**
 	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getDocumentEntries(org.kuali.rice.kns.datadictionary.DataDictionaryIndex)
@@ -259,5 +257,17 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 
 		return index.getViewByTypeIndex(viewTypeName, indexKey);
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getViewsForType(org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex,
+	 *      java.lang.String)
+	 */
+	public List<View> getViewsForType(ViewDictionaryIndex index, String viewTypeName) {
+		if (StringUtils.isBlank(viewTypeName)) {
+			throw new IllegalArgumentException("invalid (blank) view type name");
+		}
+
+		return index.getViewsForType(viewTypeName);
+	}
+
 }

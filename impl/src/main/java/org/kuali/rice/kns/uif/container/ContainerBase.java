@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.ComponentBase;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.ComponentBase;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.ErrorsField;
 import org.kuali.rice.kns.uif.field.HeaderField;
@@ -57,7 +57,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	private String summary;
 	private MessageField summaryMessageField;
-	
+
 	private boolean fieldContainer;
 
 	/**
@@ -75,7 +75,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -93,7 +93,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
@@ -114,12 +114,12 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <li>Finalizes LayoutManager</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
 	 */
 	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
+	public void performFinalize(View view, Object model, Component parent) {
+		super.performFinalize(view, model, parent);
 
 		// if header title not given, use the container title
 		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
@@ -137,7 +137,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {
@@ -207,7 +207,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 */
 	@Override
 	public void setErrorsField(ErrorsField errorsField) {
-		errorsField.setParentComponent(this);
 		this.errorsField = errorsField;
 	}
 
@@ -381,7 +380,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void setSummaryMessageField(MessageField summaryMessageField) {
 		this.summaryMessageField = summaryMessageField;
 	}
-	
+
 	/**
 	 * Gets only the attribute fields that are nested in this container.  This is a subset of
 	 * what getNestedComponents() returns.

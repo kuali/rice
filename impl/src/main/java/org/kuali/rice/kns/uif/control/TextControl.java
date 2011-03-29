@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.uif.control;
 
+import java.util.List;
+
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.widget.DatePicker;
 
 /**
@@ -30,9 +33,21 @@ public class TextControl extends ControlBase {
 
 	private DatePicker datePicker;
 	private String watermarkText;
-	
-	public TextControl() {
 
+	public TextControl() {
+		super();
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(datePicker);
+
+		return components;
 	}
 
 	/**
@@ -71,11 +86,13 @@ public class TextControl extends ControlBase {
 	}
 
 	/**
-	 * @param watermarkText the watermarkText to set
+	 * @param watermarkText
+	 *            the watermarkText to set
 	 */
 	public void setWatermarkText(String watermarkText) {
-		//to avoid users from putting in the same value as the watermark adding some spaces here
-		//see watermark troubleshooting for more info
+		// to avoid users from putting in the same value as the watermark adding
+		// some spaces here
+		// see watermark troubleshooting for more info
 		watermarkText = watermarkText + "   ";
 		this.watermarkText = watermarkText;
 	}

@@ -19,15 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.UifConstants.Orientation;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.Field;
+import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 
@@ -58,6 +59,7 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 
 	private Group addLineGroup;
 	private Group lineGroupPrototype;
+	private GroupField subCollectionGroupFieldPrototype;
 
 	private List<Group> stackedGroups;
 
@@ -71,11 +73,10 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	}
 
 	/**
-	 * The following initialization is performed:
+	 * The following actions are performed:
 	 * 
 	 * <ul>
-	 * <li>If add line group is not configured, set to new instance of line
-	 * prototype</li>
+	 * <li>Initializes the prototypes</li>
 	 * </ul>
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.kns.uif.container.View,
@@ -85,9 +86,8 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
 
-		if (addLineGroup == null) {
-			addLineGroup = ComponentUtils.copy(lineGroupPrototype);
-		}
+		view.getViewHelperService().performComponentInitialization(view, lineGroupPrototype);
+		view.getViewHelperService().performComponentInitialization(view, subCollectionGroupFieldPrototype);
 	}
 
 	/**
@@ -100,11 +100,12 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.CollectionGroup,
-	 *      java.util.List, java.lang.String, java.util.List, java.lang.String,
-	 *      java.lang.Object, int)
+	 *      java.util.List, java.util.List, java.lang.String, java.util.List,
+	 *      java.lang.String, java.lang.Object, int)
 	 */
-	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<? extends Field> lineFields,
-			String bindingPath, List<ActionField> actions, String idSuffix, Object currentLine, int lineIndex) {
+	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
+			List<GroupField> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
 
 		// construct new group
@@ -112,7 +113,12 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 		if (isAddLine) {
 			stackedGroups = new ArrayList<Group>();
 
-			lineGroup = getAddLineGroup();
+			if (addLineGroup == null) {
+				lineGroup = ComponentUtils.copy(lineGroupPrototype);
+			}
+			else {
+				lineGroup = getAddLineGroup();
+			}
 		}
 		else {
 			lineGroup = ComponentUtils.copy(lineGroupPrototype);
@@ -134,7 +140,12 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 		}
 		lineGroup.getHeader().setHeaderText(headerText);
 
-		lineGroup.setItems(lineFields);
+		// stack all fields (including sub-collections) for the group
+		List<Field> groupFields = new ArrayList<Field>();
+		groupFields.addAll(lineFields);
+		groupFields.addAll(subCollectionFields);
+
+		lineGroup.setItems(groupFields);
 
 		// set line actions on group footer
 		if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
@@ -197,7 +208,6 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	public List<Component> getNestedComponents() {
 		List<Component> components = super.getNestedComponents();
 
-		components.add(lineGroupPrototype);
 		components.addAll(stackedGroups);
 
 		return components;
@@ -289,6 +299,22 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	 */
 	public void setLineGroupPrototype(Group lineGroupPrototype) {
 		this.lineGroupPrototype = lineGroupPrototype;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.CollectionLayoutManager#getSubCollectionGroupFieldPrototype()
+	 */
+	public GroupField getSubCollectionGroupFieldPrototype() {
+		return this.subCollectionGroupFieldPrototype;
+	}
+
+	/**
+	 * Setter for the sub-collection field group prototype
+	 * 
+	 * @param subCollectionGroupFieldPrototype
+	 */
+	public void setSubCollectionGroupFieldPrototype(GroupField subCollectionGroupFieldPrototype) {
+		this.subCollectionGroupFieldPrototype = subCollectionGroupFieldPrototype;
 	}
 
 	/**

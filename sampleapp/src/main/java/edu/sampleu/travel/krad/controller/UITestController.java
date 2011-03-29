@@ -52,7 +52,7 @@ public class UITestController extends UifControllerBase {
 	@RequestMapping(params = "methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
-
+		
 		// populate model for testing
 		TravelAccount travelAccount = new TravelAccount();
 		travelAccount.setNumber("101");
@@ -86,10 +86,16 @@ public class UITestController extends UifControllerBase {
 
 		fiscalOfficer.setAccounts(officerAccounts);
 		travelAccount.setFiscalOfficer(fiscalOfficer);
+		
+		// build sub-collections
+		travelAccount2.setFiscalOfficer(fiscalOfficer);
+		travelAccount3.setFiscalOfficer(fiscalOfficer);
+		travelAccount4.setFiscalOfficer(fiscalOfficer);
 
 		uiTestForm.setTravelAccount1(travelAccount);
 		uiTestForm.setTravelAccount2(travelAccount);
 		uiTestForm.setTravelAccount3(travelAccount);
+		uiTestForm.setTravelAccount4(travelAccount);
 		
 		uiTestForm.setField5("a14");
 

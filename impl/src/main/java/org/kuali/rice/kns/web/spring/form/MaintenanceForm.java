@@ -26,7 +26,7 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
 public class MaintenanceForm extends DocumentFormBase {
 	private static final long serialVersionUID = -5805825500852498048L;
 	
-	protected String objectClassName;
+	protected String dataObjectClassName;
 	protected String maintenanceAction;
 
 	public MaintenanceForm() {
@@ -39,12 +39,12 @@ public class MaintenanceForm extends DocumentFormBase {
 		return (MaintenanceDocument) super.getDocument();
 	}
 
-	public String getObjectClassName() {
-		return this.objectClassName;
+	public String getDataObjectClassName() {
+		return this.dataObjectClassName;
 	}
 
-	public void setObjectClassName(String objectClassName) {
-		this.objectClassName = objectClassName;
+	public void setDataObjectClassName(String dataObjectClassName) {
+		this.dataObjectClassName = dataObjectClassName;
 	}
 
 	public String getMaintenanceAction() {

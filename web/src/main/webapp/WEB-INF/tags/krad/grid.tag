@@ -44,10 +44,11 @@
 <c:set var="tmpCarryOverColCount" value="0"/>
 
 <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
+  <c:if test="${item.render}">
    <c:set var="colCount" value="${colCount + 1}"/> 
      
    <%-- begin table row --%>
-   <c:if test="${itemVarStatus.first || (colCount % numberOfColumns == 1)}">
+   <c:if test="${(colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)}">
      <tr>
      
      <%-- determine if even or add style should be applied --%>
@@ -72,9 +73,15 @@
         </tr><tr>
       </c:if>
    </c:forEach>
+   
+   <%-- wildcard spans all columns --%>
+   <c:set var="itemColSpan" value="${item.colSpan}"/>
+   <c:if test="itemColSpan eq '*'">
+     <c:set var="itemColSpan" value="${numberOfColumns}"/>
+   </c:if>
      
    <%-- determine cell width by using default or configured width --%>
-   <c:set var="cellWidth" value="${defaultCellWidth * item.colSpan}%"/>
+   <c:set var="cellWidth" value="${defaultCellWidth * itemColSpan}%"/>
    <c:if test="${!empty item.width}">
       <c:set var="cellWidth" value="${item.width}"/>
    </c:if>
@@ -83,19 +90,19 @@
      
    <%-- render cell and item template --%>
    <c:if test="${renderHeaderColumns}">
-      <th width="${cellWidth}" colspan="${item.colSpan}" rowspan="${item.rowSpan}" ${style} ${styleClass}>
+      <th width="${cellWidth}" colspan="${itemColSpan}" rowspan="${item.rowSpan}" ${style} ${styleClass}>
        <krad:template component="${item}"/>
       </th>  
    </c:if>
    <c:if test="${!renderHeaderColumns}">
-     <td width="${cellWidth}" colspan="${item.colSpan}" rowspan="${item.rowSpan}"
+     <td width="${cellWidth}" colspan="${itemColSpan}" rowspan="${item.rowSpan}"
          ${style} ${styleClass} ${evenOddClass}>
        <krad:template component="${item}"/>
      </td>
    </c:if>
      
    <%-- handle colspan for the count --%>  
-   <c:set var="colCount" value="${colCount + item.colSpan - 1}"/>  
+   <c:set var="colCount" value="${colCount + itemColSpan - 1}"/>  
      
    <%-- set carry over count to hold positions for fields that span multiple rows --%>
    <c:set var="tmpCarryOverColCount" value="${tmpCarryOverColCount + item.rowSpan - 1}"/>
@@ -105,5 +112,6 @@
      </tr>
      <c:set var="carryOverColCount" value="${carryOverColCount + tmpCarryOverColCount}"/>
      <c:set var="tmpCarryOverColCount" value="0"/>
-   </c:if>  
+   </c:if> 
+ </c:if>   
 </c:forEach>             

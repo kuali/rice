@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.kns.datadictionary.view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -45,7 +48,10 @@ public class ViewDictionaryIndex implements Runnable {
 	private DefaultListableBeanFactory ddBeans;
 
 	// view entries keyed by view id with value the spring bean name
-	private Map<String, String> viewEntriesById;
+	private Map<String, String> viewBeanEntriesById;
+	
+	// view entries keyed by bean name with value the view prototype
+	private Map<String, View> viewEntriesByBean;
 
 	// view entries indexed by type
 	private Map<String, ViewTypeDictionaryIndex> viewEntriesByType;
@@ -70,7 +76,7 @@ public class ViewDictionaryIndex implements Runnable {
 	 * @return <code>View</code> instance
 	 */
 	public View getViewById(String viewId) {
-		String beanName = viewEntriesById.get(viewId);
+		String beanName = viewBeanEntriesById.get(viewId);
 		if (StringUtils.isBlank(beanName)) {
 			throw new DataDictionaryException("Unable to find View with id: " + viewId);
 		}
@@ -105,23 +111,55 @@ public class ViewDictionaryIndex implements Runnable {
 	}
 
 	/**
+	 * Gets all <code>View</code> prototypes configured for the given view type
+	 * name
+	 * 
+	 * @param viewTypeName
+	 *            - view type name to retrieve
+	 * @return List<View> view prototypes with the given type name, or empty
+	 *         list
+	 */
+	public List<View> getViewsForType(String viewTypeName) {
+		List<View> typeViews = new ArrayList<View>();
+
+		// get view ids for the type
+		if (viewEntriesByType.containsKey(viewTypeName)) {
+			ViewTypeDictionaryIndex typeIndex = viewEntriesByType.get(viewTypeName);
+			for (Entry<String, String> typeEntry : typeIndex.getViewIndex().entrySet()) {
+				// get the view prototype by bean name
+				if (viewEntriesByBean.containsKey(typeEntry.getValue())) {
+					View typeView = viewEntriesByBean.get(typeEntry.getValue());
+					typeViews.add(typeView);
+				}
+			}
+		}
+		else {
+			throw new DataDictionaryException("Unable to find view index for type: " + viewTypeName);
+		}
+
+		return typeViews;
+	}
+
+	/**
 	 * Initializes the view index <code>Map</code> then iterates through all the
 	 * beans in the factory that implement <code>View</code>, adding them to the
 	 * index
 	 */
 	protected void buildViewIndicies() {
-		viewEntriesById = new HashMap<String, String>();
+		viewBeanEntriesById = new HashMap<String, String>();
+		viewEntriesByBean = new HashMap<String, View>();
 		viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
 
 		Map<String, View> viewBeans = ddBeans.getBeansOfType(View.class);
 		for (String beanName : viewBeans.keySet()) {
 			View view = viewBeans.get(beanName);
-			if (viewEntriesById.containsKey(view.getId())) {
+			if (viewBeanEntriesById.containsKey(view.getId())) {
 				throw new DataDictionaryException("Two views must not share the same id. Found duplicate id: "
 						+ view.getId());
 			}
-
-			viewEntriesById.put(view.getId(), beanName);
+			
+			viewBeanEntriesById.put(view.getId(), beanName);
+			viewEntriesByBean.put(beanName, view);
 
 			indexViewForType(view, beanName);
 		}

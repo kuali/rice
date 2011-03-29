@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.uif.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.core.Component;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
@@ -51,7 +51,7 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
 	 * 
 	 * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization(java.lang.Object,
 	 *      java.lang.String)
-	 * @see org.kuali.rice.kns.uif.Component#getDecorators
+	 * @see org.kuali.rice.kns.uif.core.Component#getDecorators
 	 */
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -60,7 +60,7 @@ public class ComponentIdBeanPostProcessor implements BeanPostProcessor {
 			
 			if (StringUtils.isBlank(component.getId())) {
 				if (!StringUtils.contains(beanName, "$")) {
-					component.setId("id_" + beanName);
+					component.setId(beanName);
 				}
 				else {
 					component.setId("id_" + getNextId());

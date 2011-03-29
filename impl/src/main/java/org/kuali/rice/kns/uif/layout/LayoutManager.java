@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.PropertyReplacer;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.PropertyReplacer;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
@@ -220,7 +220,7 @@ public interface LayoutManager extends Serializable {
 	 * @param styleClass
 	 */
 	public void setStyleClasses(List<String> styleClasses);
-	
+
 	/**
 	 * This method adds a single style class to the list of css style classes on this component
 	 * 

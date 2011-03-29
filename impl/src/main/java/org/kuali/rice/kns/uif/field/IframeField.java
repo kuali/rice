@@ -74,7 +74,7 @@ public class IframeField extends FieldBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnLoad()
 	 */
 	@Override
 	public boolean getSupportsOnLoad() {

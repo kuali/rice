@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.ComponentBase;
-import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.ComponentBase;
 
 /**
  * Base class for Widgets
@@ -37,15 +35,7 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.widget.Widget#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object, org.kuali.rice.kns.uif.Component)
-	 */
-	public void performFinalize(View view, Object model, Component parent) {
-
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentTypeName()
+	 * @see org.kuali.rice.kns.uif.core.Component#getComponentTypeName()
 	 */
 	@Override
 	public String getComponentTypeName() {

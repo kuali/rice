@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.uif.decorator;
-
-import org.kuali.rice.kns.uif.ComponentBase;
+package org.kuali.rice.kns.uif.core;
 
 /**
- * Base classes for all decorators
+ * Extends <code>Ordered</code> interface to add setter for the order property
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DecoratorBase extends ComponentBase implements ComponentDecorator {
-	private static final long serialVersionUID = 6237875752082001706L;
-	
-	public DecoratorBase() {
-		
-	}
+public interface Ordered extends org.springframework.core.Ordered {
+	public static final int INITIAL_ORDER_VALUE = 0;
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentTypeName()
+	 * Setter for the order value
+	 * 
+	 * @param order
+	 * @see org.springframework.core.Ordered.getOrder()
 	 */
-	@Override
-	public String getComponentTypeName() {
-		return "decorator";
-	}
-
+	public void setOrder(int order);
 }

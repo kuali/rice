@@ -696,10 +696,9 @@ public class BusinessObjectAuthorizationServiceImpl implements
 	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectAuthorizationService#attributeValueNeedsToBeEncryptedOnFormsAndLinks(java.lang.Class, java.lang.String)
 	 */
-	public boolean attributeValueNeedsToBeEncryptedOnFormsAndLinks(
-			Class<?> dataObjectClass,
-			String attributeName) {
-		AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(dataObjectClass.getName(), attributeName);
+	public boolean attributeValueNeedsToBeEncryptedOnFormsAndLinks(Class<?> dataObjectClass, String attributeName) {
+		AttributeSecurity attributeSecurity = getDataDictionaryService().getAttributeSecurity(
+				dataObjectClass.getName(), attributeName);
 		return attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI();
 	}
 

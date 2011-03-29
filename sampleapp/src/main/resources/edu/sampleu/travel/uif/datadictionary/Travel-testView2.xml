@@ -40,7 +40,6 @@ limitations under the License.
             <bean parent="Page" p:id="page1">
                 <property name="items">
                     <list>
-                        <ref bean="testValidationSection1"/>
 						<ref bean="testValidationSection2"/>
 						<ref bean="testValidationSection3"/>
 						<ref bean="testValidationSection4"/>
@@ -91,7 +90,7 @@ limitations under the License.
     </property>
 </bean>
 
-<bean id="testValidationSection1" parent="GroupSection_Accordion">
+<bean id="testValidationSection1" parent="GroupSection">
     <property name="id" value="testSection1"/>
     <property name="title" value="Test Section 1"/>
     <property name="items">
@@ -101,7 +100,7 @@ limitations under the License.
     </property>
 </bean>
 
-<bean id="testValidationSection2" parent="GroupSection_Accordion" p:layoutManager.orientation="HORIZONTAL">
+<bean id="testValidationSection2" parent="GroupSection" p:layoutManager.orientation="HORIZONTAL">
   <property name="title" value="Test Section 2"/> 
   <property name="summary" value="Horizontal Layout test"/> 
   <property name="items">
@@ -128,7 +127,7 @@ limitations under the License.
   </property> 
 </bean>
 
-<bean id="testValidationSection4" parent="GroupSection_Accordion" p:layoutManager.orientation="VERTICAL">
+<bean id="testValidationSection4" parent="GroupSection" p:layoutManager.orientation="VERTICAL">
   <property name="title" value="Test Section 3"/> 
   <property name="summary" value="Testing icons, highlighting off, allowMessageRepeat off"/> 
   <property name="errorsField">
@@ -179,7 +178,7 @@ limitations under the License.
   </property> 
 </bean>
 
-<bean id="testValidationSection3" parent="GroupSection_Accordion" p:layoutManager.orientation="VERTICAL">
+<bean id="testValidationSection3" parent="GroupSection" p:layoutManager.orientation="VERTICAL">
   <property name="title" value="Test Section 3"/> 
   <property name="summary" value="Vertical layout test"/> 
   <property name="items">

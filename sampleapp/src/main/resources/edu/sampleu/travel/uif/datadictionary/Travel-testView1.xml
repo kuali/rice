@@ -47,10 +47,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>    
       <property name="formClass" value="edu.sampleu.travel.krad.form.UITestForm"/>
       <property name="defaultBindingObjectPath" value="travelAccount1"/>
-      <property name="controllerRequestMapping" value="uitest"/>
    </bean>
    
-   <bean id="testSection1" parent="GroupSection_Accordion">
+   <bean id="testSection1" parent="GroupSection">
       <property name="title" value="Test Section 1"/> 
       <property name="items">
         <list>
@@ -60,7 +59,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
    </bean>
    
-   <bean id="testSection7" parent="GroupSectionGridLayout_Accordion" p:layoutManager.numberOfColumns="2" >
+   <bean id="testSection7" parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" >
       <property name="title" value="Comparison Section"/> 
       <property name="items">
         <list>
@@ -80,7 +79,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
             </property>
             <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-            <!-- <property name="conditionalRender" value="field18 ne 'Dyn Label'"/>  -->
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:required="true" p:maxLength="25">
             <property name="control">
@@ -114,10 +112,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="control">
               <bean parent="TextControl" p:size="5"/>
             </property>
-            <property name="fieldInquiry.objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-            <property name="fieldInquiry.parameterFieldMapping">
+            <property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldInquiry.inquiryParameters">
               <map>
-                <entry key="number" value="field5"/>
+                <entry key="field5" value="number"/>
               </map>
             </property>
           </bean>
@@ -131,7 +129,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean parent="TextControl" p:size="10"/>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field7" p:label="Field 8" p:width="auto">
+          <bean parent="AttributeField_Form" p:propertyName="field34" p:label="Field 34" p:width="auto">
             <property name="control">
               <bean parent="CheckboxControl"/>
             </property>
@@ -140,7 +138,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
       <property name="componentModifiers">
          <list merge="true">
-            <ref bean="CheckboxToRadioConvertModifier"/>
+            <bean parent="CheckboxToRadioConvertModifier" p:runCondition="#component.layoutManager.numberOfColumns eq 4"/>
          </list>
       </property>  
       <property name="propertyReplacers">
@@ -152,13 +150,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with grid layout, @{2+2} columns, 50% centered"/>       
    </bean>  
    
-   <bean id="testSection6" parent="GroupSection_Accordion">
+   <bean id="testSection6" parent="GroupSection">
       <property name="title" value="Test Collections"/> 
       <property name="items">
         <list>
           <ref bean="testGroup4"/>
           <ref bean="testGroup6"/>
           <ref bean="testGroup5"/>
+          <ref bean="testGroup10"/>
+          <ref bean="testGroup11"/>           
         </list>
       </property> 
    </bean>   
@@ -168,7 +168,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="propertyName" value="fiscalOfficer.accounts"/>
       <property name="layoutManager.sequencePropertyName" value="number"/>
-      <property name="layoutManager.conditionalRenderSequenceField" value="#parent.items.size() eq 6"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
@@ -182,7 +181,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </list>
             </property>
           </bean>
-          <bean parent="AttributeField" p:propertyName="subsidizedPercent" p:label="@{#line?.name} Percent"/>
+          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
           <bean parent="AttributeField" p:propertyName="createDate"/>
           <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
         </list>
@@ -245,6 +244,73 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with collection and stacked layout"/>  
    </bean> 
    
+   <bean id="testGroup10" parent="CollectionGroup">
+      <property name="title" value="Sub Collections Stacked"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="AttributeField" p:propertyName="foId"/>
+        </list>
+      </property>  
+      <property name="addLineLabel" value="New Account"/>     
+      <property name="layoutManager.summaryTitle" value="Account"/> 
+      <property name="layoutManager.summaryFields">
+        <list>
+          <value>number</value>
+          <value>name</value>
+        </list>
+      </property>
+      <property name="subCollections">
+        <list>
+           <bean parent="testGroup5">
+             <property name="title" value="Sub Collection 1"/>  
+             <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
+             <property name="summary" value="Sub collection stacked layout"/>  
+           </bean> 
+        </list>
+      </property>      
+      <property name="summary" value="Group with sub-collections and stacked layout"/>  
+   </bean> 
+   
+   <bean id="testGroup11" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
+      <property name="title" value="Sub Collection Table"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="FieldGroup" p:label="Sub Account">
+            <property name="items">
+              <list>         
+               <bean parent="AttributeField" p:propertyName="subAccount" p:showLabel="false"/>
+               <bean parent="AttributeField" p:propertyName="subAccountName" 
+                     p:readOnly="true" p:showLabel="false"/>
+              </list>
+            </property>
+          </bean>
+          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+          <bean parent="AttributeField" p:propertyName="createDate"/>
+          <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
+        </list>
+      </property> 
+      <property name="subCollections">
+        <list>
+           <bean parent="testGroup6">
+             <property name="title" value="Sub Collection 1"/>  
+             <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
+             <property name="summary" value="Sub collection table layout"/>  
+           </bean>       
+        </list>
+      </property>                  
+      <property name="summary" value="Group with sub-collection and table layout"/>  
+   </bean>   
+   
    <bean id="testGroup3" parent="GroupGridLayout" p:layoutManager.numberOfColumns="4">   
       <property name="title" value="Test Group 3"/> 
       <property name="items">
@@ -294,7 +360,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with grid layout and various col/row spans"/>      
    </bean> 
    
-   <bean id="testSection5" parent="GroupSection_Accordion">
+   <bean id="testSection5" parent="GroupSection">
       <property name="title" value="Banking Info"/> 
       <property name="items">
         <list>
@@ -303,7 +369,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
    </bean>   
    
-   <bean id="testSection2" parent="GroupSection_Accordion" p:layoutManager.styleClasses="layout_center">
+   <bean id="testSection2" parent="GroupSection" p:layoutManager.styleClasses="layout_center">
       <property name="title" value="Test Section 2"/> 
       <property name="fieldBindingObjectPath" value="travelAccount3"/>
       <property name="items">
@@ -317,7 +383,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Section without nested group, labels top"/> 
    </bean> 
    
-   <bean id="testSection4" parent="GroupSectionGridLayout_Accordion">
+   <bean id="testSection4" parent="GroupSectionGridLayout">
       <property name="title" value="Test Section 4"/> 
       <property name="layoutManager.numberOfColumns" value="4"/>
       <property name="items">
@@ -369,7 +435,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </list>
             </property>
           </bean>
-          <bean parent="FieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%">
+          <bean parent="FieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%" p:conditionalRender="field28 eq 'joe'">
             <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
             <property name="items">
               <list>
@@ -413,7 +479,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Section with some field groups"/> 
    </bean> 
    
-   <bean id="testSection3" parent="GroupSectionGridLayout_Accordion">
+   <bean id="testSection3" parent="GroupSectionGridLayout">
       <property name="title" value="Test Section 3"/> 
       <property name="fieldBindingObjectPath" value="travelAccount3"/>
       <property name="items">

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifParameters;
+import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
@@ -98,22 +99,29 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 		super.bind(request);
 		UifFormBase form = (UifFormBase) this.getTarget();
 
-		// recreate view from id or type
-		String viewId = request.getParameter(UifParameters.VIEW_ID);
-		if (viewId != null) {
-			form.setView(getViewService().getView(viewId, request.getParameterMap()));
-		}
-		else {
-			String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
-			if (viewTypeName == null) {
-				viewTypeName = form.getViewTypeName();
+		// if view not in form, initialize from the request
+		if (form.getView() == null) {
+			View view = null;
+
+			String viewId = request.getParameter(UifParameters.VIEW_ID);
+			if (viewId != null) {
+				view = getViewService().getView(viewId,
+						WebUtils.translateRequestParameterMap(request.getParameterMap()));
+			}
+			else {
+				String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
+				if (viewTypeName == null) {
+					viewTypeName = form.getViewTypeName();
+				}
+
+				view = getViewService().getViewByType(viewTypeName,
+						WebUtils.translateRequestParameterMap(request.getParameterMap()));
 			}
 
-			form.setView(getViewService().getViewByType(viewTypeName,
-					WebUtils.translateRequestParameterMap(request.getParameterMap())));
+			form.setViewRequestParameters(view.getViewRequestParameters());
+			form.setViewId(view.getId());
+			form.setView(view);
 		}
-
-		form.setViewId(form.getView().getId());
 
 		form.postBind((HttpServletRequest) request);
 	}

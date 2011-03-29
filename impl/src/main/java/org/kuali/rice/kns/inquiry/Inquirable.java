@@ -29,6 +29,7 @@ public interface Inquirable<ObjectType> extends ViewHelperService {
 
     public ObjectType getBusinessObject(Map fieldValues);
     
+    @Deprecated
     public HtmlData getInquiryUrl(ObjectType businessObject, String attributeName, boolean forceInquiry);	
     
     @Deprecated

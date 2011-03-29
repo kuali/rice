@@ -24,12 +24,26 @@ package org.kuali.rice.kns.uif;
  */
 public class UifParameters {
 
+	public static final String AUTO_SEARCH = "autoSearch";
 	public static final String BASE_LOOKUP_URL = "baseLookupUrl";
 	public static final String METHOD_TO_CALL = "methodToCall";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
+	public static final String DISABLE_SEARCH_BUTTONS = "disableSearchButtons";
+	public static final String FIELD_CONVERSIONS = "fieldConversions";
+	public static final String HEADER_BAR_ENABLED = "headerBarEnabled";
+	public static final String HIDE_RETURN_LINK = "hideReturnLink";
+	public static final String LOOKUP_CRITERIA_ENABLED = "lookupCriteriaEnabled";
+	public static final String LOOKUP_PARAMETERS = "lookupParameters";
 	public static final String OBJECT_CLASS_NAME = "objectClassName";
+	public static final String READ_ONLY_FIELDS = "readOnlyFields";
+	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
+	public static final String RETURN_LOCATION = "returnLocation";
+	public static final String RETURN_FORM_KEY = "returnFormKey";
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
+	public static final String SHOW_MAINTENANCE_LINKS = "showMaintenanceLinks";
+	public static final String SUPRESS_ACTIONS = "supressActions";
+	public static final String SUPPLEMENTAL_ACTIONS_ENABLED = "supplementalActionsEnabled";
 	public static final String PAGE_ID = "pageId";
 	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";
 	public static final String VIEW_ID = "viewId";

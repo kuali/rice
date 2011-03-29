@@ -30,12 +30,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="header">
         <bean parent="HeaderTwo"/>
       </property> 
+      <property name="accordion">
+        <bean parent="Accordion"/>
+      </property>       
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>  
       <property name="summaryMessageField">
         <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
-      </property>            
+      </property> 
+      <property name="conditionalReadOnly" value="#parent.readOnly"/>           
   </bean> 
   
   <bean id="GroupGridLayout" abstract="true" parent="GroupGridLayout-parentBean"/>
@@ -54,6 +58,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="GroupBodyOnly-parentBean" abstract="true" parent="Group">
       <property name="renderHeader" value="false"/>
       <property name="renderFooter" value="false"/>
+      <property name="accordion.render" value="false"/>
   </bean>  
   
   <bean id="NavigationGroup" abstract="true" parent="NavigationGroup-parentBean"/>
@@ -69,24 +74,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
   <bean id="GroupSection-parentBean" abstract="true" parent="Group">
       <property name="styleClasses" value="wrap"/>
+      <property name="header">
+        <bean parent="Header" p:styleClasses="grouping-header-expandable"/>
+      </property> 
+      <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
+      <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property> 
   </bean>   
   
-  <bean id="GroupSection_Accordion" abstract="true" parent="GroupSection_Accordion-parentBean"/>
-  <bean id="GroupSection_Accordion-parentBean" abstract="true" parent="GroupSection">
-      <property name="decorator">
-        <bean parent="AccordionDecorator"/>
-      </property>
-      <property name="renderHeader" value="false"/>
-  </bean> 
-  
-  <bean id="GroupSectionGridLayout_Accordion" abstract="true" parent="GroupSectionGridLayout_Accordion-parentBean"/>
-  <bean id="GroupSectionGridLayout_Accordion-parentBean" abstract="true" parent="GroupSection_Accordion">
+  <bean id="GroupSectionGridLayout" abstract="true" parent="GroupSectionGridLayout-parentBean"/>
+  <bean id="GroupSectionGridLayout-parentBean" abstract="true" parent="GroupSection">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
-      </property> 
+      </property>  
       <property name="componentModifiers">
          <list>
             <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
@@ -108,12 +110,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
       <property name="addLineActionFields">
         <list>
-          <bean parent="ActionField" p:methodToCall="addLine" p:actionLabel="add"/>
+          <bean parent="ActionField_Small" p:methodToCall="addLine" p:actionLabel="add"/>
         </list>
       </property>          
       <property name="actionFields">
         <list>
-          <bean parent="ActionField_Secondary" p:methodToCall="deleteLine" p:actionLabel="delete"/>
+          <bean parent="ActionField_SmallSecondary" p:methodToCall="deleteLine" p:actionLabel="delete"/>
         </list>
       </property>
       <property name="layoutManager">
@@ -121,29 +123,27 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
   </bean> 
   
-  <bean id="CollectionGroup_Accordion" abstract="true" parent="CollectionGroup_Accordion-parentBean"/>
-  <bean id="CollectionGroup_Accordion-parentBean" abstract="true" parent="CollectionGroup">
-      <property name="decorator">
-        <bean parent="AccordionDecorator"/>
-      </property>
-      <property name="renderHeader" value="false"/>
-  </bean>
+  <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
+  <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
+    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
+    <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>    
+  </bean>  
   
   <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroupTableLayout-parentBean"/>
   <bean id="CollectionGroupTableLayout-parentBean" abstract="true" parent="CollectionGroup">
       <property name="layoutManager">
         <bean parent="TableLayoutManager"/>
       </property> 
-  </bean>   
+  </bean>
   
-  <bean id="CollectionGroupTableLayout_Accordion" abstract="true" parent="CollectionGroupTableLayout_Accordion-parentBean"/>
-  <bean id="CollectionGroupTableLayout_Accordion-parentBean" abstract="true" parent="CollectionGroupTableLayout">
-      <property name="decorator">
-        <bean parent="AccordionDecorator"/>
-      </property>  
-      <property name="renderHeader" value="false"/>
-  </bean> 
-
+  <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
+  <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
+    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
+    <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>    
+  </bean>     
+  
   <!-- Common Groups -->
   
   <bean id="Group_LookupHeader" parent="GroupBodyOnly">
@@ -181,7 +181,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="Group_DocumentHeader" parent="GroupBodyOnly" p:readOnly="true">
       <property name="id" value="group_docheader"/>
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/decorator/slider.jsp"/>
       <property name="items">
          <list> 
            <bean parent="AttributeField_DocumentNumber"/>
@@ -193,7 +192,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="fieldBindingObjectPath" value="document"/>
   </bean>   
   
-  <bean id="Group_DocumentOverview" parent="GroupSectionGridLayout_Accordion">
+  <bean id="Group_DocumentOverview" parent="GroupSectionGridLayout">
       <property name="id" value="group_docoverview"/>
       <property name="title" value="Document Overview"/>
       <property name="items">
@@ -206,7 +205,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="fieldBindingObjectPath" value="document.documentHeader"/>
   </bean>  
   
-  <bean id="Group_DocumentNotes" parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="3">
+  <bean id="Group_DocumentNotes" parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="3">
       <property name="id" value="group_docnotes"/>
       <property name="title" value="Notes and Attachments"/>
       <property name="propertyName" value="documentHeader.boNotes"/>
@@ -225,7 +224,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo.bindingObjectPath" value="document"/>
   </bean>    
   
-  <bean id="Group_DocumentRouteLog" parent="GroupSection_Accordion">
+  <bean id="Group_DocumentRouteLog" parent="GroupSection">
       <property name="id" value="group_docroutelog"/>
       <property name="title" value="Route Log"/>
       <property name="items">

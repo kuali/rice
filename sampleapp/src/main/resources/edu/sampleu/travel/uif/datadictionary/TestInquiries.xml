@@ -21,10 +21,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="TravelAccount-InquiryView" parent="InquiryView">
      <property name="title" value="Travel Account Inquiry"/>
-     <property name="objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="Items">
          <list>
-           <bean parent="GroupSectionGridLayout_Accordion">
+           <bean parent="GroupSectionGridLayout">
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
@@ -40,7 +40,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="title" value="Account Information"/>
            </bean>
-           <bean parent="CollectionGroup_Accordion">
+           <bean parent="CollectionGroupSection">
               <property name="title" value="Fiscal Officer Accounts"/>  
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
@@ -58,7 +58,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </list>
               </property>
            </bean>
-           <bean parent="CollectionGroupTableLayout_Accordion" p:layoutManager.numberOfColumns="5">
+           <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="5">
               <property name="title" value="Fiscal Officer Accounts"/>  
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>

@@ -86,6 +86,19 @@ function hideTab(doc, tabKey) {
     return false;
 }
 
+function setIframeAnchor(iframeName) {
+  var iframeWin = window.frames[iframeName];
+  if (iframeWin && iframeWin.location.href.indexOf("#") > -1) {
+    iframeWin.location.replace(iframeWin.location);
+  }  
+}
+
+function jumpToAnchorName(anchor){
+	var anchors = document.getElementsByName(anchor);
+	if (anchors != null)
+		location.href = '#'+anchors[0].name;
+}
+
 var formHasAlreadyBeenSubmitted = false;
 var excludeSubmitRestriction = false;
 
@@ -480,8 +493,7 @@ function writeHiddenToForm(propertyName, propertyValue) {
  * Expands all the accordion divs on the page
  */
 function expandAccordions() {
-	// Changed to click() in order to toggle the header contents	
-	//jq("div.accordion").slideDown(100);
+	//jq("span[id$='_accordion']").slideDown(100);
 	jq('img[alt="expand"]').click();
 }
 
@@ -489,8 +501,7 @@ function expandAccordions() {
  * Collapses all the accordion divs on the page
  */
 function collapseAccordions() {
-	// Changed to click() in order to toggle the header contents
-	//jq("div.accordion").slideUp(100);
+	//jq("span[id$='_accordion']").slideUp(100);
 	jq('img[alt="collapse"]').click();
 }
 
@@ -572,7 +583,7 @@ function setupValidator(){
 			jq("#" + id + "_errors_errorMessages").show();
 			var errorList = jq("#" + id + "_errors_errorMessages ul");
 			error.appendTo(errorList);
-   		}
+		}
 	});
 	jQuery.validator.addMethod("minExclusive", function(value, element, param){
 		if (param.length == 1 || param[1]()) {

@@ -48,11 +48,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="actionFieldPrototype">
         <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
       </property>  
+      <property name="subCollectionGroupFieldPrototype">
+        <bean parent="GroupField" p:labelField.render="false"/>
+      </property>         
       <property name="tableTools">
         <ref bean="TableTools-Paging"/>
       </property>   
   </bean>  
-  
+ 
   <bean id="StackedLayoutManager" parent="StackedLayoutManager-parentBean"/> 
   <bean id="StackedLayoutManager-parentBean" abstract="true" class="org.kuali.rice.kns.uif.layout.StackedLayoutManager" parent="BoxLayoutManager">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/stacked.jsp"/>
@@ -62,6 +65,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="lineGroupPrototype">
         <bean parent="StackedGroupPrototype"/>
       </property> 
+      <property name="subCollectionGroupFieldPrototype">
+        <bean parent="GroupField" p:labelField.render="false" p:group.header.render="false" 
+              p:conditionalColSpan="#parent.layoutManager.numberOfColumns" p:style="padding: 50px;"/>
+      </property>       
   </bean>  
   
   <bean id="StackedGroupPrototype" parent="StackedGroupPrototype-parentBean"/> 

@@ -18,7 +18,7 @@ package org.kuali.rice.kns.uif.container;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.ErrorsField;
 import org.kuali.rice.kns.uif.field.HeaderField;
 import org.kuali.rice.kns.uif.field.MessageField;
@@ -41,7 +41,7 @@ import org.kuali.rice.kns.uif.widget.Help;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
- * @see org.kuali.rice.kns.uif.Component
+ * @see org.kuali.rice.kns.uif.core.Component
  */
 public interface Container extends Component {
 
@@ -206,7 +206,7 @@ public interface Container extends Component {
 	 * @param help
 	 */
 	public void setHelp(Help help);
-	
+
 	/**
 	 * This property is true if the container is used to display a group of fields that is visually a single
 	 * field - this has an effect on where errors will show up for these fields.

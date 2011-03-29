@@ -1,36 +1,34 @@
 /*
- * Copyright 2007 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2007 The Kuali Foundation Licensed under the Educational Community
+ * License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package org.kuali.rice.kns.uif.widget;
 
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.BindingInfo;
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.LinkField;
+import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.format.Formatter;
 
 /**
  * Widget for rendering an Inquiry link on a field's value
@@ -38,124 +36,237 @@ import org.kuali.rice.kns.util.UrlFactory;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Inquiry extends WidgetBase {
-	private static final long serialVersionUID = -2154388007867302901L;
+    private static final long serialVersionUID = -2154388007867302901L;
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Inquiry.class);
 
-	private String baseInquiryUrl;
+    public static final String INQUIRY_TITLE_PREFIX = "title.inquiry.url.value.prependtext";
 
-	private String objectClassName;
-	private String viewId;
-	private String viewName;
+    private String baseInquiryUrl;
 
-	private Map<String, String> parameterFieldMapping;
+    private String dataObjectClassName;
+    private String viewName;
 
-	private LinkField inquiryLinkField;
+    private Map<String, String> inquiryParameters;
 
-	public Inquiry() {
-		super();
-		
-		parameterFieldMapping = new HashMap<String, String>();
-	}
+    private boolean forceInquiry;
 
-	/**
-	 * @see org.kuali.rice.kns.uif.widget.WidgetBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object, org.kuali.rice.kns.uif.Component)
-	 */
-	@Override
-	public void performFinalize(View view, Object model, Component parent) {
-		super.performFinalize(view, model, parent);
+    private LinkField inquiryLinkField;
 
-		setRender(false);
+    public Inquiry() {
+        super();
 
-		AttributeField field = (AttributeField) parent;
-		BindingInfo fieldBindingInfo = (BindingInfo) ObjectUtils.deepCopy(field.getBindingInfo());
+        forceInquiry = false;
+        inquiryParameters = new HashMap<String, String>();
+    }
 
-		if (StringUtils.isNotBlank(objectClassName)) {
-			// build inquiry url
-			Properties urlParameters = new Properties();
-			
-			urlParameters.put(UifParameters.OBJECT_CLASS_NAME, objectClassName);
-			urlParameters.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
+    /**
+     * @see org.kuali.rice.kns.uif.widget.WidgetBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
 
-			// get inquiry parameter values
-			for (Entry<String, String> parameterMapping : parameterFieldMapping.entrySet()) {
-				fieldBindingInfo.setBindingName(parameterMapping.getValue());
-				Object parameterValue = ObjectPropertyUtils.getPropertyValue(model, fieldBindingInfo.getBindingPath());
-				if (parameterValue != null) {
-					urlParameters.put(parameterMapping.getKey(), parameterValue);
-				}
-			}
+        // only set inquiry if enabled
+        if (!isRender()) {
+            return;
+        }
 
-			String inquiryUrl = UrlFactory.parameterizeUrl(baseInquiryUrl, urlParameters);
-			inquiryLinkField.setHrefText(inquiryUrl);
+        // set render to false until we find an inquiry class
+        setRender(false);
 
-			// get inquiry link text
-			Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
-			if (fieldValue != null) {
-				inquiryLinkField.setLinkLabel(fieldValue.toString());
+        AttributeField field = (AttributeField) parent;
 
-				setRender(true);
-			}
-		}
-	}
+        // check if field value is null, if so no inquiry
+        Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
+        if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
+            return;
+        }
 
-	public String getBaseInquiryUrl() {
-		return this.baseInquiryUrl;
-	}
+        // get parent object for inquiry
+        Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, field);
+        String propertyName = field.getBindingInfo().getBindingName();
 
-	public void setBaseInquiryUrl(String baseInquiryUrl) {
-		this.baseInquiryUrl = baseInquiryUrl;
-	}
+        // if class and parameters configured, build link from those
+        if (StringUtils.isNotBlank(dataObjectClassName) && (inquiryParameters != null) && !inquiryParameters.isEmpty()) {
+            Class<?> inquiryObjectClass = null;
+            try {
+                inquiryObjectClass = Class.forName(dataObjectClassName);
+            }
+            catch (ClassNotFoundException e) {
+                LOG.error("Unable to get class for: " + dataObjectClassName);
+                throw new RuntimeException(e);
+            }
 
-	public String getObjectClassName() {
-		return this.objectClassName;
-	}
+            buildInquiryLink(parentObject, propertyName, inquiryObjectClass, inquiryParameters);
+        }
+        // get inquiry class and parameters from view helper
+        else {
+            view.getViewHelperService().buildInquiryLink(parentObject, propertyName, this);
+        }
+    }
 
-	public void setObjectClassName(String objectClassName) {
-		this.objectClassName = objectClassName;
-	}
+    /**
+     * Builds the inquiry link based on the given inquiry class and parameters
+     * 
+     * @param dataObject
+     *            - parent object that contains the data (used to pull inquiry
+     *            parameters)
+     * @param propertyName
+     *            - name of the property the inquiry is set on
+     * @param inquiryObjectClass
+     *            - class of the object the inquiry should point to
+     * @param inquiryParms
+     *            - map of key field mappings for the inquiry
+     */
+    public void buildInquiryLink(Object dataObject, String propertyName, Class<?> inquiryObjectClass,
+            Map<String, String> inquiryParms) {
+        Properties urlParameters = new Properties();
 
-	public String getViewId() {
-		return this.viewId;
-	}
+        urlParameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
+        urlParameters.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
 
-	public void setViewId(String viewId) {
-		this.viewId = viewId;
-	}
+        // get inquiry parameter values
+        for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
+            String parameterName = inquiryParameter.getKey();
 
-	public String getViewName() {
-		return this.viewName;
-	}
+            Object parameterValue = ObjectPropertyUtils.getPropertyValue(dataObject, parameterName);
 
-	public void setViewName(String viewName) {
-		this.viewName = viewName;
-	}
+            // TODO: need general format util that uses spring
+            if (parameterValue == null) {
+                parameterValue = "";
+            }
+            else if (parameterValue instanceof java.sql.Date) {
+                if (Formatter.findFormatter(parameterValue.getClass()) != null) {
+                    Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+                    parameterValue = formatter.format(parameterValue);
+                }
+            }
+            else {
+                parameterValue = parameterValue.toString();
+            }
 
-	public Map<String, String> getParameterFieldMapping() {
-		return this.parameterFieldMapping;
-	}
+            // Encrypt value if it is a field that has restriction that prevents
+            // a value from being shown to user, because we don't want the
+            // browser history to store the restricted
+            // attribute's value in the URL
+            if (KNSServiceLocator.getBusinessObjectAuthorizationService()
+                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass, inquiryParameter.getValue())) {
+                try {
+                    parameterValue = KNSServiceLocator.getEncryptionService().encrypt(parameterValue);
+                }
+                catch (GeneralSecurityException e) {
+                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                    throw new RuntimeException(e);
+                }
+            }
 
-	public void setParameterFieldMapping(Map<String, String> parameterFieldMapping) {
-		this.parameterFieldMapping = parameterFieldMapping;
-	}
-	
-	public void setParameterFieldMapping(String parameterFieldMapping) {
-		Map<String, String>  parameterMapping = new HashMap<String, String>();
-		
-		String[] mappings = StringUtils.split(parameterFieldMapping, ",");
-		for (int i = 0; i < mappings.length; i++) {
-			String[] mapping = StringUtils.split(mappings[i], ":");
-			parameterMapping.put(mapping[0], mapping[1]);
-		}
-		
-		this.parameterFieldMapping = parameterMapping;
-	}
+            // add inquiry parameter to URL
+            urlParameters.put(inquiryParameter.getValue(), parameterValue);
+        }
 
-	public LinkField getInquiryLinkField() {
-		return this.inquiryLinkField;
-	}
+        String inquiryUrl = UrlFactory.parameterizeUrl(baseInquiryUrl, urlParameters);
+        inquiryLinkField.setHrefText(inquiryUrl);
 
-	public void setInquiryLinkField(LinkField inquiryLinkField) {
-		this.inquiryLinkField = inquiryLinkField;
-	}
+        // get inquiry link text
+        // TODO: should we really put the link label here or just wrap the
+        // written value?
+        Object fieldValue = ObjectPropertyUtils.getPropertyValue(dataObject, propertyName);
+        if (fieldValue != null) {
+            inquiryLinkField.setLinkLabel(fieldValue.toString());
+        }
+
+        // set inquiry title
+        String linkTitle = createTitleText(inquiryObjectClass);
+        linkTitle = LookupInquiryUtils.getTitleText(linkTitle, inquiryObjectClass, inquiryParameters);
+        inquiryLinkField.setTitle(linkTitle);
+
+        setRender(true);
+    }
+
+    /**
+     * Gets text to prepend to the inquiry link title
+     * 
+     * @param dataObjectClass
+     *            - data object class being inquired into
+     * @return String title prepend text
+     */
+    public String createTitleText(Class<?> dataObjectClass) {
+        String titleText = "";
+
+        String titlePrefixProp = KNSServiceLocator.getKualiConfigurationService().getPropertyString(
+                INQUIRY_TITLE_PREFIX);
+        if (StringUtils.isNotBlank(titlePrefixProp)) {
+            titleText += titlePrefixProp + " ";
+        }
+
+        String objectLabel = KNSServiceLocator.getDataDictionaryService().getDataDictionary()
+                .getBusinessObjectEntry(dataObjectClass.getName()).getObjectLabel();
+        if (StringUtils.isNotBlank(objectLabel)) {
+            titleText += objectLabel + " ";
+        }
+
+        return titleText;
+    }
+
+    public String getBaseInquiryUrl() {
+        return this.baseInquiryUrl;
+    }
+
+    public void setBaseInquiryUrl(String baseInquiryUrl) {
+        this.baseInquiryUrl = baseInquiryUrl;
+    }
+
+    public String getDataObjectClassName() {
+        return this.dataObjectClassName;
+    }
+
+    public void setDataObjectClassName(String dataObjectClassName) {
+        this.dataObjectClassName = dataObjectClassName;
+    }
+
+    public String getViewName() {
+        return this.viewName;
+    }
+
+    public void setViewName(String viewName) {
+        this.viewName = viewName;
+    }
+
+    public boolean isForceInquiry() {
+        return this.forceInquiry;
+    }
+
+    public void setForceInquiry(boolean forceInquiry) {
+        this.forceInquiry = forceInquiry;
+    }
+
+    public Map<String, String> getInquiryParameters() {
+        return this.inquiryParameters;
+    }
+
+    public void setInquiryParameters(Map<String, String> inquiryParameters) {
+        this.inquiryParameters = inquiryParameters;
+    }
+
+    public void setInquiryParameters(String inquiryParameterString) {
+        Map<String, String> inquiryParms = new HashMap<String, String>();
+
+        String[] mappings = StringUtils.split(inquiryParameterString, ",");
+        for (int i = 0; i < mappings.length; i++) {
+            String[] mapping = StringUtils.split(mappings[i], ":");
+            inquiryParms.put(mapping[0], mapping[1]);
+        }
+
+        this.inquiryParameters = inquiryParms;
+    }
+
+    public LinkField getInquiryLinkField() {
+        return this.inquiryLinkField;
+    }
+
+    public void setInquiryLinkField(LinkField inquiryLinkField) {
+        this.inquiryLinkField = inquiryLinkField;
+    }
 
 }

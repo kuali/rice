@@ -17,6 +17,7 @@ package org.kuali.rice.kns.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.springframework.util.MethodInvoker;
 
 /**
@@ -63,12 +64,12 @@ public class GeneratedField extends FieldBase {
 	 * <li>Setup the method invoker and invoke method to get the render output</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
 	 */
 	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
+	public void performFinalize(View view, Object model, Component parent) {
+		super.performFinalize(view, model, parent);
 
 		if (renderingMethodInvoker == null) {
 			renderingMethodInvoker = new MethodInvoker();

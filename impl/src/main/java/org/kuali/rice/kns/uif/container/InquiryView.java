@@ -42,7 +42,7 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
 public class InquiryView extends FormView {
 	private static final long serialVersionUID = 716926008488403616L;
 
-	private Class<?> objectClassName;
+	private Class<?> dataObjectClassName;
 
 	private Class<? extends InquiryPresentationController> presentationControllerClass;
 	private Class<? extends InquiryAuthorizer> authorizerClass;
@@ -67,7 +67,7 @@ public class InquiryView extends FormView {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), objectClassName);
+		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), dataObjectClassName);
 	}
 
 	/**
@@ -76,23 +76,23 @@ public class InquiryView extends FormView {
 	 * <p>
 	 * The object class name is used to pick up a dictionary entry which will
 	 * feed the attribute field definitions and other configuration. In addition
-	 * it is used to configure the <code>Inquirable</code> which will carry out the
-	 * inquiry action
+	 * it is used to configure the <code>Inquirable</code> which will carry out
+	 * the inquiry action
 	 * </p>
 	 * 
 	 * @return Class<?> inquiry object class
 	 */
-	public Class<?> getObjectClassName() {
-		return this.objectClassName;
+	public Class<?> getDataObjectClassName() {
+		return this.dataObjectClassName;
 	}
 
 	/**
 	 * Setter for the object class name
 	 * 
-	 * @param objectClassName
+	 * @param dataObjectClassName
 	 */
-	public void setObjectClassName(Class<?> objectClassName) {
-		this.objectClassName = objectClassName;
+	public void setDataObjectClassName(Class<?> dataObjectClassName) {
+		this.dataObjectClassName = dataObjectClassName;
 	}
 
 	/**

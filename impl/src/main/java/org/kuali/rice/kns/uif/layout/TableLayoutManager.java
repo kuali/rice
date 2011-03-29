@@ -18,11 +18,11 @@ package org.kuali.rice.kns.uif.layout;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
@@ -60,6 +60,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 	private GroupField actionFieldPrototype;
 
+	private GroupField subCollectionGroupFieldPrototype;
+
 	// internal counter for the data columns (not including sequence, action)
 	private int numberOfDataColumns;
 
@@ -77,19 +79,40 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		headerFields = new ArrayList<LabelField>();
 		dataFields = new ArrayList<Field>();
 	}
+	
+	/**
+	 * The following actions are performed:
+	 * 
+	 * <ul>
+	 * <li>Initializes the prototypes</li>
+	 * </ul>
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.kns.uif.container.View,
+	 *      org.kuali.rice.kns.uif.container.Container)
+	 */
+	@Override
+	public void performInitialization(View view, Container container) {
+		super.performInitialization(view, container);
+
+		view.getViewHelperService().performComponentInitialization(view, headerFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, sequenceFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, actionFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, subCollectionGroupFieldPrototype);
+	}
 
 	/**
-	 * The following initialization is performed:
+	 * The following actions are performed:
 	 * 
 	 * <ul>
 	 * <li>Sets internal count of columns to configured number</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.ContainerAware#initializeFromContainer(org.kuali.rice.kns.uif.container.Container,org.kuali.rice.kns.uif.container.Container)
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performInitialization(View view, Container container) {
-		super.performInitialization(view, container);
+	public void performApplyModel(View view, Object model, Container container) {
+		super.performApplyModel(view, model, container);
 
 		numberOfDataColumns = getNumberOfColumns();
 	}
@@ -134,11 +157,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.CollectionGroup,
-	 *      java.util.List, java.lang.String, java.util.List, java.lang.String,
-	 *      java.lang.Object, int)
+	 *      java.util.List, java.util.List, java.lang.String, java.util.List,
+	 *      java.lang.String, java.lang.Object, int)
 	 */
-	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<? extends Field> lineFields,
-			String bindingPath, List<ActionField> actions, String idSuffix, Object currentLine, int lineIndex) {
+	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
+			List<GroupField> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
 
 		// if add line build table header first
@@ -163,6 +187,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			ComponentUtils.setComponentPropertyDeep(field, "summaryMessageField.render", new Boolean(false));
 		}
 
+		int rowCount = calculateNumberOfRows(collectionGroup.getItems());
+		int rowSpan = rowCount + subCollectionFields.size();
+
 		// sequence field is always first and should span all rows for the line
 		if (renderSequenceField) {
 			Field sequenceField = null;
@@ -172,9 +199,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			else {
 				sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabelField());
 			}
-
-			int rowCount = calculateNumberOfRows(collectionGroup.getItems());
-			sequenceField.setRowSpan(rowCount);
+			sequenceField.setRowSpan(rowSpan);
 
 			if (sequenceField instanceof AttributeField) {
 				((AttributeField) sequenceField).getBindingInfo().setBindByNamePrefix(bindingPath);
@@ -197,13 +222,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()
 					&& !collectionGroup.isReadOnly()) {
 				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
-				ComponentUtils.updateIdsAndContextForLine(lineActionsField, currentLine, lineIndex);
 
+				ComponentUtils.updateIdsAndContextForLine(lineActionsField, currentLine, lineIndex);
+				lineActionsField.setRowSpan(rowSpan);
 				lineActionsField.setItems(actions);
 
 				dataFields.add(lineActionsField);
 			}
 		}
+
+		// update colspan on sub-collection fields
+		for (GroupField subCollectionField : subCollectionFields) {
+			subCollectionField.setColSpan(numberOfDataColumns);
+		}
+
+		// add sub-collection fields to end of data fields
+		dataFields.addAll(subCollectionFields);
 	}
 
 	/**
@@ -351,9 +385,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	public List<Component> getNestedComponents() {
 		List<Component> components = super.getNestedComponents();
 
-		components.add(headerFieldPrototype);
-		components.add(sequenceFieldPrototype);
-		components.add(actionFieldPrototype);
 		components.add(tableTools);
 		components.addAll(headerFields);
 		components.addAll(dataFields);
@@ -538,6 +569,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 */
 	public void setActionFieldPrototype(GroupField actionFieldPrototype) {
 		this.actionFieldPrototype = actionFieldPrototype;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.CollectionLayoutManager#getSubCollectionGroupFieldPrototype()
+	 */
+	public GroupField getSubCollectionGroupFieldPrototype() {
+		return this.subCollectionGroupFieldPrototype;
+	}
+
+	/**
+	 * Setter for the sub-collection field group prototype
+	 * 
+	 * @param subCollectionGroupFieldPrototype
+	 */
+	public void setSubCollectionGroupFieldPrototype(GroupField subCollectionGroupFieldPrototype) {
+		this.subCollectionGroupFieldPrototype = subCollectionGroupFieldPrototype;
 	}
 
 	/**

@@ -62,7 +62,7 @@ public interface DataDictionaryMapper {
 	 */
 	@Deprecated
 	public BusinessObjectEntry getBusinessObjectEntry(DataDictionaryIndex index, String className );
-	
+
 	/**
      * @param className
      * @return DataObjectEntry for the named class, or null if none exists
@@ -154,4 +154,16 @@ public interface DataDictionaryMapper {
 	 * @return View instance that matches the given index
 	 */
 	public View getViewByTypeIndex(ViewDictionaryIndex index, String viewTypeName, Map<String, String> indexKey);
+	
+	/**
+	 * Gets all <code>View</code> prototypes configured for the given view type
+	 * name
+	 * 
+	 * @param index - the view dictionary index
+	 * @param viewTypeName
+	 *            - view type name to retrieve
+	 * @return List<View> view prototypes with the given type name, or empty
+	 *         list
+	 */
+	public List<View> getViewsForType(ViewDictionaryIndex index, String viewTypeName);
 }

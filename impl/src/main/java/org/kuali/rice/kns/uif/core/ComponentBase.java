@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.uif;
+package org.kuali.rice.kns.uif.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,10 +24,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.CssConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.decorator.ComponentDecorator;
-import org.kuali.rice.kns.uif.decorator.DecoratorChain;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 
 /**
@@ -57,16 +57,25 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 
 	private boolean render;
 	private String conditionalRender;
+
 	private boolean hidden;
+
 	private boolean readOnly;
 	private String conditionalReadOnly;
+
 	private Boolean required;
+	private String conditionalRequired;
 
 	private String align;
 	private String valign;
 	private String width;
+
 	private int colSpan;
+	private String conditionalColSpan;
+
 	private int rowSpan;
+	private String conditionalRowSpan;
+
 	private String style;
 	private List<String> styleClasses;
 
@@ -91,13 +100,11 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	private String onMouseMoveScript;
 	private String onDocumentReadyScript;
 
-	private ComponentDecorator decorator;
-	private transient DecoratorChain decoratorChain;
-
 	private List<ComponentModifier> componentModifiers;
 
 	private Map<String, String> componentOptions;
 
+	@ReferenceCopy(newCollectionInstance=true)
 	private transient Map<String, Object> context;
 
 	private List<PropertyReplacer> propertyReplacers;
@@ -122,7 +129,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * <ul>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
 	public void performInitialization(View view) {
 
@@ -132,21 +139,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * The following updates are done here:
 	 * 
 	 * <ul>
-	 * <li>If component is readonly (unconditionally), update state of child
-	 * components</li>
+	 * <li></li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.Component#performApplyModel(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.core.Component#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	public void performApplyModel(View view, Object model) {
-		if (isReadOnly()) {
-			for (Component component : getNestedComponents()) {
-				if (component != null) {
-					component.setReadOnly(true);
-				}
-			}
-		}
+
 	}
 
 	/**
@@ -159,10 +159,10 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * </li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.Component#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.core.Component#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
 	 */
-	public void performFinalize(View view, Object model) {
+	public void performFinalize(View view, Object model, Component parent) {
 		if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
 			// add the align, valign, and width settings to style
 			if (StringUtils.isNotBlank(getAlign())) {
@@ -177,18 +177,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 				setStyle(getStyle() + CssConstants.WIDTH + getWidth() + ";");
 			}
 		}
-
-		decoratorChain = new DecoratorChain(this);
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getNestedComponents()
+	 * @see org.kuali.rice.kns.uif.core.Component#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {
 		List<Component> components = new ArrayList<Component>();
-
-		components.add(decorator);
 
 		return components;
 	}
@@ -198,7 +194,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * value reference should be copied. Subclasses can override this but should
 	 * include a call to super
 	 * 
-	 * @see org.kuali.rice.kns.uif.Component#getPropertiesForReferenceCopy()
+	 * @see org.kuali.rice.kns.uif.core.Component#getPropertiesForReferenceCopy()
 	 */
 	public Set<String> getPropertiesForReferenceCopy() {
 		Set<String> refCopyProperties = new HashSet<String>();
@@ -210,70 +206,70 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getId()
+	 * @see org.kuali.rice.kns.uif.core.Component#getId()
 	 */
 	public String getId() {
 		return this.id;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setId(java.lang.String)
+	 * @see org.kuali.rice.kns.uif.core.Component#setId(java.lang.String)
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getTemplate()
+	 * @see org.kuali.rice.kns.uif.core.Component#getTemplate()
 	 */
 	public String getTemplate() {
 		return this.template;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setTemplate(java.lang.String)
+	 * @see org.kuali.rice.kns.uif.core.Component#setTemplate(java.lang.String)
 	 */
 	public void setTemplate(String template) {
 		this.template = template;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getTitle()
+	 * @see org.kuali.rice.kns.uif.core.Component#getTitle()
 	 */
 	public String getTitle() {
 		return this.title;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setTitle(java.lang.String)
+	 * @see org.kuali.rice.kns.uif.core.Component#setTitle(java.lang.String)
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#isHidden()
+	 * @see org.kuali.rice.kns.uif.core.Component#isHidden()
 	 */
 	public boolean isHidden() {
 		return this.hidden;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setHidden(boolean)
+	 * @see org.kuali.rice.kns.uif.core.Component#setHidden(boolean)
 	 */
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#isReadOnly()
+	 * @see org.kuali.rice.kns.uif.core.Component#isReadOnly()
 	 */
 	public boolean isReadOnly() {
 		return this.readOnly;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setReadOnly(boolean)
+	 * @see org.kuali.rice.kns.uif.core.Component#setReadOnly(boolean)
 	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
@@ -299,17 +295,50 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getRequired()
+	 * @see org.kuali.rice.kns.uif.core.Component#getRequired()
 	 */
 	public Boolean getRequired() {
 		return this.required;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setRequired(java.lang.Boolean)
+	 * @see org.kuali.rice.kns.uif.core.Component#setRequired(java.lang.Boolean)
 	 */
 	public void setRequired(Boolean required) {
 		this.required = required;
+	}
+
+	/**
+	 * Expression language string for conditionally setting the required
+	 * property
+	 * 
+	 * @return String el that should evaluate to boolean
+	 */
+	public String getConditionalRequired() {
+		return this.conditionalRequired;
+	}
+
+	/**
+	 * Setter for the conditional required string
+	 * 
+	 * @param conditionalRequired
+	 */
+	public void setConditionalRequired(String conditionalRequired) {
+		this.conditionalRequired = conditionalRequired;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.Component#isRender()
+	 */
+	public boolean isRender() {
+		return this.render;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.Component#setRender(boolean)
+	 */
+	public void setRender(boolean render) {
+		this.render = render;
 	}
 
 	/**
@@ -328,6 +357,70 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 */
 	public void setConditionalRender(String conditionalRender) {
 		this.conditionalRender = conditionalRender;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.Component#getColSpan()
+	 */
+	public int getColSpan() {
+		return this.colSpan;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.Component#setColSpan(int)
+	 */
+	public void setColSpan(int colSpan) {
+		this.colSpan = colSpan;
+	}
+
+	/**
+	 * Expression language string for conditionally setting the colSpan property
+	 * 
+	 * @return String el that should evaluate to int
+	 */
+	public String getConditionalColSpan() {
+		return this.conditionalColSpan;
+	}
+
+	/**
+	 * Setter for the conditional colSpan string
+	 * 
+	 * @param conditionalColSpan
+	 */
+	public void setConditionalColSpan(String conditionalColSpan) {
+		this.conditionalColSpan = conditionalColSpan;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.Component#getRowSpan()
+	 */
+	public int getRowSpan() {
+		return this.rowSpan;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.Component#setRowSpan(int)
+	 */
+	public void setRowSpan(int rowSpan) {
+		this.rowSpan = rowSpan;
+	}
+
+	/**
+	 * Expression language string for conditionally setting the rowSpan property
+	 * 
+	 * @return String el that should evaluate to int
+	 */
+	public String getConditionalRowSpan() {
+		return this.conditionalRowSpan;
+	}
+
+	/**
+	 * Setter for the conditional rowSpan string
+	 * 
+	 * @param conditionalRowSpan
+	 */
+	public void setConditionalRowSpan(String conditionalRowSpan) {
+		this.conditionalRowSpan = conditionalRowSpan;
 	}
 
 	/**
@@ -414,56 +507,28 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getColSpan()
-	 */
-	public int getColSpan() {
-		return this.colSpan;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#setColSpan(int)
-	 */
-	public void setColSpan(int colSpan) {
-		this.colSpan = colSpan;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#getRowSpan()
-	 */
-	public int getRowSpan() {
-		return this.rowSpan;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#setRowSpan(int)
-	 */
-	public void setRowSpan(int rowSpan) {
-		this.rowSpan = rowSpan;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#getStyle()
+	 * @see org.kuali.rice.kns.uif.core.Component#getStyle()
 	 */
 	public String getStyle() {
 		return this.style;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setStyle(java.lang.String)
+	 * @see org.kuali.rice.kns.uif.core.Component#setStyle(java.lang.String)
 	 */
 	public void setStyle(String style) {
 		this.style = style;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getStyleClasses()
+	 * @see org.kuali.rice.kns.uif.core.Component#getStyleClasses()
 	 */
 	public List<String> getStyleClasses() {
 		return this.styleClasses;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setStyleClasses(java.util.List)
+	 * @see org.kuali.rice.kns.uif.core.Component#setStyleClasses(java.util.List)
 	 */
 	public void setStyleClasses(List<String> styleClasses) {
 		this.styleClasses = styleClasses;
@@ -497,49 +562,54 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#isRender()
+	 * @see org.kuali.rice.kns.uif.core.Component#addStyleClass(java.lang.String)
 	 */
-	public boolean isRender() {
-		return this.render;
+	public void addStyleClass(String styleClass) {
+		if (!styleClass.contains(styleClass)) {
+			styleClasses.add(styleClass);
+		}
 	}
+	
+    /**
+     * @see org.kuali.rice.kns.uif.Component#appendToStyle(java.lang.String)
+     */
+    public void appendToStyle(String styleRules) {
+        if (style == null) {
+            style = "";
+        }
+        style = style + styleRules;
+    }
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setRender(boolean)
-	 */
-	public void setRender(boolean render) {
-		this.render = render;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentModifiers()
+	 * @see org.kuali.rice.kns.uif.core.Component#getComponentModifiers()
 	 */
 	public List<ComponentModifier> getComponentModifiers() {
 		return this.componentModifiers;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setComponentModifiers(java.util.List)
+	 * @see org.kuali.rice.kns.uif.core.Component#setComponentModifiers(java.util.List)
 	 */
 	public void setComponentModifiers(List<ComponentModifier> componentModifiers) {
 		this.componentModifiers = componentModifiers;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getContext()
+	 * @see org.kuali.rice.kns.uif.core.Component#getContext()
 	 */
 	public Map<String, Object> getContext() {
 		return this.context;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setContext(java.util.Map)
+	 * @see org.kuali.rice.kns.uif.core.Component#setContext(java.util.Map)
 	 */
 	public void setContext(Map<String, Object> context) {
 		this.context = context;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#pushObjectToContext(java.lang.String,
+	 * @see org.kuali.rice.kns.uif.core.Component#pushObjectToContext(java.lang.String,
 	 *      java.lang.Object)
 	 */
 	public void pushObjectToContext(String objectName, Object object) {
@@ -551,38 +621,17 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getPropertyReplacers()
+	 * @see org.kuali.rice.kns.uif.core.Component#getPropertyReplacers()
 	 */
 	public List<PropertyReplacer> getPropertyReplacers() {
 		return this.propertyReplacers;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#setPropertyReplacers(java.util.List)
+	 * @see org.kuali.rice.kns.uif.core.Component#setPropertyReplacers(java.util.List)
 	 */
 	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
 		this.propertyReplacers = propertyReplacers;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#getDecorator()
-	 */
-	public ComponentDecorator getDecorator() {
-		return this.decorator;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#setDecorator(org.kuali.rice.kns.uif.decorator.ComponentDecorator)
-	 */
-	public void setDecorator(ComponentDecorator decorator) {
-		this.decorator = decorator;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#getDecoratorChain()
-	 */
-	public DecoratorChain getDecoratorChain() {
-		return this.decoratorChain;
 	}
 
 	/**
@@ -602,14 +651,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnLoad()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnLoad()
 	 */
 	public boolean getSupportsOnLoad() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnLoadScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnLoadScript()
 	 */
 	public String getOnLoadScript() {
 		return onLoadScript;
@@ -625,10 +674,17 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnDocumentReady()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnDocumentReady()
 	 */
 	public boolean getSupportsOnDocumentReady() {
 		return false;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnDocumentReadyScript()
+	 */
+	public String getOnDocumentReadyScript() {
+		return onDocumentReadyScript;
 	}
 
 	/**
@@ -641,14 +697,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnUnload()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnUnload()
 	 */
 	public boolean getSupportsOnUnload() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnUnloadScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnUnloadScript()
 	 */
 	public String getOnUnloadScript() {
 		return onUnloadScript;
@@ -664,14 +720,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnClose()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnClose()
 	 */
 	public boolean getSupportsOnClose() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnCloseScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnCloseScript()
 	 */
 	public String getOnCloseScript() {
 		return onCloseScript;
@@ -687,14 +743,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnBlur()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnBlur()
 	 */
 	public boolean getSupportsOnBlur() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnBlurScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnBlurScript()
 	 */
 	public String getOnBlurScript() {
 		return onBlurScript;
@@ -710,14 +766,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnChange()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnChange()
 	 */
 	public boolean getSupportsOnChange() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnChangeScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnChangeScript()
 	 */
 	public String getOnChangeScript() {
 		return onChangeScript;
@@ -733,14 +789,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnClick()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnClick()
 	 */
 	public boolean getSupportsOnClick() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnClickScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnClickScript()
 	 */
 	public String getOnClickScript() {
 		return onClickScript;
@@ -756,14 +812,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnDblClick()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnDblClick()
 	 */
 	public boolean getSupportsOnDblClick() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnDblClickScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnDblClickScript()
 	 */
 	public String getOnDblClickScript() {
 		return onDblClickScript;
@@ -779,14 +835,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnFocus()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnFocus()
 	 */
 	public boolean getSupportsOnFocus() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnFocusScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnFocusScript()
 	 */
 	public String getOnFocusScript() {
 		return onFocusScript;
@@ -802,14 +858,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnSubmit()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnSubmit()
 	 */
 	public boolean getSupportsOnSubmit() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnSubmitScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnSubmitScript()
 	 */
 	public String getOnSubmitScript() {
 		return onSubmitScript;
@@ -825,14 +881,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnKeyPress()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnKeyPress()
 	 */
 	public boolean getSupportsOnKeyPress() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnKeyPressScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnKeyPressScript()
 	 */
 	public String getOnKeyPressScript() {
 		return onKeyPressScript;
@@ -848,14 +904,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnKeyUp()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnKeyUp()
 	 */
 	public boolean getSupportsOnKeyUp() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnKeyUpScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnKeyUpScript()
 	 */
 	public String getOnKeyUpScript() {
 		return onKeyUpScript;
@@ -871,14 +927,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnKeyDown()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnKeyDown()
 	 */
 	public boolean getSupportsOnKeyDown() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnKeyDownScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnKeyDownScript()
 	 */
 	public String getOnKeyDownScript() {
 		return onKeyDownScript;
@@ -894,14 +950,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnMouseOver()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnMouseOver()
 	 */
 	public boolean getSupportsOnMouseOver() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnMouseOverScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnMouseOverScript()
 	 */
 	public String getOnMouseOverScript() {
 		return onMouseOverScript;
@@ -917,14 +973,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnMouseOut()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnMouseOut()
 	 */
 	public boolean getSupportsOnMouseOut() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnMouseOutScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnMouseOutScript()
 	 */
 	public String getOnMouseOutScript() {
 		return onMouseOutScript;
@@ -940,14 +996,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnMouseUp()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnMouseUp()
 	 */
 	public boolean getSupportsOnMouseUp() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnMouseUpScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnMouseUpScript()
 	 */
 	public String getOnMouseUpScript() {
 		return onMouseUpScript;
@@ -963,14 +1019,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnMouseDown()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnMouseDown()
 	 */
 	public boolean getSupportsOnMouseDown() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnMouseDownScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnMouseDownScript()
 	 */
 	public String getOnMouseDownScript() {
 		return onMouseDownScript;
@@ -986,14 +1042,14 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getSupportsOnMouseMove()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getSupportsOnMouseMove()
 	 */
 	public boolean getSupportsOnMouseMove() {
 		return false;
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ScriptEventSupport#getOnMouseMoveScript()
+	 * @see org.kuali.rice.kns.uif.core.ScriptEventSupport#getOnMouseMoveScript()
 	 */
 	public String getOnMouseMoveScript() {
 		return onMouseMoveScript;
@@ -1065,34 +1121,4 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 		return sb.toString();
 	}
 
-	/**
-	 * This method adds a single style to the list of css style classes on this component
-	 * 
-	 * @param style
-	 */
-	@Override
-	public void addStyleClass(String styleClass){
-		if(!styleClasses.contains(styleClass)){
-			styleClasses.add(styleClass);
-		}
-	}
-
-	/**
-	 * Script to be run when the document is 'ready'
-	 * @return the onDocumentReadyScript
-	 */
-	public String getOnDocumentReadyScript() {
-		return onDocumentReadyScript;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kns.uif.Component#appendToStyle(java.lang.String)
-	 */
-	@Override
-	public void appendToStyle(String styleRules) {
-		if(style == null){
-			style = "";
-		}
-		style = style + styleRules; 
-	}
 }

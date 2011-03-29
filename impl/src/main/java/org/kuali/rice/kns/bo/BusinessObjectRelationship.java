@@ -20,13 +20,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
  * This class represents a parentClass/child relationship between two objects
  * This is used primarily by the <code>BusinessObjectMetaDataService
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BusinessObjectRelationship implements Serializable {
-    private Class relatedClass;
-    private Class parentClass;
+    private static final long serialVersionUID = 201551776606350805L;
+    
+	private Class<?> relatedClass;
+    private Class<?> parentClass;
     private String parentAttributeName;
     private Map<String,String> parentToChildReferences = new HashMap<String,String>( 4 );
     private String userVisibleIdentifierKey = null;
@@ -35,15 +38,16 @@ public class BusinessObjectRelationship implements Serializable {
     }
     
 
-    public BusinessObjectRelationship(Class parent, String parentAttributeName, Class relatedClass ) {
+    public BusinessObjectRelationship(Class<?> parent, String parentAttributeName, Class<?> relatedClass ) {
         super();
+        
         this.relatedClass = relatedClass;
         this.parentClass = parent;
         this.parentAttributeName = parentAttributeName;
     }
 
 
-    public Class getRelatedClass() {
+    public Class<?> getRelatedClass() {
         return this.relatedClass;
     }
 
@@ -51,11 +55,11 @@ public class BusinessObjectRelationship implements Serializable {
      * Gets the parentClass attribute. 
      * @return Returns the parentClass.
      */
-    public Class getParentClass() {
+    public Class<?> getParentClass() {
         return parentClass;
     }
 
-
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append( "Relationship: " ).append( parentClass.getName() ).append( " -> " ).append( relatedClass.getName() );
@@ -99,7 +103,7 @@ public class BusinessObjectRelationship implements Serializable {
 		return null;
 	}
 
-	public String getChildAttributeForParentAttribute( String parentAttributeName ) {
-		return parentToChildReferences.get( parentAttributeName );
+	public String getChildAttributeForParentAttribute( String parentAttrName ) {
+		return parentToChildReferences.get( parentAttrName );
 	}
 }

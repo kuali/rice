@@ -857,6 +857,9 @@
 		<property name="kualiModuleService">
 			<ref bean="kualiModuleService" />
 		</property>
+        <property name="viewDictionaryService">
+            <ref bean="viewDictionaryService" />
+        </property>        
 	</bean>
     <bean id="namespaceService" class="org.kuali.rice.kns.service.impl.NamespaceServiceImpl">
     </bean>	
@@ -1385,6 +1388,7 @@
   <bean id="viewHelperService"  class="org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl">
       <property name="dataDictionaryService" ref="dataDictionaryService"/>
       <property name="expressionEvaluatorService" ref="expressionEvaluatorService"/>
+      <property name="viewDictionaryService" ref="viewDictionaryService"/>
   </bean>
   
   <bean id="expressionEvaluatorService"  class="org.kuali.rice.kns.uif.service.impl.ExpressionEvaluatorServiceImpl">
@@ -1424,5 +1428,11 @@
           <ref bean="maintenanceDocumentDictionaryService" />
       </property>       
   </bean>
+  
+  <bean id="viewDictionaryService" class="org.kuali.rice.kns.uif.service.impl.ViewDictionaryServiceImpl">
+      <property name="dataDictionaryService">
+          <ref bean="dataDictionaryService" />
+      </property> 
+  </bean>  
   
 </beans>

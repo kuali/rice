@@ -21,10 +21,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="TravelAccount-MaintenanceView" parent="MaintenanceView">
      <property name="title" value="Travel Account Maintenance"/>
-     <property name="objectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="items">
        <list merge="true">
-          <bean parent="GroupSectionGridLayout_Accordion">
+          <bean parent="GroupSectionGridLayout">
              <property name="layoutManager.numberOfColumns" value="4"/>
              <property name="layoutManager.renderLabelFieldsSeparately" value="false"/>
              <property name="items">
@@ -46,7 +46,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </list>
              </property>
           </bean> 
-          <bean parent="CollectionGroup_Accordion">
+          <bean parent="CollectionGroup">
               <property name="title" value="Fiscal Officer Accounts"/>  
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>

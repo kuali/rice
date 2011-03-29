@@ -17,7 +17,7 @@
 
 <%@ attribute name="component" required="true" 
               description="The UIF component for which the script will be generated" 
-              type="org.kuali.rice.kns.uif.ScriptEventSupport"%>
+              type="org.kuali.rice.kns.uif.core.ScriptEventSupport"%>
               
 <%-- creates the script event registration code for the events 
 supported and configured on the component --%>     

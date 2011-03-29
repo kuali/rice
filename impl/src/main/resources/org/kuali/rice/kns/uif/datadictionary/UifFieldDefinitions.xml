@@ -45,7 +45,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="constraintMessageField">
         <bean parent="MessageField" p:messageType="CONSTRAINT" p:styleClasses="constraint"/>
-      </property>           
+      </property>  
+      <property name="conditionalReadOnly" value="#parent.readOnly"/>         
   </bean>  
   
   <bean id="AttributeField_Form" abstract="true" parent="AttributeField_Form-parentBean"/>
@@ -59,6 +60,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summaryMessageField.render" value="false"/>
       <property name="constraintMessageField.render" value="false"/>
 -->
+      <property name="bindingInfo.bindToMap" value="true"/>
   </bean>
   
   <bean id="LabelField" abstract="true" parent="LabelField-parentBean"/>
@@ -68,7 +70,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="requiredMessageField">
         <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClasses="required"/>
       </property>   
-  </bean>
+  </bean>  
   
   <bean id="ErrorsField" abstract="true" parent="ErrorsField-parentBean"/>
   <bean id="ErrorsField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ErrorsField" scope="prototype">
@@ -78,7 +80,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayWarningTitle" value="false"/> 
 	  <property name="displayInfoTitle" value="false"/> 
 	  <property name="displayFieldLabelWithMessages" value="true"/>
-	  <property name="displayNestedMessages" value="false"/>
+	  <property name="displayNestedMessages" value="false"/> 
 	  <property name="displayFieldErrorIcon" value="false"/>
 	  <property name="highlightOnError" value="true"/>
 	  <property name="combineMessages" value="true"/> 
@@ -133,12 +135,20 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionField" abstract="true" parent="ActionField-parentBean"/>
   <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.kns.uif.field.ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/actionField.jsp"/>
-      <property name="styleClasses" value="ui-priority-primary"/>
   </bean>  
   
   <bean id="ActionField_Secondary" abstract="true" parent="ActionField_Secondary-parentBean"/>
   <bean id="ActionField_Secondary-parentBean" abstract="true" parent="ActionField">
       <property name="styleClasses" value="ui-priority-secondary"/>
+  </bean>  
+  
+  <bean id="ActionField_Small" abstract="true" parent="ActionField_Small-parentBean"/>
+  <bean id="ActionField_Small-parentBean" abstract="true" parent="ActionField">
+      <property name="styleClasses" value="ui-priority-primary-sm"/>
+  </bean>  
+  
+  <bean id="ActionField_SmallSecondary" abstract="true" parent="ActionField_SmallSecondary-parentBean"/>
+  <bean id="ActionField_SmallSecondary-parentBean" abstract="true" parent="ActionField">
   </bean>  
   
   <bean id="ActionLinkField" abstract="true" parent="ActionLinkField-parentBean"/>
@@ -193,17 +203,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="group">
          <bean parent="GroupBodyOnly" p:fieldContainer="true" p:layoutManager.padding="3px"/>
       </property>  
-  </bean>
+  </bean> 
   
   <!-- Common Fields -->
   
   <bean id="MessageField_RequiredIndicator" parent="MessageField" p:messageText="* indicates required field" 
         p:messageType="REQUIRED" p:id="msg_reqind"/>
   
-  <bean id="ActionField_ExpandAccordions" parent="ActionField_Secondary" p:methodToCall="expandAccordions" 
+  <bean id="ActionField_ExpandAccordions" parent="ActionField_SmallSecondary" p:methodToCall="expandAccordions" 
         p:clientSideCall="true" p:actionLabel="expand all" p:id="actn_expn"/>
                  
-  <bean id="ActionField_CollapseAccordions" parent="ActionField_Secondary" p:methodToCall="collapseAccordions" 
+  <bean id="ActionField_CollapseAccordions" parent="ActionField_SmallSecondary" p:methodToCall="collapseAccordions" 
         p:clientSideCall="true" p:actionLabel="collapse all" p:id="actn_cllps"/>
         
   <bean id="AttributeField_DocumentNumber" parent="AttributeField" p:propertyName="documentNumber" 

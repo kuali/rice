@@ -24,7 +24,7 @@
  --%>
 
 <form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" 
-            size="${control.size}" maxlength="${field.maxLength}" 
+            size="${control.size}" maxlength="${field.maxLength}" readonly="${control.readOnly}"
             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
             tabindex="${control.tabIndex}" minLength="${field.minLength}"/>
 

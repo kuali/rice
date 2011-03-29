@@ -49,16 +49,28 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <ref bean="Footer_SaveCloseCancel"/>
       </property>
   </bean>
+  
+  <bean id="KNSFormView" abstract="true" parent="FormView">
+      <property name="additionalCssFiles">
+        <list merge="true">
+          <value>/krad/css/kns/reset.css</value>
+          <value>/krad/css/kns/main.css</value>
+          <value>/krad/css/kns/fonts.css</value>
+          <value>/krad/css/kns/headers.css</value>
+          <value>/krad/css/kns/tables.css</value>
+          <value>/krad/css/kns/jquery-ui-1.8.11.custom.css</value>
+        </list>
+      </property>  
+  </bean>
 
   <!-- Common Views -->
   
   <bean id="InquiryView" abstract="true" parent="InquiryView-parentBean"/>
-  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
+  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="KNSFormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
      <property name="defaultBindingObjectPath" value="bo"/>
-     <property name="controllerRequestMapping" value="inquiry"/>
      <property name="readOnly" value="true"/>
      <property name="singlePageView" value="true"/>
      <property name="page">
@@ -70,11 +82,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
-  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
+  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="KNSFormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="lookupViewHelperService"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
-     <property name="controllerRequestMapping" value="lookup"/>
      <property name="readOnly" value="false"/>
      <property name="singlePageView" value="true"/>
      <property name="page">
@@ -110,7 +121,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="propertyName" value="searchResults"/>
         <property name="layoutManager.renderSequenceField" value="false"/>
         <property name="renderAddLine" value="false"/>
-        <property name="readOnly" value="true"/>
+        <property name="conditionalReadOnly" value="true"/>
       </bean>
     </property>
     <property name="formGroup">
@@ -147,7 +158,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>
-  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="FormView">
+  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="KNSFormView">
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.DocumentFormBase"/>
      <property name="defaultBindingObjectPath" value="document"/>
      <property name="footer">
@@ -162,7 +173,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
      <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
      <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
-     <property name="controllerRequestMapping" value="maintenance"/>  
      <property name="singlePageView" value="true"/>
      <property name="header">
         <bean parent="HeaderViewDocument"/>
@@ -174,8 +184,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="items">
        <list>
           <bean parent="Group_DocumentOverview" p:order="10"/>
-          <bean parent="Group_DocumentNotes" p:decorator.defaultOpen="false" p:order="30"/>  
-          <bean parent="Group_DocumentRouteLog" p:decorator.defaultOpen="false" p:order="40"/>  
+          <bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false" p:order="30"/>  
+          <bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false" p:order="40"/>  
        </list>
      </property>         
   </bean>
@@ -189,7 +199,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
-      </property>     
+      </property>  
+      <property name="accordion.render" value="false"/>   
   </bean>   
    
   <!-- Common Pages --> 
@@ -207,7 +218,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          <ref bean="HeaderPage_AccordionReadOnly"/>
       </property>
   </bean>
-
+     
   <bean id="PageLookup" parent="PageLookup-parentBean"/>          
   <bean id="PageLookup-parentBean" abstract="true" parent="Page">
     <property name="renderFooter" value="false"/>
@@ -215,5 +226,5 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <ref bean="HeaderPage_Lookup"/>
       </property>
   </bean>
-
+  
 </beans>

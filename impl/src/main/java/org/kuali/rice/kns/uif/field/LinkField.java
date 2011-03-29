@@ -44,7 +44,7 @@ public class LinkField extends FieldBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
 	@Override
 	public void performInitialization(View view) {

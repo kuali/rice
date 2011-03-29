@@ -18,9 +18,9 @@ package org.kuali.rice.kns.uif.field;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 
 /**
  * Field that contains a nested <code>Group</code>. Can be used to group
@@ -48,7 +48,7 @@ public class GroupField extends FieldBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
 	@Override
 	public void performInitialization(View view) {
@@ -60,7 +60,7 @@ public class GroupField extends FieldBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {

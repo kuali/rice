@@ -17,15 +17,14 @@ package org.kuali.rice.kns.uif.field;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.ContainerBase;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
@@ -47,12 +46,11 @@ public class ErrorsField extends FieldBase {
 
 	private List<String> additionalKeysToMatch;
 
-	private Component parentComponent;
-
 	//Title variables
 	private String errorTitle;
 	private String warningTitle;
 	private String infoTitle;
+
 	private boolean displayErrorTitle;
 	private boolean displayWarningTitle;
 	private boolean displayInfoTitle;
@@ -68,46 +66,47 @@ public class ErrorsField extends FieldBase {
 	//Message display flags
 	private boolean displayNestedMessages;
 	private boolean allowMessageRepeat;
+
 	private boolean displayMessages;
 	private boolean displayErrorMessages;
 	private boolean displayInfoMessages;
 	private boolean displayWarningMessages;
 	private boolean displayCounts;
 	private boolean alternateContainer;
-	
+
 	//Error messages
 	private List<String> errors;
 	private List<String> warnings;
 	private List<String> infos;
-	
+
 	//Counts
 	private int errorCount;
 	private int warningCount;
 	private int infoCount;
-	
+
 	//internal
 	private int tempCount;
-	
-	//not used
+
+	// not used
 	private boolean displayLockMessages;
-	
 
 	public ErrorsField() {
+		super();
 	}
-	
+
 	/**
 	 * PerformFinalize will generate the messages and counts used by the errorsField based on the keys that
 	 * were matched from the MessageMap for this ErrorsField.  It will also set up nestedComponents of its parentComponent
 	 * correctly based on the flags that were chosen for this ErrorsField.
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.field.FieldBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
-		
-		List<String> masterKeyList = getKeys();
+	public void performFinalize(View view, Object model, Component parent) {
+		super.performFinalize(view, model, parent);
+
+		List<String> masterKeyList = getKeys(parent);
 		errors = new ArrayList<String>();
 		warnings = new ArrayList<String>();
 		infos = new ArrayList<String>();
@@ -115,7 +114,7 @@ public class ErrorsField extends FieldBase {
 		warningCount = 0;
 		infoCount = 0;
 		MessageMap messageMap = GlobalVariables.getMessageMap();
-		
+
 		if(!displayFieldLabelWithMessages){
 			this.addStyleClass("noLabels");
 		}
@@ -126,21 +125,21 @@ public class ErrorsField extends FieldBase {
 			this.addStyleClass("addFieldIcon");
 		}
 		
-		if(displayMessages){
-			if(displayNestedMessages){
-				this.addNestedKeys(masterKeyList, parentComponent);
+		if (displayMessages) {
+			if (displayNestedMessages) {
+				this.addNestedKeys(masterKeyList, parent);
 			}
 			
-			for(String key: masterKeyList){
-				if(displayErrorMessages){
+			for (String key : masterKeyList) {
+				if (displayErrorMessages) {
 					errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
 					errorCount = errorCount + tempCount;
 				}
-				if(displayWarningMessages){
+				if (displayWarningMessages) {
 					warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
 					warningCount = warningCount + tempCount;
 				}
-				if(displayInfoMessages){
+				if (displayInfoMessages) {
 					infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
 					infoCount = infoCount + tempCount;
 				}
@@ -157,16 +156,16 @@ public class ErrorsField extends FieldBase {
 				}
 			}
 		}
-		
+
 		//dont display anything if there are no messages
 		if(errorCount + warningCount + infoCount == 0 || !displayMessages){
 			this.setStyle("display: none;");
 		}
-		else{
+		else {
 			this.setStyle("display: visible");
 		}
 	}
-	
+
 	/**
 	 * This method gets all the messages for the from the list of lists passed in (which are lists of
 	 * ErrorMessages associated to the key) and uses the configuration service to get the  message String associated.
@@ -182,57 +181,58 @@ public class ErrorsField extends FieldBase {
 		List<String> result = new ArrayList<String>();
 		tempCount = 0;
 		for(List<ErrorMessage> errorList: lists){
-			if(errorList != null && StringUtils.isNotBlank(key)){
-				KualiConfigurationService configService = KNSServiceLocator.getKualiConfigurationService();
-				String comboMessage = "";
-				String label = "";
-				for(ErrorMessage e: errorList){
-					tempCount++;
-					String message = configService.getPropertyString(e.getErrorKey());
-					if(e.getMessageParameters() != null){
-						message = MessageFormat.format(message, (Object[])e.getMessageParameters());
-					}
-					if(displayFieldLabelWithMessages){
-						AttributeField field = view.getViewIndex().getAttributeFieldByPath(key);
-						if(field != null && field.getLabel() != null){
-							label = field.getLabel();
-						}
-					}
-					//adding them to combo string instead of the list
-					if(combineMessages){
-						if(comboMessage.isEmpty()){
-							comboMessage = message;
-						}
-						else{
-							comboMessage = comboMessage + ", " + message;
-						}
-					}
-					else{
-						//add it directly to the list - non combined messages
-						if(StringUtils.isNotEmpty(label)){
-							result.add(label + " - " + message);
-						}
-						else{
-							result.add(message);
-						}
-						
+		if (errorList != null && StringUtils.isNotBlank(key)) {
+			KualiConfigurationService configService = KNSServiceLocator.getKualiConfigurationService();
+			String comboMessage = "";
+			String label = "";
+			for (ErrorMessage e : errorList) {
+				tempCount++;
+				String message = configService.getPropertyString(e.getErrorKey());
+				if (e.getMessageParameters() != null) {
+					message = MessageFormat.format(message, (Object[]) e.getMessageParameters());
+				}
+				if (displayFieldLabelWithMessages) {
+					AttributeField field = view.getViewIndex().getAttributeFieldByPath(key);
+					if (field != null && field.getLabel() != null) {
+						label = field.getLabel();
 					}
 				}
-				//add the single combo string to the returned list
-				//combineMessages will also be checked in the template to further combine them
-				if(StringUtils.isNotEmpty(comboMessage)){
-					if(StringUtils.isNotEmpty(label)){
-						result.add(label + " - " + comboMessage);
+				// adding them to combo string instead of the list
+				if (combineMessages) {
+					if (comboMessage.isEmpty()) {
+						comboMessage = message;
 					}
-					else{
-						result.add(comboMessage);
+					else {
+						comboMessage = comboMessage + ", " + message;
 					}
+				}
+				else {
+					// add it directly to the list - non combined messages
+					if (StringUtils.isNotEmpty(label)) {
+						result.add(label + " - " + message);
+					}
+					else {
+						result.add(message);
+					}
+
+				}
+			}
+			// add the single combo string to the returned list
+			// combineMessages will also be checked in the template to further
+			// combine them
+			if (StringUtils.isNotEmpty(comboMessage)) {
+				if (StringUtils.isNotEmpty(label)) {
+					result.add(label + " - " + comboMessage);
+				}
+				else {
+					result.add(comboMessage);
 				}
 			}
 		}
+		}
 		return result;
 	}
-	
+
 	/**
 	 * This method gets all the keys associated to this ErrorsField.  This includes the id of the parent
 	 * component, additional keys to match, and the bindingPath if this is an ErrorsField for an AttributeField.
@@ -241,25 +241,25 @@ public class ErrorsField extends FieldBase {
 	 * 
 	 * @return
 	 */
-	protected List<String> getKeys(){
+	protected List<String> getKeys(Component parent) {
 		List<String> keyList = new ArrayList<String>();
-		if(additionalKeysToMatch != null){
+		if (additionalKeysToMatch != null) {
 			keyList.addAll(additionalKeysToMatch);
 		}
-		if(StringUtils.isNotBlank(parentComponent.getId())){
-			keyList.add(parentComponent.getId());
+		if (StringUtils.isNotBlank(parent.getId())) {
+			keyList.add(parent.getId());
 		}
-		if(parentComponent instanceof AttributeField){
-			if(((AttributeField) parentComponent).getBindingInfo() != null && 
-					StringUtils.isNotEmpty(((AttributeField) parentComponent).getBindingInfo().getBindingPath())){
-				keyList.add(((AttributeField) parentComponent).getBindingInfo().getBindingPath());
+		if (parent instanceof AttributeField) {
+			if (((AttributeField) parent).getBindingInfo() != null
+					&& StringUtils.isNotEmpty(((AttributeField) parent).getBindingInfo().getBindingPath())) {
+				keyList.add(((AttributeField) parent).getBindingInfo().getBindingPath());
 			}
 		}
-		//Will there be additional components to check beyond AttributeField?
-		
+		// Will there be additional components to check beyond AttributeField?
+
 		return keyList;
 	}
-	
+
 	/**
 	 * This method adds all the nestedKeys of this component by calling getKeys on each of its
 	 * nestedComponents' ErrorsFields and adding them to the list.  If allowMessageRepeat is false,
@@ -268,20 +268,20 @@ public class ErrorsField extends FieldBase {
 	 * @param keyList
 	 * @param component
 	 */
-	private void addNestedKeys(List<String> keyList, Component component){
-		for(Component c: component.getNestedComponents()){
+	private void addNestedKeys(List<String> keyList, Component component) {
+		for (Component c : component.getNestedComponents()) {
 			ErrorsField ef = null;
-			if(c instanceof AttributeField){
+			if (c instanceof AttributeField) {
 				ef = ((AttributeField) c).getErrorsField();
 			}
-			else if(c instanceof ContainerBase){
+			else if (c instanceof ContainerBase) {
 				ef = ((ContainerBase) c).getErrorsField();
 			}
-			if(ef != null){
-				if(!allowMessageRepeat){
+			if (ef != null) {
+				if (!allowMessageRepeat) {
 					ef.setDisplayMessages(false);
 				}
-				keyList.addAll(ef.getKeys());
+				keyList.addAll(ef.getKeys(c));
 				addNestedKeys(keyList, c);
 			}
 		}
@@ -326,7 +326,7 @@ public class ErrorsField extends FieldBase {
 		this.infoTitle = infoTitle;
 	}
 
-	
+
 	/**
 	 * If displayErrorMessages is true, error messages will be displayed, otherwise they will not.  Unlike many
 	 * of the options contained on ErrorsField, this will not effect client side validations; ie this will not turn off errorMessage 
@@ -390,16 +390,6 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * Sets the parent component of this ErrorsField - ie the container or field this ErrorsField is showing
-	 * messages for.
-	 * 
-	 * @param parentComponent the parentComponent to set
-	 */
-	public void setParentComponent(Component parentComponent) {
-		this.parentComponent = parentComponent;
-	}
-
-	/**
 	 * AdditionalKeysToMatch is an additional list of keys outside of the default keys that will be matched
 	 * when messages are returned after a form is submitted.
 	 * These keys are only used for displaying messages generated by the server and have no effect on client side
@@ -412,7 +402,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param additionalKeysToMatch the additionalKeysToMatch to set
+	 * @param additionalKeysToMatch
+	 *            the additionalKeysToMatch to set
 	 */
 	public void setAdditionalKeysToMatch(List<String> additionalKeysToMatch) {
 		this.additionalKeysToMatch = additionalKeysToMatch;
@@ -429,7 +420,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param displayErrorTitle the displayErrorTitle to set
+	 * @param displayErrorTitle
+	 *            the displayErrorTitle to set
 	 */
 	public void setDisplayErrorTitle(boolean displayErrorTitle) {
 		this.displayErrorTitle = displayErrorTitle;
@@ -446,7 +438,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param displayWarningTitle the displayWarningTitle to set
+	 * @param displayWarningTitle
+	 *            the displayWarningTitle to set
 	 */
 	public void setDisplayWarningTitle(boolean displayWarningTitle) {
 		this.displayWarningTitle = displayWarningTitle;
@@ -463,7 +456,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param displayInfoTitle the displayInfoTitle to set
+	 * @param displayInfoTitle
+	 *            the displayInfoTitle to set
 	 */
 	public void setDisplayInfoTitle(boolean displayInfoTitle) {
 		this.displayInfoTitle = displayInfoTitle;
@@ -481,10 +475,10 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param displayFieldLabelWithMessages the displayFieldLabelWithMessages to set
+	 * @param displayFieldLabelWithMessages
+	 *            the displayFieldLabelWithMessages to set
 	 */
-	public void setDisplayFieldLabelWithMessages(
-			boolean displayFieldLabelWithMessages) {
+	public void setDisplayFieldLabelWithMessages(boolean displayFieldLabelWithMessages) {
 		this.displayFieldLabelWithMessages = displayFieldLabelWithMessages;
 	}
 
@@ -500,7 +494,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param displayMessages the displayMessages to set
+	 * @param displayMessages
+	 *            the displayMessages to set
 	 */
 	public void setDisplayMessages(boolean displayMessages) {
 		this.displayMessages = displayMessages;
@@ -517,16 +512,17 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param displayNestedMessages the displayNestedMessages to set
+	 * @param displayNestedMessages
+	 *            the displayNestedMessages to set
 	 */
 	public void setDisplayNestedMessages(boolean displayNestedMessages) {
 		this.displayNestedMessages = displayNestedMessages;
 	}
 
 	/**
-	 * Combines the messages for a single key into one concatenated message per key being matched, seperated by
-	 * a comma
-	 * 
+     * Combines the messages for a single key into one concatenated message per key being matched, seperated by
+     * a comma
+     * 
 	 * @return the combineMessages
 	 */
 	public boolean isCombineMessages() {
@@ -534,7 +530,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param combineMessages the combineMessages to set
+	 * @param combineMessages
+	 *            the combineMessages to set
 	 */
 	public void setCombineMessages(boolean combineMessages) {
 		this.combineMessages = combineMessages;
@@ -555,7 +552,8 @@ public class ErrorsField extends FieldBase {
 
 	/**
 	 * 
-	 * @param allowMessageRepeat the allowMessageRepeat to set
+	 * @param allowMessageRepeat
+	 *            the allowMessageRepeat to set
 	 */
 	public void setAllowMessageRepeat(boolean allowMessageRepeat) {
 		this.allowMessageRepeat = allowMessageRepeat;
@@ -572,7 +570,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param displayCounts the displayCounts to set
+	 * @param displayCounts
+	 *            the displayCounts to set
 	 */
 	public void setDisplayCounts(boolean displayCounts) {
 		this.displayCounts = displayCounts;
@@ -651,7 +650,8 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * @param alternateContainer the alternateContainer to set
+	 * @param alternateContainer
+	 *            the alternateContainer to set
 	 */
 	public void setAlternateContainer(boolean alternateContainer) {
 		this.alternateContainer = alternateContainer;
@@ -695,6 +695,5 @@ public class ErrorsField extends FieldBase {
 		return highlightOnError;
 	}
 
-	
 	
 }

@@ -21,10 +21,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
+import org.kuali.rice.kns.uif.widget.Accordion;
 
 /**
  * Container that holds a list of <code>Field</code> or other <code>Group</code>
@@ -52,6 +53,8 @@ public class Group extends ContainerBase {
 	private String fieldBindByNamePrefix;
 	private String fieldBindingObjectPath;
 
+	private Accordion accordion;
+
 	private List<? extends Component> items;
 
 	/**
@@ -62,15 +65,14 @@ public class Group extends ContainerBase {
 	}
 
 	/**
-	 * <p>
-	 * The following initialization is performed:
+	 * The following actions are performed:
+	 * 
 	 * <ul>
 	 * <li>Sets the bindByNamePrefix if blank on any AttributeField and
 	 * GroupField instances within the items List</li>
 	 * </ul>
-	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
 	 */
 	@Override
 	public void performInitialization(View view) {
@@ -113,6 +115,18 @@ public class Group extends ContainerBase {
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(accordion);
+
+		return components;
+	}
+
+	/**
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
 	@Override
@@ -123,9 +137,9 @@ public class Group extends ContainerBase {
 
 		return supportedComponents;
 	}
-	
+
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentTypeName()
+	 * @see org.kuali.rice.kns.uif.core.Component#getComponentTypeName()
 	 */
 	@Override
 	public String getComponentTypeName() {
@@ -184,6 +198,25 @@ public class Group extends ContainerBase {
 	 */
 	public void setFieldBindingObjectPath(String fieldBindingObjectPath) {
 		this.fieldBindingObjectPath = fieldBindingObjectPath;
+	}
+
+	/**
+	 * Accordion widget that provides collapse/expand functionality for the
+	 * group
+	 * 
+	 * @return Accordion instance
+	 */
+	public Accordion getAccordion() {
+		return this.accordion;
+	}
+
+	/**
+	 * Setter for the group's accordion instance
+	 * 
+	 * @param accordion
+	 */
+	public void setAccordion(Accordion accordion) {
+		this.accordion = accordion;
 	}
 
 	/**

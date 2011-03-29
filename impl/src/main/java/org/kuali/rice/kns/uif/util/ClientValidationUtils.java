@@ -90,6 +90,7 @@ public class ClientValidationUtils {
 		
 		private final String name;
 		
+		@Override
 		public String toString() {
 			return name;
 		}
@@ -393,7 +394,7 @@ public class ClientValidationUtils {
 	 *            validation rule should be applied
 	 */
 	public static void processPrerequisiteConstraint(AttributeField field, PrerequisiteConstraint constraint, View view, String booleanStatement) {
-		if (constraint != null && constraint.getApplyClientSide()) {
+		if (constraint != null && constraint.getApplyClientSide().booleanValue()) {
 			addScriptToView(view, getPrerequisiteStatement(field, view, constraint, booleanStatement)
 					+ getPostrequisiteStatement(field, constraint, booleanStatement));
 		}
@@ -470,7 +471,7 @@ public class ClientValidationUtils {
 			}
 			
 		}
-		String rule = "";
+		
 		String function = "function(element){\n" +
 			"return (coerceValue('"+ field.getBindingInfo().getBindingPath() + "') && " + booleanStatement + ");}";
 		String postStatement = "\nelse if(occursBefore('" + field.getBindingInfo().getBindingPath() + "','" + constraint.getAttributePath() + 

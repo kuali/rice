@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kns.uif;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.kuali.rice.core.util.JSTLConstants;
 
 /**
@@ -77,6 +74,7 @@ public class UifConstants extends JSTLConstants {
 		public static final String NAVIGATE = "navigate";
 		public static final String START = "start";
 		public static final String SAVE = "save";
+		public static final String SEARCH = "search";
 		public static final String CLOSE = "close";
 		public static final String ADD_LINE = "addLine";
 		public static final String DELETE_LINE = "deleteLine";

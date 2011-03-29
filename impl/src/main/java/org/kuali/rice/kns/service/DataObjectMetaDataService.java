@@ -18,15 +18,17 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+
 /**
+ * Provides metadata such as relationships and key fields for data objects
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DataObjectMetaDataService {
 
     /**
-     *
-     * This method checks the DataDictionary and OJB Repository File to determine the primary
+     * Checks the DataDictionary and OJB Repository File to determine the primary
      * fields names for a given class.
      *
      * @param clazz The Class to check for primary keys
@@ -42,7 +44,6 @@ public interface DataObjectMetaDataService {
      */
     public Map<String, ?> getPrimaryKeyFieldValues(Object dataObject);
 
-    
     /**
      * @param persistableObject object whose primary key field name,value pairs you want
      * @param sortFieldNames if true, the returned Map will iterate through its entries sorted by fieldName
@@ -60,5 +61,41 @@ public interface DataObjectMetaDataService {
      * @param do2
      * @return boolean indicating whether the two objects are equal.
      */
-    boolean equalsByPrimaryKeys(Object do1, Object do2);
+    public boolean equalsByPrimaryKeys(Object do1, Object do2);
+    
+	/**
+	 * Attempts to find a relationship for the given attribute within the given
+	 * data object
+	 * 
+	 * <p>
+	 * First the data dictionary is queried to find any relationship definitions
+	 * setup that include the attribute, if found the
+	 * <code>BusinessObjectRetationship</code> is build from that. If not and
+	 * the data object class is persistent, relationships are retrieved from the
+	 * persistence service. Nested attributes are handled in addition to
+	 * external business objects. If multiple relationships are found, the one
+	 * that contains the least amount of joining keys is returned
+	 * </p>
+	 * 
+	 * @param dataObject
+	 *            - data object instance that contains the attribute
+	 * @param dataObjectClass
+	 *            - class for the data object that contains the attribute
+	 * @param attributeName
+	 *            - property name for the attribute
+	 * @param attributePrefix
+	 *            - property prefix for the attribute
+	 * @param keysOnly
+	 *            - indicates whether only primary key fields should be returned
+	 *            in the relationship
+	 * @param supportsLookup
+	 *            - indicates whether the relationship should support lookup
+	 * @param supportsInquiry
+	 *            - indicates whether the relationship should support inquiry
+	 * @return BusinessObjectRelationship for the attribute, or null if not
+	 *         found
+	 */
+	public BusinessObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
+			String attributeName, String attributePrefix, boolean keysOnly, boolean supportsLookup,
+			boolean supportInquiry);
 }

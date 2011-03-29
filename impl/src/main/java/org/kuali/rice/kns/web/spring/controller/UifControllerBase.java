@@ -16,9 +16,11 @@
 package org.kuali.rice.kns.web.spring.controller;
 
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
@@ -26,20 +28,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.action.ActionForward;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
+import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,6 +74,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UifControllerBase {
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
+
 	protected static final String REDIRECT_PREFIX = "redirect:";
 
 	/**
@@ -253,31 +262,99 @@ public abstract class UifControllerBase {
 		return getUIFModelAndView(form, form.getViewId(), pageId);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigateToLookup")
-	public ModelAndView navigateToLookup(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+	/**
+	 * Builds up a URL to the lookup view based on the given post action
+	 * parameters and redirects
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=performLookup")
+	public ModelAndView performLookup(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 		Properties lookupParameters = form.getActionParametersAsProperties();
-		
+
+		String lookupObjectClassName = (String) lookupParameters.get(UifParameters.DATA_OBJECT_CLASS_NAME);
+		Class<?> lookupObjectClass = null;
+		try {
+			lookupObjectClass = Class.forName(lookupObjectClassName);
+		}
+		catch (ClassNotFoundException e) {
+			LOG.error("Unable to get class for name: " + lookupObjectClassName);
+			throw new RuntimeException("Unable to get class for name: " + lookupObjectClassName, e);
+		}
+
+		// get form values for the lookup parameter fields
+		String lookupParameterString = (String) lookupParameters.get(UifParameters.LOOKUP_PARAMETERS);
+		Map<String, String> lookupParameterFields = WebUtils.getMapFromParameterString(lookupParameterString);
+		for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
+			String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
+					lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
+			if (StringUtils.isNotBlank(lookupParameterValue)) {
+				lookupParameters.put(lookupParameter.getValue(), lookupParameterValue);
+			}
+		}
+
+		// TODO: lookup anchors and doc number?
+
+		// TODO: multi-value lookup requests
+
 		String baseLookupUrl = (String) lookupParameters.get(UifParameters.BASE_LOOKUP_URL);
 		lookupParameters.remove(UifParameters.BASE_LOOKUP_URL);
-		
+
+		// set lookup method to call
 		lookupParameters.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
+		String autoSearchString = (String) lookupParameters.get(UifParameters.AUTO_SEARCH);
+		if (Boolean.parseBoolean(autoSearchString)) {
+			lookupParameters.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.SEARCH);
+		}
+
+		lookupParameters.put(UifParameters.RETURN_LOCATION, form.getFormPostUrl());
+		lookupParameters.put(UifParameters.RETURN_FORM_KEY, form.getFormKey());
+
+		// special check for external object classes
+		if (lookupObjectClass != null) {
+			ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService()
+					.getResponsibleModuleService(lookupObjectClass);
+			if (responsibleModuleService != null && responsibleModuleService.isExternalizable(lookupObjectClass)) {
+				Map<String, String> parameterMap = new HashMap<String, String>();
+				Enumeration<Object> e = lookupParameters.keys();
+				while (e.hasMoreElements()) {
+					String paramName = (String) e.nextElement();
+					parameterMap.put(paramName, lookupParameters.getProperty(paramName));
+				}
+
+				String lookupUrl = responsibleModuleService.getExternalizableBusinessObjectLookupUrl(lookupObjectClass,
+						parameterMap);
+				return performRedirect(form, lookupUrl, new Properties());
+			}
+		}
 
 		return performRedirect(form, baseLookupUrl, lookupParameters);
 	}
 
-	protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {	
+	/**
+	 * Builds a <code>ModelAndView</code> instance configured to redirect to the
+	 * URL formed by joining the base URL with the given URL parameters
+	 * 
+	 * @param form
+	 *            - current form instance
+	 * @param baseUrl
+	 *            - base url to redirect to
+	 * @param urlParameters
+	 *            - properties containing key/value pairs for the url parameters
+	 * @return ModelAndView configured to redirect to the given URL
+	 */
+	protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
 		// If this is an Ajax call only return the redirectURL view with the URL set
 		// This is to avoid automatic redirect when using light boxes
 		if (urlParameters.get("ajaxCall") != null && urlParameters.get("ajaxCall").equals("true")) {
 			urlParameters.remove("ajaxCall");
-			String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
+		    String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 			ModelAndView modelAndView = new ModelAndView("redirectURL");            
             modelAndView.addObject("redirectUrl",  redirectUrl);
             return modelAndView;
-		}
+		}  
 		String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 		ModelAndView modelAndView = new ModelAndView(REDIRECT_PREFIX + redirectUrl);
+
 		return modelAndView;
 	}
 
@@ -308,11 +385,17 @@ public abstract class UifControllerBase {
 		// get new instance from the view service
 		View view = form.getView();
 		if ((view == null) || !StringUtils.equals(viewId, view.getId())) {
-			view = getViewService().getViewById(viewId);
+			view = getViewService().getView(viewId, form.getViewRequestParameters());
 		}
 
-		// update the view with the model data
-		getViewService().updateView(view, form);
+		// if view status is final we need to rebuild (build fresh)
+		if (StringUtils.equals(UifConstants.ViewStatus.FINAL, view.getViewStatus())) {
+			view = getViewService().rebuildView(viewId, form, form.getViewRequestParameters());
+		}
+		else {
+			// update the view with the model data
+			getViewService().buildView(view, form);
+		}
 
 		if (StringUtils.isNotBlank(pageId)) {
 			view.setCurrentPageId(pageId);

@@ -18,9 +18,9 @@ package org.kuali.rice.kns.uif.modifier;
 import java.io.Serializable;
 import java.util.Set;
 
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.Ordered;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.Ordered;
 
 /**
  * Provides modification functionality for a <code>Component</code>
@@ -85,12 +85,21 @@ public interface ComponentModifier extends Serializable, Ordered {
 	public String getRunPhase();
 
 	/**
+	 * Conditional expression to evaluate for determining whether the component
+	 * modifier should be run. If the expression evaluates to true the modifier
+	 * will be executed, otherwise it will not be executed
+	 * 
+	 * @return String el expression that should evaluate to boolean
+	 */
+	public String getRunCondition();
+
+	/**
 	 * @see org.springframework.core.Ordered#getOrder()
 	 */
 	public int getOrder();
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Ordered#setOrder(int)
+	 * @see org.kuali.rice.kns.uif.core.Ordered#setOrder(int)
 	 */
 	public void setOrder(int order);
 

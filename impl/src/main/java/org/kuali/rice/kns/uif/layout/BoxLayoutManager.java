@@ -16,13 +16,12 @@
 package org.kuali.rice.kns.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.CssConstants;
-import org.kuali.rice.kns.uif.CssConstants.Margins;
 import org.kuali.rice.kns.uif.CssConstants.Padding;
 import org.kuali.rice.kns.uif.UifConstants.Orientation;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.AttributeField;
 
 /**
@@ -34,7 +33,7 @@ import org.kuali.rice.kns.uif.field.AttributeField;
  * a CSS based template. The items in the <code>Container</code> instance are
  * rendered sequentially wrapping each one with a span element. The padding
  * property can be configured to space the elements as needed. To achieve a
- * vertical orientation, the span style is set to block. Aditional styling can
+ * vertical orientation, the span style is set to block. Additional styling can
  * be set for the items by using the itemSpanStyle property.
  * </p>
  * 
@@ -56,17 +55,18 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	}
 
 	/**
-	 * <p>
 	 * The following initialization is performed:
-	 * <p>
 	 * 
+	 * <ul>
+	 * <li>Set the itemSpanStyle</li>
+	 * </ul>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View,org.kuali.rice.kns.uif.container.Container)
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View,org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
-		
+
 		if(StringUtils.isBlank(itemStyle)){
 			itemStyle = "";
 		}
@@ -82,37 +82,38 @@ public class BoxLayoutManager extends LayoutManagerBase {
 				itemStyle += CssConstants.getCssStyle(Padding.PADDING_RIGHT, padding);
 			}
 		}
-		
-		//classes to identify this layout in jQuery and to clear the float correctly in all browsers
-		this.addStyleClass("fieldLine");
-		this.addStyleClass("clearfix");
-		
-		for(Component c: container.getNestedComponents()){
-			if(c != null){
-				if(StringUtils.equals(orientation, Orientation.HORIZONTAL)){
-					//horizontal items get a special class
-					c.addStyleClass("boxLayoutHorizontalItem");
-					c.appendToStyle(itemStyle);
-					//in a horizontal box layout errors are placed in a div next to all fields,
-					//set the errorsField to know that we are using an alternate container for them
-					if(c instanceof AttributeField){
-						((AttributeField) c).getErrorsField().setAlternateContainer(true);
-						layoutFieldErrors = true;
-					}
-				}
-				
-				if(container.isFieldContainer()){
-					if(c instanceof AttributeField){
-						((AttributeField) c).getErrorsField().setAlternateContainer(true);
-						layoutFieldErrors = true;
-					}
-				}
-			}
-		}
-	}
-	
+
+        //classes to identify this layout in jQuery and to clear the float correctly in all browsers
+        this.addStyleClass("fieldLine");
+        this.addStyleClass("clearfix");
+        
+        for(Component c: container.getNestedComponents()){
+            if(c != null){
+                if(StringUtils.equals(orientation, Orientation.HORIZONTAL)){
+                    //horizontal items get a special class
+                    c.addStyleClass("boxLayoutHorizontalItem");
+                    c.appendToStyle(itemStyle);
+                    //in a horizontal box layout errors are placed in a div next to all fields,
+                    //set the errorsField to know that we are using an alternate container for them
+                    if(c instanceof AttributeField){
+                        ((AttributeField) c).getErrorsField().setAlternateContainer(true);
+                        layoutFieldErrors = true;
+                    }
+                }
+                
+                if(container.isFieldContainer()){
+                    if(c instanceof AttributeField){
+                        ((AttributeField) c).getErrorsField().setAlternateContainer(true);
+                        layoutFieldErrors = true;
+                    }
+                }
+            }
+        }
+    }
+
 	/**
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object, org.kuali.rice.kns.uif.container.Container)
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
 	public void performFinalize(View view, Object model, Container container) {
@@ -196,7 +197,5 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	public void setLayoutFieldErrors(boolean layoutFieldErrors) {
 		this.layoutFieldErrors = layoutFieldErrors;
 	}
-	
-	
 
 }

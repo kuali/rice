@@ -22,10 +22,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.HeaderField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 
@@ -77,7 +77,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 	 * </p>
 	 * 
 	 * @see org.kuali.rice.kns.uif.modifier.ComponentModifier#performModification(org.kuali.rice.kns.uif.container.View,
-	 *      org.kuali.rice.kns.uif.Component)
+	 *      org.kuali.rice.kns.uif.core.Component)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

@@ -60,7 +60,8 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 		MaintenanceView maintenanceView = (MaintenanceView) view;
 
 		parameters.put(ViewTypeParameterNames.NAME, maintenanceView.getViewName());
-		parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME, maintenanceView.getObjectClassName().getName());
+		parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME, maintenanceView.getDataObjectClassName()
+				.getName());
 
 		return parameters;
 	}
@@ -82,9 +83,9 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 			parameters.put(ViewTypeParameterNames.NAME, UifConstants.DEFAULT_VIEW_NAME);
 		}
 
-		if (requestParameters.containsKey(ViewTypeParameterNames.OBJECT_CLASS_NAME)) {
-			parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME,
-					requestParameters.get(ViewTypeParameterNames.OBJECT_CLASS_NAME));
+		if (requestParameters.containsKey(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME)) {
+			parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME,
+					requestParameters.get(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME));
 		}
 		else if (requestParameters.containsKey(KNSPropertyConstants.DOCUMENT_NUMBER)) {
 			String documentNumber = requestParameters.get(KNSPropertyConstants.DOCUMENT_NUMBER);
@@ -98,7 +99,7 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 					Class<?> objectClassName = maintenanceDocumentDictionaryService.getBusinessObjectClass(docTypeName);
 					if (objectClassName != null) {
 						objectClassFound = true;
-						parameters.put(ViewTypeParameterNames.OBJECT_CLASS_NAME, objectClassName.getName());
+						parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME, objectClassName.getName());
 					}
 				}
 

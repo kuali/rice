@@ -39,14 +39,13 @@ import org.kuali.rice.kns.uif.UifConstants.ViewType;
  * fields. If more than one maintenance view is needed for the same object
  * class, the view name can be used to further identify an unique view
  * </p>
- * *
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceView extends DocumentView {
 	private static final long serialVersionUID = -3382802967703882341L;
 
-	private Class<?> objectClassName;
+	private Class<?> dataObjectClassName;
 
 	private String oldObjectBindingPath;
 
@@ -60,8 +59,8 @@ public class MaintenanceView extends DocumentView {
 	}
 
 	/**
-	 * <p>
 	 * The following initialization is performed:
+	 * 
 	 * <ul>
 	 * <li>Set the abstractTypeClasses map for the maintenance object path</li>
 	 * </ul>
@@ -73,8 +72,8 @@ public class MaintenanceView extends DocumentView {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), objectClassName);
-		getAbstractTypeClasses().put(getOldObjectBindingPath(), objectClassName);
+		getAbstractTypeClasses().put(getDefaultBindingObjectPath(), dataObjectClassName);
+		getAbstractTypeClasses().put(getOldObjectBindingPath(), dataObjectClassName);
 	}
 
 	/**
@@ -89,17 +88,17 @@ public class MaintenanceView extends DocumentView {
 	 * 
 	 * @return Class<?> maintenance object class
 	 */
-	public Class<?> getObjectClassName() {
-		return this.objectClassName;
+	public Class<?> getDataObjectClassName() {
+		return this.dataObjectClassName;
 	}
 
 	/**
 	 * Setter for the object class name
 	 * 
-	 * @param objectClassName
+	 * @param dataObjectClassName
 	 */
-	public void setObjectClassName(Class<?> objectClassName) {
-		this.objectClassName = objectClassName;
+	public void setDataObjectClassName(Class<?> dataObjectClassName) {
+		this.dataObjectClassName = dataObjectClassName;
 	}
 
 	public String getOldObjectBindingPath() {

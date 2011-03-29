@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.uif.field;
 
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.core.Component;
 
 /**
  * Component that contains one or more user interface elements and can be placed

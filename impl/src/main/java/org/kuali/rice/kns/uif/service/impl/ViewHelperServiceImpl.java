@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kns.uif.service.impl;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -24,21 +26,25 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.PropertyReplacer;
+import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.layout.LayoutManager;
 import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.kns.uif.service.ViewDictionaryService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
-import org.kuali.rice.kns.uif.widget.Widget;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 
 /**
  * Default Implementation of <code>ViewHelperService</code>
@@ -46,37 +52,86 @@ import org.kuali.rice.kns.uif.widget.Widget;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewHelperServiceImpl implements ViewHelperService {
-
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
 	private transient DataDictionaryService dataDictionaryService;
 	private transient ExpressionEvaluatorService expressionEvaluatorService;
+	private transient ViewDictionaryService viewDictionaryService;
 
 	/**
-	 * Default implementation consults the <code>View</code> instance for the
-	 * configured allowed parameters. If matches of those parameter names are
-	 * found in the given Map, the parameter key/value is placed into the
-	 * returned context Map
+	 * Uses reflection to find all fields defined on the <code>View</code>
+	 * instance that have the <code>RequestParameter</code> annotation (which
+	 * indicates the field may be populated by the request). For each field
+	 * found, if there is a corresponding key/value pair in the request
+	 * parameters, the value is used to populate the field. In addition, any
+	 * conditional properties of <code>PropertyReplacers</code> configured for
+	 * the field are cleared so that the request parameter value does not get
+	 * overridden by the dictionary conditional logic
 	 * 
-	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#createInitialViewContext(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#populateViewFromRequestParameters(org.kuali.rice.kns.uif.container.View,
 	 *      java.util.Map)
 	 */
 	@Override
-	public Map<String, String> createInitialViewContext(View view, Map<String, String> parameters) {
-		Map<String, String> context = new HashMap<String, String>();
+	public void populateViewFromRequestParameters(View view, Map<String, String> parameters) {
+		// build set of view properties that can be populated
+		Set<String> fieldNamesToPopulate = new HashSet<String>();
 
-		if (parameters == null || parameters.isEmpty()) {
-			return context;
-		}
+		Field[] fields = view.getClass().getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			Field field = fields[i];
 
-		Set<String> allowedParameters = view.getAllowedParameters();
-		for (String parameterName : allowedParameters) {
-			if (parameters.containsKey(parameterName)) {
-				context.put(parameterName, parameters.get(parameterName));
+			RequestParameter requestParameter = field.getAnnotation(RequestParameter.class);
+			if (requestParameter != null) {
+				// use specified parameter name if given, else use field name
+				if (StringUtils.isNotBlank(requestParameter.parameterName())) {
+					fieldNamesToPopulate.add(requestParameter.parameterName());
+				}
+				else {
+					fieldNamesToPopulate.add(field.getName());
+				}
 			}
 		}
 
-		return context;
+		// build Map of property replacers by property name
+		Map<String, Set<PropertyReplacer>> viewPropertyReplacers = new HashMap<String, Set<PropertyReplacer>>();
+		for (PropertyReplacer replacer : view.getPropertyReplacers()) {
+			Set<PropertyReplacer> propertyReplacers = new HashSet<PropertyReplacer>();
+			if (viewPropertyReplacers.containsKey(replacer.getPropertyName())) {
+				propertyReplacers = viewPropertyReplacers.get(replacer.getPropertyName());
+			}
+			propertyReplacers.add(replacer);
+
+			viewPropertyReplacers.put(replacer.getPropertyName(), propertyReplacers);
+		}
+
+		// build map of view parameter key/values and populate view fields
+		Map<String, String> viewRequestParameters = new HashMap<String, String>();
+		for (String fieldToPopulate : fieldNamesToPopulate) {
+			if (parameters.containsKey(fieldToPopulate)) {
+				String fieldValue = parameters.get(fieldToPopulate);
+
+				if (StringUtils.isNotBlank(fieldValue)) {
+					viewRequestParameters.put(fieldToPopulate, fieldValue);
+					ObjectPropertyUtils.setPropertyValue(view, fieldToPopulate, fieldValue);
+
+					// remove any conditional configuration so value is not
+					// overridden later during the apply model phase
+					String conditionalProperty = StringUtils.substring(fieldToPopulate, 0, 1).toLowerCase()
+							+ StringUtils.substring(fieldToPopulate, 1, fieldToPopulate.length());
+					conditionalProperty = UifConstants.EL_CONDITIONAL_PROPERTY_PREFIX + conditionalProperty;
+					ObjectPropertyUtils.setPropertyValue(view, conditionalProperty, fieldValue, true);
+
+					if (viewPropertyReplacers.containsKey(fieldToPopulate)) {
+						Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(fieldToPopulate);
+						for (PropertyReplacer replacer : propertyReplacers) {
+							view.getPropertyReplacers().remove(replacer);
+						}
+					}
+				}
+			}
+		}
+
+		view.setViewRequestParameters(viewRequestParameters);
 	}
 
 	/**
@@ -85,11 +140,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 */
 	@Override
 	public void performInitialization(View view) {
-		initializeComponent(view, view);
+		performComponentInitialization(view, view);
 	}
 
 	/**
 	 * Performs initialization of a component by these steps:
+	 * 
 	 * <ul>
 	 * <li>For <code>AttributeField</code> instances, set defaults from the data
 	 * dictionary.</li>
@@ -108,12 +164,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 * be an important factor to consider when initializing a component
 	 * </p>
 	 * 
-	 * @param view
-	 *            - view instance the component belongs to
-	 * @param component
-	 *            - component instance to initialize
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.kns.uif.container.View,
+	 *      org.kuali.rice.kns.uif.core.Component)
 	 */
-	protected void initializeComponent(View view, Component component) {
+	public void performComponentInitialization(View view, Component component) {
 		if (component == null) {
 			return;
 		}
@@ -140,15 +194,18 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// invoke component initializers setup to run in the initialize phase
-		for (ComponentModifier initializer : component.getComponentModifiers()) {
-			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.INITIALIZE)) {
-				initializer.performModification(view, component);
-			}
-		}
+		runComponentModifiers(view, component, null, UifConstants.ViewPhases.INITIALIZE);
 
 		// initialize nested components
 		for (Component nestedComponent : component.getNestedComponents()) {
-			initializeComponent(view, nestedComponent);
+			performComponentInitialization(view, nestedComponent);
+		}
+
+		// initialize property replacements (if components)
+		for (PropertyReplacer replacer : component.getPropertyReplacers()) {
+			if (Component.class.isAssignableFrom(replacer.getReplacement().getClass())) {
+				performComponentInitialization(view, (Component) replacer.getReplacement());
+			}
 		}
 
 		// invoke initialize service hook
@@ -195,11 +252,25 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			if (attributeDefinition != null) {
 				field.copyFromAttributeDefinition(attributeDefinition);
 			}
+
+			// update field with attribute and entry name
+			field.setDictionaryAttributeName(dictionaryAttributeName);
+			field.setDictionaryObjectEntry(dictionaryObjectEntry);
 		}
 	}
 
+	/**
+	 * Determines the dictionary class that is associated with the given
+	 * <code>AttributeField</code>
+	 * 
+	 * @param view
+	 *            - view instance for field
+	 * @param field
+	 *            - field instance to determine dictionary class for
+	 * @return Class<?> dictionary class or null if not found
+	 */
 	protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
-		return ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());
+		return ViewModelUtils.getParentObjectClassForMetadata(view, field);
 	}
 
 	/**
@@ -208,6 +279,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 */
 	@Override
 	public void performApplyModel(View view, Object model) {
+		view.pushObjectToContext(UifConstants.ContextVariableNames.VIEW, view);
+
+		Properties properties = KNSServiceLocator.getKualiConfigurationService().getAllProperties();
+		view.pushObjectToContext(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+		
 		performComponentApplyModel(view, view, model);
 	}
 
@@ -235,11 +311,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// evaluate properties
-		puchCommonContext(view, component, model);
+		pushCommonContext(view, component);
 		getExpressionEvaluatorService().evaluateObjectProperties(component, model, component.getContext());
 
 		if (component instanceof Container) {
 			LayoutManager layoutManager = ((Container) component).getLayoutManager();
+
 			if (layoutManager != null) {
 				layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
 				expressionEvaluatorService.evaluateObjectProperties(layoutManager, model, layoutManager.getContext());
@@ -253,11 +330,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		performCustomApplyModel(view, component, model);
 
 		// invoke component modifiers configured to run in the apply model phase
-		for (ComponentModifier initializer : component.getComponentModifiers()) {
-			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.APPLY_MODEL)) {
-				initializer.performModification(view, component);
-			}
-		}
+		runComponentModifiers(view, component, model, UifConstants.ViewPhases.APPLY_MODEL);
 
 		// get children and recursively perform conditional logic
 		for (Component nestedComponent : component.getNestedComponents()) {
@@ -269,12 +342,54 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 	}
 
-	public void puchCommonContext(View view, Component component, Object model) {
-		component.pushObjectToContext(UifConstants.ContextVariableNames.VIEW, view);
-		component.pushObjectToContext(UifConstants.ContextVariableNames.COMPONENT, component);
+	/**
+	 * Runs any configured <code>ComponentModifiers</code> for the given
+	 * component that match the given run phase and who run condition evaluation
+	 * succeeds
+	 * 
+	 * @param view
+	 *            - view instance for context
+	 * @param component
+	 *            - component instance whose modifiers should be run
+	 * @param model
+	 *            - model object for context
+	 * @param runPhase
+	 *            - current phase to match on
+	 */
+	protected void runComponentModifiers(View view, Component component, Object model, String runPhase) {
+		for (ComponentModifier modifier : component.getComponentModifiers()) {
+			// check run phase matches
+			if (StringUtils.equals(modifier.getRunPhase(), runPhase)) {
+				// check condition (if set) evaluates to true
+				boolean runModifier = true;
+				if (StringUtils.isNotBlank(modifier.getRunCondition())) {
+					Map<String, Object> context = new HashMap<String, Object>();
+					context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
-		Properties properties = KNSServiceLocator.getKualiConfigurationService().getAllProperties();
-		component.pushObjectToContext(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+					String conditionEvaluation = getExpressionEvaluatorService().evaluateExpressionTemplate(model,
+							context, modifier.getRunCondition());
+					runModifier = Boolean.parseBoolean(conditionEvaluation);
+				}
+
+				if (runModifier) {
+					modifier.performModification(view, component);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Gets global objects for the context map and pushes them to the context
+	 * for the component
+	 * 
+	 * @param view
+	 *            - view instance for component
+	 * @param component
+	 *            - component instance to push context to
+	 */
+	protected void pushCommonContext(View view, Component component) {
+		component.getContext().putAll(view.getContext());
+		component.pushObjectToContext(UifConstants.ContextVariableNames.COMPONENT, component);
 	}
 
 	/**
@@ -283,7 +398,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 */
 	@Override
 	public void performFinalize(View view, Object model) {
-		performComponentFinalize(view, view, model);
+		performComponentFinalize(view, view, model, null);
 	}
 
 	/**
@@ -296,33 +411,26 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 *            - the component instance that should be updated
 	 * @param model
 	 *            - top level object containing the data
+	 * @param parent
+	 *            - Parent component for the component being finalized
 	 */
-	protected void performComponentFinalize(View view, Component component, Object model) {
+	protected void performComponentFinalize(View view, Component component, Object model, Component parent) {
 		if (component == null) {
 			return;
 		}
 
 		// invoke component to update its state
-		component.performFinalize(view, model);
+		component.performFinalize(view, model, parent);
 
 		// invoke service override hook
-		performCustomUpdateState(view, component, model);
+		performCustomFinalize(view, component, model, parent);
 
 		// invoke component initializers setup to run in the finalize phase
-		for (ComponentModifier initializer : component.getComponentModifiers()) {
-			if (StringUtils.equals(initializer.getRunPhase(), UifConstants.ViewPhases.FINALIZE)) {
-				initializer.performModification(view, component);
-			}
-		}
+		runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
 
 		// get components children and recursively update state
 		for (Component nestedComponent : component.getNestedComponents()) {
-			// invoke special finalize method for widgets
-			if (nestedComponent instanceof Widget) {
-				((Widget) nestedComponent).performFinalize(view, model, component);
-			}
-
-			performComponentFinalize(view, nestedComponent, model);
+			performComponentFinalize(view, nestedComponent, model, component);
 		}
 	}
 
@@ -449,6 +557,25 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
+	 * Finds the <code>Inquirable</code> configured for the given data object
+	 * class and delegates to it for building the inquiry URL
+	 * 
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#buildInquiryLink(java.lang.Object,
+	 *      java.lang.String, org.kuali.rice.kns.uif.widget.Inquiry)
+	 */
+	public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry) {
+		Inquirable<?> inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(),
+				inquiry.getViewName());
+		if (inquirable != null) {
+			inquirable.buildInquiryLink(dataObject, propertyName, inquiry);
+		}
+		else {
+			// inquirable not found, no inquiry link can be set
+			inquiry.setRender(false);
+		}
+	}
+
+	/**
 	 * Hook for service overrides to perform custom initialization on the
 	 * component
 	 * 
@@ -478,7 +605,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
-	 * Hook for service overrides to perform custom updating of state
+	 * Hook for service overrides to perform custom component finalization
 	 * 
 	 * @param view
 	 *            - view instance containing the component
@@ -486,8 +613,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 *            - component instance to update
 	 * @param model
 	 *            - Top level object containing the data
+	 * @param parent
+	 *            - Parent component for the component being finalized
 	 */
-	protected void performCustomUpdateState(View view, Component component, Object model) {
+	protected void performCustomFinalize(View view, Component component, Object model, Component parent) {
 
 	}
 
@@ -556,6 +685,17 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 	public void setExpressionEvaluatorService(ExpressionEvaluatorService expressionEvaluatorService) {
 		this.expressionEvaluatorService = expressionEvaluatorService;
+	}
+
+	public ViewDictionaryService getViewDictionaryService() {
+	    if (this.viewDictionaryService == null) {
+	        this.viewDictionaryService = KNSServiceLocator.getViewDictionaryService();
+	    }
+		return this.viewDictionaryService;
+	}
+
+	public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
+		this.viewDictionaryService = viewDictionaryService;
 	}
 
 }

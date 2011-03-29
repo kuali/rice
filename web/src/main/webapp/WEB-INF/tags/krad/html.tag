@@ -83,9 +83,14 @@
 
       <!----------------------------------- #BEGIN FORM --------------------------------------->
       <c:if test="${view.renderForm}">
+        <c:set var="postUrl" value="${view.formPostUrl}"/>
+        <c:if test="${empty postUrl}">
+          <c:set var="postUrl" value="${KualiForm.formPostUrl}"/>
+        </c:if>
+        
         <form:form 
            id="kualiForm"
-           action="${pageContext.request.contextPath}/spring/${view.controllerRequestMapping}"
+           action="${postUrl}"
            method="post"
            enctype="multipart/form-data"
            modelAttribute="KualiForm"

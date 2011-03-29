@@ -24,11 +24,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.PropertyReplacer;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.PropertyReplacer;
+import org.kuali.rice.kns.uif.core.ReferenceCopy;
 
 /**
  * Base class for all layout managers
@@ -49,6 +50,7 @@ public abstract class LayoutManagerBase implements LayoutManager {
 
 	private List<String> styleClasses;
 
+	@ReferenceCopy(newCollectionInstance=true)
 	private Map<String, Object> context;
 
 	private List<PropertyReplacer> propertyReplacers;
@@ -202,7 +204,7 @@ public abstract class LayoutManagerBase implements LayoutManager {
 		String[] classes = StringUtils.split(styleClasses);
 		this.styleClasses = Arrays.asList(classes);
 	}
-	
+
 	/**
 	 * This method adds a single style to the list of css style classes on this layoutManager
 	 * 

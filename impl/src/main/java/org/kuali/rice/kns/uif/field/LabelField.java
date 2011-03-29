@@ -17,7 +17,7 @@ package org.kuali.rice.kns.uif.field;
 
 import java.util.List;
 
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.core.Component;
 
 /**
  * Contains a label for another <code>Field</code> instance
@@ -46,7 +46,7 @@ public class LabelField extends FieldBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {

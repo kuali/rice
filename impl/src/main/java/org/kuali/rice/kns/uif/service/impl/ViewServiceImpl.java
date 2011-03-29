@@ -71,6 +71,9 @@ public class ViewServiceImpl implements ViewService {
 			throw new RuntimeException("View not found for id: " + viewId);
 		}
 
+		// populate view from request parameters
+		view.getViewHelperService().populateViewFromRequestParameters(view, parameters);
+
 		// Initialize Phase
 		LOG.info("performing initialize phase for view: " + viewId);
 		performInitialization(view, parameters);
@@ -96,16 +99,9 @@ public class ViewServiceImpl implements ViewService {
 		// get the configured helper service for the view
 		ViewHelperService helperService = view.getViewHelperService();
 
-		// get the initial context for the view using the helper service
-		Map<String, String> context = helperService.createInitialViewContext(view, parameters);
-
-		// set context on View instance for reference by its components
-		// TODO: revisit this
-		//view.setContext(context);
-
 		// invoke initialize phase on the views helper service
 		helperService.performInitialization(view);
-		
+
 		// do indexing
 		LOG.info("processing indexing for view: " + view.getId());
 		view.getViewIndex().index();
@@ -116,19 +112,19 @@ public class ViewServiceImpl implements ViewService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewService#updateView(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.service.ViewService#buildView(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
-	public void updateView(View view, Object model) {
+	public void buildView(View view, Object model) {
 		// get the configured helper service for the view
 		ViewHelperService helperService = view.getViewHelperService();
 
 		// Apply Model Phase
-		LOG.debug("performing apply model phase for view: " + view.getId());
+		LOG.info("performing apply model phase for view: " + view.getId());
 		helperService.performApplyModel(view, model);
 
 		// Update State Phase
-		LOG.debug("performing update state phase for view: " + view.getId());
+		LOG.info("performing finalize phase for view: " + view.getId());
 		helperService.performFinalize(view, model);
 
 		// do indexing
@@ -141,28 +137,14 @@ public class ViewServiceImpl implements ViewService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewService#reconstructView(java.lang.String,
-	 *      java.util.Map, java.lang.Object)
+	 * @see org.kuali.rice.kns.uif.service.ViewService#rebuildView(java.lang.String,
+	 *      java.lang.Object, java.util.Map)
 	 */
-	public View reconstructView(String viewId, Map<String, String> parameters, Object model) {
+	public View rebuildView(String viewId, Object model, Map<String, String> parameters) {
 		View view = getView(viewId, parameters);
-		updateView(view, model);
+		buildView(view, model);
 
 		return view;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewIdByType(java.lang.String,
-	 *      java.util.Map)
-	 */
-	public String getViewIdByType(String viewType, Map<String, String> parameters) {
-		View view = getViewForType(viewType, parameters);
-
-		if (view != null) {
-			return view.getId();
-		}
-
-		return null;
 	}
 
 	/**
@@ -172,8 +154,10 @@ public class ViewServiceImpl implements ViewService {
 	public View getViewByType(String viewType, Map<String, String> parameters) {
 		View view = getViewForType(viewType, parameters);
 
-		// perform initialize phase
 		if (view != null) {
+			// populate view from request parameters
+			view.getViewHelperService().populateViewFromRequestParameters(view, parameters);
+
 			LOG.debug("performing initialize phase for view: " + view.getId());
 			performInitialization(view, parameters);
 		}

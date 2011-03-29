@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.uif.control;
 
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.core.Component;
 
 /**
  * Represents an interactive element in the UI (typically an HTML control)

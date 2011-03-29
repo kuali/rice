@@ -79,7 +79,7 @@ public class DataDictionary  {
 
 	protected List<String> configFileLocations = new ArrayList<String>();
 	
-    
+
 	public List<String> getConfigFileLocations() {
         return this.configFileLocations;
     }
@@ -211,7 +211,7 @@ public class DataDictionary  {
 	public BusinessObjectEntry getBusinessObjectEntry(String className ) {
 		return ddMapper.getBusinessObjectEntry(ddIndex, className);
 	}
-	
+
 	/**
      * @param className
      * @return BusinessObjectEntry for the named class, or null if none exists
@@ -313,6 +313,19 @@ public class DataDictionary  {
 	 */
 	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
 		return ddMapper.getViewByTypeIndex(viewIndex, viewTypeName, indexKey);
+	}
+	
+	/**
+	 * Gets all <code>View</code> prototypes configured for the given view type
+	 * name
+	 * 
+	 * @param viewTypeName
+	 *            - view type name to retrieve
+	 * @return List<View> view prototypes with the given type name, or empty
+	 *         list
+	 */
+	public List<View> getViewsForType(String viewTypeName) {
+		return ddMapper.getViewsForType(viewIndex, viewTypeName);
 	}
 
     /**

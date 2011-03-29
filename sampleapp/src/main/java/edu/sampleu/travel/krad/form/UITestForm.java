@@ -30,7 +30,7 @@ import edu.sampleu.travel.bo.TravelAccount;
  */
 public class UITestForm extends UifFormBase {
 	private static final long serialVersionUID = -2054046347823986319L;
-	
+
 	private String field1;
 	private String field2;
 	private String field3;
@@ -60,14 +60,14 @@ public class UITestForm extends UifFormBase {
 	private boolean field25;
 	private boolean field26;
 	private String field27;
-	private String field28;
+	private String field28 = "joe";
 	private boolean field29;
 	private boolean field30;
 	private boolean field31;
 	private String field32;
 	private String field33;
-	private String field34;
-	private String field35;
+    private String field34;
+    private String field35;
 	private String vField1;
 	private String vField2;
 	private String vField3;
@@ -81,6 +81,7 @@ public class UITestForm extends UifFormBase {
 	private TravelAccount travelAccount1;
 	private TravelAccount travelAccount2;
 	private TravelAccount travelAccount3;
+	private TravelAccount travelAccount4;
 
 	public UITestForm() {
 		super();
@@ -379,6 +380,14 @@ public class UITestForm extends UifFormBase {
 		this.travelAccount3 = travelAccount3;
 	}
 
+	public TravelAccount getTravelAccount4() {
+		return this.travelAccount4;
+	}
+
+	public void setTravelAccount4(TravelAccount travelAccount4) {
+		this.travelAccount4 = travelAccount4;
+	}
+	
 	/**
 	 * @return the vField1
 	 */

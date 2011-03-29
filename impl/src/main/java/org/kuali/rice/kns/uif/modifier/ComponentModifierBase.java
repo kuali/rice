@@ -32,6 +32,7 @@ public abstract class ComponentModifierBase implements ComponentModifier {
 	private static final long serialVersionUID = -8284332412469942130L;
 
 	private String runPhase;
+	private String runCondition;
 	private int order;
 
 	public ComponentModifierBase() {
@@ -56,6 +57,22 @@ public abstract class ComponentModifierBase implements ComponentModifier {
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.uif.modifier.ComponentModifier#getRunCondition()
+	 */
+	public String getRunCondition() {
+		return this.runCondition;
+	}
+
+	/**
+	 * Setter for the component modifiers run condition
+	 * 
+	 * @param runCondition
+	 */
+	public void setRunCondition(String runCondition) {
+		this.runCondition = runCondition;
+	}
+
+	/**
 	 * @see org.springframework.core.Ordered#getOrder()
 	 */
 	public int getOrder() {
@@ -63,7 +80,7 @@ public abstract class ComponentModifierBase implements ComponentModifier {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Ordered#setOrder(int)
+	 * @see org.kuali.rice.kns.uif.core.Ordered#setOrder(int)
 	 */
 	public void setOrder(int order) {
 		this.order = order;

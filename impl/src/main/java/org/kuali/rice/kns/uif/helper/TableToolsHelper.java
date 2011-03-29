@@ -16,9 +16,9 @@
 package org.kuali.rice.kns.uif.helper;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.control.TextControl;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.GroupField;
 

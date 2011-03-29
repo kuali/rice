@@ -19,17 +19,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  limitations under the License.
 -->
   
-  <!-- Decorators -->
-  
-  <bean id="AccordionDecorator" parent="AccordionDecorator-parentBean"/>
-  <bean id="AccordionDecorator-parentBean" abstract="true" class="org.kuali.rice.kns.uif.decorator.AccordionDecorator" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/decorator/accordion.jsp"/>
-      <property name="accordionHeader">
-        <bean parent="Header_Accordion"/>
-      </property>
-      <property name="styleClasses" value="tab-container"/>
-  </bean> 
-  
   <!-- Widgets -->
   
   <bean id="DatePicker" parent="DatePicker-parentBean"/>
@@ -39,8 +28,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="componentOptions">
           <map>
               <entry key="showOn" value="button"/>
-              <!-- TODO: fix me, this should use the ConfigProperties.krad.externalizable.images.url once EL expressions are working -->
-              <entry key="buttonImage" value="/kr-dev/krad/images/cal.gif"/>
+              <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
               <entry key="buttonImageOnly" value="true"/>
               <entry key="showAnim" value="slide"/>
               <entry key="showButtonPanel" value="true"/>
@@ -115,6 +103,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="componentOptions">
           <map>
               <entry key="sDom" value="T&lt;'clear'&gt;lfrtip"/>   
+              <entry key="bRetrieve " value="true"/>   
               <entry key="oTableTools" value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;/kr-dev/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
           </map>      
       </property>
@@ -124,7 +113,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="QuickFinder" parent="QuickFinder-parentBean"/>
   <bean id="QuickFinder-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.QuickFinder" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/quickFinder.jsp"/>
-      <property name="baseLookupUrl" value="http://localhost:8080/kr-dev/spring/lookup"/>
+      <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/spring/lookup"/>
       <property name="quickfinderActionField">
         <bean parent="ActionField" p:methodToCall="navigateToLookup" p:actionImageField-ref="QuickFinderImageField">
         	<property name="lightBoxLookup">
@@ -133,12 +122,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       		 
       	</bean>        
       </property>
+      <property name="conditionalRender" value="!#parent.readOnly"/>
   </bean>  
   
   <bean id="Inquiry" parent="Inquiry-parentBean"/>
   <bean id="Inquiry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Inquiry" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/inquiry.jsp"/>
-      <property name="baseInquiryUrl" value="http://localhost:8080/kr-dev/spring/inquiry"/>
+      <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
       <property name="inquiryLinkField">
         <bean parent="LinkField" p:styleClasses="action">
         	<property name="lightBox">
@@ -146,7 +136,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       		</property>
       	</bean>
       </property>
+      <property name="conditionalRender" value="#parent.readOnly"/>
   </bean>  
+  
+  <bean id="Accordion" parent="Accordion-parentBean"/>
+  <bean id="Accordion-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Accordion" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/accordion.jsp"/>
+      <property name="collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}icon_expand.png"/>
+      <property name="expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}icon_collapse.png"/>
+      <property name="animationSpeed" value="500"/>
+      <property name="defaultOpen" value="true"/>
+  </bean>    
   
   <!-- Modifiers -->
   
@@ -192,7 +192,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Other -->
   
-  <bean id="BindingInfo" class="org.kuali.rice.kns.uif.BindingInfo" scope="prototype"/>
+  <bean id="BindingInfo" class="org.kuali.rice.kns.uif.core.BindingInfo" scope="prototype"/>
   
   <bean id="ComparableInfo" class="org.kuali.rice.kns.uif.modifier.ComparableInfo" scope="prototype"/>
   
@@ -200,6 +200,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="MethodInvoker" class="org.springframework.util.MethodInvoker" scope="prototype"/>
   
-  <bean id="PropertyReplacer" class="org.kuali.rice.kns.uif.PropertyReplacer" scope="prototype"/>
+  <bean id="PropertyReplacer" class="org.kuali.rice.kns.uif.core.PropertyReplacer" scope="prototype"/>
   
 </beans>

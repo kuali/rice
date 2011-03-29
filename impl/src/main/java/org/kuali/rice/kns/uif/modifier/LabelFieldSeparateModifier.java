@@ -20,9 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.Field;
 
 /**
@@ -45,7 +45,7 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 	 * Finally the new list of components is set on the group
 	 * 
 	 * @see org.kuali.rice.kns.uif.modifier.ComponentModifier#performModification(org.kuali.rice.kns.uif.container.View,
-	 *      org.kuali.rice.kns.uif.Component)
+	 *      org.kuali.rice.kns.uif.core.Component)
 	 */
 	@Override
 	public void performModification(View view, Component component) {
@@ -67,7 +67,7 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 				Field field = (Field) item;
 
 				// pull out label field
-				if (field.getLabelField() != null && field.getLabelField().isRender()) {
+				if (field.isRender() && field.getLabelField() != null && field.getLabelField().isRender()) {
 					groupFields.add(field.getLabelField());
 
 					// set boolean to indicate label field should not be

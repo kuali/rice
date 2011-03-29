@@ -99,7 +99,7 @@ jq(document).ready(function() {
 	jq( "input:button" ).button();
 	
 	// hide loading indicator
-	//doLoading(false);
+	// doLoading(false);
 	
 	// validate form
 	// jq("form").validate();
@@ -320,11 +320,9 @@ function createDatePicker(controlId, options) {
 }
 
 /**
- * Uses jQuery fancybox to link a fancybox to a given control id. 
- * The second argument is a Map
- * of options that are available for the FancyBox. See
- * <link>http://fancybox.net/api</link> for
- * documentation on these options
+ * Uses jQuery fancybox to link a fancybox to a given control id. The second
+ * argument is a Map of options that are available for the FancyBox. See
+ * <link>http://fancybox.net/api</link> for documentation on these options
  * 
  * @param controlId -
  *          id for the control that the fancybox should be linked to
@@ -338,14 +336,10 @@ function createLightBox(controlId, options) {
 }
 
 /**
- * To fix : 
- * 1. does not work in iframe
- * 2. Get post paramaters dynamic
- * Uses jQuery fancybox to create lightbox for lookups. 
- * It prevents the default submit and makes an ajax post. 
- * The second argument is a Map
- * of options that are available for the FancyBox. See
- * <link>http://fancybox.net/api</link> for
+ * To fix : 1. does not work in iframe 2. Get post paramaters dynamic Uses
+ * jQuery fancybox to create lightbox for lookups. It prevents the default
+ * submit and makes an ajax post. The second argument is a Map of options that
+ * are available for the FancyBox. See <link>http://fancybox.net/api</link> for
  * documentation on these options
  * 
  * @param controlId -
@@ -354,10 +348,10 @@ function createLightBox(controlId, options) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createLightBoxLookup(controlId, options, actionParameterMapString) {
-    jq(function () {        	
+    jq(function () {    	
         jq("#" + controlId).click(function (e) {
         	// Prevent the default submit
-            e.preventDefault();                      
+            e.preventDefault();
             // Add the ajaxCall parameter so that the controller can avoid the redirect
             actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
             // Do the Ajax submit on the kualiForm form
@@ -374,45 +368,76 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
     });		
 }
 
-
-
 /**
  * Sets up the script necessary to toggle a group as a accordion
  * 
- * @param accordionToggleLink -
- *          id for the link that should toggle the accordion
- * @param openAccordionHeaderContents -
- *          contents that should go in the accordion header when the accordion is open
- * @param closedAccordionHeaderContents -
- *          contents that should go in the accordion header when the accordion is closed
- * @param accordionDiv -
- *          id for the div that wraps the accordion contents
+ * @param groupId -
+ *          id for the group to be toggled
+ * @param headerId -
+ *          id for the group's header in which the toggle link and image will be
+ *          inserted
+ * @param defaultOpen -
+ *          indicates whether the group should be initially open or close
+ * @param collapseImgSrc -
+ *          path to the image that should be displayed for collapsing the group
+ * @param expandImgSrc -
+ *          path to the image that should be displayed for expanding the group
+ * @param animationSpeed -
+ *          speed at which the group should be expanded or collapsed
  * @param isOpen -
  *          boolean that indicates whether the accordion should be set to open
  *          initially (true) or closed (false)
  */
-function createAccordion(accordionToggleLink, openAccordionHeaderContents, closedAccordionHeaderContents, 
-		             accordionDiv, isOpen) {
+function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed) {
   jq(document).ready(function() {
-  	if (isOpen) {
-  		jq("#" + accordionDiv).slideDown(000);
-  		jq("#" + accordionToggleLink).html(openAccordionHeaderContents);
+  	var groupToggleLinkId = groupId + "_toggle";
+  	var groupToggleLink = "<a href='#' id='" + groupToggleLinkId + "'></a>";
+  	
+  	var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand'/>";
+  	var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse'/>";
+ 
+  	// wrap the contents of the group after the header
+  	var groupAccordionSpanId = groupId + "_accordion";
+  	
+  	// remove script elements so they do not execute again on wrap
+  	jq("#" + groupId + "_div script").remove();
+
+  	jq("#" + groupId + "_div").children().first().siblings().wrapAll("<span id='" + groupAccordionSpanId + "'/>");
+  	
+  	// perform initial open/close and insert toggle link and image
+  	if (defaultOpen) {
+  		jq("#" + groupAccordionSpanId).slideDown(000);
+  		jq("#" + headerId + "_header > :header").prepend("<a href='#' id='" + groupToggleLinkId + "'>" + expandImage + "</a>");
   	}
   	else {
-  		jq("#" + accordionDiv).slideUp(000);
-  		jq("#" + accordionToggleLink).html(closedAccordionHeaderContents);
+  		jq("#" + groupAccordionSpanId).slideUp(000);
+  		jq("#" + headerId + "_header > :header").prepend("<a href='#' id='" + groupToggleLinkId + "'>" + collapseImage + "</a>");
   	} 
  
-    jq("#" + accordionToggleLink).toggle(
-       function() {
-         jq("#" + accordionDiv).slideUp(500);
-         jq("#" + accordionToggleLink).html(closedAccordionHeaderContents);
-       }, function() {
-         jq("#" + accordionDiv).slideDown(500);
-         jq("#" + accordionToggleLink).html(openAccordionHeaderContents);
-       }
-    );
-  });
+  	// perform slide and switch image
+  	if (defaultOpen) {
+      jq("#" + groupToggleLinkId).toggle(
+          function() {
+            jq("#" + groupAccordionSpanId).slideUp(animationSpeed);
+            jq("#" + groupId + "_exp").replaceWith(collapseImage);
+          }, function() {
+            jq("#" + groupAccordionSpanId).slideDown(animationSpeed);
+            jq("#" + groupId + "_col").replaceWith(expandImage);
+          }
+       );      		
+  	}
+    else {
+      jq("#" + groupToggleLinkId).toggle(
+          function() {
+            jq("#" + groupAccordionSpanId).slideDown(animationSpeed);
+            jq("#" + groupId + "_col").replaceWith(expandImage);
+          }, function() {
+            jq("#" + groupAccordionSpanId).slideUp(animationSpeed);
+            jq("#" + groupId + "_exp").replaceWith(collapseImage);
+          }
+       );     	
+    }
+  });	
 }
 
 /**
@@ -449,6 +474,7 @@ function createTable(controlId, options) {
 		var oTable = jq("#" + controlId).dataTable(options);
 	})
 }
+
 /**
 * Applies the error coloring for fields with errors, warnings, or information
 */
@@ -489,7 +515,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 		}
 	}
 }
-
+	
 /**
 *  Shows the field error icon if errorCount is greater than one and errorsField has the option turned on
 */
@@ -516,3 +542,4 @@ function showFieldIcon(errorsDivId, errorCount){
 		}
 	}
 }
+

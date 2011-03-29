@@ -49,7 +49,7 @@ public class InquiryForm extends UifFormBase {
 
 	private static final Logger LOG = Logger.getLogger(InquiryForm.class);
 
-	private String objectClassName;
+	private String dataObjectClassName;
 	private boolean canExport;
 
 	/**
@@ -77,10 +77,10 @@ public class InquiryForm extends UifFormBase {
 
 			inquirable = (Inquirable) getView().getViewHelperService();
 			try {
-				inquirable.setBusinessObjectClass(Class.forName(objectClassName));
+				inquirable.setBusinessObjectClass(Class.forName(dataObjectClassName));
 			}
 			catch (ClassNotFoundException e) {
-				throw new RuntimeException("Unable to get new instance for object class: " + objectClassName, e);
+				throw new RuntimeException("Unable to get new instance for object class: " + dataObjectClassName, e);
 			}
 
 			// the following variable is true if the method to call is not
@@ -105,11 +105,11 @@ public class InquiryForm extends UifFormBase {
 
 			
 			if (inquirable instanceof KualiInquirableImpl){
-				populateBusinessObjectPKFieldValues(request, getObjectClassName(), passedFromPreviousInquiry);
+				populateBusinessObjectPKFieldValues(request, getDataObjectClassName(), passedFromPreviousInquiry);
 				// populateInactiveRecordsInIntoInquirable(inquirable, request);
-				populateExportCapabilities(getObjectClassName());
+				populateExportCapabilities(getDataObjectClassName());
 			} else {
-				populateObjectPKFieldValues(request, getObjectClassName(), passedFromPreviousInquiry);
+				populateObjectPKFieldValues(request, getDataObjectClassName(), passedFromPreviousInquiry);
 			}
 		}
 	}
@@ -163,7 +163,7 @@ public class InquiryForm extends UifFormBase {
 							// require a DD entry for the attribute. it is only
 							// checking keys
 							// so most likely there should be an entry.
-							LOG.warn("BO class " + objectClassName + " property " + boKey
+							LOG.warn("BO class " + dataObjectClassName + " property " + boKey
 									+ " should probably have a DD definition.", ex);
 						}
 
@@ -178,7 +178,7 @@ public class InquiryForm extends UifFormBase {
 								inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameter));
 							}
 							catch (GeneralSecurityException e) {
-								LOG.error("BO class " + objectClassName + " property " + boKey
+								LOG.error("BO class " + dataObjectClassName + " property " + boKey
 										+ " should have been encrypted, but there was a problem decrypting it.");
 								throw e;
 							}
@@ -250,7 +250,7 @@ public class InquiryForm extends UifFormBase {
 							// require a DD entry for the attribute. it is only
 							// checking keys
 							// so most likely there should be an entry.
-							LOG.warn("BO class " + objectClassName + " property " + boKey
+							LOG.warn("BO class " + dataObjectClassName + " property " + boKey
 									+ " should probably have a DD definition.", ex);
 						}
 
@@ -323,12 +323,12 @@ public class InquiryForm extends UifFormBase {
 		return altKeys != null ? altKeys : new ArrayList<List<String>>();
 	}
 
-	public String getObjectClassName() {
-		return this.objectClassName;
+	public String getDataObjectClassName() {
+		return this.dataObjectClassName;
 	}
 
-	public void setObjectClassName(String objectClassName) {
-		this.objectClassName = objectClassName;
+	public void setDataObjectClassName(String dataObjectClassName) {
+		this.dataObjectClassName = dataObjectClassName;
 	}
 
 	public Object getBo() {

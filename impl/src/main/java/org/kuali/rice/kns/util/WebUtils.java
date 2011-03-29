@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -875,5 +876,69 @@ public class WebUtils {
 		}
 
 		return parameterValues;
+	}
+	
+	/**
+	 * Translates characters in the given string like brackets that will cause
+	 * problems with binding to characters that do not affect the binding
+	 * 
+	 * @param key
+	 *            - string to translate
+	 * @return String translated string
+	 */
+	public static String translateToMapSafeKey(String key) {
+		String safeKey = key;
+		
+		safeKey = StringUtils.replace(safeKey, "[", "_");
+		safeKey = StringUtils.replace(safeKey, "]", "_");
+
+		return safeKey;
+	}
+	
+	/**
+	 * Builds a string from the given map by joining each entry with a comma and
+	 * each key/value pair with a colon
+	 * 
+	 * @param map
+	 *            - map instance to build string for
+	 * @return String of map entries
+	 */
+	public static String buildMapParameterString(Map<String, String> map) {
+		String parameterString = "";
+
+		for (Entry<String, String> entry : map.entrySet()) {
+			if (StringUtils.isNotBlank(parameterString)) {
+				parameterString += ",";
+			}
+
+			parameterString += entry.getKey() + ":" + entry.getValue();
+		}
+
+		return parameterString;
+	}
+	
+	/**
+	 * Parses the given string into a Map by splitting on the comma to get the
+	 * map entries and within each entry splitting by colon to get the key/value
+	 * pairs
+	 * 
+	 * @param parameterString
+	 *            - string to parse into map
+	 * @return Map<String, String> map from string
+	 */
+	public static Map<String, String> getMapFromParameterString(String parameterString) {
+		Map<String, String> map = new HashMap<String, String>();
+
+		String[] entries = parameterString.split(".");
+		for (int i = 0; i < entries.length; i++) {
+			String[] keyValue = entries[i].split(":");
+			if (keyValue.length != 2) {
+				throw new RuntimeException("malformed field conversion pair: " + Arrays.toString(keyValue));
+			}
+
+			map.put(keyValue[0], keyValue[1]);
+		}
+
+		return map;
 	}
 }

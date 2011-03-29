@@ -16,20 +16,23 @@
 package org.kuali.rice.kns.uif.container;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.BindingInfo;
-import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
+import org.kuali.rice.kns.uif.core.BindingInfo;
+import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.Field;
+import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 
 /**
@@ -107,9 +110,15 @@ public class CollectionGroupBuilder implements Serializable {
 
 		// determine whether the add line binds to the generic form map or a
 		// specified property
-		if (StringUtils.isBlank(collectionGroup.getAddLineName())) {
+		if (StringUtils.isBlank(collectionGroup.getAddLinePropertyName())) {
 			initializeNewCollectionLine(view, model, collectionGroup, false);
 			bindAddLineToForm = true;
+
+			// set binding path for add line
+			String collectionAddLineKey = WebUtils.translateToMapSafeKey(collectionGroup.getBindingInfo()
+					.getBindingPath());
+			String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "['" + collectionAddLineKey + "']";
+			collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
 		}
 
 		String addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
@@ -144,12 +153,13 @@ public class CollectionGroupBuilder implements Serializable {
 	 *            - index of the line in the collection, or -1 if we are
 	 *            building the add line
 	 */
+	@SuppressWarnings("unchecked")
 	protected void buildLine(View view, Object model, CollectionGroup collectionGroup, String bindingPath,
 			List<ActionField> actions, boolean bindToForm, Object currentLine, int lineIndex) {
 		CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
 		// copy group items for new line
-		List<? extends Field> lineFields = ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath);
+		List<Field> lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath);
 		ComponentUtils.updateIdsAndContextForLine(lineFields, currentLine, lineIndex);
 
 		if (bindToForm) {
@@ -159,9 +169,32 @@ public class CollectionGroupBuilder implements Serializable {
 		// add generated fields to the view's index
 		view.getViewIndex().addFields(lineFields);
 
+		// if not add line build sub-collection field groups
+		List<GroupField> subCollectionFields = new ArrayList<GroupField>();
+		if ((lineIndex != -1) && (collectionGroup.getSubCollections() != null)) {
+			for (int subLineIndex = 0; subLineIndex < collectionGroup.getSubCollections().size(); subLineIndex++) {
+				CollectionGroup subCollectionPrototype = collectionGroup.getSubCollections().get(subLineIndex);
+				CollectionGroup subCollectionGroup = ComponentUtils.copy(subCollectionPrototype);
+
+				subCollectionGroup.getBindingInfo().setBindByNamePrefix(bindingPath);
+				subCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(bindingPath);
+
+				GroupField groupFieldPrototype = layoutManager.getSubCollectionGroupFieldPrototype();
+				GroupField subCollectionGroupField = ComponentUtils.copy(groupFieldPrototype);
+				subCollectionGroupField.setGroup(subCollectionGroup);
+
+				String idSuffix = "_" + lineIndex + "s" + subLineIndex;
+				ComponentUtils.updateIdsWithSuffix(subCollectionGroupField, idSuffix);
+				
+				view.getViewIndex().addCollection(subCollectionGroup);
+
+				subCollectionFields.add(subCollectionGroupField);
+			}
+		}
+
 		// invoke layout manager to build the complete line
-		layoutManager.buildLine(view, model, collectionGroup, lineFields, bindingPath, actions, "_" + lineIndex,
-				currentLine, lineIndex);
+		layoutManager.buildLine(view, model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
+				"_" + lineIndex, currentLine, lineIndex);
 	}
 
 	/**
@@ -253,12 +286,13 @@ public class CollectionGroupBuilder implements Serializable {
 		// if there is not an instance available or we need to clear create a
 		// new instance
 		BindingInfo bindingInfo = collectionGroup.getBindingInfo();
-		if (!newCollectionLines.containsKey(bindingInfo.getBindingPath())
-				|| (newCollectionLines.get(bindingInfo.getBindingPath()) == null) || clearExistingLine) {
+		String newCollectionLineKey = WebUtils.translateToMapSafeKey(bindingInfo.getBindingPath());
+		if (!newCollectionLines.containsKey(newCollectionLineKey)
+				|| (newCollectionLines.get(newCollectionLineKey) == null) || clearExistingLine) {
 			// create new instance of the collection type for the add line
 			try {
 				Object newLineInstance = collectionGroup.getCollectionObjectClass().newInstance();
-				newCollectionLines.put(bindingInfo.getBindingPath(), newLineInstance);
+				newCollectionLines.put(newCollectionLineKey, newLineInstance);
 			}
 			catch (Exception e) {
 				throw new RuntimeException("Cannot create new add line instance for group: "

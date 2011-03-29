@@ -25,10 +25,12 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.core.ReferenceCopy;
+import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
@@ -37,6 +39,7 @@ import org.kuali.rice.kns.uif.util.ClientValidationUtils;
  * Root of the component tree which encompasses a set of related
  * <code>GroupContainer</code> instances tied together with a common page layout
  * and navigation.
+ * 
  * <p>
  * The <code>View</code> component ties together all the components and
  * configuration of the User Interface for a piece of functionality. In Rice
@@ -62,6 +65,8 @@ public class View extends ContainerBase {
 	private String viewName;
 
 	private String entryPageId;
+	
+	@RequestParameter
 	private String currentPageId;
 
 	private NavigationGroup navigation;
@@ -76,10 +81,9 @@ public class View extends ContainerBase {
 	private String viewTypeName;
 	private String viewHelperServiceBeanId;
 
-	private Set<String> allowedParameters;
-
 	private String viewStatus;
 	private ViewIndex viewIndex;
+	private Map<String, String> viewRequestParameters;
 
 	private boolean singlePageView;
 	private Group page;
@@ -92,6 +96,7 @@ public class View extends ContainerBase {
 	// TODO: scripting variables, should be in context
 	private boolean dialogMode;
 
+	@ReferenceCopy
 	private ViewHelperService viewHelperService;
 
 	public View() {
@@ -106,7 +111,7 @@ public class View extends ContainerBase {
 		additionalCssFiles = new ArrayList<String>();
 		items = new ArrayList<Group>();
 		abstractTypeClasses = new HashMap<String, Class<?>>();
-		allowedParameters = new HashSet<String>();
+		viewRequestParameters = new HashMap<String, String>();
 	}
 
 	/**
@@ -156,11 +161,11 @@ public class View extends ContainerBase {
 	 * setupValidator js function for setting up the validator for this view.
 	 * 
 	 * @see org.kuali.rice.kns.uif.container.ContainerBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
+	 *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
 	 */
 	@Override
-	public void performFinalize(View view, Object model) {
-		super.performFinalize(view, model);
+	public void performFinalize(View view, Object model, Component parent) {
+		super.performFinalize(view, model, parent);
 
 		String prefixScript = "";
 		if (this.getOnDocumentReadyScript() != null) {
@@ -171,7 +176,7 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {
@@ -194,7 +199,7 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.Component#getComponentTypeName()
+	 * @see org.kuali.rice.kns.uif.core.Component#getComponentTypeName()
 	 */
 	@Override
 	public String getComponentTypeName() {
@@ -519,42 +524,6 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * Set of parameter names that are valid options for the view
-	 * <p>
-	 * Views can be configured by parameters. These might impact which parts of
-	 * the view are rendered or how the view behaves. Generally these would get
-	 * passed in when a new view is requested (by request parameters). When a
-	 * new view is requested from the <code>ViewService</code> it will consult
-	 * the view to see what parameters are allowed. If those parameters where
-	 * then specified to the view service it will retrieve those values and put
-	 * into the views context.
-	 * </p>
-	 * <p>
-	 * Example parameter would be for MaintenaceView whether a New, Edit, or
-	 * Copy was requested (maintenance mode)
-	 * </p>
-	 * <p>
-	 * If allowed parameters is empty, nothing will be set in the context for
-	 * the view request
-	 * </p>
-	 * 
-	 * @return Set<String> allowed parameters for the view
-	 * @see getContext()
-	 */
-	public Set<String> getAllowedParameters() {
-		return this.allowedParameters;
-	}
-
-	/**
-	 * Setter for the allowed parameters
-	 * 
-	 * @param allowedParameters
-	 */
-	public void setAllowedParameters(Set<String> allowedParameters) {
-		this.allowedParameters = allowedParameters;
-	}
-
-	/**
 	 * Holds field indexes of the <code>View</code> instance for retrieval
 	 * 
 	 * @return ViewIndex instance
@@ -570,6 +539,39 @@ public class View extends ContainerBase {
 	 */
 	public void setViewIndex(ViewIndex viewIndex) {
 		this.viewIndex = viewIndex;
+	}
+
+	/**
+	 * Map of parameters from the request that set view options, used to rebuild
+	 * the view on each post
+	 * 
+	 * <p>
+	 * Views can be configured by parameters. These might impact which parts of
+	 * the view are rendered or how the view behaves. Generally these would get
+	 * passed in when a new view is requested (by request parameters). These
+	 * will be used to initially populate the view properties. In addition, on a
+	 * post the view will be rebuilt and properties reset again by the allow
+	 * request parameters.
+	 * </p>
+	 * 
+	 * <p>
+	 * Example parameter would be for MaintenaceView whether a New, Edit, or
+	 * Copy was requested (maintenance mode)
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public Map<String, String> getViewRequestParameters() {
+		return this.viewRequestParameters;
+	}
+
+	/**
+	 * Setter for the view's request parameters map
+	 * 
+	 * @param viewRequestParameters
+	 */
+	public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
+		this.viewRequestParameters = viewRequestParameters;
 	}
 
 	/**
@@ -725,7 +727,7 @@ public class View extends ContainerBase {
 	 * onSubmit script configured on the <code>View</code> gets placed on the
 	 * form element
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnSubmit()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnSubmit()
 	 */
 	@Override
 	public boolean getSupportsOnSubmit() {
@@ -736,7 +738,7 @@ public class View extends ContainerBase {
 	 * onLoad script configured on the <code>View</code> gets placed in a load
 	 * call
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnLoad()
 	 */
 	@Override
 	public boolean getSupportsOnLoad() {
@@ -747,7 +749,7 @@ public class View extends ContainerBase {
 	 * onDocumentReady script configured on the <code>View</code> gets placed in
 	 * a document ready jQuery block
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getSupportsOnLoad()
+	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnLoad()
 	 */
 	@Override
 	public boolean getSupportsOnDocumentReady() {

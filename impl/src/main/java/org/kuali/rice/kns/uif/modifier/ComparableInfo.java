@@ -17,7 +17,7 @@ package org.kuali.rice.kns.uif.modifier;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kns.uif.Ordered;
+import org.kuali.rice.kns.uif.core.Ordered;
 
 
 /**

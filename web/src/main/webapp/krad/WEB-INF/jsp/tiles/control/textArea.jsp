@@ -24,7 +24,7 @@
  --%>
 
 <form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" 
-               rows="${control.rows}" cols="${control.cols}" 
+               rows="${control.rows}" cols="${control.cols}" readonly="${control.readOnly}"
                cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
                tabindex="${control.tabIndex}" maxLength="${field.maxLength}" minLength="${field.minLength}"/>
                

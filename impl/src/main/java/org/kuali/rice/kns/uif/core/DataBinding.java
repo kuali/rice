@@ -13,24 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.uif.decorator;
+package org.kuali.rice.kns.uif.core;
 
-import org.kuali.rice.kns.uif.Component;
 
 /**
- * Components that decorate another component should implement the interface
+ * Components that bind to a model (hold model data) should implement this
+ * interface
+ * 
+ * <p>
+ * Provides access to the <code>BindingInfo</code> object for the component that
+ * contains binding configuration
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ComponentDecorator extends Component {
+public interface DataBinding {
 
 	/**
-	 * Indicates the type of <code>Component</code> that is supported by the
-	 * decorator. If empty or the Component class itself is returned it is
-	 * assumed the decorator supports all components
+	 * Returns the <code>BindingInfo</code> instance that is configured for the
+	 * component
 	 * 
-	 * @return Class<? extends Component> of the support component type
+	 * @return BindingInfo
+	 * @see org.kuali.rice.kns.uif.core.BindingInfo
 	 */
-	public Class<? extends Component> getSupportedComponent();
+	public BindingInfo getBindingInfo();
+
+	/**
+	 * Name of the property (relative to the parent object) the component binds
+	 * to
+	 * 
+	 * @return String property name
+	 */
+	public String getPropertyName();
 
 }

@@ -18,6 +18,8 @@ package org.kuali.rice.kns.uif.service;
 import java.util.Map;
 
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 
 /**
  * Provides methods for implementing the various phases of a <code>View</code>
@@ -32,24 +34,22 @@ import org.kuali.rice.kns.uif.container.View;
 public interface ViewHelperService {
 
 	/**
-	 * Creates and initializes the Map that holds context information for the
-	 * <code>View</code>
+	 * Populates the <code>View</code> properties from the given request
+	 * parameters
 	 * 
 	 * <p>
-	 * Context information provides parameters and other necessary state needed
-	 * by the view to determine its own state and behavior. Certain views have
-	 * parameters they look for and can be placed into the context Map for
-	 * reference. The given parameters Map is what was sent to the view service
-	 * for the view request. It can contain zero or more of the view parameters
-	 * as well as key value pairs that are not applicable. The map should be
-	 * filtered based on the view's needs. Additional key value pairs can also
-	 * be placed into the context.
+	 * The <code>View</code> instance is inspected for fields that have the
+	 * <code>RequestParameter</code> annotation and if corresponding parameters
+	 * are found in the request parameter map, the request value is used to set
+	 * the view property. The Map of parameter name/values that match are placed
+	 * in the view so they can be later retrieved to rebuild the view. Custom
+	 * <code>ViewServiceHelper</code> implementations can add additional
+	 * parameter key/value pairs to the returned map if necessary.
 	 * </p>
 	 * 
-	 * @param parameters
-	 *            - Map<String, String> of parameters sent to view request
+	 * @see org.kuali.rice.kns.uif.core.RequestParameter
 	 */
-	public Map<String, String> createInitialViewContext(View view, Map<String, String> parameters);
+	public void populateViewFromRequestParameters(View view, Map<String, String> parameters);
 
 	/**
 	 * Performs the Initialization phase for the <code>View</code>. During this
@@ -70,6 +70,21 @@ public interface ViewHelperService {
 	 *            - View instance that should be initialized
 	 */
 	public void performInitialization(View view);
+
+	/**
+	 * Performs the Initialization phase for the given <code>Component</code>
+	 * 
+	 * <p>
+	 * Can be called for component instances constructed via code or prototypes
+	 * to initialize the constructed component
+	 * </p>
+	 * 
+	 * @param view
+	 *            - view instance the component belongs to
+	 * @param component
+	 *            - component instance that should be initialized
+	 */
+	public void performComponentInitialization(View view, Component component);
 
 	/**
 	 * Executes the ApplyModel phase. During this phase each component of the
@@ -156,5 +171,27 @@ public interface ViewHelperService {
 	 *            - index of the collection line that was selected for removal
 	 */
 	public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
+	
+	/**
+	 * Invoked by the <code>Inquiry</code> widget to build the inquiry link
+	 * 
+	 * <p>
+	 * Note this is used primarily for custom <code>Inquirable</code>
+	 * implementations to customize the inquiry class or parameters for an
+	 * inquiry. Instead of building the full inquiry link, implementations can
+	 * make a callback to
+	 * org.kuali.rice.kns.uif.widget.Inquiry.buildInquiryLink(Object, String,
+	 * Class<?>, Map<String, String>) given an inquiry class and parameters to
+	 * build the link field.
+	 * </p>
+	 * 
+	 * @param dataObject
+	 *            - parent object for the inquiry property
+	 * @param propertyName
+	 *            - name of the property the inquiry is being built for
+	 * @param inquiry
+	 *            - instance of the inquiry widget being built for the property
+	 */
+	public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
 
 }

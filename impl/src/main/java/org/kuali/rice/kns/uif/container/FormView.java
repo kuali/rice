@@ -24,16 +24,15 @@ package org.kuali.rice.kns.uif.container;
 public class FormView extends View {
 	private static final long serialVersionUID = -3291164284675273147L;
 
-	// TODO: is this necessary or can we determine it based on request?
-	private String controllerRequestMapping;
-
 	private boolean renderForm;
-	private boolean validateModelData;
+	private boolean validateServerSide;
 	private boolean validateClientSide;
+
+	private String formPostUrl;
 
 	public FormView() {
 		renderForm = true;
-		validateModelData = true;
+		validateServerSide = true;
 		validateClientSide = true;
 	}
 
@@ -68,42 +67,60 @@ public class FormView extends View {
 	 *         should not be
 	 * @see
 	 */
-	public boolean isValidateModelData() {
-		return this.validateModelData;
+	public boolean isValidateServerSide() {
+		return this.validateServerSide;
 	}
 
 	/**
-	 * Setter for the validate model data indicator
+	 * Setter for the validate server side indicator
 	 * 
-	 * @param validateModelData
+	 * @param validateServerSide
 	 */
-	public void setValidateModelData(boolean validateModelData) {
-		this.validateModelData = validateModelData;
-	}
-
-	public String getControllerRequestMapping() {
-		return this.controllerRequestMapping;
-	}
-
-	public void setControllerRequestMapping(String controllerRequestMapping) {
-		this.controllerRequestMapping = controllerRequestMapping;
+	public void setValidateServerSide(boolean validateServerSide) {
+		this.validateServerSide = validateServerSide;
 	}
 
 	/**
-	 * @param validateClientSide the validateClientSide to set
+	 * Indicates whether to perform on-the-fly validation on the client using js
+	 * during user data entry. Defaults to true
+	 * 
+	 * @return the validateClientSide
+	 */
+	public boolean isValidateClientSide() {
+		return validateClientSide;
+	}
+
+	/**
+	 * Setter for the validate client side indicator
+	 * 
+	 * @param validateClientSide
 	 */
 	public void setValidateClientSide(boolean validateClientSide) {
 		this.validateClientSide = validateClientSide;
 	}
 
 	/**
-	 * Indicates whether to perform on-the-fly validation on the client using js during
-	 * user data entry. Defaults to true
+	 * Specifies the URL the view's form should post to
 	 * 
-	 * @return the validateClientSide
+	 * <p>
+	 * Any valid form post URL (full or relative) can be specified. If left
+	 * empty, the form will be posted to the same URL of the preceding request
+	 * URL.
+	 * </p>
+	 * 
+	 * @return String post URL
 	 */
-	public boolean isValidateClientSide() {
-		return validateClientSide;
+	public String getFormPostUrl() {
+		return this.formPostUrl;
+	}
+
+	/**
+	 * Setter for the form post URL
+	 * 
+	 * @param formPostUrl
+	 */
+	public void setFormPostUrl(String formPostUrl) {
+		this.formPostUrl = formPostUrl;
 	}
 
 }

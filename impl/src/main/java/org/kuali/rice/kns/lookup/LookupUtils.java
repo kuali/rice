@@ -310,11 +310,13 @@ public class LookupUtils {
         return fieldConversionsMap;
     }
 
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject,
             String attributeName, Field field, List displayedFieldNames) {
         return setFieldQuickfinder( businessObject, (String)null, false, 0, attributeName, field, displayedFieldNames );
     }
 
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject,
             String attributeName, Field field, List displayedFieldNames, SelectiveReferenceRefresher srr) {
         return setFieldQuickfinder( businessObject, (String)null, false, 0, attributeName, field, displayedFieldNames, srr );
@@ -323,6 +325,7 @@ public class LookupUtils {
     /**
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
             String attributeName, Field field, List displayedFieldNames, SelectiveReferenceRefresher srr) {
         field = setFieldQuickfinder(businessObject, collectionName, addLine, index, attributeName, field, displayedFieldNames);
@@ -345,6 +348,7 @@ public class LookupUtils {
     /**
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
                                             String attributeName, Field field, List displayedFieldNames) {
         boolean noLookup = false;
@@ -361,6 +365,7 @@ public class LookupUtils {
 
     }
 
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index, String attributeName, Field field, List displayedFieldNames, boolean noLookupField)
     {
          if (businessObject == null) {
@@ -431,6 +436,7 @@ public class LookupUtils {
     private static String BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = null;
     private static String BASE_INQUIRY_ACTION_URL = null;
     
+    @Deprecated
     public static String getBaseLookupUrl(boolean isMultipleValue) {
     	if ( isMultipleValue ) {
     		if ( BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL == null ) {
@@ -455,6 +461,7 @@ public class LookupUtils {
     	}
     }
 
+    @Deprecated
     public static String getBaseInquiryUrl() {
     	if ( BASE_INQUIRY_ACTION_URL == null ) {
 	    	StringBuffer inquiryUrl = new StringBuffer( 
@@ -469,6 +476,7 @@ public class LookupUtils {
     	return BASE_INQUIRY_ACTION_URL;
     }
 
+    
     public static String transformLookupUrlToMultiple(String lookupUrl) {
     	return lookupUrl.replace("kr/" + KNSConstants.LOOKUP_ACTION, "kr/" + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION);
     }
@@ -541,6 +549,7 @@ public class LookupUtils {
 
     private static Map<Class,Map<String,Map>> referencesForForeignKey = new HashMap<Class, Map<String,Map>>();
 
+    @Deprecated
     public static Map getPrimitiveReference(BusinessObject businessObject, String attributeName) {
         Map chosenReferenceByKeySize = new HashMap();
         Map chosenReferenceByFieldName = new HashMap();
@@ -650,6 +659,7 @@ public class LookupUtils {
         return null == bo ? null : bo.getClass();
     }
 
+    @Deprecated
     private static String generateFieldConversions(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
         String fieldConversions = "";
 
@@ -685,6 +695,7 @@ public class LookupUtils {
         return fieldConversions;
     }
 
+    @Deprecated
     private static String generateLookupParameters(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
 
         String lookupParameters = "";
@@ -724,7 +735,7 @@ public class LookupUtils {
         return lookupParameters;
     }
 
-
+    @Deprecated
     private static String translateToDisplayedField(Class businessObjectClass, String fieldName, List displayedFieldNames) {        
         if ( persistenceStructureService.isPersistable(businessObjectClass) ) {
             Map nestedFkMap = persistenceStructureService.getNestedForeignKeyMap(businessObjectClass);

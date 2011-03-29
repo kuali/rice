@@ -143,9 +143,9 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	@Override
 	protected void initializeAttributeFieldFromDataDictionary(View view, AttributeField field) {
 		super.initializeAttributeFieldFromDataDictionary(view, field);
-		if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
-			field.getBindingInfo().setBindingPath(field.getBindingInfo().getBindingObjectPath() + "[" + field.getBindingInfo().getBindingName() + "]");
-		}
+//		if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
+//			field.getBindingInfo().setBindingPath(field.getBindingInfo().getBindingObjectPath() + "[" + field.getBindingInfo().getBindingName() + "]");
+//		}
 	}
 
 	/**
@@ -155,15 +155,16 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	 * @see org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl#getDictionaryModelClass(org.kuali.rice.kns.uif.container.View, org.kuali.rice.kns.uif.field.AttributeField)
 	 */
 	@Override
-	protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
-		// if the field binding object path matches the map name on the
-		// LookupForm model then use BO class rather than looking up dictionary
-		// model class
-		if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
-			return getDataObjectClass();
-		}
-		return ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());
-	}
+//	protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
+//		// if the field binding object path matches the map name on the
+//		// LookupForm model then use BO class rather than looking up dictionary
+//		// model class
+//		if (StringUtils.equals(UifPropertyPaths.CRITERIA_FIELDS, field.getBindingInfo().getBindingObjectPath())) {
+//			return getDataObjectClass();
+//		}
+//		
+//		return ViewModelUtils.getPropertyType(view, field.getBindingInfo().getBindingObjectPath());
+//	}
 
 	public void validateSearchParameters(Map<String, String> fieldValues) {
 		List<String> lookupFieldAttributeList = null;

@@ -19,34 +19,18 @@
 
 <%@ attribute name="component" required="true" 
               description="The UIF component for which the template will be generated" 
-              type="org.kuali.rice.kns.uif.Component"%>
+              type="org.kuali.rice.kns.uif.core.Component"%>
               
 <%-- verify the component is not null and should be rendered --%>   
 <c:if test="${(!empty component) && component.render}">     
-
-   <%-- render any decorators (if not rendered yet) --%>   
-   <c:choose>  
-     <c:when test="${component.decoratorChain.hasDecorator}">
-       <%-- render next decorator in chain --%>    
-       <c:set var="decorator" value="${component.decoratorChain.nextDecorator}"/>
-       <tiles:insertTemplate template="${decorator.template}">
-         <tiles:putAttribute name="${decorator.componentTypeName}" value="${decorator}"/>
-         <tiles:putAttribute name="decoratorChain" value="${component.decoratorChain}"/>
-         <tiles:putAttribute name="templateParameters" value="${templateParameters}"/>
-       </tiles:insertTemplate> 
-     </c:when>
-     
-     <c:otherwise>
-       <%-- render component --%>    
-       <tiles:insertTemplate template="${component.template}">
-         <tiles:putAttribute name="${component.componentTypeName}" value="${component}"/>
-         <c:forEach items="${templateParameters}" var="parameter">
-           <tiles:putAttribute name="${parameter.key}" value="${parameter.value}"/>
-         </c:forEach>
-       </tiles:insertTemplate>
+   <%-- render component --%>    
+   <tiles:insertTemplate template="${component.template}">
+       <tiles:putAttribute name="${component.componentTypeName}" value="${component}"/>
+       <c:forEach items="${templateParameters}" var="parameter">
+         <tiles:putAttribute name="${parameter.key}" value="${parameter.value}"/>
+       </c:forEach>
+   </tiles:insertTemplate>
        
-       <%-- generate event code for component --%>
-       <krad:eventScript component="${component}"/>
-     </c:otherwise>
-   </c:choose>
+   <%-- generate event code for component --%>
+   <krad:eventScript component="${component}"/>
 </c:if>            

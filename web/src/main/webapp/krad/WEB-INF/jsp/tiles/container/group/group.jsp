@@ -37,3 +37,6 @@
   <krad:template component="${group.footer}"/>
     
 </krad:div>
+
+<%-- render group accordion --%>
+<krad:template component="${group.accordion}" parent="${group}"/>

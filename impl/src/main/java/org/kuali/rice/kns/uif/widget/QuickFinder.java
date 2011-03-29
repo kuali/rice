@@ -1,28 +1,29 @@
 /*
- * Copyright 2007 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl1.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2007 The Kuali Foundation Licensed under the Educational Community
+ * License, Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.opensource.org/licenses/ecl1.php Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package org.kuali.rice.kns.uif.widget;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.ActionField;
+import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.util.ViewModelUtils;
+import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * Widget for navigating to a lookup from a field (called a quickfinder)
@@ -30,137 +31,317 @@ import org.kuali.rice.kns.uif.field.ActionField;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class QuickFinder extends WidgetBase {
-	private static final long serialVersionUID = 3302390972815386785L;
+    private static final long serialVersionUID = 3302390972815386785L;
 
-	private String baseLookupUrl;
+    // lookup configuration
+    private String baseLookupUrl;
+    private String dataObjectClassName;
+    private String viewName;
 
-	private String dataObjectClassName;
-	private String viewId;
-	private String viewName;
+    private String referencesToRefresh;
 
-	private Map<String, String> returnFieldMapping;
-	private Map<String, String> parameterFieldMapping;
+    private Map<String, String> fieldConversions;
+    private Map<String, String> lookupParameters;
 
-	boolean hideReturnColumn;
-	boolean hideActionsColumn;
-	boolean performAutoSearch;
+    // lookup view options
+    private String readOnlySearchFields;
 
-	private ActionField quickfinderActionField;
+    private Boolean hideReturnLink;
+    private Boolean supressActions;
+    private Boolean autoSearch;
+    private Boolean lookupCriteriaEnabled;
+    private Boolean supplementalActionsEnabled;
+    private Boolean disableSearchButtons;
+    private Boolean headerBarEnabled;
+    private Boolean showMaintenanceLinks;
 
-	public QuickFinder() {
-		super();
-	}
+    private ActionField quickfinderActionField;
 
-	/**
-	 * @see org.kuali.rice.kns.uif.widget.WidgetBase#performFinalize(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object, org.kuali.rice.kns.uif.Component)
-	 */
-	@Override
-	public void performFinalize(View view, Object model, Component parent) {
-		super.performFinalize(view, model, parent);
+    public QuickFinder() {
+        super();
 
-		quickfinderActionField.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
+        fieldConversions = new HashMap<String, String>();
+        lookupParameters = new HashMap<String, String>();
+    }
 
-		if (StringUtils.isNotBlank(dataObjectClassName)) {
-			quickfinderActionField.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
+    /**
+     * @see org.kuali.rice.kns.uif.widget.WidgetBase#performFinalize(org.kuali.rice.kns.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.kns.uif.core.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
 
-			setRender(true);
-		}
-		else {
-			setRender(false);
-		}
-	}
+        if (!isRender()) {
+            return;
+        }
 
-	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
-	 */
-	@Override
-	public List<Component> getNestedComponents() {
-		List<Component> components = super.getNestedComponents();
+        AttributeField field = (AttributeField) parent;
 
-		components.add(quickfinderActionField);
+        // determine lookup class, field conversions and lookup parameters in
+        // not set
+        if (StringUtils.isBlank(dataObjectClassName)) {
+            BusinessObjectRelationship relationship = getRelationshipForField(view, model, field);
 
-		return components;
-	}
+            // if no relationship found cannot have a quickfinder
+            if (relationship == null) {
+                setRender(false);
+                return;
+            }
 
-	public String getBaseLookupUrl() {
-		return this.baseLookupUrl;
-	}
+            dataObjectClassName = relationship.getRelatedClass().getName();
 
-	public void setBaseLookupUrl(String baseLookupUrl) {
-		this.baseLookupUrl = baseLookupUrl;
-	}
+            if ((fieldConversions == null) || fieldConversions.isEmpty()) {
+                generateFieldConversions(field, relationship);
+            }
 
-	public String getDataObjectClassName() {
-		return this.dataObjectClassName;
-	}
+            if ((lookupParameters == null) || lookupParameters.isEmpty()) {
+                generateLookupParameters(field, relationship);
+            }
+        }
 
-	public void setDataObjectClassName(String dataObjectClassName) {
-		this.dataObjectClassName = dataObjectClassName;
-	}
+        quickfinderActionField.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
+        quickfinderActionField.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
-	public String getViewId() {
-		return this.viewId;
-	}
+        if (!fieldConversions.isEmpty()) {
+            quickfinderActionField.addActionParameter(UifParameters.FIELD_CONVERSIONS,
+                    WebUtils.buildMapParameterString(fieldConversions));
+        }
 
-	public void setViewId(String viewId) {
-		this.viewId = viewId;
-	}
+        if (!lookupParameters.isEmpty()) {
+            quickfinderActionField.addActionParameter(UifParameters.LOOKUP_PARAMETERS,
+                    WebUtils.buildMapParameterString(lookupParameters));
+        }
 
-	public String getViewName() {
-		return this.viewName;
-	}
+        addActionParameterIfNotNull(UifParameters.VIEW_NAME, viewName);
+        addActionParameterIfNotNull(UifParameters.READ_ONLY_FIELDS, readOnlySearchFields);
+        addActionParameterIfNotNull(UifParameters.HIDE_RETURN_LINK, hideReturnLink);
+        addActionParameterIfNotNull(UifParameters.SUPRESS_ACTIONS, supressActions);
+        addActionParameterIfNotNull(UifParameters.REFERENCES_TO_REFRESH, referencesToRefresh);
+        addActionParameterIfNotNull(UifParameters.AUTO_SEARCH, autoSearch);
+        addActionParameterIfNotNull(UifParameters.LOOKUP_CRITERIA_ENABLED, lookupCriteriaEnabled);
+        addActionParameterIfNotNull(UifParameters.SUPPLEMENTAL_ACTIONS_ENABLED, supplementalActionsEnabled);
+        addActionParameterIfNotNull(UifParameters.DISABLE_SEARCH_BUTTONS, disableSearchButtons);
+        addActionParameterIfNotNull(UifParameters.HEADER_BAR_ENABLED, headerBarEnabled);
+        addActionParameterIfNotNull(UifParameters.SHOW_MAINTENANCE_LINKS, showMaintenanceLinks);
 
-	public void setViewName(String viewName) {
-		this.viewName = viewName;
-	}
+        // TODO:
+        // org.kuali.rice.kns.util.FieldUtils.populateQuickfinderDefaultsForLookup(Class,
+        // String, Field)
+    }
 
-	public Map<String, String> getReturnFieldMapping() {
-		return this.returnFieldMapping;
-	}
+    protected void addActionParameterIfNotNull(String parameterName, Object parameterValue) {
+        if ((parameterValue != null) && StringUtils.isNotBlank(parameterValue.toString())) {
+            quickfinderActionField.addActionParameter(parameterName, parameterValue.toString());
+        }
+    }
 
-	public void setReturnFieldMapping(Map<String, String> returnFieldMapping) {
-		this.returnFieldMapping = returnFieldMapping;
-	}
+    protected BusinessObjectRelationship getRelationshipForField(View view, Object model, AttributeField field) {
+        String propertyName = field.getBindingInfo().getBindingName();
 
-	public Map<String, String> getParameterFieldMapping() {
-		return this.parameterFieldMapping;
-	}
+        // get object instance and class for parent
+        Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, field);
+        Class<?> parentObjectClass = null;
+        if (parentObject != null) {
+            parentObjectClass = parentObject.getClass();
+        }
 
-	public void setParameterFieldMapping(Map<String, String> parameterFieldMapping) {
-		this.parameterFieldMapping = parameterFieldMapping;
-	}
+        // get relationship from metadata service
+        return KNSServiceLocator.getBusinessObjectMetaDataService().getDataObjectRelationship(parentObject,
+                parentObjectClass, propertyName, "", true, true, false);
+    }
 
-	public boolean isHideReturnColumn() {
-		return this.hideReturnColumn;
-	}
+    protected void generateFieldConversions(AttributeField field, BusinessObjectRelationship relationship) {
+        String parentObjectPath = ViewModelUtils.getParentObjectPath(field);
 
-	public void setHideReturnColumn(boolean hideReturnColumn) {
-		this.hideReturnColumn = hideReturnColumn;
-	}
+        fieldConversions = new HashMap<String, String>();
+        for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
+            String fromField = entry.getValue();
+            String toField = entry.getKey();
 
-	public boolean isHideActionsColumn() {
-		return this.hideActionsColumn;
-	}
+            // TODO: displayedFieldnames in
+            // org.kuali.rice.kns.lookup.LookupUtils.generateFieldConversions(BusinessObject,
+            // String, BusinessObjectRelationship, String, List, String)
 
-	public void setHideActionsColumn(boolean hideActionsColumn) {
-		this.hideActionsColumn = hideActionsColumn;
-	}
+            if (StringUtils.isNotBlank(parentObjectPath)) {
+                if (field.getBindingInfo().isBindToMap()) {
+                    toField = parentObjectPath + "['" + toField + "']";
+                }
+                else {
+                    toField = parentObjectPath + "." + toField;
+                }
+            }
 
-	public boolean isPerformAutoSearch() {
-		return this.performAutoSearch;
-	}
+            fieldConversions.put(fromField, toField);
+        }
+    }
 
-	public void setPerformAutoSearch(boolean performAutoSearch) {
-		this.performAutoSearch = performAutoSearch;
-	}
+    protected void generateLookupParameters(AttributeField field, BusinessObjectRelationship relationship) {
+        String parentObjectPath = ViewModelUtils.getParentObjectPath(field);
 
-	public ActionField getQuickfinderActionField() {
-		return this.quickfinderActionField;
-	}
+        lookupParameters = new HashMap<String, String>();
+        for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
+            String fromField = entry.getKey();
+            String toField = entry.getValue();
 
-	public void setQuickfinderActionField(ActionField quickfinderActionField) {
-		this.quickfinderActionField = quickfinderActionField;
-	}
+            // TODO: displayedFieldnames and displayedQFFieldNames in
+            // generateLookupParameters(BusinessObject,
+            // String, BusinessObjectRelationship, String, List, String)
+
+            if (relationship.getUserVisibleIdentifierKey() == null
+                    || relationship.getUserVisibleIdentifierKey().equals(fromField)) {
+                if (StringUtils.isNotBlank(parentObjectPath)) {
+                    if (field.getBindingInfo().isBindToMap()) {
+                        fromField = parentObjectPath + "['" + fromField + "']";
+                    }
+                    else {
+                        fromField = parentObjectPath + "." + fromField;
+                    }
+                }
+
+                lookupParameters.put(fromField, toField);
+            }
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
+     */
+    @Override
+    public List<Component> getNestedComponents() {
+        List<Component> components = super.getNestedComponents();
+
+        components.add(quickfinderActionField);
+
+        return components;
+    }
+
+    public String getBaseLookupUrl() {
+        return this.baseLookupUrl;
+    }
+
+    public void setBaseLookupUrl(String baseLookupUrl) {
+        this.baseLookupUrl = baseLookupUrl;
+    }
+
+    public String getDataObjectClassName() {
+        return this.dataObjectClassName;
+    }
+
+    public void setDataObjectClassName(String dataObjectClassName) {
+        this.dataObjectClassName = dataObjectClassName;
+    }
+
+    public String getViewName() {
+        return this.viewName;
+    }
+
+    public void setViewName(String viewName) {
+        this.viewName = viewName;
+    }
+
+    public String getReferencesToRefresh() {
+        return this.referencesToRefresh;
+    }
+
+    public void setReferencesToRefresh(String referencesToRefresh) {
+        this.referencesToRefresh = referencesToRefresh;
+    }
+
+    public Map<String, String> getFieldConversions() {
+        return this.fieldConversions;
+    }
+
+    public void setFieldConversions(Map<String, String> fieldConversions) {
+        this.fieldConversions = fieldConversions;
+    }
+
+    public Map<String, String> getLookupParameters() {
+        return this.lookupParameters;
+    }
+
+    public void setLookupParameters(Map<String, String> lookupParameters) {
+        this.lookupParameters = lookupParameters;
+    }
+
+    public String getReadOnlySearchFields() {
+        return this.readOnlySearchFields;
+    }
+
+    public void setReadOnlySearchFields(String readOnlySearchFields) {
+        this.readOnlySearchFields = readOnlySearchFields;
+    }
+
+    public Boolean getHideReturnLink() {
+        return this.hideReturnLink;
+    }
+
+    public void setHideReturnLink(Boolean hideReturnLink) {
+        this.hideReturnLink = hideReturnLink;
+    }
+
+    public Boolean getSupressActions() {
+        return this.supressActions;
+    }
+
+    public void setSupressActions(Boolean supressActions) {
+        this.supressActions = supressActions;
+    }
+
+    public Boolean getAutoSearch() {
+        return this.autoSearch;
+    }
+
+    public void setAutoSearch(Boolean autoSearch) {
+        this.autoSearch = autoSearch;
+    }
+
+    public Boolean getLookupCriteriaEnabled() {
+        return this.lookupCriteriaEnabled;
+    }
+
+    public void setLookupCriteriaEnabled(Boolean lookupCriteriaEnabled) {
+        this.lookupCriteriaEnabled = lookupCriteriaEnabled;
+    }
+
+    public Boolean getSupplementalActionsEnabled() {
+        return this.supplementalActionsEnabled;
+    }
+
+    public void setSupplementalActionsEnabled(Boolean supplementalActionsEnabled) {
+        this.supplementalActionsEnabled = supplementalActionsEnabled;
+    }
+
+    public Boolean getDisableSearchButtons() {
+        return this.disableSearchButtons;
+    }
+
+    public void setDisableSearchButtons(Boolean disableSearchButtons) {
+        this.disableSearchButtons = disableSearchButtons;
+    }
+
+    public Boolean getHeaderBarEnabled() {
+        return this.headerBarEnabled;
+    }
+
+    public void setHeaderBarEnabled(Boolean headerBarEnabled) {
+        this.headerBarEnabled = headerBarEnabled;
+    }
+
+    public Boolean getShowMaintenanceLinks() {
+        return this.showMaintenanceLinks;
+    }
+
+    public void setShowMaintenanceLinks(Boolean showMaintenanceLinks) {
+        this.showMaintenanceLinks = showMaintenanceLinks;
+    }
+
+    public ActionField getQuickfinderActionField() {
+        return this.quickfinderActionField;
+    }
+
+    public void setQuickfinderActionField(ActionField quickfinderActionField) {
+        this.quickfinderActionField = quickfinderActionField;
+    }
 
 }

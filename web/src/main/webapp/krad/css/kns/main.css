@@ -1,0 +1,77 @@
+#viewheader_div .view_header {
+	background: #EBEBEB url(../../images/masthead1.gif);
+	height:55px;
+	border-bottom: 1px solid #999;
+	min-width:800px;
+	margin-bottom: 24px;
+}
+#viewheader_div .view_header h1 {
+	font-size:1.5em;
+	padding-top: 0.5em;
+	padding-left: 0.6em;
+	float:left;
+	font-family: Arimo;
+	font-weight: bold;
+}
+#viewheader_div .view_header a {
+	position: absolute;
+	padding-top:18px;
+	padding-left:6px;
+}
+#viewheader_div .view_header div.doc-info {
+	float:right;
+}
+.view_header td {
+	background-color: #FFFFFF;
+	border-left: 1px solid #999999;
+	border-top: 1px solid #999999;
+	padding-left: 0.3em;
+	padding-right: 1em;
+}
+.view_header th {
+	background-color: #DEDEDE;
+	border-left: 1px solid #999999;
+	border-top: 1px solid #999999;
+	font-weight: bold;
+	padding-left: 1em;
+	padding-right: 0.3em;
+	text-align: right;
+}
+#viewpage_div {
+	margin-left:20px;
+	margin-right:20px;
+}
+#viewpage_div .page_header .grouping-header-expandable .panel-content {
+	margin-left:12px;
+	margin-right:12px;
+	margin-bottom: 12px;
+}
+#viewpage_div .page_header .message {
+	display:block;
+	font-size: .7em;
+	padding-top: 8px;
+}
+#viewpage_div .page_header .group_expandclose {
+	float:right;
+	text-align: right;
+}
+#viewpage_div .page_header .global-button-group {
+	text-align:center;
+}
+#viewpage_div .page_header .global-button-group .ui-state-default.ui-corner-all {
+	font-size:.8em;
+	padding:0em 1em .1em;
+	font-weight: bold;
+	text-transform: lowercase;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #FFF url(images/button-bevel.png) 0px 0px;
+}
+
+
+#viewpage_div .page_header .global-button-group .ui-state-default.ui-corner-all.ui-state-hover {
+	background-color:#900;
+	color: #FFF;
+	border: 1px solid #500;
+}

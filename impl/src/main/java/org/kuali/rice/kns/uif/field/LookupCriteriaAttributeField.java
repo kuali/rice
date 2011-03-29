@@ -20,7 +20,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
 import org.kuali.rice.kns.uif.control.RadioGroupControl;
 import org.kuali.rice.kns.uif.control.TextControl;
-import org.kuali.rice.kns.uif.util.UifLookupUtils;
+import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -39,7 +39,7 @@ public class LookupCriteriaAttributeField extends AttributeField {
 	 */
 	@Override
 	public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
-		UifLookupUtils.initializeAttributeFieldFromAttributeDefinition(this, attributeDefinition);
+		LookupInquiryUtils.initializeAttributeFieldFromAttributeDefinition(this, attributeDefinition);
 
 		// set field size to 30 if not already set
 		if ( (TextControl.class.isAssignableFrom(getControl().getClass())) && (((TextControl)getControl()).getSize() <= 0) ) {

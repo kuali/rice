@@ -194,7 +194,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
 		// create a new document object, if required
 		if (document == null) {
-			document = getMaintenanceDocumentService().setupNewMaintenanceDocument(form.getObjectClassName(),
+			document = getMaintenanceDocumentService().setupNewMaintenanceDocument(form.getDataObjectClassName(),
 					form.getDocTypeName(), maintenanceAction);
 
 			form.setDocument(document);

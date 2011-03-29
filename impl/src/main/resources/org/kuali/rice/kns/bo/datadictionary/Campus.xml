@@ -154,10 +154,10 @@
 
   <bean id="Campus-InquiryView" parent="InquiryView">
      <property name="title" value="Campus Inquiry"/>
-     <property name="objectClassName" value="org.kuali.rice.kns.bo.CampusImpl"/>
+     <property name="dataObjectClassName" value="org.kuali.rice.kns.bo.CampusImpl"/>
      <property name="Items">
          <list>
-           <bean parent="GroupSectionGridLayout_Accordion">
+           <bean parent="GroupSectionGridLayout">
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>

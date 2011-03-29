@@ -28,8 +28,8 @@ import org.kuali.rice.kns.inquiry.InquiryRestrictions;
  * AttributeDefinitions, InquirableField the data dictionary business object and
  * maintenance document entries
  * 
+ * TODO: refactor for general objects
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public interface BusinessObjectAuthorizationService {
 	public BusinessObjectRestrictions getLookupResultRestrictions(
@@ -51,5 +51,5 @@ public interface BusinessObjectAuthorizationService {
 	
 	public boolean canMaintain(Object dataObject, Person user, String docTypeName);
 	
-	public boolean attributeValueNeedsToBeEncryptedOnFormsAndLinks(Class<?> businessObjectClass, String attributeName);
+	public boolean attributeValueNeedsToBeEncryptedOnFormsAndLinks(Class<?> dataObjectClass, String attributeName);
 }

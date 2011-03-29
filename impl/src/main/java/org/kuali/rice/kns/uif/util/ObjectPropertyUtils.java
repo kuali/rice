@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.BeansException;
 
 /**
  * Utility methods to get/set property values and working with objects
@@ -71,12 +72,13 @@ public class ObjectPropertyUtils {
 		try {
 			wrapObject(object).setPropertyValue(propertyPath, propertyValue);
 		}
-		catch (Exception e) {
+		catch (BeansException e) {
+			// only throw exception if they have indicated to not ignore unknown
 			if (!ignoreUnknown) {
 				throw new RuntimeException(e);
 			}
-			if (LOG.isInfoEnabled()) {
-				LOG.info("Ignoring exception thrown during setting of property '" + propertyPath + "': "
+			if (LOG.isTraceEnabled()) {
+				LOG.trace("Ignoring exception thrown during setting of property '" + propertyPath + "': "
 						+ e.getLocalizedMessage());
 			}
 		}

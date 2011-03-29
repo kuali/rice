@@ -21,6 +21,7 @@ import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.Field;
+import org.kuali.rice.kns.uif.field.GroupField;
 
 /**
  * Layout manager implementations that work with a collection (such as a table
@@ -63,6 +64,9 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 *            - the field instances for the collection line which were
 	 *            copied from the collection groups items, id and binding
 	 *            already updated
+	 * @param subCollectionFields
+	 *            - group field instances for each sub collection of the current
+	 *            line
 	 * @param bindingPath
 	 *            - binding path for the groups items (if DataBinding)
 	 * @param actions
@@ -71,11 +75,22 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 * @param idSuffix
 	 *            - suffix to use for any generated items
 	 * @param currentLine
-	 *            - object instance for the current line, or null if add line          
+	 *            - object instance for the current line, or null if add line
 	 * @param lineIndex
 	 *            - index of the collection line being iterated over, or -1 if
 	 *            the add line
 	 */
-	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<? extends Field> lineFields,
-			String bindingPath, List<ActionField> actions, String idSuffix, Object currentLine, int lineIndex);
+	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
+			List<GroupField> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			Object currentLine, int lineIndex);
+
+	/**
+	 * Field group instance that is used as a prototype for creating the
+	 * sub-collection field groups. For each sub-collection a copy of the
+	 * prototype is made and the list will be passed to the layout manager
+	 * buildLine method
+	 * 
+	 * @return GroupField instance to use as prototype
+	 */
+	public GroupField getSubCollectionGroupFieldPrototype();
 }

@@ -575,6 +575,15 @@ public class MessageMap implements Serializable {
     	return infoMessages.get(propertyName);
     }
     
+    /**
+     * This method gets a list of lists that represent errors that matched by the propertyName passed in (multiple
+     * lists because the wildcard can match multiple keys).  If wildcard is true, the propertyName ends with a
+     * wildcard character.  Otherwise, it will only match on the single key and return a list with one list
+     * 
+     * @param propertyName
+     * @param allowWildcard
+     * @return
+     */
     public List<AutoPopulatingList> getErrorMessagesForProperty(String propertyName, boolean allowWildcard){
     	List<AutoPopulatingList> foundMessages = new ArrayList<AutoPopulatingList>();
     	if(allowWildcard){
@@ -600,6 +609,15 @@ public class MessageMap implements Serializable {
     	return foundMessages;
     }
     
+    /**
+     * This method gets a list of lists that represent warnings that matched by the propertyName passed in (multiple
+     * lists because the wildcard can match multiple keys).  If wildcard is true, the propertyName ends with a
+     * wildcard character.  Otherwise, it will only match on the single key and return a list with one list.
+     * 
+     * @param propertyName
+     * @param allowWildcard
+     * @return
+     */
     public List<AutoPopulatingList> getWarningMessagesForProperty(String propertyName, boolean allowWildcard){
     	List<AutoPopulatingList> foundMessages = new ArrayList<AutoPopulatingList>();
     	if(allowWildcard){
@@ -625,6 +643,15 @@ public class MessageMap implements Serializable {
     	return foundMessages;
     }
     
+    /**
+     * This method gets a list of lists that represent info messages that matched by the propertyName passed in (multiple
+     * lists because the wildcard can match multiple keys).  If wildcard is true, the propertyName ends with a
+     * wildcard character.  If it is false, it will only match on the single key and return a list with one list.
+     * 
+     * @param propertyName
+     * @param allowWildcard
+     * @return
+     */
     public List<AutoPopulatingList> getInfoMessagesForProperty(String propertyName, boolean allowWildcard){
     	List<AutoPopulatingList> foundMessages = new ArrayList<AutoPopulatingList>();
     	if(allowWildcard){

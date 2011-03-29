@@ -31,6 +31,7 @@ import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.kuali.rice.kns.uif.util.ClientValidationUtils;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -165,7 +166,8 @@ public class View extends ContainerBase {
 		if (this.getOnDocumentReadyScript() != null) {
 			prefixScript = this.getOnDocumentReadyScript();
 		}
-		this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();");
+		this.setOnDocumentReadyScript(prefixScript + "jQuery.extend(jQuery.validator.messages, "+ClientValidationUtils.generateValidatorMessagesOption()+");" +
+				"\nsetupValidator();");
 	}
 
 	/**

@@ -206,5 +206,17 @@ public interface Container extends Component {
 	 * @param help
 	 */
 	public void setHelp(Help help);
+	
+	/**
+	 * This property is true if the container is used to display a group of fields that is visually a single
+	 * field - this has an effect on where errors will show up for these fields.
+	 * @return the fieldContainer
+	 */
+	public boolean isFieldContainer();
+
+	/**
+	 * @param fieldContainer the fieldContainer to set
+	 */
+	public void setFieldContainer(boolean fieldContainer);
 
 }

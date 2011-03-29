@@ -449,41 +449,70 @@ function createTable(controlId, options) {
 		var oTable = jq("#" + controlId).dataTable(options);
 	})
 }
-
+/**
+* Applies the error coloring for fields with errors, warnings, or information
+*/
 function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide){
 	var div = jq("#" + errorDivId);
 	var label = jq("#" + errorDivId.replace("errors_div", "label"));
 	var highlightLine = "";
-	//should do layout type check here instead - this may be unreliable (?)
-	if (div.parent().is("td")) {
-		highlightLine = div.closest("td.field_attribute").closest("tr");
-	}
-	else{
-		highlightLine = div.closest(".fieldLine");
-	}
-	if (highlightLine) {
-		if(errorNum && !clientSide){
-			highlightLine.addClass("serverError");
-			label.addClass("serverError");
-		}
-		else if(errorNum){
-			highlightLine.addClass("clientError");
-			label.addClass("clientError");
-		}
-		else if(warningNum){
-			highlightLine.addClass("warning");
-			label.addClass("warning");
-		}
-		else if(infoNum){
-			highlightLine.addClass("information");
-			label.addClass("information");
+	//check to see if the option to highlight fields is on
+	if(!div.hasClass("noHighlight")){
+		if (div.parent().is("td")) {
+			highlightLine = div.parent();
 		}
 		else{
-			//we are only removing errors client side - no knowledge of warnings/infos
-			highlightLine.removeClass("clientError");
-			label.removeClass("clientError");
+			highlightLine = div.closest(".fieldLine");
+		}
+		if (highlightLine) {
+			if(errorNum && !clientSide){
+				highlightLine.addClass("serverError");
+				label.addClass("serverError");
+			}
+			else if(errorNum){
+				highlightLine.addClass("clientError");
+				label.addClass("clientError");
+			}
+			else if(warningNum){
+				highlightLine.addClass("warning");
+				label.addClass("warning");
+			}
+			else if(infoNum){
+				highlightLine.addClass("information");
+				label.addClass("information");
+			}
+			else{
+				//we are only removing errors client side - no knowledge of warnings/infos
+				highlightLine.removeClass("clientError");
+				label.removeClass("clientError");
+			}
 		}
 	}
-	
 }
 
+/**
+*  Shows the field error icon if errorCount is greater than one and errorsField has the option turned on
+*/
+function showFieldIcon(errorsDivId, errorCount){
+	var div = jq("#" + errorsDivId);
+	var inputId = errorsDivId.replace("_errors_div", "");
+	var input = jq("#" + inputId);
+	var errorIcon = jq("#" + inputId + "_errorIcon");
+	if (div.hasClass("addFieldIcon") && errorCount && errorIcon.length == 0) {
+		if (input) {
+			input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+		}
+		else {
+			//try for radios and checkboxes
+			input = jq("#" + errorDivId.replace("errors_div", "attribute1"));
+			if (input) {
+				input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+			}
+		}
+	}
+	else if(div.hasClass("addFieldIcon") && errorCount == 0){
+		if(errorIcon){
+			errorIcon.remove();
+		}
+	}
+}

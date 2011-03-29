@@ -1090,6 +1090,9 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 */
 	@Override
 	public void appendToStyle(String styleRules) {
+		if(style == null){
+			style = "";
+		}
 		style = style + styleRules; 
 	}
 }

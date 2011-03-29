@@ -231,7 +231,8 @@ div.globalbuttons
 span.field_attribute
 {
    float: left;
-   padding-top: 0px;		
+   padding-top: 0px;
+   padding-left: 5px;		
 }
 
 div.field_attribute

@@ -108,6 +108,10 @@ public class UITestController extends UifControllerBase {
 			GlobalVariables.getMessageMap().putInfo("field3", "serverTestInfo");
 			GlobalVariables.getMessageMap().putError("field13", "serverTestError");
 			GlobalVariables.getMessageMap().putWarning("field4", "serverTestWarning");
+			GlobalVariables.getMessageMap().putWarning("TEST_WARNING", "serverTestError3");
+			GlobalVariables.getMessageMap().putError("TEST_ERROR", "serverTestError3");
+			GlobalVariables.getMessageMap().putError("vField5", "serverTestError");
+			GlobalVariables.getMessageMap().putError("vField6", "serverTestError");
 			//GlobalVariables.getMessageMap().clearErrorMessages();
 			return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), uiTestForm.getPageId());
 		}

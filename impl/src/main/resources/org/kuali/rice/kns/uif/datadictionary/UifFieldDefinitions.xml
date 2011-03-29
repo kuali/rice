@@ -78,7 +78,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayWarningTitle" value="false"/> 
 	  <property name="displayInfoTitle" value="false"/> 
 	  <property name="displayFieldLabelWithMessages" value="true"/>
-	  <property name="displayNestedMessages" value="false"/> 
+	  <property name="displayNestedMessages" value="false"/>
+	  <property name="displayFieldErrorIcon" value="false"/>
 	  <property name="highlightOnError" value="true"/>
 	  <property name="combineMessages" value="true"/> 
 	  <property name="allowMessageRepeat" value="true"/>
@@ -94,16 +95,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="displayErrorTitle" value="false"/>
 	  <property name="displayWarningTitle" value="false"/> 
 	  <property name="displayInfoTitle" value="false"/> 
-	  <property name="displayFieldLabelWithMessages" value="false"/>
-	  <property name="displayNestedMessages" value="false"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="true"/> 
 	  <property name="highlightOnError" value="false"/>
-	  <property name="combineMessages" value="false"/> 
-	  <property name="allowMessageRepeat" value="false"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <!--note global display flag is false by default, but others are true by default, 
+	  no messages will be displayed by default in groups, but all can easily be turned on-->
 	  <property name="displayMessages" value="false"/>
-	  <property name="displayErrorMessages" value="false"/>
-	  <property name="displayWarningMessages" value="false"/>
-	  <property name="displayInfoMessages" value="false"/>
-	  <property name="displayCounts" value="false"/>
+	  <property name="displayCounts" value="true"/>
   </bean>
   
   <bean id="ErrorsField_View" abstract="true" parent="ErrorsField">
@@ -191,9 +191,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="FieldGroup" abstract="true" parent="FieldGroup-parentBean"/>
   <bean id="FieldGroup-parentBean" abstract="true" parent="GroupField">
       <property name="group">
-         <bean parent="GroupBodyOnly"/>
+         <bean parent="GroupBodyOnly" p:fieldContainer="true" p:layoutManager.padding="3px"/>
       </property>  
-  </bean> 
+  </bean>
   
   <!-- Common Fields -->
   

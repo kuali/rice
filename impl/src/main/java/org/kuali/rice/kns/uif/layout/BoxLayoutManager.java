@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.CssConstants;
 import org.kuali.rice.kns.uif.CssConstants.Margins;
+import org.kuali.rice.kns.uif.CssConstants.Padding;
 import org.kuali.rice.kns.uif.UifConstants.Orientation;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
@@ -46,6 +47,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	private String padding;
 
 	private String itemStyle;
+	private boolean layoutFieldErrors;
 
 	public BoxLayoutManager() {
 		super();
@@ -56,10 +58,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	/**
 	 * <p>
 	 * The following initialization is performed:
-	 * <ul>
-	 * <li>Set the itemSpanStyle</li>
-	 * </ul>
-	 * </p>
+	 * <p>
+	 * 
 	 * 
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View,org.kuali.rice.kns.uif.container.Container)
 	 */
@@ -67,38 +67,50 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
 		
-		if (StringUtils.isBlank(itemStyle) && StringUtils.isNotEmpty(padding)) {
-			if (StringUtils.equals(orientation, Orientation.VERTICAL)) {
-				// set item to block which will cause a line break and margin
-				// bottom for padding
-				itemStyle += CssConstants.getCssStyle(Margins.MARGIN_BOTTOM, padding);
-			}
-			else {
-				// set margin right for padding
-				itemStyle = CssConstants.getCssStyle(Margins.MARGIN_RIGHT, padding);
-				
-			}
-		}
-		else{
+		if(StringUtils.isBlank(itemStyle)){
 			itemStyle = "";
 		}
 		
+		if(StringUtils.isNotEmpty(padding)) {
+			if (StringUtils.equals(orientation, Orientation.VERTICAL)) {
+				// set item to block which will cause a line break and margin
+				// bottom for padding
+				itemStyle += CssConstants.getCssStyle(Padding.PADDING_BOTTOM, padding);
+			}
+			else {
+				// set margin right for padding
+				itemStyle += CssConstants.getCssStyle(Padding.PADDING_RIGHT, padding);
+			}
+		}
+		
+		if(StringUtils.equals(orientation, Orientation.HORIZONTAL)){
+			this.addStyleClass("clearfix");
+			this.addStyleClass("fieldLine");
+		}
+		else{
+			this.addStyleClass("fieldLine");
+			this.addStyleClass("clearfix");
+		}
 		
 		for(Component c: container.getNestedComponents()){
 			if(c != null){
 				if(StringUtils.equals(orientation, Orientation.HORIZONTAL)){
-					this.addStyleClass("clearfix");
-					this.addStyleClass("fieldLine");
 					c.addStyleClass("boxLayoutHorizontalItem");
 					c.appendToStyle(itemStyle);
 					//in a horizontal box layout errors are placed in a div next to all fields,
 					//set the errorsField to know that we are using an alternate container for them
 					if(c instanceof AttributeField){
 						((AttributeField) c).getErrorsField().setAlternateContainer(true);
-						//((AttributeField) c).getErrorsField().addStyleClass("floatLeft");
+						layoutFieldErrors = true;
 					}
 				}
-				//Vertical case is handled in the JSP
+				
+				if(container.isFieldContainer()){
+					if(c instanceof AttributeField){
+						((AttributeField) c).getErrorsField().setAlternateContainer(true);
+						layoutFieldErrors = true;
+					}
+				}
 			}
 		}
 	}
@@ -174,5 +186,21 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	public void setItemStyle(String itemStyle) {
 		this.itemStyle = itemStyle;
 	}
+
+	/**
+	 * @return the layoutFieldErrors
+	 */
+	public boolean isLayoutFieldErrors() {
+		return this.layoutFieldErrors;
+	}
+
+	/**
+	 * @param layoutFieldErrors the layoutFieldErrors to set
+	 */
+	public void setLayoutFieldErrors(boolean layoutFieldErrors) {
+		this.layoutFieldErrors = layoutFieldErrors;
+	}
+	
+	
 
 }

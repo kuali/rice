@@ -17,6 +17,7 @@
 
 <tiles:useAttribute name="items" classname="java.util.List"/>
 <tiles:useAttribute name="manager" classname="org.kuali.rice.kns.uif.layout.BoxLayoutManager"/>
+<tiles:useAttribute name="container" classname="org.kuali.rice.kns.uif.container.ContainerBase"/>
 
 <%--
     Box Layout Manager:
@@ -36,27 +37,39 @@
   <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
+<c:set var="itemSpanClasses" value="class=\"fieldLine boxLayoutVerticalItem clearfix\""/>
+
+<c:if test="${container.fieldContainer}">
+  <c:set var="fieldItemsStyle" value="style=\"float:left;\""/>
+  <c:set var="itemSpanClasses" value="class=\"fieldContainerVerticalItem clearfix\""/>
+</c:if>
+
 <%-- render items --%> 
 <div id="${manager.id}" ${style} ${styleClass}>
+<span ${fieldItemsStyle}>
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
 	   <c:choose>
 	   	   <c:when test="${manager.orientation=='HORIZONTAL'}">
 	       		<krad:template component="${item}"/>
 	       </c:when>
 	       <c:otherwise>
-	       		<span class="fieldLine boxLayoutVerticalItem clearfix" style="${manager.itemStyle}">
+	       		<span ${itemSpanClasses} style="${manager.itemStyle}">
 	       			<krad:template component="${item}"/>
 	       		</span>
 	       </c:otherwise>
 	   </c:choose>
    </c:forEach>
-   <c:if test="${manager.orientation=='HORIZONTAL'}">
+</span>
+<%-- 
+   Adds a special error container for horizontal case, fields will instead display their errors here 
+   (errorsField in attributeFields of this layout will not generate their errorsField through their jsp, as normal) 
+   see BoxLayoutManager.java 
+--%> 
+  <c:if test="${manager.layoutFieldErrors}">
 	   <span id="${manager.id}_errors_block" class="errorsField" style="float:left;">
-	   		<c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-		   		<c:if test="${item.class.name =='org.kuali.rice.kns.uif.field.AttributeField'}">
-				  <krad:template component="${item.errorsField}"/>
-				</c:if>
+	   		<c:forEach items="${container.attributeFields}" var="item">
+				<krad:template component="${item.errorsField}"/>
 	   		</c:forEach>
 	   </span>
-   </c:if>
+  </c:if> 
 </div> 

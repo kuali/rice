@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kns.uif.container;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.ComponentBase;
+import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.ErrorsField;
 import org.kuali.rice.kns.uif.field.HeaderField;
 import org.kuali.rice.kns.uif.field.MessageField;
@@ -55,6 +57,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	private String summary;
 	private MessageField summaryMessageField;
+	
+	private boolean fieldContainer;
 
 	/**
 	 * Default Constructor
@@ -377,5 +381,40 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void setSummaryMessageField(MessageField summaryMessageField) {
 		this.summaryMessageField = summaryMessageField;
 	}
+	
+	/**
+	 * Gets only the attribute fields that are nested in this container.  This is a subset of
+	 * what getNestedComponents() returns.
+	 * 
+	 * @return
+	 */
+	public List<AttributeField> getAttributeFields(){
+		List<AttributeField> attributeFields = new ArrayList<AttributeField>();
+		for(Component c: this.getNestedComponents()){
+			if(c instanceof AttributeField){
+				attributeFields.add((AttributeField)c);
+			}
+		}
+		return attributeFields;
+		
+	}
+
+	/**
+	 * This property is true if the container is used to display a group of fields that is visually a single
+	 * field.
+	 * @return the fieldContainer
+	 */
+	public boolean isFieldContainer() {
+		return this.fieldContainer;
+	}
+
+	/**
+	 * @param fieldContainer the fieldContainer to set
+	 */
+	public void setFieldContainer(boolean fieldContainer) {
+		this.fieldContainer = fieldContainer;
+	}
+	
+	
 
 }

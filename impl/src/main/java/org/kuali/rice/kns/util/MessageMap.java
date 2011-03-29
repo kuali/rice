@@ -574,6 +574,81 @@ public class MessageMap implements Serializable {
     public AutoPopulatingList getInfoMessagesForProperty(String propertyName) {
     	return infoMessages.get(propertyName);
     }
+    
+    public List<AutoPopulatingList> getErrorMessagesForProperty(String propertyName, boolean allowWildcard){
+    	List<AutoPopulatingList> foundMessages = new ArrayList<AutoPopulatingList>();
+    	if(allowWildcard){
+            boolean wildcard = false;
+            if (propertyName.endsWith("*")) {
+            	wildcard = true;
+                propertyName = propertyName.substring(0, propertyName.length() - 1);
+            }
+            for (Iterator<String> keys = errorMessages.keySet().iterator(); keys.hasNext();) {
+                String key = keys.next();
+                if(!wildcard && propertyName.equals(key)){
+                	foundMessages.add(errorMessages.get(key));
+                	break;
+                }
+                else if(wildcard && key.startsWith(propertyName)){
+                	foundMessages.add(errorMessages.get(key));
+                }
+            }
+    	}
+    	else{
+    		foundMessages.add(getErrorMessagesForProperty(propertyName));
+    	}
+    	return foundMessages;
+    }
+    
+    public List<AutoPopulatingList> getWarningMessagesForProperty(String propertyName, boolean allowWildcard){
+    	List<AutoPopulatingList> foundMessages = new ArrayList<AutoPopulatingList>();
+    	if(allowWildcard){
+            boolean wildcard = false;
+            if (propertyName.endsWith("*")) {
+            	wildcard = true;
+                propertyName = propertyName.substring(0, propertyName.length() - 1);
+            }
+            for (Iterator<String> keys = warningMessages.keySet().iterator(); keys.hasNext();) {
+                String key = keys.next();
+                if(!wildcard && propertyName.equals(key)){
+                	foundMessages.add(warningMessages.get(key));
+                	break;
+                }
+                else if(wildcard && key.startsWith(propertyName)){
+                	foundMessages.add(warningMessages.get(key));
+                }
+            }
+    	}
+    	else{
+    		foundMessages.add(getWarningMessagesForProperty(propertyName));
+    	}
+    	return foundMessages;
+    }
+    
+    public List<AutoPopulatingList> getInfoMessagesForProperty(String propertyName, boolean allowWildcard){
+    	List<AutoPopulatingList> foundMessages = new ArrayList<AutoPopulatingList>();
+    	if(allowWildcard){
+            boolean wildcard = false;
+            if (propertyName.endsWith("*")) {
+            	wildcard = true;
+                propertyName = propertyName.substring(0, propertyName.length() - 1);
+            }
+            for (Iterator<String> keys = infoMessages.keySet().iterator(); keys.hasNext();) {
+                String key = keys.next();
+                if(!wildcard && propertyName.equals(key)){
+                	foundMessages.add(infoMessages.get(key));
+                	break;
+                }
+                else if(wildcard && key.startsWith(propertyName)){
+                	foundMessages.add(infoMessages.get(key));
+                }
+            }
+    	}
+    	else{
+    		foundMessages.add(getInfoMessagesForProperty(propertyName));
+    	}
+    	return foundMessages;
+    }
 
     /**
      * @deprecated As of rice 0.9.4, use {@link #hasNoErrors()} instead

@@ -1025,24 +1025,28 @@ form li.complex p.error {
 }
 
 .errorsField .errorMessages{
-	color: red;
+	color: #DF0000;
 	font-weight: bold;
 }
 
-span.clientError, div.clientError, tr.clientError, span.serverError, div.serverError, tr.serverError{
+span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError{
 	background-color: #FFE0E9 !important;
 }
 
-span.information, div.information, tr.information{
+span.information, div.information, td.information{
 	background-color: #AFDCEC;
 }
 
-span.warning, div.warning, tr.warning{
+span.warning, div.warning, td.warning{
 	background-color: #F4E271;
 }
 
 label.clientError, label.serverError{
-	color: red !important;
+	color: #DF0000 !important;
+}
+
+li label.error{
+	display: inline !important;
 }
 
 .clearfix:after {
@@ -1062,5 +1066,10 @@ label.clientError, label.serverError{
 
 .boxLayoutVerticalItem{
 	padding-bottom: 20px;
+	display: block;
+}
+
+.fieldContainerVerticalItem{
+	padding-bottom: 5px;
 	display: block;
 }

@@ -17,6 +17,7 @@
 
 <tiles:useAttribute name="items" classname="java.util.List"/>
 <tiles:useAttribute name="manager" classname="org.kuali.rice.kns.uif.layout.StackedLayoutManager"/>
+<tiles:useAttribute name="container" classname="org.kuali.rice.kns.uif.container.ContainerBase"/>
 
 <%--
     Stacked Layout Manager:
@@ -28,4 +29,5 @@
 <tiles:insertTemplate template="box.jsp">
    <tiles:putAttribute name="items" value="${manager.stackedGroups}"/>
    <tiles:putAttribute name="manager" value="${manager}"/>
+   <tiles:putAttribute name="container" value="${container}"/>
 </tiles:insertTemplate>  

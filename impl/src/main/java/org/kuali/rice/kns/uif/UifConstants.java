@@ -111,26 +111,6 @@ public class UifConstants extends JSTLConstants {
 		public static final String FINAL = "F";
 	}
 
-	public static Map<String, String> validCharactersMethods = new HashMap<String, String>() {
-		private static final long serialVersionUID = -2457154523353529782L;
-
-		{
-			put("digits", "digits");
-			put("date", "date");
-			put("number", "number");
-			put("alphanumeric", "alphanumeric");
-			put("integer", "integer");
-			put("email", "email");
-			put("url", "url");
-			put("letterswithbasicpunc", "letterswithbasicpunc");
-			put("lettersonly", "lettersonly");
-			put("nowhitespace", "nowhitespace");
-			put("time", "time");
-			put("creditcard", "creditcard");
-			put("phoneUS", "phoneUS");
-		}
-	};
-
 	public static final String EL_PLACEHOLDER_PREFIX = "@{";
 	public static final String EL_PLACEHOLDER_SUFFIX = "}";
 	public static final String EL_CONDITIONAL_PROPERTY_PREFIX = "conditional";

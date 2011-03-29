@@ -325,7 +325,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="FieldGroup" p:label="Field Group 1" p:width="40%" p:labelField.width="10%">
             <property name="items">
               <list>
-                <bean parent="AttributeField_Form" p:propertyName="field20" p:label="Field 11" p:maxLength="4">
+                <bean parent="AttributeField_Form" p:propertyName="field20" p:label="Field 11" p:maxLength="4" p:required="true">
                   <property name="control">
                     <bean parent="TextControl" p:size="5"/>
                   </property>
@@ -373,12 +373,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
             <property name="items">
               <list>
-                <bean parent="AttributeField_Form" p:propertyName="field28" p:label="Field 11" p:showLabel="false" p:maxLength="4">
+                <bean parent="AttributeField_Form" p:propertyName="field28" p:label="Field 11" p:showLabel="false" p:maxLength="4" p:required="true">
                   <property name="control">
                     <bean parent="TextControl" p:size="5"/>
                   </property>
                 </bean>    
-                <bean parent="AttributeField_Form" p:propertyName="field32" p:label="Field 12" p:showLabel="false" p:maxLength="20">
+                <bean parent="AttributeField_Form" p:propertyName="field32" p:label="Field 12" p:showLabel="false" p:maxLength="20" p:required="true">
                   <property name="control">
                     <bean parent="TextControl" p:size="21"/>
                   </property>

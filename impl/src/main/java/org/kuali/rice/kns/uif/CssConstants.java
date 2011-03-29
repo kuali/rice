@@ -59,6 +59,13 @@ public class CssConstants {
 		public static final String MARGIN_BOTTOM = "margin-bottom: {0};";
 	}
 	
+	public static class Padding {
+		public static final String PADDING_LEFT = "padding-left: {0};";
+		public static final String PADDING_RIGHT = "padding-right: {0};";
+		public static final String PADDING_TOP = "padding-top: {0};";
+		public static final String PADDING_BOTTOM = "padding-bottom: {0};";
+	}
+	
 	public static final String WIDTH = "width: ";
 
 	/**

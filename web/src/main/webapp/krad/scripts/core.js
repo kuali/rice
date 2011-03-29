@@ -544,13 +544,26 @@ function setupValidator(){
 		highlight: function(element, errorClass, validClass) {
 			jq(element).addClass(errorClass).removeClass(validClass);
 			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 1, 0, 0, true);
+			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 1);
 		},
 		unhighlight: function(element, errorClass, validClass) {
 			jq(element).removeClass(errorClass).addClass(validClass);
 			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
+			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
 		},
 		errorPlacement: function(error, element) {
 			var id = getAttributeId(element.attr('id'), element.attr('type'));
+			//check to see if the option to use labels is on
+			if (!jq("#" + id + "_errors_div").hasClass("noLabels")) {
+				var label = getLabel(id);
+				label = jq.trim(label);
+				if (label) {
+					if (label.charAt(label.length - 1) == ":") {
+						label = label.slice(0, -1);
+					}
+					error.find("label").before(label + " - ");
+				}
+			}
 			jq("#" + id + "_errors_div").show();
 			jq("#" + id + "_errors_errorMessages").show();
 			var errorList = jq("#" + id + "_errors_errorMessages ul");
@@ -564,7 +577,7 @@ function setupValidator(){
 		else{
 			return true;
 		}
-	}, "Value must be greater than {0}");
+	});
 	jQuery.validator.addMethod("maxInclusive", function(value, element, param){
 		if (param.length == 1 || param[1]()) {
 			return this.optional(element) || value <= param[0];
@@ -572,7 +585,7 @@ function setupValidator(){
 		else{
 			return true;
 		}
-	}, "Value must not exceed {0}");
+	});
 	jQuery.validator.addMethod("minLengthConditional", function(value, element, param){
 		if (param.length == 1 || param[1]()) {
 			return this.optional(element) || this.getLength(jq.trim(value), element) >= param[0];
@@ -580,7 +593,7 @@ function setupValidator(){
 		else{
 			return true;
 		}
-	}, "Must be at least {0} characters");
+	});
 	jQuery.validator.addMethod("maxLengthConditional", function(value, element, param){
 		if (param.length == 1 || param[1]()) {
 			return this.optional(element) || this.getLength(jq.trim(value), element) <= param[0];
@@ -588,8 +601,20 @@ function setupValidator(){
 		else{
 			return true;
 		}
-	}, "Must be at most {0} characters");
+	});
 	jq.watermark.showAll();
+}
+
+//gets the the label for field with the corresponding id
+function getLabel(id){
+	var label =  jq("#" + id + "_label");
+	if(label){
+		return label.text();
+	}
+	else{
+		return "";
+	}
+	
 }
 
 //checks to see if any fields depend on the field being validated, if they do calls validate
@@ -607,8 +632,8 @@ function dependsOnCheck(element){
 }
 
 //checks to see if the fields with names specified in the name array contain a value
-//if they do - returns true if the num of fields with values are between min/max
-function mustOccurCheck(nameArray, min, max){
+//if they do - returns the total if the num of fields matched
+function mustOccurTotal(nameArray, min, max){
 	var total = 0;
 	for(i=0; i < nameArray.length; i++){
 		if(coerceValue(nameArray[i])){
@@ -616,11 +641,20 @@ function mustOccurCheck(nameArray, min, max){
 		}
 	}
 	
+	return total;
+
+}
+
+//checks to see if the fields with names specified in the name array contain a value
+//if they do - returns 1 if the num of fields with values are between min/max
+//this function is used to for mustoccur constraints nested in others
+function mustOccurCheck(total, min, max){
+	
 	if (total >= min && total <= max) {
-		return true;
+		return 1;
 	}
 	else {
-		return false;
+		return 0;
 	}
 }
 

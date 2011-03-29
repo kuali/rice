@@ -25,7 +25,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="BoxLayoutManager-parentBean" abstract="true" class="org.kuali.rice.kns.uif.layout.BoxLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/box.jsp"/>
       <property name="orientation" value="HORIZONTAL"/>
-      <property name="padding" value="1px"/>
   </bean>  
   
   <bean id="GridLayoutManager" parent="GridLayoutManager-parentBean"/> 

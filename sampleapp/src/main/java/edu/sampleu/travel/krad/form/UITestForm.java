@@ -66,9 +66,14 @@ public class UITestForm extends UifFormBase {
 	private boolean field31;
 	private String field32;
 	private String field33;
+	private String field34;
+	private String field35;
 	private String vField1;
 	private String vField2;
 	private String vField3;
+	private String vField4;
+	private String vField5;
+	private String vField6;
 	private String hField1;
 	private String hField2;
 	private String hField3;
@@ -457,5 +462,77 @@ public class UITestForm extends UifFormBase {
 	public void sethField3(String hField3) {
 		this.hField3 = hField3;
 	}
+
+	/**
+	 * @return the field34
+	 */
+	public String getField34() {
+		return this.field34;
+	}
+
+	/**
+	 * @param field34 the field34 to set
+	 */
+	public void setField34(String field34) {
+		this.field34 = field34;
+	}
+
+	/**
+	 * @return the field35
+	 */
+	public String getField35() {
+		return this.field35;
+	}
+
+	/**
+	 * @param field35 the field35 to set
+	 */
+	public void setField35(String field35) {
+		this.field35 = field35;
+	}
+
+	/**
+	 * @return the vField4
+	 */
+	public String getvField4() {
+		return this.vField4;
+	}
+
+	/**
+	 * @param vField4 the vField4 to set
+	 */
+	public void setvField4(String vField4) {
+		this.vField4 = vField4;
+	}
+
+	/**
+	 * @return the vField5
+	 */
+	public String getvField5() {
+		return this.vField5;
+	}
+
+	/**
+	 * @param vField5 the vField5 to set
+	 */
+	public void setvField5(String vField5) {
+		this.vField5 = vField5;
+	}
+
+	/**
+	 * @return the vField6
+	 */
+	public String getvField6() {
+		return this.vField6;
+	}
+
+	/**
+	 * @param vField6 the vField6 to set
+	 */
+	public void setvField6(String vField6) {
+		this.vField6 = vField6;
+	}
+	
+	
 
 }

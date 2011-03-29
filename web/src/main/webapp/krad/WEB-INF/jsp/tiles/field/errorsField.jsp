@@ -80,10 +80,11 @@
    </div>
 </c:if>
 </krad:div>
-<c:if test="${(field.infoCount > 0 || field.warningCount > 0 || field.errorCount > 0) && field.highlightOnError}">
+<c:if test="${(field.infoCount > 0 || field.warningCount > 0 || field.errorCount > 0)}">
 	<script type="text/javascript">
 		jq(document).ready(function(){
 			applyErrorColors("${field.id}_div", ${field.errorCount}, ${field.warningCount}, ${field.infoCount}, false);
+			showFieldIcon("${field.id}_div", ${field.errorCount});
 		});
 	</script>
 </c:if>

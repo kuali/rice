@@ -23,7 +23,7 @@ import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.kuali.rice.ksb.security.service.DigitalSignatureService;
 import org.kuali.rice.ksb.util.KSBConstants;

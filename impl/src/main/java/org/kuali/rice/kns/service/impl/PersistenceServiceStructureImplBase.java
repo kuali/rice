@@ -22,11 +22,11 @@ import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
-import org.kuali.rice.core.ojb.BaseOjbConfigurer;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
@@ -81,7 +81,7 @@ public class PersistenceServiceStructureImplBase {
 		if (isJpaEnabledForKnsClass(clazz)) {
 			List fieldNames = new ArrayList();
 	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
-	    	for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
+	    	for (org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
 	    		fieldNames.add(field.getName());
 	    	}
 	    	return fieldNames;

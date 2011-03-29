@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.junit.Test;
-import org.kuali.rice.core.util.SQLUtils;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;

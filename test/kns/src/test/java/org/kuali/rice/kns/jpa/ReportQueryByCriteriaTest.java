@@ -17,8 +17,8 @@ package org.kuali.rice.kns.jpa;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.test.KNSTestCase;
 

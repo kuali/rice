@@ -18,7 +18,8 @@ package org.kuali.rice.kew.config;
 
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 /**
  *

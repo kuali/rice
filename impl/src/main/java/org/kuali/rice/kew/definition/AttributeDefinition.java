@@ -16,7 +16,8 @@
  */
 package org.kuali.rice.kew.definition;
 
-import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 

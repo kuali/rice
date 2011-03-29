@@ -1,7 +1,7 @@
 package org.kuali.rice.kim.service;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 import javax.xml.namespace.QName;
 

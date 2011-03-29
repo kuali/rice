@@ -1,8 +1,8 @@
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.core.KualiException;
+import org.kuali.rice.core.api.exception.KualiException;
 
-public class ModuleServiceNotFoundException extends KualiException{
+public class ModuleServiceNotFoundException extends KualiException {
     public ModuleServiceNotFoundException(String message) {
         super(message);
     }

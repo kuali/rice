@@ -21,7 +21,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.bam.dao.BAMDAO;
 

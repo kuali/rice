@@ -18,7 +18,7 @@ package org.kuali.rice.kew.messaging.exceptionhandling;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.MDC;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;

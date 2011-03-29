@@ -18,7 +18,7 @@ package org.kuali.rice.kns.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.dao.impl.LookupDaoJpa;

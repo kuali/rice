@@ -18,7 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.rule.Role;

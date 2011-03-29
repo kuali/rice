@@ -16,7 +16,8 @@
 package org.kuali.rice.kew.rule;
 
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;

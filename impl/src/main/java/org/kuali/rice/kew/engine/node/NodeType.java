@@ -22,8 +22,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 

@@ -16,7 +16,7 @@
 
 package org.kuali.rice.edl.framework.services;
 
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 
 public class EdlFrameworkServiceLocator {

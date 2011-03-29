@@ -17,7 +17,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;

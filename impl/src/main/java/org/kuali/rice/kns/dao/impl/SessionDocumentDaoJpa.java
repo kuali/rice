@@ -20,9 +20,9 @@ import java.sql.Timestamp;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.kns.bo.SessionDocument;
 import org.kuali.rice.kns.dao.SessionDocumentDao;
 import org.kuali.rice.kns.util.KNSPropertyConstants;

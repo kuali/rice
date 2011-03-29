@@ -23,8 +23,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.rice.core.database.platform.DatabasePlatform;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;

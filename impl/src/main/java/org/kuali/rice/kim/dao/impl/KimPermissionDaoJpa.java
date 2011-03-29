@@ -22,11 +22,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria;;
+;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

@@ -16,9 +16,10 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;

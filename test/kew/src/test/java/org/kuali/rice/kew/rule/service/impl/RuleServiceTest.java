@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.rule.service.impl;
 
 import org.junit.Test;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;

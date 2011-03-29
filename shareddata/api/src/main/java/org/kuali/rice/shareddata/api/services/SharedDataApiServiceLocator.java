@@ -16,7 +16,7 @@
 
 package org.kuali.rice.shareddata.api.services;
 
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.shareddata.api.campus.CampusService;
 import org.kuali.rice.shareddata.api.country.CountryService;
 import org.kuali.rice.shareddata.api.county.CountyService;

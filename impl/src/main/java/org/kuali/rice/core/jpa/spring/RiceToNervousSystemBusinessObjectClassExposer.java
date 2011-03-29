@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.jpa.spring;
 
+import org.kuali.rice.core.framework.persistence.jpa.PersistableBusinessObjectClassExposer;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +32,7 @@ public class RiceToNervousSystemBusinessObjectClassExposer implements Persistabl
 	/**
 	 * Exposes a list of non-KNS entity class names
 	 * 
-	 * @see org.kuali.rice.core.jpa.spring.PersistableBusinessObjectClassExposer#exposePersistableBusinessObjectClassNames()
+	 * @see org.kuali.rice.core.framework.persistence.jpa.PersistableBusinessObjectClassExposer#exposePersistableBusinessObjectClassNames()
 	 */
 	public Set<String> exposePersistableBusinessObjectClassNames() {
 		Set<String> exposedClasses = new HashSet<String>();

@@ -18,7 +18,7 @@ package org.kuali.rice.kns;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;

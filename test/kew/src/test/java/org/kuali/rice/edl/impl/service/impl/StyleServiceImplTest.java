@@ -18,11 +18,10 @@ package org.kuali.rice.edl.impl.service.impl;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
 import org.kuali.rice.edl.impl.service.StyleService;
-import org.kuali.rice.edl.impl.service.impl.StyleServiceImpl;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;

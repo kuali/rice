@@ -19,7 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 /**
  * A lifecycle that wraps a service.  This fetches and calls a lifecycle available

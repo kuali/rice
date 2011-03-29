@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 
 import javax.xml.namespace.QName;
 import java.io.*;

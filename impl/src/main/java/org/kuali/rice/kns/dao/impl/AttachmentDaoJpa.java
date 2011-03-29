@@ -19,7 +19,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.dao.AttachmentDao;
 
@@ -38,7 +39,7 @@ public class AttachmentDaoJpa implements AttachmentDao {
 	 public Attachment getAttachmentByNoteId(Long noteId) {
 		 Criteria criteria = new Criteria(Attachment.class.getName());
 		 criteria.eq("noteIdentifier", noteId);
-	     return (Attachment) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();          
+	     return (Attachment) new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 	    }
 
     /**

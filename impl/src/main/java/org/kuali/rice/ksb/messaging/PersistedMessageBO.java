@@ -15,7 +15,7 @@ package org.kuali.rice.ksb.messaging;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.persistence.*;

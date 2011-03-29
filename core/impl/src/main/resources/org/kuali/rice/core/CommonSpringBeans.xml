@@ -66,9 +66,9 @@
        </property>
     </bean>
 
-	<bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean" lazy-init="true" />
+	<bean id="userTransaction" class="org.kuali.rice.core.framework.persistence.jta.UserTransactionFactoryBean" lazy-init="true" />
 
-	<bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean" lazy-init="true" />
+	<bean id="jtaTransactionManager" class="org.kuali.rice.core.framework.persistence.jta.TransactionManagerFactoryBean" lazy-init="true" />
 
 	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
 		<property name="userTransaction">
@@ -99,7 +99,7 @@
 		</property>
 	</bean>
 
-	<bean id="matchAllTxInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor" lazy-init="true">
+	<bean id="matchAllTxInterceptor" class="org.kuali.rice.core.framework.persistence.jta.KualiTransactionInterceptor" lazy-init="true">
 		<property name="transactionManager">
 			<ref bean="transactionManager" />
 		</property>
@@ -108,7 +108,7 @@
 		</property>
 	</bean>
 	
-	<bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.jpa.spring.NoResultExceptionInterceptor" />
+	<bean id="NoResultExceptionInterceptor" class="org.kuali.rice.core.framework.persistence.jpa.NoResultExceptionInterceptor" />
 	 
 	<bean id="commonDefaultAdvisorAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 
@@ -121,7 +121,7 @@
 		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
 	</bean>
 
-	<bean id="transactionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
+	<bean id="transactionInterceptor" class="org.kuali.rice.core.framework.persistence.jta.KualiTransactionInterceptor">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>

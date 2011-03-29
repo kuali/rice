@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.exception;
 
-import org.kuali.rice.core.KualiException;
+import org.kuali.rice.core.api.exception.KualiException;
 
 /**
  * This class represents an exception that is thrown when the configuration service tries to redefine a configuration property with

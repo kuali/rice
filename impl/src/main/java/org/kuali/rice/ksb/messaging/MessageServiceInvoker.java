@@ -18,8 +18,9 @@ package org.kuali.rice.ksb.messaging;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;

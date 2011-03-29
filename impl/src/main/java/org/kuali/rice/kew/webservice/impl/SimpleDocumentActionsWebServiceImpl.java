@@ -27,7 +27,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.SQLUtils;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;

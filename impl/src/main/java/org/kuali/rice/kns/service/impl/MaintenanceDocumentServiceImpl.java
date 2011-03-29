@@ -18,7 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
+import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kns.dao.MaintenanceDocumentDao;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;

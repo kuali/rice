@@ -28,7 +28,8 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.security.HttpClientHeaderDigitalSigner;
 import org.kuali.rice.ksb.security.SignatureVerifyingInputStream;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
@@ -156,7 +157,7 @@ public class KSBHttpInvokerRequestExecutor extends CommonsHttpInvokerRequestExec
 	}
 	
 	protected DigitalSignatureService getDigitalSignatureService() {
-		return (DigitalSignatureService)GlobalResourceLoader.getService(KSBConstants.ServiceNames.DIGITAL_SIGNATURE_SERVICE);
+		return (DigitalSignatureService) GlobalResourceLoader.getService(KSBConstants.ServiceNames.DIGITAL_SIGNATURE_SERVICE);
 	}
 	
 	protected JavaSecurityManagementService getJavaSecurityManagementService() {

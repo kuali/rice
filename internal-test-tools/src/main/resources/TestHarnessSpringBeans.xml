@@ -60,7 +60,7 @@
 		<property name="properties" value="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}" />
   </bean>
 
-  <bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
+  <bean id="ojbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.JtaOjbConfigurer">
     <property name="transactionManager" ref="jtaTransactionManager"/>
   </bean>
 
@@ -68,10 +68,10 @@
     <property name="defaultTimeout" value="${transaction.timeout}"/>
   </bean>
 
-  <bean id="userTransaction" class="org.kuali.rice.core.jta.UserTransactionFactoryBean">
+  <bean id="userTransaction" class="org.kuali.rice.core.framework.persistence.jta.UserTransactionFactoryBean">
   	<property name="defaultUserTransaction"><ref local="jotm"/></property>
   </bean>
-  <bean id="jtaTransactionManager" class="org.kuali.rice.core.jta.TransactionManagerFactoryBean">
+  <bean id="jtaTransactionManager" class="org.kuali.rice.core.framework.persistence.jta.TransactionManagerFactoryBean">
   	<property name="defaultTransactionManager"><ref local="jotm"/></property>
   </bean>
 
@@ -87,7 +87,7 @@
 		</property>
 	</bean>
 
-  <bean id="dataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+  <bean id="dataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
     <property name="transactionManager"><ref local="jtaTransactionManager"/></property>
     <property name="driverClassName"><value>${datasource.driver.name}</value></property>
     <property name="url"><value>${datasource.url}</value></property>

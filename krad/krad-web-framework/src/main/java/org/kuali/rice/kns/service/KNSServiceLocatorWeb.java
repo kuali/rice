@@ -1,6 +1,7 @@
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;

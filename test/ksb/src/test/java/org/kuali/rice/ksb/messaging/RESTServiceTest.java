@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService;
 import org.kuali.rice.ksb.messaging.remotedservices.Inbox;

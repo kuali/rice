@@ -18,7 +18,7 @@ package org.kuali.rice.kns.dao.proxy;
 import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.SessionDocument;
 import org.kuali.rice.kns.dao.SessionDocumentDao;
 import org.springframework.transaction.annotation.Transactional;

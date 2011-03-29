@@ -16,7 +16,7 @@
 
 package org.kuali.rice.ken.dao;
 
-import org.kuali.rice.core.framework.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 
 import java.sql.Timestamp;

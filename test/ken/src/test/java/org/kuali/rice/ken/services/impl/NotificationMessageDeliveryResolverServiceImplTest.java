@@ -17,7 +17,7 @@
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
-import org.kuali.rice.core.framework.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.ken.bo.Notification;

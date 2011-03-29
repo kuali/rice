@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
+import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.help.HelpEntry;

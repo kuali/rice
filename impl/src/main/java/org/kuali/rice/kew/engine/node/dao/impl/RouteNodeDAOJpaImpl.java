@@ -21,7 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;

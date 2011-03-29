@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.routeheader.service.impl;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -38,7 +38,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 

@@ -16,7 +16,8 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
@@ -54,7 +55,7 @@ public class RemoteFailureTest extends KSBTestCase {
 	}
 	
 	@Test public void testSOAPEchoService() throws Exception {
-		EchoService echoService = (EchoService)GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
+		EchoService echoService = (EchoService) GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
 		assertNotNull(echoService);
 		String echoValue = "echoValue";
 		String result = echoService.echo(echoValue);

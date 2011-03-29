@@ -18,7 +18,7 @@ package org.kuali.rice.kew.bo.lookup;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.DateTimeService;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.core.web.format.CollectionFormatter;
@@ -75,7 +75,7 @@ KualiLookupableHelperServiceImpl {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.core.DateTimeService)
+	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.core.api.datetime.DateTimeService)
 	 */
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;

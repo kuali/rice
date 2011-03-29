@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.test;
 
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
@@ -28,7 +28,7 @@ import javax.transaction.UserTransaction;
  * 
  * This doesn't defer to the {@link GlobalResourceLoader} because I'm not sure 
  * the test harness justifies the extra setup at the moment.  If/when the 
- * testharness {@link SpringResourceLoader} is placed in the {@link GlobalResourceLoader} 
+ * testharness {@link org.kuali.rice.core.impl.resourceloader.SpringResourceLoader} is placed in the {@link GlobalResourceLoader}
  * this can delegate to that {@link GlobalResourceLoader}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

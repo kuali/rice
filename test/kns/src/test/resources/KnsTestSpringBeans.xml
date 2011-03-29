@@ -81,7 +81,7 @@
     
     <alias alias="jtaUserTransaction" name="jtaTransactionManager"/>
 
-	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+	<bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
 		<property name="transactionManager" ref="jtaTransactionManager" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />

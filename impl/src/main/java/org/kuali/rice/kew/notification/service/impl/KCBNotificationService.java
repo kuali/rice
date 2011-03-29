@@ -18,7 +18,8 @@ package org.kuali.rice.kew.notification.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;

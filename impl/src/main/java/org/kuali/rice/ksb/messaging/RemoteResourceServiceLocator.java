@@ -21,12 +21,12 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
 
 
 /**
- * A {@link ResourceLoader} which locates endpoints to remoted services.
+ * A {@link org.kuali.rice.core.api.resourceloader.ResourceLoader} which locates endpoints to remoted services.
  *
  * @see ResourceLoader
  * @see RemotedServiceHolder

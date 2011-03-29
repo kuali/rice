@@ -17,7 +17,7 @@
 package org.kuali.rice.ken.service.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.framework.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.UserChannelSubscription;
 import org.kuali.rice.ken.service.NotificationChannelService;
 import org.kuali.rice.ken.service.UserPreferenceService;

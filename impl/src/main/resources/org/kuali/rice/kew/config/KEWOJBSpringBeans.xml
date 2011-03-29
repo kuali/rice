@@ -56,7 +56,7 @@
 
   <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
-	<bean id="kewOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+	<bean id="kewOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
 				<value>enWorkflowDataSource</value>

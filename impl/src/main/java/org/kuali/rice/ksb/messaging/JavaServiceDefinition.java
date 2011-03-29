@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.messaging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

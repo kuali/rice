@@ -38,11 +38,13 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
-import org.kuali.rice.core.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
@@ -234,7 +236,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 				if (oldBusinessObject.getExtension() != null) {
 					PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
 					EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
-					org.kuali.rice.core.jpa.criteria.Criteria extensionCriteria = new org.kuali.rice.core.jpa.criteria.Criteria(boe.getClass().getName());
+					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
 					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
 						try {
 							Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
@@ -245,7 +247,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 						}
 					}				
 					try {
-						boe = (PersistableBusinessObjectExtension) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
+						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
 					} catch (PersistenceException e) {}
 					oldBusinessObject.setExtension(boe);
 				}

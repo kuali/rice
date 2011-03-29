@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceKeyConstants;

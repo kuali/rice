@@ -19,8 +19,8 @@ import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
 import org.apache.commons.httpclient.NoHttpResponseException;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
-import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.impl.proxy.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 

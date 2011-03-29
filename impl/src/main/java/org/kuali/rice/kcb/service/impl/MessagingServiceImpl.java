@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
@@ -216,7 +216,7 @@ public class MessagingServiceImpl implements MessagingService {
         LOG.debug("registering synchronization");
 
         if (!TransactionSynchronizationManager.isSynchronizationActive()) {
-        	throw new RiceRuntimeException("transaction syncronization is not active " + 
+        	throw new RiceRuntimeException("transaction syncronization is not active " +
         			"(!TransactionSynchronizationManager.isSynchronizationActive())");
         } else if (!TransactionSynchronizationManager.isActualTransactionActive()) {
         	throw new RiceRuntimeException("actual transaction is not active " +

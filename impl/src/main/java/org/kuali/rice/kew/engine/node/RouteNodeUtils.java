@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.engine.node;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;

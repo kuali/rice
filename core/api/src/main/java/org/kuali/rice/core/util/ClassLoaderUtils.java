@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.proxy.TargetedInvocationHandler;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.proxy.TargetedInvocationHandler;
 
 /**
  * Provides common utility methods for dealing with Classloaders.

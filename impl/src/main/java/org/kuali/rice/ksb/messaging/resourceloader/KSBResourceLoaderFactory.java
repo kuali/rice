@@ -19,10 +19,12 @@ package org.kuali.rice.ksb.messaging.resourceloader;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.resourceloader.BaseResourceLoader;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.core.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.api.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
 

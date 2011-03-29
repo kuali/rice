@@ -16,7 +16,7 @@
 
 package org.kuali.rice.core.api.config;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 
 
 /**

@@ -18,6 +18,8 @@ package org.kuali.rice.kns.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.dao.DocumentHeaderDao;
 
@@ -43,9 +45,9 @@ public class DocumentHeaderDaoJpa implements DocumentHeaderDao {
      * @see org.kuali.dao.DocumentHeaderDao#getByDocumentHeaderId(java.lang.Long)
      */
     public DocumentHeader getByDocumentHeaderId(String id) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(DocumentHeader.class.getName());
+		Criteria criteria = new Criteria(DocumentHeader.class.getName());
 		criteria.eq("FDOC_NBR", id);		
-		return (DocumentHeader) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
+		return (DocumentHeader) new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
     }
 
     /**

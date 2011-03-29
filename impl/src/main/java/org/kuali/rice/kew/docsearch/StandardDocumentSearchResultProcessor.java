@@ -18,7 +18,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;

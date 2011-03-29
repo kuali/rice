@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
-import org.kuali.rice.core.KualiException;
+import org.kuali.rice.core.api.exception.KualiException;
 import org.kuali.rice.core.util.type.TypeUtils;
 
 /**

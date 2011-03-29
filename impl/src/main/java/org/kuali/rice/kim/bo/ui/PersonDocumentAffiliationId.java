@@ -18,7 +18,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.CompositePrimaryKeyBase;
+import org.kuali.rice.core.framework.persistence.jpa.CompositePrimaryKeyBase;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

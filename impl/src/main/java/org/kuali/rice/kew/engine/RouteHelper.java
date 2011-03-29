@@ -16,8 +16,10 @@
  */
 package org.kuali.rice.kew.engine;
 
-import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.engine.node.BasicJoinEngine;
 import org.kuali.rice.kew.engine.node.DynamicNode;
@@ -80,6 +82,6 @@ public class RouteHelper {
     }
 
     public Node getNode(RouteNode routeNode) {
-    	return (Node)GlobalResourceLoader.getObject(new ObjectDefinition(routeNode.getNodeType(), routeNode.getDocumentType().getServiceNamespace()));
+    	return (Node) GlobalResourceLoader.getObject(new ObjectDefinition(routeNode.getNodeType(), routeNode.getDocumentType().getServiceNamespace()));
     }
 }

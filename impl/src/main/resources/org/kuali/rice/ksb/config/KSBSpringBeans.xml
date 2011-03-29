@@ -73,7 +73,7 @@
 		</property>
 	</bean>
 
-	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
+	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbRegistry.datasource</value>
@@ -87,7 +87,7 @@
 		<property name="serverDataSource" value="true"/>
 	</bean>
 
-	<bean id="ksbMessageDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
+	<bean id="ksbMessageDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>ksbMessage.datasource</value>
@@ -101,7 +101,7 @@
 		<property name="serverDataSource" value="false"/>
 	</bean>
 
-	<bean id="ksbMessageNonTransactionalDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="ksbMessageNonTransactionalDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="nullAllowed" value="true"/>
 		<property name="nonTransactionalDataSource" value="true"/>
 		<property name="preferredDataSourceParams">

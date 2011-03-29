@@ -21,7 +21,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMParam;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.bam.dao.BAMDAO;

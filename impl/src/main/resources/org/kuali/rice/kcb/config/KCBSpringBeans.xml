@@ -59,7 +59,7 @@
 	
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-	<bean id="kcbOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+	<bean id="kcbOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
 				<value>kcbDataSource</value>
@@ -69,7 +69,7 @@
 	</bean>
 
 
-    <bean id="kcbDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
+    <bean id="kcbDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
             <list>
                 <value>org.kuali.rice.kcb.datasource</value>
@@ -165,7 +165,7 @@
 
     <!-- DAOS -->
 
-    <bean id="kcbGenericDao" class="org.kuali.rice.core.impl.dao.GenericDaoOjb">
+    <bean id="kcbGenericDao" class="org.kuali.rice.core.impl.persistence.dao.GenericDaoOjb">
         <property name="jcdAlias">
             <value>kcbDataSource</value>
         </property>

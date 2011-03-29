@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;

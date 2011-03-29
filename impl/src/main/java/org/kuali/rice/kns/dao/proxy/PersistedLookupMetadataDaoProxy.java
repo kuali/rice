@@ -17,7 +17,7 @@ package org.kuali.rice.kns.dao.proxy;
 
 import java.sql.Timestamp;
 
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.LookupResults;
 import org.kuali.rice.kns.bo.SelectedObjectIds;
 import org.kuali.rice.kns.dao.PersistedLookupMetadataDao;

@@ -18,6 +18,7 @@ package org.kuali.rice.core.jpa.spring;
 
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.framework.persistence.jpa.DevHibernateJpaVendorAdapter;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;

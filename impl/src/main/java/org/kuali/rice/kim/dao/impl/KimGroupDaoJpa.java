@@ -31,8 +31,8 @@ import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**

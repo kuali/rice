@@ -25,9 +25,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.reflect.DataDefinition;
-import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.core.api.reflect.DataDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.core.api.reflect.DataDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -110,7 +113,7 @@ public class ActionRegistryImpl implements ActionRegistry {
 			//ActionTakenEvent actionTaken = (ActionTakenEvent)GlobalResourceLoader.getResourceLoader().getObject(actionDefinition);
 			// TODO ActionTakenEvent is not an interface so we can't fetch them through the GlobalResourceLoader, for now, just use
 			// the ObjectDefinitionResolver
-			ActionTakenEvent actionTaken = (ActionTakenEvent)ObjectDefinitionResolver.createObject(actionDefinition, ClassLoaderUtils.getDefaultClassLoader(), false);
+			ActionTakenEvent actionTaken = (ActionTakenEvent) ObjectDefinitionResolver.createObject(actionDefinition, ClassLoaderUtils.getDefaultClassLoader(), false);
 			if (actionTaken == null) {
 				// TODO the exception handling here is a bit wonky
 				throw new ResourceUnavailableException("Could not locate action taken class '" + actionClassName + "'");

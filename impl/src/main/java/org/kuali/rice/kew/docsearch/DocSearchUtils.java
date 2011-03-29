@@ -27,9 +27,10 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;

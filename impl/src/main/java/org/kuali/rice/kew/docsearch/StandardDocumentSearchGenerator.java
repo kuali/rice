@@ -18,14 +18,15 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.database.platform.DatabasePlatform;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.jdbc.SqlBuilder;
-import org.kuali.rice.core.jdbc.criteria.Criteria;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.Criteria;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -570,7 +571,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String tableAlias = "EXT" + tableIndex;
 
         Map<String, List<SearchAttributeCriteriaComponent>> searchableAttributeRangeComponents = new HashMap<String,List<SearchAttributeCriteriaComponent>>();
-        org.kuali.rice.core.jdbc.criteria.Criteria finalCriteria = null;
+        Criteria finalCriteria = null;
 
         for (Iterator<SearchAttributeCriteriaComponent> iterator = searchableAttributes.iterator(); iterator.hasNext(); tableIndex++) {
             SearchAttributeCriteriaComponent criteriaComponent = iterator.next();
@@ -1388,7 +1389,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             principalList.add(p.getPrincipalId());
         }
 
-        Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_DOC_HDR_T", tableAlias);
+        Criteria crit = new Criteria("KREW_DOC_HDR_T", tableAlias);
         crit.in("INITR_PRNCPL_ID", principalList, String.class);
 
         //sqlBuild.addCriteria("INITR_PRNCPL_ID", userWorkflowId, tableAlias, String.class, true, false, crit);
@@ -1413,7 +1414,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
 
             SqlBuilder sqlBuild = new SqlBuilder();
-            org.kuali.rice.core.jdbc.criteria.Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_DOC_HDR_T", "DOC_HDR");
+            Criteria crit = new Criteria("KREW_DOC_HDR_T", "DOC_HDR");
 
             sqlBuild.addCriteria("TTL", docTitle, String.class, true, true, crit);
             return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
@@ -1478,7 +1479,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 principalList.add(p.getPrincipalId());
             }
 
-            Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_ACTN_RQST_T", "KREW_ACTN_RQST_T");
+            Criteria crit = new Criteria("KREW_ACTN_RQST_T", "KREW_ACTN_RQST_T");
 
             crit.in("PRNCPL_ID", principalList, String.class);
 
@@ -1546,7 +1547,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 principalList.add(p.getPrincipalId());
             }
 
-            Criteria crit = new org.kuali.rice.core.jdbc.criteria.Criteria("KREW_ACTN_TKN_T", "KREW_ACTN_TKN_T");
+            Criteria crit = new Criteria("KREW_ACTN_TKN_T", "KREW_ACTN_TKN_T");
             crit.in("PRNCPL_ID", principalList, String.class);
 
             returnSql = whereClausePredicatePrefix +

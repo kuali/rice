@@ -17,9 +17,9 @@
 package org.kuali.rice.kew.doctype.dao.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;

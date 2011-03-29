@@ -62,7 +62,7 @@
 	
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-	<bean id="kenOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+	<bean id="kenOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
 				<value>kenDataSource</value>
@@ -71,7 +71,7 @@
 		<property name="metadataLocation" value="classpath:org/kuali/rice/ken/config/OJB-repository-ken.xml" />
 	</bean>
 
-    <bean id="kenDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" >
+    <bean id="kenDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" >
         <property name="preferredDataSourceParams">
             <list>
                 <value>org.kuali.ken.datasource</value>
@@ -203,7 +203,7 @@
 
     <!-- DAOS -->
     <!-- OJB-->
-    <bean id="kenGenericDao" class="org.kuali.rice.core.impl.dao.GenericDaoOjb">
+    <bean id="kenGenericDao" class="org.kuali.rice.core.impl.persistence.dao.GenericDaoOjb">
         <property name="jcdAlias">
             <value>kenDataSource</value>
         </property>

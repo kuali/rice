@@ -18,8 +18,9 @@ package org.kuali.rice.kns.config;
 
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -68,7 +69,7 @@ public class KNSConfigurer extends ModuleConfigurer {
             LOG.info("KNS Configurer - Loading DD");
 			DataDictionaryService dds = KNSServiceLocatorWeb.getDataDictionaryService();
 			if ( dds == null ) {
-				dds = (DataDictionaryService) GlobalResourceLoader.getService( KNSServiceLocatorWeb.DATA_DICTIONARY_SERVICE );
+				dds = (DataDictionaryService) GlobalResourceLoader.getService(KNSServiceLocatorWeb.DATA_DICTIONARY_SERVICE);
 			}
 			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
 

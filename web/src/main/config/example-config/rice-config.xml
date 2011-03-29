@@ -28,14 +28,14 @@
 	
 	<!-- MySQL example -->
 	<param name="datasource.ojb.platform">MySQL</param>
-	<param name="datasource.platform">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.core.framework.persistence.platform.MySQLDatabasePlatform</param>
 	<param name="datasource.url">jdbc:mysql://localhost:3306/${datasource.username}</param>
 	<param name="datasource.driver.name">com.mysql.jdbc.Driver</param>
 	<param name="datasource.pool.validationQuery">select 1</param>
 	
 	<!-- Oracle example 
 	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
 	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
 	<param name="datasource.driver.name">oracle.jdbc.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>

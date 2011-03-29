@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.*;
 import org.kuali.rice.kim.service.IdentityService;

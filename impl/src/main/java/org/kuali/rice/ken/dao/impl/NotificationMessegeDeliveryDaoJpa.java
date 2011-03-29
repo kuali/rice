@@ -17,8 +17,8 @@
 package org.kuali.rice.ken.dao.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.framework.dao.GenericDao;
-import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao;
@@ -58,7 +58,7 @@ public class NotificationMessegeDeliveryDaoJpa implements NotificationMessegeDel
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao#getMessageDeliveriesForAutoRemoval(org.kuali.rice.core.framework.dao.GenericDao)
+	 * @see org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao#getMessageDeliveriesForAutoRemoval(org.kuali.rice.core.framework.persistence.dao.GenericDao)
 	 */
 	@Override
 	public Collection<NotificationMessageDelivery> getMessageDeliveriesForAutoRemoval(Timestamp tm, GenericDao businessObjectDao) {
@@ -91,7 +91,7 @@ public class NotificationMessegeDeliveryDaoJpa implements NotificationMessegeDel
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao#getLockedDeliveries(java.lang.Class, org.kuali.rice.core.framework.dao.GenericDao)
+	 * @see org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao#getLockedDeliveries(java.lang.Class, org.kuali.rice.core.framework.persistence.dao.GenericDao)
 	 */
 	@Override
 	public Collection<NotificationMessageDelivery> getLockedDeliveries(

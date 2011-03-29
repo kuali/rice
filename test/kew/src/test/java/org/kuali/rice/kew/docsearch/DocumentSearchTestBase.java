@@ -18,7 +18,7 @@ package org.kuali.rice.kew.docsearch;
 import java.util.Arrays;
 
 import org.junit.Ignore;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;

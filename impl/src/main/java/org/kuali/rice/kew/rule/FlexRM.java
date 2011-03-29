@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.actionrequest.*;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;

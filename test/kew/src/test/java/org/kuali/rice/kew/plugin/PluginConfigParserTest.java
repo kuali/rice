@@ -18,7 +18,8 @@ package org.kuali.rice.kew.plugin;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.api.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.api.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 import java.io.File;

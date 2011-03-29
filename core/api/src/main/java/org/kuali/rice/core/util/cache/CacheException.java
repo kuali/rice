@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.util.cache;
 
-import org.kuali.rice.core.KualiException;
+import org.kuali.rice.core.api.exception.KualiException;
 
 /**
  * CacheException

@@ -26,7 +26,7 @@ import javax.jws.WebService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;

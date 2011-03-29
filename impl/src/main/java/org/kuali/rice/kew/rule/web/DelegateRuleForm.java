@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;

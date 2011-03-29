@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.serviceconnectors;
 
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;

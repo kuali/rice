@@ -71,7 +71,7 @@
 
   	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
-    <bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+    <bean id="kimDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
         <property name="preferredDataSourceParams">
             <list>
                 <value>kim.datasource</value>
@@ -85,7 +85,7 @@
         <property name="serverDataSource" value="true"/>
     </bean>
 
-	<bean id="kimOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+	<bean id="kimOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
 				<value>kimDataSource</value>

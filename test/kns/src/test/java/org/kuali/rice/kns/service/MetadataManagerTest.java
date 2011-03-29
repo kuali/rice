@@ -21,7 +21,7 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.core.impl.parameter.ParameterId;
 import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
-import org.kuali.rice.core.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
 import org.kuali.rice.shareddata.impl.country.CountryBo;
@@ -85,7 +85,7 @@ public class MetadataManagerTest extends KNSTestCase {
 	}
 	
 	/**
-	 * Tests that MetadataManager.getPersistableBusinessObjectPrimaryKeyObject correctly pulls primary keys
+	 * Tests that MetadataManager.getEntityPrimaryKeyObject correctly pulls primary keys
 	 * from a BO
 	 */
 	@Test
@@ -93,14 +93,14 @@ public class MetadataManagerTest extends KNSTestCase {
 		ParameterTypeBo parameterType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterTypeBo.class, "CONFG");
 		assertNotNull("ParameterType should not be null", parameterType);
 		
-		Object pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(parameterType);
+		Object pkValue = MetadataManager.getEntityPrimaryKeyObject(parameterType);
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"CONFG\"", "CONFG", pkValue);
 		
 		Parameter parameter = CoreFrameworkServiceLocator.getParameterService().getParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
 		assertNotNull("State should not be null", parameter);
 		
-		pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(ParameterBo.from(parameter));
+		pkValue = MetadataManager.getEntityPrimaryKeyObject(ParameterBo.from(parameter));
 		org.junit.Assert.assertEquals("Composite pkValue for Parameter should have class of ParameterId", ParameterId.class, pkValue.getClass());
 		ParameterId parameterId = (ParameterId)pkValue;
 		assertEquals("namespace code was not correctly set", "KR-NS", parameterId.getNamespaceCode());

@@ -18,10 +18,11 @@ package org.kuali.rice.ksb.test;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.ojb.BaseOjbConfigurer;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.core.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.server.TestClient1;
 import org.kuali.rice.ksb.server.TestClient2;

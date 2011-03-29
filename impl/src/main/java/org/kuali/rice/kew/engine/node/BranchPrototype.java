@@ -27,7 +27,7 @@ import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
@@ -83,7 +83,7 @@ public class BranchPrototype implements Serializable {
 	
 	//@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 	
 }

@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;

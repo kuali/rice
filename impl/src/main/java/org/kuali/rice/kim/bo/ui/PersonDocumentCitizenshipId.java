@@ -16,7 +16,7 @@
 
 package org.kuali.rice.kim.bo.ui;
 
-import org.kuali.rice.core.framework.persistence.CompositePrimaryKeyBase;
+import org.kuali.rice.core.framework.persistence.jpa.CompositePrimaryKeyBase;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

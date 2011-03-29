@@ -44,31 +44,31 @@
     <param name="datasource.ojb.platform" override="false">Oracle9i</param>
 
     <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.OracleDriver</param>
-    <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+    <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle" override="false">select 1 from dual</param>
 
     <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.OracleDriver</param>
-    <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+    <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle9i" override="false">select 1 from dual</param>
 
     <param name="datasource.driver.name.MySQL" override="false">com.mysql.jdbc.Driver</param>
-    <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
+    <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.framework.persistence.platform.MySQLDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
     <param name="datasource.ojb.sequenceManager.className.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
     <param name="datasource.pool.validationQuery.MySQL" override="false">select 1</param>
 
     <param name="datasource.driver.name.Derby" override="false">org.apache.derby.jdbc.EmbeddedDriver</param>
-    <param name="datasource.platform.Derby" override="false">org.kuali.rice.core.database.platform.DerbyDatabasePlatform</param>
+    <param name="datasource.platform.Derby" override="false">org.kuali.rice.core.framework.persistence.platform.DerbyDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Derby" override="false">** NEEDS IMPLEMENTED **</param>
     <param name="datasource.ojb.sequenceManager.className.Derby" override="false">** NEEDS IMPLEMENTED **</param>
     <param name="datasource.pool.validationQuery.Derby" override="false">values(1)</param>
 
     <param name="datasource.driver.name.McKoi" override="false">com.mckoi.JDBCDriver</param>
-    <param name="datasource.platform.McKoi" override="false">org.kuali.rice.core.database.platform.MckoiDatabasePlatform</param>
+    <param name="datasource.platform.McKoi" override="false">org.kuali.rice.core.framework.persistence.platform.MckoiDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
     <param name="datasource.ojb.sequenceManager.className.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
     <param name="datasource.pool.validationQuery.McKoi" override="false">select 1 from dual</param>

@@ -18,7 +18,7 @@ package org.kuali.rice.core.framework.services;
 
 import org.kuali.rice.core.framework.impex.xml.XmlImpexRegistry;
 import org.kuali.rice.core.framework.parameter.ParameterService;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 public class CoreFrameworkServiceLocator {
 

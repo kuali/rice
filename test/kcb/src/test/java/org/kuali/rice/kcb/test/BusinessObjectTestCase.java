@@ -17,7 +17,7 @@
 package org.kuali.rice.kcb.test;
 
 import org.junit.Before;
-import org.kuali.rice.core.framework.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 

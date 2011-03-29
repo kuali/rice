@@ -27,7 +27,7 @@ import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;

@@ -26,7 +26,8 @@ import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
@@ -80,7 +81,7 @@ public class SOAPServiceTest extends KSBTestCase {
 	@Test
 	public void testJaxWsSOAPService(){	
 		
-		JaxWsEchoService jaxwsEchoService = (JaxWsEchoService)GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"));
+		JaxWsEchoService jaxwsEchoService = (JaxWsEchoService) GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"));
 		String result = jaxwsEchoService.doEcho("Fi Fi Fo Fum");
 		assertTrue(("Fi Fi Fo Fum").equals(result));
 	}

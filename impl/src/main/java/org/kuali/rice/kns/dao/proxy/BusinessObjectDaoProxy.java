@@ -18,7 +18,7 @@ package org.kuali.rice.kns.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -187,7 +187,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 
 	/**
 	 * Has the proxied DAO handle the criteria
-	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria)
 	 */
 	//public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
 	//	Class clazz = null;

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO;
 

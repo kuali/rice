@@ -123,7 +123,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
     /**
 	 * Throws an UnsupportedOperationException
-	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria)
 	 */
 	//public <T extends BusinessObject> Collection<T> findMatching(org.kuali.rice.core.jpa.criteria.Criteria criteria) {
 	//	throw new UnsupportedOperationException("OJB does not support finding matching business objects using JPA criteria");

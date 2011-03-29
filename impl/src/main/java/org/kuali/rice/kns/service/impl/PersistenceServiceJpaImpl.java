@@ -27,9 +27,9 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.exception.IntrospectionException;
@@ -307,7 +307,7 @@ public class PersistenceServiceJpaImpl extends PersistenceServiceImplBase implem
 				// iterate through the keys for the reference object and set value
                 List<String> refFkNames = od.getForeignKeyFields();
                 EntityDescriptor refCld = MetadataManager.getEntityDescriptor(od.getTargetEntity());
-                Set<org.kuali.rice.core.jpa.metadata.FieldDescriptor> refPkNames = refCld.getPrimaryKeys();
+                Set<org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor> refPkNames = refCld.getPrimaryKeys();
 
                 try {
 	                for (String fk : refFkNames) {

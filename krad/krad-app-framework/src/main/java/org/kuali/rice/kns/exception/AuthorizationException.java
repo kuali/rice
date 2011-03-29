@@ -18,7 +18,7 @@ package org.kuali.rice.kns.exception;
 import java.util.Collections;
 import java.util.Map;
 
-import org.kuali.rice.core.KualiException;
+import org.kuali.rice.core.api.exception.KualiException;
 import org.kuali.rice.core.util.RiceKeyConstants;
 
 /**

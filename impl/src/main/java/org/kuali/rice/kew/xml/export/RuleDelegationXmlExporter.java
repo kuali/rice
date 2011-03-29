@@ -33,8 +33,8 @@ import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
 import java.util.Iterator;
 
 import org.jdom.Element;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;

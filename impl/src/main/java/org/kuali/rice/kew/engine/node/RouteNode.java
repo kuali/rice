@@ -45,7 +45,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -386,7 +386,7 @@ public class RouteNode implements Serializable {
 
 	//@PrePersist
 	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
+		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 	
 	/**

@@ -82,7 +82,7 @@
     
     <alias name="jtaTransactionManager" alias="jtaUserTransaction"/>
 
-  <bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+  <bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
     <property name="transactionManager" ref="jtaTransactionManager"/>
     <property name="driverClassName" value="${datasource.driver.name}"/>
     <property name="url" value="${datasource.url}"/>
@@ -108,7 +108,7 @@
 <!--
     <bean id="enNotificationService" class="org.kuali.rice.kew.notification.service.impl.KCBNotificationService"  lazy-init="true"/>
 -->
-	<bean id="rootResourceLoader" class="org.kuali.rice.core.resourceloader.SpringBeanFactoryResourceLoader"/>
+	<bean id="rootResourceLoader" class="org.kuali.rice.core.impl.resourceloader.SpringBeanFactoryResourceLoader"/>
 
 	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
 	

@@ -20,7 +20,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.LogicalOperator;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.util.SQLUtils;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.kew.util.KEWConstants;

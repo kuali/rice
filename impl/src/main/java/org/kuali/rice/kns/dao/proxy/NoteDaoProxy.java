@@ -17,7 +17,7 @@ package org.kuali.rice.kns.dao.proxy;
 
 import java.util.List;
 
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.dao.NoteDao;
 import org.springframework.dao.DataAccessException;

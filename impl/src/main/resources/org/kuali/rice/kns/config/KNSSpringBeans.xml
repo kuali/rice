@@ -59,9 +59,9 @@
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
-	<bean id="dateTimeService" class="org.kuali.rice.core.impl.DateTimeServiceImpl"/>
+	<bean id="dateTimeService" class="org.kuali.rice.core.impl.datetime.DateTimeServiceImpl"/>
 	
-	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
+	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
 				<value>knsApplicationDataSource</value>
@@ -71,7 +71,7 @@
 		<property name="metadataLocation" value="classpath:org/kuali/rice/kns/config/OJB-repository-kns.xml" />
 	</bean>
 
-	<bean id="knsApplicationDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="knsApplicationDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>knsClient.datasource</value>
@@ -85,7 +85,7 @@
 		<property name="serverDataSource" value="false"/>
 	</bean>
 
-	<bean id="knsServerDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="knsServerDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>knsServer.datasource</value>

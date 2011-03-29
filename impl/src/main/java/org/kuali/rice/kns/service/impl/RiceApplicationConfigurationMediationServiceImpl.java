@@ -15,7 +15,8 @@ package org.kuali.rice.kns.service.impl;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
@@ -133,7 +134,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     
     protected RiceApplicationConfigurationService findRiceApplicationConfigurationService(QName serviceName) {
     	try {
-    		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(serviceName);
+    		return (RiceApplicationConfigurationService) GlobalResourceLoader.getService(serviceName);
     	} catch (Exception e) {
     		// if the service doesn't exist an exception is thrown
     		LOG.warn("Failed to locate RiceApplicationConfigurationService with name: " + serviceName,e);

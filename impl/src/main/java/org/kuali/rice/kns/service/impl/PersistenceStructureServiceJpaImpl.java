@@ -24,17 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.core.jpa.metadata.JoinColumnDescriptor;
-import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.JoinColumnDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.exception.ReferenceAttributeDoesntExistException;
 import org.kuali.rice.kns.exception.ReferenceAttributeNotAnOjbReferenceException;
@@ -83,7 +80,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		List pkList = new ArrayList();
 
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
-		for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
+		for (org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
 			pkList.add(field.getName());
 		}
 
@@ -98,7 +95,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		List fieldNames = new ArrayList();
 
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
-		for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getFields()) {
+		for (org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor field : descriptor.getFields()) {
 			fieldNames.add(field.getName());
 		}
 
@@ -214,8 +211,8 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		if (objectDescriptor == null) {
 			throw new RuntimeException("Attribute name " + attributeName + " is not a valid reference to class " + persistableObjectClass.getName());
 		}
-		List<org.kuali.rice.core.jpa.metadata.FieldDescriptor> matches = new ArrayList<org.kuali.rice.core.jpa.metadata.FieldDescriptor>();
-		for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getFields()) {
+		List<org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor> matches = new ArrayList<org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor>();
+		for (org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor field : descriptor.getFields()) {
 			String column = field.getColumn();
 			for (JoinColumnDescriptor join : objectDescriptor.getJoinColumnDescriptors()) {
 				if (column != null && column.equals(join.getName())) {
@@ -394,7 +391,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		}
 
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
-		org.kuali.rice.core.jpa.metadata.CollectionDescriptor cd = descriptor.getCollectionDescriptorByName(collectionName);
+		org.kuali.rice.core.framework.persistence.jpa.metadata.CollectionDescriptor cd = descriptor.getCollectionDescriptorByName(collectionName);
 		List<String> childPrimaryKeys = cd.getForeignKeyFields();
 
 		List parentForeignKeys = getPrimaryKeys(boClass);
@@ -430,9 +427,9 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		for (ObjectDescriptor objectReferenceDescriptor : descriptor.getObjectRelationships()) {
 			EntityDescriptor referenceDescriptor = MetadataManager.getEntityDescriptor(objectReferenceDescriptor.getTargetEntity());
 			List<String> fkFields = objectReferenceDescriptor.getForeignKeyFields();
-			Set<org.kuali.rice.core.jpa.metadata.FieldDescriptor> pkFields = referenceDescriptor.getPrimaryKeys();
+			Set<org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor> pkFields = referenceDescriptor.getPrimaryKeys();
 			int i = 0;
-			for (org.kuali.rice.core.jpa.metadata.FieldDescriptor fd : pkFields) {
+			for (org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor fd : pkFields) {
 				fkMap.put(objectReferenceDescriptor.getAttributeName() + "." + fd.getName(), fkFields.get(i));
 				i++;
 			}
@@ -574,7 +571,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		Map<String, Class> references = new HashMap();
-		for (org.kuali.rice.core.jpa.metadata.ObjectDescriptor od : descriptor.getObjectRelationships()) {
+		for (org.kuali.rice.core.framework.persistence.jpa.metadata.ObjectDescriptor od : descriptor.getObjectRelationships()) {
 			references.put(od.getAttributeName(), od.getTargetEntity());
 		}
 
@@ -594,7 +591,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 			return references;
 		}
 
-		for (org.kuali.rice.core.jpa.metadata.CollectionDescriptor cd : descriptor.getCollectionRelationships()) {
+		for (org.kuali.rice.core.framework.persistence.jpa.metadata.CollectionDescriptor cd : descriptor.getCollectionRelationships()) {
 			references.put(cd.getAttributeName(), cd.getTargetEntity());
 		}
 

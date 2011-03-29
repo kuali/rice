@@ -18,9 +18,9 @@ package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.DateTimeService;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -190,7 +190,7 @@ public class LookupUtils {
      * @param businessObjectClass BO class to search on / get limit for
      * @param criteria search criteria
      */
-    public static void applySearchResultsLimit(Class businessObjectClass, org.kuali.rice.core.jpa.criteria.Criteria criteria) {
+    public static void applySearchResultsLimit(Class businessObjectClass, org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria) {
         Integer limit = getSearchResultsLimit(businessObjectClass);
         if (limit != null) {
         	criteria.setSearchLimit(limit);

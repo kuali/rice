@@ -16,7 +16,8 @@
  */package org.kuali.rice.kns.web.servlet.dwr;
 
 import org.directwebremoting.spring.SpringCreator;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.springframework.beans.factory.BeanFactory;
 
 

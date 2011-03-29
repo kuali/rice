@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;

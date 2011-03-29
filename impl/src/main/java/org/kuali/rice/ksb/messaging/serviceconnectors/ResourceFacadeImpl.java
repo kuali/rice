@@ -23,7 +23,7 @@ import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxrs.JAXRSBindingFactory;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
 import org.kuali.rice.ksb.messaging.RESTServiceDefinition;

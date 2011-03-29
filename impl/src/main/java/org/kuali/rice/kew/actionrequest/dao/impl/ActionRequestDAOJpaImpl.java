@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.actionrequest.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;

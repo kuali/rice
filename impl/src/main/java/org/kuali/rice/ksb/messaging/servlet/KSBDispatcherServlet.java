@@ -23,7 +23,7 @@ import org.apache.cxf.transport.servlet.ServletController;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;

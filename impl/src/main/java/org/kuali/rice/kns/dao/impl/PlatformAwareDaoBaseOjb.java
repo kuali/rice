@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
-import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.kns.dao.PlatformAwareDao;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;

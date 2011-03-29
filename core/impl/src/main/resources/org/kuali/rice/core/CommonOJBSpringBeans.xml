@@ -55,7 +55,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="ojbConfigurer" class="org.kuali.rice.core.ojb.JtaOjbConfigurer">
+	<bean id="ojbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.JtaOjbConfigurer">
 		<property name="transactionManager" ref="jtaTransactionManager" />
 	</bean>
 

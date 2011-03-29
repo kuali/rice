@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;

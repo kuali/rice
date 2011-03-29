@@ -20,8 +20,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.dao.BranchDAO;
@@ -66,7 +67,7 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	 protected void deleteBranchStatesById(Long stateId){
 	    	Criteria criteria = new Criteria("BranchState", "branchState");
 	    	criteria.eq("branchStateId", stateId);	        	        
-	        BranchState branchState = (BranchState)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
+	        BranchState branchState = (BranchState)new QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
 	        entityManager.remove(branchState);
 	    }
 

@@ -29,11 +29,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.database.platform.DatabasePlatform;
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -198,7 +199,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     }
 
     protected DatabasePlatform getPlatform() {
-    	return (DatabasePlatform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
+    	return (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
     public Collection findPendingByResponsibilityIds(Set responsibilityIds) {

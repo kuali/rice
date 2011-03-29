@@ -19,8 +19,6 @@ package org.kuali.rice.kew.rule.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleResponsibilityDAO;
 

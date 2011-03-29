@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.RemotedServiceRegistry;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.servlet.HandlerMapping;

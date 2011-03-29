@@ -18,7 +18,7 @@ package org.kuali.rice.kew.docsearch.xml;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.util.SQLUtils;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;

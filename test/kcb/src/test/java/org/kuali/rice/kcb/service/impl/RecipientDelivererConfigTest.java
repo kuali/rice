@@ -16,7 +16,7 @@
 package org.kuali.rice.kcb.service.impl;
 
 import org.junit.Test;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;

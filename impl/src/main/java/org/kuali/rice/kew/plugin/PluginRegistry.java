@@ -18,7 +18,8 @@ package org.kuali.rice.kew.plugin;
 
 import java.util.List;
 
-import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 
 /**
  * Maintains a registry of Plugins and allows for loading of resources from those plugins.  It is

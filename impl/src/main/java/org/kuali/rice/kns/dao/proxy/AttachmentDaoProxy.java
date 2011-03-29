@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.dao.proxy;
 
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.dao.AttachmentDao;
 public class AttachmentDaoProxy implements AttachmentDao {

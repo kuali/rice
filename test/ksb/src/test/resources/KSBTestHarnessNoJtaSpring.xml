@@ -242,7 +242,7 @@
 			<value>PROPAGATION_REQUIRED</value>
 		</property>
 	</bean>
-	<bean id="matchAllTxInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor" lazy-init="true">
+	<bean id="matchAllTxInterceptor" class="org.kuali.rice.core.framework.persistence.jta.KualiTransactionInterceptor" lazy-init="true">
 		<property name="transactionManager">
 			<ref bean="transactionManager" />
 		</property>

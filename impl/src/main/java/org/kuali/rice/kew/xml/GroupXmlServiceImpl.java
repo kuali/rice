@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.GroupXmlExporter;

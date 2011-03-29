@@ -17,12 +17,12 @@
 package org.kuali.rice.kns.config;
 
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * Exports services in the {@link GlobalResourceLoader} as beans available to Spring.
+ * Exports services in the {@link org.kuali.rice.core.api.resourceloader.GlobalResourceLoader} as beans available to Spring.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

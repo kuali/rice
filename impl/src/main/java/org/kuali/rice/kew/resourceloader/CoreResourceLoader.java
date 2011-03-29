@@ -18,9 +18,11 @@ package org.kuali.rice.kew.resourceloader;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
-import org.kuali.rice.core.resourceloader.ServiceLocator;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
+import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ServiceLocator;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;

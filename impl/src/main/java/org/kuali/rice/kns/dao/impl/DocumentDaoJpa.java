@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
@@ -83,11 +85,11 @@ public class DocumentDaoJpa implements DocumentDao {
      */
     @Override
     public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> clazz, List<String> idList) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
+		Criteria criteria = new Criteria(clazz.getName());
 		criteria.in(KNSPropertyConstants.DOCUMENT_NUMBER, idList);
 		List<T> list = new ArrayList<T>();
 		try {
-			list = new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+			list = new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 		}

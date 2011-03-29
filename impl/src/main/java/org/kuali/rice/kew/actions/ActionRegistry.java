@@ -19,7 +19,7 @@ package org.kuali.rice.kew.actions;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.reflect.DataDefinition;
+import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;

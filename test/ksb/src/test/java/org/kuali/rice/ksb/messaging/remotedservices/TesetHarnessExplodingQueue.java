@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.remotedservices;
 
 import java.io.Serializable;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 

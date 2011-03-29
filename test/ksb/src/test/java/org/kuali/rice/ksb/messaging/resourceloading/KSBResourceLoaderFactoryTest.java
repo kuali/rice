@@ -20,8 +20,9 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.test.config.SimpleConfig;
 

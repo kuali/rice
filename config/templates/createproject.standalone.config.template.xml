@@ -23,7 +23,7 @@
 	<param name="${PROJECT_NAME}.datasource.username"></param>
 	<param name="${PROJECT_NAME}.datasource.password"></param>
 	<param name="${PROJECT_NAME}.datasource.ojb.platform">Oracle9i</param>
-	<param name="${PROJECT_NAME}.datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+	<param name="${PROJECT_NAME}.datasource.platform">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
 	<param name="${PROJECT_NAME}.datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="${PROJECT_NAME}.datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="${PROJECT_NAME}.datasource.pool.maxWait">30000</param>
@@ -40,7 +40,7 @@
 	<param name="rice.datasource.username"></param>
 	<param name="rice.datasource.password"></param>
 	<param name="rice.datasource.ojb.platform">Oracle9i</param>
-	<param name="rice.datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+	<param name="rice.datasource.platform">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
 	<param name="rice.datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="rice.datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="rice.datasource.pool.maxWait">30000</param>

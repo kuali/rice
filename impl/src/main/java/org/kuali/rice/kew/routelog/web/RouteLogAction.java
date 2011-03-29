@@ -19,7 +19,8 @@ package org.kuali.rice.kew.routelog.web;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -204,7 +205,7 @@ public class RouteLogAction extends KewKualiAction {
         ReportCriteriaDTO reportCriteria = new ReportCriteriaDTO(document.getRouteHeaderId());
         String serviceNamespace = document.getDocumentType().getServiceNamespace();
         WorkflowUtility workflowUtility = 
-        	(WorkflowUtility)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
+        	(WorkflowUtility) GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
 
         // gather the IDs for action requests that predate the simulation
 		Set<Long> preexistingActionRequestIds = getActionRequestIds(document);

@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;

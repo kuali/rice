@@ -21,7 +21,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.framework.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;

@@ -16,7 +16,7 @@
 package org.kuali.rice.ksb.security.admin;
 
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 import javax.xml.namespace.QName;

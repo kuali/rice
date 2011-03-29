@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.dao;
 
-import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 
 public interface PlatformAwareDao {
     public void setDbPlatform(DatabasePlatform dbPlatform);

@@ -15,7 +15,7 @@
   useAutoCommit="0"
   ignoreAutoCommitExceptions="false">
   <object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl"/>
-  <sequence-manager className="org.kuali.rice.core.ojb.ConfigurableSequenceManager">
+  <sequence-manager className="org.kuali.rice.core.framework.persistence.ojb.ConfigurableSequenceManager">
     <attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager"/>
   </sequence-manager>
 </jdbc-connection-descriptor>

@@ -20,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PBKey;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.ModuleConfiguration;

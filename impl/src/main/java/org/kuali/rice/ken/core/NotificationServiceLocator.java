@@ -16,7 +16,7 @@
 
 package org.kuali.rice.ken.core;
 
-import org.kuali.rice.core.framework.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.service.NotificationChannelService;

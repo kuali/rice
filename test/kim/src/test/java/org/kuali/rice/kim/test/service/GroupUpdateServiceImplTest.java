@@ -16,7 +16,8 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
@@ -65,7 +66,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
-		groupUpdateService = (GroupUpdateServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupUpdateService"));
+		groupUpdateService = (GroupUpdateServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimGroupUpdateService"));
 		businessObjectService = KNSServiceLocator.getBusinessObjectService();
 	}
 

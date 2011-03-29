@@ -18,7 +18,7 @@ package org.kuali.rice.kew.test;
 
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 public class TestSpringLifecycle extends BaseLifecycle {
 

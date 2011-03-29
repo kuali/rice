@@ -17,8 +17,7 @@ package org.kuali.rice.ksb.messaging;
 
 import java.lang.reflect.Method;
 
-import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.ksb.messaging.config.ServiceBasedServiceDefinitionRegisterer;
 import org.kuali.rice.ksb.service.KSBServiceLocator;

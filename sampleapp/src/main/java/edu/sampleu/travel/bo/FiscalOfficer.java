@@ -18,11 +18,10 @@ package edu.sampleu.travel.bo;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.framework.persistence.jpa.annotations.Sequence;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**

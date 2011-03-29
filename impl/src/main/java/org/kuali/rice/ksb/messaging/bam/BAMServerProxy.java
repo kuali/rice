@@ -16,8 +16,8 @@
 package org.kuali.rice.ksb.messaging.bam;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.kuali.rice.core.proxy.BaseTargetedInvocationHandler;
-import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.impl.proxy.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;

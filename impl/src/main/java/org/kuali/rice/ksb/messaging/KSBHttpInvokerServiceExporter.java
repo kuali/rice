@@ -18,7 +18,8 @@ package org.kuali.rice.ksb.messaging;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.bam.BAMServerProxy;
 import org.springframework.aop.framework.ProxyFactory;

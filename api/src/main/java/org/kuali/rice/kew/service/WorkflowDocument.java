@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
@@ -189,7 +190,7 @@ public class WorkflowDocument implements java.io.Serializable {
      */
     private WorkflowDocumentActions getWorkflowDocumentActions() throws WorkflowException {
     	WorkflowDocumentActions workflowDocumentActions = 
-    		(WorkflowDocumentActions)GlobalResourceLoader.getService(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+    		(WorkflowDocumentActions) GlobalResourceLoader.getService(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
     	if (workflowDocumentActions == null) {
     		throw new WorkflowException("Could not locate the WorkflowDocumentActions service.  Please ensure that KEW client is configured properly!");
     	}

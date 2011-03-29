@@ -16,7 +16,8 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.remotedservices.GenericTestService;
 import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
@@ -97,7 +98,7 @@ public class ServiceCallClusterTest extends KSBTestCase {
 		int i = 0;
 		while (i < SERVICE_CALLS) {
 			i++;
-			services.add((TestServiceInterface)GlobalResourceLoader.getService(serviceName));
+			services.add((TestServiceInterface) GlobalResourceLoader.getService(serviceName));
 		}
 		
 		for (TestServiceInterface service : services) {

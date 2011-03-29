@@ -18,10 +18,10 @@ package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
-import org.kuali.rice.core.DateTimeService;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
+import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;

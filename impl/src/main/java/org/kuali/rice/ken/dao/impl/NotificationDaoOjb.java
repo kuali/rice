@@ -18,7 +18,7 @@ package org.kuali.rice.ken.dao.impl;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.framework.dao.GenericDao;
+import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.dao.NotificationDao;
@@ -40,7 +40,7 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotifications(java.sql.Timestamp, org.kuali.rice.core.framework.dao.GenericDao)
+	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotifications(java.sql.Timestamp, org.kuali.rice.core.framework.persistence.dao.GenericDao)
 	 */
 	@Override
 	public Collection findMatchedNotificationsForResolution(Timestamp tm, GenericDao dao) {
@@ -60,7 +60,7 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotificationsForUnlock(java.sql.Timestamp, org.kuali.rice.core.framework.dao.GenericDao)
+	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotificationsForUnlock(java.sql.Timestamp, org.kuali.rice.core.framework.persistence.dao.GenericDao)
 	 */
 	@Override
 	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao) {

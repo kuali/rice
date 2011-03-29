@@ -22,7 +22,7 @@ import javax.persistence.EntityManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.hibernate.proxy.HibernateProxy;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.dao.impl.PersistenceDaoOjb;

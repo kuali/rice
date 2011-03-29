@@ -27,11 +27,11 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.proxy.HibernateProxy;
-import org.kuali.rice.core.jpa.metadata.CollectionDescriptor;
-import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
-import org.kuali.rice.core.jpa.metadata.JoinColumnDescriptor;
-import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.CollectionDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.JoinColumnDescriptor;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 

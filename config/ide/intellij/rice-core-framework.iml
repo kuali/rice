@@ -40,6 +40,22 @@
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
+    <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
+    <orderEntry type="module" module-name="krad-app-framework" />
+    <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.5-RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.5-RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
   </component>
 </module>
 

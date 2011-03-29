@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.objectremoting;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 

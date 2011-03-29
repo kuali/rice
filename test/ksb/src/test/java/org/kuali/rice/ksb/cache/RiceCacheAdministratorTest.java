@@ -20,7 +20,7 @@ import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.springframework.context.ApplicationContext;
 

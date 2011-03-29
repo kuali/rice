@@ -30,10 +30,11 @@ import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.ejb.HibernateEntityManager;
 import org.hibernate.proxy.HibernateProxy;
-import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
-import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
@@ -78,7 +79,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		}
 		T bo = null;
 		try {
-			bo = (T) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(clazz, primaryKeys)).toQuery().getSingleResult();
+			bo = (T) new QueryByCriteria(entityManager, buildJpaCriteria(clazz, primaryKeys)).toQuery().getSingleResult();
 		} catch (PersistenceException e) {}
 		return bo;
 	}
@@ -111,7 +112,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAll(java.lang.Class)
 	 */
 	public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz) {
-		return (Collection<T>) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName())).toQuery().getResultList();
+		return (Collection<T>) new QueryByCriteria(entityManager, new Criteria(clazz.getName())).toQuery().getResultList();
 	}
 
 	/**
@@ -119,9 +120,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.lang.String, boolean)
 	 */
 	public <T extends BusinessObject> Collection<T> findAllOrderBy(Class<T> clazz, String sortField, boolean sortAscending) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
+		Criteria criteria = new Criteria(clazz.getName());
 		criteria.orderBy(sortField, sortAscending);
-		return new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+		return new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 	}
 
 	/**
@@ -131,29 +132,29 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.util.Map)
 	 */
 	public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
-		return (Collection<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(clazz, fieldValues)).toQuery().getResultList();
+		return (Collection<T>)new QueryByCriteria(entityManager, buildJpaCriteria(clazz, fieldValues)).toQuery().getResultList();
 	}
 
 	/**
 	 * Uses the passed query to form a Rice QueryByCriteria, which then translates to a JPA query and retrieves results
-	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria)
 	 */
 	public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
-		return (List<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+		return (List<T>)new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActive(java.lang.Class)
 	 */
 	public <T extends BusinessObject> Collection<T> findAllActive(Class<T> clazz) {
-		return (Collection<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildActiveJpaCriteria(clazz)).toQuery().getResultList();
+		return (Collection<T>)new QueryByCriteria(entityManager, buildActiveJpaCriteria(clazz)).toQuery().getResultList();
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActive(java.lang.Class)
 	 */
 	public <T extends BusinessObject> Collection<T> findAllInactive(Class<T> clazz) {
-		return (Collection<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildInactiveJpaCriteria(clazz)).toQuery().getResultList();
+		return (Collection<T>)new QueryByCriteria(entityManager, buildInactiveJpaCriteria(clazz)).toQuery().getResultList();
 	}
 	
 	/**
@@ -161,9 +162,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.lang.String, boolean)
 	 */
 	public <T extends BusinessObject> Collection<T> findAllActiveOrderBy(Class<T> clazz, String sortField, boolean sortAscending) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = buildActiveJpaCriteria(clazz);
+		Criteria criteria = buildActiveJpaCriteria(clazz);
 		criteria.orderBy(sortField, sortAscending);
-		return (Collection<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+		return (Collection<T>)new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 	}
 
 	/**
@@ -171,9 +172,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.util.Map)
 	 */
 	public <T extends BusinessObject> Collection<T> findMatchingActive(Class<T> clazz, Map<String, ?> fieldValues) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = buildJpaCriteria(clazz, fieldValues);
+		Criteria criteria = buildJpaCriteria(clazz, fieldValues);
 		criteria.and(buildActiveJpaCriteria(clazz));
-		return (Collection<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+		return (Collection<T>)new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 	}
 
 	/**
@@ -183,7 +184,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.util.Map)
 	 */
 	public int countMatching(Class clazz, Map<String, ?> fieldValues) {
-		return ((Long) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(clazz, fieldValues)).toCountQuery().getSingleResult()).intValue();
+		return ((Long) new QueryByCriteria(entityManager, buildJpaCriteria(clazz, fieldValues)).toCountQuery().getSingleResult()).intValue();
 	}
 
 	/**
@@ -193,9 +194,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.util.Map, java.util.Map)
 	 */
 	public int countMatching(Class clazz, Map<String, ?> positiveFieldValues, Map<String, ?> negativeFieldValues) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = buildJpaCriteria(clazz, positiveFieldValues);
+		Criteria criteria = buildJpaCriteria(clazz, positiveFieldValues);
 		criteria.and(buildNegativeJpaCriteria(clazz, negativeFieldValues));
-		return ((Long) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult()).intValue();
+		return ((Long) new QueryByCriteria(entityManager, criteria).toCountQuery().getSingleResult()).intValue();
 	}
 
 	/**
@@ -205,9 +206,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.util.Map)
 	 */
 	public <T extends BusinessObject> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = buildJpaCriteria(clazz, fieldValues);
+		Criteria criteria = buildJpaCriteria(clazz, fieldValues);
 		criteria.orderBy(sortField, sortAscending);
-		return (Collection<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
+		return (Collection<T>)new QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 	}
 
 	/**
@@ -271,7 +272,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 			if (entityManager.contains(realPBO)) {
 				entityManager.remove(realPBO);
 			} else {
-				final PersistableBusinessObject foundBO = (PersistableBusinessObject)entityManager.find(realPBO.getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(realPBO));
+				final PersistableBusinessObject foundBO = (PersistableBusinessObject)entityManager.find(realPBO.getClass(), MetadataManager.getEntityPrimaryKeyObject(realPBO));
 				if (foundBO != null) {
 					entityManager.remove(foundBO);
 				}
@@ -311,7 +312,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 */
 	public void deleteMatching(Class clazz, Map<String, ?> fieldValues) {
 		// Rice JPA MetadataManager
-		new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(clazz, fieldValues), QueryByCriteriaType.DELETE).toQuery().executeUpdate();
+		new QueryByCriteria(entityManager, buildJpaCriteria(clazz, fieldValues), QueryByCriteriaType.DELETE).toQuery().executeUpdate();
 	}
 
 	/**
@@ -319,7 +320,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 */
 	public PersistableBusinessObject retrieve(PersistableBusinessObject object) {
 		PersistableBusinessObject pbo = null;
-		Object pkObject = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(object);
+		Object pkObject = MetadataManager.getEntityPrimaryKeyObject(object);
 		if (pkObject != null) {
 			pbo = (PersistableBusinessObject) entityManager.find(object.getClass(), pkObject);
 			if (pbo != null && pbo.getExtension() != null) {
@@ -329,8 +330,8 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		return pbo;
 	}
 
-	private org.kuali.rice.core.jpa.criteria.Criteria buildJpaCriteria(Class clazz, Map<String, ?> fieldValues) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
+	private Criteria buildJpaCriteria(Class clazz, Map<String, ?> fieldValues) {
+		Criteria criteria = new Criteria(clazz.getName());
 		for (Iterator i = fieldValues.entrySet().iterator(); i.hasNext();) {
 			Map.Entry<String, ?> e = (Map.Entry<String, ?>) i.next();
 
@@ -359,20 +360,20 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		return criteria;
 	}
 
-	private org.kuali.rice.core.jpa.criteria.Criteria buildActiveJpaCriteria(Class clazz) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
+	private Criteria buildActiveJpaCriteria(Class clazz) {
+		Criteria criteria = new Criteria(clazz.getName());
 		criteria.eq(KNSPropertyConstants.ACTIVE, true);
 		return criteria;
 	}
 
-	private org.kuali.rice.core.jpa.criteria.Criteria buildInactiveJpaCriteria(Class clazz) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
+	private Criteria buildInactiveJpaCriteria(Class clazz) {
+		Criteria criteria = new Criteria(clazz.getName());
 		criteria.eq(KNSPropertyConstants.ACTIVE, false);
 		return criteria;
 	}
 
-	private org.kuali.rice.core.jpa.criteria.Criteria buildNegativeJpaCriteria(Class clazz, Map negativeFieldValues) {
-		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
+	private Criteria buildNegativeJpaCriteria(Class clazz, Map negativeFieldValues) {
+		Criteria criteria = new Criteria(clazz.getName());
 		for (Iterator i = negativeFieldValues.entrySet().iterator(); i.hasNext();) {
 			Map.Entry e = (Map.Entry) i.next();
 
@@ -421,7 +422,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	}
 
 	private PersistableBusinessObject reattachAndSave(PersistableBusinessObject bo) {
-		PersistableBusinessObject attachedBo = findByPrimaryKey(bo.getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(bo));
+		PersistableBusinessObject attachedBo = findByPrimaryKey(bo.getClass(), MetadataManager.getEntityPrimaryKeyValuePairs(bo));
 		PersistableBusinessObject newBo = attachedBo;
 		if (attachedBo == null) {
 			newBo = entityManager.merge(bo);
@@ -430,12 +431,12 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 			}
 		} else {
 			/*if (bo.getExtension() != null) {
-				PersistableBusinessObject attachedBoe = findByPrimaryKey(bo.getExtension().getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(bo.getExtension()));
+				PersistableBusinessObject attachedBoe = findByPrimaryKey(bo.getExtension().getClass(), MetadataManager.getEntityPrimaryKeyValuePairs(bo.getExtension()));
 				OrmUtils.reattach(bo.getExtension(),attachedBoe);
 				attachedBo.setExtension((PersistableBusinessObjectExtension) attachedBoe);
 				entityManager.merge(attachedBoe);
 			}*/
-			OrmUtils.reattach(bo,attachedBo);
+			OrmUtils.reattach(bo, attachedBo);
 			newBo = entityManager.merge(attachedBo);
 		}
 		return newBo;

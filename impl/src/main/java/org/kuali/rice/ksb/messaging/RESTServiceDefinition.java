@@ -19,7 +19,7 @@ package org.kuali.rice.ksb.messaging;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 
 import javax.ws.rs.Path;
 import java.util.List;

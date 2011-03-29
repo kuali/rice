@@ -82,7 +82,7 @@
 		</property>
 	</bean>
 
-	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
+	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>
 				<value>org.kuali.workflow.datasource</value>
@@ -96,7 +96,7 @@
 		<property name="serverDataSource" value="true"/>
     </bean>
     
-    <bean id="kewNonTransactionalDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
+    <bean id="kewNonTransactionalDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
         <property name="nullAllowed" value="true"/>
         <property name="nonTransactionalDataSource" value="true"/>
         <property name="preferredDataSourceParams">
@@ -440,7 +440,7 @@
 		</property>
 	</bean>
 
-  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
+  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.kuali.rice.core.framework.persistence.jta.KualiTransactionInterceptor">
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>

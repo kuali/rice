@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.exception;
 
-import org.kuali.rice.core.database.NoRollbackRuntimeException;
+import org.kuali.rice.core.framework.persistence.jta.NoRollbackRuntimeException;
 
 /**
  * ValidationException

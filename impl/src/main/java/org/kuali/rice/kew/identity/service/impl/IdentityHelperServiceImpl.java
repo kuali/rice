@@ -17,14 +17,9 @@ package org.kuali.rice.kew.identity.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.dto.EmplIdDTO;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.dto.UserIdDTO;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.user.EmplId;

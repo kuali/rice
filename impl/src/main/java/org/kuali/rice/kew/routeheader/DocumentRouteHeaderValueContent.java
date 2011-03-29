@@ -27,8 +27,6 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.kuali.rice.core.jpa.annotations.Sequence;
-
 @Entity
 @Table(name="KREW_DOC_HDR_CNTNT_T")
 @NamedQuery(name="DocumentRouteHeaderValueContent.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValueContent as d where d.routeHeaderId = :routeHeaderId")

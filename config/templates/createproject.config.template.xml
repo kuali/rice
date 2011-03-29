@@ -13,7 +13,7 @@
 	<param name="datasource.username">rice</param>
 	<param name="datasource.password">*** password ***</param>
 	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+	<param name="datasource.platform">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
 	<param name="datasource.driver.name">oracle.jdbc.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>

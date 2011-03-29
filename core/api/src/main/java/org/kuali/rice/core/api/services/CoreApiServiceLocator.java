@@ -3,7 +3,8 @@ package org.kuali.rice.core.api.services;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
 import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
 import org.kuali.rice.core.api.namespace.NamespaceService;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 public class CoreApiServiceLocator {
 

@@ -18,7 +18,8 @@ package org.kuali.rice.kim.test.service;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
@@ -53,7 +54,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		personService = (PersonServiceImpl)GlobalResourceLoader.getService(new QName("personService"));
+		personService = (PersonServiceImpl) GlobalResourceLoader.getService(new QName("personService"));
 		
 	}
 

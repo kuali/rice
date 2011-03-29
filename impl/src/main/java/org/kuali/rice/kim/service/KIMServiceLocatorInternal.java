@@ -19,7 +19,8 @@ package org.kuali.rice.kim.service;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.xml.namespace.QName;

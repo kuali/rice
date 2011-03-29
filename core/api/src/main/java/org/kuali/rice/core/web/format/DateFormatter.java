@@ -24,9 +24,9 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import org.kuali.rice.core.DateTimeService;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceKeyConstants;
 
 /**

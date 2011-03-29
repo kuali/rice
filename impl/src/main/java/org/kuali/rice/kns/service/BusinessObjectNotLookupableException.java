@@ -1,6 +1,6 @@
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.core.KualiException;
+import org.kuali.rice.core.api.exception.KualiException;
 
 /**
  * Thrown when a BusinessObject is expected to implement Lookupable, but does not.

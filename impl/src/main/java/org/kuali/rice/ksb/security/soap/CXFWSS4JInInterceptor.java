@@ -24,7 +24,7 @@ import org.apache.ws.security.components.crypto.Merlin;
 import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
 import org.kuali.rice.ksb.messaging.ServiceInfo;

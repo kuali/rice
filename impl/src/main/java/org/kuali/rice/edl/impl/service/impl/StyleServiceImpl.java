@@ -18,8 +18,8 @@ package org.kuali.rice.edl.impl.service.impl;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.core.util.XmlJotter;

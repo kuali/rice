@@ -17,8 +17,8 @@
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;

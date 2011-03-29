@@ -16,7 +16,8 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -45,7 +46,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		roleService = (RoleServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimRoleService"));
+		roleService = (RoleServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimRoleService"));
 		roleUpdateService = (RoleUpdateServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimRoleUpdateService"));
 	}
 

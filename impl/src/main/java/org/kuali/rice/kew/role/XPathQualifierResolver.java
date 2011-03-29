@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.role;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;

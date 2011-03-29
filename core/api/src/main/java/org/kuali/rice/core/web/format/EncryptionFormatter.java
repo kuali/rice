@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 /**
  * This formatter calls the encryption service to encrypt/decrypt values.

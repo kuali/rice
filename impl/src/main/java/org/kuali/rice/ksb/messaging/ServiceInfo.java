@@ -22,8 +22,8 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 

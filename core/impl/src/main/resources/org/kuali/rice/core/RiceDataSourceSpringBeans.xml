@@ -55,7 +55,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+	<bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />

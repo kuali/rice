@@ -31,19 +31,19 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 		@Parameter(name="value_column",value="id")
 	])
 	@Column(name="ID")
-	def String id;
+	def String id
 	
 	@Column(name="PROP_ID")
-	def String propId;
+	def String propId
 	
 	@Column(name="PARM_VAL")
-	def String value;
+	def String value
 	
 	@Column(name="PARM_TYP_CD")
-	def String parameterType;
+	def String parameterType
 	
 	@Column(name="SEQ_NO")
-	def Integer sequenceNumber;
+	def Integer sequenceNumber
 	
 	
 	/**
@@ -53,7 +53,7 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	*/
    static PropositionParameter to(PropositionParameterBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.PropositionParameter.Builder.create(bo).build();
+	   return org.kuali.rice.krms.api.repository.PropositionParameter.Builder.create(bo).build()
    }
 
 	/**
@@ -65,9 +65,9 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	   if (bos == null) { return null }
 	   List<PropositionParameter> parms = new ArrayList<PropositionParameter>();
 	   for (PropositionParameter p : bos){
-		   parms.add(PropositionParameter.Builder.create(p).build());
+		   parms.add(PropositionParameter.Builder.create(p).build())
 	   }
-	   return Collections.unmodifiableList(parms);
+	   return Collections.unmodifiableList(parms)
    }
    /**
 	* Converts a immutable object to it's mutable bo counterpart
@@ -99,7 +99,7 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 		   bo.sequenceNumber = im.sequenceNumber
 	   	   bos.add(bo);
 	   }
-	   return Collections.unmodifiableList(bos);
+	   return Collections.unmodifiableList(bos)
    }
  
 } 

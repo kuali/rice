@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-
-
-
-
-
-
-
-
 package org.kuali.rice.krms.api.repository
 
 import javax.xml.bind.JAXBContext
@@ -70,6 +62,7 @@ class KrmsTypeTest {
 	  String getNamespace() {"KRMS_TEST" }
 	  String getServiceName() {"TypeServiceImpl"}
       boolean isActive() { true }
+	  List<KrmsTypeAttribute> getAttributes() {null}
     }).build()
   }
 

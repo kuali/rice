@@ -1,10 +1,7 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,41 +16,40 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.krms.api.repository.Proposition.Elements;
 
 /**
- * Concrete model object implementation of KRMS KrmsType. 
+ * Concrete model object implementation of KRMS KrmsAttributeDefinition. 
  * immutable. 
- * Instances of KrmsType can be (un)marshalled to and from XML.
+ * Instances of KrmsAttributeDefinition can be (un)marshalled to and from XML.
  *
- * @see KrmsTypeContract
+ * @see KrmsAttributeDefinitionContract
  */
-@XmlRootElement(name = KrmsType.Constants.ROOT_ELEMENT_NAME, namespace = KrmsType.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = KrmsAttributeDefinition.Constants.ROOT_ELEMENT_NAME, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = KrmsType.Constants.TYPE_NAME, propOrder = {
-		KrmsType.Elements.ID,
-		KrmsType.Elements.NAME,
-		KrmsType.Elements.NAMESPACE,
-		KrmsType.Elements.SERVICENAME,
-		KrmsType.Elements.ACTIVE,
-		"attributes",
+@XmlType(name = KrmsAttributeDefinition.Constants.TYPE_NAME, propOrder = {
+		KrmsAttributeDefinition.Elements.ID,
+		KrmsAttributeDefinition.Elements.NAME,
+		KrmsAttributeDefinition.Elements.NAMESPACE,
+		KrmsAttributeDefinition.Elements.LABEL,
+		KrmsAttributeDefinition.Elements.ACTIVE,
+		KrmsAttributeDefinition.Elements.COMPONENT_NAME,
 		"_elements"
 })
-public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
-	private static final long serialVersionUID = -8314397393380856301L;
-
-	@XmlElement(name = Elements.ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionContract, ModelObjectComplete{
+	private static final long serialVersionUID = -6356968810972165031L;
+	
+	@XmlElement(name = Elements.ID, required=true, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
 	private String id;
-	@XmlElement(name = Elements.NAME, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAME, required=true, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
 	private String name;
-	@XmlElement(name = Elements.NAMESPACE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAMESPACE, required=true, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
 	private String namespace;
-	@XmlElement(name = Elements.SERVICENAME, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
-	private String serviceName;
-	@XmlElement(name = Elements.ACTIVE, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.LABEL, required=false, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	private String label;
+	@XmlElement(name = Elements.ACTIVE, required=false, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
 	private boolean active;
-	@XmlElement(name = Elements.ATTRIBUTE, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
-	private List<KrmsTypeAttribute> attributes;
+	@XmlElement(name = Elements.COMPONENT_NAME, required=false, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	private String componentName;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -62,79 +58,67 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
      */
-    private KrmsType() {
+    private KrmsAttributeDefinition() {
     	this.id = null;
     	this.name = null;
     	this.namespace = null;
-    	this.serviceName = null;
+    	this.label = null;
     	this.active = false;
-    	this.attributes = null;
+    	this.componentName = null;
     }
     
     /**
-	 * Constructs a KRMS KrmsType from the given builder.  This constructor is private and should only
+	 * Constructs a KrmsAttributeDefinition from the given builder.  This constructor is private and should only
 	 * ever be invoked from the builder.
 	 * 
-	 * @param builder the Builder from which to construct the KRMS type
+	 * @param builder the Builder from which to construct the KrmsAttributeDefinition
 	 */
-    private KrmsType(Builder builder) {
+    private KrmsAttributeDefinition(Builder builder) {
         this.id = builder.getId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
-        this.serviceName = builder.getServiceName();
+        this.label = builder.getLabel();
         this.active = builder.isActive();
-        List<KrmsTypeAttribute> attrList = new ArrayList<KrmsTypeAttribute>();
-        if (builder.attributes != null){
-        		for (KrmsTypeAttribute.Builder b : builder.attributes){
-        			attrList.add(b.build());
-        		}
-        }
-        this.attributes = Collections.unmodifiableList(attrList);
+        this.componentName = builder.getComponentName();
     }
     
-	@Override
 	public String getId() {
 		return this.id;
 	}
 	
-	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	@Override
 	public String getNamespace() {
 		return this.namespace;
 	}
 
-	@Override
-	public String getServiceName() {
-		return this.serviceName;
+	public String getLabel() {
+		return this.label;
 	}
 	
-	@Override
 	public boolean isActive() {
 		return this.active; 
 	}
 
-	@Override
-	public List<KrmsTypeAttribute> getAttributes() {
-		return this.attributes; 
+	public String getComponentName() {
+		return this.componentName;
 	}
-
+	
 	/**
-     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
+     * This builder is used to construct instances of KrmsAttributeDefinition.  It enforces the constraints of the {@link KrmsAttributeDefinitionContract}.
      */
-    public static class Builder implements KrmsTypeContract, ModelBuilder, Serializable {		
-		private static final long serialVersionUID = -3469525730879441547L;
+    public static class Builder implements KrmsAttributeDefinitionContract, ModelBuilder, Serializable {		
+		private static final long serialVersionUID = -2110564370088779631L;
 		
 		private String id;
         private String name;
         private String namespace;
-        private String serviceName = "";
+        private String label = "";
         private boolean active;
-        private List<KrmsTypeAttribute.Builder> attributes;
-        
+        private String componentName = "";
+
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
@@ -145,22 +129,20 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 			setActive(true);
         }
 
-        public Builder serviceName(String serviceName){
-        	this.serviceName = serviceName;
+        public Builder label(String label){
+        	setLabel(label);
         	return this;
         }
-        
-        public Builder attributes(List<KrmsTypeAttribute.Builder> attributes){
-        	setAttributes(attributes);
+        public Builder componentName(String componentName){
+        	setComponentName(componentName);
         	return this;
         }
-
         /**
          * Creates a builder from the given parameters.
          * 
-         * @param id the KRMS type id
-         * @param name the KRMS type name
-         * @param namespace the KRMS type namespace
+         * @param id the KrmsAttributeDefinition id
+         * @param name the KrmsAttributeDefinition name
+         * @param namespace the KrmsAttributeDefinition namespace
          * @return an instance of the builder with the fields already populated
          * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
          */
@@ -169,26 +151,19 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
+         * Creates a builder by populating it with data from the given {@link KrmsAttributeDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(KrmsTypeContract contract) {
+        public static Builder create(KrmsAttributeDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
             Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getNamespace());
-            builder.setNamespace(contract.getNamespace());
             builder.setActive(contract.isActive());
-            List <KrmsTypeAttribute.Builder> attrBuilderList = new ArrayList<KrmsTypeAttribute.Builder>();
-            if (contract.getAttributes() != null) {
-            	for(KrmsTypeAttributeContract attr : contract.getAttributes()){
-            		KrmsTypeAttribute.Builder myBuilder = 
-            			KrmsTypeAttribute.Builder.create(attr);
-            		attrBuilderList.add(myBuilder);
-            	}
-            }
+            builder.setLabel(contract.getLabel());
+            builder.setComponentName(contract.getComponentName());
             return builder;
         }
 
@@ -219,16 +194,12 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 			this.namespace = namespace;
 		}
 		
-		public void setServiceName(String serviceName) {
-			this.serviceName = serviceName;
+		public void setLabel(String label) {
+			this.label = label;
 		}
 		
-		public void setAttributes(List<KrmsTypeAttribute.Builder> attributes){
-			if (attributes == null || attributes.isEmpty()){
-				this.attributes = Collections.unmodifiableList(new ArrayList<KrmsTypeAttribute.Builder>());
-				return;
-			}
-			this.attributes = Collections.unmodifiableList(attributes);
+		public void setComponentName(String componentName) {
+			this.componentName = componentName;
 		}
 		
 		public void setActive(boolean active) {
@@ -247,12 +218,12 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 			return namespace;
 		}
 
-		public String getServiceName() {
-			return serviceName;
+		public String getComponentName() {
+			return componentName;
 		}
-		
-		public List<KrmsTypeAttribute.Builder> getAttributes(){
-			return attributes;
+
+		public String getLabel() {
+			return label;
 		}
 
 		public boolean isActive() {
@@ -260,13 +231,13 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 		}
 
 		/**
-		 * Builds an instance of a KrmsType based on the current state of the builder.
+		 * Builds an instance of a CampusType based on the current state of the builder.
 		 * 
-		 * @return the fully-constructed KrmsType
+		 * @return the fully-constructed CampusType
 		 */
         @Override
-        public KrmsType build() {
-            return new KrmsType(this);
+        public KrmsAttributeDefinition build() {
+            return new KrmsAttributeDefinition(this);
         }
 		
     }
@@ -290,8 +261,8 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 	 */
 	static class Constants {
 		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
-		final static String ROOT_ELEMENT_NAME = "KRMSType";
-		final static String TYPE_NAME = "KRMSTypeType";
+		final static String ROOT_ELEMENT_NAME = "KrmsAttributeDefinition";
+		final static String TYPE_NAME = "KrmsAttributionDefinitionType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
 	}
 	
@@ -303,8 +274,8 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 		final static String ID = "id";
 		final static String NAME = "name";
 		final static String NAMESPACE = "namespace";
-		final static String SERVICENAME = "serviceName";
+		final static String LABEL = "label";
+		final static String COMPONENT_NAME = "componentName";
 		final static String ACTIVE = "active";
-		final static String ATTRIBUTE = "attribute";
 	}
 }

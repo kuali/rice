@@ -44,7 +44,7 @@ public interface KrmsTypeService {
      *
      * @param name the given type name
      * @param namespace the given type namespace
-     * @return A krms type object with the given namespace and name if a country with that name and namespace
+     * @return A krms type object with the given namespace and name if one with that name and namespace
      *         exists.  Otherwise, null is returned.
      * @throws IllegalStateException if multiple krms types exist with the same name and namespace
      */

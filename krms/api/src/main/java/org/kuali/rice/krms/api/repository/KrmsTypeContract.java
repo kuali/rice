@@ -1,7 +1,6 @@
 package org.kuali.rice.krms.api.repository;
 
-
-//import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
+import java.util.List;
 
 public interface KrmsTypeContract {
 	/**
@@ -40,6 +39,14 @@ public interface KrmsTypeContract {
 	 * @return the service name of the KRMS type
 	 */
 	public String getServiceName();
+
+	/**
+	 * This method returns a list of attributes associated with the 
+	 * KrmsType
+	 * 
+	 * @return a list of KrmsTypeAttribute objects.
+	 */
+	public List<? extends KrmsTypeAttributeContract> getAttributes();
 	
 	/**
 	 * @return the active

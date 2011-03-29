@@ -522,6 +522,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                                         docGroup.setNamespaceCode(group.getNamespaceCode());
                                         docGroup.setPrincipalId(memberId);
                                         docGroup.setGroupMemberId(groupMember.getGroupMemberId());
+                                        docGroup.setKimTypeId(group.getKimTypeId());
                                         if (groupMember.getActiveFromDate() != null) {
                                         	docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
                                         }

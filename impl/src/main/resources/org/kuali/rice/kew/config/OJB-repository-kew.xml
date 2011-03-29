@@ -92,7 +92,7 @@
   <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent" table="KREW_DOC_HDR_CNTNT_T" >
   <field-descriptor name="routeHeaderId" column="DOC_HDR_ID" jdbc-type="BIGINT" primarykey="true"/>
     <field-descriptor name="documentContent" column="DOC_CNTNT_TXT" jdbc-type="CLOB"
-    conversion="org.kuali.rice.kew.ojb.OjbEncryptDecryptFieldConversion"/>
+    conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiEncryptDecryptFieldConversion"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.notes.Note" table="KREW_DOC_NTE_T">
@@ -871,7 +871,7 @@
     <field-descriptor column="STYLE_ID" name="edocLiteStyleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_S"/>
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>
-    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>
+    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion3"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
@@ -890,7 +890,7 @@
     <field-descriptor column="DOC_TYP_NM" name="edlName" jdbc-type="VARCHAR"/>
     <field-descriptor column="EDL_DEF_NM" name="definition" jdbc-type="VARCHAR"/>
     <field-descriptor column="STYLE_NM" name="style" jdbc-type="VARCHAR"/>
-    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.kew.ojb.OjbCharBooleanConversion"/>
+    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion3"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>

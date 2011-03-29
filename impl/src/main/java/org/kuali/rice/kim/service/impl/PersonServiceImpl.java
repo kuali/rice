@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -432,7 +433,7 @@ public class PersonServiceImpl implements PersonService {
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {
 									criteria.put(key, 
-											KNSServiceLocator.getEncryptionService().encrypt(criteria.get(key))
+											CoreApiServiceLocator.getEncryptionService().encrypt(criteria.get(key))
 											);
 								} catch (GeneralSecurityException ex) {
 									LOG.error("Unable to encrypt value for external ID search of type " + extIdTypeCode, ex );

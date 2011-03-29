@@ -37,6 +37,7 @@ import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
+import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kns.bo.InactivateableFromTo;
@@ -53,7 +54,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.OjbCharBooleanConversion;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**

@@ -18,16 +18,25 @@ package org.kuali.rice.kns.util;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
-import org.kuali.rice.kns.bo.*;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.bo.KualiCode;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
-import org.kuali.rice.kns.datadictionary.control.*;
+import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
@@ -39,7 +48,12 @@ import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
@@ -47,7 +61,11 @@ import org.kuali.rice.kns.web.ui.Section;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -605,7 +623,7 @@ public final class FieldUtils {
                 	field.setEncryptedValue(fieldValue.toString());
                 }
                 else {
-                	field.setEncryptedValue(KNSServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
+                	field.setEncryptedValue(CoreApiServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
                 }
             }
             catch (GeneralSecurityException e) {

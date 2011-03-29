@@ -124,11 +124,11 @@
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="BIGINT" nullable="false"/>
 		<field-descriptor name="accountOwner" column="ACCT_OWNR" jdbc-type="VARCHAR" nullable="false"/>
-		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" nullable="false"/>
+		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion" nullable="false"/>
 		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="DATE" nullable="false"/>
 		<field-descriptor name="accountState" column="ACCT_STAT" jdbc-type="VARCHAR" nullable="false"/>
 		<field-descriptor name="accountUpdateDateTime" column="ACCT_UPDATE_DT_TM" jdbc-type="TIMESTAMP" nullable="false"/>
-		<field-descriptor name="accountAwake" column="ACCT_AWAKE" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="accountAwake" column="ACCT_AWAKE" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 	</class-descriptor>
 	
 	<class-descriptor class="org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument" table="TST_SEARCH_ATTR_INDX_TST_DOC_T">

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -65,7 +66,7 @@ public class DisplayInactivationBlockersForm extends KualiForm {
 			throw new IllegalArgumentException("BO Class is not a BusinessObject: " + businessObjectClassName);
 		}
 		
-		EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
+		EncryptionService encryptionService = CoreApiServiceLocator.getEncryptionService();
 		BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocatorWeb.getBusinessObjectAuthorizationService();
 		
 		List primaryKeyFieldNames = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);

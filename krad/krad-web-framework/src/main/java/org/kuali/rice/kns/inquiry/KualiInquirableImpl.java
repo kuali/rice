@@ -21,6 +21,7 @@ import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -479,7 +480,7 @@ public class KualiInquirableImpl implements Inquirable {
 
     public EncryptionService getEncryptionService() {
 	if ( encryptionService == null ) {
-	    encryptionService = KNSServiceLocator.getEncryptionService();
+	    encryptionService = CoreApiServiceLocator.getEncryptionService();
 	}
         return this.encryptionService;
     }

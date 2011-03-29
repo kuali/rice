@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.test.document;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.framework.persistence.jpa.type.HibernateKualiDecimalFieldType;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
@@ -35,7 +36,7 @@ import java.sql.Timestamp;
 @Table(name="ACCT_DD_ATTR_DOC")
 @org.hibernate.annotations.TypeDef(
 			name="rice_decimal",
-			typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalFieldType.class
+			typeClass=HibernateKualiDecimalFieldType.class
 	)
 public class AccountWithDDAttributesDocument extends TransactionalDocumentBase implements SessionDocument {
 	private static final long serialVersionUID = 174220131121010870L;

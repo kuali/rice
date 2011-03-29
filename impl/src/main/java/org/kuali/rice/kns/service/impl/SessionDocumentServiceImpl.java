@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.UserSession;
@@ -301,7 +302,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 
 	protected EncryptionService getEncryptionService() {
 		if ( encryptionService == null ) {
-			encryptionService = KNSServiceLocator.getEncryptionService();
+			encryptionService = CoreApiServiceLocator.getEncryptionService();
 		}
 		return encryptionService;
 	}

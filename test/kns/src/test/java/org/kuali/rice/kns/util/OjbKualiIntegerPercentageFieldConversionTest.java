@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.util;
 
 import org.junit.Test;
+import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiIntegerPercentageFieldConversion;
 import org.kuali.test.KNSTestCase;
 
 import static org.junit.Assert.assertEquals;

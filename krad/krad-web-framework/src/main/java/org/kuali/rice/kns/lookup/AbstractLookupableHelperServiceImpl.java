@@ -19,6 +19,7 @@ package org.kuali.rice.kns.lookup;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
@@ -246,7 +247,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the encryptionService.
      */
     protected EncryptionService getEncryptionService() {
-        return encryptionService != null ? encryptionService : KNSServiceLocator.getEncryptionService();
+        return encryptionService != null ? encryptionService : CoreApiServiceLocator.getEncryptionService();
     }
 
     /**

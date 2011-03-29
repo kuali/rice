@@ -19,11 +19,11 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversionDefaultImpl;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiEncryptDecryptFieldConversion;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.impl.PersistenceServiceImplBase;
-import org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion;
 
 import java.util.HashMap;
 import java.util.Set;

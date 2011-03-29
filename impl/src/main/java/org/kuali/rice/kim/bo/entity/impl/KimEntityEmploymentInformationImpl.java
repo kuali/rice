@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.entity.impl;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.kuali.rice.core.framework.persistence.jpa.type.HibernateKualiDecimalFieldType;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
@@ -31,7 +32,7 @@ import javax.persistence.*;
 @Table(name = "KRIM_ENTITY_EMP_INFO_T")
 @TypeDef(
 		name="rice_decimal",
-		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalFieldType.class
+		typeClass=HibernateKualiDecimalFieldType.class
 	)
 public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDataBase implements KimEntityEmploymentInformation {
 

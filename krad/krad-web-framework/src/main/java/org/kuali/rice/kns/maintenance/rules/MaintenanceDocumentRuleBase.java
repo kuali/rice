@@ -19,6 +19,7 @@ package org.kuali.rice.kns.maintenance.rules;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -340,7 +341,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             // Encrypt value if it is a secure field
             if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
                 try {
-                    keyValue = KNSServiceLocator.getEncryptionService().encrypt(keyValue);
+                    keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);

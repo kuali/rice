@@ -38,6 +38,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
@@ -89,7 +90,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	public KualiMaintenanceDocumentAction() {
 		super();
 		maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
-		encryptionService = KNSServiceLocator.getEncryptionService();
+		encryptionService = CoreApiServiceLocator.getEncryptionService();
 	}
 
 	@Override

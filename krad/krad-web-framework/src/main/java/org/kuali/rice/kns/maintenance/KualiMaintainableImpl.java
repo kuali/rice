@@ -18,6 +18,7 @@ package org.kuali.rice.kns.maintenance;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -1134,7 +1135,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
     public static EncryptionService getEncryptionService() {
         if (encryptionService == null) {
-            encryptionService = KNSServiceLocator.getEncryptionService();
+            encryptionService = CoreApiServiceLocator.getEncryptionService();
         }
         return encryptionService;
     }

@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -164,7 +165,7 @@ public class InquiryForm extends KualiForm {
 
     protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
         try {
-            EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
+            EncryptionService encryptionService = CoreApiServiceLocator.getEncryptionService();
             DataDictionaryService dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
             BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocatorWeb.getBusinessObjectAuthorizationService();
             BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocatorWeb.getBusinessObjectMetaDataService();

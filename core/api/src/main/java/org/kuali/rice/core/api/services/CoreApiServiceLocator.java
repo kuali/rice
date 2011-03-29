@@ -1,5 +1,7 @@
 package org.kuali.rice.core.api.services;
 
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
 import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
 import org.kuali.rice.core.api.namespace.NamespaceService;
@@ -28,7 +30,7 @@ public class CoreApiServiceLocator {
         return getService(XML_INGESTER_SERVICE);
     }
     
-    
-    
-     
+    public static final EncryptionService getEncryptionService() {
+        return getService(CoreConstants.Services.ENCRYPTION_SERVICE);
+    }
 }

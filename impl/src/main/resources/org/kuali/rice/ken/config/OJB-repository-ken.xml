@@ -64,7 +64,7 @@
     <field-descriptor name="id" column="CHNL_ID" jdbc-type="BIGINT" primarykey="true" indexed="true" autoincrement="true" sequence-name="KREN_CHNL_S" />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" nullable="false" />
-    <field-descriptor name="subscribable" column="SUBSCRB_IND" conversion="org.kuali.rice.ken.util.OjbCharBooleanConversion" jdbc-type="CHAR" nullable="false" />
+    <field-descriptor name="subscribable" column="SUBSCRB_IND" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion2" jdbc-type="CHAR" nullable="false" />
     
     <!-- List references -->
     <!-- This class uses the specified collection descriptor b/c it is an M:N mapping -->
@@ -95,7 +95,7 @@
     <field-descriptor name="id" column="CNTNT_TYP_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREN_CNTNT_TYP_S" />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="version" column="CNTNT_TYP_VER_NBR" jdbc-type="INTEGER" nullable="false" />
-    <field-descriptor name="current" column="CUR_IND" jdbc-type="CHAR" nullable="false" conversion="org.kuali.rice.core.util.OjbCharBooleanFieldTFConversion"/>
+    <field-descriptor name="current" column="CUR_IND" jdbc-type="CHAR" nullable="false" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversionTF"/>
     <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" nullable="false" />
     <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" nullable="false" />
     <field-descriptor name="xsd" column="XSD" jdbc-type="VARCHAR" nullable="false" />

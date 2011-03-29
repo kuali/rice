@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
@@ -212,7 +213,7 @@ public class ActionFormUtilMap extends HashMap {
         }
 
         try {
-            encrypted = KNSServiceLocator.getEncryptionService().encrypt(value);
+            encrypted = CoreApiServiceLocator.getEncryptionService().encrypt(value);
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt value in action form: " + e.getMessage());

@@ -23,6 +23,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -1121,7 +1122,7 @@ public abstract class KualiAction extends DispatchAction {
     
     protected EncryptionService getEncryptionService() {
     	if (encryptionService == null) {
-    		encryptionService = KNSServiceLocator.getEncryptionService();
+    		encryptionService = CoreApiServiceLocator.getEncryptionService();
     	}
     	return encryptionService;
     }

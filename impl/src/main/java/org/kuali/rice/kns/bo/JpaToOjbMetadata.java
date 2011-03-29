@@ -117,7 +117,7 @@ public class JpaToOjbMetadata {
 					sb.append( "index=\"true\" " );
 				}
 				if ( field.getType() == boolean.class ) {
-					sb.append( "conversion=\"org.kuali.rice.kns.util.OjbCharBooleanConversion\" " );
+					sb.append( "conversion=\"org.kuali.rice.kns.util.OjbCharBooleanConversion3\" " );
 				}
 				if ( field.getName().equals( "versionNumber" ) ) {
 					sb.append( "locking=\"true\" " );

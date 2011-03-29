@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jpa.spring;
-
-import org.kuali.rice.core.framework.persistence.jpa.PersistableBusinessObjectClassExposer;
+package org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,11 +30,11 @@ public class RiceToNervousSystemBusinessObjectClassExposer implements Persistabl
 	/**
 	 * Exposes a list of non-KNS entity class names
 	 * 
-	 * @see org.kuali.rice.core.framework.persistence.jpa.PersistableBusinessObjectClassExposer#exposePersistableBusinessObjectClassNames()
+	 * @see PersistableBusinessObjectClassExposer#exposePersistableBusinessObjectClassNames()
 	 */
 	public Set<String> exposePersistableBusinessObjectClassNames() {
 		Set<String> exposedClasses = new HashSet<String>();
-		exposedClasses.add(org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl.class.getName());
+		/*exposedClasses.add(org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl.class.getName());
@@ -118,7 +116,7 @@ public class RiceToNervousSystemBusinessObjectClassExposer implements Persistabl
 	    exposedClasses.add(org.kuali.rice.ken.bo.NotificationSender.class.getName());
 	    exposedClasses.add(org.kuali.rice.ken.bo.UserChannelSubscription.class.getName());
 	    exposedClasses.add(org.kuali.rice.ken.bo.NotificationMessageDelivery.class.getName());
-	    
+	    */
 	    return exposedClasses;
 	}
 

@@ -61,7 +61,7 @@
     </property>
   </bean>
 
-  <bean id="ksbMessageEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceLocalContainerEntityManagerFactoryBean">    
+  <bean id="ksbMessageEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceLocalContainerEntityManagerFactoryBean">
     <constructor-arg value="rice.ksb.message"/>
     <constructor-arg ref="ksbMessageDataSource"/>
   </bean>
@@ -70,7 +70,7 @@
   	<property name="entityManagerFactory" ref="ksbMessageEntityManagerFactory"/>
   </bean>
   
-  <bean id="ksbRegistryEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceLocalContainerEntityManagerFactoryBean">    
+  <bean id="ksbRegistryEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceLocalContainerEntityManagerFactoryBean">
     <constructor-arg value="rice.ksb.registry"/>
     <constructor-arg ref="ksbRegistryDataSource"/>
   </bean>

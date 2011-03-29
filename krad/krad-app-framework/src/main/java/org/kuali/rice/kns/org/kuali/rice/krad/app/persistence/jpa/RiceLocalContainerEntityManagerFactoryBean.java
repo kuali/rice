@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.jpa.spring;
+package org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa;
 
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;

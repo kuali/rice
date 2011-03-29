@@ -5,19 +5,15 @@
     <output-test url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../core/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/wsdl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/surefire-reports" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -40,7 +36,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />

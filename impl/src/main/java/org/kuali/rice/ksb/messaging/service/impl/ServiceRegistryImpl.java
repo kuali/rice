@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.service.impl;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.DataAccessUtils;
+import org.kuali.rice.core.framework.persistence.ojb.DataAccessUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.messaging.FlattenedServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;

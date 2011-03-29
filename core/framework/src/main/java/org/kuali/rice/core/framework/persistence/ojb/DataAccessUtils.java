@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.util;
+package org.kuali.rice.core.framework.persistence.ojb;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
@@ -29,7 +31,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
  */
 public final class DataAccessUtils {
 
-    private static final Set<Class<?>> OPTIMISTIC_LOCK_EXCEPTION_CLASSES = new HashSet<Class<?>>();
+    private static final Set<Class<? extends Throwable>> OPTIMISTIC_LOCK_EXCEPTION_CLASSES = new HashSet<Class<? extends Throwable>>();
     
         private DataAccessUtils() {
                 throw new UnsupportedOperationException("do not call");
@@ -41,24 +43,24 @@ public final class DataAccessUtils {
         addOptimisticLockExceptionClass(OptimisticLockingFailureException.class);
     }
 
-    public static boolean isOptimisticLockFailure(Exception exception) {
+    public static synchronized boolean isOptimisticLockFailure(Throwable exception) {
         if (exception == null) {
             return false;
         }
         for (final Class<?> exceptionClass : getOptimisticLockExceptionClasses()) {
-            if (exceptionClass.isInstance(exception) || exceptionClass.isInstance(exception.getCause())) {
+            if (ExceptionUtils.indexOfType(exception, exceptionClass) >= 0) {
                 return true;
             }
         }
         return false;
     }
 
-    public static void addOptimisticLockExceptionClass(Class exceptionClass) {
+    public static synchronized void addOptimisticLockExceptionClass(Class<? extends Throwable> exceptionClass) {
         OPTIMISTIC_LOCK_EXCEPTION_CLASSES.add(exceptionClass);
     }
 
-    public static Set<Class<?>> getOptimisticLockExceptionClasses() {
-        return OPTIMISTIC_LOCK_EXCEPTION_CLASSES;
+    public static synchronized Set<Class<? extends Throwable>> getOptimisticLockExceptionClasses() {
+        return Collections.unmodifiableSet(OPTIMISTIC_LOCK_EXCEPTION_CLASSES);
     }
 
 }

@@ -127,7 +127,7 @@
 
   <!-- START JPA CONFIGURATION -->
 
-  <bean id="kimEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
+  <bean id="kimEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kim"/>
     <constructor-arg ref="kimDataSource"/>
   </bean>

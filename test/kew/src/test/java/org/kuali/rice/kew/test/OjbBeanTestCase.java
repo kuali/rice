@@ -18,7 +18,7 @@ package org.kuali.rice.kew.test;
 
 
 import org.junit.Test;
-import org.kuali.rice.core.util.DataAccessUtils;
+import org.kuali.rice.core.framework.persistence.ojb.DataAccessUtils;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springmodules.orm.ojb.PersistenceBrokerTemplate;

@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jpa.spring;
+package org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa;
 
 import javax.sql.DataSource;
 
-import org.kuali.rice.core.framework.persistence.jpa.PersistableBusinessObjectClassExposer;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 

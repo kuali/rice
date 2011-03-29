@@ -362,7 +362,7 @@
 
   <!-- START JPA CONFIGURATION -->
 
-  <bean id="kenEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
+  <bean id="kenEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.ken"/>
     <constructor-arg ref="kenDataSource"/>
   </bean>

@@ -671,7 +671,7 @@
 
   <!-- START JPA CONFIGURATION -->
 
-  <bean id="kewEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">
+  <bean id="kewEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
     <constructor-arg value="rice.kew"/>
     <constructor-arg ref="enWorkflowDataSource"/>
   </bean>

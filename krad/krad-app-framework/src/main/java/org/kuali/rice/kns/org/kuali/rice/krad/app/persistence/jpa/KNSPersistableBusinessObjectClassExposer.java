@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jpa.spring;
-
-import org.kuali.rice.core.framework.persistence.jpa.PersistableBusinessObjectClassExposer;
+package org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +31,7 @@ public class KNSPersistableBusinessObjectClassExposer implements
 	/**
 	 * Exposes all KNS objects - a hard coded list for now - to persistence units
 	 * 
-	 * @see org.kuali.rice.core.framework.persistence.jpa.PersistableBusinessObjectClassExposer#exposePersistableBusinessObjectClassNames()
+	 * @see PersistableBusinessObjectClassExposer#exposePersistableBusinessObjectClassNames()
 	 */
 	@Override
 	public Set<String> exposePersistableBusinessObjectClassNames() {

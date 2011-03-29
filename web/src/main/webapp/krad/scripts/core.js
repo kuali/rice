@@ -480,14 +480,18 @@ function writeHiddenToForm(propertyName, propertyValue) {
  * Expands all the accordion divs on the page
  */
 function expandAccordions() {
-	jq("div.accordion").slideDown(100);
+	// Changed to click() in order to toggle the header contents	
+	//jq("div.accordion").slideDown(100);
+	jq('img[alt="expand"]').click();
 }
 
 /**
  * Collapses all the accordion divs on the page
  */
 function collapseAccordions() {
-	jq("div.accordion").slideUp(100);
+	// Changed to click() in order to toggle the header contents
+	//jq("div.accordion").slideUp(100);
+	jq('img[alt="collapse"]').click();
 }
 
 /**

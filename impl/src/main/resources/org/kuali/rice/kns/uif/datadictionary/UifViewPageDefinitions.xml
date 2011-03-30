@@ -66,7 +66,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <!-- Common Views -->
   
   <bean id="InquiryView" abstract="true" parent="InquiryView-parentBean"/>
-  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="KNSFormView">
+  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
@@ -82,7 +82,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
-  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="KNSFormView">
+  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="lookupViewHelperService"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
@@ -158,7 +158,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>
-  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="KNSFormView">
+  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="FormView">
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.DocumentFormBase"/>
      <property name="defaultBindingObjectPath" value="document"/>
      <property name="footer">

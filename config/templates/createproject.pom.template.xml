@@ -54,12 +54,13 @@
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-impl</artifactId>
 			<version>${RICE_VERSION}</version>
-                        <exclusions>   
-                            <exclusion>
-		                <artifactId>asm</artifactId>
-		                <groupId>asm</groupId>
-		            </exclusion>
-		        </exclusions>
+                        <exclusions>	
+			    <exclusion>
+                                <!-- we moved our patch to groupId org.kuali.db.ojb -->
+                                <groupId>ojb</groupId>
+                                <artifactId>db-ojb</artifactId>
+                             </exclusion>
+			</exclusions>
                 </dependency>
                 <dependency>
                         <groupId>com.oracle</groupId>
@@ -87,4 +88,17 @@
                         </snapshots>
                 </repository>
 	</repositories>
+       <pluginRepositories>
+                <pluginRepository>
+                        <id>kuali.nexus</id>
+                        <name>Nexus Repository Manager</name>
+                        <url>http://nexus.kuali.org/content/groups/public</url>
+                        <releases>
+                                <enabled>true</enabled>
+                        </releases>
+                        <snapshots>
+                                <enabled>true</enabled>
+                        </snapshots>
+                </pluginRepository>
+	</pluginRepositories>
 </project>

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-
-
-
-
 package org.kuali.rice.shareddata.impl.county
 
 import groovy.mock.interceptor.MockFor
@@ -26,6 +22,7 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.shareddata.api.county.CountyService
 
 class CountyServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -33,8 +30,11 @@ class CountyServiceImplTest {
     static sampleCounties = new HashMap<List<String>, CountyBo>()
     static sampleCountiesPerCountryState = new HashMap<List<String>, List<CountyBo>>()
 
-    private def MockFor mockBoService
-    private CountyServiceImpl cservice;
+    private MockFor businessObjectServiceMock
+    private BusinessObjectService boService
+    CountyService countyService
+    CountyServiceImpl countyServiceImpl
+
 
     @BeforeClass
     static void createSamplePostalCodeBOs() {
@@ -55,111 +55,113 @@ class CountyServiceImplTest {
 
     @Before
     void setupBoServiceMockContext() {
-        mockBoService = new MockFor(BusinessObjectService)
-        cservice = new CountyServiceImpl()
+        businessObjectServiceMock = new MockFor(BusinessObjectService)
+
+    }
+
+    @Before
+    void setupServiceUnderTest() {
+        countyServiceImpl = new CountyServiceImpl()
+        countyService = countyServiceImpl
+    }
+
+    void injectBusinessObjectServiceIntoCountryService() {
+        boService = businessObjectServiceMock.proxyDelegateInstance()
+        countyServiceImpl.setBusinessObjectService(boService)
     }
 
     @Test
     void test_getCounty_null_countryCode() {
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
+        injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail(IllegalArgumentException.class) {
-            cservice.getCounty(null, "MI", "48848")
+        shouldFail() {
+            countyService.getCounty(null, "MI", "48848")
         }
-        mockBoService.verify(boService)
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_getPostalCode_null_stateCode() {
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
+        injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail(IllegalArgumentException.class) {
-            cservice.getCounty("US", null, "48848")
+        shouldFail() {
+            countyService.getCounty("US", null, "48848")
         }
-        mockBoService.verify(boService)
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_getPostalCode_null_code() {
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
+        injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail(IllegalArgumentException.class) {
-            cservice.getCounty("US", "MI", null)
+        shouldFail() {
+            countyService.getCounty("US", "MI", null)
         }
-        mockBoService.verify(boService)
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_get_county_exists() {
-        mockBoService.demand.findByPrimaryKey (1..1) { clazz, map -> sampleCounties[map["countryCode"], map["stateCode"], [map["code"]]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
-        Assert.assertEquals (CountyBo.to(sampleCounties[["US", "48848"]]), cservice.getCounty("US", "MI", "shi"))
-        mockBoService.verify(boService)
+        businessObjectServiceMock.demand.findByPrimaryKey(1..1) { clazz, map -> sampleCounties[map["countryCode"], map["stateCode"], [map["code"]]] }
+        injectBusinessObjectServiceIntoCountryService()
+        Assert.assertEquals(CountyBo.to(sampleCounties[["US", "48848"]]), countyService.getCounty("US", "MI", "shi"))
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_get_county_does_not_exist() {
-        mockBoService.demand.findByPrimaryKey (1..1) { clazz, map -> sampleCounties[map["countryCode"],  map["stateCode"], [map["code"]]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
-        Assert.assertNull (cservice.getCounty("FOO", "BAR", "BAZ"))
-        mockBoService.verify(boService)
+        businessObjectServiceMock.demand.findByPrimaryKey(1..1) { clazz, map -> sampleCounties[map["countryCode"], map["stateCode"], [map["code"]]] }
+        injectBusinessObjectServiceIntoCountryService()
+        Assert.assertNull(countyService.getCounty("FOO", "BAR", "BAZ"))
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_getAllPostalCodesInCountryAndState_null_countryCode() {
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
+        injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail(IllegalArgumentException.class) {
-            cservice.findAllCountiesInCountryAndState(null, "MI")
+        shouldFail() {
+            countyService.findAllCountiesInCountryAndState(null, "MI")
         }
-        mockBoService.verify(boService)
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_getAllPostalCodesInCountryAndState_null_stateCode() {
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
+        injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail(IllegalArgumentException.class) {
-            cservice.findAllCountiesInCountryAndState("US", null)
+        shouldFail() {
+            countyService.findAllCountiesInCountryAndState("US", null)
         }
-        mockBoService.verify(boService)
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_find_all_county_in_country_state_exists() {
-        mockBoService.demand.findMatching (1..1) { clazz, map -> sampleCountiesPerCountryState[map["countryCode"], map["stateCode"]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
-        def values = cservice.findAllCountiesInCountryAndState("US", "MI")
-        Assert.assertEquals (sampleCountiesPerCountryState[["US", "MI"]].collect { CountyBo.to(it) }, values)
+        businessObjectServiceMock.demand.findMatching(1..1) { clazz, map -> sampleCountiesPerCountryState[map["countryCode"], map["stateCode"]] }
+        injectBusinessObjectServiceIntoCountryService()
+        def values = countyService.findAllCountiesInCountryAndState("US", "MI")
+        Assert.assertEquals(sampleCountiesPerCountryState[["US", "MI"]].collect { CountyBo.to(it) }, values)
 
         //is this unmodifiable?
-        shouldFail(UnsupportedOperationException.class) {
+        shouldFail() {
             values.add(CountyBo.to(sampleCounties[["CA", "MI", "shi"]]))
         }
-        mockBoService.verify(boService)
+        businessObjectServiceMock.verify(boService)
     }
 
     @Test
     void test_find_all_county_in_country_state_does_not_exist() {
-        mockBoService.demand.findMatching (1..1) { clazz, map -> sampleCountiesPerCountryState[map["countryCode"], map["stateCode"]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        cservice.setBusinessObjectService(boService);
-        def values = cservice.findAllCountiesInCountryAndState("FOO", "BAR")
-        Assert.assertEquals ([], values)
+        businessObjectServiceMock.demand.findMatching(1..1) { clazz, map -> sampleCountiesPerCountryState[map["countryCode"], map["stateCode"]] }
+        injectBusinessObjectServiceIntoCountryService()
+        def values = countyService.findAllCountiesInCountryAndState("FOO", "BAR")
+        Assert.assertEquals([], values)
 
         //is this unmodifiable?
-        shouldFail(UnsupportedOperationException.class) {
+        shouldFail() {
             values.add(CountyBo.to(sampleCounties[["CA", "MI", "shi"]]))
         }
 
-        mockBoService.verify(boService)
+        businessObjectServiceMock.verify(boService)
     }
 }

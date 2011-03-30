@@ -16,6 +16,7 @@
 
 package org.kuali.rice.shareddata.api.county;
 
+import org.kuali.rice.core.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
 import javax.jws.WebMethod;
@@ -23,6 +24,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 @WebService(name = "countyServiceSoap", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
@@ -69,5 +71,6 @@ public interface CountyService {
      */
     @WebMethod(operationName="findAllCountiesInCountryAndState")
     @WebResult(name = "counties")
+    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<County> findAllCountiesInCountryAndState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode);
 }

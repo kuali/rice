@@ -189,6 +189,7 @@ public class ErrorsField extends FieldBase {
 				tempCount++;
 				String message = configService.getPropertyString(e.getErrorKey());
 				if (e.getMessageParameters() != null) {
+					message = message.replace("'", "\"");
 					message = MessageFormat.format(message, (Object[]) e.getMessageParameters());
 				}
 				if (displayFieldLabelWithMessages) {

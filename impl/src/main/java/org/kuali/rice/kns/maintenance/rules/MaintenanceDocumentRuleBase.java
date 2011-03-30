@@ -33,6 +33,8 @@ import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
+import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
@@ -674,8 +676,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             dictionaryValidationService.validateApcRules(businessObject);
         }
         else {
-            // TODO do we need to put the errors in the GlobalVariables errors map
+            GlobalVariables.getMessageMap().addToErrorPath("dataObject");
+            
             dictionaryValidationService.validate(newBo);
+            
+            GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
         }
 
 
@@ -981,14 +986,14 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (document.getNewMaintainableObject() == null) {
             return success;
         }
-        if (document.getNewMaintainableObject().getBusinessObject() == null) {
+        if (document.getNewMaintainableObject().getDataObject() == null) {
             return success;
         }
-        if (!(document.getNewMaintainableObject().getBusinessObject() instanceof GlobalBusinessObject)) {
+        if (!(document.getNewMaintainableObject().getDataObject() instanceof GlobalBusinessObject)) {
             return success;
         }
 
-        PersistableBusinessObject bo = (PersistableBusinessObject) document.getNewMaintainableObject().getBusinessObject();
+        PersistableBusinessObject bo = (PersistableBusinessObject) document.getNewMaintainableObject().getDataObject();
         GlobalBusinessObject gbo = (GlobalBusinessObject) bo;
         return gbo.isPersistable();
     }

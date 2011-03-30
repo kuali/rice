@@ -24,12 +24,15 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
 import org.kuali.rice.kns.web.spring.form.MaintenanceForm;
 import org.springframework.stereotype.Controller;
@@ -232,14 +235,23 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	@RequestMapping(params = "methodToCall=route")
 	public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		ModelAndView modelAndView = super.route(form, request, response);
-
-		MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
-		if (document.getNewMaintainableObject().getBusinessObject() instanceof PersistableAttachment) {
-			PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(
-					document.getNewMaintainableObject().getBusinessObject());
-			request.setAttribute("fileName", bo.getFileName());
-		}
+	    
+	    ModelAndView modelAndView;
+	    
+	    try {
+    		modelAndView = super.route(form, request, response);
+    
+    		MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+    		if (document.getNewMaintainableObject().getBusinessObject() instanceof PersistableAttachment) {
+    			PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(
+    					document.getNewMaintainableObject().getBusinessObject());
+    			request.setAttribute("fileName", bo.getFileName());
+    		}
+	    }
+	    catch(ValidationException vex) {
+	        MessageMap mmap = GlobalVariables.getMessageMap();
+	        modelAndView = getUIFModelAndView(form);
+	    }
 
 		return modelAndView;
 	}

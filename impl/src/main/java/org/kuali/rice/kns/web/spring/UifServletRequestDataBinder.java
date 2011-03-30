@@ -99,29 +99,26 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 		super.bind(request);
 		UifFormBase form = (UifFormBase) this.getTarget();
 
-		// if view not in form, initialize from the request
-		if (form.getView() == null) {
-			View view = null;
+        // initialize view for request
+        View view = null;
 
-			String viewId = request.getParameter(UifParameters.VIEW_ID);
-			if (viewId != null) {
-				view = getViewService().getView(viewId,
-						WebUtils.translateRequestParameterMap(request.getParameterMap()));
-			}
-			else {
-				String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
-				if (viewTypeName == null) {
-					viewTypeName = form.getViewTypeName();
-				}
+        String viewId = request.getParameter(UifParameters.VIEW_ID);
+        if (viewId != null) {
+            view = getViewService().getView(viewId, WebUtils.translateRequestParameterMap(request.getParameterMap()));
+        }
+        else {
+            String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
+            if (viewTypeName == null) {
+                viewTypeName = form.getViewTypeName();
+            }
 
-				view = getViewService().getViewByType(viewTypeName,
-						WebUtils.translateRequestParameterMap(request.getParameterMap()));
-			}
+            view = getViewService().getViewByType(viewTypeName,
+                    WebUtils.translateRequestParameterMap(request.getParameterMap()));
+        }
 
-			form.setViewRequestParameters(view.getViewRequestParameters());
-			form.setViewId(view.getId());
-			form.setView(view);
-		}
+        form.setViewRequestParameters(view.getViewRequestParameters());
+        form.setViewId(view.getId());
+        form.setView(view);
 
 		form.postBind((HttpServletRequest) request);
 	}

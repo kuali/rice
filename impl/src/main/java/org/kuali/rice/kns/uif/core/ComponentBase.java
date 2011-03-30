@@ -565,7 +565,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * @see org.kuali.rice.kns.uif.core.Component#addStyleClass(java.lang.String)
 	 */
 	public void addStyleClass(String styleClass) {
-		if (!styleClass.contains(styleClass)) {
+		if (!styleClasses.contains(styleClass)) {
 			styleClasses.add(styleClass);
 		}
 	}

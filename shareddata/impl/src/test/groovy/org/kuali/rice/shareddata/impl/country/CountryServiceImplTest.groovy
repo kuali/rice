@@ -57,7 +57,7 @@ class CountryServiceImplTest {
     void setupBoServiceMockContext() {
         businessObjectServiceMockFor = new MockFor(BusinessObjectService.class)
         countryServiceImpl = new CountryServiceImpl()
-        countryService = countryServiceImpl    //assign Interface type to implementation instance for unit test only
+        countryService = countryServiceImpl    //assign Interface type to implementation reference for unit test only
     }
 
     void injectBusinessObjectServiceIntoCountryService() {

@@ -2,14 +2,14 @@ package org.kuali.rice.core.jaxb;
 
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Handles JAXB mapping that ensures that any List created from unmarshalled XML will be immutable.
  */
-public class ImmutableListAdapter extends XmlAdapter<ArrayList<?>,List<?>> {
+public class ImmutableListAdapter extends XmlAdapter<Object[],List<?>> {
 
     /**
      * Returns an immutable List when a List is unmarshalled from XML.  This is done to ensure service contracts,
@@ -20,9 +20,11 @@ public class ImmutableListAdapter extends XmlAdapter<ArrayList<?>,List<?>> {
      * @throws Exception
      */
     @Override
-    public List<?> unmarshal(ArrayList<?> objects) throws Exception {
-        return Collections.unmodifiableList(objects);
+    public List<?> unmarshal(Object[] objects) throws Exception {
+        return Collections.unmodifiableList(Arrays.asList(objects));
     }
+
+
 
     /**
      * Returns the same List that was passed in as an ArrayList.  There is no requirement of what kind of List is ued when
@@ -32,7 +34,7 @@ public class ImmutableListAdapter extends XmlAdapter<ArrayList<?>,List<?>> {
      * @throws Exception
      */
     @Override
-    public ArrayList<?> marshal(List<?> objects) throws Exception {
-        return new ArrayList(objects);
+    public Object[] marshal(List<?> objects) throws Exception {
+        return objects.toArray();
     }
 }

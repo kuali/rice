@@ -16,6 +16,7 @@
 
 package org.kuali.rice.shareddata.api.postalcode;
 
+import org.kuali.rice.core.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
 import javax.jws.WebMethod;
@@ -23,6 +24,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 /**
@@ -70,5 +72,6 @@ public interface PostalCodeService {
      */
     @WebMethod(operationName="findAllPostalCodesInCountry")
     @WebResult(name = "postalCodes")
+    @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<PostalCode> findAllPostalCodesInCountry(@WebParam(name = "countryCode") String countryCode);
 }

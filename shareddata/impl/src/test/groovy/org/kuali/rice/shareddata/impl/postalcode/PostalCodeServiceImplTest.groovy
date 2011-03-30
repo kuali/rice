@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-
-
-
-
-
-
 package org.kuali.rice.shareddata.impl.postalcode
 
 import groovy.mock.interceptor.MockFor
@@ -28,6 +22,7 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.kuali.rice.kns.service.BusinessObjectService
+import org.kuali.rice.shareddata.api.postalcode.PostalCodeService
 
 class PostalCodeServiceImplTest {
 
@@ -37,7 +32,9 @@ class PostalCodeServiceImplTest {
     static samplePostalCodesPerCountry = new HashMap<String, List<PostalCodeBo>>()
 
     private def MockFor mockBoService
-    private PostalCodeServiceImpl pcservice;
+    BusinessObjectService boService
+    PostalCodeServiceImpl postalCodeServiceImpl
+    PostalCodeService postalCodeService
 
     @BeforeClass
     static void createSamplePostalCodeBOs() {
@@ -57,70 +54,67 @@ class PostalCodeServiceImplTest {
     @Before
     void setupBoServiceMockContext() {
         mockBoService = new MockFor(BusinessObjectService)
-        pcservice = new PostalCodeServiceImpl()
+        postalCodeServiceImpl = new PostalCodeServiceImpl()
+        postalCodeService = postalCodeServiceImpl //assign Interface type to implementation reference for unit test only
+    }
+
+    void injectBusinessObjectServiceIntoCountryService() {
+        boService = mockBoService.proxyDelegateInstance()
+        postalCodeServiceImpl.setBusinessObjectService(boService);
     }
 
     @Test
     void test_get_postal_code_null_countryCode() {
-        def boService = mockBoService.proxyDelegateInstance()
-        pcservice.setBusinessObjectService(boService);
-
-        shouldFail(IllegalArgumentException.class) {
-            pcservice.getPostalCode(null, "48848")
+        injectBusinessObjectServiceIntoCountryService()
+        shouldFail() {
+            postalCodeService.getPostalCode(null, "48848")
         }
         mockBoService.verify(boService)
     }
 
     @Test
     void test_get_postal_code_null_code() {
-        def boService = mockBoService.proxyDelegateInstance()
-        pcservice.setBusinessObjectService(boService);
-
-        shouldFail(IllegalArgumentException.class) {
-            pcservice.getPostalCode("US", null)
+        injectBusinessObjectServiceIntoCountryService()
+        shouldFail() {
+            postalCodeService.getPostalCode("US", null)
         }
         mockBoService.verify(boService)
     }
 
     @Test
     void test_get_postal_code_exists() {
-        mockBoService.demand.findByPrimaryKey (1..1) { clazz, map -> samplePostalCodes[map["countryCode"], [map["code"]]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        pcservice.setBusinessObjectService(boService);
-        Assert.assertEquals (PostalCodeBo.to(samplePostalCodes[["US", "48848"]]), pcservice.getPostalCode("US", "48848"))
+        mockBoService.demand.findByPrimaryKey(1..1) { clazz, map -> samplePostalCodes[map["countryCode"], [map["code"]]] }
+        injectBusinessObjectServiceIntoCountryService()
+        Assert.assertEquals(PostalCodeBo.to(samplePostalCodes[["US", "48848"]]), postalCodeService.getPostalCode("US", "48848"))
         mockBoService.verify(boService)
     }
 
     @Test
     void test_get_postal_code_does_not_exist() {
-        mockBoService.demand.findByPrimaryKey (1..1) { clazz, map -> samplePostalCodes[map["countryCode"], [map["code"]]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        pcservice.setBusinessObjectService(boService);
-        Assert.assertNull (pcservice.getPostalCode("FOO", "BAR"))
+        mockBoService.demand.findByPrimaryKey(1..1) { clazz, map -> samplePostalCodes[map["countryCode"], [map["code"]]] }
+        injectBusinessObjectServiceIntoCountryService()
+        Assert.assertNull(postalCodeService.getPostalCode("FOO", "BAR"))
         mockBoService.verify(boService)
     }
 
     @Test
     void test_find_all_postal_codes_in_country_null_countryCode() {
-        def boService = mockBoService.proxyDelegateInstance()
-        pcservice.setBusinessObjectService(boService);
-
-        shouldFail(IllegalArgumentException.class) {
-            pcservice.findAllPostalCodesInCountry(null)
+        injectBusinessObjectServiceIntoCountryService()
+        shouldFail() {
+            postalCodeService.findAllPostalCodesInCountry(null)
         }
         mockBoService.verify(boService)
     }
 
     @Test
     void test_find_all_postal_codes_in_country_exists() {
-        mockBoService.demand.findMatching (1..1) { clazz, map -> samplePostalCodesPerCountry[map["countryCode"]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        pcservice.setBusinessObjectService(boService);
-        def values = pcservice.findAllPostalCodesInCountry("US")
-        Assert.assertEquals (samplePostalCodesPerCountry["US"].collect { PostalCodeBo.to(it) }, values)
+        mockBoService.demand.findMatching(1..1) { clazz, map -> samplePostalCodesPerCountry[map["countryCode"]] }
+        injectBusinessObjectServiceIntoCountryService()
+        def values = postalCodeService.findAllPostalCodesInCountry("US")
+        Assert.assertEquals(samplePostalCodesPerCountry["US"].collect { PostalCodeBo.to(it) }, values)
 
         //is this unmodifiable?
-        shouldFail(UnsupportedOperationException.class) {
+        shouldFail() {
             values.add(PostalCodeBo.to(samplePostalCodes[["CA", "604"]]))
         }
         mockBoService.verify(boService)
@@ -128,11 +122,10 @@ class PostalCodeServiceImplTest {
 
     @Test
     void test_find_all_postal_codes_in_country_does_not_exist() {
-        mockBoService.demand.findMatching (1..1) { clazz, map -> samplePostalCodesPerCountry[map["countryCode"]] }
-        def boService = mockBoService.proxyDelegateInstance()
-        pcservice.setBusinessObjectService(boService);
-        def values = pcservice.findAllPostalCodesInCountry("FOO")
-        Assert.assertEquals ([], values)
+        mockBoService.demand.findMatching(1..1) { clazz, map -> samplePostalCodesPerCountry[map["countryCode"]] }
+        injectBusinessObjectServiceIntoCountryService()
+        def values = postalCodeService.findAllPostalCodesInCountry("FOO")
+        Assert.assertEquals([], values)
 
         //is this unmodifiable?
         shouldFail(UnsupportedOperationException.class) {

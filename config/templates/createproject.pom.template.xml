@@ -70,9 +70,15 @@
 	</dependencies>
 	<repositories>
 		<repository>
-			<id>kuali</id>
-			<name>Kuali Repository</name>
-			<url>https://test.kuali.org/maven</url>
-		</repository>
+                        <id>kuali.nexus</id>
+                        <name>Nexus Repository Manager</name>
+                        <url>http://nexus.kuali.org/content/groups/public</url>
+                        <releases>
+                                <enabled>true</enabled>
+                        </releases>
+                        <snapshots>
+                                <enabled>true</enabled>
+                        </snapshots>
+                </repository>
 	</repositories>
 </project>

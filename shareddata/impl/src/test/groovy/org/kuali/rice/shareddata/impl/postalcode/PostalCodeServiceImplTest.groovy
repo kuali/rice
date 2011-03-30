@@ -54,8 +54,12 @@ class PostalCodeServiceImplTest {
     @Before
     void setupBoServiceMockContext() {
         mockBoService = new MockFor(BusinessObjectService)
+    }
+
+    @Before
+    void setupServiceUnderTest() {
         postalCodeServiceImpl = new PostalCodeServiceImpl()
-        postalCodeService = postalCodeServiceImpl //assign Interface type to implementation reference for unit test only
+        postalCodeService = postalCodeServiceImpl
     }
 
     void injectBusinessObjectServiceIntoCountryService() {

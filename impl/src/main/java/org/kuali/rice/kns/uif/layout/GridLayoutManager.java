@@ -86,7 +86,22 @@ public class GridLayoutManager extends LayoutManagerBase {
 	public void performFinalize(View view, Object model, Container container) {
 		super.performFinalize(view, model, container);
 
+		if (matchColumnsToFieldCount) {
+			numberOfColumns = container.getItems().size();
+		}
 	}
+
+	/**
+     * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View, java.lang.Object, org.kuali.rice.kns.uif.container.Container)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Container container) {
+	    super.performApplyModel(view, model, container);
+
+		if (matchColumnsToFieldCount) {
+			numberOfColumns = container.getItems().size();
+		}
+    }
 
 	/**
 	 * @see org.kuali.rice.kns.uif.layout.ContainerAware#getSupportedContainer()

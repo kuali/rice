@@ -47,7 +47,7 @@ public interface BusinessObjectAuthorizationService {
 	public boolean canPartiallyUnmaskField(
 			Person user, Class<?> businessObjectClass, String fieldName, Document document);
 	
-	public <T extends BusinessObject> boolean canCreate(Class<T> boClass, Person user, String docTypeName);
+	public boolean canCreate(Class<?> boClass, Person user, String docTypeName);
 	
 	public boolean canMaintain(Object dataObject, Person user, String docTypeName);
 	

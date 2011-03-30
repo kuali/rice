@@ -116,6 +116,20 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </property>
       </bean>
     </property>
+    <property name="resultsActionsField">
+      <bean parent="GeneratedField">
+        <property name="label" value="Actions" />
+        <property name="renderingMethodToCall" value="getActionUrlsFromField" />
+        <property name="styleClasses" value="field_attribute"/>
+      </bean>
+    </property>
+    <property name="resultsReturnField">
+      <bean parent="GeneratedField">
+        <property name="label" value="Return Value" />
+        <property name="renderingMethodToCall" value="getReturnUrlForResults" />
+        <property name="styleClasses" value="field_attribute"/>
+      </bean>
+    </property>
     <property name="resultsGroup">
       <bean parent="CollectionGroupTableLayout" p:layoutManager.matchColumnsToFieldCount="true">
         <property name="propertyName" value="searchResults"/>

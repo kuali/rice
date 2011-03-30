@@ -861,6 +861,22 @@
             <ref bean="viewDictionaryService" />
         </property>        
 	</bean>
+  
+    <bean id="dataObjectMetaDataService" class="org.kuali.rice.kns.service.impl.DataObjectMetaDataServiceImpl">
+        <property name="dataDictionaryService">
+            <ref bean="dataDictionaryService" />
+        </property>
+        <property name="persistenceStructureService">
+            <ref bean="persistenceStructureService" />
+        </property>
+        <property name="kualiModuleService">
+            <ref bean="kualiModuleService" />
+        </property>
+        <property name="viewDictionaryService">
+            <ref bean="viewDictionaryService" />
+        </property>        
+    </bean>
+
     <bean id="namespaceService" class="org.kuali.rice.kns.service.impl.NamespaceServiceImpl">
     </bean>	
     
@@ -1396,24 +1412,12 @@
   
   <bean id="lookupViewHelperService" class="org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl" 
         scope="prototype" parent="viewHelperService">
-      <property name="persistenceStructureService">
-          <ref bean="persistenceStructureService" />
-      </property>
-      <property name="encryptionService">
-          <ref bean="encryptionService" />
-      </property>
-      <property name="lookupService">
-          <ref bean="lookupService" />
-      </property>
-      <property name="businessObjectDictionaryService">
-          <ref bean="businessObjectDictionaryService" />
-      </property>
-      <property name="businessObjectMetaDataService">
-          <ref bean="businessObjectMetaDataService" />
-      </property>
-      <property name="businessObjectAuthorizationService">
-          <ref bean="businessObjectAuthorizationService" />
-      </property>
+      <property name="persistenceStructureService" ref="persistenceStructureService"/>
+      <property name="lookupService" ref="lookupService"/>
+      <property name="encryptionService" ref="encryptionService"/>
+      <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
+      <property name="dataObjectMetaDataService" ref="dataObjectMetaDataService"/>
+      <property name="businessObjectAuthorizationService" ref="businessObjectAuthorizationService"/>
   </bean>
 
   <bean id="inquiryViewTypeService" class="org.kuali.rice.kns.uif.service.impl.InquiryViewTypeServiceImpl"/>

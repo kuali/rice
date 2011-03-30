@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.uif.control;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Represents a HTML TextArea control. Generally used for values that are very
  * large (such as a description)
@@ -26,7 +28,7 @@ public class TextAreaControl extends ControlBase {
 	
 	private int rows;
 	private int cols;
-	private String watermarkText;
+	private String watermarkText = StringUtils.EMPTY;
 	
 	public TextAreaControl() {
 
@@ -69,6 +71,11 @@ public class TextAreaControl extends ControlBase {
 	 * @param watermarkText the watermarkText to set
 	 */
 	public void setWatermarkText(String watermarkText) {
+		//to avoid users from putting in the same value as the watermark adding some spaces here
+		//see watermark troubleshooting for more info
+		if (StringUtils.isNotEmpty(watermarkText)) {
+			watermarkText = watermarkText + "   ";
+		}
 		this.watermarkText = watermarkText;
 	}
 

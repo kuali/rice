@@ -1075,8 +1075,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 * @param resultTable
 	 * @param bounded
 	 * @return
-	 * 
-	 * @deprecated Use {@link #performLookup(org.kuali.rice.kns.web.spring.form.LookupForm, List, boolean)} instead.
 	 */
 	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
 		Map lookupFormFields = lookupForm.getFieldsForLookup();

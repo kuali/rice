@@ -36,10 +36,10 @@ public class MaintenanceDocumentPresentationControllerBase extends
 
 	protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
-	public boolean canCreate(Class boClass) {
+	public boolean canCreate(Class<?> dataObjectClass) {
 		return getMaintenanceDocumentDictionaryService().getAllowsNewOrCopy(
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
-						boClass));
+						dataObjectClass));
 	}
 
 	public Set<String> getConditionallyHiddenPropertyNames(

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 
 /**
  * Provides metadata such as relationships and key fields for data objects
@@ -98,4 +99,14 @@ public interface DataObjectMetaDataService {
 	public BusinessObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
 			String attributeName, String attributePrefix, boolean keysOnly, boolean supportsLookup,
 			boolean supportInquiry);
+
+	/**
+	 * This method fetches the RelationshipDefinition using the parameters.
+	 * 
+	 * @param dataObjectClass - data object class that contains the attribute
+	 * @param attributeName - property name for the attribute
+	 * @return RelationshipDefinition for the attribute, or null if not found
+	 */
+	public RelationshipDefinition getDictionaryRelationship(Class<?> dataObjectClass, String attributeName);
+
 }

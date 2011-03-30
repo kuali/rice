@@ -169,20 +169,20 @@ public abstract class HtmlData implements Serializable {
 	 * KFSMI-658 This method gets the title text for a link/control
 	 * 
 	 * @param prependText
-	 * @param bo
+	 * @param dataObject
 	 * @param fieldConversions
 	 * @param returnKeys
 	 * @return title text
 	 */
-	public static String getTitleText(String prependText, Object bo, List keys, BusinessObjectRestrictions businessObjectRestrictions) {
-		if (bo == null)
+	public static String getTitleText(String prependText, Object dataObject, List<String> keys, BusinessObjectRestrictions businessObjectRestrictions) {
+		if (dataObject == null)
 			return KNSConstants.EMPTY_STRING;
 
 		Map<String, String> keyValueMap = new HashMap<String, String>();
 		Iterator keysIt = keys.iterator();
 		while (keysIt.hasNext()) {
 			String fieldNm = (String) keysIt.next();
-			Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
+			Object fieldVal = ObjectUtils.getPropertyValue(dataObject, fieldNm);
 			
 			FieldRestriction fieldRestriction = null;
 			if (businessObjectRestrictions != null) {
@@ -199,7 +199,7 @@ public abstract class HtmlData implements Serializable {
 			}
 			keyValueMap.put(fieldNm, fieldVal.toString());
 		}
-		return getTitleText(prependText, bo.getClass(), keyValueMap);
+		return getTitleText(prependText, dataObject.getClass(), keyValueMap);
 	}
 	
 	private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
@@ -210,14 +210,13 @@ public abstract class HtmlData implements Serializable {
 		return businessObjectAuthorizationService;
 	}
 
-	public static String getTitleText(String prependText, Class element, Map<String, String> keyValueMap) {
-		Class elementClass = element;
+	public static String getTitleText(String prependText, Class<?> dataObjectClass, Map<String, String> keyValueMap) {
 		StringBuffer titleText = new StringBuffer(prependText);
 		for (String key : keyValueMap.keySet()) {
 			String fieldVal = keyValueMap.get(key).toString();
 			
 			titleText.append(KNSServiceLocator.getDataDictionaryService()
-					.getAttributeLabel(element, key)
+					.getAttributeLabel(dataObjectClass, key)
 					+ "=" + fieldVal.toString() + " ");
 		}
 		return titleText.toString();

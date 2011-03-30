@@ -16,18 +16,24 @@
 package org.kuali.rice.kns.web.spring.controller;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
+import org.kuali.rice.kns.uif.container.LookupView;
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.service.LookupViewHelperService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -60,24 +66,30 @@ public class LookupController extends UifControllerBase {
     /**
      * @see org.kuali.rice.kns.web.spring.controller.UifControllerBase#checkAuthorization(org.kuali.rice.kns.web.spring.form.UifFormBase, java.lang.String)
      */
-	// TODO delyea - how to execute checkAuthorization method
-	// TODO sgibson - you know this method is called by the UifControllerHandlerInterceptor?
     @Override
 	public void checkAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
         if (!(form instanceof LookupForm)) {
             super.checkAuthorization(form, methodToCall);
         } else {
+        	LookupForm lookupForm = (LookupForm) form;
             try {
-                Class<?> businessObjectClass = Class.forName(((LookupForm) form).getDataObjectClassName());
-                if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
-                    throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
+                Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
+            	Person user = GlobalVariables.getUserSession().getPerson();
+            	// check if creating documents is allowed
+                String documentTypeName = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getDocumentTypeName(dataObjectClass);
+                if ((documentTypeName != null) && !KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(documentTypeName).canInitiate(documentTypeName, user)) {
+                    lookupForm.setSuppressActions( true );
+                }
+            	// check if user is allowed to lookup object
+                if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(dataObjectClass), null)) {
+                    throw new AuthorizationException(user.getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
-                    		businessObjectClass.getSimpleName());
+                    		dataObjectClass.getSimpleName());
                 }
             }
             catch (ClassNotFoundException e) {
-            	LOG.warn("Unable to load BusinessObject class: " + ((LookupForm) form).getDataObjectClassName(), e);
-                super.checkAuthorization(form, methodToCall);
+            	LOG.warn("Unable to load BusinessObject class: " + lookupForm.getDataObjectClassName(), e);
+                super.checkAuthorization(lookupForm, methodToCall);
             }
         }
     }
@@ -96,7 +108,9 @@ public class LookupController extends UifControllerBase {
     	Properties props = new Properties();
     	props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
     	props.put("docFormKey", lookupForm.getFormKey());
-    	props.put("docNum", lookupForm.getDocNum());
+    	if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
+        	props.put("docNum", lookupForm.getDocNum());
+    	}
     	return performRedirect(lookupForm, lookupForm.getBackLocation(), props);
     }
 
@@ -126,8 +140,8 @@ public class LookupController extends UifControllerBase {
         }
 
         // validate search parameters
-        // TODO this is turned off until we have a way to query the view lookup definition
-//        lookupViewHelperService.validateSearchParameters(lookupForm.getCriteriaFields());
+        List<? extends Component> criteriaComponents = ((LookupView) lookupForm.getView()).getCriteriaGroup().getItems();
+        lookupViewHelperService.validateSearchParameters(criteriaComponents, lookupForm.getCriteriaFields());
 
         Collection<?> displayList = lookupViewHelperService.performSearch(lookupForm.getCriteriaFieldsForLookup(), true);
 

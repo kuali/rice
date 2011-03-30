@@ -18,7 +18,9 @@ package org.kuali.rice.kns.uif.service;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.field.GeneratedField;
 
 /**
@@ -47,9 +49,10 @@ public interface LookupViewHelperService extends ViewHelperService {
 	/**
 	 * Validates the values filled in as search criteria, also checks for required field values.
 	 * 
+	 * @param criteriaComponents - Components that are a part of the criteria for the lookup
 	 * @param fieldValues - Map of property/value pairs
 	 */
-	public void validateSearchParameters(Map<String, String> fieldValues);
+	public void validateSearchParameters(List<? extends Component> criteriaComponents, Map<String, String> fieldValues);
 
 	/**
 	 * Gets the readOnlyFieldsList attribute.
@@ -65,9 +68,31 @@ public interface LookupViewHelperService extends ViewHelperService {
 	 */
 	public void setReadOnlyFieldsList(List<String> readOnlyFieldsList);
 
-	public void setDataObjectClass(Class dataObjectClass);
+	public void setDataObjectClass(Class<?> dataObjectClass);
 
 	public void setFieldConversions(Map<String, String> fieldConversions);
+
+	public void setDocNum(String docNum);
+
+    public boolean isHideReturnLink();
+
+    public void setHideReturnLink(boolean hideReturnLink);
+
+    public void setSuppressActions(boolean suppressActions);
+
+    public boolean isSuppressActions();
+
+    public void setShowMaintenanceLinks(boolean showMaintenanceLinks);
+
+   	public boolean isShowMaintenanceLinks();
+
+    public String getReturnLocation();
+
+	public String getDocFormKey();
+
+	public boolean isAtLeastOneRowReturnable();
+
+	public boolean isAtLeastOneRowHasActions();
 
     /**
      * Builds the HTML string text needed to create a new document for the class represented by this lookup view. By default this includes verifying that the current user has permission to 
@@ -87,25 +112,34 @@ public interface LookupViewHelperService extends ViewHelperService {
 	 */
 	public String getActionUrlsFromField(GeneratedField generatedField);
 
-    /**
-     * Initializes the lookup with the given Map of parameters.
-     *
-     * @param parameters
-     */
-    public void setParameters(Map parameters);
+	/**
+	 * Build the HTML string text needed to return the object represented by the current row in the list to the source object that called the Lookup.
+	 * 
+	 * @param generatedField
+	 * @return
+	 */
+	public String getReturnUrlForResults(GeneratedField generatedField);
 
-    /**
-     * @return Returns the parameters passed to this lookup
-     */
-    public Map getParameters();
+	/**
+	 * @return Set of property names that should be set as read only based on the current search
+	 *         contents
+	 */
+    public Set<String> getConditionallyReadOnlyPropertyNames();
+
+	/**
+	 * @return Set of property names that should be set as required based on the current search
+	 *         contents
+	 */
+	public Set<String> getConditionallyRequiredPropertyNames();
+
+	/**
+	 * @return Set of property names that should be set as hidden based on the current search
+	 *         contents
+	 */
+	public Set<String> getConditionallyHiddenPropertyNames();
 
 /*************************************************************************************************/
 
-//    /**
-//     * @return String url for the location to return to after the lookup
-//     */
-//    public String getReturnLocation();
-//
 //    /**
 //     * Determines if there should be more search fields rendered based on already entered search criteria.
 //     *
@@ -113,16 +147,6 @@ public interface LookupViewHelperService extends ViewHelperService {
 //     * @return boolean
 //     */
 //    public boolean checkForAdditionalFields(Map fieldValues);
-//
-//    /**
-//     * Builds the return value url.
-//     *
-//     * @param businessObject - Instance of a business object containing the return values
-//     * @param fieldConversions - Map of conversions mapping bo names to caller field names.
-//     * @param lookupImpl - Current lookup impl name
-//     * @return String url called when selecting a row from the result set
-//     */
-//    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, BusinessObjectRestrictions businessObjectRestrictions);
 //
 //    /**
 //     * Returns whether this search was performed using the values of the primary keys only
@@ -161,11 +185,5 @@ public interface LookupViewHelperService extends ViewHelperService {
 //    public boolean performCustomAction(boolean ignoreErrors);
 //
 //    public void applyFieldAuthorizationsFromNestedLookups(Field field);
-//    
-//    /**
-//     * Performs conditional logic (based on current search values or other parameters) to
-//     * override field hidden, read-only, and required attributes previously set.
-//     */
-//    public void applyConditionalLogicForFieldDisplay();
 
 }

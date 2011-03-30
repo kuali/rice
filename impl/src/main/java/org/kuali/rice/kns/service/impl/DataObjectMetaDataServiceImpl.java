@@ -228,7 +228,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         return relationship;
     }
 
-    protected RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName) {
+    public RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName) {
         DataDictionaryEntry entryBase = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(
                 c.getName());
         if (entryBase == null) {

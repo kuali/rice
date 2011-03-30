@@ -17,11 +17,17 @@ package org.kuali.rice.kns.uif.container;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.control.HiddenControl;
 import org.kuali.rice.kns.uif.core.Component;
+import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.field.Field;
+import org.kuali.rice.kns.uif.service.LookupViewHelperService;
+import org.kuali.rice.kns.uif.util.LookupInquiryUtils;
 
 /**
  * TODO delyea: Fill in javadocs here
@@ -35,6 +41,8 @@ public class LookupView extends FormView {
 
 	private Group criteriaGroup;
 	private CollectionGroup resultsGroup;
+	private Field resultsActionsField;
+	private Field resultsReturnField;
 	private Group formGroup;
 
 	private List<Component> criteriaFields;
@@ -86,6 +94,104 @@ public class LookupView extends FormView {
 	}
 
 	/**
+     * @see org.kuali.rice.kns.uif.container.ContainerBase#performApplyModel(org.kuali.rice.kns.uif.container.View, java.lang.Object)
+     */
+    @Override
+    public void performApplyModel(View view, Object model) {
+	    if (isRenderActionsFields()) {
+	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsActionsField());
+	    }
+	    if (isRenderReturnFields()) {
+	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsReturnField());
+	    }
+	    applyConditionalLogicForFieldDisplay();
+	    super.performApplyModel(view, model);
+    }
+
+	public void applyConditionalLogicForFieldDisplay() {
+	    LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) getViewHelperService();
+		Set<String> readOnlyFields = lookupViewHelperService.getConditionallyReadOnlyPropertyNames();
+		Set<String> requiredFields = lookupViewHelperService.getConditionallyRequiredPropertyNames();
+		Set<String> hiddenFields = lookupViewHelperService.getConditionallyHiddenPropertyNames();
+		if ( (readOnlyFields != null && !readOnlyFields.isEmpty()) ||
+			 (requiredFields != null && !requiredFields.isEmpty()) ||
+			 (hiddenFields != null && !hiddenFields.isEmpty()) 
+			) {
+			for (Field field : getResultsGroup().getItems()) {
+				if (AttributeField.class.isAssignableFrom(field.getClass())) {
+					AttributeField attributeField = (AttributeField) field;
+					if (readOnlyFields != null && readOnlyFields.contains(attributeField.getBindingInfo().getBindingName())) {
+						attributeField.setReadOnly(true);
+					}
+					if (requiredFields != null && requiredFields.contains(attributeField.getBindingInfo().getBindingName())) {
+						attributeField.setRequired(Boolean.TRUE);
+					}
+					if (hiddenFields != null && hiddenFields.contains(attributeField.getBindingInfo().getBindingName())) {
+						attributeField.setControl(LookupInquiryUtils.generateCustomLookupControlFromExisting(HiddenControl.class, null));
+					}
+				}
+	        }
+		}
+	}
+
+	/**
+     * @see org.kuali.rice.kns.uif.container.View#performFinalize(org.kuali.rice.kns.uif.container.View, java.lang.Object)
+     */
+	@SuppressWarnings("unchecked")
+	@Override
+    public void performFinalize(View view, Object model, Component parent) {
+	    super.performFinalize(view, model, parent);
+//	    if (isRenderActionsFields()) {
+//	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsActionsField());
+//	    }
+//	    if (isRenderReturnFields()) {
+//	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsReturnField());
+//	    }
+    }
+
+	public boolean isRenderActionsFields(){
+		/* if - 
+		 *   KualiForm.actionUrlsExist = true
+		 *   KualiForm.suppressActions != true
+		 *   !KualiForm.multipleValues
+		 *   KualiForm.showMaintenanceLinks = true
+		 *   
+		 *  if - 
+		 *   row.actionsUrls != ''
+		 */
+		LookupViewHelperService lookupHelperService = (LookupViewHelperService) getViewHelperService();
+		return ( (lookupHelperService.isAtLeastOneRowHasActions()) &&
+				 (!lookupHelperService.isSuppressActions()) &&
+				 (lookupHelperService.isShowMaintenanceLinks())
+				);
+    }
+	
+	public boolean isRenderReturnFields(){
+		/* if - 
+		 *   KualiForm.formKey != ''
+		 *   KualiForm.hideReturnLink = false
+		 *   !KualiForm.multipleValues   
+		 *   KualiForm.backLocation is not empty
+		 *   
+		 *  if -
+		 *   row.rowReturnable
+		 */
+		LookupViewHelperService lookupHelperService = (LookupViewHelperService) getViewHelperService();
+		return ( (StringUtils.isNotBlank(lookupHelperService.getDocFormKey())) &&
+				 (StringUtils.isNotBlank(lookupHelperService.getReturnLocation())) &&
+				 (!lookupHelperService.isHideReturnLink())
+				);
+		/* if - 
+		 *   KualiForm.formKey != ''   ----   @see LookupViewHelperService#getDocFormKey()
+		 *   KualiForm.hideReturnLink = false   ----   
+		 *   !KualiForm.multipleValues   ----   
+		 *   KualiForm.backLocation is not empty   ----   
+		 *   
+		 *  if -
+		 *   row.rowReturnable   ----   @see LookupViewHelperService#getActionUrlsFromField
+		 */
+	}
+	/**
 	 * Class name for the object the lookup applies to
 	 * 
 	 * <p>
@@ -109,6 +215,34 @@ public class LookupView extends FormView {
 	public void setDataObjectClassName(Class<?> dataObjectClassName) {
 		this.dataObjectClassName = dataObjectClassName;
 	}
+
+	/**
+     * @return the resultsActionsField
+     */
+    public Field getResultsActionsField() {
+    	return this.resultsActionsField;
+    }
+
+	/**
+     * @param resultsActionsField the resultsActionsField to set
+     */
+    public void setResultsActionsField(Field resultsActionsField) {
+    	this.resultsActionsField = resultsActionsField;
+    }
+
+	/**
+     * @return the resultsReturnField
+     */
+    public Field getResultsReturnField() {
+    	return this.resultsReturnField;
+    }
+
+	/**
+     * @param resultsReturnField the resultsReturnField to set
+     */
+    public void setResultsReturnField(Field resultsReturnField) {
+    	this.resultsReturnField = resultsReturnField;
+    }
 
 	public Group getCriteriaGroup() {
 		return this.criteriaGroup;

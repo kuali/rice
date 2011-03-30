@@ -23,7 +23,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 public interface MaintenanceDocumentPresentationController extends
 		DocumentPresentationController,
 		InquiryOrMaintenanceDocumentPresentationController {
-	public boolean canCreate(Class boClass);
+	public boolean canCreate(Class<?> dataObjectClass);
 
 	public Set<String> getConditionallyReadOnlyPropertyNames(
 			MaintenanceDocument document);

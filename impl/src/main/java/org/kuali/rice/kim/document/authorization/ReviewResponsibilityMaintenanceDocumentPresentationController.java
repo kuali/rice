@@ -33,7 +33,7 @@ public class ReviewResponsibilityMaintenanceDocumentPresentationController exten
 	 * @see org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase#canCreate(java.lang.Class)
 	 */
 	@Override
-	public boolean canCreate(Class boClass) {
+	public boolean canCreate(Class<?> boClass) {
 		return super.canCreate( ReviewResponsibility.class );
 	}
 	

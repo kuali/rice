@@ -114,7 +114,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	public void performApplyModel(View view, Object model, Container container) {
 		super.performApplyModel(view, model, container);
 
-		numberOfDataColumns = getNumberOfColumns();
+		setNumberOfDataColumns(getNumberOfColumns());
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		CollectionGroup collectionGroup = (CollectionGroup) container;
 
-		int totalColumns = numberOfDataColumns;
+		int totalColumns = getNumberOfDataColumns();
 		if (renderSequenceField) {
 			totalColumns++;
 		}
@@ -219,7 +219,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			cellPosition += lineField.getColSpan();
 
 			// action field should be in last column
-			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()
+			if ((cellPosition == getNumberOfDataColumns()) && collectionGroup.isRenderLineActions()
 					&& !collectionGroup.isReadOnly()) {
 				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
 
@@ -280,7 +280,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			addHeaderField(field, cellPosition);
 
 			// add action header as last column in row
-			if ((cellPosition == numberOfDataColumns) && collectionGroup.isRenderLineActions()
+			if ((cellPosition == getNumberOfDataColumns()) && collectionGroup.isRenderLineActions()
 					&& !collectionGroup.isReadOnly()) {
 				actionFieldPrototype.setLabelFieldRendered(true);
 				actionFieldPrototype.setRowSpan(rowCount);
@@ -340,7 +340,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
 		if (cellCount != 0) {
-			rowCount = cellCount / numberOfDataColumns;
+			rowCount = cellCount / getNumberOfDataColumns();
 		}
 
 		return rowCount;
@@ -615,5 +615,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	public void setTableTools(TableTools tableTools) {
 		this.tableTools = tableTools;
 	}
+
+	/**
+     * @return the numberOfDataColumns
+     */
+    public int getNumberOfDataColumns() {
+		if (isMatchColumnsToFieldCount()) {
+			return getNumberOfColumns();
+		}
+    	return this.numberOfDataColumns;
+    }
+
+	/**
+     * @param numberOfDataColumns the numberOfDataColumns to set
+     */
+    public void setNumberOfDataColumns(int numberOfDataColumns) {
+    	this.numberOfDataColumns = numberOfDataColumns;
+    }
 
 }

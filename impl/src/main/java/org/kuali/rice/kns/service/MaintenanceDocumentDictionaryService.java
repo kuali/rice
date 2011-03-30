@@ -63,7 +63,7 @@ public interface MaintenanceDocumentDictionaryService {
      * @param businessObjectClass
      * @return The document type name for the class as a String.
      */
-    public String getDocumentTypeName(Class businessObjectClass);
+    public String getDocumentTypeName(Class<?> businessObjectClass);
 
     /**
      * The collection of ReferenceDefinition objects defined as DefaultExistenceChecks for the MaintenanceDocument.

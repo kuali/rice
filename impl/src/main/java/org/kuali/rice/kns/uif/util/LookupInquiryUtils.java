@@ -117,7 +117,7 @@ public class LookupInquiryUtils {
 		return newControl;
 	}
 
-	protected static Control generateCustomLookupControlFromExisting(Class<? extends Control> controlClass,
+	public static Control generateCustomLookupControlFromExisting(Class<? extends Control> controlClass,
 			Control existingControl) {
 		try {
 			Control newControl = controlClass.newInstance();

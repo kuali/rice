@@ -124,7 +124,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     /**
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getDocumentTypeName(java.lang.Class)
      */
-    public String getDocumentTypeName(Class businessObjectClass) {
+    public String getDocumentTypeName(Class<?> businessObjectClass) {
         String documentTypeName = null;
 
         MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);

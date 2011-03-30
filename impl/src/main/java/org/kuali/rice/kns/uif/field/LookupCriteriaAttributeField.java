@@ -30,6 +30,22 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  */
 public class LookupCriteriaAttributeField extends AttributeField {
 
+	protected boolean treatWildcardsAndOperatorsAsLiteral = false;
+
+	/**
+     * @return the treatWildcardsAndOperatorsAsLiteral
+     */
+    public boolean isTreatWildcardsAndOperatorsAsLiteral() {
+    	return this.treatWildcardsAndOperatorsAsLiteral;
+    }
+
+	/**
+     * @param treatWildcardsAndOperatorsAsLiteral the treatWildcardsAndOperatorsAsLiteral to set
+     */
+    public void setTreatWildcardsAndOperatorsAsLiteral(boolean treatWildcardsAndOperatorsAsLiteral) {
+    	this.treatWildcardsAndOperatorsAsLiteral = treatWildcardsAndOperatorsAsLiteral;
+    }
+
 	/**
 	 * Defaults the properties of the <code>AttributeField</code> to the corresponding properties of its <code>AttributeDefinition</code> retrieved from the dictionary (if such an entry exists). If
 	 * the field already contains a value for a property, the definitions value is not used.

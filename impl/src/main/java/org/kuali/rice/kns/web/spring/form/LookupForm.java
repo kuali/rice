@@ -46,6 +46,8 @@ public class LookupForm extends UifFormBase {
 	private Map<String, String> criteriaFieldsForLookup;
 	private String conversionFields;
 	private Map<String, String> fieldConversions;
+	private boolean suppressActions = false;
+    private boolean hideReturnLink = false;
 	
 	private Collection<?> searchResults;
 
@@ -110,6 +112,34 @@ public class LookupForm extends UifFormBase {
     	this.searchResults = searchResults;
     }
 
+    /**
+     * @param suppressActions The suppressActions to set.
+     */
+    public void setSuppressActions(boolean suppressActions) {
+        this.suppressActions = suppressActions;
+    }
+
+    /**
+     * @return Returns the suppressActions.
+     */
+    public boolean isSuppressActions() {
+        return suppressActions;
+    }
+
+    /**
+     * @return Returns the hideReturnLink.
+     */
+    public boolean isHideReturnLink() {
+        return hideReturnLink;
+    }
+
+    /**
+     * @param hideReturnLink The hideReturnLink to set.
+     */
+    public void setHideReturnLink(boolean hideReturnLink) {
+        this.hideReturnLink = hideReturnLink;
+    }
+
 	protected LookupViewHelperService getLookupViewHelperServiceFromModel(View view) {
         ViewHelperService viewHelperService = view.getViewHelperService();
         if (viewHelperService == null) {
@@ -153,7 +183,6 @@ public class LookupForm extends UifFormBase {
 			 * info)
 			 */
 //			localLookupable.setParameters(request.getParameterMap());
-			localLookupViewHelperService.setParameters(request.getParameterMap());
 
 			// check the doc form key is empty before setting so we don't
 			// override a restored lookup form
@@ -166,6 +195,25 @@ public class LookupForm extends UifFormBase {
 			if (request.getParameter(KNSConstants.DOC_NUM) != null) {
 				setDocNum(request.getParameter(KNSConstants.DOC_NUM));
 			}
+
+			// this used to be in the Form as a property but has been moved for KRAD
+			Boolean showMaintenanceLinks = Boolean.valueOf(request.getParameter("showMaintenanceLinks"));
+            // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
+            if (!showMaintenanceLinks.booleanValue()) {
+            	// TODO delyea - is this the best way to decide whether to display the maintenance actions?
+            	if (StringUtils.contains(getBackLocation(), "/"+KNSConstants.PORTAL_ACTION) 
+            			|| StringUtils.contains(getBackLocation(), "/index.html")) {
+            		showMaintenanceLinks = Boolean.TRUE;
+            	}
+            }
+            localLookupViewHelperService.setShowMaintenanceLinks(showMaintenanceLinks.booleanValue());
+            
+			// this used to be in the Form as a property but has been moved for KRAD
+//			String hideReturnLink = request.getParameter("hideReturnLink");
+//			Boolean hideReturnLinkValue = processBooleanParameter(hideReturnLink);
+//			if (hideReturnLinkValue != null) {
+//				localLookupViewHelperService.setHideReturnLink(hideReturnLinkValue.booleanValue());
+//			}
 
 			if (request.getParameter("returnLocation") != null) {
 				setBackLocation(request.getParameter("returnLocation"));
@@ -192,7 +240,7 @@ public class LookupForm extends UifFormBase {
 			}
 
 			// init lookupable with bo class
-			Class boClass = Class.forName(getDataObjectClassName());
+			Class<?> boClass = Class.forName(getDataObjectClassName());
 			localLookupViewHelperService.setDataObjectClass(boClass);
 			Map<String, String> fieldValues = new HashMap<String, String>();
 			Map<String, String> formFields = getCriteriaFields();
@@ -263,6 +311,9 @@ public class LookupForm extends UifFormBase {
 
 			setFieldConversions(LookupUtils.translateFieldConversions(this.conversionFields));
 			localLookupViewHelperService.setFieldConversions(getFieldConversions());
+			localLookupViewHelperService.setDocNum(this.getDocNum());
+			localLookupViewHelperService.setSuppressActions(isSuppressActions());
+			localLookupViewHelperService.setHideReturnLink(isHideReturnLink());
 //			setLookupViewHelperService(localLookupViewHelperService);
 			setCriteriaFieldsForLookup(fieldValues);
 
@@ -281,12 +332,22 @@ public class LookupForm extends UifFormBase {
 		}
 	}
 
+	protected Boolean processBooleanParameter(String parameterValue) {
+		if (StringUtils.isNotBlank(parameterValue)) {
+			if ("YES".equals(parameterValue.toUpperCase())) {
+				return Boolean.TRUE;
+			}
+			return new Boolean(parameterValue);
+		}
+		return null;
+	}
+
 	/**
 	 * BELOW COPIED FROM LookupForm
 	 */
 
     private String readOnlyFields;
-    private List readOnlyFieldsList;
+    private List<String> readOnlyFieldsList;
 
 	public String getReadOnlyFields() {
     	return this.readOnlyFields;
@@ -296,11 +357,11 @@ public class LookupForm extends UifFormBase {
     	this.readOnlyFields = readOnlyFields;
     }
 
-	public List getReadOnlyFieldsList() {
+	public List<String> getReadOnlyFieldsList() {
     	return this.readOnlyFieldsList;
     }
 
-	public void setReadOnlyFieldsList(List readOnlyFieldsList) {
+	public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
     	this.readOnlyFieldsList = readOnlyFieldsList;
     }
 

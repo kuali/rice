@@ -108,10 +108,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager.numberOfColumns" value="4"/>
       <property name="items">
         <list>
-          <bean parent="AttributeField_Form" p:propertyName="field5" p:readOnly="true" p:label="Field 5" p:width="auto" p:maxLength="4">
+          <bean parent="AttributeField_Form" p:propertyName="field5" p:readOnly="true" p:label="Field 5" p:width="auto" p:maxLength="4" p:conditionalReadOnly="">
             <property name="control">
               <bean parent="TextControl" p:size="5"/>
-            </property>
+            </property>            
             <property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
             <property name="fieldInquiry.inquiryParameters">
               <map>
@@ -119,7 +119,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </map>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field6" p:label="Field 6" p:required="true" p:width="auto" p:maxLength="25">
+          <bean parent="AttributeField_Form" p:propertyName="field6" p:label="Field 6" p:readOnly="true" p:required="true" p:width="auto" p:maxLength="25">
             <property name="control">
               <bean parent="TextControl" p:size="26"/>
             </property>

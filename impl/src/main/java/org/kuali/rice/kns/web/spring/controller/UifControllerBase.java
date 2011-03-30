@@ -283,12 +283,14 @@ public abstract class UifControllerBase {
 
 		// get form values for the lookup parameter fields
 		String lookupParameterString = (String) lookupParameters.get(UifParameters.LOOKUP_PARAMETERS);
-		Map<String, String> lookupParameterFields = WebUtils.getMapFromParameterString(lookupParameterString);
-		for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
-			String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
-					lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
-			if (StringUtils.isNotBlank(lookupParameterValue)) {
-				lookupParameters.put(lookupParameter.getValue(), lookupParameterValue);
+		if (lookupParameterString != null) {
+			Map<String, String> lookupParameterFields = WebUtils.getMapFromParameterString(lookupParameterString);
+			for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
+				String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
+						lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
+				if (StringUtils.isNotBlank(lookupParameterValue)) {
+					lookupParameters.put(lookupParameter.getValue(), lookupParameterValue);
+				}
 			}
 		}
 

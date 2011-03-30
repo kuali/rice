@@ -362,8 +362,9 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
             		// Add the returned URL to the FancyBox href setting
             		options['href'] = data;
         			jq.fancybox(options);
+        			jq.watermark.showAll();
         		}
-        	});
+        	});            
         });
     });		
 }

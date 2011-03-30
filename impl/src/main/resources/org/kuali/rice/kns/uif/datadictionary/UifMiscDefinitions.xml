@@ -115,7 +115,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/quickFinder.jsp"/>
       <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/spring/lookup"/>
       <property name="quickfinderActionField">
-        <bean parent="ActionField" p:methodToCall="navigateToLookup" p:actionImageField-ref="QuickFinderImageField">
+        <bean parent="ActionField" p:methodToCall="performLookup" p:actionImageField-ref="QuickFinderImageField">
         	<property name="lightBoxLookup">
         		<ref bean="LightBoxLookup"/>
       		</property>

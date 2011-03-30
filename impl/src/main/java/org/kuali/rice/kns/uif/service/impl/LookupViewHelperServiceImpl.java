@@ -1353,7 +1353,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
      * @return the dataObjectMetaDataService
      */
     public DataObjectMetaDataService getDataObjectMetaDataService() {
-    	return this.dataObjectMetaDataService;
+		return dataObjectMetaDataService != null ? dataObjectMetaDataService : KNSServiceLocator.getDataObjectMetaDataService();
     }
 
 	/**

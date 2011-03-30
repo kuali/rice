@@ -172,6 +172,12 @@ public class KNSServiceLocator {
 	return (BusinessObjectMetaDataService) getService(BUSINESS_OBJECT_METADATA_SERVICE);
     }
 
+    public static final String DATA_OBJECT_METADATA_SERVICE = "dataObjectMetaDataService";
+
+    public static DataObjectMetaDataService getDataObjectMetaDataService() {
+	return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
+    }
+
     public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
 
     public static TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {

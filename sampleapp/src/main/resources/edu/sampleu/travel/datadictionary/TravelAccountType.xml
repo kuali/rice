@@ -45,6 +45,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Code"/>
     <property name="maxLength" value="3"/>
+    <property name="constraint" value="Must be 3 digits"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
@@ -52,6 +53,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="3"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="3"/>
+    </property>    
     <property name="summary" value="Travel Account Type Code"/>
     <property name="name" value="accountTypeCode"/>
     <property name="label" value="Travel Account Type Code"/>
@@ -63,6 +67,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="maxLength" value="30"/>
+    <property name="constraint" value="Must be no more than 30 digits"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
@@ -70,6 +75,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="30"/>
+    </property>    
     <property name="summary" value="Account Type Name"/>
     <property name="name" value="name"/>
     <property name="label" value="Account Type Name"/>
@@ -81,6 +89,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Account Type"/>
     <property name="maxLength" value="30"/>
+    <property name="constraint" value="Must be no more than 30 digits"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
@@ -88,6 +97,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="30"/>
+    </property>    
     <property name="summary" value="Account Type"/>
     <property name="name" value="codeAndDescription"/>
     <property name="label" value="Account Type"/>

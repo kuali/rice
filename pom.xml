@@ -16,494 +16,508 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.kuali.rice</groupId>
-	<artifactId>rice</artifactId>
-	<packaging>pom</packaging>
-	<name>Kuali Rice</name>
-	<version>2.0.0-SNAPSHOT</version>
-	<description>The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows both Kuali and non-Kuali applications to be built in an agile fashion, such that developers will be able to react to end-user business requirements in an efficient and productive manner, so that they can produce high quality business applications.</description>
-	<url>http://rice.kuali.org</url>
-	<inceptionYear>2007</inceptionYear>
-	<licenses>
-		<license>
-			<name>The Kuali Foundation Educational Community License 2.0</name>
-			<url>http://www.opensource.org/licenses/ecl2.txt</url>
-			<distribution>manual</distribution>
-		</license>
-	</licenses>
-	<organization>
-		<name>The Kuali Foundation</name>
-		<url>http://kuali.org/</url>
-	</organization>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.skip.packaging>false</maven.skip.packaging>
-		<maven.failsafe.forkmode>once</maven.failsafe.forkmode>
-		<maven.failsafe.forkedProcessTimeoutInSeconds>7200</maven.failsafe.forkedProcessTimeoutInSeconds>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.kuali.rice</groupId>
+    <artifactId>rice</artifactId>
+    <packaging>pom</packaging>
+    <name>Kuali Rice</name>
+    <version>2.0.0-SNAPSHOT</version>
+    <description>The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
+        both Kuali and non-Kuali applications to be built in an agile fashion, such that developers will be able to
+        react to end-user business requirements in an efficient and productive manner, so that they can produce high
+        quality business applications.
+    </description>
+    <url>http://rice.kuali.org</url>
+    <inceptionYear>2007</inceptionYear>
+    <licenses>
+        <license>
+            <name>The Kuali Foundation Educational Community License 2.0</name>
+            <url>http://www.opensource.org/licenses/ecl2.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+    <organization>
+        <name>The Kuali Foundation</name>
+        <url>http://kuali.org/</url>
+    </organization>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.skip.packaging>false</maven.skip.packaging>
+        <maven.failsafe.forkmode>once</maven.failsafe.forkmode>
+        <maven.failsafe.forkedProcessTimeoutInSeconds>7200</maven.failsafe.forkedProcessTimeoutInSeconds>
         <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
         <maven.failsafe.skip>true</maven.failsafe.skip>
         <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
 
         <!-- must provide an explicit pattern - surefire default does not work
 			b/c of non-unit test classes that are included in default expression -->
-		<maven.surefire.includes>**/*Test.java</maven.surefire.includes>
+        <maven.surefire.includes>**/*Test.java</maven.surefire.includes>
         <maven.surefire.skip>false</maven.surefire.skip>
 
-		<!-- project dependencies -->
-		<!-- no longer maintained - should use spring security instead -->
-		<acegi.version>1.0.7</acegi.version>
-		<antlr.version>2.7.7</antlr.version>
-		<aopalliance.version>1.0</aopalliance.version>
-		<asm.version>3.2</asm.version>
-		<bcprov.version>1.45</bcprov.version>
-		<!-- the 3.x codebase is completely different - switching will require rewriting much code -->
-		<bsf.version>2.4.0</bsf.version>
-		<casclient.version>2.1.1</casclient.version>
-		<cas-client-core.version>3.2.0</cas-client-core.version>
-		<cglib.version>2.2</cglib.version>
-		<commons-beanutils.version>1.8.3</commons-beanutils.version>
-		<commons-codec.version>1.4</commons-codec.version>
-		<commons-collections.version>3.2.1</commons-collections.version>
-		<commons-dbcp.version>1.4</commons-dbcp.version>
-		<commons-fileupload.version>1.2.2</commons-fileupload.version>
-		<commons-httpclient.version>3.1</commons-httpclient.version>
-		<commons-io.version>2.0.1</commons-io.version>
-		<commons-lang.version>2.6</commons-lang.version>
-		<commons-pool.version>1.5.5</commons-pool.version>
-		<commons-validator.version>1.3.1</commons-validator.version>
-		<connector-api.version>1.5</connector-api.version>
-		<cxf.version>2.3.3</cxf.version>
-		<db-ojb.version>1.0.4-patch6</db-ojb.version>
-		<displaytag.version>1.2</displaytag.version>
-		<dom4j.version>1.6.1</dom4j.version>
-		<dwr.version>3.0.M1</dwr.version>
-		<groovy.version>1.7.10</groovy.version>
-		<hibernate.version>3.6.2.Final</hibernate.version>
-		<mail.version>1.4.4</mail.version>
-		<javassist.version>3.14.0-GA</javassist.version>
-		<jaxen.version>1.1.1</jaxen.version>
-		<!-- 1.1.1 is not in maven central repo -->
-		<jdom.version>1.1</jdom.version>
-		<jetty.version>7.3.1.v20110307</jetty.version>
-		<jotm.version>2.1.9</jotm.version>
-		<jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
-		<jsp-api.version>2.1</jsp-api.version>
-		<jsr311-api.version>1.1.1</jsr311-api.version>
-		<jstl.version>1.2</jstl.version>
-		<jta.version>1.1</jta.version>
-		<junit.version>4.8.2</junit.version>
-		<log4j.version>1.2.16</log4j.version>
-		<mysql-connector-java.version>5.1.15</mysql-connector-java.version>
-		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
-		<oscache.version>2.4.1</oscache.version>
-		<persistence.version>1.0.0.Final</persistence.version>
-		<quartz.version>1.8.4</quartz.version>
-		<reflections.version>0.9.5-RC2</reflections.version>
-		<serializer.version>2.7.1</serializer.version>
-		<servlet-api.version>2.5</servlet-api.version>
-		<slf4j.version>1.6.1</slf4j.version>
-		<spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-		<spring.version>3.0.5.RELEASE</spring.version>
-		<struts.version>1.3.10</struts.version>
-		<subethasmtp.version>3.1.4</subethasmtp.version>
-		<xapool.version>1.5.0-patch3</xapool.version>
-		<!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->
-		<xercesImpl.version>2.9.1</xercesImpl.version>
+        <!-- project dependencies -->
+        <!-- no longer maintained - should use spring security instead -->
+        <acegi.version>1.0.7</acegi.version>
+        <antlr.version>2.7.7</antlr.version>
+        <aopalliance.version>1.0</aopalliance.version>
+        <asm.version>3.2</asm.version>
+        <bcprov.version>1.45</bcprov.version>
+        <!-- the 3.x codebase is completely different - switching will require rewriting much code -->
+        <bsf.version>2.4.0</bsf.version>
+        <casclient.version>2.1.1</casclient.version>
+        <cas-client-core.version>3.2.0</cas-client-core.version>
+        <cglib.version>2.2</cglib.version>
+        <commons-beanutils.version>1.8.3</commons-beanutils.version>
+        <commons-codec.version>1.4</commons-codec.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-dbcp.version>1.4</commons-dbcp.version>
+        <commons-fileupload.version>1.2.2</commons-fileupload.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <commons-io.version>2.0.1</commons-io.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <commons-pool.version>1.5.5</commons-pool.version>
+        <commons-validator.version>1.3.1</commons-validator.version>
+        <connector-api.version>1.5</connector-api.version>
+        <cxf.version>2.3.3</cxf.version>
+        <db-ojb.version>1.0.4-patch6</db-ojb.version>
+        <displaytag.version>1.2</displaytag.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <dwr.version>3.0.M1</dwr.version>
+        <groovy.version>1.7.10</groovy.version>
+        <hibernate.version>3.6.2.Final</hibernate.version>
+        <mail.version>1.4.4</mail.version>
+        <javassist.version>3.14.0-GA</javassist.version>
+        <jaxen.version>1.1.1</jaxen.version>
+        <!-- 1.1.1 is not in maven central repo -->
+        <jdom.version>1.1</jdom.version>
+        <jetty.version>7.3.1.v20110307</jetty.version>
+        <jotm.version>2.1.9</jotm.version>
+        <jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
+        <jsp-api.version>2.1</jsp-api.version>
+        <jsr311-api.version>1.1.1</jsr311-api.version>
+        <jstl.version>1.2</jstl.version>
+        <jta.version>1.1</jta.version>
+        <junit.version>4.8.2</junit.version>
+        <log4j.version>1.2.16</log4j.version>
+        <mysql-connector-java.version>5.1.15</mysql-connector-java.version>
+        <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
+        <oscache.version>2.4.1</oscache.version>
+        <persistence.version>1.0.0.Final</persistence.version>
+        <quartz.version>1.8.4</quartz.version>
+        <reflections.version>0.9.5-RC2</reflections.version>
+        <serializer.version>2.7.1</serializer.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <slf4j.version>1.6.1</slf4j.version>
+        <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
+        <spring.version>3.0.5.RELEASE</spring.version>
+        <struts.version>1.3.10</struts.version>
+        <subethasmtp.version>3.1.4</subethasmtp.version>
+        <xapool.version>1.5.0-patch3</xapool.version>
+        <!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->
+        <xercesImpl.version>2.9.1</xercesImpl.version>
         <xmlunit.version>1.3</xmlunit.version>
-		<xstream.version>1.3.1</xstream.version>
-		<wss4j.version>1.5.10</wss4j.version>
+        <xstream.version>1.3.1</xstream.version>
+        <wss4j.version>1.5.10</wss4j.version>
 
-		<!-- database drivers location -->
-		<jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
-		<mysql-connector-java.jar.location>${jdbc.drivers.location}/mysql-connector-java-${mysql-connector-java.version}.jar</mysql-connector-java.jar.location>
-		<ojdbc14.jar.location>${jdbc.drivers.location}/ojdbc14-${ojdbc14.version}.jar</ojdbc14.jar.location>
+        <!-- database drivers location -->
+        <jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
+        <mysql-connector-java.jar.location>
+            ${jdbc.drivers.location}/mysql-connector-java-${mysql-connector-java.version}.jar
+        </mysql-connector-java.jar.location>
+        <ojdbc14.jar.location>${jdbc.drivers.location}/ojdbc14-${ojdbc14.version}.jar</ojdbc14.jar.location>
 
-		<cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
-		<javadoc.plugin.version>2.7</javadoc.plugin.version>
-		<project.info.reports.plugin.version>2.3.1</project.info.reports.plugin.version>
-		<site.plugin.version>3.0-beta-3</site.plugin.version>
-		<surefire.plugin.version>2.8</surefire.plugin.version>
+        <cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
+        <javadoc.plugin.version>2.7</javadoc.plugin.version>
+        <project.info.reports.plugin.version>2.3.1</project.info.reports.plugin.version>
+        <site.plugin.version>3.0-beta-3</site.plugin.version>
+        <surefire.plugin.version>2.8</surefire.plugin.version>
         <failsafe.plugin.version>2.8</failsafe.plugin.version>
         <source.plugin.version>2.1.2</source.plugin.version>
         <assembly.plugin.version>2.2.1</assembly.plugin.version>
         <web.launch.context.path>/kr-dev</web.launch.context.path>
-        <web.launch.spring.file />
-	</properties>
+        <web.launch.spring.file/>
+    </properties>
 
-	<build>
-		<testResources>
-			<!-- NOTE: Because Maven test runs can be spawned in a new JVM, the system
-				properties on the initial Maven command line are not necessarily propagated
-				to the spawned test run. This means we cannot automatically use System property
-				definitions to override configuration parameters. To work around this, we
-				have configured the test resources to be pre-filtered by maven prior to running,
-				which results in config parameter tokens being replaced by System property
-				definitions (because the ${token} syntax happens to be the same. So. If you
-				need to introduce a new configuration property that needs to be overridable
-				by Bamboo/CI, make sure to set the property in one of the below config files,
-				so that it can be pre-emptively replaced by Maven prior to kicking off the
-				test run. E.g. <param name="my.new.param">${my.new.param}</param> -->
-			<testResource>
-				<filtering>true</filtering>
-				<directory>${basedir}/src/test/resources/META-INF</directory>
-				<includes>
-					<include>${project.name}-test-config.xml</include>
-					<include>sample-app-test-config.xml</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-			</testResource>
-		</testResources>
-		<pluginManagement>
-			<plugins>
-				<!--
-				    This plugin helps enforce that excluded dependencies stay excluded
-					and don't sneak back in through another dependency (a global ban). Here are
-					a few common situations this plugin helps with:
+    <build>
+        <testResources>
+            <!-- NOTE: Because Maven test runs can be spawned in a new JVM, the system
+                   properties on the initial Maven command line are not necessarily propagated
+                   to the spawned test run. This means we cannot automatically use System property
+                   definitions to override configuration parameters. To work around this, we
+                   have configured the test resources to be pre-filtered by maven prior to running,
+                   which results in config parameter tokens being replaced by System property
+                   definitions (because the ${token} syntax happens to be the same. So. If you
+                   need to introduce a new configuration property that needs to be overridable
+                   by Bamboo/CI, make sure to set the property in one of the below config files,
+                   so that it can be pre-emptively replaced by Maven prior to kicking off the
+                   test run. E.g. <param name="my.new.param">${my.new.param}</param> -->
+            <testResource>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/test/resources/META-INF</directory>
+                <includes>
+                    <include>${project.name}-test-config.xml</include>
+                    <include>sample-app-test-config.xml</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <pluginManagement>
+            <plugins>
+                <!--
+                        This plugin helps enforce that excluded dependencies stay excluded
+                        and don't sneak back in through another dependency (a global ban). Here are
+                        a few common situations this plugin helps with:
 
-					1) multiple implementations of a dependency - you only want to use one implementation
-					   (ex: commons-logging vs jcl-over-slf4j, javax.mail vs geronimo-javamail_1.4_spec)
-					2) similar maven artifacts are produced for the same project - you only need to include one
-					   (ex: cglib vs cglib-nodep)
-					3) an artifact's group id or artifact id has been renamed - maven considers these different
-					   artifacts and you only want to include one
-					   (ex: opensymphony:quartz vs org.opensymphony.quartz:quartz vs org.quartz-scheduler:quartz)
-					4) an artifact was added to the container and no longer is needed
-					   (ex: jaxb in java 6)
+                        1) multiple implementations of a dependency - you only want to use one implementation
+                           (ex: commons-logging vs jcl-over-slf4j, javax.mail vs geronimo-javamail_1.4_spec)
+                        2) similar maven artifacts are produced for the same project - you only need to include one
+                           (ex: cglib vs cglib-nodep)
+                        3) an artifact's group id or artifact id has been renamed - maven considers these different
+                           artifacts and you only want to include one
+                           (ex: opensymphony:quartz vs org.opensymphony.quartz:quartz vs org.quartz-scheduler:quartz)
+                        4) an artifact was added to the container and no longer is needed
+                           (ex: jaxb in java 6)
 
-					This plugin also helps enforce consistent a consistent Java & Maven version are used.  This helps the
-					stability of builds across systems.
+                        This plugin also helps enforce consistent a consistent Java & Maven version are used.  This helps the
+                        stability of builds across systems.
 
-					This plugin also enforces that plugins specify a version number.  Using meta version tags or not specifing a version
-					on a plugin is a decrecated feature as it leads to build instability.
+                        This plugin also enforces that plugins specify a version number.  Using meta version tags or not specifing a version
+                        on a plugin is a decrecated feature as it leads to build instability.
 
-					Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions of
-					artifacts by making sure that all deps converge.  This managed at the dep management section which is critical.
-			    -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.0</version>
-					<executions>
-						<execution>
-							<id>enforce-banned-dependencies</id>
-							<goals>
-								<goal>enforce</goal>
-							</goals>
-							<configuration>
-								<rules>
-									<requireJavaVersion>
-										<version>1.6</version>
-									</requireJavaVersion>
-									<requireMavenVersion>
-										<version>[3.0,4.0)</version>
-									</requireMavenVersion>
-									<DependencyConvergence />
+                        Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions of
+                        artifacts by making sure that all deps converge.  This managed at the dep management section which is critical.
+                    -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.0</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-banned-dependencies</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requireJavaVersion>
+                                        <version>1.6</version>
+                                    </requireJavaVersion>
+                                    <requireMavenVersion>
+                                        <version>[3.0,4.0)</version>
+                                    </requireMavenVersion>
+                                    <DependencyConvergence/>
 
-									<!-- Maven 3 Migration: This rule is not supported by Maven 3. See:
-										http://jira.codehaus.org/browse/MENFORCER-98 -->
-									<!-- <requirePluginVersions>
-										<message>Specifying a plugin w/o a version is a deprecated
-											feature b/c it can cause non-reproducible builds</message>
-										<banLatest>true</banLatest>
-										<banRelease>true</banRelease>
-										<banSnapshots>true</banSnapshots>
-										<phases>clean,deploy,site</phases>
-									</requirePluginVersions>-->
+                                    <!-- Maven 3 Migration: This rule is not supported by Maven 3. See:
+                                                 http://jira.codehaus.org/browse/MENFORCER-98 -->
+                                    <!-- <requirePluginVersions>
+                                                 <message>Specifying a plugin w/o a version is a deprecated
+                                                     feature b/c it can cause non-reproducible builds</message>
+                                                 <banLatest>true</banLatest>
+                                                 <banRelease>true</banRelease>
+                                                 <banSnapshots>true</banSnapshots>
+                                                 <phases>clean,deploy,site</phases>
+                                             </requirePluginVersions>-->
 
-									<bannedDependencies>
-										<excludes>
+                                    <bannedDependencies>
+                                        <excludes>
                                             <!-- using the kuali version of ojb -->
                                             <exclude>ojb</exclude>
 
                                             <!-- renamed (decrecated) groupids -->
-											<exclude>struts</exclude>
-											<exclude>wss4j</exclude>
-											<exclude>acegisecurity</exclude>
-											<exclude>xstream</exclude>
-											<exclude>uk.ltd.getahead</exclude>
-											<exclude>quartz</exclude>
-											<exclude>jdom</exclude>
-											<exclude>groovy</exclude>
-											<exclude>bouncycastle</exclude>
-											<exclude>org.opensymphony.quartz</exclude>
-											<exclude>opensymphony:quartz</exclude>
-											<exclude>javassist</exclude>
+                                            <exclude>struts</exclude>
+                                            <exclude>wss4j</exclude>
+                                            <exclude>acegisecurity</exclude>
+                                            <exclude>xstream</exclude>
+                                            <exclude>uk.ltd.getahead</exclude>
+                                            <exclude>quartz</exclude>
+                                            <exclude>jdom</exclude>
+                                            <exclude>groovy</exclude>
+                                            <exclude>bouncycastle</exclude>
+                                            <exclude>org.opensymphony.quartz</exclude>
+                                            <exclude>opensymphony:quartz</exclude>
+                                            <exclude>javassist</exclude>
 
-											<!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
-											<exclude>commons-logging</exclude>
-											<!-- already including a different jcl-over-slf4j -->
-											<exclude>org.slf4j:jcl104-over-slf4j</exclude>
-											<!-- excluding all slf4j -->
-											<exclude>org.slf4j</exclude>
+                                            <!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
+                                            <exclude>commons-logging</exclude>
+                                            <!-- already including a different jcl-over-slf4j -->
+                                            <exclude>org.slf4j:jcl104-over-slf4j</exclude>
+                                            <!-- excluding all slf4j -->
+                                            <exclude>org.slf4j</exclude>
 
-											<!-- already including cglib-nodep -->
-											<exclude>cglib:cglib</exclude>
-											<!-- already including the jdk16 version -->
-											<exclude>org.bouncycastle:bcprov-jdk14</exclude>
-											<!-- already including the jdk16 version -->
-											<exclude>org.bouncycastle:bcprov-jdk15</exclude>
+                                            <!-- already including cglib-nodep -->
+                                            <exclude>cglib:cglib</exclude>
+                                            <!-- already including the jdk16 version -->
+                                            <exclude>org.bouncycastle:bcprov-jdk14</exclude>
+                                            <!-- already including the jdk16 version -->
+                                            <exclude>org.bouncycastle:bcprov-jdk15</exclude>
 
-											<!-- excluding old jstl implementations which can cause hard-to-detect errors -->
-											<exclude>taglibs:standard</exclude>
-											<exclude>javax.servlet:jstl</exclude> <!-- allowing (including) a specific version below -->
+                                            <!-- excluding old jstl implementations which can cause hard-to-detect errors -->
+                                            <exclude>taglibs:standard</exclude>
+                                            <exclude>javax.servlet:jstl</exclude>
+                                            <!-- allowing (including) a specific version below -->
 
-											<!-- already including javax.mail -->
-											<exclude>javamail</exclude>
-											<exclude>geronimo:geronimo-mail</exclude>
-											<exclude>org.apache.geronimo.javamail:geronimo-javamail_1.4_mail</exclude>
-											<exclude>org.apache.geronimo.javamail:geronimo-javamail_1.3.1_mail</exclude>
-											<exclude>org.apache.geronimo.modules:geronimo-mail</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-javamail_1.3.1_spec</exclude>
+                                            <!-- already including javax.mail -->
+                                            <exclude>javamail</exclude>
+                                            <exclude>geronimo:geronimo-mail</exclude>
+                                            <exclude>org.apache.geronimo.javamail:geronimo-javamail_1.4_mail</exclude>
+                                            <exclude>org.apache.geronimo.javamail:geronimo-javamail_1.3.1_mail</exclude>
+                                            <exclude>org.apache.geronimo.modules:geronimo-mail</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-javamail_1.3.1_spec</exclude>
 
-											<!-- already including javax.transation -->
-											<exclude>org.apache.geronimo.specs:geronimo-jta_1.1_spec</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec</exclude>
-											<exclude>geronimo-spec:geronimo-spec-jta</exclude>
-											<exclude>org.ow2.spec.ee:ow2-jta-1.1-spec</exclude>
-											<exclude>jta</exclude>
+                                            <!-- already including javax.transation -->
+                                            <exclude>org.apache.geronimo.specs:geronimo-jta_1.1_spec</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec</exclude>
+                                            <exclude>geronimo-spec:geronimo-spec-jta</exclude>
+                                            <exclude>org.ow2.spec.ee:ow2-jta-1.1-spec</exclude>
+                                            <exclude>jta</exclude>
 
-											<!-- aleady including the hibernate implementation -->
-											<exclude>javax.persistence</exclude>
+                                            <!-- aleady including the hibernate implementation -->
+                                            <exclude>javax.persistence</exclude>
 
-											<!-- activation apis - in jdk 6 -->
-											<exclude>javax.activation</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec</exclude>
+                                            <!-- activation apis - in jdk 6 -->
+                                            <exclude>javax.activation</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec</exclude>
 
-											<!-- metadata apis - in jdk 6 -->
-											<exclude>javax.jws</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec</exclude>
+                                            <!-- metadata apis - in jdk 6 -->
+                                            <exclude>javax.jws</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec</exclude>
 
-											<!-- These are repackaged parser apis - some of these apis are
-												included in jdk 6. The non-jdk parsers can be added indivually if needed. -->
-											<exclude>xerces:xmlParserAPIs</exclude>
-											<exclude>xml-apis</exclude>
+                                            <!-- These are repackaged parser apis - some of these apis are
+                                                           included in jdk 6. The non-jdk parsers can be added indivually if needed. -->
+                                            <exclude>xerces:xmlParserAPIs</exclude>
+                                            <exclude>xml-apis</exclude>
 
-											<!-- group ids for many sun xml apis - in jdk 6 -->
-											<exclude>javax.xml</exclude>
-											<exclude>com.sun.xml</exclude>
+                                            <!-- group ids for many sun xml apis - in jdk 6 -->
+                                            <exclude>javax.xml</exclude>
+                                            <exclude>com.sun.xml</exclude>
 
-											<!-- jaxb apis - in jdk 6 -->
-											<exclude>javax.xml.bind</exclude>
-											<exclude>com.sun.xml.bind</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-jaxb_2.1_spec</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec</exclude>
+                                            <!-- jaxb apis - in jdk 6 -->
+                                            <exclude>javax.xml.bind</exclude>
+                                            <exclude>com.sun.xml.bind</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-jaxb_2.1_spec</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec</exclude>
 
-											<!-- jaxws apis - in jdk 6 -->
-											<exclude>javax.xml.ws</exclude>
-											<exclude>com.sun.xml.ws</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-jaxws_2.1_spec</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-jaxws_2.2_spec</exclude>
+                                            <!-- jaxws apis - in jdk 6 -->
+                                            <exclude>javax.xml.ws</exclude>
+                                            <exclude>com.sun.xml.ws</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-jaxws_2.1_spec</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-jaxws_2.2_spec</exclude>
 
-											<!-- stax apis - in jdk 6 -->
-											<exclude>javax.xml.stream</exclude>
-											<exclude>com.sun.xml.stream</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-stax-api_1.2_spec</exclude>
-											<exclude>stax</exclude>
+                                            <!-- stax apis - in jdk 6 -->
+                                            <exclude>javax.xml.stream</exclude>
+                                            <exclude>com.sun.xml.stream</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-stax-api_1.2_spec</exclude>
+                                            <exclude>stax</exclude>
 
-											<!-- jaxp apis - in jdk 6 -->
-											<exclude>javax.xml.parsers</exclude>
-											<exclude>com.sun.xml.parsers</exclude>
-											<exclude>org.apace.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.4</exclude>
-											<exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.3</exclude>
+                                            <!-- jaxp apis - in jdk 6 -->
+                                            <exclude>javax.xml.parsers</exclude>
+                                            <exclude>com.sun.xml.parsers</exclude>
+                                            <exclude>org.apace.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.4
+                                            </exclude>
+                                            <exclude>
+                                                org.apache.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.3
+                                            </exclude>
 
-											<!-- saaj apis - in jdk 6 -->
-											<exclude>javax.xml.soap</exclude>
-											<exclude>javax.xml.soap:saaj-api</exclude>
-											<exclude>javax.xml.soap:saaj-impl</exclude>
-											<exclude>com.sun.xml.messaging.saaj</exclude>
-											<exclude>org.apache.geronimo.specs:geronimo-saaj_1.3_spec</exclude>
-											<exclude>geronimo-spec:geronimo-spec-saaj</exclude>
-											<exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3</exclude>
-										</excludes>
+                                            <!-- saaj apis - in jdk 6 -->
+                                            <exclude>javax.xml.soap</exclude>
+                                            <exclude>javax.xml.soap:saaj-api</exclude>
+                                            <exclude>javax.xml.soap:saaj-impl</exclude>
+                                            <exclude>com.sun.xml.messaging.saaj</exclude>
+                                            <exclude>org.apache.geronimo.specs:geronimo-saaj_1.3_spec</exclude>
+                                            <exclude>geronimo-spec:geronimo-spec-saaj</exclude>
+                                            <exclude>
+                                                org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3
+                                            </exclude>
+                                        </excludes>
 
-										<includes>
-											<!-- only allow in this specific version -->
-											<include>javax.servlet:jstl:${jstl.version}</include>
-											<include>org.slf4j:*:${slf4j.version}</include>
-										</includes>
-									</bannedDependencies>
-								</rules>
-								<fail>true</fail>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.4.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.3.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.5</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.3.2</version>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-						<!-- impl module is huge and requires at least 768m to compile -->
-						<fork>true</fork>
-						<meminitial>256</meminitial>
-						<maxmem>1024</maxmem>
-					</configuration>
-				</plugin>
+                                        <includes>
+                                            <!-- only allow in this specific version -->
+                                            <include>javax.servlet:jstl:${jstl.version}</include>
+                                            <include>org.slf4j:*:${slf4j.version}</include>
+                                        </includes>
+                                    </bannedDependencies>
+                                </rules>
+                                <fail>true</fail>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
-                  <groupId>org.codehaus.gmaven</groupId>
-                  <artifactId>gmaven-plugin</artifactId>
-                  <version>1.3</version>
-                  <configuration>
-                    <providerSelection>1.7</providerSelection>
-                  </configuration>
-                  <dependencies>
-                      <dependency>
-                        <groupId>org.codehaus.gmaven.runtime</groupId>
-                        <artifactId>gmaven-runtime-1.7</artifactId>
-                        <version>1.3</version>
-                        <exclusions>
-                          <exclusion>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.4.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                        <!-- impl module is huge and requires at least 768m to compile -->
+                        <fork>true</fork>
+                        <meminitial>256</meminitial>
+                        <maxmem>1024</maxmem>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>gmaven-plugin</artifactId>
+                    <version>1.3</version>
+                    <configuration>
+                        <providerSelection>1.7</providerSelection>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.gmaven.runtime</groupId>
+                            <artifactId>gmaven-runtime-1.7</artifactId>
+                            <version>1.3</version>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>org.codehaus.groovy</groupId>
+                                    <artifactId>groovy-all</artifactId>
+                                </exclusion>
+                            </exclusions>
+                        </dependency>
+                        <dependency>
                             <groupId>org.codehaus.groovy</groupId>
                             <artifactId>groovy-all</artifactId>
-                          </exclusion>
-                        </exclusions>
-                      </dependency>
-                      <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-all</artifactId>
-                        <version>${groovy.version}</version>
-                      </dependency>
-                  </dependencies>
-                  <executions>
-                      <execution>
-                          <goals>
-                              <goal>generateStubs</goal>
-                              <goal>compile</goal>
-                              <goal>generateTestStubs</goal>
-                              <goal>testCompile</goal>
-                          </goals>
-                      </execution>
-                  </executions>
-              </plugin>
+                            <version>${groovy.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generateStubs</goal>
+                                <goal>compile</goal>
+                                <goal>generateTestStubs</goal>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>buildnumber-maven-plugin</artifactId>
-					<version>1.0-beta-4</version>
-					<executions>
-						<execution>
-							<phase>validate</phase>
-							<goals>
-								<goal>create</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<format>{0,date,yyyy/MM/dd-HH:mm:ss}</format>
-						<items>
-							<item>timestamp</item>
-						</items>
-						<buildNumberPropertyName>current.timestamp</buildNumberPropertyName>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3.1</version>
-					<configuration>
-						<archive>
-							<manifest>
-								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							</manifest>
-							<manifestEntries>
-								<SVN-Repository>${prefix.repository}</SVN-Repository>
-								<SVN-Path>${prefix.path}</SVN-Path>
-								<SVN-Revision>${prefix.revision}</SVN-Revision>
-								<Build-Time>${current.timestamp}</Build-Time>
-							</manifestEntries>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.5</version>
-					<configuration>
-						<skip>${maven.skip.packaging}</skip>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>com.atlassian.maven.plugins</groupId>
-					<artifactId>maven-licenses-plugin</artifactId>
-					<version>0.3-kuali</version>
-					<configuration>
-						<licenses.repositoryId>kr-repo</licenses.repositoryId>
-						<licenses.repositoryUrl>https://test.kuali.org/maven</licenses.repositoryUrl>
-						<locateJarDirectory>${basedir}/web/target/rice-web-${project.version}/WEB-INF/lib</locateJarDirectory>
-						<locateOutputFile>locate.out</locateOutputFile>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.6</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1.1</version>
-					<configuration>
-						<archive>
-							<manifest>
-								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							</manifest>
-							<manifestEntries>
-								<SVN-Repository>${prefix.repository}</SVN-Repository>
-								<SVN-Path>${prefix.path}</SVN-Path>
-								<SVN-Revision>${prefix.revision}</SVN-Revision>
-							</manifestEntries>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>com.sun.tools.jxc.maven2</groupId>
-					<artifactId>maven-jaxb-schemagen-plugin</artifactId>
-					<version>1.2</version>
-				</plugin>
-				<plugin>
-					<groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-					<artifactId>maven-svn-revision-number-plugin</artifactId>
-					<version>1.6</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>revision</goal>
-							</goals>
-							<phase>initialize</phase>
-						</execution>
-					</executions>
-					<configuration>
-						<entries>
-							<entry>
-								<prefix>prefix</prefix>
-							</entry>
-						</entries>
-					</configuration>
-				</plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.0-beta-4</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <format>{0,date,yyyy/MM/dd-HH:mm:ss}</format>
+                        <items>
+                            <item>timestamp</item>
+                        </items>
+                        <buildNumberPropertyName>current.timestamp</buildNumberPropertyName>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.3.1</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <SVN-Repository>${prefix.repository}</SVN-Repository>
+                                <SVN-Path>${prefix.path}</SVN-Path>
+                                <SVN-Revision>${prefix.revision}</SVN-Revision>
+                                <Build-Time>${current.timestamp}</Build-Time>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <skip>${maven.skip.packaging}</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.atlassian.maven.plugins</groupId>
+                    <artifactId>maven-licenses-plugin</artifactId>
+                    <version>0.3-kuali</version>
+                    <configuration>
+                        <licenses.repositoryId>kr-repo</licenses.repositoryId>
+                        <licenses.repositoryUrl>https://test.kuali.org/maven</licenses.repositoryUrl>
+                        <locateJarDirectory>${basedir}/web/target/rice-web-${project.version}/WEB-INF/lib
+                        </locateJarDirectory>
+                        <locateOutputFile>locate.out</locateOutputFile>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.1.1</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <SVN-Repository>${prefix.repository}</SVN-Repository>
+                                <SVN-Path>${prefix.path}</SVN-Path>
+                                <SVN-Revision>${prefix.revision}</SVN-Revision>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.sun.tools.jxc.maven2</groupId>
+                    <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+                    <version>1.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+                    <artifactId>maven-svn-revision-number-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>revision</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <entries>
+                            <entry>
+                                <prefix>prefix</prefix>
+                            </entry>
+                        </entries>
+                    </configuration>
+                </plugin>
 
                 <plugin>
                     <groupId>org.mortbay.jetty</groupId>
@@ -584,13 +598,13 @@
                     </configuration>
                 </plugin>
                 <plugin>
-				    <groupId>com.agilejava.docbkx</groupId>
-				    <artifactId>docbkx-maven-plugin</artifactId>
+                    <groupId>com.agilejava.docbkx</groupId>
+                    <artifactId>docbkx-maven-plugin</artifactId>
                     <version>2.0.11</version>
-				</plugin>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
-				    <artifactId>versions-maven-plugin</artifactId>
+                    <artifactId>versions-maven-plugin</artifactId>
                     <version>1.2</version>
                 </plugin>
                 <plugin>
@@ -610,9 +624,9 @@
                 </plugin>
 
                 <plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${surefire.plugin.version}</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire.plugin.version}</version>
                     <configuration>
                         <skip>${maven.surefire.skip}</skip>
                         <useFile>false</useFile>
@@ -622,7 +636,7 @@
                         </includes>
                         <reportFormat>plain</reportFormat>
                     </configuration>
-				</plugin>
+                </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -639,7 +653,8 @@
                     <configuration>
                         <skip>${maven.failsafe.skip}</skip>
                         <additionalClasspathElements>
-                            <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
+                            <additionalClasspathElement>${mysql-connector-java.jar.location}
+                            </additionalClasspathElement>
                             <additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
                         </additionalClasspathElements>
                         <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
@@ -649,28 +664,31 @@
                             <include>${maven.failsafe.includes}</include>
                         </includes>
                         <forkMode>${maven.failsafe.forkmode}</forkMode>
-                        <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
+                        <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}
+                        </forkedProcessTimeoutInSeconds>
                         <reportFormat>plain</reportFormat>
-                        <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
+                        <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
+                            -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled
+                        </argLine>
                     </configuration>
                 </plugin>
 
                 <plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>cobertura-maven-plugin</artifactId>
-					<version>${cobertura.maven.plugin.version}</version>
-					<configuration>
-						<instrumentation>
-							<excludes>
-								<exclude>org/kuali/rice/**/test/**/*.class</exclude>
-							</excludes>
-						</instrumentation>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>${cobertura.maven.plugin.version}</version>
+                    <configuration>
+                        <instrumentation>
+                            <excludes>
+                                <exclude>org/kuali/rice/**/test/**/*.class</exclude>
+                            </excludes>
+                        </instrumentation>
                     </configuration>
-				</plugin>
+                </plugin>
                 <plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>${site.plugin.version}</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${site.plugin.version}</version>
                     <configuration>
                         <reportPlugins>
                             <plugin>
@@ -700,7 +718,7 @@
                                 <configuration>
                                     <reportFormat>plain</reportFormat>
                                 </configuration>
-                                 <reportSets>
+                                <reportSets>
                                     <reportSet>
                                         <reports>
                                             <report>report-only</report>
@@ -738,46 +756,46 @@
                             </plugin>
                         </reportPlugins>
                     </configuration>
-				</plugin>
+                </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>${assembly.plugin.version}</version>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${assembly.plugin.version}</version>
                 </plugin>
-			</plugins>
-		</pluginManagement>
+            </plugins>
+        </pluginManagement>
 
-		<plugins>
-
-           <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<artifactId>maven-licenses-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-				<artifactId>maven-svn-revision-number-plugin</artifactId>
-			</plugin>
+        <plugins>
 
             <plugin>
-                  <groupId>org.codehaus.gmaven</groupId>
-                  <artifactId>gmaven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-licenses-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+                <artifactId>maven-svn-revision-number-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -789,42 +807,42 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-		</plugins>
+        </plugins>
 
-		<extensions>
-			<extension>
+        <extensions>
+            <extension>
                 <groupId>org.kuali.maven.wagons</groupId>
                 <artifactId>maven-s3-wagon</artifactId>
                 <version>1.0.25</version>
             </extension>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>1.0-beta-7</version>
-			</extension>
-		</extensions>
-	</build>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>1.0-beta-7</version>
+            </extension>
+        </extensions>
+    </build>
 
-	<modules>
-		<module>api</module>
-		<module>impl</module>
-		<module>web</module>
-		<module>internal-test-tools</module>
+    <modules>
+        <module>api</module>
+        <module>impl</module>
+        <module>web</module>
+        <module>internal-test-tools</module>
         <module>development-tools</module>
-		<module>sampleapp</module>
-		<module>standalone</module>
-		<!-- <module>ksb</module> -->
-		<!-- <module>kcb</module> -->
-		<!-- <module>kns</module> -->
-		<!--<module>kim</module>-->
-		<!-- <module>kew</module> -->
-		<!-- <module>ken</module> -->
-		<module>core</module>
-		<module>test</module>
-		<module>edl</module>
-		<module>kim</module>
+        <module>sampleapp</module>
+        <module>standalone</module>
+        <!-- <module>ksb</module> -->
+        <!-- <module>kcb</module> -->
+        <!-- <module>kns</module> -->
+        <!--<module>kim</module>-->
+        <!-- <module>kew</module> -->
+        <!-- <module>ken</module> -->
+        <module>core</module>
+        <module>test</module>
+        <module>edl</module>
+        <module>kim</module>
         <module>krad</module>
-		<module>krms</module>
+        <module>krms</module>
         <module>client-contrib</module>
         <module>shareddata</module>
         <module>doc</module>
@@ -1769,119 +1787,1031 @@
 				</exclusions>
 			</dependency>
 
+
+            <dependency>
+                <groupId>antlr</groupId>
+                <artifactId>antlr</artifactId>
+                <version>${antlr.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>aopalliance</groupId>
+                <artifactId>aopalliance</artifactId>
+                <version>${aopalliance.version}</version>
+            </dependency>
+
+            <!-- explicitly including asm to change version number from what maven would have resolved it to -->
+            <dependency>
+                <groupId>asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+
+            <dependency>
+                <!-- groupid was changed to org.apache.bsf in later versions -->
+                <groupId>bsf</groupId>
+                <artifactId>bsf</artifactId>
+                <version>${bsf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <!-- groupid was changed to org.jasig.cas in later versions -->
+                <groupId>cas</groupId>
+                <artifactId>casclient</artifactId>
+                <version>${casclient.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>cglib</groupId>
+                <!-- using nodep to resolve a problem with the asm dependency -->
+                <artifactId>cglib-nodep</artifactId>
+                <version>${cglib.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${commons-collections.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>${commons-dbcp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>${commons-httpclient.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-pool</groupId>
+                <artifactId>commons-pool</artifactId>
+                <version>${commons-pool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-validator</groupId>
+                <artifactId>commons-validator</artifactId>
+                <version>${commons-validator.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <!-- excluding because struts requires a newer version than is brought in from 1.3.1 of commons-validator -->
+                    <exclusion>
+                        <groupId>commons-digester</groupId>
+                        <artifactId>commons-digester</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>ojdbc14</artifactId>
+                <version>${ojdbc14.version}</version>
+                <!--<scope>provided</scope>-->
+            </dependency>
+
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>${xstream.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>displaytag</groupId>
+                <artifactId>displaytag</artifactId>
+                <version>${displaytag.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>jcl104-over-slf4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>jstl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${mail.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- required by jotm -->
+            <dependency>
+                <groupId>javax.resource</groupId>
+                <artifactId>connector-api</artifactId>
+                <version>${connector-api.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+                <!-- should be provided scope on newer containers like tomcat 7 -->
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet.jsp</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>${jsp-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.transaction</groupId>
+                <artifactId>jta</artifactId>
+                <version>${jta.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>jsr311-api</artifactId>
+                <version>${jsr311-api.version}</version>
+            </dependency>
+
+            <!-- explicitly including jaxen to change version number from what maven would have resolved it to -->
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>${jaxen.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.kuali.db.ojb</groupId>
+                <artifactId>db-ojb</artifactId>
+                <version>${db-ojb.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>xalan</groupId>
+                        <artifactId>xalan</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <!-- groupid will change to org.opensymphony.oscache if they ever release another version -->
+                <groupId>opensymphony</groupId>
+                <artifactId>oscache</artifactId>
+                <version>${oscache.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.acegisecurity</groupId>
+                <artifactId>acegi-security</artifactId>
+                <version>${acegi.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-remoting</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jdbc</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-support</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.acegisecurity</groupId>
+                <artifactId>acegi-security-cas</artifactId>
+                <version>${acegi.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-web</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-api</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-common-utilities</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <!-- avoids conflict with javamail -->
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-core</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-databinding-aegis</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-databinding-jaxb</artifactId>
+                <version>${cxf.version}</version>
+                <scope>runtime</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-xjc</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-bindings-soap</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.soap</groupId>
+                        <artifactId>saaj-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <!-- avoids conflict with javamail -->
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-jaxws_2.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.soap</groupId>
+                        <artifactId>saaj-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.messaging.saaj</groupId>
+                        <artifactId>saaj-impl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-simple</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http-jetty</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-ws-security</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.soap</groupId>
+                        <artifactId>saaj-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcprov-jdk15</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-core</artifactId>
+                <version>${struts.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>antlr</artifactId>
+                        <groupId>antlr</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-el</artifactId>
+                <version>${struts.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>standard</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>jstl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-extras</artifactId>
+                <version>${struts.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-taglib</artifactId>
+                <version>${struts.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.ws.security</groupId>
+                <artifactId>wss4j</artifactId>
+                <version>${wss4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcprov-jdk14</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk16</artifactId>
+                <version>${bcprov.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${groovy.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.directwebremoting</groupId>
+                <artifactId>dwr</artifactId>
+                <version>${dwr.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>xerces</groupId>
+                        <artifactId>xmlParserAPIs</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>jdom</groupId>
+                        <artifactId>jdom</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>antlr</groupId>
+                        <artifactId>antlr</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.0-api</artifactId>
+                <version>${persistence.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jasig.cas.client</groupId>
+                <artifactId>cas-client-core</artifactId>
+                <version>${cas-client-core.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jdom</groupId>
+                <artifactId>jdom</artifactId>
+                <version>${jdom.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>dom4j</groupId>
+                        <artifactId>dom4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springmodules</groupId>
+                <artifactId>spring-modules-ojb</artifactId>
+                <version>${spring-modules-ojb.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <!-- we moved our patch to groupId org.kuali.db.ojb -->
+                        <groupId>ojb</groupId>
+                        <artifactId>db-ojb</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.subethamail</groupId>
+                <artifactId>subethasmtp</artifactId>
+                <version>${subethasmtp.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.jotm</groupId>
+                <artifactId>jotm-core</artifactId>
+                <version>${jotm.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.ow2.spec.ee</groupId>
+                        <artifactId>ow2-jta-1.1-spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>xalan</groupId>
+                <artifactId>serializer</artifactId>
+                <version>${serializer.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <!-- groupid was changed to com.experlog in later versions -->
+                <groupId>xapool</groupId>
+                <artifactId>xapool</artifactId>
+                <version>${xapool.version}</version>
+            </dependency>
+
+            <!-- explicitly including xercesImpl to change version number from what maven would have resolved it to -->
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>${xercesImpl.version}</version>
+                <scope>runtime</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <dependency>
                 <groupId>xmlunit</groupId>
                 <artifactId>xmlunit</artifactId>
                 <version>${xmlunit.version}</version>
                 <scope>test</scope>
             </dependency>
-		</dependencies>
-	</dependencyManagement>
+        </dependencies>
+    </dependencyManagement>
 
-	<profiles>
-		<profile>
-			<id>release</id>
-			<!-- profile used to add additional settings for the release process without affecting local development speed -->
+    <profiles>
+        <profile>
+            <id>release</id>
+            <!-- profile used to add additional settings for the release process without affecting local development speed -->
 
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-                            <version>${javadoc.plugin.version}</version>
-							<executions>
-								<execution>
-									<id>attach-javadocs</id>
-									<phase>verify</phase>
-									<goals>
-										<goal>jar</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-source-plugin</artifactId>
-							<version>${source.plugin.version}</version>
-							<executions>
-								<execution>
-									<id>attach-sources</id>
-									<phase>verify</phase>
-									<goals>
-										<goal>jar-no-fork</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-assembly-plugin</artifactId>
-							<version>${assembly.plugin.version}</version>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>${javadoc.plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-javadocs</id>
+                                    <phase>verify</phase>
+                                    <goals>
+                                        <goal>jar</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
                         </plugin>
-					</plugins>
-				</pluginManagement>
-				<plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-source-plugin</artifactId>
+                            <version>${source.plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-sources</id>
+                                    <phase>verify</phase>
+                                    <goals>
+                                        <goal>jar-no-fork</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-assembly-plugin</artifactId>
+                            <version>${assembly.plugin.version}</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
 
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-					</plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
 
-                  <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <configuration>
-                      <descriptors>
-                        <!-- pack all source so it can be referrred to in child modules -->
-                        <descriptor>project.xml</descriptor>
-                      </descriptors>
-                    </configuration>
-                    <executions>
-                      <execution>
-                        <id>make-project-source-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                          <goal>single</goal>
-                        </goals>
-                      </execution>
-                    </executions>
-                    <!-- do NOT do this custom packaging for sub modules.  This is a one time thing -->
-                    <inherited>false</inherited>
-                  </plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <!-- pack all source so it can be referrred to in child modules -->
+                                <descriptor>project.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-project-source-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <!-- do NOT do this custom packaging for sub modules.  This is a one time thing -->
+                        <inherited>false</inherited>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
-	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/trunk</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/trunk</developerConnection>
-		<url>https://test.kuali.org/svn/rice/trunk</url>
-	</scm>
+    <scm>
+        <connection>scm:svn:https://test.kuali.org/svn/rice/trunk</connection>
+        <developerConnection>scm:svn:https://test.kuali.org/svn/rice/trunk</developerConnection>
+        <url>https://test.kuali.org/svn/rice/trunk</url>
+    </scm>
 
-	<distributionManagement>
-                <repository>
-                        <id>kuali-maven-repo</id>
-                        <name>Kuali Releases Repository</name>
-                        <url>s3://maven.kuali.org/release</url>
-                </repository>
-                <snapshotRepository>
-                        <id>kuali-maven-repo</id>
-                        <name>Kuali Snapshot Repository</name>
-                        <url>s3://maven.kuali.org/snapshot</url>
-                </snapshotRepository>
-		<site>
-			<id>rice-site</id>
-			<name>Rice Web Site</name>
-			<url>scp://www.kuali.org:/home/ubuntu/www/drupal/content/kuali/rice/docs/${project.version}/site</url>
-		</site>
-	</distributionManagement>
+    <distributionManagement>
+        <repository>
+            <id>kuali-maven-repo</id>
+            <name>Kuali Releases Repository</name>
+            <url>s3://maven.kuali.org/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>kuali-maven-repo</id>
+            <name>Kuali Snapshot Repository</name>
+            <url>s3://maven.kuali.org/snapshot</url>
+        </snapshotRepository>
+        <site>
+            <id>rice-site</id>
+            <name>Rice Web Site</name>
+            <url>scp://www.kuali.org:/home/ubuntu/www/drupal/content/kuali/rice/docs/${project.version}/site</url>
+        </site>
+    </distributionManagement>
 </project>

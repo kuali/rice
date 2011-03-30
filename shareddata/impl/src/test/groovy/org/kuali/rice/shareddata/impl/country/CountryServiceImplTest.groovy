@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-
-
-
-
 package org.kuali.rice.shareddata.impl.country
 
 import groovy.mock.interceptor.MockFor
@@ -32,180 +28,168 @@ import org.kuali.rice.shareddata.api.country.CountryService
 
 class CountryServiceImplTest {
 
-  private final shouldFail = new GroovyTestCase().&shouldFail
+    private final shouldFail = new GroovyTestCase().&shouldFail
 
-  static Map<String, CountryBo> sampleCountries = new HashMap<String, CountryBo>()
-  static Map<String, CountryBo> sampleCountriesKeyedByAltCode = new HashMap<String, CountryBo>()
-  def mockBusinessObjectService
+    static Map<String, CountryBo> sampleCountries = new HashMap<String, CountryBo>()
+    static Map<String, CountryBo> sampleCountriesKeyedByAltCode = new HashMap<String, CountryBo>()
 
-  @BeforeClass
-  static void createSampleCountryBOs() {
-    CountryBo unitedStatesBo = new CountryBo(active: true, alternateCode: "USA", code: "US",
-            name: "United States", restricted: false)
-    CountryBo australiaBo = new CountryBo(active: true, alternateCode: "AU", code: "AUS",
-            name: "Australia", restricted: false)
-    CountryBo nowhereBo = new CountryBo(active: true, alternateCode: "ZZ", code: "ZZZ",
-            name: "Australia", restricted: true)
-    for (bo in [unitedStatesBo, australiaBo, nowhereBo]) {
-      sampleCountries.put(bo.code, bo)
-      sampleCountriesKeyedByAltCode.put(bo.alternateCode, bo)
-    }
-  }
+    MockFor businessObjectServiceMockFor
+    BusinessObjectService bos
+    CountryServiceImpl countryServiceImpl
+    CountryService countryService
 
-  @Before
-  void setupBoServiceMockContext() {
-    mockBusinessObjectService = new MockFor(BusinessObjectService.class)
-  }
-
-
-  @Test
-  public void test_getCountry() {
-    mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-      Class clazz, Map map -> return sampleCountries.get(map.get(KNSPropertyConstants.POSTAL_COUNTRY_CODE))
+    @BeforeClass
+    static void createSampleCountryBOs() {
+        //Doing setup in a static context since bring up and down a server is an expensive operation
+        CountryBo unitedStatesBo = new CountryBo(active: true, alternateCode: "USA", code: "US",
+                name: "United States", restricted: false)
+        CountryBo australiaBo = new CountryBo(active: true, alternateCode: "AU", code: "AUS",
+                name: "Australia", restricted: false)
+        CountryBo nowhereBo = new CountryBo(active: true, alternateCode: "ZZ", code: "ZZZ",
+                name: "Australia", restricted: true)
+        for (bo in [unitedStatesBo, australiaBo, nowhereBo]) {
+            sampleCountries.put(bo.code, bo)
+            sampleCountriesKeyedByAltCode.put(bo.alternateCode, bo)
+        }
     }
 
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-    Country country = service.getCountry("US")
-
-    Assert.assertEquals(CountryBo.to(sampleCountries.get("US")), country)
-    mockBusinessObjectService.verify(bos)
-  }
-
-  @Test
-  public void testGetByPrimaryIdEmptyCountryCode() {
-    shouldFail(IllegalArgumentException.class) {
-      new CountryServiceImpl().getCountry("")
-    }
-  }
-
-  @Test
-  public void testGetByPrimaryIdNullCountryCode() {
-    shouldFail(IllegalArgumentException.class) {
-      new CountryServiceImpl().getCountry(null)
-    }
-  }
-
-  @Test
-  public void testGetByAlternateCode() {
-    mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map ->
-      [sampleCountriesKeyedByAltCode.get(
-              map.get(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
-    }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-    Country country = service.getCountryByAlternateCode("USA")
-
-    Assert.assertEquals(CountryBo.to(sampleCountriesKeyedByAltCode.get("USA")), country)
-    mockBusinessObjectService.verify(bos)
-  }
-
-  @Test
-  public void testGetByAlternateCodeWhenNoneFound() {
-    mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> []}
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-    Country country = service.getCountryByAlternateCode("ZZ")
-
-    Assert.assertNull(country)
-    mockBusinessObjectService.verify(bos)
-
-  }
-
-  @Test
-  public void testGetByAlternateCodeWhenMultipleFound() {
-    mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
-    }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-
-    shouldFail(IllegalStateException.class) {
-      service.getCountryByAlternateCode("US")
+    @Before
+    void setupBoServiceMockContext() {
+        businessObjectServiceMockFor = new MockFor(BusinessObjectService.class)
+        countryServiceImpl = new CountryServiceImpl()
+        countryService = countryServiceImpl    //assign Interface type to implementation instance for unit test only
     }
 
-    mockBusinessObjectService.verify(bos)
-  }
-
-  @Test
-  public void testGetByAlternateCodeWithEmptyCode() {
-    shouldFail(IllegalArgumentException.class) {
-      new CountryServiceImpl().getCountryByAlternateCode(" ")
+    void injectBusinessObjectServiceIntoCountryService() {
+        bos =  businessObjectServiceMockFor.proxyDelegateInstance()
+        countryServiceImpl.setBusinessObjectService(bos)
     }
-  }
 
-  @Test
-  public void testGetByAlternateCodeWithNullCode() {
-    shouldFail(IllegalArgumentException.class) {
-      new CountryServiceImpl().getCountryByAlternateCode(null)
+    @Test
+    public void test_getCountry() {
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
+            Class clazz, Map map -> return sampleCountries.get(map.get(KNSPropertyConstants.POSTAL_COUNTRY_CODE))
+        }
+        injectBusinessObjectServiceIntoCountryService()
+
+        Country country = countryService.getCountry("US")
+        Assert.assertEquals(CountryBo.to(sampleCountries.get("US")), country)
+        businessObjectServiceMockFor.verify(bos)
     }
-  }
 
-  @Test
-  public void findAllCountriesNotRestricted() {
-    mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+    @Test
+    public void testGetByPrimaryIdEmptyCountryCode() {
+        shouldFail() {
+            countryService.getCountry("")
+        }
     }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-    service.findAllCountriesNotRestricted()
 
-    mockBusinessObjectService.verify(bos)
-  }
-
-  @Test
-  public void findAllCountriesNotRestrictedReturnsImmutableList() {
-    mockBusinessObjectService.demand.findMatching(1) {
-      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+    @Test
+    public void testGetByPrimaryIdNullCountryCode() {
+        shouldFail() {
+            countryService.getCountry(null)
+        }
     }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-    List<Country> countries = service.findAllCountriesNotRestricted()
-    shouldFail(UnsupportedOperationException.class) {
-      countries.add(null);
+
+    @Test
+    public void testGetByAlternateCode() {
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map ->
+            [sampleCountriesKeyedByAltCode.get(
+                    map.get(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
+        }
+        injectBusinessObjectServiceIntoCountryService()
+
+        Country country = countryService.getCountryByAlternateCode("USA")
+        Assert.assertEquals(CountryBo.to(sampleCountriesKeyedByAltCode.get("USA")), country)
+        businessObjectServiceMockFor.verify(bos)
     }
-    mockBusinessObjectService.verify(bos)
 
-  }
+    @Test
+    public void testGetByAlternateCodeWhenNoneFound() {
+        businessObjectServiceMockFor.demand.findMatching(1) {Class clazz, Map map -> []}
+        injectBusinessObjectServiceIntoCountryService()
 
-  @Test
-  public void testFindAllCountries() {
-    mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
+        Country country = countryService.getCountryByAlternateCode("ZZ")
+        Assert.assertNull(country)
+        businessObjectServiceMockFor.verify(bos)
+
     }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-    service.findAllCountries()
+    @Test
+    public void testGetByAlternateCodeWhenMultipleFound() {
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+        }
+        injectBusinessObjectServiceIntoCountryService()
 
-    mockBusinessObjectService.verify(bos)
-  }
-
-  public void testFindAllCountriesReturnsImmutableList() {
-    mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
+        shouldFail() {
+            countryService.getCountryByAlternateCode("US")
+        }
+        businessObjectServiceMockFor.verify(bos)
     }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    CountryService service = new CountryServiceImpl()
-    service.setBusinessObjectService(bos)
-    List<Country> countries = service.findAllCountriesNotRestricted()
-
-    shouldFail(UnsupportedOperationException.class) {
-      countries.add(null)
+    @Test
+    public void testGetByAlternateCodeWithEmptyCode() {
+        shouldFail() {
+            countryService.getCountryByAlternateCode(" ")
+        }
     }
-    mockBusinessObjectService.verify(bos)
-  }
+
+    @Test
+    public void testGetByAlternateCodeWithNullCode() {
+        shouldFail() {
+            countryService.getCountryByAlternateCode(null)
+        }
+    }
+
+    @Test
+    public void findAllCountriesNotRestricted() {
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+        }
+        injectBusinessObjectServiceIntoCountryService()
+
+        countryService.findAllCountriesNotRestricted()
+        businessObjectServiceMockFor.verify(bos)
+    }
+
+    @Test
+    public void findAllCountriesNotRestrictedReturnsImmutableList() {
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
+        }
+        injectBusinessObjectServiceIntoCountryService()
+
+        List<Country> countries = countryService.findAllCountriesNotRestricted()
+        shouldFail() {
+            countries.add(null);
+        }
+        businessObjectServiceMockFor.verify(bos)
+
+    }
+
+    @Test
+    public void testFindAllCountries() {
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
+        }
+        injectBusinessObjectServiceIntoCountryService()
+
+        countryService.findAllCountries()
+        businessObjectServiceMockFor.verify(bos)
+    }
+
+    public void testFindAllCountriesReturnsImmutableList() {
+        businessObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU"), sampleCountries.get("ZZ")]
+        }
+        injectBusinessObjectServiceIntoCountryService()
+
+        List<Country> countries = countryService.findAllCountriesNotRestricted()
+        shouldFail() {
+            countries.add(null)
+        }
+        businessObjectServiceMockFor.verify(bos)
+    }
 }

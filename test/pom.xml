@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Copyright 2006-2011 The Kuali Foundation
   ~
@@ -14,9 +13,7 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <name>rice-test</name>
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -35,7 +32,8 @@
         <module>kcb</module>
         <module>impl</module>
         <module>edl</module>
-    </modules>
+        <module>shareddata</module>
+  </modules>
     <properties>
       <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->
       <maven.surefire.skip>true</maven.surefire.skip>

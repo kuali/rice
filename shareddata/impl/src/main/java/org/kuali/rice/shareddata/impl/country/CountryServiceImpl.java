@@ -79,9 +79,9 @@ public final class CountryServiceImpl implements CountryService {
     }
 
     /**
-     * Sets the businessObjectService attribute value.
+     * Sets the businessObjectServiceMockFor attribute value.
      *
-     * @param businessObjectService The businessObjectService to set.
+     * @param businessObjectService The businessObjectServiceMockFor to set.
      */
     public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;

@@ -50,6 +50,8 @@ public class ClientValidationUtils {
 	// message
 	private static List<List<String>> mustOccursPathNames;
 	
+	public static final String LABEL_KEY_SPLIT_PATTERN = ",";
+	
 	public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
 	public static final String PREREQ_MSG_KEY = "prerequisite";
 	public static final String POSTREQ_MSG_KEY = "postrequisite";
@@ -104,6 +106,31 @@ public class ClientValidationUtils {
             return false;
 		}
 	}
+	
+	public static String generateMessageFromLabelKey(String labelKey){
+		String message = "NO MESSAGE";
+		if(StringUtils.isNotEmpty(labelKey)){
+			if(labelKey.contains(LABEL_KEY_SPLIT_PATTERN)){
+				message = "";
+				String[] tokens = labelKey.split(LABEL_KEY_SPLIT_PATTERN);
+				int i = 0;
+				for(String s: tokens){
+					String ps = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + s);
+					i++;
+					if(i != tokens.length){
+						message = message + ps + ", ";
+					}
+					else{
+						message = message + ps;
+					}
+				}
+			}
+			else{
+				message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + labelKey);
+			}
+		}
+		return message;
+	}
 
 	/**
 	 * Generates the js object used to override all default messages for validator jquery plugin with custom
@@ -139,12 +166,10 @@ public class ClientValidationUtils {
 	 * @return js validator.addMethod script
 	 */
 	public static String getRegexMethod(ValidCharactersConstraint validCharactersConstraint) {
-		String message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + validCharactersConstraint.getLabelKey());
-		if(StringUtils.isEmpty(message)){
-			message = validCharactersConstraint.getLabelKey() + "- no message";
-		}
+		String message = generateMessageFromLabelKey(validCharactersConstraint.getLabelKey());
+		String key = "validChar" + methodKey;
 		
-		return "\njQuery.validator.addMethod(\"" + validCharactersConstraint.getLabelKey()
+		return "\njQuery.validator.addMethod(\"" + key
 				+ "\", function(value, element) {\n" + " return this.optional(element) || "
 				+ validCharactersConstraint.getJsValue() + ".test(value); " + "}, \""
 				+ message + "\");";
@@ -341,12 +366,14 @@ public class ClientValidationUtils {
 			}
 			else if (constraint instanceof ValidCharactersConstraint) {
 				String regexMethod = "";
-				String methodName = ((BaseConstraint) constraint).getLabelKey();
-				if (((ValidCharactersConstraint)constraint).getJsValue() != null) {
+				String methodName = "";
+				if(StringUtils.isNotEmpty(((ValidCharactersConstraint)constraint).getJsValue())) {
 					regexMethod = ClientValidationUtils.getRegexMethod((ValidCharactersConstraint) constraint) + "\n";
+					methodName = "validChar" + methodKey;
+					methodKey++;
 				}
 				else {
-					if(ClientValidationUtils.ValidationMessageKeys.contains(((ValidCharactersConstraint)constraint).getLabelKey())){
+					if(StringUtils.isNotEmpty(((ValidCharactersConstraint)constraint).getLabelKey())){
 						methodName = ((ValidCharactersConstraint)constraint).getLabelKey();
 					}
 				}
@@ -416,7 +443,13 @@ public class ClientValidationUtils {
 	 */
 	private static String getPrerequisiteStatement(AttributeField field, View view, PrerequisiteConstraint constraint, String booleanStatement) {
 		methodKey++;
-		String message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + "prerequisite");
+		String message = "";
+		if(StringUtils.isEmpty(constraint.getLabelKey())){
+			message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + "prerequisite");
+		}
+		else{
+			message = generateMessageFromLabelKey(constraint.getLabelKey());
+		}
 		if(StringUtils.isEmpty(message)){
 			message = "prerequisite - No message";
 		}
@@ -458,11 +491,15 @@ public class ClientValidationUtils {
 	 */
 	private static String getPostrequisiteStatement(AttributeField field, PrerequisiteConstraint constraint, String booleanStatement) {
 		// field occurs after case
-		String message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + "postrequisite");
-		if(StringUtils.isEmpty(message)){
-			message = "postrequisite - No message";
+		String message = "";
+		if(StringUtils.isEmpty(constraint.getLabelKey())){
+			message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + "postrequisite");
 		}
 		else{
+			message = generateMessageFromLabelKey(constraint.getLabelKey());
+		}
+		
+		if(StringUtils.isEmpty(constraint.getLabelKey())){
 			if(StringUtils.isNotEmpty(field.getLabel())){
 				message = MessageFormat.format(message, field.getLabel());
 			}
@@ -502,7 +539,7 @@ public class ClientValidationUtils {
 		String methodName = "moConstraint" + methodKey;
 		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
 		" if(" + booleanStatement + "){return (this.optional(element) || ("+ getMustOccurStatement(field, mc) + "));}else{return true;}" +
-		"}, \"" + getMustOccursMessage(view) +"\");";
+		"}, \"" + getMustOccursMessage(view, mc) +"\");";
 		String rule = method + "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').rules(\"add\", {\n" + methodName + ": function(element){return (" + booleanStatement + ");}\n});";
 		addScriptToView(view, rule);
 	}
@@ -572,83 +609,89 @@ public class ClientValidationUtils {
 
 	
 	/**
-	 * Generates a message for the must occurs constraint.  This message is most accurate when must occurs is a single
+	 * Generates a message for the must occur constraint (if no label key is specified).  
+	 * This message is most accurate when must occurs is a single
 	 * or double level constraint.  Beyond that, the message will still be accurate but may be confusing for
-	 * the user - this message however will work in most use cases.
+	 * the user - this auto-generated message however will work in MOST use cases.
 	 * 
 	 * @param view
 	 * @return
 	 */
-	private static String getMustOccursMessage(View view){
+	private static String getMustOccursMessage(View view, MustOccurConstraint constraint){
 		String message = "";
-		String and = configService.getPropertyString(AND_MSG_KEY);
-		String all = configService.getPropertyString(ALL_MSG_KEY);
-		String atMost = configService.getPropertyString(ATMOST_MSG_KEY);
-		String genericLabel = configService.getPropertyString(GENERIC_FIELD_MSG_KEY);
-		String mustOccursMsg = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
-		//String postfix = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_POST_MSG_KEY);
-		String statement="";
-		for(int i=0; i< mustOccursPathNames.size(); i++){
-			String andedString = "";
-			
-			List<String> paths = mustOccursPathNames.get(i);
-			if(!paths.isEmpty()){
-				//note that the last 2 strings are min and max and rest are attribute paths
-				String min = paths.get(paths.size()-2);
-				String max = paths.get(paths.size()-1);
-				for(int j=0; j<paths.size()-2;j++){
-					AttributeField field = view.getViewIndex().getAttributeFieldByPath(paths.get(j).trim());
-					String label = genericLabel;
-					if(field != null && StringUtils.isNotEmpty(field.getLabel())){
-						label = field.getLabel();
-					}
-					if(min.equals(max)){
-						if(j==0){
-							andedString = label;
+		if(StringUtils.isNotEmpty(constraint.getLabelKey())){
+			message = generateMessageFromLabelKey(constraint.getLabelKey());
+		}
+		else{
+			String and = configService.getPropertyString(AND_MSG_KEY);
+			String all = configService.getPropertyString(ALL_MSG_KEY);
+			String atMost = configService.getPropertyString(ATMOST_MSG_KEY);
+			String genericLabel = configService.getPropertyString(GENERIC_FIELD_MSG_KEY);
+			String mustOccursMsg = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
+			//String postfix = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_POST_MSG_KEY);
+			String statement="";
+			for(int i=0; i< mustOccursPathNames.size(); i++){
+				String andedString = "";
+				
+				List<String> paths = mustOccursPathNames.get(i);
+				if(!paths.isEmpty()){
+					//note that the last 2 strings are min and max and rest are attribute paths
+					String min = paths.get(paths.size()-2);
+					String max = paths.get(paths.size()-1);
+					for(int j=0; j<paths.size()-2;j++){
+						AttributeField field = view.getViewIndex().getAttributeFieldByPath(paths.get(j).trim());
+						String label = genericLabel;
+						if(field != null && StringUtils.isNotEmpty(field.getLabel())){
+							label = field.getLabel();
 						}
-						else if(j==paths.size()-3){
-							andedString = andedString + " " + and + " " + label;
+						if(min.equals(max)){
+							if(j==0){
+								andedString = label;
+							}
+							else if(j==paths.size()-3){
+								andedString = andedString + " " + and + " " + label;
+							}
+							else{
+								andedString = andedString + ", " + label;
+							}
 						}
 						else{
-							andedString = andedString + ", " + label;
+							andedString = andedString + "<li>" + label + "</li>";
 						}
 					}
-					else{
-						andedString = andedString + "<li>" + label + "</li>";
+					if(min.equals(max)){
+						andedString = "<li>" + andedString + "</li>";
+					}
+					andedString="<ul>" + andedString + "</ul>";
+				
+					if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && !min.equals(max)){
+						andedString = MessageFormat.format(mustOccursMsg, min + "-" + max) + "<br/>" +andedString;
+					}
+					else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i==0){
+						andedString = MessageFormat.format(mustOccursMsg, all) + "<br/>" +andedString;
+					}
+					else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i!=0){
+						//leave andedString as is
+					}
+					else if(StringUtils.isNotEmpty(min)){
+						andedString = MessageFormat.format(mustOccursMsg, min) + "<br/>" +andedString;
+					}
+					else if(StringUtils.isNotEmpty(max)){
+						andedString = MessageFormat.format(mustOccursMsg, atMost + " " + max) + "<br/>" +andedString;
 					}
 				}
-				if(min.equals(max)){
-					andedString = "<li>" + andedString + "</li>";
-				}
-				andedString="<ul>" + andedString + "</ul>";
-			
-				if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && !min.equals(max)){
-					andedString = MessageFormat.format(mustOccursMsg, min + "-" + max) + "<br/>" +andedString;
-				}
-				else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i==0){
-					andedString = MessageFormat.format(mustOccursMsg, all) + "<br/>" +andedString;
-				}
-				else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i!=0){
-					//leave andedString as is
-				}
-				else if(StringUtils.isNotEmpty(min)){
-					andedString = MessageFormat.format(mustOccursMsg, min) + "<br/>" +andedString;
-				}
-				else if(StringUtils.isNotEmpty(max)){
-					andedString = MessageFormat.format(mustOccursMsg, atMost + " " + max) + "<br/>" +andedString;
+				if(StringUtils.isNotEmpty(andedString)){
+					if(i==0){
+						statement = andedString;
+					}
+					else{
+						statement = statement + andedString;
+					}
 				}
 			}
-			if(StringUtils.isNotEmpty(andedString)){
-				if(i==0){
-					statement = andedString;
-				}
-				else{
-					statement = statement + andedString;
-				}
+			if(StringUtils.isNotEmpty(statement)){
+				message = statement;
 			}
-		}
-		if(StringUtils.isNotEmpty(statement)){
-			message = statement;
 		}
 		
 		return message;
@@ -689,15 +732,15 @@ public class ClientValidationUtils {
 		}
 
 		if (field.getValidCharactersConstraint() != null && field.getValidCharactersConstraint().getApplyClientSide()) {
-			if (field.getValidCharactersConstraint().getJsValue() != null) {
+			if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getJsValue())) {
 				// set jsValue takes precedence
 				addScriptToView(view, ClientValidationUtils.getRegexMethod(field.getValidCharactersConstraint()));
-				field.getControl().addStyleClass(field.getValidCharactersConstraint().getLabelKey());
+				field.getControl().addStyleClass("validChar" + methodKey);
+				methodKey++;
 			}
 			else {
-				// attempt to find key in the map of known supported
-				// validCharacter methods
-				if(ClientValidationUtils.ValidationMessageKeys.contains(field.getValidCharactersConstraint().getLabelKey())){
+				//blindly assume that if there is no js value defined that there must be a method by this name
+				if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getLabelKey())){
 					field.getControl().addStyleClass(field.getValidCharactersConstraint().getLabelKey());
 				}
 			}

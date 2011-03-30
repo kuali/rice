@@ -17,11 +17,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BaseConstraint implements Constraint {
     @XmlElement
-    protected String labelKey; // Label key will map to a message... for a field
-								// there can be multiple contexts for the
-								// label... a help context, a description
-								// context, and a field label context for
-								// example
+    protected String labelKey; 
     @XmlElement
     protected Boolean applyClientSide;
     
@@ -32,7 +28,12 @@ public class BaseConstraint implements Constraint {
 	/**
 	 * LabelKey should be a single word key.  This key is used to find a message to use for this
 	 * constraint from available messages.  The key is also used for defining/retrieving validation method
-	 * names when applicable - as such this key MUST exist for valid character constraints.
+	 * names when applicable for ValidCharactersContraints.
+	 * 
+	 * If a comma separated list of keys is used, a message will be generated that is a comma separated list of
+	 * the messages retrieved for each key.
+	 * 
+	 * @see ValidCharactersConstraint
 	 * 
 	 * @return
 	 */

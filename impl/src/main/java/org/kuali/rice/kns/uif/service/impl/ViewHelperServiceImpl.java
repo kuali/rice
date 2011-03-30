@@ -311,14 +311,16 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// evaluate properties
-		pushCommonContext(view, component);
+		component.getContext().putAll(getCommonContext(view, component));
 		getExpressionEvaluatorService().evaluateObjectProperties(component, model, component.getContext());
 
 		if (component instanceof Container) {
 			LayoutManager layoutManager = ((Container) component).getLayoutManager();
 
 			if (layoutManager != null) {
+			    layoutManager.getContext().putAll(getCommonContext(view, component));
 				layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
+				layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
 				expressionEvaluatorService.evaluateObjectProperties(layoutManager, model, layoutManager.getContext());
 			}
 		}
@@ -365,6 +367,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 				if (StringUtils.isNotBlank(modifier.getRunCondition())) {
 					Map<String, Object> context = new HashMap<String, Object>();
 					context.put(UifConstants.ContextVariableNames.COMPONENT, component);
+					context.put(UifConstants.ContextVariableNames.VIEW, view);
 
 					String conditionEvaluation = getExpressionEvaluatorService().evaluateExpressionTemplate(model,
 							context, modifier.getRunCondition());
@@ -378,19 +381,23 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 	}
 
-	/**
-	 * Gets global objects for the context map and pushes them to the context
-	 * for the component
-	 * 
-	 * @param view
-	 *            - view instance for component
-	 * @param component
-	 *            - component instance to push context to
-	 */
-	protected void pushCommonContext(View view, Component component) {
-		component.getContext().putAll(view.getContext());
-		component.pushObjectToContext(UifConstants.ContextVariableNames.COMPONENT, component);
-	}
+    /**
+     * Gets global objects for the context map and pushes them to the context
+     * for the component
+     * 
+     * @param view
+     *            - view instance for component
+     * @param component
+     *            - component instance to push context to
+     */
+    protected Map<String, Object> getCommonContext(View view, Component component) {
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        context.putAll(view.getContext());
+        context.put(UifConstants.ContextVariableNames.COMPONENT, component);
+
+        return context;
+    }
 
 	/**
 	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performFinalize(org.kuali.rice.kns.uif.container.View,
@@ -567,7 +574,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		Inquirable<?> inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(),
 				inquiry.getViewName());
 		if (inquirable != null) {
-			inquirable.buildInquiryLink(dataObject, propertyName, inquiry);
+			inquirable.buildInquirableLink(dataObject, propertyName, inquiry);
 		}
 		else {
 			// inquirable not found, no inquiry link can be set

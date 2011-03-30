@@ -118,6 +118,7 @@ public class UifConstants extends JSTLConstants {
 		public static final String COMPONENT = "component";
 		public static final String INDEX = "index";
 		public static final String LINE = "line";
+		public static final String MANAGER = "manager";
 		public static final String PARENT = "parent";
 		public static final String VIEW = "view";
 	}

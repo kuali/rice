@@ -21,6 +21,7 @@ import java.util.Map;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 
 /**
  * This interface defines the methods for inquirables.
@@ -70,5 +71,28 @@ public interface Inquirable<ObjectType> extends ViewHelperService {
      */
     @Deprecated
     public void setShowInactiveRecords(String collectionName, boolean showInactive);
+    
+    /**
+     * Invoked by the <code>ViewHelperService</code> to build a link to the
+     * inquiry
+     * 
+     * <p>
+     * Note this is used primarily for custom <code>Inquirable</code>
+     * implementations to customize the inquiry class or parameters for an
+     * inquiry. Instead of building the full inquiry link, implementations can
+     * make a callback to
+     * org.kuali.rice.kns.uif.widget.Inquiry.buildInquiryLink(Object, String,
+     * Class<?>, Map<String, String>) given an inquiry class and parameters to
+     * build the link field.
+     * </p>
+     * 
+     * @param dataObject
+     *            - parent object for the inquiry property
+     * @param propertyName
+     *            - name of the property the inquiry is being built for
+     * @param inquiry
+     *            - instance of the inquiry widget being built for the property
+     */
+    public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry);
     
 }

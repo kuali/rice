@@ -169,33 +169,32 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
 		return sections;
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#buildInquiryLink(java.lang.Object,
-	 *      java.lang.String, org.kuali.rice.kns.uif.widget.Inquiry)
-	 */
-	@Override
-	public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry) {
-		Class<?> inquiryObjectClass = null;
+    /**
+     * @see org.kuali.rice.kns.inquiry.Inquirable#buildInquirableLink(java.lang.Object,
+     *      java.lang.String, org.kuali.rice.kns.uif.widget.Inquiry)
+     */
+    public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry) {
+        Class<?> inquiryObjectClass = null;
 
-		// inquiry into data object class if property is title attribute
-		Class<?> dataObjectClass = ObjectUtils.materializeClassForProxiedObject(dataObject);
-		if (propertyName.equals(getBusinessObjectDictionaryService().getTitleAttribute(dataObjectClass))) {
-			inquiryObjectClass = dataObjectClass;
-		}
-		else if (ObjectUtils.isNestedAttribute(propertyName)) {
-			String nestedPropertyName = ObjectUtils.getNestedAttributePrefix(propertyName);
-			Object nestedPropertyObject = ObjectUtils.getNestedValue(dataObject, nestedPropertyName);
+        // inquiry into data object class if property is title attribute
+        Class<?> dataObjectClass = ObjectUtils.materializeClassForProxiedObject(dataObject);
+        if (propertyName.equals(getBusinessObjectDictionaryService().getTitleAttribute(dataObjectClass))) {
+            inquiryObjectClass = dataObjectClass;
+        }
+        else if (ObjectUtils.isNestedAttribute(propertyName)) {
+            String nestedPropertyName = ObjectUtils.getNestedAttributePrefix(propertyName);
+            Object nestedPropertyObject = ObjectUtils.getNestedValue(dataObject, nestedPropertyName);
 
-			if (ObjectUtils.isNotNull(nestedPropertyObject)) {
-				String nestedPropertyPrimitive = ObjectUtils.getNestedAttributePrimitive(propertyName);
-				Class<?> nestedPropertyObjectClass = ObjectUtils.materializeClassForProxiedObject(nestedPropertyObject);
+            if (ObjectUtils.isNotNull(nestedPropertyObject)) {
+                String nestedPropertyPrimitive = ObjectUtils.getNestedAttributePrimitive(propertyName);
+                Class<?> nestedPropertyObjectClass = ObjectUtils.materializeClassForProxiedObject(nestedPropertyObject);
 
-				if (nestedPropertyPrimitive.equals(getBusinessObjectDictionaryService().getTitleAttribute(
-						nestedPropertyObjectClass))) {
-					inquiryObjectClass = nestedPropertyObjectClass;
-				}
-			}
-		}
+                if (nestedPropertyPrimitive.equals(getBusinessObjectDictionaryService().getTitleAttribute(
+                        nestedPropertyObjectClass))) {
+                    inquiryObjectClass = nestedPropertyObjectClass;
+                }
+            }
+        }
 
 		// if not title, then get primary relationship
 		BusinessObjectRelationship relationship = null;

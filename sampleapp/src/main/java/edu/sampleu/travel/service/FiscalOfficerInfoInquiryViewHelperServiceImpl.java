@@ -23,6 +23,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl;
+import org.kuali.rice.kns.uif.widget.Inquiry;
 
 import edu.sampleu.travel.dto.FiscalOfficerInfo;
 
@@ -37,6 +38,11 @@ public class FiscalOfficerInfoInquiryViewHelperServiceImpl extends ViewHelperSer
         FiscalOfficerService service = GlobalResourceLoader.getService("fiscalOfficerService");
         
         return service.retrieveFiscalOfficer(new Long((String)fieldValues.get("id")));
+    }
+
+    @Override
+    public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry) {
+        // TODO jkneal - THIS METHOD NEEDS JAVADOCS
     }
 
     @Override

@@ -107,11 +107,11 @@ public class LookupController extends UifControllerBase {
 	public ModelAndView cancel(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
     	Properties props = new Properties();
     	props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
-    	props.put("docFormKey", lookupForm.getFormKey());
+    	props.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
     	if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
-        	props.put("docNum", lookupForm.getDocNum());
+        	props.put(UifParameters.DOC_NUM, lookupForm.getDocNum());
     	}
-    	return performRedirect(lookupForm, lookupForm.getBackLocation(), props);
+    	return performRedirect(lookupForm, lookupForm.getReturnLocation(), props);
     }
 
     /**

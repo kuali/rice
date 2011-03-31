@@ -104,7 +104,7 @@ public class QuickFinder extends WidgetBase {
         quickfinderActionField.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
         if (!fieldConversions.isEmpty()) {
-            quickfinderActionField.addActionParameter(UifParameters.FIELD_CONVERSIONS,
+            quickfinderActionField.addActionParameter(UifParameters.CONVERSION_FIELDS,
                     WebUtils.buildMapParameterString(fieldConversions));
         }
 
@@ -147,7 +147,7 @@ public class QuickFinder extends WidgetBase {
         }
 
         // get relationship from metadata service
-        return KNSServiceLocator.getBusinessObjectMetaDataService().getDataObjectRelationship(parentObject,
+        return KNSServiceLocator.getDataObjectMetaDataService().getDataObjectRelationship(parentObject,
                 parentObjectClass, propertyName, "", true, true, false);
     }
 

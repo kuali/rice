@@ -27,14 +27,15 @@ public class UifParameters {
 	public static final String AUTO_SEARCH = "autoSearch";
 	public static final String BASE_LOOKUP_URL = "baseLookupUrl";
 	public static final String METHOD_TO_CALL = "methodToCall";
+    public static final String CONVERSION_FIELDS = "conversionFields";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
 	public static final String DISABLE_SEARCH_BUTTONS = "disableSearchButtons";
-	public static final String FIELD_CONVERSIONS = "fieldConversions";
+    public static final String DOC_NUM = "docNum";
+    public static final String FORM_KEY = "formKey";
 	public static final String HEADER_BAR_ENABLED = "headerBarEnabled";
 	public static final String HIDE_RETURN_LINK = "hideReturnLink";
 	public static final String LOOKUP_CRITERIA_ENABLED = "lookupCriteriaEnabled";
 	public static final String LOOKUP_PARAMETERS = "lookupParameters";
-	public static final String OBJECT_CLASS_NAME = "objectClassName";
 	public static final String READ_ONLY_FIELDS = "readOnlyFields";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
 	public static final String RETURN_LOCATION = "returnLocation";

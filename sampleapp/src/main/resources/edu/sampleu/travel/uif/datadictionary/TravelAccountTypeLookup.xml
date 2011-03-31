@@ -18,7 +18,7 @@
  limitations under the License.
 -->
 
-  <bean id="TravelAccount-LookupView" parent="LookupView">
+  <bean id="TravelAccountType-LookupView" parent="LookupView">
     <property name="title" value="Travel Account Type Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccountType" />
     <property name="criteriaFields">

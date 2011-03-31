@@ -90,7 +90,7 @@ public abstract class UifControllerBase {
 	@ModelAttribute(value = "KualiForm")
 	public UifFormBase initForm(HttpServletRequest request) {
 		UifFormBase form;
-		String formKeyParam = request.getParameter(KNSConstants.FORM_KEY);
+		String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
 		
 		// TODO not sure if this is safe, but assuming if docFormKey comes in then
 		// we are loading a Document view

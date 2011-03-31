@@ -88,7 +88,7 @@ public interface LookupViewHelperService extends ViewHelperService {
 
     public String getReturnLocation();
 
-	public String getDocFormKey();
+	public String getReturnFormKey();
 
 	public boolean isAtLeastOneRowReturnable();
 

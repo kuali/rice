@@ -98,7 +98,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 
 	protected Class<?> dataObjectClass;
 	protected String returnLocation;
-	protected String docFormKey;
+	protected String returnFormKey;
 	protected String docNum;
 	protected String referencesToRefresh;
 	protected boolean searchUsingOnlyPrimaryKeyValues = false;
@@ -356,8 +356,8 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 
 		searchUsingOnlyPrimaryKeyValues = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(getDataObjectClass(), fieldValues);
 
-		setReturnLocation(fieldValues.get(KNSConstants.BACK_LOCATION));
-		setDocFormKey(fieldValues.get(KNSConstants.DOC_FORM_KEY));
+		setReturnLocation(fieldValues.get(UifParameters.RETURN_LOCATION));
+		setReturnFormKey(fieldValues.get(UifParameters.RETURN_FORM_KEY));
 		setReferencesToRefresh(fieldValues.get(KNSConstants.REFERENCES_TO_REFRESH));
 		List<?> searchResults;
 		Map<String, String> nonBlankFieldValues = new HashMap<String, String>();
@@ -686,7 +686,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 			// props.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
 			// props.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getDataObjectClass().getName());
 			props.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, MaintenanceDocumentController.METHOD_TO_CALL_NEW);
-			props.put(UifConstants.ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME, getDataObjectClass().getName());
+			props.put(UifParameters.DATA_OBJECT_CLASS_NAME, getDataObjectClass().getName());
 			props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
 
 			// TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 2 lines)
@@ -825,7 +825,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		}
 		// TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 3 lines)
 		// props.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, dataObject.getClass().getName());
-		props.put(UifConstants.ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME, dataObject.getClass().getName());
+		props.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObject.getClass().getName());
 		props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
 		// TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 2 lines)
 		// return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, props);
@@ -988,21 +988,21 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 //			lookupAnchor = anchor;
 //		}
 //		buffer.append("&anchor=" + lookupAnchor + "&docNum=" + (StringUtils.isEmpty(getDocNum()) ? "" : getDocNum()));
-		buffer.append("&docNum=" + (StringUtils.isEmpty(getDocNum()) ? "" : getDocNum()));
+		buffer.append("&" + UifParameters.DOC_NUM + "=" + (StringUtils.isEmpty(getDocNum()) ? "" : getDocNum()));
 		return buffer.toString();
 	}
 
 	protected Properties getReturnUrlParameters(Object dataObject, Map<String,String> fieldConversionValues, String lookupImpl, List<String> returnKeys) {
 		Properties props = new Properties();
 		props.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.RETURN_METHOD_TO_CALL);
-		if (getDocFormKey() != null) {
-			props.put(KNSConstants.DOC_FORM_KEY, getDocFormKey());
+		if (getReturnFormKey() != null) {
+			props.put(UifParameters.FORM_KEY, getReturnFormKey());
 		}
 		if (lookupImpl != null) {
 			props.put(KNSConstants.REFRESH_CALLER, lookupImpl);
 		}
 		if (getDocNum() != null) {
-			props.put(KNSConstants.DOC_NUM, getDocNum());
+			props.put(UifParameters.DOC_NUM, getDocNum());
 		}
 
 		if (getReferencesToRefresh() != null) {
@@ -1015,7 +1015,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 
 			Object fieldVal = ObjectUtils.getPropertyValue(dataObject, fieldNm);
 			if (fieldVal == null) {
-				fieldVal = KNSConstants.EMPTY_STRING;
+				fieldVal = StringUtils.EMPTY;
 			}
 
 			if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(getDataObjectClass(), fieldNm)) {
@@ -1197,21 +1197,6 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
     }
 
 	/**
-	 * @return the docFormKey
-	 */
-	public String getDocFormKey() {
-		return this.docFormKey;
-	}
-
-	/**
-	 * @param docFormKey
-	 *            the docFormKey to set
-	 */
-	public void setDocFormKey(String docFormKey) {
-		this.docFormKey = docFormKey;
-	}
-
-	/**
 	 * @return the docNum
 	 */
 	public String getDocNum() {
@@ -1300,6 +1285,20 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	public void setDefaultSortAttributeNames(List<String> defaultSortAttributeNames) {
 		this.defaultSortAttributeNames = defaultSortAttributeNames;
 	}
+
+	/**
+     * @return the returnFormKey
+     */
+    public String getReturnFormKey() {
+    	return this.returnFormKey;
+    }
+
+	/**
+     * @param returnFormKey the returnFormKey to set
+     */
+    public void setReturnFormKey(String returnFormKey) {
+    	this.returnFormKey = returnFormKey;
+    }
 
 	/**
 	 * @return the sortAscending

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.LookupViewHelperService;
@@ -192,17 +193,17 @@ public class LookupForm extends UifFormBase {
 				setFormKey(request.getParameter(KNSConstants.DOC_FORM_KEY));
 			}
 
-			if (request.getParameter(KNSConstants.DOC_NUM) != null) {
-				setDocNum(request.getParameter(KNSConstants.DOC_NUM));
-			}
+//			if (request.getParameter(KNSConstants.DOC_NUM) != null) {
+//				setDocNum(request.getParameter(KNSConstants.DOC_NUM));
+//			}
 
 			// this used to be in the Form as a property but has been moved for KRAD
 			Boolean showMaintenanceLinks = Boolean.valueOf(request.getParameter("showMaintenanceLinks"));
             // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
             if (!showMaintenanceLinks.booleanValue()) {
             	// TODO delyea - is this the best way to decide whether to display the maintenance actions?
-            	if (StringUtils.contains(getBackLocation(), "/"+KNSConstants.PORTAL_ACTION) 
-            			|| StringUtils.contains(getBackLocation(), "/index.html")) {
+            	if (StringUtils.contains(getReturnLocation(), "/"+KNSConstants.PORTAL_ACTION) 
+            			|| StringUtils.contains(getReturnLocation(), "/index.html")) {
             		showMaintenanceLinks = Boolean.TRUE;
             	}
             }
@@ -215,12 +216,9 @@ public class LookupForm extends UifFormBase {
 //				localLookupViewHelperService.setHideReturnLink(hideReturnLinkValue.booleanValue());
 //			}
 
-			if (request.getParameter("returnLocation") != null) {
-				setBackLocation(request.getParameter("returnLocation"));
-			}
-			if (request.getParameter("conversionFields") != null) {
-				setConversionFields(request.getParameter("conversionFields"));
-			}
+//			if (request.getParameter("conversionFields") != null) {
+//				setConversionFields(request.getParameter("conversionFields"));
+//			}
 //			String value = request.getParameter("multipleValues");
 //			if (value != null) {
 //				if ("YES".equals(value.toUpperCase())) {
@@ -298,10 +296,10 @@ public class LookupForm extends UifFormBase {
 //				}
 //
 //			}
-			fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getReturnFormKey());
-			fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
-			if (this.getDocNum() != null) {
-				fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());
+			fieldValues.put(UifParameters.RETURN_FORM_KEY, getReturnFormKey());
+			fieldValues.put(UifParameters.RETURN_LOCATION, getReturnLocation());
+			if (StringUtils.isNotBlank(getDocNum())) {
+				fieldValues.put(KNSConstants.DOC_NUM, getDocNum());
 			}
 //			if (StringUtils.isNotBlank(getReferencesToRefresh())) {
 //				fieldValues.put(KNSConstants.REFERENCES_TO_REFRESH, this.getReferencesToRefresh());
@@ -309,9 +307,9 @@ public class LookupForm extends UifFormBase {
 
 			this.setCriteriaFields(fieldValues);
 
-			setFieldConversions(LookupUtils.translateFieldConversions(this.conversionFields));
+			setFieldConversions(LookupUtils.translateFieldConversions(getConversionFields()));
 			localLookupViewHelperService.setFieldConversions(getFieldConversions());
-			localLookupViewHelperService.setDocNum(this.getDocNum());
+			localLookupViewHelperService.setDocNum(getDocNum());
 			localLookupViewHelperService.setSuppressActions(isSuppressActions());
 			localLookupViewHelperService.setHideReturnLink(isHideReturnLink());
 //			setLookupViewHelperService(localLookupViewHelperService);
@@ -364,26 +362,5 @@ public class LookupForm extends UifFormBase {
 	public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
     	this.readOnlyFieldsList = readOnlyFieldsList;
     }
-
-	/**
-	 * BELOW COPIED FROM KualiForm
-	 */
-
-	private String backLocation;
-
-	/**
-	 * @return the backLocation
-	 */
-	public String getBackLocation() {
-		return this.backLocation;
-	}
-
-	/**
-	 * @param backLocation
-	 *            the backLocation to set
-	 */
-	public void setBackLocation(String backLocation) {
-		this.backLocation = backLocation;
-	}
 
 }

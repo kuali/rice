@@ -19,5 +19,4 @@
 
 <html:hidden property="documentWebScope" value="session"/>
 <html:hidden property="formKey" value="${KualiForm.formKey}" />
-<html:hidden property="docFormKey" value="${KualiForm.formKey}" />
 <html:hidden property="docNum" value="${KualiForm.document.documentNumber}" />

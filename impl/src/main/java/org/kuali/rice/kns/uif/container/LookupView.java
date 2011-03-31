@@ -69,7 +69,11 @@ public class LookupView extends FormView {
 	public void performInitialization(View view) {
 		initializeGroups();
 		if (getItems().isEmpty()) {
-			setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup(), getFormGroup()));
+			if (getFormGroup() != null) {
+				setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup(), getFormGroup()));
+			} else {
+				setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
+			}
 		}
 		super.performInitialization(view);
 
@@ -177,7 +181,7 @@ public class LookupView extends FormView {
 		 *   row.rowReturnable
 		 */
 		LookupViewHelperService lookupHelperService = (LookupViewHelperService) getViewHelperService();
-		return ( (StringUtils.isNotBlank(lookupHelperService.getDocFormKey())) &&
+		return ( (StringUtils.isNotBlank(lookupHelperService.getReturnFormKey())) &&
 				 (StringUtils.isNotBlank(lookupHelperService.getReturnLocation())) &&
 				 (!lookupHelperService.isHideReturnLink())
 				);

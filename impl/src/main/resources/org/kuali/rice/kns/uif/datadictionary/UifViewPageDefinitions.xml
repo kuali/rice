@@ -138,6 +138,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="conditionalReadOnly" value="true"/>
       </bean>
     </property>
+<!--
     <property name="formGroup">
       <bean parent="GroupBodyOnly">
         <property name="layoutManager">
@@ -169,6 +170,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </property>
       </bean>
     </property>
+-->
   </bean>
   
   <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>

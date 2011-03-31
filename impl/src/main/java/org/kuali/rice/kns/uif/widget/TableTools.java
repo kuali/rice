@@ -38,6 +38,11 @@ public class TableTools extends WidgetBase {
 	private String emptyTableMessage;
 	private boolean disableTableSort;
 	
+	/**
+	 * By default, show the search and export options
+	 */
+	private boolean showSearchAndExportOptions = true;
+	
 	public TableTools() {
 		super();
 	}
@@ -61,6 +66,13 @@ public class TableTools extends WidgetBase {
 		if (isDisableTableSort()){
 			getComponentOptions().put(UifConstants.TableToolsKeys.TABLE_SORT,"false");
 		}
+		
+		if (!isShowSearchAndExportOptions()){
+			String sDomOption = getComponentOptions().get(UifConstants.TableToolsKeys.SDOM);
+			sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option 	
+			sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
+			getComponentOptions().put(UifConstants.TableToolsKeys.SDOM,sDomOption);
+		}
 	}
 	
 	/**
@@ -82,6 +94,8 @@ public class TableTools extends WidgetBase {
 	}
 	
 	/**
+	 * Returns true if sorting is disabled
+	 *  
 	 * @return the disableTableSort
 	 */
 	public boolean isDisableTableSort() {
@@ -89,9 +103,29 @@ public class TableTools extends WidgetBase {
 	}
 
 	/**
+	 * Enables/disables the table sorting
+	 *  
 	 * @param disableTableSort the disableTableSort to set
 	 */
 	public void setDisableTableSort(boolean disableTableSort) {
 		this.disableTableSort = disableTableSort;
+	}
+	
+	/**
+	 * Returns true if search and export options are enabled
+	 * 
+	 * @return the showSearchAndExportOptions
+	 */
+	public boolean isShowSearchAndExportOptions() {
+		return this.showSearchAndExportOptions;
+	}
+
+	/**
+	 * Show/Hide the search and export options in tabletools
+	 * 
+	 * @param showSearchAndExportOptions the showSearchAndExportOptions to set
+	 */
+	public void setShowSearchAndExportOptions(boolean showSearchAndExportOptions) {
+		this.showSearchAndExportOptions = showSearchAndExportOptions;
 	}
 }

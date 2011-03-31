@@ -18,6 +18,7 @@ package org.kuali.rice.kns.uif.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
@@ -30,7 +31,10 @@ import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.field.LabelField;
 import org.kuali.rice.kns.uif.helper.TableToolsHelper;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.widget.TableTools;
+import org.kuali.rice.kns.web.spring.form.InquiryForm;
+import org.kuali.rice.kns.web.spring.form.LookupForm;
 
 /**
  * Layout manager that works with <code>CollectionGroup</code> components and
@@ -142,7 +146,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		setNumberOfColumns(totalColumns);
 
 		if (tableTools != null) {
-			if (!tableTools.isDisableTableSort()) {
+			/**
+			 * For Lookup and Inquiry forms, allow table tools to Auto-detect from raw data
+			 */
+			if (!tableTools.isDisableTableSort() && !(model instanceof InquiryForm || model instanceof LookupForm)) {
 				buildTableToolsColumnOptions(collectionGroup);
 			}
 		}
@@ -350,24 +357,33 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		StringBuffer tableToolsColumnOptions = new StringBuffer("[");
 
-		if (collectionGroup.isRenderAddLine()) {
+		if (isRenderSequenceField()) {
 			tableToolsColumnOptions.append(" null ,");
 		}
 
 		for (Component component : collectionGroup.getItems()) {
-			String colOptions = TableToolsHelper.constructTableColumnOptions(true, component);
+			/**
+			 * For GroupField, get the first field from that group
+			 */
+			if (component instanceof GroupField){
+				component = ((GroupField)component).getItems().get(0);
+			}
+			Class dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(), ((AttributeField)component).getPropertyName());
+			String colOptions = TableToolsHelper.constructTableColumnOptions(true, dataTypeClass);
 			tableToolsColumnOptions.append(colOptions + " , ");
+			
 		}
 
 		if (collectionGroup.isRenderLineActions()) {
 			String colOptions = TableToolsHelper.constructTableColumnOptions(false, null);
 			tableToolsColumnOptions.append(colOptions);
+		}else{
+			tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
 		}
 
 		tableToolsColumnOptions.append("]");
 
-		tableTools.getComponentOptions()
-				.put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
+		tableTools.getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
 	}
 
 	/**

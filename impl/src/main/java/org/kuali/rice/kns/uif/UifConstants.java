@@ -124,6 +124,7 @@ public class UifConstants extends JSTLConstants {
 	}
 
 	public static class TableToolsKeys{
+		public static final String SDOM = "sDom";
 		public static final String LANGUAGE = "oLanguage";
 		public static final String EMPTY_TABLE = "sEmptyTable";
 		public static final String AO_COLUMNS = "aoColumns";

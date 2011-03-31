@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kns.uif.helper;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.Date;
+
+import org.apache.commons.lang.ClassUtils;
 import org.kuali.rice.kns.uif.UifConstants;
-import org.kuali.rice.kns.uif.control.TextControl;
-import org.kuali.rice.kns.uif.core.Component;
-import org.kuali.rice.kns.uif.field.AttributeField;
-import org.kuali.rice.kns.uif.field.GroupField;
 
 /**
  * 
@@ -28,23 +26,20 @@ import org.kuali.rice.kns.uif.field.GroupField;
  */
 public class TableToolsHelper {
 
-	public static String constructTableColumnOptions(boolean isSortable, Component component){
+	public static String constructTableColumnOptions(boolean isSortable, Class dataTypeClass){
+		
 		String colOptions = "null";
 		
-		if (!isSortable){
+		if (!isSortable || dataTypeClass == null){
 			colOptions = "{ \"" + UifConstants.TableToolsKeys.SORTABLE + "\" : false } ";
-		}else if (component instanceof AttributeField){
-			AttributeField field = (AttributeField)component;
-			
-			if ( field.getControl() instanceof TextControl && StringUtils.equals(field.getDescription(),"Travel Account Number")){
-				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.NUMERIC + "\" } ";
-			}else if ( field.getControl() instanceof TextControl && ((TextControl)field.getControl()).getDatePicker() != null){
-				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.DATE + "\" } ";
-			}else if ( field.getControl() instanceof TextControl){
+		}else{
+			if (ClassUtils.isAssignable(dataTypeClass, String.class)){
 				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" } ";
+			}else if (ClassUtils.isAssignable(dataTypeClass, Date.class)){
+				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.DATE + "\" } ";				
+			}else if (ClassUtils.isAssignable(dataTypeClass, Number.class)){
+				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.NUMERIC + "\" } ";
 			}
-		}else if (component instanceof GroupField){
-			colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" } ";
 		}
 		
 		return colOptions;

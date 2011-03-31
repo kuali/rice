@@ -155,14 +155,13 @@ div.tab-newh3 img { margin-right:6px
 	height:40px;
 	background-color: #FFF;
 	color:#000;
-	padding-top: 12px;
-	padding-right: 12px;
 	padding-left: 12px;
 	background-image: url(../images/toptexture.png);
 }
 
 .view_header h1 {
-	font-size: 2em;	
+	font-size: 2em;
+	padding-top: 12px;	
 }	
 
 .page_header {
@@ -284,7 +283,6 @@ th.infoline {
 }
 
 .group_docheader {
-	width: 40%;
 	float: right;
 }
 

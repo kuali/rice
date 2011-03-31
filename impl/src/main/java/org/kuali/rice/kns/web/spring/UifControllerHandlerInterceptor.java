@@ -63,6 +63,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             }
             
             // store form in session
+            form.setPreviousView(null);
             request.getSession().setAttribute(form.getFormKey(), model);
             
             // currently methodToCall must be a regularly parseable request parameter, so just get from request

@@ -22,6 +22,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.PersistableAttachment;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.exception.ValidationException;
@@ -101,9 +102,9 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
 			// Retrieving the FileName from BO table
 			Maintainable tmpMaintainable = form.getDocument().getNewMaintainableObject();
-			if (tmpMaintainable.getBusinessObject() instanceof PersistableAttachment) {
+			if (tmpMaintainable.getDataObject() instanceof PersistableAttachment) {
 				PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(
-						tmpMaintainable.getBusinessObject());
+						(PersistableBusinessObject) tmpMaintainable.getDataObject());
 				if (bo != null) {
 					request.setAttribute("fileName", bo.getFileName());
 				}
@@ -235,18 +236,18 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	@RequestMapping(params = "methodToCall=route")
 	public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-	    
+
 	    ModelAndView modelAndView;
 	    
 	    try {
     		modelAndView = super.route(form, request, response);
     
-    		MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
-    		if (document.getNewMaintainableObject().getBusinessObject() instanceof PersistableAttachment) {
-    			PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(
-    					document.getNewMaintainableObject().getBusinessObject());
-    			request.setAttribute("fileName", bo.getFileName());
-    		}
+		MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+		if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
+			PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(
+					(PersistableBusinessObject) document.getNewMaintainableObject().getDataObject());
+			request.setAttribute("fileName", bo.getFileName());
+		}
 	    }
 	    catch(ValidationException vex) {
 	        MessageMap mmap = GlobalVariables.getMessageMap();
@@ -255,7 +256,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
             HttpServletResponse response) throws Exception {

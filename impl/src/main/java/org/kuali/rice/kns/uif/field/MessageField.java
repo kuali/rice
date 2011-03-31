@@ -46,11 +46,11 @@ public class MessageField extends FieldBase {
 	public boolean isRender() {
 		boolean render = super.isRender();
 
-		if (render) {
-			render = StringUtils.isNotBlank(messageText);
-		}
+        if (render) {
+            render = StringUtils.isNotBlank(messageText) && !StringUtils.equals(messageText, "&nbsp;");
+        }
 
-		return render;
+        return render;
 	}
 
 	public MessageField(String messageType) {

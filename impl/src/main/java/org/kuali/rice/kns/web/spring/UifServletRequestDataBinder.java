@@ -101,8 +101,11 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 	public void bind(ServletRequest request) {
 		super.bind(request);
 		UifFormBase form = (UifFormBase) this.getTarget();
+		
+		// back up previous view instance
+		form.setPreviousView(form.getView());
 
-        // initialize view for request
+        // initialize new view for request
         View view = null;
 
         // we are going to need this no matter how we get the view, so do it once

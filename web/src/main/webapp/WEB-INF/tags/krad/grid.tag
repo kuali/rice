@@ -23,7 +23,9 @@
 <%@ attribute name="renderHeaderColumns" required="false" 
               description="Boolean that indicates whether the columns should rendered as th or td cell, defaults to false"%>   
 <%@ attribute name="applyAlternatingRowStyles" required="false" 
-              description="Boolean that indicates whether the even odd style classes should be applied to the rows, defaults to false"%>                            
+              description="Boolean that indicates whether the even odd style classes should be applied to the rows, defaults to false"%>   
+<%@ attribute name="applyDefaultCellWidths" required="false" 
+              description="Boolean that indicates whether default widths should be applied to the cells, defaults to true"%>                           
               
 <c:if test="${empty numberOfColumns}">
   <c:set var="numberOfColumns" value="2"/>
@@ -36,6 +38,10 @@
 <c:if test="${empty applyAlternatingRowStyles}">
   <c:set var="applyAlternatingRowStyles" value="false"/>
 </c:if>   
+
+<c:if test="${empty applyDefaultCellWidths}">
+  <c:set var="applyDefaultCellWidths" value="true"/>
+</c:if>
    
 <c:set var="defaultCellWidth" value="${100/numberOfColumns}"/> 
              
@@ -73,36 +79,38 @@
         </tr><tr>
       </c:if>
    </c:forEach>
-   
-   <%-- wildcard spans all columns --%>
-   <c:set var="itemColSpan" value="${item.colSpan}"/>
-   <c:if test="itemColSpan eq '*'">
-     <c:set var="itemColSpan" value="${numberOfColumns}"/>
-   </c:if>
      
    <%-- determine cell width by using default or configured width --%>
-   <c:set var="cellWidth" value="${defaultCellWidth * itemColSpan}%"/>
+   <c:set var="cellWidth" value=""/>
+   <c:if test="${applyDefaultCellWidths}">
+     <c:set var="cellWidth" value="${defaultCellWidth * item.colSpan}%"/>
+   </c:if>
+   
    <c:if test="${!empty item.width}">
       <c:set var="cellWidth" value="${item.width}"/>
+   </c:if>
+   
+   <c:if test="${!empty cellWidth}">
+     <c:set var="cellWidth" value="width=\"${cellWidth}\""/>
    </c:if>
    
    <krad:attributeBuilder component="${item}"/>
      
    <%-- render cell and item template --%>
    <c:if test="${renderHeaderColumns}">
-      <th width="${cellWidth}" colspan="${itemColSpan}" rowspan="${item.rowSpan}" ${style} ${styleClass}>
+      <th ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}" ${style} ${styleClass}>
        <krad:template component="${item}"/>
       </th>  
    </c:if>
    <c:if test="${!renderHeaderColumns}">
-     <td width="${cellWidth}" colspan="${itemColSpan}" rowspan="${item.rowSpan}"
+     <td ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
          ${style} ${styleClass} ${evenOddClass}>
        <krad:template component="${item}"/>
      </td>
    </c:if>
      
    <%-- handle colspan for the count --%>  
-   <c:set var="colCount" value="${colCount + itemColSpan - 1}"/>  
+   <c:set var="colCount" value="${colCount + item.colSpan - 1}"/>  
      
    <%-- set carry over count to hold positions for fields that span multiple rows --%>
    <c:set var="tmpCarryOverColCount" value="${tmpCarryOverColCount + item.rowSpan - 1}"/>

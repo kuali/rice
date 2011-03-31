@@ -142,7 +142,31 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="header.styleClasses" value="grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>    
-  </bean>     
+  </bean>   
+  
+  <bean id="MaintenanceGroupSectionGridLayout" abstract="true" parent="MaintenanceGroupSectionGridLayout-parentBean"/>
+  <bean id="MaintenanceGroupSectionGridLayout-parentBean" parent="GroupSectionGridLayout">  
+    <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+    <property name="componentModifiers">
+       <list merge="true">
+         <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
+       </list>
+    </property>
+  </bean>
+  
+  <bean id="MaintenanceCollectionGroupSection" abstract="true" parent="MaintenanceCollectionGroupSection-parentBean"/>
+  <bean id="MaintenanceCollectionGroupSection-parentBean" parent="CollectionGroupSection">  
+    <property name="layoutManager.lineGroupPrototype">   
+       <bean parent="StackedGroupPrototype">          
+         <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+         <property name="componentModifiers">
+            <list merge="true">
+              <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
+            </list>
+        </property>
+      </bean>
+    </property>    
+  </bean>
   
   <!-- Common Groups -->
   
@@ -179,7 +203,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager.orientation" value="HORIZONTAL"/> 
   </bean>
   
-  <bean id="Group_DocumentHeader" parent="GroupBodyOnly" p:readOnly="true">
+  <bean id="Group_DocumentHeader" parent="GroupBodyOnly" p:conditionalReadOnly="true">
       <property name="id" value="group_docheader"/>
       <property name="items">
          <list> 
@@ -188,6 +212,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            <bean parent="AttributeField_FormDocumentInitiatorNetworkId"/>
            <bean parent="AttributeField_FormDocumentCreateDate"/>
          </list>
+      </property>
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager" p:numberOfColumns="2" p:styleClasses="" p:applyDefaultCellWidths="false"/>
       </property>
       <property name="fieldBindingObjectPath" value="document"/>
   </bean>   
@@ -231,7 +258,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          <list> 
            <bean parent="IframeField" p:height="500" p:width="95%" p:vspace="0" p:hspace="0" p:frameborder="0">
              <property name="id" value="routeLogIFrame"/>
-             <property name="source" value="${ConfigProperties.workflow.url}/RouteLog.do?routeHeaderId=${KualiForm.workflowDocument.routeHeaderId}"/>
+             <property name="source" value="@{#ConfigProperties['workflow.url']}/RouteLog.do?routeHeaderId=@{workflowDocument.routeHeaderId}"/>
              <property name="onLoadScript" value="setRouteLogIframeDimensions();"/>
            </bean>
          </list>

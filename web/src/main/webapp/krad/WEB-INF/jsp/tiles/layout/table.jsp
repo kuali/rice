@@ -35,12 +35,13 @@
 <table id="${manager.id}" ${style} ${styleClass}>
   <thead>
      <krad:grid items="${manager.headerFields}" numberOfColumns="${manager.numberOfColumns}" 
-                renderHeaderColumns="true"/>
+                renderHeaderColumns="true" applyDefaultCellWidths="${manager.applyDefaultCellWidths}"/>
   </thead>
   
   <tbody>
      <krad:grid items="${manager.dataFields}" numberOfColumns="${manager.numberOfColumns}" 
-                applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"/>
+                applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"
+                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"/>
   </tbody>
 </table>
 

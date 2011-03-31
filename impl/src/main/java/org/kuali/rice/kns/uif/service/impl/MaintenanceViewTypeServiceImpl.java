@@ -87,8 +87,8 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 			parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME,
 					requestParameters.get(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME));
 		}
-		else if (requestParameters.containsKey(KNSPropertyConstants.DOCUMENT_NUMBER)) {
-			String documentNumber = requestParameters.get(KNSPropertyConstants.DOCUMENT_NUMBER);
+		else if (requestParameters.containsKey(KNSPropertyConstants.DOC_ID)) {
+			String documentNumber = requestParameters.get(KNSPropertyConstants.DOC_ID);
 
 			boolean objectClassFound = false;
 			try {

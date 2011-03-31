@@ -120,7 +120,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         	<property name="lightBoxLookup">
         		<ref bean="LightBoxLookup"/>
       		</property>
-      		 
       	</bean>        
       </property>
       <property name="conditionalRender" value="!#parent.readOnly"/>

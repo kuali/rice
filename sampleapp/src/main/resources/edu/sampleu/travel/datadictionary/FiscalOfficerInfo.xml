@@ -140,10 +140,7 @@
     <property name="viewHelperServiceBeanId" value="fiscalOfficerInfoMaintainable" />
     <property name="items">
       <list merge="true">
-        <bean parent="GroupSectionGridLayout">
-          <property name="layoutManager.numberOfColumns" value="4" />
-          <property name="layoutManager.renderLabelFieldsSeparately"
-            value="false" />
+        <bean parent="MaintenanceGroupSectionGridLayout">
           <property name="items">
             <list>
               <bean parent="AttributeField" p:propertyName="id" />
@@ -151,11 +148,6 @@
             </list>
           </property>
           <property name="title" value="Fiscal Officer Information" />
-          <property name="componentModifiers">
-            <list merge="true">
-              <ref bean="MaintenanceCompareModifier" />
-            </list>
-          </property>
         </bean>
         <!--
         <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
@@ -173,7 +165,7 @@
           </property>        
         </bean>
         -->
-        <bean parent="CollectionGroupSection">
+        <bean parent="MaintenanceCollectionGroupSection">
             <property name="title" value="Fiscal Officer Accounts"/>  
             <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
             <property name="propertyName" value="accounts"/>
@@ -183,18 +175,6 @@
                 <bean parent="AttributeField" p:propertyName="name"/>
               </list>
             </property>   
-            <property name="layoutManager.lineGroupPrototype">   
-              <bean parent="StackedGroupPrototype">
-                 <property name="layoutManager.numberOfColumns" value="4"/>
-                 <property name="layoutManager.renderLabelFieldsSeparately" value="false"/>
-                 <property name="componentModifiers">
-                   <list>
-                     <bean parent="MaintenanceCompareModifier" p:runPhase="FINALIZE"/>
-                     <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
-                   </list>
-                 </property>
-              </bean>
-            </property>
             <property name="layoutManager.summaryTitle" value="Travel Account"/> 
             <property name="layoutManager.summaryFields">
               <list>

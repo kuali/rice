@@ -288,7 +288,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     public void performApplyModel(View view, Object model) {
         // get action flag and edit modes from authorizer/presentation
         // controller
-        invokeAuthorizerPresentationController(view, (UifFormBase) model);
+     //   invokeAuthorizerPresentationController(view, (UifFormBase) model);
 
         view.pushObjectToContext(UifConstants.ContextVariableNames.VIEW, view);
 

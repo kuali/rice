@@ -23,7 +23,8 @@ import org.junit.Assert
 
 
 /**
- * This is a description of what this class does - dseibert don't forget to fill this in. 
+ * This class tests out the buiding of a PropositionParameter object.
+ * It also tests XML marshalling / unmarshalling
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -33,13 +34,14 @@ class PropositionParameterTest {
 	private static final String ID = "1001"
 	private static final String PROP_ID = "202"
 	private static final String VALUE = "campusCode"
-	private static final String PARAMETER_TYPE_C = "C"
-	private static final String PARAMETER_TYPE_T = "T"
-	private static final String PARAMETER_TYPE_F = "F"
-	private static final String PARAMETER_TYPE_BAD = "X"
+	private static final String PARAMETER_TYPE_C = "C"   // Constant
+	private static final String PARAMETER_TYPE_T = "T"	 // Term
+	private static final String PARAMETER_TYPE_F = "F"   // Function
+	private static final String PARAMETER_TYPE_BAD = "X"  // some invalid value
+	
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
-		<PropositionParameter xmlns="http://rice.kuali.org/schema/krms">
+		<PropositionParameter xmlns="http://rice.kuali.org/krms">
 			<id>1001</id>
 			<propId>202</propId>
 			<value>campusCode</value>

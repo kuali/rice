@@ -91,7 +91,7 @@ class KrmsTypeTest {
     String xml = sw.toString()
 
     String expectedTypeElementXml = """
-    <KRMSType xmlns="http://rice.kuali.org/schema/krms">
+    <KRMSType xmlns="http://rice.kuali.org/krms">
       <id>2</id>
       <name>United States</name>
       <namespace>KRMS_TEST</namespace>
@@ -109,7 +109,7 @@ class KrmsTypeTest {
   @Test
   public void testXmlUnmarshal() {
     String rawXml = """
-    <KRMSType xmlns="http://rice.kuali.org/schema/krms">
+    <KRMSType xmlns="http://rice.kuali.org/krms">
       <id>3</id>
       <name>Student</name>
       <namespace>KRMS_TEST</namespace>

@@ -17,22 +17,86 @@
 package org.kuali.rice.krms.impl.repository;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.krms.api.repository.Proposition;
 import org.kuali.rice.krms.api.repository.PropositionParameter;
-import org.kuali.rice.krms.api.repository.PropositionParameterService;
+import org.kuali.rice.krms.api.repository.PropositionRepositoryService;
 
-import java.util.*;
-
-public final class PropositionParameterServiceImpl implements PropositionParameterService {
+public final class PropositionRepositoryServiceImpl implements PropositionRepositoryService {
 
     private BusinessObjectService businessObjectService;
+
+	/**
+	 * This overridden method creates a Proposition if it does not 
+	 * already exist in the repository.
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#createProposition(org.kuali.rice.krms.api.repository.Proposition)
+	 */
+	@Override
+	public void createProposition(Proposition prop) {
+		if (prop == null){
+	        throw new IllegalArgumentException("proposition is null");
+		}
+		final String propIdKey = prop.getPropId();
+		final Proposition existing = getPropositionById(propIdKey);
+		if (existing != null && existing.getPropId().equals(propIdKey)){
+            throw new IllegalStateException("the proposition to create already exists: " + prop);			
+		}
+		
+		businessObjectService.save(PropositionBo.from(prop));
+	}
+
+	/**
+	 * This overridden method updates an existing proposition
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#updateProposition(org.kuali.rice.krms.api.repository.Proposition)
+	 */
+	@Override
+	public void updateProposition(Proposition prop) {
+        if (prop == null) {
+            throw new IllegalArgumentException("proposition is null");
+        }
+		final String propIdKey = prop.getPropId();
+		final Proposition existing = getPropositionById(propIdKey);
+        if (existing == null) {
+            throw new IllegalStateException("the proposition does not exist: " + prop);
+        }
+        final Proposition toUpdate;
+        if (!existing.getPropId().equals(prop.getPropId())){
+        	final Proposition.Builder builder = Proposition.Builder.create(prop);
+        	builder.setPropId(existing.getPropId());
+        	toUpdate = builder.build();
+        } else {
+        	toUpdate = prop;
+        }
+        
+        businessObjectService.save(PropositionBo.from(toUpdate));
+	}
+
+	/**
+	 * This overridden method retrieves a proposition by the give proposition id.
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#getPropositionById(java.lang.String)
+	 */
+	@Override
+	public Proposition getPropositionById(String propId) {
+		if (StringUtils.isBlank(propId)){
+            throw new IllegalArgumentException("propId is null or blank");			
+		}
+		PropositionBo bo = businessObjectService.findBySinglePrimaryKey(PropositionBo.class, propId);
+		return PropositionBo.to(bo);
+	}
 
 	/**
 	 * This overridden method creates a PropositionParameter if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.PropositionParameterService#createParameter(org.kuali.rice.krms.api.repository.PropositionParameter)
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#createParameter(org.kuali.rice.krms.api.repository.PropositionParameter)
 	 */
 	@Override
 	public void createParameter(PropositionParameter parameter) {
@@ -50,9 +114,9 @@ public final class PropositionParameterServiceImpl implements PropositionParamet
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method updates an existing proposition parameter
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.PropositionParameterService#updateParameter(org.kuali.rice.krms.api.repository.PropositionParameter)
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#updateParameter(org.kuali.rice.krms.api.repository.PropositionParameter)
 	 */
 	@Override
 	public void updateParameter(PropositionParameter parameter) {
@@ -78,9 +142,9 @@ public final class PropositionParameterServiceImpl implements PropositionParamet
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method retrieves a list of parameters for a given proposition
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.PropositionParameterService#getParameters(java.lang.Long)
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#getParameters(java.lang.Long)
 	 */
 	@Override
 	public List<PropositionParameter> getParameters(String propId) {
@@ -94,9 +158,9 @@ public final class PropositionParameterServiceImpl implements PropositionParamet
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method gets a parameter by the parameter id
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.PropositionParameterService#getParameterById(java.lang.String)
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#getParameterById(java.lang.String)
 	 */
 	@Override
 	public PropositionParameter getParameterById(String id) {
@@ -108,9 +172,9 @@ public final class PropositionParameterServiceImpl implements PropositionParamet
 	}
 
 	/**
-	 * This overridden method ...
+	 * This overridden method gets a parameter by the Proposition Id and Sequence Number
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.PropositionParameterService#getParameterByPropIdAndSequenceNumber(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#getParameterByPropIdAndSequenceNumber(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public PropositionParameter getParameterByPropIdAndSequenceNumber(
@@ -127,7 +191,7 @@ public final class PropositionParameterServiceImpl implements PropositionParamet
 		PropositionParameterBo bo = businessObjectService.findByPrimaryKey(PropositionParameterBo.class, map);
 		return PropositionParameterBo.to(bo);
 	}
-
+	
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }

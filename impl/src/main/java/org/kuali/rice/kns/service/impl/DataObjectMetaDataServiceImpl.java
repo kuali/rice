@@ -47,7 +47,6 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
     /**
      * @see org.kuali.rice.kns.service.DataObjectMetaDataService#listPrimaryKeyFieldNames(java.lang.Class)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public List<String> listPrimaryKeyFieldNames(Class<?> clazz) {
         if (persistenceStructureService.isPersistable(clazz)) {
@@ -190,7 +189,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             return relationship;
         }
 
-        // non-nested reference, get peristence relationships first
+        // non-nested reference, get persistence relationships first
         int maxSize = Integer.MAX_VALUE;
 
         // try persistable reference first

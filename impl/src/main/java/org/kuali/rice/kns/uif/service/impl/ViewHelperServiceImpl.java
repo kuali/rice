@@ -247,7 +247,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// if we were able to find a dictionary attribute and object, call
 		// data dictionary service to get AttributeDefinition
 		if (StringUtils.isNotBlank(dictionaryAttributeName) && StringUtils.isNotBlank(dictionaryObjectEntry)) {
-			AttributeDefinition attributeDefinition = dataDictionaryService.getAttributeDefinition(
+			AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(
 					dictionaryObjectEntry, dictionaryAttributeName);
 			if (attributeDefinition != null) {
 				field.copyFromAttributeDefinition(attributeDefinition);
@@ -321,7 +321,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			    layoutManager.getContext().putAll(getCommonContext(view, component));
 				layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
 				layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
-				expressionEvaluatorService.evaluateObjectProperties(layoutManager, model, layoutManager.getContext());
+				getExpressionEvaluatorService().evaluateObjectProperties(layoutManager, model, layoutManager.getContext());
 			}
 		}
 

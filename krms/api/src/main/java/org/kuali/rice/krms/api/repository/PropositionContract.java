@@ -2,41 +2,28 @@ package org.kuali.rice.krms.api.repository;
 
 import java.util.List;
 
-
-//import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-
 public interface PropositionContract {
 	/**
 	 * This is the ID for the KRMS proposition
-	 *
-	 * <p>
-	 * It is the ID of a KRMS proposition.
-	 * </p>
 	 * @return ID for KRMS proposition.
 	 */
 	public String getPropId();
 
 	/**
 	 * This is the description text for the KRMS proposition
-	 *
-	 * <p>
-	 * It is a description of the proposition
-	 * </p>
 	 * @return description for KRMS type.
 	 */
 	public String getDescription();
 
 	/**
-	 * This is the Proposition KrmsType of the proposition.
-	 *
-	 * <p>
-	 * It provides scope of the KRMS type.
-	 * </p>
+	 * This is the id of Proposition KrmsType of the proposition.
+	 * It provides some context to what type of object of the KRMS type.
 	 * @return the id of the KRMS type.
 	 */
 	public String getTypeId();
 
 	/**
+	 * <p>
 	 * There are three main types of Propositions:
 	 *   Compound Propositions - a proposition consisting of other propositions 
 	 *   	and a boolean algebra operator (AND, OR) defining how to evaluate 
@@ -46,9 +33,11 @@ public interface PropositionContract {
      *      returns true or false
      *   Simple Propositions - a proposition of the form lhs op rhs where 
      *   	lhs=left-hand side, rhs=right-hand side, and op=operator
-	 * 
+	 * </p>
 	 * @return the proposition type code of the proposition
+	 * <p>
 	 *      Valid values are C = compound, P = parameterized, S = simple
+	 * </p>
 	 */
 	public String getPropositionTypeCode();
 	
@@ -56,9 +45,9 @@ public interface PropositionContract {
 	 * This is the parameter list of the proposition.
 	 * Parameters are listed in Reverse Polish Notation.
 	 * Parameters may be constants, terms, or functions.
-	 * 
+	 * <p>
 	 * Compound Propositions will have an empty parameter list.
-	 *
+	 * </p>
 	 * @see PropositionParameter
 	 * @return the Parameters related to the proposition
 	 */

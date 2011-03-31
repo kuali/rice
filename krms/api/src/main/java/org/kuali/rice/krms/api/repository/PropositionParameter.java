@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -26,7 +27,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  *
  * @see PropositionParameterContract
  */
-@XmlRootElement(name = PropositionParameter.Constants.ROOT_ELEMENT_NAME, namespace = KrmsType.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = PropositionParameter.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PropositionParameter.Constants.TYPE_NAME, propOrder = {
 		PropositionParameter.Elements.ID,
@@ -34,25 +35,25 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		PropositionParameter.Elements.VALUE,
 		PropositionParameter.Elements.PARM_TYPE,
 		PropositionParameter.Elements.SEQUENCE,
-		"_elements"
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PropositionParameter implements PropositionParameterContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true)
 	private String id;
-	@XmlElement(name = Elements.PROP_ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PROP_ID, required=true)
 	private String propId;
-	@XmlElement(name = Elements.VALUE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.VALUE, required=true)
 	private String value;
-	@XmlElement(name = Elements.PARM_TYPE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PARM_TYPE, required=true)
 	private String parameterType;
-	@XmlElement(name = Elements.SEQUENCE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.SEQUENCE, required=true)
 	private Integer sequenceNumber;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	 /** 
      * This constructor should never be called.  
@@ -133,7 +134,7 @@ public final class PropositionParameter implements PropositionParameterContract,
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
+         * Creates a builder by populating it with data from the given {@link PropositionParameterContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
@@ -249,7 +250,7 @@ public final class PropositionParameter implements PropositionParameterContract,
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "PropositionParameter";
 		final static String TYPE_NAME = "PropositionParameterType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**

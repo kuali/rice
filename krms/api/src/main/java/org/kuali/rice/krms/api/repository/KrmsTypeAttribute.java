@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -23,7 +24,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * Instances of KrmsTypeAttribute can be (un)marshalled to and from XML.
  *
  */
-@XmlRootElement(name = KrmsTypeAttribute.Constants.ROOT_ELEMENT_NAME, namespace = KrmsTypeAttribute.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = KrmsTypeAttribute.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = KrmsTypeAttribute.Constants.TYPE_NAME, propOrder = {
 		KrmsTypeAttribute.Elements.ID,
@@ -32,27 +33,27 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		KrmsTypeAttribute.Elements.SEQ_NO,
 		KrmsTypeAttribute.Elements.ACTIVE,
 		KrmsTypeAttribute.Elements.ATTR_DEFN,
-		"_elements"
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class KrmsTypeAttribute implements KrmsTypeAttributeContract, ModelObjectComplete{
 	private static final long serialVersionUID = -304265575559412478L;
 	
-	@XmlElement(name = Elements.ID, required=true, namespace = KrmsTypeAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true)
 	private String id;
-	@XmlElement(name = Elements.TYPE_ID, required=true, namespace = KrmsTypeAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
-	@XmlElement(name = Elements.ATTR_DEFN_ID, required=true, namespace = KrmsTypeAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ATTR_DEFN_ID, required=true)
 	private String attributeDefinitionId;
-	@XmlElement(name = Elements.SEQ_NO, required=true, namespace = KrmsTypeAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.SEQ_NO, required=true)
 	private Integer sequenceNumber;
-	@XmlElement(name = Elements.ACTIVE, required=false, namespace = KrmsTypeAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ACTIVE, required=false)
 	private boolean active;
-	@XmlElement(name = Elements.ATTR_DEFN, required=false, namespace = KrmsTypeAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ATTR_DEFN, required=false)
 	private KrmsAttributeDefinition attributeDefinition;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -256,10 +257,9 @@ public final class KrmsTypeAttribute implements KrmsTypeAttributeContract, Model
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "KrmsTypeAttribute";
 		final static String TYPE_NAME = "KrmsTypeAttributeType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**

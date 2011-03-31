@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -24,7 +25,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  *
  * @see KrmsAttributeDefinitionContract
  */
-@XmlRootElement(name = KrmsAttributeDefinition.Constants.ROOT_ELEMENT_NAME, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = KrmsAttributeDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = KrmsAttributeDefinition.Constants.TYPE_NAME, propOrder = {
 		KrmsAttributeDefinition.Elements.ID,
@@ -33,27 +34,27 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		KrmsAttributeDefinition.Elements.LABEL,
 		KrmsAttributeDefinition.Elements.ACTIVE,
 		KrmsAttributeDefinition.Elements.COMPONENT_NAME,
-		"_elements"
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = -6356968810972165031L;
 	
-	@XmlElement(name = Elements.ID, required=true, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true)
 	private String id;
-	@XmlElement(name = Elements.NAME, required=true, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAME, required=true)
 	private String name;
-	@XmlElement(name = Elements.NAMESPACE, required=true, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAMESPACE, required=true)
 	private String namespace;
-	@XmlElement(name = Elements.LABEL, required=false, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.LABEL, required=false)
 	private String label;
-	@XmlElement(name = Elements.ACTIVE, required=false, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ACTIVE, required=false)
 	private boolean active;
-	@XmlElement(name = Elements.COMPONENT_NAME, required=false, namespace = KrmsAttributeDefinition.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.COMPONENT_NAME, required=false)
 	private String componentName;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -260,10 +261,9 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "KrmsAttributeDefinition";
 		final static String TYPE_NAME = "KrmsAttributionDefinitionType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**

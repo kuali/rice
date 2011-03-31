@@ -18,53 +18,71 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 import org.kuali.rice.krms.api.LogicalOperator;
 
 /**
- * Concrete model object implementation of KRMS Proposition 
- * immutable. 
- * Instances of PropositionParameter can be (un)marshalled to and from XML.
+ * Concrete model object implementation of KRMS Proposition. 
+ * Immutable. 
+ * Instances of Proposition can be (un)marshalled to and from XML.
  *
- * @see PropositionContract
+ * There are three main types of Propositions:
+ *    1. Compound Propositions - a proposition consisting of other propositions
+ *    	 and a boolean algebra operator (AND, OR) defining how to evaluate those propositions.
+ *    2. Parameterized Propositions - a proposition which is parameterized by some set of values, 
+ *    	 evaluation logic is implemented by hand and returns true or false
+ *    3. Simple Propositions - a proposition of the form lhs op rhs where 
+ *    	lhs=left-hand side, rhs=right-hand side, and op=operator
+ * Propositions are reference by a rule or another proposition (in the case of compound propositions).
+ * Propositions are never re-used across multiple rules.
+ * Each proposition can have zero or more parameters. The proposition parameter is the primary 
+ * data element used to define the proposition.  (@see PropositionParameter)
+ * 
+ * @see PropositonContract
+ * @see PropositionParameterContract
  */
-@XmlRootElement(name = Proposition.Constants.ROOT_ELEMENT_NAME, namespace = KrmsType.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = Proposition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Proposition.Constants.TYPE_NAME, propOrder = {
 		Proposition.Elements.PROP_ID,
 		Proposition.Elements.DESC,
 		Proposition.Elements.TYPE_ID,
 		Proposition.Elements.PROP_TYPE_CODE,
-		"parameters",
+		"parameters",									// xml element name differs from class property name
 		Proposition.Elements.CMPND_OP_CODE,
-		"compoundComponents",
-		"_elements"
+		"compoundComponents",							// xml element name differs from class property name
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Proposition implements PropositionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.PROP_ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PROP_ID, required=true)
 	private String propId;
-	@XmlElement(name = Elements.DESC, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	
+	@XmlElement(name = Elements.DESC, required=true)
 	private String description;
-	@XmlElement(name = Elements.TYPE_ID, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	
+	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
-	@XmlElement(name = Elements.PROP_TYPE_CODE, required=true, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	
+	@XmlElement(name = Elements.PROP_TYPE_CODE, required=true)
 	private String propositionTypeCode;
-	@XmlElement(name = Elements.PARAMETERS, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	
+	@XmlElement(name = Elements.PARAMETERS, required=false)
 	private List<PropositionParameter> parameters;
 	
-	@XmlElement(name = Elements.CMPND_OP_CODE, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.CMPND_OP_CODE, required=false)
 	private String compoundOpCode;
 	
-	@XmlElement(name = Elements.CMPND_COMPONENTS, required=false, namespace = KrmsType.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.CMPND_COMPONENTS, required=false)
 	private List<Proposition> compoundComponents;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	
 	 /** 
@@ -81,21 +99,25 @@ public final class Proposition implements PropositionContract, ModelObjectComple
     }
     
     /**
-	 * Constructs a KRMS KrmsType from the given builder.  
+	 * Constructs a KRMS Proposition from the given builder.  
 	 * This constructor is private and should only ever be invoked from the builder.
 	 * 
-	 * @param builder the Builder from which to construct the KRMS type
+	 * @param builder the Builder from which to construct the KRMS Proposition
 	 */
     private Proposition(Builder builder) {
         this.propId = builder.getPropId();
         this.description = builder.getDescription();
         this.typeId = builder.getTypeId();
         this.propositionTypeCode = builder.getPropositionTypeCode();
+        
+        // Build parameter list
         List<PropositionParameter> paramList = new ArrayList<PropositionParameter>();
         for (PropositionParameter.Builder b : builder.parameters){
         	paramList.add(b.build());
         }
         this.parameters = Collections.unmodifiableList(paramList);
+        
+        // Build Compound Proposition properties
         this.compoundOpCode = builder.getCompoundOpCode();
         List <Proposition> componentList = new ArrayList<Proposition>();
         if (builder.compoundComponents != null){
@@ -142,7 +164,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
+     * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionContract}.
      */
     public static class Builder implements PropositionContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
@@ -235,7 +257,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 			if (StringUtils.isBlank(typeId)) {
 	                throw new IllegalArgumentException("KRMS type id is blank");
 			}
-			// TODO: check against valid values
+			// TODO: check against valid values ?
 			this.typeId = typeId;
 		}
 		
@@ -316,9 +338,9 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 		}
 
 		/**
-		 * Builds an instance of a CampusType based on the current state of the builder.
+		 * Builds an instance of a Proposition based on the current state of the builder.
 		 * 
-		 * @return the fully-constructed CampusType
+		 * @return the fully-constructed Proposition
 		 */
         @Override
         public Proposition build() {
@@ -345,10 +367,9 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "Proposition";
 		final static String TYPE_NAME = "PropositionType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**
@@ -366,7 +387,12 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	}
 
 	/**
-	 * This enumeration identifies the valid Proposition type codes 
+	 * This enumeration identifies the valid Proposition type codes
+	 * The PropositionType enumeration lists the appropriate types of propositions
+	 * The valid types are:
+     *    Compound Propositions - a proposition consisting of other propositions and a boolean algebra operator (AND, OR) defining how to evaluate those propositions
+     *    Parameterized Propositions - a proposition which is parameterized by some set of values, evaluation logic is implemented by hand and returns true or false
+	 *    Simple Propositions - a proposition of the form lhs op rhs where lhs=left-hand side, rhs=right-hand side, and op=operator
 	 */
 	public enum PropositionTypes {
 		SIMPLE("S"),

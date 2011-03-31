@@ -16,6 +16,8 @@
 
 package org.kuali.rice.krms.api.repository;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -23,12 +25,44 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 
-import java.util.List;
-
-
-@WebService(name = "PropositionParameterService", targetNamespace = KrmsType.Constants.KRMSNAMESPACE)
+@WebService(name = "PropositionRepositoryService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface PropositionParameterService {
+public interface PropositionRepositoryService {
+
+    /**
+     * This will create a {@link Proposition} exactly like the parameter passed in.
+     *
+     * @param prop the proposition to create
+     * @throws IllegalArgumentException if the proposition is null
+     * @throws IllegalStateException if the proposition already exists in the system
+     */
+    @WebMethod(operationName="createProposition")
+    void createProposition(@WebParam(name = "prop") Proposition prop);
+
+    /**
+     * This will update a {@link Proposition}.
+     *
+     *
+     * @param prop the proposition to update
+     * @throws IllegalArgumentException if the proposition is null
+     * @throws IllegalStateException if the proposition does not exist in the system
+     */
+    @WebMethod(operationName="updateProposition")
+    void updateProposition(@WebParam(name = "prop") Proposition prop);
+
+    /**
+     * Lookup the proposition based on the given proposition id.
+     *
+     * @param propId the given proposition id
+     * @return a proposition associated with the given proposition id.  A null reference is returned if an invalid or
+     *         non-existent id is supplied.
+     */
+    @WebMethod(operationName = "getPropositionById")
+    @WebResult(name = "prop")
+    Proposition getPropositionById(
+            @WebParam(name = "propId") String propId);
+
+
 
     /**
      * This will create a {@link PropositionParameter} exactly like the parameter passed in.
@@ -87,5 +121,6 @@ public interface PropositionParameterService {
     PropositionParameter getParameterByPropIdAndSequenceNumber(
             @WebParam(name = "propId") String propId,
             @WebParam(name = "sequenceNumber")Integer sequenceNumber);
+
 
 }

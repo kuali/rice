@@ -24,7 +24,7 @@ import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 
-@WebService(name = "KRMSTypeService", targetNamespace = KrmsType.Constants.KRMSNAMESPACE)
+@WebService(name = "KRMSTypeService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KrmsTypeService {
 

@@ -45,6 +45,7 @@ import org.kuali.rice.kns.uif.modifier.ComponentModifier;
 import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.kns.uif.service.ViewDictionaryService;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
+import org.kuali.rice.kns.uif.util.CloneUtils;
 import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.uif.widget.Inquiry;
@@ -82,7 +83,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // build set of view properties that can be populated
         Set<String> fieldNamesToPopulate = new HashSet<String>();
 
-        Field[] fields = view.getClass().getDeclaredFields();
+        Field[] fields = CloneUtils.getFields(view.getClass(), true);
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
 

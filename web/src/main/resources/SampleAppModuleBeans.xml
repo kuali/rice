@@ -76,7 +76,8 @@
                 <value>classpath:edu/sampleu/travel/uif/datadictionary/TestMaintenance.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/datadictionary/Travel-testView1.xml</value>   
                 <value>classpath:edu/sampleu/travel/uif/datadictionary/Travel-testView2.xml</value>             
-                <value>classpath:edu/sampleu/travel/uif/datadictionary/FiscalOfficerView.xml</value>                
+                <value>classpath:edu/sampleu/travel/uif/datadictionary/FiscalOfficerView.xml</value>
+                <value>classpath:edu/sampleu/travel/uif/datadictionary/FiscalOfficerLookup.xml</value>
             </list>
         </property>
         <property name="databaseRepositoryFilePaths">

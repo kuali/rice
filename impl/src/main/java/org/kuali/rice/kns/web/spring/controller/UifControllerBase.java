@@ -92,12 +92,6 @@ public abstract class UifControllerBase {
 		UifFormBase form;
 		String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
 
-		// TODO not sure if this is safe, but assuming if docFormKey comes in then
-		// we are loading a Document view
-		if(StringUtils.isBlank(formKeyParam)) {
-		    formKeyParam = request.getParameter(KNSConstants.DOC_FORM_KEY);
-		}
-
 		if (StringUtils.isNotBlank(formKeyParam)) {
 			form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
 		}
@@ -266,6 +260,14 @@ public abstract class UifControllerBase {
 		return getUIFModelAndView(form, form.getViewId(), pageId);
 	}
 
+	@RequestMapping(params = "methodToCall=refresh")
+    public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	    // TODO: this code still needs ported with whatever we are supposed
+	    // to do on refresh
+	    return getUIFModelAndView(form);
+	}
+
 	/**
 	 * Builds up a URL to the lookup view based on the given post action
 	 * parameters and redirects
@@ -288,14 +290,14 @@ public abstract class UifControllerBase {
 		// get form values for the lookup parameter fields
 		String lookupParameterString = (String) lookupParameters.get(UifParameters.LOOKUP_PARAMETERS);
 		if (lookupParameterString != null) {
-		Map<String, String> lookupParameterFields = WebUtils.getMapFromParameterString(lookupParameterString);
-		for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
-			String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
-					lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
-			if (StringUtils.isNotBlank(lookupParameterValue)) {
-				lookupParameters.put(lookupParameter.getValue(), lookupParameterValue);
+			Map<String, String> lookupParameterFields = WebUtils.getMapFromParameterString(lookupParameterString);
+			for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
+				String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
+						lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
+				if (StringUtils.isNotBlank(lookupParameterValue)) {
+					lookupParameters.put(lookupParameter.getValue(), lookupParameterValue);
+				}
 			}
-		}
 		}
 
 		// TODO: lookup anchors and doc number?

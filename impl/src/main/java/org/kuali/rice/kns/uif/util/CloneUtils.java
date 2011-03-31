@@ -174,20 +174,20 @@ public class CloneUtils {
         return original.getClass().newInstance();
     }
 
-    protected static Field[] getFields(Object object, boolean includeStatic) {
+    public static Field[] getFields(Object object, boolean includeStatic) {
         return getFields(object, includeStatic, true);
     }
 
-    protected static Field[] getFields(Object object, boolean includeStatic, boolean includeTransient) {
+    public static Field[] getFields(Object object, boolean includeStatic, boolean includeTransient) {
         Class<?> c = object.getClass();
         return getFields(c, includeStatic, includeTransient);
     }
 
-    protected static Field[] getFields(Class<?> c, boolean includeStatic) {
+    public static Field[] getFields(Class<?> c, boolean includeStatic) {
         return getFields(c, includeStatic, true);
     }
 
-    protected static Field[] getFields(Class<?> c, boolean includeStatic, boolean includeTransient) {
+    public static Field[] getFields(Class<?> c, boolean includeStatic, boolean includeTransient) {
         String cacheKey = c.getCanonicalName() + ":" + includeStatic;
         Field[] array = fieldCache.get(cacheKey);
 

@@ -101,6 +101,7 @@ public class View extends ContainerBase {
     private String viewMenuGrouping;
 
     // TODO: scripting variables, should be in context
+    @RequestParameter
     private boolean dialogMode;
 
     @ReferenceCopy

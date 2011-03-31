@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifParameters;
@@ -121,21 +122,23 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                 viewTypeName = form.getViewTypeName();
             }
 
-            try {
-                view = getViewService().getViewByType(viewTypeName, parameterMap);
-            }
-            catch(DataDictionaryException ddex) {
-                // maybe we have a view id from the session form
-                if(form.getViewId() != null) {
-                    view = getViewService().getView(form.getViewId(), parameterMap);
-                }
-                
-                // if we didn't find one, just re-throw
-                if(view == null) {
-                    throw ddex;
-                }
-                
-                LOG.warn("Obtained viewId from cached form, this may not be safe!");
+            if (StringUtils.isBlank(viewTypeName)) {
+            	view = getViewFromPreviousModel(form, parameterMap);
+            	if (view == null) {
+            		throw new RuntimeException("Could not find enough information to fetch the required view. Checked the model retrieved from session for both viewTypeName and viewId");
+            	}
+            } else {
+	            try {
+	                view = getViewService().getViewByType(viewTypeName, parameterMap);
+	            }
+	            catch(DataDictionaryException ddex) {
+	            	view = getViewFromPreviousModel(form, parameterMap);
+	                // if we didn't find one, just re-throw
+	                if(view == null) {
+	                    throw ddex;
+	                }
+	                LOG.warn("Obtained viewId from cached form, this may not be safe!");
+	            }
             }
         }
 
@@ -145,8 +148,16 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
 		form.postBind((HttpServletRequest) request);
 	}
-    
-    public ViewService getViewService() {
+
+	protected View getViewFromPreviousModel(UifFormBase form, Map<String, String> parameterMap) {
+        // maybe we have a view id from the session form
+        if(form.getViewId() != null) {
+            return getViewService().getView(form.getViewId(), parameterMap);
+        }
+        return null;
+	}
+
+	public ViewService getViewService() {
         if(viewService == null) {
             viewService = KNSServiceLocator.getViewService();
         }

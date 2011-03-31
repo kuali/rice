@@ -104,15 +104,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="fieldBindingObjectPath" value="criteriaFields"/>
         <property name="layoutManager.numberOfColumns" value="2"/>
         <property name="footer">
-          <bean id="Group_SearchClearCancel" parent="Footer">
-            <property name="items">
-              <list> 
-                <bean parent="ActionField" p:methodToCall="search" p:actionLabel="search"/>
-                <bean parent="ActionField" p:methodToCall="clearValues" p:actionLabel="clear values"/>
-                <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="cancel"/>
-              </list>
-            </property>
-          </bean>
+          <bean parent="FooterLookup" />
         </property>
       </bean>
     </property>
@@ -138,39 +130,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="conditionalReadOnly" value="true"/>
       </bean>
     </property>
-<!--
-    <property name="formGroup">
-      <bean parent="GroupBodyOnly">
-        <property name="layoutManager">
-          <bean parent="GridLayoutManager"/>
-        </property>
-        <property name="items">
-          <list>
-            <bean parent="AttributeField_Form" p:propertyName="dataObjectClassName">
-              <property name="control">
-                <bean parent="HiddenControl"/>
-              </property>
-            </bean>
-            <bean parent="AttributeField_Form" p:propertyName="backLocation">
-              <property name="control">
-                <bean parent="HiddenControl"/>
-              </property>
-            </bean>
-            <bean parent="AttributeField_Form" p:propertyName="conversionFields">
-              <property name="control">
-                <bean parent="HiddenControl"/>
-              </property>
-            </bean>
-            <bean parent="AttributeField_Form" p:propertyName="readOnlyFields">
-              <property name="control">
-                <bean parent="HiddenControl"/>
-              </property>
-            </bean>
-          </list>
-        </property>
-      </bean>
-    </property>
--->
   </bean>
   
   <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>

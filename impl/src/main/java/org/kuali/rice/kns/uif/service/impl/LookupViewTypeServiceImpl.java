@@ -70,10 +70,6 @@ public class LookupViewTypeServiceImpl implements ViewTypeService {
 			parameters.put(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME,
 					requestParameters.get(ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME));
 		}
-		else {
-			throw new RuntimeException("Parameter '" + ViewTypeParameterNames.DATA_OBJECT_CLASS_NAME
-					+ "' must be given to find views of type: " + getViewTypeName());
-		}
 
 		return parameters;
 	}

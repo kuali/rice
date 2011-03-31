@@ -43,7 +43,6 @@ public class LookupView extends FormView {
 	private CollectionGroup resultsGroup;
 	private Field resultsActionsField;
 	private Field resultsReturnField;
-	private Group formGroup;
 
 	private List<Component> criteriaFields;
 	private List<Component> resultFields;
@@ -69,11 +68,7 @@ public class LookupView extends FormView {
 	public void performInitialization(View view) {
 		initializeGroups();
 		if (getItems().isEmpty()) {
-			if (getFormGroup() != null) {
-				setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup(), getFormGroup()));
-			} else {
-				setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
-			}
+			setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
 		}
 		super.performInitialization(view);
 
@@ -270,14 +265,6 @@ public class LookupView extends FormView {
 
 	public void setCriteriaFields(List<Component> criteriaFields) {
 		this.criteriaFields = criteriaFields;
-	}
-
-	public Group getFormGroup() {
-		return this.formGroup;
-	}
-
-	public void setFormGroup(Group formGroup) {
-		this.formGroup = formGroup;
 	}
 
 	public List<Component> getResultFields() {

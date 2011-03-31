@@ -114,7 +114,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="FooterInquiry" parent="Footer">
       <property name="items">
         <list> 
-          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close"/>
+          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close" p:conditionalRender="!#view.dialogMode"/>
+        </list>
+      </property>  
+  </bean>
+  
+  <bean id="FooterLookup" parent="Footer">
+      <property name="items">
+        <list> 
+          <bean parent="ActionField" p:methodToCall="search" p:actionLabel="Search"/>
+          <bean parent="ActionField" p:methodToCall="clearValues" p:actionLabel="Clear Values"/>
+          <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="Cancel" p:conditionalRender="!#view.dialogMode"/>
         </list>
       </property>  
   </bean>

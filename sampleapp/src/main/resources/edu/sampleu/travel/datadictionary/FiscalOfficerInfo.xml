@@ -123,11 +123,6 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="GeneratedField">
-          <property name="label" value="Actions" />
-          <property name="renderingMethodToCall" value="getActionUrlsFromField" />
-          <property name="styleClasses" value="field_attribute"/>
-        </bean>
         <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="userName" />
       </list>

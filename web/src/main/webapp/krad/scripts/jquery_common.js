@@ -145,7 +145,7 @@ function initializeInquiryHandlers() {
 		e.preventDefault();
 
 		// get the inquiry link target
-		var href = jq(this).attr('href') + '&dialogMode=Y';
+		var href = jq(this).attr('href') + '&dialogMode=true';
 		showIFrameDialog(href, 'Inquiry');
 	})
 }
@@ -161,7 +161,7 @@ function initializeLookupHandlers() {
 						// build lookup URL from input name
 						var name = jq(this).attr('name');
 
-						var href = 'lookup.do?dialogMode=Y&docFormKey=0&returnLocation=portal.jsp&methodToCall=start&businessObjectClassName=';
+						var href = 'lookup.do?dialogMode=true&returnLocation=portal.jsp&methodToCall=start&businessObjectClassName=';
 						var businessObjectClass = substringBetween(name, '(!!', '!!)');
 						if (businessObjectClass != null) {
 							href += businessObjectClass;

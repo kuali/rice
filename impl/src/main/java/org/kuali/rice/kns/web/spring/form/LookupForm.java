@@ -298,7 +298,7 @@ public class LookupForm extends UifFormBase {
 //				}
 //
 //			}
-			fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
+			fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getReturnFormKey());
 			fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
 			if (this.getDocNum() != null) {
 				fieldValues.put(KNSConstants.DOC_NUM, this.getDocNum());

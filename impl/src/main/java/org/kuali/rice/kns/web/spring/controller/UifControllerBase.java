@@ -20,15 +20,14 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForward;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -46,7 +45,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
-import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,6 +91,12 @@ public abstract class UifControllerBase {
 	public UifFormBase initForm(HttpServletRequest request) {
 		UifFormBase form;
 		String formKeyParam = request.getParameter(KNSConstants.FORM_KEY);
+		
+		// TODO not sure if this is safe, but assuming if docFormKey comes in then
+		// we are loading a Document view
+		if(StringUtils.isBlank(formKeyParam)) {
+		    formKeyParam = request.getParameter(KNSConstants.DOC_FORM_KEY);
+		}
 
 		if (StringUtils.isNotBlank(formKeyParam)) {
 			form = (UifFormBase) request.getSession().getAttribute(formKeyParam);

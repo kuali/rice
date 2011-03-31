@@ -255,6 +255,14 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 
 		return modelAndView;
 	}
+	
+	@RequestMapping(params = "methodToCall=refresh")
+    public ModelAndView refresh(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	    // TODO: this code still needs ported with whatever we are supposed
+	    // to do on refresh
+	    return getUIFModelAndView(form);
+	}
 
 	protected MaintenanceDocumentService getMaintenanceDocumentService() {
 		return KNSServiceLocator.getMaintenanceDocumentService();

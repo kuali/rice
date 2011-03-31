@@ -119,36 +119,6 @@
           <property name="serviceName" value="dataDictionaryService" />
         </bean>
       </property>
-      <property name="persistenceStructureService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="persistenceStructureService" />
-        </bean>
-      </property>
-      <property name="encryptionService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="encryptionService" />
-        </bean>
-      </property>
-      <property name="lookupService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="lookupService" />
-        </bean>
-      </property>
-      <property name="businessObjectDictionaryService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="businessObjectDictionaryService" />
-        </bean>
-      </property>
-      <property name="businessObjectMetaDataService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="businessObjectMetaDataService" />
-        </bean>
-      </property>
-      <property name="businessObjectAuthorizationService">
-        <bean class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-          <property name="serviceName" value="businessObjectAuthorizationService" />
-        </bean>
-      </property>
     </bean>
     
     <bean id="fiscalOfficerInfoMaintainable"

@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.kns.web.spring;
 
+import java.util.Map;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.kns.datadictionary.DataDictionaryException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.container.View;
@@ -102,9 +105,12 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         // initialize view for request
         View view = null;
 
+        // we are going to need this no matter how we get the view, so do it once
+        Map<String, String> parameterMap = WebUtils.translateRequestParameterMap(request.getParameterMap());
+        
         String viewId = request.getParameter(UifParameters.VIEW_ID);
         if (viewId != null) {
-            view = getViewService().getView(viewId, WebUtils.translateRequestParameterMap(request.getParameterMap()));
+            view = getViewService().getView(viewId, parameterMap);
         }
         else {
             String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
@@ -112,8 +118,22 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                 viewTypeName = form.getViewTypeName();
             }
 
-            view = getViewService().getViewByType(viewTypeName,
-                    WebUtils.translateRequestParameterMap(request.getParameterMap()));
+            try {
+                view = getViewService().getViewByType(viewTypeName, parameterMap);
+            }
+            catch(DataDictionaryException ddex) {
+                // maybe we have a view id from the session form
+                if(form.getViewId() != null) {
+                    view = getViewService().getView(form.getViewId(), parameterMap);
+                }
+                
+                // if we didn't find one, just re-throw
+                if(view == null) {
+                    throw ddex;
+                }
+                
+                LOG.warn("Obtained viewId from cached form, this may not be safe!");
+            }
         }
 
         form.setViewRequestParameters(view.getViewRequestParameters());

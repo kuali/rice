@@ -85,6 +85,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	public static final String ACTION_URLS_CHILDREN_END = "]";
 	public static final String ACTION_URLS_SEPARATOR = "&nbsp;&nbsp;";
 	public static final String ACTION_URLS_EMPTY = "&nbsp;";
+	public static final String RETURN_TARGET_FRAME = "_parent";
 
 	private transient LookupService lookupService;
 	// TODO delyea - investigate if encryptionService is even needed due to new spring binding
@@ -967,6 +968,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		AnchorHtmlData anchor = new AnchorHtmlData(getReturnHrefUsingParameters(props, context, returnKeys), HtmlData.getTitleText(returnUrlAnchorLabel, dataObject, returnKeys,
 		        businessObjectRestrictions));
 		anchor.setDisplayText(returnUrlAnchorLabel);
+		anchor.setTarget(RETURN_TARGET_FRAME);
 		return anchor;
 	}
 

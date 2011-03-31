@@ -60,6 +60,4 @@ public class CampusServiceRemoteTest extends CampusServiceImplTest {
     public void testGetCampusTypeNullCode() {
         super.testGetCampusTypeNullCode();
     }
-
-
 }

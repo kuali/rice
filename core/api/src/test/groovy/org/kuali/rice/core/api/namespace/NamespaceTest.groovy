@@ -35,43 +35,42 @@ class NamespaceTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
-        Namespace.Builder.create(null, null, 1);
+        Namespace.Builder.create(null, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        Namespace.Builder.create(null, APP_CODE, 1);
+        Namespace.Builder.create(null, APP_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        Namespace.Builder.create("", APP_CODE, 1);
+        Namespace.Builder.create("", APP_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        Namespace.Builder.create("  ", APP_CODE, 1);
+        Namespace.Builder.create("  ", APP_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
-        Namespace.Builder.create(CODE, null, 1);
+        Namespace.Builder.create(CODE, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
-        Namespace.Builder.create(CODE, "", 1);
+        Namespace.Builder.create(CODE, "");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
-        Namespace.Builder.create(CODE, """
-        """, 1);
+        Namespace.Builder.create(CODE, "");
     }
 
     @Test
     void happy_path() {
-        Namespace.Builder.create(CODE, APP_CODE, 1);
+        Namespace.Builder.create(CODE, APP_CODE);
     }
 
     @Test

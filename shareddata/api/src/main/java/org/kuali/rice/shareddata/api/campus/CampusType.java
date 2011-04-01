@@ -55,7 +55,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
 	@XmlElement(name = Elements.ACTIVE, required=false)
 	private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
 	@SuppressWarnings("unused")
@@ -119,10 +119,9 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String code, Long versionNumber) {
+        private Builder(String code) {
             setCode(code);
 			setActive(true);
-            setVersionNumber(versionNumber);
         }
 
         /**
@@ -132,8 +131,8 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
          * @return an instance of the builder with the code already populated
          * @throws IllegalArgumentException if the code is null or blank
          */
-        public static Builder create(String code, Long versionNumber) {
-            return new Builder(code, versionNumber);
+        public static Builder create(String code) {
+            return new Builder(code);
         }
 
         /**
@@ -146,9 +145,10 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getCode(), contract.getVersionNumber());
+            Builder builder =  new Builder(contract.getCode());
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 

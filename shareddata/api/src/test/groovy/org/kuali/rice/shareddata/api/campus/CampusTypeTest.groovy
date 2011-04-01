@@ -38,13 +38,13 @@ class CampusTypeTest {
 
     @Test
     void test_create_only_required() {
-        CampusType.Builder.create(CampusType.Builder.create(CODE, VERSION_NUMBER)).build();
+        CampusType.Builder.create(CampusType.Builder.create(CODE)).build();
     }
 
 	@Test
 	public void testCampusTypeBuilderPassedInParams() {
 	  //No assertions, just test whether the Builder gives us a Country object
-	  CampusType campustype = CampusType.Builder.create(CODE, VERSION_NUMBER).build()
+	  CampusType campustype = CampusType.Builder.create(CODE).build()
 	}
 	
 	@Test
@@ -54,12 +54,12 @@ class CampusTypeTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCampusTypeBuilderEmptyCode() {
-	  CampusType.Builder.create("", VERSION_NUMBER)
+	  CampusType.Builder.create("")
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testCampusTypeBuilderNullCode() {
-	  CampusType.Builder.create(null, VERSION_NUMBER)
+	  CampusType.Builder.create(null)
 	}
 	
 	@Test

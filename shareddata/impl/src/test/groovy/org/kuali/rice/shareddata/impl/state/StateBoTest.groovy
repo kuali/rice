@@ -24,7 +24,7 @@ import junit.framework.Assert
 class StateBoTest {
   @Test
   public void testNotEqualsWithCampus() {
-    State immutable = State.Builder.create("MI", "Michigan","US", 1).build();
+    State immutable = State.Builder.create("MI", "Michigan","US").build();
     StateBo bo = StateBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

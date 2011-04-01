@@ -42,62 +42,62 @@ class StateTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
-        State.Builder.create(null, null, null, 1);
+        State.Builder.create(null, null, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        State.Builder.create(null, NAME, COUNTRY_CODE, 1);
+        State.Builder.create(null, NAME, COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        State.Builder.create("", NAME, COUNTRY_CODE, 1);
+        State.Builder.create("", NAME, COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        State.Builder.create("  ", NAME, COUNTRY_CODE, 1);
+        State.Builder.create("  ", NAME, COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
-        State.Builder.create(CODE, null, COUNTRY_CODE, 1);
+        State.Builder.create(CODE, null, COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
-        State.Builder.create(CODE, "", COUNTRY_CODE, 1);
+        State.Builder.create(CODE, "", COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
-        State.Builder.create(CODE, "  ", COUNTRY_CODE, 1);
+        State.Builder.create(CODE, "  ", COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_null() {
-        State.Builder.create(CODE, NAME, null, 1);
+        State.Builder.create(CODE, NAME, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_empty() {
-        State.Builder.create(CODE, NAME, "", 1);
+        State.Builder.create(CODE, NAME, "");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_third_whitespace() {
-        State.Builder.create(CODE, NAME, "  ", 1);
+        State.Builder.create(CODE, NAME, "  ");
     }
 
     @Test
     void test_create_only_required() {
-        State.Builder.create(State.Builder.create(CODE, NAME, COUNTRY_CODE, 1)).build();
+        State.Builder.create(State.Builder.create(CODE, NAME, COUNTRY_CODE)).build();
     }
 
     @Test
     void happy_path() {
-        State.Builder.create(CODE, NAME, COUNTRY_CODE, 1).build();
+        State.Builder.create(CODE, NAME, COUNTRY_CODE).build();
     }
 
     @Test

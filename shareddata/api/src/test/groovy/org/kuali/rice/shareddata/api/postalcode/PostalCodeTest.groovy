@@ -49,92 +49,92 @@ class PostalCodeTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
-        PostalCode.Builder.create(null, null, null);
+        PostalCode.Builder.create(null, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        PostalCode.Builder.create(null, COUNTRY_CODE, VERSION_NUMBER);
+        PostalCode.Builder.create(null, COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        PostalCode.Builder.create("", COUNTRY_CODE, VERSION_NUMBER);
+        PostalCode.Builder.create("", COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        PostalCode.Builder.create("  ", COUNTRY_CODE, VERSION_NUMBER);
+        PostalCode.Builder.create("  ", COUNTRY_CODE);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
-        PostalCode.Builder.create(CODE, null, VERSION_NUMBER);
+        PostalCode.Builder.create(CODE, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
-        PostalCode.Builder.create(CODE, "", VERSION_NUMBER);
+        PostalCode.Builder.create(CODE, "");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
-        PostalCode.Builder.create(CODE, "  ", VERSION_NUMBER);
+        PostalCode.Builder.create(CODE, "  ");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_cityName_null() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCityName(null);
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCityName(null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_cityName_empty() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCityName("");
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCityName("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_cityName_whitespace() {
-        PostalCode.Builder.create(CODE,COUNTRY_CODE, VERSION_NUMBER).setCityName("  ");
+        PostalCode.Builder.create(CODE,COUNTRY_CODE).setCityName("  ");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_stateCode_null() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setStateCode(null);
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setStateCode(null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_stateCode_empty() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setStateCode("");
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setStateCode("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_stateCode_whitespace() {
-        PostalCode.Builder.create(CODE,COUNTRY_CODE, VERSION_NUMBER).setStateCode("  ");
+        PostalCode.Builder.create(CODE,COUNTRY_CODE).setStateCode("  ");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_countyCode_null() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCountyCode(null);
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCountyCode(null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_countyCode_empty() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).setCountyCode("");
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).setCountyCode("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_countyCode_whitespace() {
-        PostalCode.Builder.create(CODE,COUNTRY_CODE, VERSION_NUMBER).setCountyCode("  ");
+        PostalCode.Builder.create(CODE,COUNTRY_CODE).setCountyCode("  ");
     }
 
     @Test
     void test_create_only_required() {
-        PostalCode.Builder.create(PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER)).build();
+        PostalCode.Builder.create(PostalCode.Builder.create(CODE, COUNTRY_CODE)).build();
     }
 
     @Test
     void happy_path() {
-        PostalCode.Builder.create(CODE, COUNTRY_CODE, VERSION_NUMBER).build();
+        PostalCode.Builder.create(CODE, COUNTRY_CODE).build();
     }
 
     @Test

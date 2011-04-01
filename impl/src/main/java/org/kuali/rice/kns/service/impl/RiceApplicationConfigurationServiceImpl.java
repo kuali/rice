@@ -16,6 +16,12 @@
 
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT;
@@ -33,12 +39,6 @@ import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 //@Transactional
 public class RiceApplicationConfigurationServiceImpl implements RiceApplicationConfigurationService {
@@ -101,7 +101,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 
         String namespace = getKualiModuleService().getNamespaceCode(documentOrStepClass);
         String name = (detailTypeName == null) ? detailTypeString : detailTypeName;
-        Component.Builder detailType = Component.Builder.create(namespace, detailTypeName, name, false, null);
+        Component.Builder detailType = Component.Builder.create(namespace, detailTypeName, name, false);
         return detailType.build();
     }
 

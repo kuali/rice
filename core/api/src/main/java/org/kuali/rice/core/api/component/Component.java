@@ -71,7 +71,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -153,13 +153,12 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String namespaceCode, String code, String name, boolean virtual, Long versionNumber) {
+        private Builder(String namespaceCode, String code, String name, boolean virtual) {
 			setNamespaceCode(namespaceCode);
             setCode(code);
             setName(name);
             setVirtual(virtual);
 			setActive(true);
-            setVersionNumber(versionNumber);
         }
 
         /**
@@ -172,8 +171,8 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 		 * @param virtual the virtual flag to use when constructing this builder
 		 * @throws IllegalArgumentException if any of the parameters are null or blank
 		 */
-        public static Builder create(String namespaceCode, String code, String name, boolean virtual, Long versionNumber) {
-            return new Builder(namespaceCode, code, name, virtual, versionNumber);
+        public static Builder create(String namespaceCode, String code, String name, boolean virtual) {
+            return new Builder(namespaceCode, code, name, virtual);
         }
 
         /**
@@ -183,8 +182,9 @@ public final class Component implements ComponentContract, ModelObjectComplete {
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(ComponentContract contract) {
-            Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName(),  contract.isVirtual(), contract.getVersionNumber());
-            builder.active = contract.isActive();
+            Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName(),  contract.isVirtual());
+            builder.setActive(contract.isActive());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 

@@ -36,27 +36,27 @@ class ParameterTypeTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
-        ParameterType.Builder.create((String) null, 1);
+        ParameterType.Builder.create((String) null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        ParameterType.Builder.create("", 1);
+        ParameterType.Builder.create("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        ParameterType.Builder.create("  ", 1);
+        ParameterType.Builder.create("  ");
     }
 
     @Test
     void test_create_only_required() {
-        ParameterType.Builder.create(ParameterType.Builder.create(PARAMETER_TYPE_CODE, 1)).build();
+        ParameterType.Builder.create(ParameterType.Builder.create(PARAMETER_TYPE_CODE)).build();
     }
 
     @Test
     void happy_path() {
-        ParameterType.Builder.create(PARAMETER_TYPE_CODE, 1);
+        ParameterType.Builder.create(PARAMETER_TYPE_CODE);
     }
 
     @Test

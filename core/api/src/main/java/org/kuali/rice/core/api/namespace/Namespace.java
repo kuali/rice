@@ -68,7 +68,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -145,11 +145,10 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		 * @param applicationCode the application code to use when constructing this builder
 		 * @throws IllegalArgumentException if the code or applicationCode are null or blank
 		 */
-        private Builder(String code, String applicationCode, Long versionNumber) {
+        private Builder(String code, String applicationCode) {
             setCode(code);
             setApplicationCode(applicationCode);
 			setActive(true);
-            setVersionNumber(versionNumber);
         }
 
         /**
@@ -160,8 +159,8 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		 * @return an instance of the builder with the given data already populated
 		 * @throws IllegalArgumentException if the code or applicationCode are null or blank
          */
-        public static Builder create(String code, String applicationCode, Long versionNumber) {
-            return new Builder(code, applicationCode, versionNumber);
+        public static Builder create(String code, String applicationCode) {
+            return new Builder(code, applicationCode);
         }
 
 		/**
@@ -171,9 +170,10 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(NamespaceContract contract) {
-            Builder builder  = new Builder(contract.getCode(), contract.getApplicationCode(), contract.getVersionNumber());
+            Builder builder  = new Builder(contract.getCode(), contract.getApplicationCode());
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 

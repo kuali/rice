@@ -16,6 +16,16 @@
 
 package org.kuali.rice.shareddata.api.county;
 
+import java.io.Serializable;
+import java.util.Collection;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -24,15 +34,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
-import java.util.Collection;
 
 @XmlRootElement(name = County.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -64,7 +65,7 @@ public final class County implements CountyContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -137,7 +138,7 @@ public final class County implements CountyContract, ModelObjectComplete {
         private boolean active;
         private Long versionNumber;
 
-        private Builder(String code, String name, String countryCode, String stateCode, Long versionNumber) {
+        private Builder(String code, String name, String countryCode, String stateCode) {
             setCode(code);
             setName(name);
             setCountryCode(countryCode);
@@ -148,8 +149,8 @@ public final class County implements CountyContract, ModelObjectComplete {
         /**
          * creates a County Builder with the required fields.
          */
-        public static Builder create(String code, String name, String countryCode, String stateCode, Long versionNumber) {
-            final Builder builder = new Builder(code, name, countryCode, stateCode, versionNumber);
+        public static Builder create(String code, String name, String countryCode, String stateCode) {
+            final Builder builder = new Builder(code, name, countryCode, stateCode);
             builder.setActive(true);
             return builder;
         }
@@ -158,8 +159,9 @@ public final class County implements CountyContract, ModelObjectComplete {
          * creates a County Builder from an existing {@link CountyContract}.
          */
         public static Builder create(CountyContract contract) {
-            final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode(), contract.getStateCode(), contract.getVersionNumber());
+            final Builder builder = new Builder(contract.getCode(), contract.getName(), contract.getCountryCode(), contract.getStateCode());
             builder.setActive(contract.isActive());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 

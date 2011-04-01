@@ -16,6 +16,16 @@
 
 package org.kuali.rice.shareddata.api.country;
 
+import java.io.Serializable;
+import java.util.Collection;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -24,10 +34,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
-
-import javax.xml.bind.annotation.*;
-import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * POJO implementation of CountryContract that is immutable. Instances of Country can be (un)marshalled to and from XML.
@@ -63,7 +69,7 @@ public final class Country implements CountryContract, ModelObjectComplete {
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -151,23 +157,24 @@ public final class Country implements CountryContract, ModelObjectComplete {
         private Long versionNumber;
 
         private Builder(String code, String alternateCode, String name,
-                        boolean restricted, boolean active, Long versionNumber) {
+                        boolean restricted, boolean active) {
             this.setCode(code);
             this.setAlternateCode(alternateCode);
             this.setName(name);
             this.setRestricted(restricted);
             this.setActive(active);
-            this.setVersionNumber(versionNumber);
         }
 
         public static Builder create(String code, String alternatePostalCode, String name,
-                                     boolean restricted, boolean active, Long versionNumber) {
-            return new Builder(code, alternatePostalCode, name, restricted, active, versionNumber);
+                                     boolean restricted, boolean active) {
+            return new Builder(code, alternatePostalCode, name, restricted, active);
         }
 
         public static Builder create(CountryContract cc) {
-            return new Builder(cc.getCode(), cc.getAlternateCode(),
-                    cc.getName(), cc.isRestricted(), cc.isActive(), cc.getVersionNumber());
+            Builder builder = new Builder(cc.getCode(), cc.getAlternateCode(),
+                    cc.getName(), cc.isRestricted(), cc.isActive());
+            builder.setVersionNumber(cc.getVersionNumber());
+            return builder;
         }
 
         @Override

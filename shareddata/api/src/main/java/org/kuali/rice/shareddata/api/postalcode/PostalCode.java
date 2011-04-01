@@ -69,7 +69,7 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -150,17 +150,16 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
         private boolean active;
         private Long versionNumber;
 
-        private Builder(String code, String countryCode, Long versionNumber) {
+        private Builder(String code, String countryCode) {
             setCode(code);
             setCountryCode(countryCode);
-            setVersionNumber(versionNumber);
         }
 
         /**
          * creates a PostalCode builder with the required fields.
          */
-        public static Builder create(String code, String countryCode, Long versionNumber) {
-            final Builder builder = new Builder(code, countryCode, versionNumber);
+        public static Builder create(String code, String countryCode) {
+            final Builder builder = new Builder(code, countryCode);
             builder.setActive(true);
             return builder;
         }
@@ -169,9 +168,9 @@ public final class PostalCode implements PostalCodeContract, ModelObjectComplete
          * creates a PostalCode builder from an existing {@link PostalCodeContract}.
          */
         public static Builder create(PostalCodeContract contract) {
-            final Builder builder = new Builder(contract.getCode(), contract.getCountryCode(), contract.getVersionNumber());
+            final Builder builder = new Builder(contract.getCode(), contract.getCountryCode());
             builder.setActive(contract.isActive());
-
+            builder.setVersionNumber(contract.getVersionNumber());
             if (StringUtils.isNotBlank(contract.getCountyCode())) {
                 builder.setCountyCode(contract.getCountyCode());
             }

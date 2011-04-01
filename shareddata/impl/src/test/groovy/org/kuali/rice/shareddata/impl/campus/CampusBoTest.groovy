@@ -24,7 +24,7 @@ import org.junit.Test
 class CampusBoTest {
   @Test
   public void testNotEqualsWithCampus() {
-    Campus immutable = Campus.Builder.create(Campus.Builder.create("AMES", new Long(1))).build();
+    Campus immutable = Campus.Builder.create(Campus.Builder.create("AMES")).build();
     CampusBo bo = CampusBo.from(immutable)
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

@@ -51,22 +51,22 @@ class CountryTest {
 
   @Test
   void test_create_only_required() {
-    Country.Builder.create(Country.Builder.create(CODE, null, NAME, false, true, 1)).build();
+    Country.Builder.create(Country.Builder.create(CODE, null, NAME, false, true)).build();
   }
 
   @Test
   public void testCountryBuilderPassedInParams() {
     //No assertions, just test whether the Builder gives us a Country object
-    Country.Builder.create(CODE, null, NAME, false, true, 1).build()
+    Country.Builder.create(CODE, null, NAME, false, true).build()
   }
 
   @Test
   public void testCountryBuilderPassedInCountryContract() {
     //No assertions, just test whether the Builder gives us a Country object
     Country country = Country.Builder.create(new CountryContract() {
-      String getCode() {CODE}
-      String getAlternateCode() { ALT_CODE }
-      String getName() { NAME }
+      String getCode() { CountryTest.CODE }
+      String getAlternateCode() { CountryTest.ALT_CODE }
+      String getName() { CountryTest.NAME }
       boolean isActive() { true }
       boolean isRestricted() { false }
       Long getVersionNumber() { 1 }
@@ -76,14 +76,14 @@ class CountryTest {
   @Test
   public void testCountryBuilderNullCountryCode() {
     shouldFail(IllegalArgumentException.class) {
-      Country.Builder.create(null, null, NAME, false, true, 1)
+      Country.Builder.create(null, null, NAME, false, true)
     }
   }
 
   @Test
   public void testCountryBuilderEmptyCountryCode() {
     shouldFail(IllegalArgumentException.class) {
-      Country.Builder.create("  ", null, NAME, false, true, 1)
+      Country.Builder.create("  ", null, NAME, false, true)
     }
   }
 
@@ -93,7 +93,9 @@ class CountryTest {
     Marshaller marshaller = jc.createMarshaller()
     StringWriter sw = new StringWriter()
 
-    Country country = Country.Builder.create(CODE, ALT_CODE, NAME, false, true, 1).build()
+	Country.Builder builder = Country.Builder.create(CODE, ALT_CODE, NAME, false, true)
+	builder.setVersionNumber(1)
+    Country country = builder.build()
     marshaller.marshal(country, sw)
     String xml = sw.toString()
 

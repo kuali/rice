@@ -76,7 +76,7 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
     @XmlElement(name = Elements.EVALUATION_OPERATOR, required = false)
     private final EvaluationOperator evaluationOperator;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
     @SuppressWarnings("unused")
@@ -172,30 +172,30 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         private EvaluationOperator evaluationOperator;
         private Long versionNumber;
 
-        private Builder(String applicationCode, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType, Long versionNumber) {
+        private Builder(String applicationCode, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType) {
             setApplicationCode(applicationCode);
             setNamespaceCode(namespaceCode);
             setComponentCode(componentCode);
             setName(name);
             setParameterType(parameterType);
-            setVersionNumber(versionNumber);
         }
 
         /**
          * creates a Parameter with the required fields.
          */
-        public static Builder create(String applicationCode, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType, Long versionNumber) {
-            return new Builder(applicationCode, namespaceCode, componentCode, name, parameterType, versionNumber);
+        public static Builder create(String applicationCode, String namespaceCode, String componentCode, String name, ParameterType.Builder parameterType) {
+            return new Builder(applicationCode, namespaceCode, componentCode, name, parameterType);
         }
 
         /**
          * creates a Parameter from an existing {@link ParameterContract}.
          */
         public static Builder create(ParameterContract contract) {
-            Builder builder = new Builder(contract.getApplicationCode(), contract.getNamespaceCode(), contract.getComponentCode(), contract.getName(), ParameterType.Builder.create(contract.getParameterType()), contract.getVersionNumber());
+            Builder builder = new Builder(contract.getApplicationCode(), contract.getNamespaceCode(), contract.getComponentCode(), contract.getName(), ParameterType.Builder.create(contract.getParameterType()));
             builder.setValue(contract.getValue());
             builder.setDescription(contract.getDescription());
             builder.setEvaluationOperator(contract.getEvaluationOperator());
+            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 

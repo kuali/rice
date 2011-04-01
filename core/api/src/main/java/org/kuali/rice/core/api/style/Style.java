@@ -43,6 +43,7 @@ import org.w3c.dom.Element;
 		Style.Elements.XML_CONTENT,
 		Style.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Style implements StyleContract, ModelObjectComplete {
@@ -61,7 +62,7 @@ public final class Style implements StyleContract, ModelObjectComplete {
 	@XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
     
-	@XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = true)
+	@XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 	
 	@XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
@@ -71,6 +72,15 @@ public final class Style implements StyleContract, ModelObjectComplete {
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 	
+    private Style() {
+    	this.styleId = null;
+    	this.name = null;
+    	this.xmlContent = null;
+    	this.active = false;
+    	this.versionNumber = null;
+    	this.objectId = null;
+    }
+    
     private Style(Builder builder) {
     	this.styleId = builder.getStyleId();
     	this.name = builder.getName();

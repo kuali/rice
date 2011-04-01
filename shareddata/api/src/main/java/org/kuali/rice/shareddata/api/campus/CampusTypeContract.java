@@ -16,7 +16,10 @@
 
 package org.kuali.rice.shareddata.api.campus;
 
-public interface CampusTypeContract {
+import org.kuali.rice.core.api.mo.GloballyUnique;
+import org.kuali.rice.core.api.mo.Versioned;
+
+public interface CampusTypeContract extends Versioned, GloballyUnique {
 	
 	/**
 	 * This is the campus type code for the CampusType.  This is cannot be a null or a blank string.
@@ -49,12 +52,5 @@ public interface CampusTypeContract {
 	 * @return active boolean for CampusType.
 	 */
 	boolean isActive();
-
-    /**
-     * This the object version number for CampusType.
-     *
-     * @return the version number of the CampusType
-     */
-    Long getVersionNumber();
 
 }

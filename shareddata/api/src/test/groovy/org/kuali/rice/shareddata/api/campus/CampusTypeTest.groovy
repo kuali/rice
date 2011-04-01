@@ -27,12 +27,14 @@ class CampusTypeTest {
     private static String NAME = "AWESOME";
     private static String ACTIVE = "true";
     private static Long VERSION_NUMBER = new Long(1);
+	private static final String OBJECT_ID = UUID.randomUUID();
 	def static final String XML = """
 	  <campusType xmlns="http://rice.kuali.org/shareddata">
 			<code>${CODE}</code>
 			<name>${NAME}</name>
 			<active>${ACTIVE}</active>
 			<versionNumber>${VERSION_NUMBER}</versionNumber>
+			<objectId>${OBJECT_ID}</objectId>
 	  </campusType>
 	  """
 
@@ -89,6 +91,7 @@ class CampusTypeTest {
 	  Assert.assertEquals(NAME,campusType.name)
 	  Assert.assertEquals(ACTIVE.toBoolean(),campusType.active)
       Assert.assertEquals(VERSION_NUMBER,campusType.versionNumber)
+	  Assert.assertEquals(OBJECT_ID,campusType.objectId)
   
 	}
 	
@@ -97,7 +100,8 @@ class CampusTypeTest {
 			String getCode() { CampusTypeTest.CODE }
 			String getName() { CampusTypeTest.NAME }
 			boolean isActive() { CampusTypeTest.ACTIVE.toBoolean() }
-            Long getVersionNumber() {CampusTypeTest.VERSION_NUMBER}
+            Long getVersionNumber() { CampusTypeTest.VERSION_NUMBER }
+			String getObjectId() { CampusTypeTest.OBJECT_ID }
 		  }).build()
 	}
 }

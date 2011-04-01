@@ -19,7 +19,9 @@ package org.kuali.rice.shareddata.api.campus
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
+
 import junit.framework.Assert
+
 import org.junit.Test
 
 class CampusTest {
@@ -30,8 +32,10 @@ class CampusTest {
 	private static final String CAMPUS_TYPE_NAME = "BOTH"
     private static final String CAMPUS_TYPE_ACTIVE = "true";
     private static final Long CAMPUS_TYPE_VERSION_NUMBER = new Long(1);
+	private static final String CAMPUS_TYPE_OBJECT_ID = UUID.randomUUID();
 	private static final String ACTIVE = "true";
     private static final Long VERSION_NUMBER = new Long(1);
+	private static final String OBJECT_ID = UUID.randomUUID();
 
     private static final String XML = """
     <campus xmlns="http://rice.kuali.org/shareddata">
@@ -43,9 +47,11 @@ class CampusTest {
 			<name>${CAMPUS_TYPE_NAME}</name>
 			<active>${CAMPUS_TYPE_ACTIVE}</active>
 			<versionNumber>${CAMPUS_TYPE_VERSION_NUMBER}</versionNumber>
+			<objectId>${CAMPUS_TYPE_OBJECT_ID}</objectId>
 		</campusType>
 		<active>${ACTIVE}</active>
 		<versionNumber>${VERSION_NUMBER}</versionNumber>
+		<objectId>${OBJECT_ID}</objectId>
 	  </campus>
     """
 
@@ -108,7 +114,9 @@ class CampusTest {
 	  Assert.assertEquals(CAMPUS_TYPE_NAME, campus.campusType.name)
 	  Assert.assertEquals(CAMPUS_TYPE_ACTIVE.toBoolean(), campus.campusType.active)
       Assert.assertEquals(VERSION_NUMBER, campus.versionNumber)
+	  Assert.assertEquals(OBJECT_ID, campus.objectId)
       Assert.assertEquals(CAMPUS_TYPE_VERSION_NUMBER, campus.campusType.versionNumber)
+	  Assert.assertEquals(CAMPUS_TYPE_OBJECT_ID, campus.campusType.objectId)
 	}
 	
 	private Campus createCampusFromPassedInContract() {
@@ -121,9 +129,11 @@ class CampusTest {
 				String getName() {CampusTest.CAMPUS_TYPE_NAME}
 				boolean isActive() {CampusTest.CAMPUS_TYPE_ACTIVE.toBoolean()}
                 Long getVersionNumber() { CampusTest.CAMPUS_TYPE_VERSION_NUMBER }
+				String getObjectId() { CampusTest.CAMPUS_TYPE_OBJECT_ID }
 			}).build()}
 			boolean isActive() { CampusTest.ACTIVE.toBoolean() }
             Long getVersionNumber() { CampusTest.VERSION_NUMBER }
+			String getObjectId() { CampusTest.OBJECT_ID }
 		  }).build()
 
         return campus

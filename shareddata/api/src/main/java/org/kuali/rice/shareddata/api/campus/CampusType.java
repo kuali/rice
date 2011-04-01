@@ -41,6 +41,7 @@ import java.util.Collection;
 		CampusType.Elements.NAME,
 		CampusType.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        CoreConstants.CommonElements.OBJECT_ID,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class CampusType implements CampusTypeContract, ModelObjectComplete{
@@ -58,6 +59,9 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+	private final String objectId;
+    
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -70,6 +74,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
     	this.name = null;
     	this.active = false;
         this.versionNumber = null;
+        this.objectId = null;
     }
     
     /**
@@ -83,6 +88,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
         this.name = builder.getName();
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
+        this.objectId = builder.getObjectId();
     }
     
 	@Override
@@ -104,6 +110,11 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
     public Long getVersionNumber() {
         return this.versionNumber;
     }
+    
+    @Override
+	public String getObjectId() {
+		return objectId;
+	}
 
 	/**
      * This builder is used to construct instances of CampusType.  It enforces the constraints of the {@link CampusTypeContract}.
@@ -115,6 +126,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
         private String name;
         private boolean active;
         private Long versionNumber;
+        private String objectId;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -149,6 +161,7 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setObjectId(contract.getObjectId());
             return builder;
         }
 
@@ -176,6 +189,10 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
         public void setVersionNumber(Long versionNumber) {
             this.versionNumber = versionNumber;
         }
+        
+        public void setObjectId(String objectId) {
+        	this.objectId = objectId;
+        }
 
 		@Override
 		public String getCode() {
@@ -196,6 +213,11 @@ public final class CampusType implements CampusTypeContract, ModelObjectComplete
         public Long getVersionNumber() {
             return versionNumber;
         }
+        
+        @Override
+    	public String getObjectId() {
+    		return objectId;
+    	}
 
 		/**
 		 * Builds an instance of a CampusType based on the current state of the builder.

@@ -17,6 +17,16 @@
 package org.kuali.rice.shareddata.api.campus;
 
 
+import java.io.Serializable;
+import java.util.Collection;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -25,15 +35,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
-import java.util.Collection;
 
 @XmlRootElement(name = Campus.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -44,6 +45,7 @@ import java.util.Collection;
         Campus.Elements.CAMPUS_TYPE,
         Campus.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Campus implements CampusContract, ModelObjectComplete {
@@ -66,6 +68,9 @@ public final class Campus implements CampusContract, ModelObjectComplete {
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+    
+	@XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+	private final String objectId;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -83,6 +88,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
     	this.campusType = null;
     	this.active = false;
         this.versionNumber = null;
+        this.objectId = null;
     }
     
     /**
@@ -102,6 +108,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         }
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
+        this.objectId = builder.getObjectId();
     }
 
 	@Override
@@ -133,6 +140,12 @@ public final class Campus implements CampusContract, ModelObjectComplete {
     public Long getVersionNumber() {
         return versionNumber;
     }
+        
+	@Override
+	public String getObjectId() {
+		return objectId;
+	}
+
 	/**
      * This builder is used to construct instances of Campus.  It enforces the constraints of the {@link CampusContract}.
      */
@@ -144,6 +157,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         private CampusType.Builder campusType;
         private boolean active;
         private Long versionNumber;
+        private String objectId;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -182,6 +196,7 @@ public final class Campus implements CampusContract, ModelObjectComplete {
             }
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setObjectId(contract.getObjectId());
             return builder;
         }
 
@@ -217,6 +232,10 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }
+        
+        public void setObjectId(String objectId) {
+        	this.objectId = objectId;
+        }
 
 		@Override
 		public String getCode() {
@@ -248,6 +267,10 @@ public final class Campus implements CampusContract, ModelObjectComplete {
             return versionNumber;
         }
 
+        @Override
+    	public String getObjectId() {
+    		return objectId;
+    	}
 
 		/**
 		 * Builds an instance of a Campus based on the current state of the builder.

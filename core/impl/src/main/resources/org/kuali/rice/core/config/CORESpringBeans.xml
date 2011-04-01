@@ -67,6 +67,10 @@
 		<property name="beanNames">
 			<list>
                 <idref local="xmlDigesterService" />
+                <!-- <idref local="styleService" />
+                <idref local="styleXmlLoader" />
+                <idref local="styleXmlExporter" />
+                -->
 			</list>
 		</property>
 	</bean>
@@ -94,5 +98,43 @@
 	<bean id="xmlExporterService" class="org.kuali.rice.core.impl.impex.xml.XmlExporterServiceImpl">
 		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
 	</bean>
+	
+	<!-- TODO moved these to KEWSpringBeans.xml for now because of dependency issues with the caching magic
+	
+	<bean id="serviceRegistry" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
+	</bean>
+	
+	<bean id="coreCache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean">
+		<property name="remotedServiceRegistry" ref="serviceRegistry"/>
+		<property name="serviceName" value="RICE_CORE_CACHE" />
+    </bean>
+    
+    <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
+    	<property name="cache" ref="coreCache" />
+    </bean>
+    
+    <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParser">
+    	<property name="styleService" ref="styleService" />
+    </bean>
+    
+    <bean id="styleXmlExporter" class="org.kuali.rice.core.impl.style.StyleXmlExporter"/>
+        
+    <bean id="coreImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
+		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
+        
+        <property name="xmlLoadersToRegister">
+		   <list>
+		     <ref local="styleXmlLoader" />
+		   </list>
+		</property>
+		<property name="xmlExportersToRegister">
+		   <list>
+		     <ref local="styleXmlExporter" />
+		   </list>
+		</property>
+	</bean>
+	
+	-->
 
 </beans>

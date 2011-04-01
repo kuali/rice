@@ -24,16 +24,11 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
 public class EDocLiteDAOOjbImpl extends PersistenceBrokerDaoSupport implements EDocLiteDAO {
-
-    public void saveEDocLiteStyle(EDocLiteStyle styleData) {
-        this.getPersistenceBrokerTemplate().store(styleData);
-    }
 
     public void saveEDocLiteDefinition(EDocLiteDefinition edocLiteData) {
     	this.getPersistenceBrokerTemplate().store(edocLiteData);
@@ -41,13 +36,6 @@ public class EDocLiteDAOOjbImpl extends PersistenceBrokerDaoSupport implements E
 
     public void saveEDocLiteAssociation(EDocLiteAssociation assoc) {
     	this.getPersistenceBrokerTemplate().store(assoc);
-    }
-
-    public EDocLiteStyle getEDocLiteStyle(String styleName) {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo("name", styleName);
-        criteria.addEqualTo("activeInd", Boolean.TRUE);
-        return (EDocLiteStyle) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(EDocLiteStyle.class, criteria));
     }
 
     public EDocLiteDefinition getEDocLiteDefinition(String defName) {
@@ -62,32 +50,6 @@ public class EDocLiteDAOOjbImpl extends PersistenceBrokerDaoSupport implements E
         criteria.addEqualTo("edlName", docTypeName);
         criteria.addEqualTo("activeInd", Boolean.TRUE);
         return (EDocLiteAssociation) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(EDocLiteAssociation.class, criteria));
-    }
-
-    /**
-     * Returns names of all active Styles
-     */
-    public List<String> getEDocLiteStyleNames() {
-        List<EDocLiteStyle> styles = getEDocLiteStyles();
-        List<String> styleNames = new ArrayList<String>(styles.size());
-        for (EDocLiteStyle style: styles) {
-            styleNames.add(style.getName());
-        }
-        return styleNames;
-    }
-
-    /**
-     * Returns all active Styles
-     */
-    public List<EDocLiteStyle> getEDocLiteStyles() {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo("activeInd", Boolean.TRUE);
-        Iterator it = this.getPersistenceBrokerTemplate().getIteratorByQuery(new QueryByCriteria(EDocLiteStyle.class, criteria));
-        List<EDocLiteStyle> styles = new ArrayList<EDocLiteStyle>();
-        while (it.hasNext()) {
-            styles.add((EDocLiteStyle) it.next());
-        }
-        return styles;
     }
 
     public List getEDocLiteDefinitions() {

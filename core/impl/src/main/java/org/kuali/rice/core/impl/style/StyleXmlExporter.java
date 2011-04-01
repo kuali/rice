@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.xml.export;
+package org.kuali.rice.core.impl.style;
 
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
@@ -31,10 +31,8 @@ import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlRenderer;
 import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.xml.XmlRenderer;
 
 /**
  * Exports Style definitions to XML.
@@ -56,12 +54,12 @@ public class StyleXmlExporter implements XmlExporter {
 	}
 
 	public Element export(ExportDataSet exportDataSet) {
-		KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
+		StyleExportDataSet dataSet = StyleExportDataSet.fromExportDataSet(exportDataSet);
 		if (!dataSet.getStyles().isEmpty()) {
 			Element rootElement = renderer.renderElement(null, STYLE_STYLES);
 			rootElement.setAttribute(SCHEMA_LOCATION_ATTR, STYLE_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
-			for (Iterator iter = dataSet.getStyles().iterator(); iter.hasNext();) {
-				EDocLiteStyle edocLite = (EDocLiteStyle) iter.next();
+			for (Iterator<StyleBo> iter = dataSet.getStyles().iterator(); iter.hasNext();) {
+				StyleBo edocLite = iter.next();
 				exportStyle(rootElement, edocLite);
 			}
 			return rootElement;
@@ -69,7 +67,7 @@ public class StyleXmlExporter implements XmlExporter {
 		return null;
 	}
 
-	private void exportStyle(Element parentEl, EDocLiteStyle style) {
+	private void exportStyle(Element parentEl, StyleBo style) {
         if (style == null) {
             LOG.error("Attempted to export style which was not found");
             return;

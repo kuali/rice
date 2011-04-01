@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright 2008-2010 The Kuali Foundation
+ Copyright 2009 The Kuali Foundation
  
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -53,37 +53,23 @@
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-  <bean id="enExceptionRoutingService" class="org.kuali.rice.kew.routemanager.TestExceptionRoutingServiceImpl"/>
-  <bean id="enDocumentRequeuerService" class="mocks.MockDocumentRequeuerImpl" />
-  <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl">
-    <property name="deploymentEnvironment">
-      <value>${environment}</value>
-    </property>
-    <property name="emailContentGenerator">
-      <bean class="mocks.MockStyleableEmailContentServiceImpl">
-        <property name="styleService" ref="styleService"/>
-      </bean>
-    </property>
-  </bean>
 
-  <!--
-    a "fake" service, used by ServiceInvocationRuleTest; in an ideal demonstration this would live in
-    application space/context/resource loader, but for now it's still in the KEW module context  
+<!--
+  <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+
+	 <bean id="coreOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
+			<list>
+				<value>coreDataSource</value>
+			</list>
+		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/core/impl/config/OJB-repository-core.xml" />
+	</bean>
+
+  <bean id="styleDao" class="org.kuali.rice.core.impl.style.StyleDaoOjb">
+    <property name="jcdAlias" value="enWorkflowDataSource" />
+  </bean>
+  
   -->
-  <bean id="fakeService" class="org.kuali.rice.kew.test.FakeServiceImpl"/>
-
-  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>  
-    <property name="serviceDefinition">
-      <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
-        <property name="serviceInterface"><value>org.kuali.rice.kew.test.FakeService</value></property>
-        <property name="service">
-          <ref bean="fakeService"/>
-        </property>
-        <property name="localServiceName" value="fakeService-remote"/>
-        <property name="serviceNameSpaceURI" value="fake"/>
-        <property name="retryAttempts" value="0"/>
-      </bean>
-    </property>
-  </bean>
+  
 </beans>

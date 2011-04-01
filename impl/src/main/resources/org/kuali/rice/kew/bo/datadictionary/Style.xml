@@ -15,25 +15,25 @@
  limitations under the License.
 -->
 
-  <bean id="EDocLiteStyle" parent="EDocLiteStyle-parentBean"/>
+  <bean id="Style" parent="Style-parentBean"/>
 
-  <bean id="EDocLiteStyle-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.edl.impl.bo.EDocLiteStyle"/>
-    <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
+  <bean id="Style-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.core.impl.style.StyleBo"/>
+    <property name="exporterClass" value="org.kuali.rice.core.impl.style.StyleDataExporter"/>
     <property name="objectLabel" value="Stylesheet"/>
     <property name="inquiryDefinition">
-      <ref bean="EDocLiteStyle-inquiryDefinition"/>
+      <ref bean="Style-inquiryDefinition"/>
     </property>
     <property name="lookupDefinition">
-      <ref bean="EDocLiteStyle-lookupDefinition"/>
+      <ref bean="Style-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="edocLiteStyleId"/>
+    <property name="titleAttribute" value="styleId"/>
     <property name="attributes">
       <list>
-        <ref bean="EDocLiteStyle-edocLiteStyleId"/>
-        <ref bean="EDocLiteStyle-name"/>
-        <ref bean="EDocLiteStyle-xmlContent"/>
-        <ref bean="EDocLiteStyle-activeInd"/>
+        <ref bean="Style-styleId"/>
+        <ref bean="Style-name"/>
+        <ref bean="Style-xmlContent"/>
+        <ref bean="Style-active"/>
       </list>
     </property>
   </bean>
@@ -41,9 +41,9 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="EDocLiteStyle-edocLiteStyleId" parent="EDocLiteStyle-edocLiteStyleId-parentBean"/>
+  <bean id="Style-styleId" parent="Style-styleId-parentBean"/>
 
-  <bean id="EDocLiteStyle-edocLiteStyleId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Style-styleId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id"/>
     <property name="maxLength" value="30"/>
     <property name="validationPattern">
@@ -52,13 +52,13 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="name" value="edocLiteStyleId"/>
+    <property name="name" value="styleId"/>
     <property name="label" value="Id"/>
   </bean>
 
-  <bean id="EDocLiteStyle-name" parent="EDocLiteStyle-name-parentBean"/>
+  <bean id="Style-name" parent="Style-name-parentBean"/>
 
-  <bean id="EDocLiteStyle-name-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Style-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="name"/>
     <property name="maxLength" value="2000"/>
     <property name="validationPattern">
@@ -71,9 +71,9 @@
     <property name="label" value="Style Name"/>
   </bean> 
  
-   <bean id="EDocLiteStyle-xmlContent" parent="EDocLiteStyle-xmlContent-parentBean"/>
+   <bean id="Style-xmlContent" parent="Style-xmlContent-parentBean"/>
 
-  <bean id="EDocLiteStyle-xmlContent-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="Style-xmlContent-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="xmlContent"/>
     <property name="maxLength" value="250"/>
     <property name="validationPattern">
@@ -86,10 +86,10 @@
     <property name="label" value="XML Content"/>
   </bean>
   
-  <bean id="EDocLiteStyle-activeInd" parent="EDocLiteStyle-activeInd-parentBean"/>
+  <bean id="Style-active" parent="Style-active-parentBean"/>
 
-  <bean id="EDocLiteStyle-activeInd-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="activeInd"/>
+  <bean id="Style-active-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="active"/>
     <property name="maxLength" value="50"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
@@ -98,27 +98,27 @@
       <bean parent="CheckboxControlDefinition"/>
     </property>
     <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/> 
-    <property name="summary" value="activeInd"/>
-    <property name="name" value="activeInd"/>
+    <property name="summary" value="active"/>
+    <property name="name" value="active"/>
     <property name="label" value="Active Indicator"/>
   </bean>
    
  
   <!-- Business Object Inquiry Definition -->
 
-  <bean id="EDocLiteStyle-inquiryDefinition" parent="EDocLiteStyle-inquiryDefinition-parentBean"/>
+  <bean id="Style-inquiryDefinition" parent="Style-inquiryDefinition-parentBean"/>
 
-  <bean id="EDocLiteStyle-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+  <bean id="Style-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
     <property name="inquirySections">
       <list>
      	<bean parent="InquirySectionDefinition">
-          <property name="title" value="EdocLiteStyle"/>
+          <property name="title" value="Style"/>
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="edocLiteStyleId"/>
+              <bean parent="FieldDefinition" p:attributeName="styleId"/>
               <bean parent="FieldDefinition" p:attributeName="name"/>
-              <bean parent="FieldDefinition" p:attributeName="activeInd"/>              
+              <bean parent="FieldDefinition" p:attributeName="active"/>              
             </list>
           </property>
         </bean>
@@ -128,9 +128,9 @@
 
   <!-- Business Object Lookup Definition -->
 
-  <bean id="EDocLiteStyle-lookupDefinition" parent="EDocLiteStyle-lookupDefinition-parentBean"/>
+  <bean id="Style-lookupDefinition" parent="Style-lookupDefinition-parentBean"/>
 
-  <bean id="EDocLiteStyle-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+  <bean id="Style-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
     
     <property name="defaultSort">
       <bean parent="SortDefinition">
@@ -138,18 +138,18 @@
     </property>
     <property name="lookupFields">
       <list>         
-        <bean parent="FieldDefinition" p:attributeName="edocLiteStyleId" p:forceLookup="true"/>       
+        <bean parent="FieldDefinition" p:attributeName="styleId" p:forceLookup="true"/>       
         <bean parent="FieldDefinition" p:attributeName="name" p:forceLookup="true"/>
-     	<bean parent="FieldDefinition" p:attributeName="activeInd"/>
+     	<bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="edocLiteStyleId"/>
+        <bean parent="FieldDefinition" p:attributeName="styleId"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="activeInd"/>
+        <bean parent="FieldDefinition" p:attributeName="active"/>
 	  </list>
     </property>
-    <property name="title" value="EdocLiteStyle Lookup"/>
+    <property name="title" value="Style Lookup"/>
   </bean>
 </beans>

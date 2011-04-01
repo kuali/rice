@@ -26,7 +26,6 @@ import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
 
 /**
@@ -42,19 +41,6 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
 
     @PersistenceContext(unitName = "kew-unit")
     private EntityManager entityManager;
-
-    /**
-     * Save a EDocLiteStyle
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#saveEDocLiteStyle(org.kuali.rice.edl.impl.bo.EDocLiteStyle)
-     */
-    public void saveEDocLiteStyle(final EDocLiteStyle styleData) {
-        if (styleData.getEdocLiteStyleId() == null) {
-            entityManager.persist(styleData);
-        } else {
-            OrmUtils.merge(entityManager, styleData);
-        }
-    }
 
     /**
      * Save a EDocLiteDefinition
@@ -83,20 +69,6 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
     }
 
     /**
-     * Get a EDocLoiteStyle
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteStyle(java.lang.String)
-     */
-    public EDocLiteStyle getEDocLiteStyle(final String styleName) {
-        final Criteria crit = new Criteria(EDocLiteStyle.class.getName());
-
-        crit.eq(NAME_CRITERIA, styleName);
-        crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-
-        return (EDocLiteStyle) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-    }
-
-    /**
      * Get a EDocLiteDefinition
      *
      * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteDefinition(java.lang.String)
@@ -118,34 +90,6 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         crit.eq("edlName", docTypeName);
         crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
         return (EDocLiteAssociation) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-    }
-
-    /**
-     * Returns names of all active Styles
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteStyleNames()
-     */
-    public List<String> getEDocLiteStyleNames() {
-        final List<EDocLiteStyle> styles = getEDocLiteStyles();
-        final List<String> styleNames = new ArrayList<String>(styles.size());
-        for (EDocLiteStyle style : styles) {
-            styleNames.add(style.getName());
-        }
-        return styleNames;
-    }
-
-    /**
-     * Returns all active Styles
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteStyles()
-     */
-    @SuppressWarnings("unchecked")
-    public List<EDocLiteStyle> getEDocLiteStyles() {
-        final Criteria crit = new Criteria(EDocLiteStyle.class.getName());
-        crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-
-        return (List<EDocLiteStyle>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-
     }
 
     /**

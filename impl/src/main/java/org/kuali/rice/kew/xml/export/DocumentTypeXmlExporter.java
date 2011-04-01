@@ -76,6 +76,7 @@ import org.jdom.input.SAXBuilder;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlRenderer;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -89,7 +90,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 
 /**

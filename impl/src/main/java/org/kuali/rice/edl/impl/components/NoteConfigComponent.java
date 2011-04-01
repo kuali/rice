@@ -16,11 +16,32 @@
 
 package org.kuali.rice.edl.impl.components;
 
-import com.thoughtworks.xstream.XStream;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.mail.EmailBcList;
 import org.kuali.rice.core.mail.EmailBody;
@@ -53,25 +74,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.thoughtworks.xstream.XStream;
 
 
 /**
@@ -506,7 +509,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 		    
 		    protected Templates loadStyleSheet(String styleName) {
 			try {
-			    Templates style = KEWServiceLocator.getStyleService().getStyleAsTranslet(styleName);
+			    Templates style = CoreApiServiceLocator.getStyleService().getStyleAsTranslet(styleName);
 			    if (style == null) {
 				throw new WorkflowRuntimeException("Failed to locate stylesheet with name '" + styleName + "'");
 			    }

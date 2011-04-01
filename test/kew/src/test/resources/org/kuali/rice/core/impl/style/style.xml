@@ -17,7 +17,7 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<styles xmlns="ns:workflow/Style" xsi:schemaLocation="ns:workflow/Style resource:Style">
 		<style name="an_arbitrary_style">
-			<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.edl.framework.util.EDLFunctionstionstions">	
+			<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.edl.framework.util.EDLFunctions">	
 				<xsl:include href="widgets"/>	
 				<xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="yes" method="html" omit-xml-declaration="yes"/>
 				<xsl:param name="overrideMain" select="'false'"/>
@@ -50,14 +50,14 @@
         <!-- for inclusion tests -->
 
         <style name="test_included">
-            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xorg.kuali.rice.edl.framework.util.EDLFunctionsLFunctionsLFunctions">    
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.edl.framework.util.EDLFunctions">    
               <xsl:template match="a">11111</xsl:template>
               <xsl:template match="b">22222</xsl:template>
             </xsl:stylesheet>
         </style>
 
         <style name="test_imported">
-            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.aporg.kuali.rice.edl.framework.util.EDLFunctionsil.EDLFunctionsil.EDLFunctions">    
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.edl.framework.util.EDLFunctions">    
                 <xsl:template match="a">aaaaa</xsl:template>
                 <xsl:template match="b">bbbbb</xsl:template>
             </xsl:stylesheet>
@@ -65,7 +65,7 @@
 
         <!-- duplicate template definition behavior seems to be implementation-specific
         <style name="test_includer">
-            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="httorg.kuali.rice.edl.framework.util.EDLFunctionsrk.util.EDLFunctionsrk.util.EDLFunctions">    
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.edl.framework.util.EDLFunctions">    
                 <xsl:output omit-xml-declaration="yes"/>
                 <xsl:include href="test_included"/>   
                 <xsl:template match="a">oneoneoneoneone</xsl:template>
@@ -74,7 +74,7 @@
          -->
 
         <style name="test_includer2">
-            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlorg.kuali.rice.edl.framework.util.EDLFunctionsamework.util.EDLFunctionsamework.util.EDLFunctions">    
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.edl.framework.util.EDLFunctions">    
                 <xsl:output omit-xml-declaration="yes"/>
                 <xsl:include href="test_included"/>   
                 <xsl:template match="/a">oneoneoneoneone</xsl:template> <!-- this one wins, it's more specific? -->
@@ -82,7 +82,7 @@
         </style>
 
         <style name="test_importer">
-            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Tranorg.kuali.rice.edl.framework.util.EDLFunctionsdl.framework.util.EDLFunctionsdl.framework.util.EDLFunctions">  
+            <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wf="http://xml.apache.org/xalan/java/org.kuali.rice.edl.framework.util.EDLFunctions">  
                 <xsl:import href="test_imported"/>
                 <xsl:output omit-xml-declaration="yes"/>
                 <xsl:template match="b">BBBBB</xsl:template> <!-- this one should win -->

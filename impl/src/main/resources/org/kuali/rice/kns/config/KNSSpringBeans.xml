@@ -123,7 +123,7 @@
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
-			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/Style.xml</value>
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
               	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>

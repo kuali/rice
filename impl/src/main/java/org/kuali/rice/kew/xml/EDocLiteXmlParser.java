@@ -16,33 +16,34 @@
  */
 package org.kuali.rice.kew.xml;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.edl.impl.EDLXmlUtils;
-import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.edl.impl.EDLXmlUtils;
+import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
+import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
+import org.kuali.rice.edl.impl.service.EDocLiteService;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -92,8 +93,8 @@ public class EDocLiteXmlParser {
                         Element e = (Element) node;
                         if ("style".equals(node.getNodeName())) {
                             LOG.debug("Digesting EDocLiteStyle: " + e.getAttribute("name"));
-                            EDocLiteStyle style = parseEDocLiteStyle(e);
-                            getEDLService().saveEDocLiteStyle(style);
+                            Style style = parseStyle(e);
+                            getStyleService().saveStyle(style);
                         } else if ("edl".equals(node.getNodeName())) {
                             LOG.debug("Digesting EDocLiteDefinition: " + e.getAttribute("name"));
                             EDocLiteDefinition def = parseEDocLiteDefinition(e);
@@ -113,12 +114,8 @@ public class EDocLiteXmlParser {
         //}
     }
 
-    private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
-        WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
-        if (cause != null) {
-            wsee.initCause(cause);
-        }
-        return wsee;
+    private static XmlIngestionException generateException(String error, Throwable cause) {
+    	throw new XmlIngestionException(error, cause);
     }
 
     /**
@@ -148,13 +145,12 @@ public class EDocLiteXmlParser {
      *            element to parse
      * @return an EDocLiteStyle
      */
-    private static EDocLiteStyle parseEDocLiteStyle(Element e) {
+    private static Style parseStyle(Element e) {
         String name = e.getAttribute("name");
         if (name == null || name.length() == 0) {
             throw generateMissingAttribException("style", "name");
         }
-        EDocLiteStyle style = new EDocLiteStyle();
-        style.setName(name);
+        Style.Builder styleBuilder = Style.Builder.create(name);
         Element stylesheet = null;
         NodeList children = e.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
@@ -171,11 +167,11 @@ public class EDocLiteXmlParser {
             throw generateMissingChildException("style", "xsl:stylesheet");
         }
         try {
-            style.setXmlContent(XmlJotter.jotNode(stylesheet, true));
+            styleBuilder.setXmlContent(XmlJotter.jotNode(stylesheet, true));
         } catch (XmlException te) {
             throw generateSerializationException("style", te);
         }
-        return style;
+        return styleBuilder.build();
     }
 
     /**
@@ -201,7 +197,7 @@ public class EDocLiteXmlParser {
         try {
             fields = (NodeList) xpath.evaluate("fieldDef", e, XPathConstants.NODESET);
         } catch (XPathExpressionException xpee) {
-            throw new RuntimeException("Invalid EDocLiteDefinition", xpee);
+            throw new XmlIngestionException("Invalid EDocLiteDefinition", xpee);
         }
 
         if (fields != null) {
@@ -231,7 +227,7 @@ public class EDocLiteXmlParser {
                     message.append(it.next());
                     message.append("\n");
                 }
-                throw new RuntimeException(message.toString());
+                throw new XmlIngestionException(message.toString());
             }
         }
 
@@ -243,19 +239,23 @@ public class EDocLiteXmlParser {
         return def;
     }
 
-    private static WorkflowServiceErrorException generateMissingAttribException(String element, String attrib) {
+    private static XmlIngestionException generateMissingAttribException(String element, String attrib) {
         return generateException("EDocLite '" + element + "' element must contain a '" + attrib + "' attribute", null);
     }
 
-    private static WorkflowServiceErrorException generateMissingChildException(String element, String child) {
+    private static XmlIngestionException generateMissingChildException(String element, String child) {
         return generateException("EDocLite '" + element + "' element must contain a '" + child + "' child element", null);
     }
 
-    private static WorkflowServiceErrorException generateSerializationException(String element, XmlException cause) {
+    private static XmlIngestionException generateSerializationException(String element, XmlException cause) {
         return generateException("Error serializing EDocLite '" + element + "' element", cause);
     }
 
     private static EDocLiteService getEDLService() {
     	return KEWServiceLocator.getEDocLiteService();
+    }
+    
+    private static StyleService getStyleService() {
+    	return CoreApiServiceLocator.getStyleService();
     }
 }

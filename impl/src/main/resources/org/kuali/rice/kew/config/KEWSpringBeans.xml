@@ -145,7 +145,6 @@
 				<idref local="enExceptionRoutingService" />
                 <idref local="enHelpService" />
                 <idref local="enEDocLiteService" />
-                <idref local="enStyleService" />
                 <idref local="enStatsService" />
                 <idref local="enNoteService" />
                 <idref local="enDocumentRoutingService" />
@@ -162,6 +161,9 @@
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>
                 -->
+                <idref local="styleService" />
+                <idref local="styleXmlLoader" />
+                <idref local="styleXmlExporter" />
 			</list>
 		</property>
 	</bean>
@@ -398,8 +400,9 @@
     </bean>
     
 	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl" lazy-init="true">
-        <property name="styleService" ref="enStyleService"/>
+        <property name="styleService" ref="styleService"/>
     </bean>
+    
     <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl">
         <property name="deploymentEnvironment">
             <value>${environment}</value>
@@ -419,12 +422,14 @@
    
     <bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl" lazy-init="true">
         <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
-        <property name="styleService" ref="enStyleService"/>
+        <property name="styleService" ref="styleService"/>
     </bean>
 
-    <bean id="enStyleService" class="org.kuali.rice.edl.impl.service.impl.StyleServiceImpl" lazy-init="true">
-        <property name="styleDAO" ref="enEDocLiteDAO"/>
-    </bean>
+	<!-- <bean id="styleService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="styleService" />
+	</bean>
+	
+	-->
 
     <bean id="enHelpService" class="org.kuali.rice.kew.help.service.impl.HelpServiceImpl" lazy-init="true">
         <property name="helpDAO" ref="enHelpDAO" />
@@ -571,7 +576,7 @@
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml</value>
-			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml</value>
+			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/Style.xml</value>
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
               	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
@@ -727,7 +732,6 @@
              <ref local="enRuleDelegationService" />
              <ref local="enHelpService" />
              <ref local="enEDocLiteService" />
-             <ref local="enStyleService" />
 		   </list>
 		</property>
 		<property name="xmlExportersToRegister">
@@ -740,7 +744,47 @@
              <ref local="enRuleDelegationService" />
              <ref local="enHelpService" />
              <ref local="enEDocLiteService" />
-             <ref local="enStyleService" />
+		   </list>
+		</property>
+	</bean>
+	
+	<!-- TODO moved these from CoreSpringBeans.xml for now because of dependency issues with the caching magic -->
+	
+	<bean id="serviceRegistry" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
+	</bean>
+	
+	<bean id="coreCache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean">
+		<property name="remotedServiceRegistry" ref="serviceRegistry"/>
+		<property name="serviceName" value="RICE_CORE_CACHE" />
+    </bean>
+    
+    <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
+    	<property name="cache" ref="coreCache" />
+    	<property name="styleDao" ref="styleDao" />
+    </bean>
+    
+    <bean id="styleDao" class="org.kuali.rice.core.impl.style.StyleDaoOjb">
+    	<property name="jcdAlias" value="enWorkflowDataSource" />
+    </bean>
+    
+    <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParser">
+    	<property name="styleService" ref="styleService" />
+    </bean>
+    
+    <bean id="styleXmlExporter" class="org.kuali.rice.core.impl.style.StyleXmlExporter"/>
+        
+    <bean id="coreImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
+		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
+        
+        <property name="xmlLoadersToRegister">
+		   <list>
+		     <ref local="styleXmlLoader" />
+		   </list>
+		</property>
+		<property name="xmlExportersToRegister">
+		   <list>
+		     <ref local="styleXmlExporter" />
 		   </list>
 		</property>
 	</bean>

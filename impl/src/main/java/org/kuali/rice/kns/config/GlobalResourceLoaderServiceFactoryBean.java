@@ -27,16 +27,25 @@ import org.springframework.beans.factory.InitializingBean;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean, InitializingBean {
+public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Object>, InitializingBean {
 
 	private String serviceName;
 	private boolean singleton;
+	private boolean mustExist;
+	
+	public GlobalResourceLoaderServiceFactoryBean() {
+		this.mustExist = true;
+	}
 	
 	public Object getObject() throws Exception {
-		return GlobalResourceLoader.getService(this.getServiceName());
+		Object service = GlobalResourceLoader.getService(this.getServiceName());
+		if (mustExist && service == null) {
+			throw new IllegalStateException("Service must exist and no service could be located with name: " + this.getServiceName());
+		}
+		return service;
 	}
 
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return Object.class;
 	}
 
@@ -55,6 +64,15 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean, Init
 	public void setSingleton(boolean singleton) {
 		this.singleton = singleton;
 	}
+	
+	public boolean isMustExist() {
+		return mustExist;
+	}
+	
+	public void setMustExist(boolean mustExist) {
+		this.mustExist = mustExist;
+	}
+	
 
 	public void afterPropertiesSet() throws Exception {
 		if (this.getServiceName() == null) {

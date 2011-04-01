@@ -16,9 +16,26 @@
 
 package org.kuali.rice.edl.impl.service.impl;
 
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
+import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.edl.impl.EDLController;
@@ -28,10 +45,8 @@ import org.kuali.rice.edl.impl.EDLGlobalConfigFactory;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.edl.impl.service.StyleService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -46,20 +61,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -84,10 +85,6 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 
     public void setEDocLiteDAO(EDocLiteDAO dao) {
         this.dao = dao;
-    }
-
-    public void setStyleService(StyleService styleService) {
-        this.styleService = styleService;
     }
 
 	public EDLController getEDLController(String edlName) {
@@ -135,23 +132,19 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 		}
 	}
 
-	private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
-        WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
-        if (cause != null) {
-            wsee.initCause(cause);
-        }
-        return wsee;
+	private static XmlIngestionException generateException(String error, Throwable cause) {
+        return new XmlIngestionException(error, cause);
     }
 
-    private static WorkflowServiceErrorException generateMissingAttribException(String element, String attrib) {
+    private static XmlIngestionException generateMissingAttribException(String element, String attrib) {
         return generateException("EDocLite '" + element + "' element must contain a '" + attrib + "' attribute", null);
     }
 
-    private static WorkflowServiceErrorException generateMissingChildException(String element, String child) {
+    private static XmlIngestionException generateMissingChildException(String element, String child) {
         return generateException("EDocLite '" + element + "' element must contain a '" + child + "' child element", null);
     }
 
-    private static WorkflowServiceErrorException generateSerializationException(String element, XmlException cause) {
+    private static XmlIngestionException generateSerializationException(String element, XmlException cause) {
         return generateException("Error serializing EDocLite '" + element + "' element", cause);
     }
 
@@ -259,10 +252,6 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 
     // ---- helper methods
 
-    public void saveEDocLiteStyle(EDocLiteStyle data) {
-        styleService.saveStyle(data);
-    }
-
     public void saveEDocLiteDefinition(EDocLiteDefinition data) {
         EDocLiteDefinition existingData = getEDocLiteDefinition(data.getName());
         if (existingData != null) {
@@ -292,10 +281,6 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 
     // ---- EDocLiteService interface implementation
 
-    public void saveEDocLiteStyle(InputStream xml) {
-        styleService.saveStyle(xml);
-    }
-
     public void saveEDocLiteDefinition(InputStream xml) {
         // convert xml to EDocLiteDefinition
         EDocLiteDefinition data = parseEDocLiteDefinition(parse(xml).getDocumentElement());
@@ -308,20 +293,12 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         saveEDocLiteAssociation(assoc);
     }
 
-    public EDocLiteStyle getEDocLiteStyle(String styleName) {
-        return styleService.getStyle(styleName);
-    }
-
     public EDocLiteDefinition getEDocLiteDefinition(String definitionName) {
         return dao.getEDocLiteDefinition(definitionName);
     }
 
     public EDocLiteAssociation getEDocLiteAssociation(String docTypeName) {
         return dao.getEDocLiteAssociation(docTypeName);
-    }
-
-    public List<String> getEDocLiteStyles() {
-        return styleService.getStyleNames();
     }
 
     public List getEDocLiteDefinitions() {
@@ -338,10 +315,6 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         }
 
         return styleService.getStyleAsTranslet(name);
-    }
-
-    public void removeStyleFromCache(String styleName) {
-        styleService.removeStyleFromCache(styleName);
     }
 
     public void removeDefinitionFromCache(String defName) {
@@ -371,6 +344,10 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 	@Override
 	public boolean supportPrettyPrint() {
 		return false;
+	}
+	
+	public void setStyleService(StyleService styleService) {
+		this.styleService = styleService;
 	}
 	
 }

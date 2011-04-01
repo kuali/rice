@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.edl.impl;
+package org.kuali.rice.core.impl.style;
 
 import java.io.StringReader;
 
@@ -23,27 +23,34 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.api.style.StyleService;
 
 
 /**
- * Imported into client style sheets to import other style sheets in our database into their stylesheet.
+ * A URIResolver that knows how to resolve href's based on style names.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class WidgetURIResolver implements URIResolver {
+class StyleUriResolver implements URIResolver {
 
-	private static final Logger LOG = Logger.getLogger(WidgetURIResolver.class);
+	private static final Logger LOG = Logger.getLogger(StyleUriResolver.class);
+	
+	private final StyleService styleService;
+	
+	StyleUriResolver(StyleService styleService) {
+		if (styleService == null) {
+			throw new IllegalArgumentException("styleService cannot be null");
+		}
+		this.styleService = styleService;
+	}
 
 	public Source resolve(String href, String base) {
 
 		try {
-			EDocLiteService eDocSvc = KEWServiceLocator.getEDocLiteService();
-			EDocLiteStyle widgetStyle = eDocSvc.getEDocLiteStyle(href);
-			return new StreamSource(new StringReader(widgetStyle.getXmlContent()));
+			Style style = styleService.getStyle(href);
+			return new StreamSource(new StringReader(style.getXmlContent()));
 
 		} catch (Exception e) {
 			LOG.error("Error ocurred getting style " + href, e);

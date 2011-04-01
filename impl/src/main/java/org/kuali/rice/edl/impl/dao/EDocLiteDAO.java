@@ -20,21 +20,15 @@ import java.util.List;
 
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 
 
 public interface EDocLiteDAO {
-    public void saveEDocLiteStyle(EDocLiteStyle style);
     public void saveEDocLiteDefinition(EDocLiteDefinition definition);
     public void saveEDocLiteAssociation(EDocLiteAssociation assoc);
 
-    public EDocLiteStyle getEDocLiteStyle(String styleName);
     public EDocLiteDefinition getEDocLiteDefinition(String defName);
     public EDocLiteAssociation getEDocLiteAssociation(String documentTypeName);
     public EDocLiteAssociation getEDocLiteAssociation(Long associationId);
-
-    public List<String> getEDocLiteStyleNames();
-    public List<EDocLiteStyle> getEDocLiteStyles();
 
     public List<String> getEDocLiteDefinitions();
     public List<EDocLiteAssociation> getEDocLiteAssociations();

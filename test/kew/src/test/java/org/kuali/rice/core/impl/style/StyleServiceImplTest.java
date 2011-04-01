@@ -14,27 +14,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.edl.impl.service.impl;
+package org.kuali.rice.core.impl.style;
 
-import org.apache.log4j.Logger;
-import org.junit.Test;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
-import org.kuali.rice.edl.impl.service.StyleService;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
 
-import static org.junit.Assert.*;
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
 
 /**
@@ -47,16 +60,15 @@ public class StyleServiceImplTest extends KEWTestCase {
 	@Test public void testLoadXML() throws FileNotFoundException {
         loadXmlFile("style.xml");
 
-        StyleService styleService = KEWServiceLocator.getStyleService();
+        StyleService styleService = CoreApiServiceLocator.getStyleService();
         assertNotNull("Style 'an_arbitrary_style' not found", styleService.getStyle("an_arbitrary_style"));
 
         assertTrue("Style not found among all styles", styleService.getStyleNames().contains("an_arbitrary_style"));
 
-        EDocLiteStyle style = styleService.getStyle("an_arbitrary_style");
+        Style style = styleService.getStyle("an_arbitrary_style");
         assertNotNull("'an_arbitrary_style' style not found", style);
         assertEquals("an_arbitrary_style", style.getName());
-        assertNotNull(style.getActiveInd());
-        assertTrue(style.getActiveInd().booleanValue());
+        assertTrue(style.isActive());
         assertNotNull(style.getXmlContent());
     }
 
@@ -66,15 +78,15 @@ public class StyleServiceImplTest extends KEWTestCase {
 	 * See edl.style.widgets in common-config-defualts.xml, edl.style.gidgets in kew-test-config.xml
 	 */
     @Test public void testLoadingFromConfiguredFile() {
-        StyleService styleService = KEWServiceLocator.getStyleService();
-        EDocLiteDAO dao = (EDocLiteDAO)KEWServiceLocator.getService("enEDocLiteDAO");
+        StyleService styleService = CoreApiServiceLocator.getStyleService();
+        StyleDao dao = (StyleDao)GlobalResourceLoader.getService("styleDao");
 
         String notThereStyle = "gidgets";
         String isThereStyle = "widgets";
 
         // first verify that the database doesn't contain these styles already
-        assertNull(dao.getEDocLiteStyle(notThereStyle));
-        assertNull(dao.getEDocLiteStyle(isThereStyle));
+        assertNull(dao.getStyle(notThereStyle));
+        assertNull(dao.getStyle(isThereStyle));
 
         // test loading an incorrectly configured style
         try {
@@ -94,7 +106,7 @@ public class StyleServiceImplTest extends KEWTestCase {
     @Test public void testInclusions() throws FileNotFoundException, TransformerConfigurationException, TransformerException {
         loadXmlFile("style.xml");
 
-        StyleService styleService = KEWServiceLocator.getStyleService();
+        StyleService styleService = CoreApiServiceLocator.getStyleService();
 
         // ignoring the duplicate definition via inclusion test as the behavior seems
         // unspecified
@@ -146,11 +158,11 @@ public class StyleServiceImplTest extends KEWTestCase {
     }
 
     @Test public void testLoadBadDefinition() throws FileNotFoundException {
-        StyleService styleService = KEWServiceLocator.getStyleService();
+        XmlLoader xmlLoader = CoreImplServiceLocator.getStyleXmlLoader();
         try {
-            styleService.loadXml(TestUtilities.loadResource(getClass(), "badstyle.xml"), null);
+            xmlLoader.loadXml(TestUtilities.loadResource(getClass(), "badstyle.xml"), null);
             fail("BadDefinition was successfully parsed.");
-        } catch (RuntimeException re) {
+        } catch (XmlIngestionException re) {
             // should probably use type system to detect type of error, not just message string...
             // maybe we need general parsing or "semantic" validation exception
             assertTrue("Wrong exception occurred: " + re, re.getMessage().contains("Style 'style' element must contain a 'xsl:stylesheet' child element"));
@@ -158,24 +170,25 @@ public class StyleServiceImplTest extends KEWTestCase {
     }
 
     @Test public void testStoreStyle() {
-        StyleService styleService = KEWServiceLocator.getStyleService();
-        String styleXml = "<style></style>";
+    	StyleService styleService = CoreApiServiceLocator.getStyleService();
+    	XmlLoader xmlLoader = CoreImplServiceLocator.getStyleXmlLoader();
+        String styleXml = "<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\"><styles xmlns=\"ns:workflow/Style\" xsi:schemaLocation=\"ns:workflow/Style resource:Style\"><style></style></styles></data>";
         try {
-            styleService.saveStyle(new ByteArrayInputStream(styleXml.getBytes()));
+            xmlLoader.loadXml(new ByteArrayInputStream(styleXml.getBytes()), null);
             fail("Storing style with no name succeeded");
-        } catch (WorkflowServiceErrorException wsee) {
+        } catch (XmlIngestionException e) {
             // expected due to lack of name
         }
-        styleXml = "<style name=\"test\"></style>";
+        styleXml = "<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\"><styles xmlns=\"ns:workflow/Style\" xsi:schemaLocation=\"ns:workflow/Style resource:Style\"><style name=\"test\"></style></styles></data>";
         try {
-            styleService.saveStyle(new ByteArrayInputStream(styleXml.getBytes()));
+        	xmlLoader.loadXml(new ByteArrayInputStream(styleXml.getBytes()), null);
             fail("Storing style with no xsl:stylesheet element succeeded");
-        } catch (WorkflowServiceErrorException wsee) {
+        } catch (XmlIngestionException e) {
             // expected due to lack of stylesheet content
         }
-        styleXml = "<style name=\"test\"><xsl:stylesheet></xsl:stylesheet></style>";
-        styleService.saveStyle(new ByteArrayInputStream(styleXml.getBytes()));
-        EDocLiteStyle style = styleService.getStyle("test");
+        styleXml = "<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\"><styles xmlns=\"ns:workflow/Style\" xsi:schemaLocation=\"ns:workflow/Style resource:Style\"><style name=\"test\"><xsl:stylesheet></xsl:stylesheet></style></styles></data>";
+        xmlLoader.loadXml(new ByteArrayInputStream(styleXml.getBytes()), null);
+        Style style = styleService.getStyle("test");
         assertNotNull(style);
         assertEquals("test", style.getName());
         assertNotNull(style);
@@ -192,17 +205,19 @@ public class StyleServiceImplTest extends KEWTestCase {
         loadXmlFile("style.xml");
 
         // try to grab the templates out of the cache, it shouldn't be cached yet
-        Templates cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
+        StyleServiceImpl styleServiceImpl = new StyleServiceImpl();
+        styleServiceImpl.setCache((RiceCacheAdministrator)GlobalResourceLoader.getService("coreCache"));
+        Templates cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
         assertNull("The default style template should not be cached yet.", cachedTemplates);
 
         // fetch the Templates object from the service
-        Templates templates = KEWServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
+        Templates templates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
         assertNotNull("Templates should not be null.", templates);
-        templates = KEWServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
+        templates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
         assertNotNull("Templates should not be null.", templates);
 
         // the Templates should now be cached
-        cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
+        cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
         assertNotNull("Templates should now be cached.", cachedTemplates);
 
         // the cached Templates should be the same as the Templates we fetched from the service
@@ -210,16 +225,16 @@ public class StyleServiceImplTest extends KEWTestCase {
 
         // now re-import the style and the templates should no longer be cached
         loadXmlFile("style.xml");
-        cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
+        cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
         assertNull("After re-import, the Default style Templates should no longer be cached.", cachedTemplates);
 
         // re-fetch the templates from the service and verify they are in the cache
-        Templates newTemplates = KEWServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
+        Templates newTemplates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
         assertNotNull("Templates should not be null.", templates);
-        newTemplates = KEWServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
+        newTemplates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
         assertNotNull("Templates should not be null.", templates);
 
-        cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
+        cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
         assertNotNull("Templates should now be cached.", cachedTemplates);
 
         // lastly, check that the newly cached templates are not the same as the original templates

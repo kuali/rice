@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.export;
+package org.kuali.rice.core.impl.style;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,33 +22,21 @@ import java.util.List;
 
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
-import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.help.HelpEntry;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
- * The DataExporter allows for exporting of KEW BusinessObjects to various supported
- * formats.  The current implementation supports only XML export.  This process is initiated
- * from the KNS screens (lookups and inquiries) and this implementation leverages the
- * existing XmlExporterService which is part of KEW and which was used to do exports before
- * KEW was converted to use the KNS.
+ * TODO
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DataExporter implements Exporter {
+public class StyleDataExporter implements Exporter {
 
 	private List<String> supportedFormats = new ArrayList<String>();
 
-	public DataExporter() {
+	public StyleDataExporter() {
 		supportedFormats.add(KNSConstants.XML_FORMAT);
 	}
 
@@ -72,29 +60,13 @@ public class DataExporter implements Exporter {
 	 * Builds the ExportDataSet based on the BusinessObjects passed in.
 	 */
 	protected ExportDataSet buildExportDataSet(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects) {
-		KewExportDataSet dataSet = new KewExportDataSet();
+		StyleExportDataSet dataSet = new StyleExportDataSet();
 		for (BusinessObject businessObject : businessObjects) {
-			if (businessObjectClass.equals(RuleAttribute.class)) {
-				dataSet.getRuleAttributes().add((RuleAttribute)businessObject);
-			} else if (businessObjectClass.equals(RuleTemplate.class)) {
-				dataSet.getRuleTemplates().add((RuleTemplate)businessObject);
-			} else if (businessObjectClass.equals(DocumentType.class)) {
-				dataSet.getDocumentTypes().add((DocumentType)businessObject);
-			} else if (businessObjectClass.equals(EDocLiteAssociation.class)) {
-				dataSet.getEdocLites().add((EDocLiteAssociation)businessObject);
-			} else if (businessObjectClass.equals(HelpEntry.class)) {
-				dataSet.getHelp().add((HelpEntry)businessObject);
-			} else if (businessObjectClass.equals(RuleBaseValues.class)) {
-				dataSet.getRules().add((RuleBaseValues)businessObject);
-			} else if (businessObjectClass.equals(RuleDelegation.class)) {
-				dataSet.getRuleDelegations().add((RuleDelegation)businessObject);
-			} else if (businessObjectClass.equals(GroupImpl.class)) {
-				dataSet.getGroups().add((GroupImpl)businessObject);
+			if (businessObjectClass.equals(StyleBo.class)) {
+				dataSet.getStyles().add((StyleBo)businessObject);
 			}    
 		}
-		ExportDataSet exportDataSet = new ExportDataSet();
-		dataSet.populateExportDataSet(exportDataSet);
-		return exportDataSet;
+		return dataSet.createExportDataSet();
 	}
 
 }

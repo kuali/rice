@@ -15,25 +15,23 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.edl.impl.service;
+package org.kuali.rice.core.api.style;
 
-import java.io.InputStream;
 import java.util.List;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
-import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.framework.impex.xml.XmlLoader;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-
-
-public interface StyleService extends XmlLoader, XmlExporter {
-    public void saveStyle(InputStream xml);
-    public EDocLiteStyle getStyle(String styleName);
+public interface StyleService {
+		
+    public Style getStyle(String styleName);
+    
     public List<String> getStyleNames();
-    public List<EDocLiteStyle> getStyles();
-    public void removeStyleFromCache(String styleName);
+    
+    public List<Style> getStyles();
+        
     public Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
-    public void saveStyle(EDocLiteStyle data);
+    
+    public void saveStyle(Style data);
+	
 }

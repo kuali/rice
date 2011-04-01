@@ -64,6 +64,7 @@ import org.jdom.Namespace;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.util.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -73,7 +74,6 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**

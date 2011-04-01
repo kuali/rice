@@ -14,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.xml;
+package org.kuali.rice.core.util;
 
 import java.util.Date;
 
 import org.jdom.CDATA;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.kuali.rice.core.util.RiceConstants;
 
 /**
  * A helper class which helps with building the XML for objects.

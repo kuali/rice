@@ -13,21 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.xml;
+package org.kuali.rice.core.impl.style;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.impex.xml.XmlConstants;
-import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.edl.impl.service.StyleService;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,18 +24,31 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.InputStream;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.impex.xml.XmlConstants;
+import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
+import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.xml.XmlException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 /**
  * Parser for Style content type, managed by StyleService
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StyleXmlParser {
+public class StyleXmlParser implements XmlLoader {
 	private static final Logger LOG = Logger.getLogger(StyleXmlParser.class);
 
-    private static ThreadLocal DOCUMENT_BUILDER = new ThreadLocal() {
-        protected Object initialValue() {
+	private StyleService styleService;
+	
+    private static ThreadLocal<DocumentBuilder> DOCUMENT_BUILDER = new ThreadLocal<DocumentBuilder>() {
+        protected DocumentBuilder initialValue() {
             try {
                 return DocumentBuilderFactory.newInstance().newDocumentBuilder();
             } catch (ParserConfigurationException pce) {
@@ -55,7 +56,7 @@ public class StyleXmlParser {
                 // so might as well isolate the evilness here, and just balk if this occurs
                 String message = "Error obtaining document builder";
                 LOG.error(message, pce);
-                return new RuntimeException(message, pce);
+                throw new RuntimeException(message, pce);
             }
         }
     };
@@ -68,23 +69,15 @@ public class StyleXmlParser {
         return (DocumentBuilder) DOCUMENT_BUILDER.get();
     }
 
-    public static void loadXml(StyleService styleService, InputStream inputStream, String principalId) {
+    public void loadXml(InputStream inputStream, String principalId) {
         DocumentBuilder db = getDocumentBuilder();
         XPath xpath = XPathFactory.newInstance().newXPath();
         Document doc;
-        // parse and save EDocLiteDefinition, EDocLiteStyle, or EDocLiteAssociation xml from to-be-determined XML format
-        //try {
         try {
             doc = db.parse(inputStream);
         } catch (Exception e) {
             throw generateException("Error parsing Style XML file", e);
         }
-            /*try {
-                LOG.info(XmlHelper.writeNode(doc.getFirstChild(), true));
-            } catch (TransformerException e) {
-                LOG.warn("Error displaying document");
-            }*/
-
             NodeList styles;
             try {
                 styles = (NodeList) xpath.evaluate("//" + XmlConstants.STYLE_STYLES, doc.getFirstChild(), XPathConstants.NODESET);
@@ -102,25 +95,13 @@ public class StyleXmlParser {
                         Element e = (Element) node;
                         if (XmlConstants.STYLE_STYLE.equals(node.getNodeName())) {
                             LOG.debug("Digesting style: " + e.getAttribute("name"));
-                            EDocLiteStyle style = parseStyle(e);
-                            styleService.saveStyle(style);
+                            StyleBo style = parseStyle(e);
+                            styleService.saveStyle(StyleBo.to(style));
                         }
                     }
                 }
             }
-        //} catch (Exception e) {
-        //    throw generateException("Error parsing EDocLite XML file", e);
-        //}
     }
-
-    private static WorkflowServiceErrorException generateException(String error, Throwable cause) {
-        WorkflowServiceErrorException wsee = new WorkflowServiceErrorException(error, new WorkflowServiceErrorImpl(error, KEWConstants.XML_FILE_PARSE_ERROR));
-        if (cause != null) {
-            wsee.initCause(cause);
-        }
-        return wsee;
-    }
-
     /**
      * Parses an EDocLiteStyle
      *
@@ -128,12 +109,12 @@ public class StyleXmlParser {
      *            element to parse
      * @return an EDocLiteStyle
      */
-    private static EDocLiteStyle parseStyle(Element e) {
+    private static StyleBo parseStyle(Element e) {
         String name = e.getAttribute("name");
         if (name == null || name.length() == 0) {
             throw generateMissingAttribException(XmlConstants.STYLE_STYLE, "name");
         }
-        EDocLiteStyle style = new EDocLiteStyle();
+        StyleBo style = new StyleBo();
         style.setName(name);
         Element stylesheet = null;
         NodeList children = e.getChildNodes();
@@ -158,15 +139,24 @@ public class StyleXmlParser {
         return style;
     }
 
-    private static WorkflowServiceErrorException generateMissingAttribException(String element, String attrib) {
+    private static XmlIngestionException generateMissingAttribException(String element, String attrib) {
         return generateException("Style '" + element + "' element must contain a '" + attrib + "' attribute", null);
     }
 
-    private static WorkflowServiceErrorException generateMissingChildException(String element, String child) {
+    private static XmlIngestionException generateMissingChildException(String element, String child) {
         return generateException("Style '" + element + "' element must contain a '" + child + "' child element", null);
     }
 
-    private static WorkflowServiceErrorException generateSerializationException(String element, XmlException cause) {
+    private static XmlIngestionException generateSerializationException(String element, XmlException cause) {
         return generateException("Error serializing Style '" + element + "' element", cause);
     }
+    
+    private static XmlIngestionException generateException(String error, Throwable cause) {
+    	return new XmlIngestionException(error, cause);
+    }
+    
+    public void setStyleService(StyleService styleService) {
+    	this.styleService = styleService;
+    }
+
 }

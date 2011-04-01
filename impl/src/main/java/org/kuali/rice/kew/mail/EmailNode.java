@@ -16,9 +16,16 @@
 
 package org.kuali.rice.kew.mail;
 
-import com.thoughtworks.xstream.XStream;
+import java.io.StringReader;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.mail.EmailBody;
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailFrom;
@@ -43,11 +50,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import java.io.StringReader;
+import com.thoughtworks.xstream.XStream;
 
 
 /**
@@ -111,7 +114,7 @@ public class EmailNode implements SimpleNode {
 
     protected Templates loadStyleSheet(String styleName) {
 	try {
-	    Templates style = KEWServiceLocator.getStyleService().getStyleAsTranslet(styleName);
+	    Templates style = CoreApiServiceLocator.getStyleService().getStyleAsTranslet(styleName);
 	    if (style == null) {
 		throw new WorkflowRuntimeException("Failed to locate stylesheet with name '" + styleName + "'");
 	    }

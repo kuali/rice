@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.core.util.RiceConstants;
 
@@ -91,6 +92,12 @@ public class CoreConfigurer extends ModuleConfigurer {
 		final List<String> springFileLocations = new ArrayList<String>();
 		
 		springFileLocations.add("classpath:org/kuali/rice/core/config/CORESpringBeans.xml");
+		if (OrmUtils.isJpaEnabled("rice.core")) {
+        	springFileLocations.add("classpath:org/kuali/rice/core/config/CoreJpaSpringBeans.xml");
+        }
+        else {
+        	springFileLocations.add("classpath:org/kuali/rice/core/config/CoreOjbSpringBeans.xml");
+        }
 		return springFileLocations;
 	}
 	

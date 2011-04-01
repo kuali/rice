@@ -16,28 +16,36 @@
 
 package org.kuali.rice.edl.impl;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.test.BaselineTestCase;
-import org.w3c.dom.Element;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import javax.xml.transform.Templates;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import javax.xml.transform.Templates;
+
+import org.junit.Test;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
+import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
+import org.kuali.rice.edl.impl.service.EDocLiteService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.test.BaselineTestCase;
+import org.w3c.dom.Element;
 
 /**
  * Tests EDocLiteServiceImpl
@@ -51,20 +59,20 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         loadXmlFile("edlstyle.xml");
 
         EDocLiteService edls = KEWServiceLocator.getEDocLiteService();
+        StyleService styleService = CoreApiServiceLocator.getStyleService();
         //edls.loadXml(new FileInputStream("conf/examples/xml/EDocLiteContent.xml"));
         assertTrue("Definition not found", edls.getEDocLiteDefinitions().contains("profile"));
-        assertTrue("Style not found", edls.getEDocLiteStyles().contains("Default"));
+        assertTrue("Style not found", styleService.getStyleNames().contains("Default"));
         assertEquals(1, edls.getEDocLiteAssociations().size());
         EDocLiteDefinition def = edls.getEDocLiteDefinition("profile");
         assertNotNull("'profile' definition not found", def);
         assertEquals("profile", def.getName());
         assertNotNull(def.getActiveInd());
         assertTrue(def.getActiveInd().booleanValue());
-        EDocLiteStyle style = edls.getEDocLiteStyle("Default");
+        Style style = styleService.getStyle("Default");
         assertNotNull("'Default' style not found", style);
         assertEquals("Default", style.getName());
-        assertNotNull(style.getActiveInd());
-        assertTrue(style.getActiveInd().booleanValue());
+        assertTrue(style.isActive());
         assertNotNull(style.getXmlContent());
     }
 
@@ -73,7 +81,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         try {
             edls.loadXml(TestUtilities.loadResource(getClass(), "BadDefinition.xml"), null);
             fail("BadDefinition was successfully parsed.");
-        } catch (RuntimeException re) {
+        } catch (XmlIngestionException re) {
             // should probably use type system to detect type of error, not just message string...
             // maybe we need general parsing or "semantic" validation exception
             assertTrue("Wrong exception occurred", re.getMessage().contains("EDocLite definition contains references to non-existent attributes"));
@@ -86,7 +94,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         try {
             edls.saveEDocLiteDefinition(new ByteArrayInputStream(defXml.getBytes()));
             fail("Storing edl with no name succeeded");
-        } catch (WorkflowServiceErrorException wsee) {
+        } catch (XmlIngestionException wsee) {
             // expected due to lack of name
         }
         defXml = "<edl name=\"test\"></edl>";
@@ -96,45 +104,20 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         assertEquals("test", def.getName());
     }
 
-    @Test public void testStoreStyle() {
-        EDocLiteService edls = KEWServiceLocator.getEDocLiteService();
-        String styleXml = "<style></style>";
-        try {
-            edls.saveEDocLiteStyle(new ByteArrayInputStream(styleXml.getBytes()));
-            fail("Storing style with no name succeeded");
-        } catch (WorkflowServiceErrorException wsee) {
-            // expected due to lack of name
-        }
-        styleXml = "<style name=\"test\"></style>";
-        try {
-            edls.saveEDocLiteStyle(new ByteArrayInputStream(styleXml.getBytes()));
-            fail("Storing style with no xsl:stylesheet element succeeded");
-        } catch (WorkflowServiceErrorException wsee) {
-            // expected due to lack of stylesheet content
-        }
-        styleXml = "<style name=\"test\"><xsl:stylesheet></xsl:stylesheet></style>";
-        edls.saveEDocLiteStyle(new ByteArrayInputStream(styleXml.getBytes()));
-        EDocLiteStyle style = edls.getEDocLiteStyle("test");
-        assertNotNull(style);
-        assertEquals("test", style.getName());
-        assertNotNull(style);
-        assertNotNull(style.getXmlContent());
-    }
-
     @Test public void testStoreAssociation() {
         EDocLiteService edls = KEWServiceLocator.getEDocLiteService();
         String assocXml = "<association></association>";
         try {
             edls.saveEDocLiteAssociation(new ByteArrayInputStream(assocXml.getBytes()));
             fail("Storing association with no docType succeeded");
-        } catch (WorkflowServiceErrorException wsee) {
+        } catch (XmlIngestionException wsee) {
             // expected due to lack of doctype
         }
         assocXml = "<association><docType></docType></association>";
         try {
             edls.saveEDocLiteAssociation(new ByteArrayInputStream(assocXml.getBytes()));
             fail("Storing association with empty docType succeeded");
-        } catch (WorkflowServiceErrorException wsee) {
+        } catch (XmlIngestionException wsee) {
             // expected due to emtpy doctype value
         }
         assocXml = "<association><docType>foobar</docType></association>";

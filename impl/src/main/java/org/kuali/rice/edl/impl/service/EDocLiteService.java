@@ -27,26 +27,21 @@ import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.edl.impl.EDLController;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
 import org.w3c.dom.Document;
 
 
 public interface EDocLiteService extends XmlLoader, XmlExporter {
-	//looks like these are here only for tests, the question is why...
-    public void saveEDocLiteStyle(InputStream xml);
-    public void saveEDocLiteDefinition(InputStream xml);
+
+	public void saveEDocLiteDefinition(InputStream xml);
     public void saveEDocLiteAssociation(InputStream xml);
 
-    public EDocLiteStyle getEDocLiteStyle(String styleName);
     public EDocLiteDefinition getEDocLiteDefinition(String defName);
     public EDocLiteAssociation getEDocLiteAssociation(String docType);
     public EDocLiteAssociation getEDocLiteAssociation(Long associationId);
 
-    public List<String> getEDocLiteStyles();
     public List<EDocLiteDefinition> getEDocLiteDefinitions();
     public List<EDocLiteAssociation> getEDocLiteAssociations();
 
-    public void removeStyleFromCache(String styleName);
     public void removeDefinitionFromCache(String edlName);
     public Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
     public List<EDocLiteAssociation> search(EDocLiteAssociation edocLite);
@@ -54,7 +49,6 @@ public interface EDocLiteService extends XmlLoader, XmlExporter {
     public EDLController getEDLController(String edlName);
 	public EDLController getEDLController(Long documentTypeId);
 	public void initEDLGlobalConfig();
-	public void saveEDocLiteStyle(EDocLiteStyle data);
     public void saveEDocLiteDefinition(EDocLiteDefinition data) ;
     public void saveEDocLiteAssociation(EDocLiteAssociation assoc);
     public Document getDefinitionXml(EDocLiteAssociation edlAssociation);

@@ -27,11 +27,11 @@ import java.util.List;
 import org.jdom.Document;
 import org.junit.Test;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.impl.style.StyleBo;
+import org.kuali.rice.core.impl.style.StyleExportDataSet;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.edl.impl.bo.EDocLiteStyle;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 
@@ -59,12 +59,14 @@ public class StyleXmlExporterTest extends XmlExporterTestCase {
     }
 
     protected void assertExport() throws Exception {
-        List<EDocLiteStyle> oldStyles = KEWServiceLocator.getStyleService().getStyles();
-
+        List<Style> oldStyles = CoreApiServiceLocator.getStyleService().getStyles();
+        
         System.err.println("Styles: " + oldStyles.size());
 
-        KewExportDataSet dataSet = new KewExportDataSet();
-        dataSet.getStyles().addAll(oldStyles);
+        StyleExportDataSet dataSet = new StyleExportDataSet();
+        for (Style style : oldStyles) {
+        	dataSet.getStyles().add(StyleBo.from(style));
+        }
 
         byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
         assertTrue("XML should be non empty.", xmlBytes != null && xmlBytes.length > 0);
@@ -77,12 +79,12 @@ public class StyleXmlExporterTest extends XmlExporterTestCase {
         // import the exported xml
         loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));
 
-        List<EDocLiteStyle> newStyles = KEWServiceLocator.getStyleService().getStyles();
+        List<Style> newStyles = CoreApiServiceLocator.getStyleService().getStyles();
         assertEquals("Should have same number of old and new Styles.", oldStyles.size(), newStyles.size());
-        for (Iterator iterator = oldStyles.iterator(); iterator.hasNext();) {
-            EDocLiteStyle oldStyleEntry = (EDocLiteStyle) iterator.next();
+        for (Iterator<Style> iterator = oldStyles.iterator(); iterator.hasNext();) {
+            Style oldStyleEntry = iterator.next();
             boolean foundAttribute = false;
-            for (EDocLiteStyle newStyleEntry: newStyles) {
+            for (Style newStyleEntry: newStyles) {
                 if (oldStyleEntry.getName().equals(newStyleEntry.getName())) {
                     // NOTE: xmlns="http://www.w3.org/1999/xhtml" must be set on elements that contain HTML; exporter will automatically append an empty
                     // attribute, which will result in trivially unmatching content

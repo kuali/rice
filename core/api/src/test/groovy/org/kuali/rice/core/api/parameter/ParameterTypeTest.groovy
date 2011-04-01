@@ -22,13 +22,15 @@ import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 
 class ParameterTypeTest {
-
+	private static final Long VERSION_NUMBER = new Integer(1);
+	private static final String OBJECT_ID = UUID.randomUUID();
     private static final String XML = """
         <parameterType xmlns="http://rice.kuali.org/core/v2_0">
             <code>PC</code>
             <name>Config</name>
             <active>true</active>
-            <versionNumber>1</versionNumber>
+            <versionNumber>${VERSION_NUMBER}</versionNumber>
+            <objectId>${OBJECT_ID}</objectId>
         </parameterType>
     """
 
@@ -69,7 +71,8 @@ class ParameterTypeTest {
 				def String code ="PC"
 				def String name = "Config"
 				def boolean active = true
-                def Long versionNumber = 1
+                def Long versionNumber = ParameterTypeTest.VERSION_NUMBER
+				def String objectId = ParameterTypeTest.OBJECT_ID
 			}).build()
 	}
 }

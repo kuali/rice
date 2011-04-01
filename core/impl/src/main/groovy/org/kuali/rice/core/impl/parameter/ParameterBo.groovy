@@ -113,6 +113,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
 
         bo.parameterType = ParameterTypeBo.from(im.parameterType)
         bo.versionNumber = im.versionNumber
+		bo.objectId = im.objectId;
 
         return bo
     }

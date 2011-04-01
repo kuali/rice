@@ -34,6 +34,7 @@ class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {
     def String evaluationOperatorCode
     def ParameterTypeEbo parameterType
     def Long versionNumber
+	def String objectId
 
     @Override
 	EvaluationOperator getEvaluationOperator() {
@@ -80,6 +81,7 @@ class ParameterEbo implements ParameterContract, ExternalizableBusinessObject {
 
         bo.parameterType = ParameterTypeEbo.from(im.parameterType)
         bo.versionNumber = im.versionNumber
+		bo.objectId = im.objectId
 
         return bo
     }

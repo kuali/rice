@@ -16,6 +16,16 @@
 
 package org.kuali.rice.core.api.parameter;
 
+import java.io.Serializable;
+import java.util.Collection;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -24,15 +34,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * An immutable representation of a parameter type.
@@ -49,6 +50,7 @@ import java.util.Collection;
     ParameterType.Elements.NAME,
     ParameterType.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
+    CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class ParameterType implements ParameterTypeContract, ModelObjectComplete {
@@ -66,6 +68,9 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+    
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+	private final String objectId;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -79,6 +84,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
     	this.name = null;
     	this.active = false;
         this.versionNumber = null;
+        this.objectId = null;
     }
 
 	/**
@@ -92,6 +98,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
         name = builder.getName();
         active = builder.isActive();
         versionNumber = builder.getVersionNumber();
+        this.objectId = builder.getObjectId();
     }
 
     @Override
@@ -109,10 +116,15 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
 		return active;
 	}
 
-     @Override
+    @Override
 	public Long getVersionNumber() {
 		return versionNumber;
 	}
+     
+    @Override
+ 	public String getObjectId() {
+ 		return objectId;
+ 	}
 
 	/**
      * This builder is used to construct instances of ParameterType.  It enforces the constraints of the {@link ParameterTypeContract}.
@@ -125,6 +137,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
         private String name;
         private boolean active;
         private Long versionNumber;
+        private String objectId;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -157,6 +170,7 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setObjectId(contract.getObjectId());
             return builder;
         }
 
@@ -184,6 +198,10 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
         public void setVersionNumber(Long versionNumber) {
             this.versionNumber = versionNumber;
         }
+        
+        public void setObjectId(String objectId) {
+        	this.objectId = objectId;
+        }
 
 		@Override
 		public String getCode() {
@@ -204,6 +222,11 @@ public final class ParameterType implements ParameterTypeContract, ModelObjectCo
         public Long getVersionNumber() {
             return versionNumber;
         }
+        
+        @Override
+    	public String getObjectId() {
+    		return objectId;
+    	}
 
 		/**
 		 * Builds an instance of a ParameterType based on the current state of the builder.

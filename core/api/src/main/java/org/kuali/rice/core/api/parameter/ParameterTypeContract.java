@@ -1,11 +1,14 @@
 package org.kuali.rice.core.api.parameter;
 
+import org.kuali.rice.core.api.mo.GloballyUnique;
+import org.kuali.rice.core.api.mo.Versioned;
+
 /**
  * Defines the contract for a parameter type.  The parameter type is largely indicative of the way in which the
  * parameter will be used by clients.  Examples might include a parameter which is used for configuration purposes
  * or one which is used to define parameters used during validation. 
  */
-public interface ParameterTypeContract {
+public interface ParameterTypeContract extends Versioned, GloballyUnique {
     
 	/**
      * This is the code value for the ParameterType.  It cannot be null or a blank string.
@@ -28,10 +31,4 @@ public interface ParameterTypeContract {
      */
     boolean isActive();
 
-    /**
-     * This the object version number for ParameterType.
-     *
-     * @return the version number of the ParameterType
-     */
-    Long getVersionNumber();
 }

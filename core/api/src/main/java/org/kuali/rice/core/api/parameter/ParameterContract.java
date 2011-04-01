@@ -16,6 +16,9 @@
 
 package org.kuali.rice.core.api.parameter;
 
+import org.kuali.rice.core.api.mo.GloballyUnique;
+import org.kuali.rice.core.api.mo.Versioned;
+
 /**
  * This is the contract for a Parameter.  The concept of a parameter is a key=value pair that is associated
  * with a rice enabled application.
@@ -35,7 +38,7 @@ package org.kuali.rice.core.api.parameter;
  *     the value consists of the {@link #getValue() value}
  * </p>
  */
-public interface ParameterContract {
+public interface ParameterContract extends Versioned, GloballyUnique {
 
 	/**
      * This the application code for the Parameter.  This cannot be null or a blank string.
@@ -110,12 +113,5 @@ public interface ParameterContract {
      * @return type
      */
 	ParameterTypeContract getParameterType();
-
-    /**
-     * This the object version number for Parameter.
-     *
-     * @return the version number of the Parameter
-     */
-    Long getVersionNumber();
 
 }

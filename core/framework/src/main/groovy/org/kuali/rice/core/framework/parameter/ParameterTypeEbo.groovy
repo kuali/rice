@@ -29,6 +29,7 @@ class ParameterTypeEbo implements ParameterTypeContract, Inactivateable, Externa
 	def String name
 	def boolean active = true
     def Long versionNumber
+	def String objectId
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -57,6 +58,7 @@ class ParameterTypeEbo implements ParameterTypeContract, Inactivateable, Externa
         bo.active = im.active
         bo.code = im.code
         bo.name = im.name
+		bo.objectId = im.objectId
         return bo
     }
 

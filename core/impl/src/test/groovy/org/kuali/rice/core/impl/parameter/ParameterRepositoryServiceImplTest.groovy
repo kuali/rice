@@ -416,6 +416,7 @@ class ParameterRepositoryServiceImplTest {
 				def String name = "Config"
 				def boolean active = true
                 def Long versionNumber = 1
+				def String objectId = UUID.randomUUID()
 			}).build()
             }
             def String applicationCode = "BORG_HUNT"
@@ -425,6 +426,7 @@ class ParameterRepositoryServiceImplTest {
             def String description = "turn the shields on"
             def EvaluationOperator evaluationOperator = EvaluationOperator.ALLOW
             def Long versionNumber = 1
+			def String objectId = UUID.randomUUID()
         }).build()
 	}
 }

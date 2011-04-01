@@ -21,10 +21,8 @@
 package org.kuali.rice.core.api.parameter;
 
 
-import javax.xml.bind.JAXBContext
-import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.core.test.JAXBAssert;
+import org.kuali.rice.core.test.JAXBAssert
 
 public class ParameterTest {
 
@@ -38,7 +36,10 @@ public class ParameterTest {
 	private static final String PARAMETER_TYPE_CODE = "PC"
     private static final String PARAMETER_TYPE_NAME = "Config"
     private static final String PARAMETER_TYPE_ACTIVE = "true"
+	private static final Long PARAMETER_TYPE_VERSION_NUMBER = new Integer(1);
+	private static final String PARAMETER_TYPE_OBJECT_ID = UUID.randomUUID();
     private static final Long VERSION_NUMBER = new Integer(1);
+	private static final String OBJECT_ID = UUID.randomUUID();
 
     private static final String XML = """
     <parameter xmlns="http://rice.kuali.org/core/v2_0">
@@ -52,10 +53,12 @@ public class ParameterTest {
             <code>${PARAMETER_TYPE_CODE}</code>
             <name>${PARAMETER_TYPE_NAME}</name>
             <active>${PARAMETER_TYPE_ACTIVE}</active>
-            <versionNumber>1</versionNumber>
+            <versionNumber>${PARAMETER_TYPE_VERSION_NUMBER}</versionNumber>
+            <objectId>${PARAMETER_TYPE_OBJECT_ID}</objectId>
         </parameterType>
         <evaluationOperator>${EVALUATION_OP.operatorCode}</evaluationOperator>
-        <versionNumber>1</versionNumber>
+        <versionNumber>${VERSION_NUMBER}</versionNumber>
+        <objectId>${OBJECT_ID}</objectId>
     </parameter>
     """
 
@@ -151,7 +154,8 @@ public class ParameterTest {
 				def String code = ParameterTest.PARAMETER_TYPE_CODE
 				def String name = ParameterTest.PARAMETER_TYPE_NAME
 				def boolean active = ParameterTest.PARAMETER_TYPE_ACTIVE.toBoolean()
-                def Long versionNumber = ParameterTest.VERSION_NUMBER
+                def Long versionNumber = ParameterTest.PARAMETER_TYPE_VERSION_NUMBER
+				def String objectId = ParameterTest.PARAMETER_TYPE_OBJECT_ID
 			}).build()
             }
             def String applicationCode = ParameterTest.APPLICATION_CODE
@@ -161,6 +165,7 @@ public class ParameterTest {
             def String description = ParameterTest.DESC
             def EvaluationOperator evaluationOperator = ParameterTest.EVALUATION_OP;
             def Long versionNumber = ParameterTest.VERSION_NUMBER;
+			def String objectId = ParameterTest.OBJECT_ID
         }).build()
 	}
 }

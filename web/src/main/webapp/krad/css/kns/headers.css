@@ -48,10 +48,7 @@ div#maincontent h3 {
 /*EXPANDABLE HEADER BEGIN*/
 
 div.grouping-header-expandable {
-	background-color:#E4E4E4;
-	-moz-border-radius: 8px;
 	border-radius: 8px;
-	border: 1px solid #999;
 	margin-bottom: 18px;
 }
 div.grouping-header-expandable a {

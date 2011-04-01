@@ -22,7 +22,7 @@
 }
 
 
-.panel-content th {
+table.datatable th {
 	background-color:#f1f1f1;
 	font-weight:bold;
 	border-top: 1px solid #999;
@@ -30,7 +30,7 @@
 	padding-left:1em;
 	padding-right:0.3em
 }
-.panel-content td {
+table.datatable td {
 	background-color:#fff;
 	border-top: 1px solid #999;
 	border-left: 1px solid #999;
@@ -38,7 +38,7 @@
 	padding-left:.3em
 }
 
-.panel-content td, th {
+table.datatable td, th {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 }
@@ -50,3 +50,9 @@
 
 .panel-content th[scope="row"] { text-align:right
 }
+
+
+table.datatable {border-collapse:collapse;
+	width:100%;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;}

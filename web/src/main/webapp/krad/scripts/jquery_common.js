@@ -331,8 +331,14 @@ function createDatePicker(controlId, options) {
  */
 function createLightBox(controlId, options) {	
     jq(function () {
-    	jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true')
-    	jq("#" + controlId).fancybox(options);    	
+    	if (!jq("#fancybox-frame", parent.document).length) {
+			jq("#" + controlId).fancybox(options);						
+    	}else{
+    		jq("#" + controlId).attr('target', '_self');
+    	}
+    	if (!jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
+    		jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true')
+    	}
     });			
 }
 
@@ -349,26 +355,36 @@ function createLightBox(controlId, options) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createLightBoxLookup(controlId, options, actionParameterMapString) {
-    jq(function () {        	    	    
-        jq("#" + controlId).click(function (e) {
-        	// Prevent the default submit
-            e.preventDefault();
-            // Add the ajaxCall parameter so that the controller can avoid the redirect
-            //dialogMode=Y
-            actionParameterMapString['actionParameters[dialogMode]'] = 'true';
-            actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
-            // Do the Ajax submit on the kualiForm form
-            jq("#kualiForm").ajaxSubmit({  
-            	// The additional data ie. baseLookupURL, bussObject
-            	data: actionParameterMapString,
-        		success: function(data) {
-            		// Add the returned URL to the FancyBox href setting
-            		options['href'] = data;
-        			jq.fancybox(options);
-        			jq.watermark.showAll();        			
-        		}
-        	});            
-        });
+    jq(function () {     
+    	if (!jq("#fancybox-frame", parent.document).length) {
+			jq("#" + controlId).click(function (e) {
+	        	// Prevent the default submit
+	            e.preventDefault();
+	            // Add the ajaxCall parameter so that the controller can avoid the redirect
+	            //dialogMode=Y
+	            actionParameterMapString['actionParameters[dialogMode]'] = 'true';
+	            actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
+	            // Do the Ajax submit on the kualiForm form
+	            jq("#kualiForm").ajaxSubmit({  
+	            	// The additional data ie. baseLookupURL, bussObject
+	            	data: actionParameterMapString,
+	        		success: function(data) {
+	            		// Add the returned URL to the FancyBox href setting
+	            		options['href'] = data;
+	        			jq.fancybox(options);
+	        			jq.watermark.showAll();        			
+	        		}
+	        	});            
+	        });
+    	}else{
+			jq("#" + controlId).click(function (e) {
+				actionParameterMapString['actionParameters[dialogMode]'] = 'true';
+				for (var key in actionParameterMapString) {
+			 	 	writeHiddenToForm(key , actionParameterMapString[key]);
+			 	}
+			});
+    	}
+        
     });		
 }
 

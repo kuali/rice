@@ -19,11 +19,11 @@ public class StateServiceRemoteTest extends StateServiceImplTest {
 
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(StateService.class);
-        factory.setAddress(ServiceConstant.ENDPOINT_URL);
+        factory.setAddress(ServiceEndpointLocation.ENDPOINT_URL);
         this.setStateService((StateService) factory.create());
 
         //Note: Endpoint.publish only starts up an internal (jetty) server the first time it is invoked.
-        endpoint = Endpoint.publish(ServiceConstant.ENDPOINT_URL, this.getStateServiceImpl());
+        endpoint = Endpoint.publish(ServiceEndpointLocation.ENDPOINT_URL, this.getStateServiceImpl());
     }
 
     @After

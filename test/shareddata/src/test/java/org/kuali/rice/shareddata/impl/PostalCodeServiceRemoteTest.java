@@ -18,11 +18,11 @@ public class PostalCodeServiceRemoteTest extends PostalCodeServiceImplTest {
         super.setupServiceUnderTest();
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(PostalCodeService.class);
-        factory.setAddress(ServiceConstant.ENDPOINT_URL);
+        factory.setAddress(ServiceEndpointLocation.ENDPOINT_URL);
         this.setPostalCodeService((PostalCodeService) factory.create());
 
         //Note: Endpoint.publish only starts up an internal (jetty) server the first time it is invoked.
-        endpoint = Endpoint.publish(ServiceConstant.ENDPOINT_URL, this.getPostalCodeServiceImpl());
+        endpoint = Endpoint.publish(ServiceEndpointLocation.ENDPOINT_URL, this.getPostalCodeServiceImpl());
     }
 
     @After

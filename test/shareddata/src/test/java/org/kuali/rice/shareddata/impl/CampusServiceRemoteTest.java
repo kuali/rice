@@ -21,11 +21,11 @@ public class CampusServiceRemoteTest extends CampusServiceImplTest {
 
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(CampusService.class);
-        factory.setAddress(ServiceConstant.ENDPOINT_URL);
+        factory.setAddress(ServiceEndpointLocation.ENDPOINT_URL);
         this.setCampusService((CampusService) factory.create());
 
         //Note: Endpoint.publish only starts up an internal (jetty) server the first time it is invoked.
-        endpoint = Endpoint.publish(ServiceConstant.ENDPOINT_URL, this.getCampusServiceImpl());
+        endpoint = Endpoint.publish(ServiceEndpointLocation.ENDPOINT_URL, this.getCampusServiceImpl());
     }
 
     @After

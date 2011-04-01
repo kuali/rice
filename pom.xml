@@ -670,6 +670,9 @@
                         <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
                             -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled
                         </argLine>
+                        <systemPropertyVariables>
+                            <jaxws.endpoint.publish.test.address>http://localhost:25555/countryServce/</jaxws.endpoint.publish.test.address>
+                        </systemPropertyVariables>
                     </configuration>
                 </plugin>
 

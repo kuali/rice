@@ -12,9 +12,10 @@ package org.kuali.rice.kns.uif.widget;
 
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -207,6 +208,18 @@ public class Inquiry extends WidgetBase {
         }
 
         return titleText;
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.uif.core.ComponentBase#getNestedComponents()
+     */
+    @Override
+    public List<Component> getNestedComponents() {
+        List<Component> components = super.getNestedComponents();
+
+        components.add(inquiryLinkField);
+
+        return components;
     }
 
     public String getBaseInquiryUrl() {

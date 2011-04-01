@@ -74,7 +74,7 @@ class CountyServiceImplTest {
     void test_getCounty_null_countryCode() {
         injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countyService.getCounty(null, "MI", "48848")
         }
         businessObjectServiceMock.verify(boService)
@@ -84,7 +84,7 @@ class CountyServiceImplTest {
     void test_getPostalCode_null_stateCode() {
         injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countyService.getCounty("US", null, "48848")
         }
         businessObjectServiceMock.verify(boService)
@@ -94,7 +94,7 @@ class CountyServiceImplTest {
     void test_getPostalCode_null_code() {
         injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countyService.getCounty("US", "MI", null)
         }
         businessObjectServiceMock.verify(boService)
@@ -120,7 +120,7 @@ class CountyServiceImplTest {
     void test_getAllPostalCodesInCountryAndState_null_countryCode() {
         injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countyService.findAllCountiesInCountryAndState(null, "MI")
         }
         businessObjectServiceMock.verify(boService)
@@ -130,7 +130,7 @@ class CountyServiceImplTest {
     void test_getAllPostalCodesInCountryAndState_null_stateCode() {
         injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countyService.findAllCountiesInCountryAndState("US", null)
         }
         businessObjectServiceMock.verify(boService)
@@ -144,7 +144,7 @@ class CountyServiceImplTest {
         Assert.assertEquals(sampleCountiesPerCountryState[["US", "MI"]].collect { CountyBo.to(it) }, values)
 
         //is this unmodifiable?
-        shouldFail() {
+        shouldFail(RuntimeException) {
             values.add(CountyBo.to(sampleCounties[["CA", "MI", "shi"]]))
         }
         businessObjectServiceMock.verify(boService)
@@ -158,7 +158,7 @@ class CountyServiceImplTest {
         Assert.assertEquals([], values)
 
         //is this unmodifiable?
-        shouldFail() {
+        shouldFail(RuntimeException) {
             values.add(CountyBo.to(sampleCounties[["CA", "MI", "shi"]]))
         }
 

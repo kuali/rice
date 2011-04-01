@@ -84,14 +84,14 @@ class CountryServiceImplTest {
 
     @Test
     public void testGetByPrimaryIdEmptyCountryCode() {
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countryService.getCountry("")
         }
     }
 
     @Test
     public void testGetByPrimaryIdNullCountryCode() {
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countryService.getCountry(null)
         }
     }
@@ -136,14 +136,14 @@ class CountryServiceImplTest {
 
     @Test
     public void testGetByAlternateCodeWithEmptyCode() {
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countryService.getCountryByAlternateCode(" ")
         }
     }
 
     @Test
     public void testGetByAlternateCodeWithNullCode() {
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countryService.getCountryByAlternateCode(null)
         }
     }
@@ -167,7 +167,7 @@ class CountryServiceImplTest {
         injectBusinessObjectServiceIntoCountryService()
 
         List<Country> countries = countryService.findAllCountriesNotRestricted()
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countries.add(null);
         }
         businessObjectServiceMockFor.verify(bos)
@@ -192,7 +192,7 @@ class CountryServiceImplTest {
         injectBusinessObjectServiceIntoCountryService()
 
         List<Country> countries = countryService.findAllCountriesNotRestricted()
-        shouldFail() {
+        shouldFail(RuntimeException) {
             countries.add(null)
         }
         businessObjectServiceMockFor.verify(bos)

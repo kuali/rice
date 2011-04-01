@@ -16,11 +16,7 @@
 
 package org.kuali.rice.core.impl.style;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,13 +26,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.api.style.StyleRepositoryService;
 import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
-import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
@@ -47,16 +40,14 @@ import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleServiceImpl implements StyleService {
+	
     private static final Logger LOG = Logger.getLogger(StyleServiceImpl.class);
 
-    private static final String TEMPLATES_CACHE_GROUP_NAME = "Templates";
-    private static final String STYLE_CONFIG_PREFIX = "edl.style";
-
-    private StyleDao dao;
+    private StyleRepositoryService styleRepositoryService;
     private RiceCacheAdministrator cache;
 
-    public void setStyleDao(StyleDao dao) {
-        this.dao = dao;
+    public void setStyleRepositoryService(StyleRepositoryService styleRepositoryService) {
+    	this.styleRepositoryService = styleRepositoryService;
     }
     
     public void setCache(RiceCacheAdministrator cache) {
@@ -71,45 +62,7 @@ public class StyleServiceImpl implements StyleService {
      */
     @Override
     public Style getStyle(String styleName) {
-    	// try to fetch the style from the database
-        StyleBo style = dao.getStyle(styleName);
-        // if it's null, look for a config param specifiying a file to load
-        if (style == null) {
-            String propertyName = STYLE_CONFIG_PREFIX + "." + styleName;
-            String location = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
-            if (location != null) {
-            	
-                InputStream xml = null;
-
-                try {
-                    xml = RiceUtilities.getResourceAsStream(location);
-                } catch (MalformedURLException e) {
-                    throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location), e);
-                } catch (IOException e) {
-                    throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location), e);
-                }
-
-                if (xml == null) {
-                    throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location) + ", no such file");
-                }
-                
-                LOG.info("Automatically importing style '" + styleName + "' from '" + location + "' as configured by "+ propertyName);
-                CoreImplServiceLocator.getStyleXmlLoader().loadXml(xml, null);
-            }
-        }
-        return StyleBo.to(style);
-    }
-
-    /**
-     * This method ...
-     *
-     * @param propertyName
-     * @param location
-     * @return
-     */
-    private String getUnableToLoadMessage(String propertyName, String location) {
-        return "unable to load resource at '" + location +
-                "' specified by configuration parameter '" + propertyName + "'";
+    	return styleRepositoryService.getStyle(styleName);
     }
 
     @Override
@@ -155,14 +108,7 @@ public class StyleServiceImpl implements StyleService {
      */
     @Override
     public List<Style> getStyles() {
-        List<StyleBo> styleBos = dao.getStyles();
-        List<Style> styles = new ArrayList<Style>();
-        if (styleBos != null) {
-        	for (StyleBo styleBo : styleBos) {
-        		styles.add(StyleBo.to(styleBo));
-        	}
-        }
-        return styles;
+        return styleRepositoryService.getStyles();
     }
 
     /**
@@ -170,45 +116,21 @@ public class StyleServiceImpl implements StyleService {
      */
     @Override
     public List<String> getStyleNames() {
-        return dao.getStyleNames();
-    }
-
-    /**
-     * Does not currently take into account style sheet dependences robustly
-     */
-    private void removeStyleFromCache(String styleName) {
-        LOG.info("Removing Style " + styleName + " from the style cache");
-        // we don't know what styles may import other styles so we need to flush them all
-        cache.flushGroup(TEMPLATES_CACHE_GROUP_NAME);
-        //KEWServiceLocator.getCacheAdministrator().flushEntry(getTemplatesCacheKey(styleName));
+        return styleRepositoryService.getStyleNames();
     }
 
     @Override
-    public void saveStyle(Style data) {
-    	if (data == null) {
-    		throw new IllegalArgumentException("The given style was null.");
-    	}
-    	StyleBo styleToUpdate = StyleBo.from(data);
-    	saveStyleBo(styleToUpdate);
+    public void saveStyle(Style style) {
+    	styleRepositoryService.saveStyle(style);
     }
-    
-    protected void saveStyleBo(StyleBo styleBo) {
-    	StyleBo existingData = dao.getStyle(styleBo.getName());
-        if (existingData != null) {
-            existingData.setActive(false);
-            dao.saveStyle(existingData);
-        }
-        dao.saveStyle(styleBo);
-        removeStyleFromCache(styleBo.getName());
-    }
-    
+        
     // cache helper methods
 
     /**
      * Returns the key to be used for caching the Templates for the given style name.
      */
     protected String getTemplatesCacheKey(String styleName) {
-        return TEMPLATES_CACHE_GROUP_NAME + ":" + styleName;
+        return StyleRepositoryServiceImpl.TEMPLATES_CACHE_GROUP_NAME + ":" + styleName;
     }
 
     protected Templates fetchTemplatesFromCache(String styleName) {
@@ -216,7 +138,7 @@ public class StyleServiceImpl implements StyleService {
     }
 
     protected void putTemplatesInCache(String styleName, Templates templates) {
-        cache.putInCache(getTemplatesCacheKey(styleName), templates, TEMPLATES_CACHE_GROUP_NAME);
+        cache.putInCache(getTemplatesCacheKey(styleName), templates, StyleRepositoryServiceImpl.TEMPLATES_CACHE_GROUP_NAME);
     }
 
 }

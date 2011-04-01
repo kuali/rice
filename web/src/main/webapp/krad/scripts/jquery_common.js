@@ -331,7 +331,7 @@ function createDatePicker(controlId, options) {
  */
 function createLightBox(controlId, options) {	
     jq(function () {
-    	jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=Y')
+    	jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true')
     	jq("#" + controlId).fancybox(options);    	
     });			
 }
@@ -355,7 +355,7 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
             e.preventDefault();
             // Add the ajaxCall parameter so that the controller can avoid the redirect
             //dialogMode=Y
-            actionParameterMapString['actionParameters[dialogMode]'] = 'Y';
+            actionParameterMapString['actionParameters[dialogMode]'] = 'true';
             actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
             // Do the Ajax submit on the kualiForm form
             jq("#kualiForm").ajaxSubmit({  

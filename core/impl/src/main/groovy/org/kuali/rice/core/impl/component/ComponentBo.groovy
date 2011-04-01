@@ -90,6 +90,8 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
         bo.active = im.active
         bo.namespaceCode = im.namespaceCode
         bo.virtual = im.virtual
+		bo.versionNumber = im.versionNumber
+		bo.objectId = im.objectId
 
         return bo;
     }

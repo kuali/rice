@@ -15,22 +15,18 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.NullValueInNestedPathException;
 
 /**
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
@@ -40,13 +36,10 @@ import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
  */
 public class DictionaryObjectAttributeValueReader extends BaseAttributeValueReader {
 
-	protected Map<String, Class<?>> attributeTypeMap;
-	protected Map<String, Object> attributeValueMap;
-
 	protected Object object;
 	protected DataDictionaryEntry entry;
 
-	protected Map<String, PropertyDescriptor> beanInfo;
+	protected BeanWrapper beanWrapper;
 	
 	private String attributePath;
 	
@@ -55,11 +48,9 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		this.entry = entry;
 		this.entryName = entryName;
 
-		if (object != null)
-			this.beanInfo = getBeanInfo(object.getClass());
-		
-		this.attributeTypeMap = new HashMap<String, Class<?>>();
-		this.attributeValueMap = new HashMap<String, Object>();
+		if (object != null){
+			beanWrapper = new BeanWrapperImpl(object);
+		}		
 	}
 	
 	public DictionaryObjectAttributeValueReader(Object object, String entryName, DataDictionaryEntry entry, String attributePath) {
@@ -68,8 +59,8 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 	
 	@Override
-	public Constrainable getDefinition(String attributeName) {
-		return entry != null ? entry.getAttributeDefinition(attributeName) : null;
+	public Constrainable getDefinition(String attrName) {
+		return entry != null ? entry.getAttributeDefinition(attrName) : null;
 	}
 	
 	@Override
@@ -94,9 +85,9 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 	
 	@Override
-	public String getLabel(String attributeName) {
-		AttributeDefinition attributeDefinition = entry != null ? entry.getAttributeDefinition(attributeName) : null;
-		return attributeDefinition != null ? attributeDefinition.getLabel()  : attributeName;
+	public String getLabel(String attrName) {
+		AttributeDefinition attributeDefinition = entry != null ? entry.getAttributeDefinition(attrName) : null;
+		return attributeDefinition != null ? attributeDefinition.getLabel()  : attrName;
 	}
 
 	@Override
@@ -111,20 +102,13 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	}
 
 	@Override
-	public Class<?> getType(String attributeName) {
-		Class<?> attributeType = attributeTypeMap != null ? attributeTypeMap.get(attributeName) : null;
+	public Class<?> getType(String attrName) {
+		PropertyDescriptor propertyDescriptor = beanWrapper.getPropertyDescriptor(attrName);
 		
-		if (attributeType != null)
-			return attributeType;
-		
-		PropertyDescriptor propertyDescriptor = beanInfo.get(attributeName);
-		attributeType = propertyDescriptor.getPropertyType();
-		if (attributeType != null)
-			attributeTypeMap.put(attributeName, attributeType);
-		
-		return attributeType;
+		return propertyDescriptor.getPropertyType();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public <X> X getValue() throws AttributeValidationException {
 		Object value = getValue(attributeName);
@@ -133,32 +117,22 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <X> X getValue(String attributeName) throws AttributeValidationException {
-		X attributeValue = (X) attributeValueMap.get(attributeName);
-		
-		if (attributeValue != null)
-			return attributeValue;
+	public <X> X getValue(String attrName) throws AttributeValidationException {
+		X attributeValue = null;
 		
 		Exception e = null;
 		try {
-			PropertyDescriptor propertyDescriptor = beanInfo.get(attributeName);
-			Method readMethod = propertyDescriptor.getReadMethod();
-			
-			attributeValue = (X) readMethod.invoke(object);
+			attributeValue = (X) beanWrapper.getPropertyValue(attrName);
 
 		} catch (IllegalArgumentException iae) {
 			e = iae;
-		} catch (IllegalAccessException iace) {
-			e = iace;
-		} catch (InvocationTargetException ite) {
-			e = ite;
+		} catch (NullValueInNestedPathException nvinp){
+			//just return null
 		}
 		
 		if (e != null)
-			throw new AttributeValidationException("Unable to lookup attribute value by name (" + attributeName + ") using introspection", e);
+			throw new AttributeValidationException("Unable to lookup attribute value by name (" + attrName + ") using introspection", e);
 		
-		if (attributeValue != null)
-			attributeValueMap.put(attributeName, attributeValue);
 		
 		//			JLR : KS has code to handle dynamic attributes -- not sure whether this is really needed anymore if we're actually relying on types
 		//            // Extract dynamic attributes
@@ -170,21 +144,4 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		
 		return attributeValue;
 	}
-
-	private Map<String, PropertyDescriptor> getBeanInfo(Class<?> clazz) {
-		Map<String, PropertyDescriptor> properties = new HashMap<String, PropertyDescriptor>();
-		BeanInfo beanInfo = null;
-		try {
-			beanInfo = Introspector.getBeanInfo(clazz);
-		} catch (IntrospectionException e) {
-			throw new RuntimeException(e);
-		}
-		PropertyDescriptor[] propertyDescriptors = beanInfo
-		.getPropertyDescriptors();
-		for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-			properties.put(propertyDescriptor.getName(), propertyDescriptor);
-		}
-		return properties;
-	}
-
 }

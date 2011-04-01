@@ -32,6 +32,7 @@ public class ConstraintValidationResult {
 	
 	private String entryName;
 	private String attributeName;
+	private String attributePath;
 	private String constraintName;
 	private ErrorLevel level;
 	
@@ -173,6 +174,20 @@ public class ConstraintValidationResult {
 	 */
 	public void setConstraintLabelKey(String constraintLabelKey) {
 		this.constraintLabelKey = constraintLabelKey;
+	}
+
+	/**
+	 * @return the attributePath
+	 */
+	public String getAttributePath() {
+		return this.attributePath;
+	}
+
+	/**
+	 * @param attributePath the attributePath to set
+	 */
+	public void setAttributePath(String attributePath) {
+		this.attributePath = attributePath;
 	}
 	
 }

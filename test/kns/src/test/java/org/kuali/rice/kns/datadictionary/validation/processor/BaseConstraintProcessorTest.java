@@ -21,12 +21,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.AttributeDefinitionBase;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;

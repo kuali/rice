@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.kns.exception.ValidationException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -34,9 +35,11 @@ import org.springframework.beans.factory.InitializingBean;
 abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, InitializingBean {
 
     protected List<AttributeDefinition> attributes;
+    protected List<ComplexAttributeDefinition> complexAttributes;
     protected List<CollectionDefinition> collections;
     protected List<RelationshipDefinition> relationships;
     protected Map<String, AttributeDefinition> attributeMap;
+    protected Map<String, ComplexAttributeDefinition> complexAttributeMap;
     protected Map<String, CollectionDefinition> collectionMap;
     protected Map<String, RelationshipDefinition> relationshipMap;
     
@@ -71,6 +74,21 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
     }
 
     /**
+	 * @return the complexAttributes
+	 */
+	public List<ComplexAttributeDefinition> getComplexAttributes() {
+		return this.complexAttributes;
+	}
+
+	/**
+	 * @param complexAttributes the complexAttributes to set
+	 */
+	public void setComplexAttributes(
+			List<ComplexAttributeDefinition> complexAttributes) {
+		this.complexAttributes = complexAttributes;
+	}
+
+	/**
      * @param collectionName
      * @return CollectionDefinition with the given name, or null if none with that name exists
      */
@@ -314,5 +332,49 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
                 relationshipMap.put(relationshipName, relationship);
             }
     	}
+    	
+    	//Populate attributes with nested attribute definitions
+    	if (complexAttributes != null){
+    		for (ComplexAttributeDefinition complexAttribute:complexAttributes){
+    			addNestedAttributes(complexAttribute, complexAttribute.getName());
+    		}
+    	}
    	}
+
+    private void addNestedAttributes(ComplexAttributeDefinition complexAttribute, String attrPath){
+    	DataDictionaryEntryBase dataDictionaryEntry = (DataDictionaryEntryBase)complexAttribute.getDataObjectEntry();
+    	
+    	//Add attributes for the complex attibutes
+    	for (AttributeDefinition attribute:dataDictionaryEntry.getAttributes()){
+    		String nestedAttributeName = attrPath + "." + attribute.getName();
+    		AttributeDefinition nestedAttribute = copyAttributeDefinition(attribute);
+    		nestedAttribute.setName(nestedAttributeName);
+    		
+    		if (!attributeMap.containsValue(nestedAttributeName)){
+    			this.attributes.add(nestedAttribute);
+    			this.attributeMap.put(nestedAttributeName, nestedAttribute);
+    		}
+    	}    	
+    	
+    	//Recursively add complex attributes
+    	List<ComplexAttributeDefinition> nestedComplexAttributes = dataDictionaryEntry.getComplexAttributes();
+    	if (nestedComplexAttributes != null){
+	    	for (ComplexAttributeDefinition nestedComplexAttribute:nestedComplexAttributes){
+	    		addNestedAttributes(nestedComplexAttribute, attrPath);
+	    	}
+    	}
+    }
+    
+    private AttributeDefinition copyAttributeDefinition(AttributeDefinition attrDefToCopy){
+    	AttributeDefinition attrDefCopy = new AttributeDefinition();
+    	
+    	try {
+    		
+			BeanUtils.copyProperties(attrDefToCopy, attrDefToCopy, new String[] { "formatterClass" });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return attrDefCopy;
+    }
 }

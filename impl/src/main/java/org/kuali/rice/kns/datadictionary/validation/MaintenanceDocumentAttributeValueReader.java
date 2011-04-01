@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -44,6 +47,10 @@ import org.kuali.rice.kns.util.ObjectUtils;
  */
 public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAttributeValueReader {
 
+	protected Map<String, Class<?>> attributeTypeMap;
+	protected Map<String, Object> attributeValueMap;
+	protected Map<String, PropertyDescriptor> beanInfo;	
+	
 	private final static Logger LOG = Logger.getLogger(MaintenanceDocumentAttributeValueReader.class);
 	
 	private List<Constrainable> attributeDefinitions;
@@ -51,6 +58,12 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	
 	public MaintenanceDocumentAttributeValueReader(Object object, String entryName, MaintenanceDocumentEntry entry, PersistenceStructureService persistenceStructureService) {
 		super(object, entryName, entry);
+		
+		if (object != null)
+			this.beanInfo = getBeanInfo(object.getClass());
+		
+		this.attributeTypeMap = new HashMap<String, Class<?>>();
+		this.attributeValueMap = new HashMap<String, Object>();		
 		
 		this.attributeDefinitions = new LinkedList<Constrainable>();
 		this.attributeDefinitionMap = new HashMap<String, AttributeDefinition>();
@@ -136,4 +149,20 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 		return (X) attributeValueMap.get(attributeName);
 	}
 
+	private Map<String, PropertyDescriptor> getBeanInfo(Class<?> clazz) {
+		Map<String, PropertyDescriptor> properties = new HashMap<String, PropertyDescriptor>();
+		BeanInfo beanInfo = null;
+		try {
+			beanInfo = Introspector.getBeanInfo(clazz);
+		} catch (IntrospectionException e) {
+			throw new RuntimeException(e);
+		}
+		PropertyDescriptor[] propertyDescriptors = beanInfo
+		.getPropertyDescriptors();
+		for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+			properties.put(propertyDescriptor.getName(), propertyDescriptor);
+		}
+		return properties;
+	}
+	
 }

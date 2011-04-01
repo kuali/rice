@@ -28,13 +28,12 @@ import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.datadictionary.validation.capability.CaseConstrainable;
-import org.kuali.rice.kns.datadictionary.validation.capability.ExistenceConstrainable;
-import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.Formatable;
 import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.LengthConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.MustOccurConstrainable;
-import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrainable;
+import org.kuali.rice.kns.datadictionary.validation.capability.PrerequisiteConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.RangeConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint;
@@ -52,21 +51,13 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  * 
  */
-public class AttributeDefinition extends DataDictionaryDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, ExistenceConstrainable, Formatable, CollectionSizeConstrainable, HierarchicallyConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
+public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
 	private static final long serialVersionUID = -2490613377818442742L;
 
 	protected Boolean forceUppercase = Boolean.FALSE;
-
-	protected String name;
 	
 	protected DataType dataType;
 	
-	protected String label;
-	protected String shortLabel;
-	protected String displayLabelAttribute;
-	
-	protected String messageKey;
-
 	protected Integer minLength;
 	protected Integer maxLength;
 	protected Boolean unique;
@@ -76,17 +67,11 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 
 	@Deprecated 
 	protected ValidationPattern validationPattern;
-	protected Boolean required = Boolean.FALSE;
 
 	protected ControlDefinition control;
 
 	// TODO: rename to control once ControlDefinition is removed
 	protected Control controlField;
-
-	protected String summary;
-	protected String constraint;
-
-	protected String description;
 
 	protected String formatterClass;
 
@@ -98,17 +83,14 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	// KS-style constraints 
 	protected String customValidatorClass;
 	protected ValidCharactersConstraint validCharactersConstraint;	
-	protected Integer minOccurs;
-	protected Integer maxOccurs;
     protected CaseConstraint caseConstraint;
     protected List<PrerequisiteConstraint> dependencyConstraints;
 	protected List<MustOccurConstraint> mustOccurConstraints;
 	protected LookupConstraint lookupDefinition;// If the user wants to match
-	// against two searches, that
-	// search must be defined as
-	// well
+		// against two searches, that search must be defined as  well
 	protected String lookupContextPath;
 	
+	//TODO: This may not be required since we now use ComplexAttributeDefinition
 	protected String childEntryName;
 	
 
@@ -126,62 +108,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 
 	public Boolean getForceUppercase() {
 		return this.forceUppercase;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	/*
-	 * name = name of attribute
-	 */
-	public void setName(String name) {
-		if (StringUtils.isBlank(name)) {
-			throw new IllegalArgumentException("invalid (blank) name");
-		}
-		this.name = name;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * The label element is the field or collection name that will be shown on
-	 * inquiry and maintenance screens. This will be overridden by presence of
-	 * displayLabelAttribute element.
-	 */
-	public void setLabel(String label) {
-		if (StringUtils.isBlank(label)) {
-			throw new IllegalArgumentException("invalid (blank) label");
-		}
-		this.label = label;
-	}
-
-	/**
-	 * @return the shortLabel, or the label if no shortLabel has been set
-	 */
-	public String getShortLabel() {
-		return (shortLabel != null) ? shortLabel : getLabel();
-	}
-
-	/**
-	 * @return the shortLabel directly, without substituting in the label
-	 */
-	protected String getDirectShortLabel() {
-		return shortLabel;
-	}
-
-	/**
-	 * The shortLabel element is the field or collection name that will be used
-	 * in applications when a shorter name (than the label element) is required.
-	 * This will be overridden by presence of displayLabelAttribute element.
-	 */
-	public void setShortLabel(String shortLabel) {
-		if (StringUtils.isBlank(shortLabel)) {
-			throw new IllegalArgumentException("invalid (blank) shortLabel");
-		}
-		this.shortLabel = shortLabel;
 	}
 
 	@Override
@@ -288,19 +214,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 		// FIXME: JLR - need to recreate this functionality using the ValidCharsConstraint logic
 	}
 
-	/**
-	 * The required element allows values of "true" or "false". A value of
-	 * "true" indicates that a value must be entered for this business object
-	 * when creating or editing a new business object.
-	 */
-	public void setRequired(Boolean required) {
-		this.required = required;
-	}
-
-	@Override
-	public Boolean isRequired() {
-		return this.required;
-	}
 
 	/**
 	 * @return control
@@ -354,30 +267,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 			throw new IllegalArgumentException("invalid (null) control");
 		}
 		this.control = control;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	/**
-	 * The summary element is used to provide a short description of the
-	 * attribute or collection. This is designed to be used for help purposes.
-	 */
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * The description element is used to provide a long description of the
-	 * attribute or collection. This is designed to be used for help purposes.
-	 */
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public boolean hasFormatterClass() {
@@ -462,23 +351,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	@Override
 	public String toString() {
 		return "AttributeDefinition for attribute " + getName();
-	}
-
-	public String getDisplayLabelAttribute() {
-		return displayLabelAttribute;
-	}
-
-	/**
-	 * The displayLabelAttribute element is used to indicate that the label and
-	 * short label should be obtained from another attribute.
-	 * 
-	 * The label element and short label element defined for this attribute will
-	 * be overridden. Instead, the label and short label values will be obtained
-	 * by referencing the corresponding values from the attribute indicated by
-	 * this element.
-	 */
-	public void setDisplayLabelAttribute(String displayLabelAttribute) {
-		this.displayLabelAttribute = displayLabelAttribute;
 	}
 
 	/**
@@ -615,36 +487,6 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
 	 */
 	public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
 		this.validCharactersConstraint = validCharactersConstraint;
-	}
-
-	/**
-	 * @return the minOccurs
-	 */
-	@Override
-	public Integer getMinimumNumberOfElements() {
-		return this.minOccurs;
-	}
-
-	/**
-	 * @param minOccurs the minOccurs to set
-	 */
-	public void setMinOccurs(Integer minOccurs) {
-		this.minOccurs = minOccurs;
-	}
-
-	/**
-	 * @return the maxOccurs
-	 */
-	@Override
-	public Integer getMaximumNumberOfElements() {
-		return this.maxOccurs;
-	}
-
-	/**
-	 * @param maxOccurs the maxOccurs to set
-	 */
-	public void setMaxOccurs(Integer maxOccurs) {
-		this.maxOccurs = maxOccurs;
 	}
 
 	/**

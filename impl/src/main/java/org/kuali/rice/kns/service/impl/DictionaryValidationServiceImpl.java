@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Stack;
 import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -41,22 +40,22 @@ import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.ApcRuleDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.CollectionDefinition;
+import org.kuali.rice.kns.datadictionary.ComplexAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
+import org.kuali.rice.kns.datadictionary.DataObjectEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.ReferenceDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MaintenanceDocumentAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.SingleAttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.kns.datadictionary.validation.capability.Constrainable;
-import org.kuali.rice.kns.datadictionary.validation.capability.HierarchicallyConstrainable;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
-import org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider;
 import org.kuali.rice.kns.datadictionary.validation.processor.CollectionConstraintProcessor;
 import org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor;
@@ -106,11 +105,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     private PersistenceStructureService persistenceStructureService;
     
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
 	private List<CollectionConstraintProcessor> collectionConstraintProcessors;
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     private List<ConstraintProvider> constraintProviders;
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	private List<ConstraintProcessor> elementConstraintProcessors;
 	
 	
@@ -150,8 +149,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String, boolean)
      */
     @Override
-	public DictionaryValidationResult validate(Object object, String entryName, boolean validateRequired) {
-    	return validate(object, entryName, (String)null, validateRequired);
+	public DictionaryValidationResult validate(Object object, String entryName, boolean doOptionalProcessing) {
+    	return validate(object, entryName, (String)null, doOptionalProcessing);
     }
     
     /**
@@ -205,14 +204,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	public void validateDocument(Document document) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
-        validate(document, documentEntryName);
-        
-//        DataDictionaryEntryBase documentEntry = (DataDictionaryEntryBase) getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(documentEntryName);
-//     // FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
-//        validator.validate(new DictionaryObjectAttributeValueReader(document, documentEntryName, documentEntry), true);
-        
-//        // validate primitive values
-//        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", true);
+        validate(document, documentEntryName);        
     }
 
 
@@ -224,21 +216,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
-        validate(document, documentEntryName, attributeName, true);
-        
-//        try {
-//            PropertyDescriptor attributeDescriptor = PropertyUtils.getPropertyDescriptor(document, attributeName);
-//            validatePrimitiveFromDescriptor(documentEntryName, document, attributeDescriptor, errorPrefix, true);
-//        }
-//        catch (NoSuchMethodException e) {
-//            throw new InfrastructureException("unable to find propertyDescriptor for property '" + attributeName + "'", e);
-//        }
-//        catch (IllegalAccessException e) {
-//            throw new InfrastructureException("unable to access propertyDescriptor for property '" + attributeName + "'", e);
-//        }
-//        catch (InvocationTargetException e) {
-//            throw new InfrastructureException("unable to invoke methods for property '" + attributeName + "'", e);
-//        }
+        validate(document, documentEntryName, attributeName, true);        
     }
 
     /**
@@ -258,12 +236,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
-        // validate primitive values of the document
-//        validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
-//        DataDictionaryEntryBase documentEntry = (DataDictionaryEntryBase) getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(documentEntryName);
-//     // FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
-//        validator.validate(new DictionaryObjectAttributeValueReader(document, documentEntryName, documentEntry), true);
-//        
         validate(document, documentEntryName);
         
         if (maxDepth > 0) {
@@ -358,27 +330,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             return;
         }
         
-//        String entryName = businessObject.getClass().getName();
-//        
-//        BusinessObjectEntry businessObjectEntry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(entryName);
-//     // FIXME: The code under DefaultValidatorImpl will be moved into DictionaryValidationServiceImpl eventually
-//        validator.validate(new DictionaryObjectAttributeValueReader(businessObject, entryName, businessObjectEntry), validateRequired);
-        
-        validate(businessObject, businessObject.getClass().getName());
-        
-//        if (validator != null) {
-//        	BusinessObjectEntryDTO businessObjectEntry = getDataDictionaryService().getBusinessObjectEntry(businessObject.getClass().getName());
-//        	validator.validateObject(businessObject, businessObjectEntry);
-//        } else {
-//	        try {
-//	        	// validate the primitive attributes of the bo
-//	        	validatePrimitivesFromDescriptors(businessObject.getClass().getName(), businessObject, PropertyUtils.getPropertyDescriptors(businessObject.getClass()), "", validateRequired);
-//	        } catch(RuntimeException e) {
-//	        	LOG.error(String.format("Exception while validating %s", businessObject.getClass().getName()), e);
-//	        	throw e;
-//	        }
-////        }
-        
+        validate(businessObject, businessObject.getClass().getName());        
     }
 
     /**
@@ -720,20 +672,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * iterates through property descriptors looking for primitives types, calls validate format and required check
-     * 
-     * @param entryName
-     * @param object
-     * @param propertyDescriptors
-     * @param errorPrefix
-     */
-//    private void validatePrimitivesFromDescriptors(String entryName, Object object, PropertyDescriptor[] propertyDescriptors, String errorPrefix, boolean validateRequired) {
-//        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-//            validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, errorPrefix, validateRequired);
-//        }
-//    }
-
-    /**
      * calls validate format and required check for the given propertyDescriptor
      * 
      * @param entryName
@@ -768,16 +706,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         // attempt to retrieve the specified object from the db
         BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
 
-        // if it isnt there, then it doesnt exist, return false
+        // if it isn't there, then it doesn't exist, return false
         if (ObjectUtils.isNotNull(referenceBo)) {
             return true;
         }
 
         // otherwise, it is there, return true
-        else {
-            return false;
-        }
-
+        return false;
     }
 
     /**
@@ -801,9 +736,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
         if (!(referenceBo instanceof Inactivateable) || ((Inactivateable) referenceBo).isActive()) {
             return true;
-        }else{
-        	return false;
         }
+
+        return false;
     }
 
     /**
@@ -819,7 +754,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             displayFieldName = reference.getDisplayFieldName();
         }
         else {
-            Class boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : bo.getClass();
+            Class<?> boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : bo.getClass();
             displayFieldName = dataDictionaryService.getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
         }
 
@@ -1121,15 +1056,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/*
 	 * This is the top-level validation method for all attribute value readers
 	 */
-	public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing) {
-    	Stack<String> elementStack = new Stack<String>();
+	public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing) {    	
     	
     	DictionaryValidationResult result = new DictionaryValidationResult();
     	
-    	if (valueReader.getAttributeName() == null) 
-    		validateObject(result, valueReader, elementStack, doOptionalProcessing);
-    	else 
-	    	validateAttribute(result, valueReader, elementStack, doOptionalProcessing);
+    	if (valueReader.getAttributeName() == null){ 
+    		validateObject(result, valueReader, doOptionalProcessing);
+    	} else { 
+	    	validateAttribute(result, valueReader, doOptionalProcessing);
+    	}
     	
     	if (result.getNumberOfErrors() > 0) {
 	    	for (Iterator<ConstraintValidationResult> iterator = result.iterator() ; iterator.hasNext() ;) {
@@ -1141,45 +1076,20 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	
     	return result;
     }
-	
-	private void processObject(DictionaryValidationResult result, Constrainable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
-    	if (isComplex) {
-    		// In the case of complex objects, need to build a new attribute value reader for this object and its dictionary entry
-        	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, value, passedAttributeValueReader, elementStack, isComplex);
-    		validateObject(result, attributeValueReader, elementStack, checkIfRequired);
-    	} else
-    		processElementConstraints(result, value, definition, passedAttributeValueReader, elementStack, checkIfRequired);
+		
+    private void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition, AttributeValueReader attributeValueReader, boolean doOptionalProcessing) {
+    	processConstraints(result, elementConstraintProcessors, value, definition, attributeValueReader, doOptionalProcessing);
     }
     
-    private void processCollection(DictionaryValidationResult result, Constrainable definition, Collection<?> collection, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean checkIfRequired, boolean isComplex) {
-        int i=0;
-        for (Object element : collection) {
-        	elementStack.push(Integer.toString(i));
-        	if (isComplex) {
-        		// In the case of complex objects, have to resolve a new attribute value reader based on the child entry name and this particular element (as the business object)
-            	AttributeValueReader attributeValueReader = resolveAttributeValueReader(definition, element, passedAttributeValueReader, elementStack, isComplex);
-        		validateObject(result, attributeValueReader, elementStack, checkIfRequired);
-        	} else 
-        		processElementConstraints(result, element, definition, passedAttributeValueReader, elementStack, checkIfRequired);
-        	
-        	elementStack.pop();
-            i++;
-        }
-    
-        processCollectionConstraints(result, collection, definition, passedAttributeValueReader, elementStack, checkIfRequired);
-    }
-	
-    private void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-    	processConstraints(result, elementConstraintProcessors, value, definition, attributeValueReader, elementStack, doOptionalProcessing);
+    private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection, Constrainable definition, AttributeValueReader attributeValueReader, boolean doOptionalProcessing) {
+    	processConstraints(result, collectionConstraintProcessors, collection, definition, attributeValueReader, doOptionalProcessing);
     }
     
-    private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-    	processConstraints(result, collectionConstraintProcessors, collection, definition, attributeValueReader, elementStack, doOptionalProcessing);
-    }
-    
-    @SuppressWarnings("rawtypes")
-	private void processConstraints(DictionaryValidationResult result, List<? extends ConstraintProcessor> constraintProcessors, Object object, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) {
-		if (constraintProcessors != null) {
+    @SuppressWarnings("unchecked")
+	private void processConstraints(DictionaryValidationResult result, List<? extends ConstraintProcessor> constraintProcessors, Object value, Constrainable definition, AttributeValueReader attributeValueReader, boolean doOptionalProcessing) {
+		//TODO: Implement custom validators
+    	
+    	if (constraintProcessors != null) {
 			Constrainable selectedDefinition = definition;
 			AttributeValueReader selectedAttributeValueReader = attributeValueReader;
 			
@@ -1231,7 +1141,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 						continue;
 					}
 					
-					ProcessorResult processorResult = processor.process(result, object, constraint, selectedAttributeValueReader);
+					ProcessorResult processorResult = processor.process(result, value, constraint, selectedAttributeValueReader);
 					
 					Collection<Constraint> processorResultContraints = processorResult.getConstraints();
 					if (processorResultContraints != null && processorResultContraints.size() > 0)
@@ -1250,28 +1160,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 			}
 		}
     }
-    
-    
-	private AttributeValueReader resolveAttributeValueReader(Constrainable definition, Object value, AttributeValueReader passedAttributeValueReader, Stack<String> elementStack, boolean isComplex) {
-    	if (isComplex && definition instanceof HierarchicallyConstrainable) {
-    		
-    		// The idea here is that a 'HierarchicallyConstrained' definition provides the business object name 
-        	String childEntryName = ((HierarchicallyConstrainable)definition).getChildEntryName();
-
-    		DataDictionaryEntry childEntry = childEntryName != null ? getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
-
-    		if (childEntry == null)
-    			throw new AttributeValidationException("No valid child entry of the name " + childEntryName + " can be found in the data dictionary");
-    		
-    		elementStack.push(childEntryName);
-    		
-    		// Create a new attribute value reader using the current attribute value as its 'object', along with the correct dictionary metadata 
-    		// that's available using the child entry name
-    		return new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry, passedAttributeValueReader.getPath());
-    	}
-    	return passedAttributeValueReader;
-    }
-	
+    	
     private void setFieldError(String entryName, String attributeName, String key, String ... args) {
     	if (getDataDictionaryService() == null)
     		return;
@@ -1286,81 +1175,91 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	GlobalVariables.getMessageMap().putError(attributeName, key, array);
     }
 	
-	private void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+
+    private void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader, boolean checkIfRequired) throws AttributeValidationException {
 		Constrainable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
-        validateAttribute(result, definition, attributeValueReader, elementStack, checkIfRequired);
+        validateAttribute(result, definition, attributeValueReader, checkIfRequired);
     }
     
-    private void validateAttribute(DictionaryValidationResult result, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
+    private void validateAttribute(DictionaryValidationResult result, Constrainable definition, AttributeValueReader attributeValueReader,  boolean checkIfRequired) throws AttributeValidationException {
     	
     	if (definition == null)
     		throw new AttributeValidationException("Unable to validate constraints for attribute \"" + attributeValueReader.getAttributeName() + "\" on entry \"" + attributeValueReader.getEntryName() + "\" because no attribute definition can be found.");
     	
     	Object value = attributeValueReader.getValue();
     	
-    	validateConstrainableObject(result, value, definition, attributeValueReader, elementStack, checkIfRequired);
-    	
+    	processElementConstraints(result, value, definition, attributeValueReader, checkIfRequired);
     }
     
-    private void validateConstrainableObject(DictionaryValidationResult result, Object value, Constrainable definition, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean checkIfRequired) throws AttributeValidationException {
-    	DataType dataType = definition instanceof DataTypeConstraint ? ((DataTypeConstraint)definition).getDataType() : null;
-    	boolean isComplex = dataType != null && dataType.equals(DataType.COMPLEX);
+    private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader, boolean doOptionalProcessing) throws AttributeValidationException {
     	
-    	if (ValidationUtils.isNullOrEmpty(value)) { 
-    		processElementConstraints(result, value, definition, attributeValueReader, elementStack, checkIfRequired);
-    	}
-    	
-    	if (value instanceof Collection) {
-			// Obviously, it's not the child entry's attribute definition being passed here, but that's okay, if isComplex=true, definition is ignored
-			processCollection(result, definition, (Collection<?>)value, attributeValueReader, elementStack, checkIfRequired, isComplex);
-        } else {
-        	processObject(result, definition, value, attributeValueReader, elementStack, checkIfRequired, isComplex);
-        }
-    }
-
-    private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader, Stack<String> elementStack, boolean doOptionalProcessing) throws AttributeValidationException {
-
-    	// This method can be called recursively on objects that are themselves attributes of other objects, in which case a path 
-    	// will be maintained in the attribute value reader, using the standard bean notation with "." delimiters
-    	// for example on a Car object the business object volume control knob might be indicated by "dashboard.radio.volumeControl"
-    	String attributePath = attributeValueReader.getPath();
-    	
-    	// If this attribute path is something other than "" when trimmed of whitespace, then we can safely assume we're dealing with an attribute object
-    	boolean isObjectAnAttribute = StringUtils.isNotBlank(attributePath);
-    	
-    	// The KS code kept track of the recursion using a stack - presumably for error checking - but it is not currently being used by this code and should probably be
-    	// eliminated or made use of in some way.
-    	if (isObjectAnAttribute) 
-    		elementStack.push(attributePath);
-
     	// If the entry itself is constrainable then the attribute value reader will return it here and we'll need to check if it has any constraints
-    	Constrainable entry = attributeValueReader.getEntry();
-    	
-    	if (entry != null)
-    		validateConstrainableObject(result, attributeValueReader.getObject(), entry, attributeValueReader, elementStack, doOptionalProcessing);
+    	//FIXME: WJG - Do we want to make entry be constrainable?
+    	Constrainable objectEntry = attributeValueReader.getEntry();
+    	processElementConstraints(result, attributeValueReader.getObject(), objectEntry, attributeValueReader, doOptionalProcessing);
 
     	List<Constrainable> definitions = attributeValueReader.getDefinitions();
 
     	// Exit if the attribute value reader has no child definitions
     	if (null == definitions) 
     		return;
-
-    	// Otherwise, iterate through those definitions and 
-    	for (Constrainable definition : definitions) {
-    		if (definition == null)
-    			continue;
-
+    	
+    	//Process all attribute definitions
+    	for (Constrainable definition : definitions) {   		
     		String attributeName = definition.getName();
-    		attributeValueReader.setAttributeName(attributeName);
-
-    		validateAttribute(result, definition, attributeValueReader, elementStack, doOptionalProcessing);
-
-    		// FIXME: Need to check that it's okay that custom validators are no longer possible - alternative is to inject custom processors
+			attributeValueReader.setAttributeName(attributeName);    			
+			Object value = attributeValueReader.getValue(attributeName);
+			
+    		processElementConstraints(result, value, definition, attributeValueReader, doOptionalProcessing);
     	}
     	
-    	if (isObjectAnAttribute)
-    		elementStack.pop();
+    	//Process any constraints that may be defined on complex attributes
+    	if (objectEntry instanceof DataDictionaryEntryBase){
+    		List<ComplexAttributeDefinition> complexAttrDefinitions = ((DataDictionaryEntryBase)objectEntry).getComplexAttributes();
+
+    		if (complexAttrDefinitions != null){
+	        	for (ComplexAttributeDefinition complexAttrDefinition:complexAttrDefinitions){    		    		
+	       			DataDictionaryEntry childEntry = complexAttrDefinition.getDataObjectEntry(); 
+	       		
+	        		String attributeName = complexAttrDefinition.getName();
+	        		
+	        		attributeValueReader.setAttributeName(attributeName);
+	    			Object value = attributeValueReader.getValue();    		
+	    			if (value != null){
+	    				AttributeValueReader nestedAttributeValueReader = 
+	    	    			new DictionaryObjectAttributeValueReader(value, childEntry.getFullClassName(), childEntry, attributeValueReader.getPath());
+	    	    		validateObject(result, nestedAttributeValueReader, doOptionalProcessing);    		
+	    			}
+	
+	    			processElementConstraints(result, value, complexAttrDefinition, attributeValueReader, doOptionalProcessing);	
+	        	}
+    		}
+    	}
+
     	
+    	//FIXME: I think we may want to use a new CollectionConstrainable interface instead to obtain from 
+    	//DictionaryObjectAttributeValueReader
+    	DataObjectEntry entry = (DataObjectEntry)attributeValueReader.getEntry();
+    	List<CollectionDefinition> collectionDefinitions = entry.getCollections();
+    	for (CollectionDefinition collectionDefinition:collectionDefinitions){
+    		//TODO: Do we need to be able to handle simple collections (ie. String, etc)
+    		
+    		String childEntryName = collectionDefinition.getDataObjectClass();
+    		String attributeName = collectionDefinition.getName();
+    		attributeValueReader.setAttributeName(attributeName);
+			Collection<?> collectionObject = attributeValueReader.getValue();
+			DataDictionaryEntry childEntry = childEntryName != null ? getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
+			if (collectionObject != null){
+				for (Object value:collectionObject){
+					//FIXME: It's inefficient to be creating new attribute reader for each item in collection
+					AttributeValueReader nestedAttributeValueReader = 
+		    			new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry, attributeValueReader.getPath());
+		    		validateObject(result, nestedAttributeValueReader, doOptionalProcessing);    						
+				}
+			}
+
+			processCollectionConstraints(result, collectionObject, collectionDefinition, attributeValueReader, doOptionalProcessing);
+    	}
     }
 
     /**
@@ -1428,7 +1327,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
 	 * @return the collectionConstraintProcessors
 	 */
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public List<CollectionConstraintProcessor> getCollectionConstraintProcessors() {
 		return this.collectionConstraintProcessors;
 	}
@@ -1436,7 +1335,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
 	 * @param collectionConstraintProcessors the collectionConstraintProcessors to set
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public void setCollectionConstraintProcessors(
 			List<CollectionConstraintProcessor> collectionConstraintProcessors) {
 		this.collectionConstraintProcessors = collectionConstraintProcessors;
@@ -1445,7 +1344,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
 	 * @return the constraintProviders
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public List<ConstraintProvider> getConstraintProviders() {
 		return this.constraintProviders;
 	}
@@ -1453,7 +1352,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
 	 * @param constraintProviders the constraintProviders to set
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public void setConstraintProviders(List<ConstraintProvider> constraintProviders) {
 		this.constraintProviders = constraintProviders;
 	}
@@ -1461,7 +1360,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
 	 * @return the elementConstraintProcessors
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public List<ConstraintProcessor> getElementConstraintProcessors() {
 		return this.elementConstraintProcessors;
 	}
@@ -1469,7 +1368,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
 	 * @param elementConstraintProcessors the elementConstraintProcessors to set
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public void setElementConstraintProcessors(
 			List<ConstraintProcessor> elementConstraintProcessors) {
 		this.elementConstraintProcessors = elementConstraintProcessors;

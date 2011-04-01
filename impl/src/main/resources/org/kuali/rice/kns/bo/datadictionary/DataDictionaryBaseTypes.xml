@@ -61,6 +61,7 @@
 	<bean id="SupportAttributeDefinition"
 		class="org.kuali.rice.kns.datadictionary.SupportAttributeDefinition"
 		abstract="true" />
+
 	<bean id="JavaClassValidationPattern"
 		class="org.kuali.rice.kns.datadictionary.validation.fieldlevel.JavaClassValidationPattern"
 		abstract="true" />
@@ -75,6 +76,8 @@
 	<bean id="HeaderNavigation" class="org.kuali.rice.kns.datadictionary.HeaderNavigation"
 		abstract="true" />
 	<bean id="AttributeDefinition" class="org.kuali.rice.kns.datadictionary.AttributeDefinition"
+		abstract="true" />
+	<bean id="ComplexAttributeDefinition" class="org.kuali.rice.kns.datadictionary.ComplexAttributeDefinition"
 		abstract="true" />
 	<bean id="HiddenControlDefinition"
 		class="org.kuali.rice.kns.datadictionary.control.HiddenControlDefinition"

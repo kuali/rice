@@ -23,10 +23,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.datadictionary.CollectionDefinition;
 import org.kuali.rice.kns.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.kns.datadictionary.validation.DataType;
 import org.kuali.rice.kns.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.kns.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.kns.datadictionary.validation.MockAddress;
@@ -51,12 +50,12 @@ public class CollectionSizeConstraintProcessorTest {
 
 	private CollectionSizeConstraintProcessor processor;
 	
-	private AttributeDefinition constrained0to2;
-	private AttributeDefinition constrained0to3;
-	private AttributeDefinition constrained2to4;
-	private AttributeDefinition constrained3to6;
-	private AttributeDefinition constrained5to12;
-	private AttributeDefinition unconstrained;
+	private CollectionDefinition constrained0to2;
+	private CollectionDefinition constrained0to3;
+	private CollectionDefinition constrained2to4;
+	private CollectionDefinition constrained3to6;
+	private CollectionDefinition constrained5to12;
+	private CollectionDefinition unconstrained;
 	private MockCompany companyWithThreeAddressesAndThreeContactEmails; 
 	
 	@Before
@@ -78,12 +77,8 @@ public class CollectionSizeConstraintProcessorTest {
 		contactEmails.add("support@3m.com");
 		companyWithThreeAddressesAndThreeContactEmails.setContactEmails(contactEmails);
 		
-		constrained0to2 = new AttributeDefinition() {
+		constrained0to2 = new CollectionDefinition() {
 
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
 
 			@Override
 			public String getLabel() {
@@ -106,12 +101,7 @@ public class CollectionSizeConstraintProcessorTest {
 			}
 		};
 		
-		constrained0to3 = new AttributeDefinition() {
-
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
+		constrained0to3 = new CollectionDefinition() {
 
 			@Override
 			public String getLabel() {
@@ -134,12 +124,7 @@ public class CollectionSizeConstraintProcessorTest {
 			}
 		};
 		
-		constrained2to4 = new AttributeDefinition() {
-
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
+		constrained2to4 = new CollectionDefinition() {
 
 			@Override
 			public String getLabel() {
@@ -162,12 +147,7 @@ public class CollectionSizeConstraintProcessorTest {
 			}
 		};
 		
-		constrained3to6 = new AttributeDefinition() {
-
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
+		constrained3to6 = new CollectionDefinition() {
 
 			@Override
 			public String getLabel() {
@@ -190,12 +170,7 @@ public class CollectionSizeConstraintProcessorTest {
 			}
 		};
 		
-		constrained5to12 = new AttributeDefinition() {
-
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
+		constrained5to12 = new CollectionDefinition() {
 
 			@Override
 			public String getLabel() {
@@ -218,12 +193,7 @@ public class CollectionSizeConstraintProcessorTest {
 			}
 		};
 		
-		unconstrained = new AttributeDefinition() {
-
-			@Override
-			public DataType getDataType() {
-				return DataType.STRING;
-			}
+		unconstrained = new CollectionDefinition() {
 
 			@Override
 			public String getLabel() {
@@ -322,9 +292,9 @@ public class CollectionSizeConstraintProcessorTest {
 		Assert.assertEquals(new CollectionSizeConstraintProcessor().getName(), result.getConstraintName());
 	}
 	
-	private ConstraintValidationResult process(DictionaryValidationResult dictionaryValidationResult, Object object, AttributeDefinition definition, String attributeName) {
+	private ConstraintValidationResult process(DictionaryValidationResult dictionaryValidationResult, Object object, CollectionDefinition definition, String attributeName) {
 		BusinessObjectEntry entry = new BusinessObjectEntry();
-		entry.setAttributes(Collections.singletonList(definition));
+		entry.setCollections(Collections.singletonList((CollectionDefinition)definition));
 		
 		AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, "org.kuali.rice.kns.datadictionary.validation.MockCompany", entry);
 		attributeValueReader.setAttributeName(attributeName);

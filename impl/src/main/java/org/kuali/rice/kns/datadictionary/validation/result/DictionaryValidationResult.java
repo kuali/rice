@@ -77,7 +77,7 @@ public class DictionaryValidationResult {
 	}
 	
 	public ConstraintValidationResult addError(AttributeValueReader attributeValueReader, String constraintName, String errorKey, String... errorParameters) {
-		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
+		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 		constraintValidationResult.setError(errorKey, errorParameters);
 		numberOfErrors++;
 		return constraintValidationResult;
@@ -87,7 +87,7 @@ public class DictionaryValidationResult {
 		if (errorLevel.getLevel() > ErrorLevel.WARN.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.WARN);
 		
-		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
+		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 		constraintValidationResult.setWarning(errorKey, errorParameters);
 		numberOfWarnings++;
 		return constraintValidationResult;
@@ -97,14 +97,14 @@ public class DictionaryValidationResult {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.OK);
 		
-		return getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
+		return getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 	}
 	
 	public ConstraintValidationResult addSkipped(AttributeValueReader attributeValueReader, String constraintName) {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.INAPPLICABLE);
 		
-		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
+		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 		constraintValidationResult.setStatus(ErrorLevel.INAPPLICABLE);
 		return constraintValidationResult;
 	}
@@ -113,7 +113,7 @@ public class DictionaryValidationResult {
 		if (errorLevel.getLevel() > ErrorLevel.OK.getLevel())
 			return new ConstraintValidationResult(constraintName, ErrorLevel.NOCONSTRAINT);
 		
-		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), constraintName);
+		ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
 		constraintValidationResult.setStatus(ErrorLevel.NOCONSTRAINT);
 		return constraintValidationResult;
 	}
@@ -187,10 +187,11 @@ public class DictionaryValidationResult {
 		return entryValidationResult;
 	}
 	
-	private ConstraintValidationResult getConstraintValidationResult(String entryName, String attributeName, String constraintName) {
+	private ConstraintValidationResult getConstraintValidationResult(String entryName, String attributeName, String attributePath, String constraintName) {
 		ConstraintValidationResult constraintValidationResult = getEntryValidationResult(entryName).getAttributeValidationResult(attributeName).getConstraintValidationResult(constraintName);
 		constraintValidationResult.setEntryName(entryName);
 		constraintValidationResult.setAttributeName(attributeName);
+		constraintValidationResult.setAttributePath(attributePath);
 		return constraintValidationResult;
 	}
 

@@ -53,7 +53,6 @@ public class AttributeDefinitionConstraintProvider extends BaseConstraintProvide
 		resolverMap.put(ValidCharactersConstraint.class.getName(), new ValidCharactersConstraintResolver<AttributeDefinition>());
 		resolverMap.put(PrerequisiteConstraint.class.getName(), new PrerequisiteConstraintsResolver<AttributeDefinition>());
 		resolverMap.put(MustOccurConstraint.class.getName(), new MustOccurConstraintsResolver<AttributeDefinition>());
-		resolverMap.put(CollectionSizeConstraint.class.getName(), new DefinitionConstraintResolver<AttributeDefinition>());
 	}
 
 	/**

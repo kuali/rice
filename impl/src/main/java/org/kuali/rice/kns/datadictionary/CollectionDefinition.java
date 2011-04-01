@@ -18,6 +18,7 @@ package org.kuali.rice.kns.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.kns.datadictionary.validation.capability.CollectionSizeConstrainable;
 
 /**
  * A single Collection attribute definition in the DataDictionary, which contains information relating to the display, validation,
@@ -25,18 +26,25 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
  * 
  * 
  */
-public class CollectionDefinition extends DataDictionaryDefinitionBase {
+public class CollectionDefinition extends DataDictionaryDefinitionBase implements CollectionSizeConstrainable{
     private static final long serialVersionUID = -2644072136271281041L;
     
-	protected String name;
+    protected String dataObjectClass;
+    protected String name;
     protected String label;
     protected String shortLabel;
     protected String elementLabel;
     
     protected String summary;
-    protected String description;
 
-    public CollectionDefinition() {}
+	protected String description;
+    
+	protected Integer minOccurs;
+	protected Integer maxOccurs;
+
+    public CollectionDefinition() {
+    	//empty
+    }
 
     public String getName() {
         return name;
@@ -83,9 +91,9 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
- The elementLabel defines the name to be used for a single object
-                within the collection.  For example: "Address" may be the name
-                of one object within the "Addresses" collection.
+ 	 * The elementLabel defines the name to be used for a single object
+     * within the collection.  For example: "Address" may be the name
+     * of one object within the "Addresses" collection.
      */
     public void setElementLabel(String elementLabel) {
         this.elementLabel = elementLabel;
@@ -96,8 +104,8 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-                      The summary element is used to provide a short description of the
-                      attribute or collection.  This is designed to be used for help purposes.
+	 * The summary element is used to provide a short description of the
+     * attribute or collection.  This is designed to be used for help purposes.
      */
     public void setSummary(String summary) {
         this.summary = summary;
@@ -108,15 +116,29 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-                      The description element is used to provide a long description of the
-                      attribute or collection.  This is designed to be used for help purposes.
+	 * The description element is used to provide a long description of the
+	 * attribute or collection.  This is designed to be used for help purposes.
      */
     public void setDescription(String description) {
         this.description = description;
     }
-
-
+    
+           
     /**
+	 * @return the objectClass
+	 */
+	public String getDataObjectClass() {
+		return this.dataObjectClass;
+	}
+
+	/**
+	 * @param objectClass the objectClass to set
+	 */
+	public void setDataObjectClass(String dataObjectClass) {
+		this.dataObjectClass = dataObjectClass;
+	}
+
+	/**
      * Directly validate simple fields, call completeValidation on Definition fields.
      * 
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntry#completeValidation()
@@ -131,7 +153,53 @@ public class CollectionDefinition extends DataDictionaryDefinitionBase {
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return "CollectionDefinition for collection " + getName();
     }
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint#getMaximumNumberOfElements()
+	 */
+	@Override
+	public Integer getMaximumNumberOfElements() {
+		return this.maxOccurs;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint#getMinimumNumberOfElements()
+	 */
+	@Override
+	public Integer getMinimumNumberOfElements() {
+		return this.minOccurs;
+	}
+
+    /**
+	 * @return the minOccurs
+	 */
+	public Integer getMinOccurs() {
+		return this.minOccurs;
+	}
+
+	/**
+	 * @param minOccurs the minOccurs to set
+	 */
+	public void setMinOccurs(Integer minOccurs) {
+		this.minOccurs = minOccurs;
+	}
+
+	/**
+	 * @return the maxOccurs
+	 */
+	public Integer getMaxOccurs() {
+		return this.maxOccurs;
+	}
+
+	/**
+	 * @param maxOccurs the maxOccurs to set
+	 */
+	public void setMaxOccurs(Integer maxOccurs) {
+		this.maxOccurs = maxOccurs;
+	}
+
 }

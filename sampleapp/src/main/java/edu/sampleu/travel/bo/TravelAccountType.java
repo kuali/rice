@@ -58,9 +58,13 @@ public class TravelAccountType extends PersistableBusinessObjectBase {
 		this.name = name;
 	}
 
-	public String getCodeAndDescription() {
-		return accountTypeCode + " - " + name;
-	}
+    public String getCodeAndDescription() {
+        if (accountTypeCode != null) {
+            return accountTypeCode + " - " + name;
+        }
+
+        return "";
+    }
 
 	@Override
     protected LinkedHashMap toStringMapper() {

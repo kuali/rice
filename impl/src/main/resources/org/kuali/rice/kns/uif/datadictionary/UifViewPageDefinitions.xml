@@ -68,7 +68,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.InquiryAuthorizerBase"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
      <property name="defaultBindingObjectPath" value="bo"/>
-     <property name="readOnly" value="true"/>
+     <property name="conditionalReadOnly" value="true"/>
      <property name="singlePageView" value="true"/>
      <property name="page">
         <bean parent="PageInquiry"/>

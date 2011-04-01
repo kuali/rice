@@ -73,7 +73,7 @@
     <property name="controlField">
       <bean parent="TextControl" p:size="10"/>
     </property>    
-    <property name="summary" value="Travel Account Number"/>
+    <property name="summary" value="Unique identifier for account"/>
     <property name="name" value="number"/>
     <property name="label" value="Travel Account Number"/>
     <property name="description" value="Travel Account Number"/>
@@ -82,9 +82,9 @@
   <bean id="TravelAccount-subAccount" parent="TravelAccount-number-parentBean">
     <property name="name" value="subAccount"/>
     <property name="shortLabel" value="Travel Sub Account Number"/>
-    <property name="summary" value="Travel Sub Account Number"/>
     <property name="label" value="Travel Sub Account Number"/>
     <property name="description" value="Travel Sub Account Number"/>
+    <property name="summary" value=""/>
   </bean>
 
   <bean id="TravelAccount-name" parent="TravelAccount-name-parentBean"/>
@@ -102,7 +102,6 @@
     <property name="controlField">
       <bean parent="TextControl" p:size="30"/>
     </property>     
-    <property name="summary" value="Account Name"/>
     <property name="name" value="name"/>
     <property name="label" value="Account Name"/>
     <property name="description" value="Account Name"/>
@@ -111,7 +110,6 @@
   <bean id="TravelAccount-subAccountName" parent="TravelAccount-name-parentBean">
     <property name="name" value="subAccountName"/>
     <property name="shortLabel" value="Sub Account Name"/>
-    <property name="summary" value="Sub Account Name"/>
     <property name="label" value="Sub Account Name"/>
     <property name="description" value="Sub Account Name"/>
   </bean>
@@ -119,11 +117,10 @@
   <bean id="TravelAccount-subsidizedPercent" parent="AttributeReferenceDummy-percent">
     <property name="name" value="subsidizedPercent"/>
     <property name="shortLabel" value="Subsidized Percent"/>
-    <property name="summary" value="Subsidized Percent"/>
     <property name="label" value="Subsidized Percent"/>
     <property name="description" value="Subsidized Percent"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="6"/>
+      <bean parent="TextControl" p:size="6" p:watermarkText="##.##"/>
     </property>
     <property name="validationPattern">
       <bean parent="FixedPointValidationPattern" p:precision="5" p:allowNegative="false" p:scale="2"/>
@@ -133,7 +130,6 @@
   <bean id="TravelAccount-createDate" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="createDate"/>
     <property name="shortLabel" value="Date Created"/>
-    <property name="summary" value="Date Created"/>
     <property name="label" value="Date Created"/>
     <property name="description" value="Date Created"/>
     <property name="controlField">
@@ -151,6 +147,7 @@
       <bean parent="TextControl" p:size="2"/>
     </property>      
     <property name="name" value="extension.accountTypeCode"/>
+    <property name="summary" value="Type code grouping for account"/>
   </bean>
   <bean id="TravelAccount-extension.accountType.codeAndDescription" parent="TravelAccount-extension.accountType.codeAndDescription-parentBean"/>
 
@@ -164,6 +161,7 @@
     <property name="controlField">
       <bean parent="TextControl" p:size="5"/>
     </property>
+    <property name="summary" value="Responsbile for aproving account expenses"/>
   </bean>
 
 <!-- Business Object Inquiry Definition -->

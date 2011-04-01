@@ -15,9 +15,19 @@
  */
 package org.kuali.rice.kns.uif.authorization;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InquiryPresentationControllerBase extends PresentationControllerBase {
+    
+    @Override
+    public Set<String> getActionFlags(UifFormBase model) {
+        return new HashSet<String>();
+    }
 
 }

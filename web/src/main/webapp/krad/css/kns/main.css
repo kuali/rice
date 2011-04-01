@@ -82,3 +82,17 @@
 	margin-bottom: 18px;
 	padding: 12px;
 }
+
+.summary {
+	font-size: 12px;
+	margin-bottom: auto;
+	display: block;
+}
+
+.constraint {
+	font-size: 10px;
+	color: gray;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	display: block;
+}

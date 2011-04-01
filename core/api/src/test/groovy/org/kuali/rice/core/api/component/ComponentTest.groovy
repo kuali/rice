@@ -16,29 +16,30 @@
 
 package org.kuali.rice.core.api.component
 
-import javax.xml.bind.JAXBContext
-
-import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 
 class ComponentTest {
+	private static final String CODE = "PC"
+	private static final String NAME = "Config"
+	private static final String NAMESPACE_CODE = "NSC"
+	private static final boolean VIRTUAL = false
+	private static final boolean ACTIVE = true
+	private static final Long VERSION_NUMBER = new Long(1);
+	private static final String OBJECT_ID = UUID.randomUUID();
     private static final String XML = """
         <component xmlns="http://rice.kuali.org/core/v2_0">
-            <code>PC</code>
-            <name>Config</name>
-            <namespaceCode>NSC</namespaceCode>
-            <virtual>false</virtual>
-            <active>true</active>
-            <versionNumber>1</versionNumber>
+            <code>${CODE}</code>
+            <name>${NAME}</name>
+            <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
+            <virtual>${VIRTUAL}</virtual>
+            <active>${ACTIVE}</active>
+            <versionNumber>${VERSION_NUMBER}</versionNumber>
+            <objectId>${OBJECT_ID}</objectId>
         </component>
     """
 
-    private static final String CODE = "PC"
-    private static final String NAME = "Config"
-    private static final String NAMESPACE_CODE = "NSC"
-    private static final boolean VIRTUAL = false
-    private static final boolean ACTIVE = true
+    
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
@@ -108,6 +109,7 @@ class ComponentTest {
                 def boolean virtual = false
                 def boolean active = true
                 def Long versionNumber = 1
+				def String objectId = ComponentTest.OBJECT_ID
 			}).build()
 	}
 }

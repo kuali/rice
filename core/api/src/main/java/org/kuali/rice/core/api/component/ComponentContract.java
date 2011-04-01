@@ -16,11 +16,14 @@
 
 package org.kuali.rice.core.api.component;
 
+import org.kuali.rice.core.api.mo.GloballyUnique;
+import org.kuali.rice.core.api.mo.Versioned;
+
 /**
  * This is the contract for a Component.  This represents functional/logical piece
  * within a rice application or rice ecosystem.
  */
-public interface ComponentContract {
+public interface ComponentContract extends Versioned, GloballyUnique {
 
     /**
      * This is the code value for the component.  It cannot be null or a blank string.
@@ -58,10 +61,4 @@ public interface ComponentContract {
     boolean isActive();
 
 
-    /**
-     * This the object version number for Component.
-     *
-     * @return the version number of the Parameter
-     */
-    Long getVersionNumber();
 }

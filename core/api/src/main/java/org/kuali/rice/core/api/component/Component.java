@@ -50,6 +50,7 @@ import java.util.Collection;
     Component.Elements.VIRTUAL,
     Component.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
+    CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Component implements ComponentContract, ModelObjectComplete {
@@ -73,6 +74,9 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+    
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+	private final String objectId;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -88,6 +92,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
     	this.virtual = false;
     	this.active = true;
         this.versionNumber = null;
+        this.objectId = null;
     }
 
 	/**
@@ -103,6 +108,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
         virtual = builder.isVirtual();
         active = builder.isActive();
         versionNumber = builder.getVersionNumber();
+        this.objectId = builder.getObjectId();
     }
     
     
@@ -135,6 +141,11 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 	public Long getVersionNumber() {
 		return versionNumber;
 	}
+    
+    @Override
+	public String getObjectId() {
+		return objectId;
+	}
 
 	/**
      * This builder is used to construct instances of Component.  It enforces the constraints of the {@link ComponentContract}.
@@ -149,6 +160,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
         private boolean virtual;
         private boolean active;
         private Long versionNumber;
+        private String objectId;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -185,6 +197,7 @@ public final class Component implements ComponentContract, ModelObjectComplete {
             Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName(),  contract.isVirtual());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setObjectId(contract.getObjectId());
             return builder;
         }
 
@@ -268,6 +281,15 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 		public void setVersionNumber(Long versionNumber) {
 			this.versionNumber = versionNumber;
 		}
+		
+		@Override
+    	public String getObjectId() {
+    		return objectId;
+    	}
+		
+		public void setObjectId(String objectId) {
+        	this.objectId = objectId;
+        }
 
 		/**
 		 * Builds an instance of a Component based on the current state of the builder.

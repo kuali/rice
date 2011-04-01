@@ -31,6 +31,7 @@ class ComponentEbo implements ComponentContract, Inactivateable, ExternalizableB
 	def boolean active = true
 	def boolean virtual
     def Long versionNumber
+	def String objectId
 
     /**
      * Converts a mutable ebo to its immutable counterpart
@@ -61,6 +62,7 @@ class ComponentEbo implements ComponentContract, Inactivateable, ExternalizableB
         bo.active = im.active
         bo.namespaceCode = im.namespaceCode
         bo.virtual = im.virtual
+		bo.objectId = im.objectId
         return bo;
     }
 

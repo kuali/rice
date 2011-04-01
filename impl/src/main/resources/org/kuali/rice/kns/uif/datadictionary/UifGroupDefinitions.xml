@@ -75,7 +75,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="GroupSection-parentBean" abstract="true" parent="Group">
       <property name="styleClasses" value="wrap"/>
       <property name="header">
-        <bean parent="Header" p:styleClasses="grouping-header-expandable"/>
+        <bean parent="HeaderTwo" p:styleClasses="grouping-header-expandable"/>
       </property> 
       <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
       <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>

@@ -12,10 +12,11 @@ import java.util.Arrays;
 public class ImmutableListAdapter extends XmlAdapter<Object[],List<?>> {
 
     /**
-     * Returns an immutable List when a List is unmarshalled from XML.  This is done to ensure service contracts,
-     * which are to return immutable objects, also return immutable Lists when an XML sequence is returned via a
-     * remote method invocation.
-     * @param objects
+     * Returns an immutable List when a List is meant to be unmarshalled from XML.  This is done to ensure service
+     * contracts, which are to return immutable objects, also return immutable Lists when an XML sequence is returned
+     * via a remote SOAP call.
+     *
+     * @param objects an array of Objects collected from XML to be transformed into an immutable List
      * @return An immutable List
      * @throws Exception
      */
@@ -24,11 +25,10 @@ public class ImmutableListAdapter extends XmlAdapter<Object[],List<?>> {
         return Collections.unmodifiableList(Arrays.asList(objects));
     }
 
-
-
     /**
-     * Returns the same List that was passed in as an ArrayList.  There is no requirement of what kind of List is ued when
-     * marshalling to XML.
+     * Creates an array of Object[] from a passed in List for JAXB marshalling. There is no requirement of what kind of
+     * List is used when marshalling to XML.
+     *
      * @param objects
      * @return The same List object that was passed in
      * @throws Exception

@@ -1,7 +1,8 @@
 body {
-	background-color: #F6F6F6;
-	font-family: Helvetica, Arial, sans-serif;
+	background-color: #FFF;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	margin: 0px;
+	padding: 0px;
 }
 div#wrap {
 	position: relative;
@@ -11,27 +12,38 @@ div#wrap {
 	margin-right: auto;
 	margin-bottom: 0px;
 	margin-left: auto;
+	font-size: .8em;
 }
 div#maincontent {
 	position: relative;
 	margin-left: 150px;
 }
-
-
-div#maincontent-kfs {
-	position: relative;
-	margin-left: 150px;
-}
-
-
-div#maincontent H1 {
-	color:#666;
+div#maincontent h1 {
+	color:#333;
 	font-size: 1.8em;
 	padding-top: 12px;
 	padding-bottom: 12px;
 }
 
+div#maincontent h2 {
+	color:#060;
+	font-size: .8em;
+	padding-top: 0px;
+	padding-bottom: 6px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999;
+}
 
+div#maincontent h3 {
+	color:#333;
+	font-size: 1em;
+	padding-top: 0px;
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #999;
+	margin-bottom: 6px;
+}
 
 /*EXPANDABLE HEADER BEGIN*/
 
@@ -42,7 +54,7 @@ div.grouping-header-expandable {
 	border: 1px solid #999;
 	padding: 8px;
 	margin-bottom: 8px;
-	background-image: url(../images/bg-carbo-red.png);
+	background-image: url(../../images/bg-carbo-red.png);
 	background-position: 0px;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: 1.2em;
@@ -80,33 +92,3 @@ div.grouping-header-expandableh3 img {
 
 
 /*KFS STYLE DOC HEADER*/
-
-
-#doc_header {
-	height:40px;
-	background-color: #FAFAFA;
-	color:#000;
-	font-size: 2em;
-	padding-top: 12px;
-	padding-right: 12px;
-	padding-left: 12px;
-	background-image: url(../images/toptexture.png);
-}
-/*KS STYLE DOC HEADER*/
-
-#ks_header {
-	height:40px;
-	background-color: #060;
-	color:#FFF;
-	font-size: 2em;
-	padding-top: 12px;
-	padding-right: 12px;
-	padding-left: 12px;
-	background-image: url(../images/toptexture.png);
-}
-#ks_header h1 {
-	color:#666;
-	font-size: 2em;
-	padding: 20px;
-	font-weight: bold;
-}

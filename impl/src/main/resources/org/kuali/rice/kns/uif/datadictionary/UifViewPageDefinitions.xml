@@ -25,6 +25,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="View-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
       <property name="viewHelperServiceBeanId" value="viewHelperService"/>
       <property name="styleClasses" value="workarea"/>
+      <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.PresentationControllerBase"/>
+      <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.AuthorizerBase"/>
 	  <property name="errorsField">
         <bean parent="ErrorsField_View"/>
       </property>
@@ -34,17 +36,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="footer">
         <bean parent="Footer"/>
       </property> 
-      <property name="additionalCssFiles">
-        <list>
-          <value>/krad/css/kuali-stacked.css</value>
-        </list>
+      <property name="expressionVariables">
+        <map>
+          <entry key="editModes" value="#view.editModes"/>
+          <entry key="actionFlags" value="#view.actionFlags"/>
+        </map>
       </property>
+      <property name="conditionalReadOnly" value="!#actionFlags.contains('canEdit')"/>
   </bean>
   
   <bean id="FormView" abstract="true" parent="FormView-parentBean"/>
   <bean id="FormView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
-    <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.AuthorizerBase"/>
-    <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.PresentationControllerBase"/>
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
       <property name="onSubmitScript" value="createLoading(true);return hasFormAlreadyBeenSubmitted();"/>
       <property name="footer">
@@ -53,26 +55,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="KNSFormView" abstract="true" parent="FormView">
-      <property name="additionalCssFiles">
-        <list merge="true">
-          <value>/krad/css/kns/reset.css</value>
-          <value>/krad/css/kns/main.css</value>
-          <value>/krad/css/kns/fonts.css</value>
-          <value>/krad/css/kns/headers.css</value>
-          <value>/krad/css/kns/tables.css</value>
-          <value>/krad/css/kns/jquery-ui-1.8.11.custom.css</value>
-        </list>
-      </property>  
+      <property name="additionalCssFiles" ref="kns-css"/>
   </bean>
 
   <!-- Common Views -->
   
   <bean id="InquiryView" abstract="true" parent="InquiryView-parentBean"/>
-  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
+  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="KNSFormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
-     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.InquiryPresentationControllerBase" />
-     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.InquiryAuthorizerBase" />
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.InquiryPresentationControllerBase"/>
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.InquiryAuthorizerBase"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
      <property name="defaultBindingObjectPath" value="bo"/>
      <property name="readOnly" value="true"/>
@@ -86,7 +79,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
-  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="FormView">
+  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="KNSFormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="lookupViewHelperService"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
@@ -111,7 +104,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="FooterLookup" />
         </property>
       </bean>
-    </property>
+    </property>  
     <property name="resultsActionsField">
       <bean parent="GeneratedField">
         <property name="label" value="Actions" />
@@ -137,9 +130,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>
-  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="FormView">
+  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="KNSFormView">
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.DocumentFormBase"/>
      <property name="defaultBindingObjectPath" value="document"/>
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.DocumentPresentationControllerBase"/>
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.DocumentAuthorizerBase"/>
      <property name="footer">
         <bean parent="FooterDocument"/>
      </property>     
@@ -149,8 +144,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="MaintenanceView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
-     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentPresentationControllerBase" />
-     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentAuthorizerBase" />
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentPresentationControllerBase"/>
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentAuthorizerBase"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
      <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
      <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>

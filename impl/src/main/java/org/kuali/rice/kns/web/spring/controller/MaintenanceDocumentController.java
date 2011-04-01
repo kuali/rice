@@ -15,10 +15,15 @@
  */
 package org.kuali.rice.kns.web.spring.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.PersistableAttachment;
@@ -36,7 +41,9 @@ import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
 import org.kuali.rice.kns.web.spring.form.MaintenanceForm;
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.AutoPopulatingList;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -250,14 +257,30 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 		}
 	    }
 	    catch(ValidationException vex) {
-	        MessageMap mmap = GlobalVariables.getMessageMap();
 	        modelAndView = getUIFModelAndView(form);
 	    }
 
 		return modelAndView;
 	}
+	
+	@Override
+    protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
+	    // TODO: remove once error path is fixed in business rules
+//	    // update error messages
+//	    Map<String, AutoPopulatingList> adjustedPathErrors = new HashMap<String, AutoPopulatingList>();
+//	    MessageMap messageMap = GlobalVariables.getMessageMap();
+//	    for (Entry<String, AutoPopulatingList> pathErrors : messageMap.getErrorMessages().entrySet()) {
+//	        String path = pathErrors.getKey();
+//	        if (path.startsWith("document.newMaintainableObject") && !path.startsWith("document.newMaintainableObject.dataObject")) {
+//	            String adjustedPath = StringUtils.replace(path, "document.newMaintainableObject", "document.newMaintainableObject.dataObject");
+//	            adjustedPathErrors.put(adjustedPath, pathErrors.getValue());
+//	        }
+//	    }
+	    
+        return super.getUIFModelAndView(form, viewId, pageId);
+    }
 
-	protected MaintenanceDocumentService getMaintenanceDocumentService() {
+    protected MaintenanceDocumentService getMaintenanceDocumentService() {
 		return KNSServiceLocator.getMaintenanceDocumentService();
 	}
 

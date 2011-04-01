@@ -18,6 +18,7 @@ package org.kuali.rice.kns.uif.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 
 /**
@@ -29,7 +30,11 @@ public class PresentationControllerBase implements PresentationController {
      * @see org.kuali.rice.kns.uif.authorization.PresentationController#getActionFlags(org.kuali.rice.kns.web.spring.form.UifFormBase)
      */
     public Set<String> getActionFlags(UifFormBase model) {
-        return new HashSet<String>();
+        Set<String> actions = new HashSet<String>();
+
+        actions.add(KNSConstants.KUALI_ACTION_CAN_EDIT);
+
+        return actions;
     }
 
     /**

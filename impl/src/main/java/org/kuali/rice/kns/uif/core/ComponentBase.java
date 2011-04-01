@@ -165,16 +165,16 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	public void performFinalize(View view, Object model, Component parent) {
 		if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
 			// add the align, valign, and width settings to style
-			if (StringUtils.isNotBlank(getAlign())) {
-				setStyle(getStyle() + CssConstants.TEXT_ALIGN + getAlign() + ";");
+            if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {
+                appendToStyle(CssConstants.TEXT_ALIGN + getAlign() + ";");
+            }
+
+			if (StringUtils.isNotBlank(getValign()) && !StringUtils.contains(getStyle(), CssConstants.VERTICAL_ALIGN)) {
+			    appendToStyle(CssConstants.VERTICAL_ALIGN + getValign() + ";");
 			}
 
-			if (StringUtils.isNotBlank(getValign())) {
-				setStyle(getStyle() + CssConstants.VERTICAL_ALIGN + getValign() + ";");
-			}
-
-			if (StringUtils.isNotBlank(getWidth())) {
-				setStyle(getStyle() + CssConstants.WIDTH + getWidth() + ";");
+			if (StringUtils.isNotBlank(getWidth()) && !StringUtils.contains(getStyle(), CssConstants.WIDTH)) {
+			    appendToStyle(CssConstants.WIDTH + getWidth() + ";");
 			}
 		}
 	}
@@ -517,7 +517,7 @@ public abstract class ComponentBase implements Component, ScriptEventSupport {
 	 * @see org.kuali.rice.kns.uif.core.Component#setStyle(java.lang.String)
 	 */
 	public void setStyle(String style) {
-		this.style = style;
+		this.style = style; 
 	}
 
 	/**

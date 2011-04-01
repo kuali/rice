@@ -17,6 +17,25 @@
 // global vars
 var $dialog = null;
 var jq = jQuery.noConflict();
+
+// common event registering done here through JQuery ready event
+jq(document).ready(function() {
+
+// if (!dialogMode) {
+// $.jGrowl("Save Successful", {
+// sticky : true
+// });
+// }
+	
+	// buttons
+	jq( "input:submit" ).button();
+	jq( "input:button" ).button();
+})
+
+jq(document).unload(function() {
+	
+})
+
 jQuery.fn.dataTableExt.oSort['kuali_date-asc']  = function(a,b) {
 	var ukDatea = a.split('/');
 	var ukDateb = b.split('/');
@@ -61,70 +80,6 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iCol
 	} );
 	return aData;
 }
-
-
-
-// common event registering done here through JQuery ready event
-jq(document).ready(function() {
-
-// if (!dialogMode) {
-// $.jGrowl("Save Successful", {
-// sticky : true
-// });
-// }
-
-	// $.loading(true, { img:'images/jquery/loading.gif', align:'center', text:
-	// 'Loading...'});
- // jq("#red").loading();
-
-
-	// jq(":input").watermark("Fill Me ...");
-
-	// initializeInquiryHandlers();
-
-	// initializeLookupHandlers();
-
-// if (dialogMode) {
-// initializeReturnHandlers();
-// resizeDialog();
-// }
-
-	// this is for nested inquiries to keep opening in the same dialog
-	// if (dialogMode) {
-	// jq('a[href*=inquiry.do]').attr('target', '_self');
-	// }
-	
-	// buttons
-	jq( "input:submit" ).button();
-	jq( "input:button" ).button();
-	
-	// hide loading indicator
-	// doLoading(false);
-	
-	// validate form
-	// jq("form").validate();
-	
-	
-	// TMP for style stuff
-    jq(document).ready(function() {
-        jq(".green").slideUp(000);
-		
-        jq(".showgreen").toggle(function() {
-            jq(".green").slideDown(600);
-            
-            jq(".showgreen").html(" close <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/cancel.png' width='16' height='16' alt='collapse'>");
-        }, function() {
-            jq(".showgreen").html("#34683456  <img style='margin-left:12px; margin-right:4px;' src='/kr-dev/krad/images/down.png' width='16' height='16' alt='collapse'>");
-            jq(".green").slideUp(600);
-     });
-    });    
-
-   // end tmp
-})
-
-jq(document).unload(function() {
-	
-})
 
 
 function resizeDialog() {
@@ -332,7 +287,7 @@ function createDatePicker(controlId, options) {
 function createLightBox(controlId, options) {	
     jq(function () {
     	if (!jq("#fancybox-frame", parent.document).length) {
-			jq("#" + controlId).fancybox(options);						
+    	jq("#" + controlId).fancybox(options);    	
     	}else{
     		jq("#" + controlId).attr('target', '_self');
     	}
@@ -355,27 +310,27 @@ function createLightBox(controlId, options) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createLightBoxLookup(controlId, options, actionParameterMapString) {
-    jq(function () {     
+    jq(function () {        	    	    
     	if (!jq("#fancybox-frame", parent.document).length) {
-			jq("#" + controlId).click(function (e) {
-	        	// Prevent the default submit
-	            e.preventDefault();
-	            // Add the ajaxCall parameter so that the controller can avoid the redirect
-	            //dialogMode=Y
+        jq("#" + controlId).click(function (e) {
+        	// Prevent the default submit
+            e.preventDefault();
+            // Add the ajaxCall parameter so that the controller can avoid the redirect
+            //dialogMode=Y
 	            actionParameterMapString['actionParameters[dialogMode]'] = 'true';
-	            actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
-	            // Do the Ajax submit on the kualiForm form
-	            jq("#kualiForm").ajaxSubmit({  
-	            	// The additional data ie. baseLookupURL, bussObject
-	            	data: actionParameterMapString,
-	        		success: function(data) {
-	            		// Add the returned URL to the FancyBox href setting
-	            		options['href'] = data;
-	        			jq.fancybox(options);
-	        			jq.watermark.showAll();        			
-	        		}
-	        	});            
-	        });
+            actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
+            // Do the Ajax submit on the kualiForm form
+            jq("#kualiForm").ajaxSubmit({  
+            	// The additional data ie. baseLookupURL, bussObject
+            	data: actionParameterMapString,
+        		success: function(data) {
+            		// Add the returned URL to the FancyBox href setting
+            		options['href'] = data;
+        			jq.fancybox(options);
+        			jq.watermark.showAll();        			
+        		}
+        	});            
+        });
     	}else{
 			jq("#" + controlId).click(function (e) {
 				actionParameterMapString['actionParameters[dialogMode]'] = 'true';

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xmlns:p="http://www.springframework.org/schema/p" 
-xsi:schemaLocation="http://www.springframework.org/schema/beans         
-                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 <!--
  Copyright 2007-2009 The Kuali Foundation
  
@@ -18,6 +21,36 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
+
+  <!-- CSS Profiles -->
+  
+  <util:list id="kns-css">
+     <value>/krad/css/kns/reset.css</value>
+     <value>/krad/css/kns/main.css</value>
+     <value>/krad/css/kns/fonts.css</value>
+     <value>/krad/css/kns/headers.css</value>
+     <value>/krad/css/kns/tables.css</value>
+     <value>/krad/css/kns/jquery-ui-1.8.11.css</value>
+     <value>/krad/css/kuali-stacked.css</value>
+  </util:list>
+  
+  <util:list id="ka-css">
+     <value>/krad/css/ka/kuali-clean.css</value>
+     <value>/krad/css/ka/form.css</value>
+     <value>/krad/css/ka/jquery-ui-1.8.5.css</value>
+     <value>/krad/css/ka/jquery.ui.theme.css</value>
+     <value>/krad/css/navigationMenu.css</value>
+     <value>/krad/css/kuali-stacked.css</value>
+  </util:list>  
+  
+  <util:list id="ks-css">
+     <value>/krad/css/ks/kuali-clean.css</value>
+     <value>/krad/css/ks/form.css</value>
+     <value>/krad/css/ks/jquery-ui-1.8.5.css</value>
+     <value>/krad/css/ks/jquery.ui.theme.css</value>
+     <value>/krad/css/navigationMenu.css</value>
+     <value>/krad/css/kuali-stacked.css</value>
+  </util:list>    
   
   <!-- Widgets -->
   

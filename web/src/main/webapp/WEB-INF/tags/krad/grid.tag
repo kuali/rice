@@ -20,20 +20,26 @@
               type="java.util.List"%>
 <%@ attribute name="numberOfColumns" required="false" 
               description="Number of columns the grid should contain, defaults to 2"%>  
-<%@ attribute name="renderHeaderColumns" required="false" 
-              description="Boolean that indicates whether the columns should rendered as th or td cell, defaults to false"%>   
+<%@ attribute name="renderHeaderRow" required="false" 
+              description="Boolean that indicates whether the row columns should rendered as th or td cell, defaults to false"%>   
 <%@ attribute name="applyAlternatingRowStyles" required="false" 
               description="Boolean that indicates whether the even odd style classes should be applied to the rows, defaults to false"%>   
 <%@ attribute name="applyDefaultCellWidths" required="false" 
-              description="Boolean that indicates whether default widths should be applied to the cells, defaults to true"%>                           
+              description="Boolean that indicates whether default widths should be applied to the cells, defaults to true"%>   
+<%@ attribute name="renderAlternatingHeaderColumns" required="false" 
+              description="Boolean that indicates whether alternating header columns should be rendered, defaults to false"%>                                        
               
 <c:if test="${empty numberOfColumns}">
   <c:set var="numberOfColumns" value="2"/>
 </c:if>      
 
-<c:if test="${empty renderHeaderColumns}">
-  <c:set var="renderHeaderColumns" value="false"/>
+<c:if test="${empty renderHeaderRow}">
+  <c:set var="renderHeaderRow" value="false"/>
 </c:if>        
+
+<c:if test="${renderHeaderRow}">
+  <c:set var="headerScope" value="col"/>
+</c:if> 
 
 <c:if test="${empty applyAlternatingRowStyles}">
   <c:set var="applyAlternatingRowStyles" value="false"/>
@@ -41,6 +47,16 @@
 
 <c:if test="${empty applyDefaultCellWidths}">
   <c:set var="applyDefaultCellWidths" value="true"/>
+</c:if>
+
+<c:if test="${empty renderAlternatingHeaderColumns}">
+  <c:set var="renderAlternatingHeaderColumns" value="false"/>
+</c:if>
+
+<c:set var="renderHeaderColumn" value="false"/>
+<c:if test="${renderAlternatingHeaderColumns}">
+  <c:set var="renderHeaderColumn" value="true"/>
+  <c:set var="headerScope" value="row"/>
 </c:if>
    
 <c:set var="defaultCellWidth" value="${100/numberOfColumns}"/> 
@@ -97,16 +113,22 @@
    <krad:attributeBuilder component="${item}"/>
      
    <%-- render cell and item template --%>
-   <c:if test="${renderHeaderColumns}">
-      <th ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}" ${style} ${styleClass}>
+   <c:if test="${renderHeaderRow || renderHeaderColumn}">
+      <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}" 
+          rowspan="${item.rowSpan}" ${style} ${styleClass}>
        <krad:template component="${item}"/>
       </th>  
    </c:if>
-   <c:if test="${!renderHeaderColumns}">
+   <c:if test="${!renderHeaderRow && !renderHeaderColumn}">
      <td ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
          ${style} ${styleClass} ${evenOddClass}>
        <krad:template component="${item}"/>
      </td>
+   </c:if>
+   
+   <%-- if alternating headers flip flag --%>
+   <c:if test="${renderAlternatingHeaderColumns}">
+     <c:set var="renderHeaderColumn" value="${!renderHeaderColumn}"/>
    </c:if>
      
    <%-- handle colspan for the count --%>  

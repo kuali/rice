@@ -115,6 +115,7 @@ public class UifConstants extends JSTLConstants {
 	public static class ContextVariableNames {
 		public static final String CONFIG_PROPERTIES = "ConfigProperties";
 		public static final String COMPONENT = "component";
+		public static final String CONSTANTS = "Constants";
 		public static final String INDEX = "index";
 		public static final String LINE = "line";
 		public static final String MANAGER = "manager";

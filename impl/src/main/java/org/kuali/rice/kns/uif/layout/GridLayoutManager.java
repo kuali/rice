@@ -43,6 +43,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     private boolean matchColumnsToFieldCount;
     private boolean applyAlternatingRowStyles;
     private boolean applyDefaultCellWidths;
+    private boolean renderAlternatingHeaderColumns;
 
     public GridLayoutManager() {
         super();
@@ -82,22 +83,23 @@ public class GridLayoutManager extends LayoutManagerBase {
     public void performFinalize(View view, Object model, Container container) {
         super.performFinalize(view, model, container);
 
-        // TODO: lookup into why we need this in each of the phases        
-		if (matchColumnsToFieldCount) {
-			numberOfColumns = container.getItems().size();
-		}
-	}
+        // TODO: lookup into why we need this in each of the phases
+        if (matchColumnsToFieldCount) {
+            numberOfColumns = container.getItems().size();
+        }
+    }
 
-	/**
-     * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View, java.lang.Object, org.kuali.rice.kns.uif.container.Container)
+    /**
+     * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
      */
     @Override
     public void performApplyModel(View view, Object model, Container container) {
-	    super.performApplyModel(view, model, container);
+        super.performApplyModel(view, model, container);
 
-		if (matchColumnsToFieldCount) {
-			numberOfColumns = container.getItems().size();
-		}
+        if (matchColumnsToFieldCount) {
+            numberOfColumns = container.getItems().size();
+        }
     }
 
     /**
@@ -229,6 +231,31 @@ public class GridLayoutManager extends LayoutManagerBase {
      */
     public void setApplyDefaultCellWidths(boolean applyDefaultCellWidths) {
         this.applyDefaultCellWidths = applyDefaultCellWidths;
+    }
+
+    /**
+     * Indicates whether header columns (th for tables) should be rendered for
+     * every other item (alternating)
+     * 
+     * <p>
+     * If true the first cell of each row will be rendered as an header, with
+     * every other cell in the row as a header
+     * </p>
+     * 
+     * @return boolean true if alternating headers should be rendered, false if
+     *         not
+     */
+    public boolean isRenderAlternatingHeaderColumns() {
+        return this.renderAlternatingHeaderColumns;
+    }
+
+    /**
+     * Setter for the render alternating header columns indicator
+     * 
+     * @param renderAlternatingHeaderColumns
+     */
+    public void setRenderAlternatingHeaderColumns(boolean renderAlternatingHeaderColumns) {
+        this.renderAlternatingHeaderColumns = renderAlternatingHeaderColumns;
     }
 
 }

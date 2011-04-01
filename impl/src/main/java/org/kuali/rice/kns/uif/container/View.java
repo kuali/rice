@@ -92,6 +92,8 @@ public class View extends ContainerBase {
     private Set<String> actionFlags;
     private Set<String> editModes;
 
+    private Map<String, String> expressionVariables;
+
     private boolean singlePageView;
     private Group page;
 
@@ -100,7 +102,6 @@ public class View extends ContainerBase {
     private LinkField viewMenuLink;
     private String viewMenuGrouping;
 
-    // TODO: scripting variables, should be in context
     @RequestParameter
     private boolean dialogMode;
 
@@ -120,18 +121,18 @@ public class View extends ContainerBase {
         items = new ArrayList<Group>();
         abstractTypeClasses = new HashMap<String, Class<?>>();
         viewRequestParameters = new HashMap<String, String>();
+        expressionVariables = new HashMap<String, String>();
     }
 
     /**
-     * <p>
      * The following initialization is performed:
+     * 
      * <ul>
      * <li>If a single paged view, set items in page group and put the page in
      * the items list</li>
      * <li>If current page id is not set, it is set to the configured entry page
      * or first item in list id</li>
      * </ul>
-     * </p>
      * 
      * @see org.kuali.rice.kns.uif.container.ContainerBase#performInitialization(org.kuali.rice.kns.uif.container.View)
      */
@@ -678,6 +679,34 @@ public class View extends ContainerBase {
      */
     public void setEditModes(Set<String> editModes) {
         this.editModes = editModes;
+    }
+
+    /**
+     * Map that contains expressions to evaluate and make available as variables
+     * for conditional expressions within the view
+     * 
+     * <p>
+     * Each Map entry contains one expression variables, where the map key gives
+     * the name for the variable, and the map value gives the variable
+     * expression. The variables expressions will be evaluated before
+     * conditional logic is run and made available as variables for other
+     * conditional expressions. Variable expressions can be based on the model
+     * and any object contained in the view's context
+     * </p>
+     * 
+     * @return Map<String, String> variable expressions
+     */
+    public Map<String, String> getExpressionVariables() {
+        return this.expressionVariables;
+    }
+
+    /**
+     * Setter for the view's map of variable expressions
+     * 
+     * @param expressionVariables
+     */
+    public void setExpressionVariables(Map<String, String> expressionVariables) {
+        this.expressionVariables = expressionVariables;
     }
 
     /**

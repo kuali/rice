@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
@@ -50,7 +51,9 @@ import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.util.ViewModelUtils;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 
 /**
@@ -254,7 +257,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // if we were able to find a dictionary attribute and object, call
         // data dictionary service to get AttributeDefinition
         if (StringUtils.isNotBlank(dictionaryAttributeName) && StringUtils.isNotBlank(dictionaryObjectEntry)) {
-			AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(
+            AttributeDefinition attributeDefinition = getDataDictionaryService().getAttributeDefinition(
                     dictionaryObjectEntry, dictionaryAttributeName);
             if (attributeDefinition != null) {
                 field.copyFromAttributeDefinition(attributeDefinition);
@@ -290,10 +293,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // controller
         invokeAuthorizerPresentationController(view, (UifFormBase) model);
 
-        view.pushObjectToContext(UifConstants.ContextVariableNames.VIEW, view);
-
-        Properties properties = KNSServiceLocator.getKualiConfigurationService().getAllProperties();
-        view.pushObjectToContext(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+        // set view context for conditional expressions
+        setViewContext(view, model);
 
         performComponentApplyModel(view, view, model);
     }
@@ -322,6 +323,32 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         Set<String> editModes = presentationController.getEditModes(model);
         editModes = authorizer.getEditModes(model, user, editModes);
         view.setEditModes(editModes);
+    }
+
+    /**
+     * Sets up the view context which will be available to other components
+     * through their context for conditional logic evaluation
+     * 
+     * @param view
+     *            - view instance to set context for
+     * @param model
+     *            - object containing the view data
+     */
+    protected void setViewContext(View view, Object model) {
+        view.pushObjectToContext(UifConstants.ContextVariableNames.VIEW, view);
+
+        Properties properties = KNSServiceLocator.getKualiConfigurationService().getAllProperties();
+        view.pushObjectToContext(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+        
+        view.pushObjectToContext(UifConstants.ContextVariableNames.CONSTANTS, KNSConstants.class);
+
+        // evaluate view expressions for further context
+        for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
+            String variableName = variableExpression.getKey();
+            Object value = getExpressionEvaluatorService().evaluateExpression(model, view.getContext(),
+                    variableExpression.getValue());
+            view.pushObjectToContext(variableName, value);
+        }
     }
 
     /**
@@ -358,7 +385,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                 layoutManager.getContext().putAll(getCommonContext(view, component));
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
-				getExpressionEvaluatorService().evaluateObjectProperties(layoutManager, model, layoutManager.getContext());
+                getExpressionEvaluatorService().evaluateObjectProperties(layoutManager, model,
+                        layoutManager.getContext());
             }
         }
 

@@ -23,6 +23,7 @@ limitations under the License.
     <property name="id" value="Travel-testView2"/>
     <property name="title" value="Test View 2"/>
     <property name="entryPageId" value="page1"/>
+    <property name="additionalCssFiles" ref="ks-css"/>
 	<property name="errorsField">
         <bean parent="ErrorsField_View">
 	       	<property name="additionalKeysToMatch">
@@ -37,35 +38,34 @@ limitations under the License.
     </property>
     <property name="items">
         <list>
-            <bean parent="Page" p:id="page1">
+            <bean parent="Page" p:id="page1" p:title="Test Course">
                 <property name="items">
                     <list>
-                        <ref bean="testValidationSection1"/>
 						<ref bean="testValidationSection2"/>
 						<ref bean="testValidationSection3"/>
 						<ref bean="testValidationSection4"/>
-						<ref bean="testSection4"/>
+						<ref bean="test2Section4"/>
                     </list>
                 </property>
             </bean>
-            <bean parent="Page" p:id="page2">
+            <bean parent="Page" p:id="page2" p:title="Test Course">
                 <property name="items">
                     <list>
-                        <ref bean="testSection6"/>
+                        <ref bean="test2Section6"/>
                     </list>
                 </property>
             </bean>
-            <bean parent="Page" p:id="page3">
+            <bean parent="Page" p:id="page3" p:title="Test Course">
                 <property name="items">
                     <list>
-                        <ref bean="testSection4"/>
+                        <ref bean="test2Section4"/>
                     </list>
                 </property>
             </bean>
-            <bean parent="Page" p:id="page4">
+            <bean parent="Page" p:id="page4" p:title="Test Course">
                 <property name="items">
                     <list>
-                        <ref bean="testSection3"/>
+                        <ref bean="test2Section3"/>
                     </list>
                 </property>
             </bean>
@@ -91,9 +91,11 @@ limitations under the License.
     </property>
 </bean>
 
-<bean id="testValidationSection1" parent="GroupSection">
+<bean id="testValidationSection1" parent="Group">
     <property name="id" value="testSection1"/>
     <property name="title" value="Test Section 1"/>
+    <property name="accordion.render" value="false"/>
+    <property name="styleClasses" value="group_header"/>    
     <property name="items">
         <list>
             <ref bean="testValidationGroup1"/>
@@ -101,9 +103,11 @@ limitations under the License.
     </property>
 </bean>
 
-<bean id="testValidationSection2" parent="GroupSection" p:layoutManager.orientation="HORIZONTAL">
+<bean id="testValidationSection2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
   <property name="title" value="Test Section 2"/> 
   <property name="summary" value="Horizontal Layout test"/> 
+  <property name="accordion.render" value="false"/>
+  <property name="styleClasses" value="group_header"/>  
   <property name="items">
     <list>
       <bean parent="AttributeField_Form" p:label="Field 1" p:propertyName="hField1" p:labelPlacement="TOP" 
@@ -128,9 +132,11 @@ limitations under the License.
   </property> 
 </bean>
 
-<bean id="testValidationSection4" parent="GroupSection" p:layoutManager.orientation="VERTICAL">
+<bean id="testValidationSection4" parent="Group" p:layoutManager.orientation="VERTICAL">
   <property name="title" value="Test Section 3"/> 
   <property name="summary" value="Testing icons, highlighting off, allowMessageRepeat off"/> 
+  <property name="accordion.render" value="false"/>
+  <property name="styleClasses" value="group_header"/>  
   <property name="errorsField">
     <bean parent="ErrorsField_Group">
     	<property name="displayMessages" value="true"/>
@@ -179,9 +185,11 @@ limitations under the License.
   </property> 
 </bean>
 
-<bean id="testValidationSection3" parent="GroupSection" p:layoutManager.orientation="VERTICAL">
+<bean id="testValidationSection3" parent="Group" p:layoutManager.orientation="VERTICAL">
   <property name="title" value="Test Section 3"/> 
   <property name="summary" value="Vertical layout test"/> 
+  <property name="accordion.render" value="false"/>
+  <property name="styleClasses" value="group_header"/>
   <property name="items">
     <list>
       <bean parent="AttributeField_Form" p:label="Field 1" p:propertyName="vField1" p:labelPlacement="TOP" 
@@ -213,6 +221,8 @@ limitations under the License.
     <property name="id" value="testValidationGroup1"/>
     <property name="title" value="Validation Test Group 1"/>
     <property name="summary" value="Constraint text will tell you what is being tested"/>
+    <property name="accordion.render" value="false"/>
+    <property name="styleClasses" value="group_header"/>
     <property name="items">
         <list>
             
@@ -466,5 +476,27 @@ limitations under the License.
         </list>
     </property>
 </bean>
+
+   <bean id="test2Section4" parent="testSection4">
+      <property name="accordion.render" value="false"/>
+      <property name="styleClasses" value="group_header"/>
+   </bean>
+   
+  <bean id="test2Section6" parent="Group">
+      <property name="title" value="Test Collections"/>
+      <property name="accordion.render" value="false"/>
+      <property name="styleClasses" value="group_header"/> 
+      <property name="items">
+        <list>
+          <ref bean="testGroup4"/>
+          <ref bean="testGroup6"/>
+        </list>
+      </property> 
+   </bean>
+   
+   <bean id="test2Section3" parent="testSection3">
+      <property name="accordion.render" value="false"/>
+      <property name="styleClasses" value="group_header"/>
+   </bean>  
 
 </beans>

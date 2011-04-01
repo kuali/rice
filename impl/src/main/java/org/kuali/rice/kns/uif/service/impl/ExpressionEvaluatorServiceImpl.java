@@ -80,6 +80,30 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         return result;
     }
 
+    /**
+     * @see org.kuali.rice.kns.uif.service.ExpressionEvaluatorService#evaluateExpression(java.lang.Object,
+     *      java.util.Map, java.lang.String)
+     */
+    public Object evaluateExpression(Object contextObject, Map<String, Object> evaluationParameters,
+            String expressionStr) {
+        StandardEvaluationContext context = new StandardEvaluationContext(contextObject);
+        context.setVariables(evaluationParameters);
+
+        ExpressionParser parser = new SpelExpressionParser();
+        Expression expression = parser.parseExpression(expressionStr);
+
+        Object result = null;
+        try {
+            result = expression.getValue(context);
+        }
+        catch (EvaluationException e) {
+            LOG.error("Exception evaluating expression: " + expressionStr);
+            throw new RuntimeException("Exception evaluating expression: " + expressionStr, e);
+        }
+
+        return result;
+    }
+
     protected void evaluatePropertyReplacers(Object object, Object contextObject,
             Map<String, Object> evaluationParameters) {
         List<PropertyReplacer> replacers = null;

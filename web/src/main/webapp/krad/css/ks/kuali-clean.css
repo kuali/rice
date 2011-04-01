@@ -108,16 +108,14 @@ div.fill {
 /*EXPANDABLE HEADER BEGIN*/
 
 div.grouping-header-expandable {
-	background-color:#900;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
-	border: 1px solid #999;
-	padding: 8px;
-	margin-bottom: 8px;
-	background-image: url(../images/bg-carbo-red.png);
+	padding: 4px;
+	margin-bottom: 4px;
 	background-position: 0px;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: 1.2em;
+	color:#636D05;
 }
 div.grouping-header-expandable a {
 	color:#FFF;
@@ -156,17 +154,27 @@ div.tab-newh3 img { margin-right:6px
 	background-color: #FFF;
 	color:#000;
 	padding-left: 12px;
-	background-image: url(../images/toptexture.png);
+	background-image: url(../../images/toptexture.png);
 }
 
 .view_header h1 {
-	font-size: 2em;
-	padding-top: 12px;	
+	font-size: 1.5em;
+	padding-top: 8px;	
 }	
 
-.page_header {
-	padding-bottom: 60px;
-}	
+.page_header h1 {
+	font-size: 1.6em;
+    border-bottom-width: 3px;
+	border-bottom-style: solid;
+	border-bottom-color: #000;
+}
+
+.group_header h2 {
+	padding-top: 8px;
+	padding-bottom: 8px;
+	font-size: 1.2em;
+	color:#636D05;
+}
 
 .workarea table.datatable
 {
@@ -181,6 +189,7 @@ div.tab-newh3 img { margin-right:6px
 	font-size: 12px;
 	margin-bottom: auto;
 	display: block;
+	padding-bottom: 5px;
 }
 
 .constraint {

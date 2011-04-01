@@ -44,5 +44,6 @@
 <table id="${manager.id}" ${style} ${styleClass}>
    <krad:grid items="${items}" numberOfColumns="${manager.numberOfColumns}" 
               applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"
-              applyDefaultCellWidths="${manager.applyDefaultCellWidths}"/>
+              applyDefaultCellWidths="${manager.applyDefaultCellWidths}"
+              renderAlternatingHeaderColumns="${manager.renderAlternatingHeaderColumns}"/>
 </table>

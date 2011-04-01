@@ -45,10 +45,10 @@ table.datatable td, th {
 
 
 
-.panel-content th[scope="col"] { text-align:center
+table.datatable th[scope="col"] { text-align:center
 }
 
-.panel-content th[scope="row"] { text-align:right
+table.datatable th[scope="row"] { text-align:right
 }
 
 

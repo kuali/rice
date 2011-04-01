@@ -5,12 +5,12 @@
 	margin-bottom: 24px;
 }
 #viewheader_div .view_header h1 {
-	font-size:1.5em;
+	font-size:1.2em;
 	padding-left: 0.6em;
 	font-family: Arimo;
 	font-weight: bold;
-	padding-top: .2em;
-	padding-bottom: .2em;
+	padding-top: 0.4em;
+	padding-bottom: 0.4em;
 }
 #viewheader_div .view_header a {
 	position: absolute;
@@ -54,10 +54,10 @@
 	float:right;
 	text-align: right;
 }
-#viewpage_div .page_header .global-button-group {
+.page_header .globalbuttons {
 	text-align:center;
 }
-#viewpage_div .page_header .global-button-group .ui-state-default.ui-corner-all {
+.globalbuttons .ui-state-default.ui-corner-all {
 	font-size:.8em;
 	padding:0em 1em .1em;
 	font-weight: bold;
@@ -65,11 +65,12 @@
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	background: #FFF url(images/button-bevel.png) 0px 0px;
+	background: #FFF url(../../images/button-bevel.png) 0px 0px;
 }
 
+div.globalbuttons { text-align:center;	padding-top: 20px;}
 
-#viewpage_div .page_header .global-button-group .ui-state-default.ui-corner-all.ui-state-hover {
+.globalbuttons .ui-state-default.ui-corner-all.ui-state-hover {
 	background-color:#900;
 	color: #FFF;
 	border: 1px solid #500;

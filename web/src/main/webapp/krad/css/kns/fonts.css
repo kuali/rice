@@ -28,22 +28,16 @@
 
 
 
-
-
-body{font-family: Arimo;}
-
-
-.view_header h1 {
-	
-
-}
-.view_header td, th {
+table.datatable td, th {
 	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: .8em;
 }
 
-
-.panel-content td, th {
+h2, h3 {
 	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 0.8em;
+	font-weight: bold;
+}
+
+
+h3 { font-size:.8em
 }

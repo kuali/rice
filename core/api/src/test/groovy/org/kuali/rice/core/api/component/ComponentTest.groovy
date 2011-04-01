@@ -103,12 +103,12 @@ class ComponentTest {
 
     private create() {
 		return Component.Builder.create(new ComponentContract() {
-				def String code ="PC"
-				def String name = "Config"
-				def String namespaceCode = "NSC"
-                def boolean virtual = false
-                def boolean active = true
-                def Long versionNumber = 1
+				def String code = ComponentTest.CODE
+				def String name = ComponentTest.NAME
+				def String namespaceCode = ComponentTest.NAMESPACE_CODE
+                def boolean virtual = ComponentTest.VIRTUAL
+                def boolean active = ComponentTest.ACTIVE
+                def Long versionNumber = ComponentTest.VERSION_NUMBER
 				def String objectId = ComponentTest.OBJECT_ID
 			}).build()
 	}

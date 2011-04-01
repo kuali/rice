@@ -50,6 +50,7 @@ import org.w3c.dom.Element;
     Namespace.Elements.NAME,
     Namespace.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
+    CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
     })
 public final class Namespace implements NamespaceContract, ModelObjectComplete {
@@ -71,6 +72,9 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+	private final String objectId;
+    
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -84,6 +88,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
     	this.name = null;
     	this.active = true;
         this.versionNumber = null;
+        this.objectId = null;
     }
 
 	/**
@@ -98,6 +103,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
         name = builder.getName();
         active = builder.isActive();
         versionNumber = builder.getVersionNumber();
+        objectId = builder.getObjectId();
     }
 
     @Override
@@ -124,6 +130,11 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
     public Long getVersionNumber() {
         return versionNumber;
     }
+    
+    @Override
+	public String getObjectId() {
+		return objectId;
+	}
 
 	/**
      * This builder is used to construct instances of Namespace.  It enforces the constraints of the {@link NamespaceContract}.
@@ -137,6 +148,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		private String name;
 		private boolean active;
         private Long versionNumber;
+        private String objectId;
 
 		/**
 		 * Constructs a Namespace Builder with the given namespace code and application code.  Defaults the active indicator to true.
@@ -174,6 +186,7 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
             builder.setName(contract.getName());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
+            builder.setObjectId(contract.getObjectId());
             return builder;
         }
 
@@ -201,6 +214,14 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
                 throw new IllegalArgumentException("applicationCode is blank");
             }
             this.applicationCode = applicationCode;
+        }
+        
+		public void setVersionNumber(Long versionNumber) {
+			this.versionNumber = versionNumber;
+		}
+		
+		public void setObjectId(String objectId) {
+        	this.objectId = objectId;
         }
 
         @Override
@@ -235,11 +256,11 @@ public final class Namespace implements NamespaceContract, ModelObjectComplete {
 		public Long getVersionNumber() {
 			return versionNumber;
 		}
-
-
-		public void setVersionNumber(Long versionNumber) {
-			this.versionNumber = versionNumber;
-		}
+		
+        @Override
+        public String getObjectId() {
+        	return objectId;
+        }
 
 		/**
 		 * Builds an instance of a Namespace based on the current state of the builder.

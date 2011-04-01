@@ -20,18 +20,22 @@ import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 
 class NamespaceTest {
-        private static final String XML = """
+	private static final String CODE = "PC"
+	private static final String APP_CODE = "AC"
+	private static final Long VERSION_NUMBER = new Long(1);
+	private static final String OBJECT_ID = UUID.randomUUID();
+	private static final String XML = """
         <namespace xmlns="http://rice.kuali.org/core/v2_0">
-            <code>PC</code>
-            <applicationCode>AC</applicationCode>
+            <code>${CODE}</code>
+            <applicationCode>${APP_CODE}</applicationCode>
             <name>N</name>
             <active>true</active>
-            <versionNumber>1</versionNumber>
+            <versionNumber>${VERSION_NUMBER}</versionNumber>
+            <objectId>${OBJECT_ID}</objectId>
         </namespace>
     """
 
-    private static final String CODE = "PC"
-    private static final String APP_CODE = "AC"
+    
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
@@ -80,11 +84,12 @@ class NamespaceTest {
 
     private create() {
 		return Namespace.Builder.create(new NamespaceContract() {
-				def String code = "PC"
-				def String applicationCode = "AC"
+				def String code = NamespaceTest.CODE
+				def String applicationCode = NamespaceTest.APP_CODE
                 def String name = "N"
                 def boolean active = true
-                def Long versionNumber = 1
+                def Long versionNumber = NamespaceTest.VERSION_NUMBER
+				def String objectId = NamespaceTest.OBJECT_ID
 			}).build()
 	}
 }

@@ -1,12 +1,15 @@
 package org.kuali.rice.core.api.namespace;
 
+import org.kuali.rice.core.api.mo.GloballyUnique;
+import org.kuali.rice.core.api.mo.Versioned;
+
 /**
  * Defines the contract for a Namespace.  A namespace is a mechanism for partitioning of data into
  * areas of responsibility.  Since much of the Kuali Rice middleware is shared across multiple integrating
  * applications, this notion of a namespace is a critical element in keeping related data elements
  * grouped together and isolated from those to which they should have no relation or access.
  */
-public interface NamespaceContract {
+public interface NamespaceContract extends Versioned, GloballyUnique {
 
     /**
      * This is the code value for the namespace.  It cannot be null or a blank string.
@@ -40,10 +43,4 @@ public interface NamespaceContract {
      */
     boolean isActive();
 
-    /**
-     * This the object version number for Namespace.
-     *
-     * @return the version number of the Namespace
-     */
-    Long getVersionNumber();
 }

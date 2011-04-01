@@ -125,7 +125,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
   <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
-    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="header">
+      <bean parent="HeaderTwo" p:styleClasses="grouping-header-expandable"/>
+    </property> 
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>    
   </bean>  
@@ -139,7 +141,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
   <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
-    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="header">
+      <bean parent="HeaderTwo" p:styleClasses="grouping-header-expandable"/>
+    </property> 
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-col.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}arrow-exp.png"/>    
   </bean>   

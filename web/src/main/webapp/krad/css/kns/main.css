@@ -1,17 +1,16 @@
 #viewheader_div .view_header {
 	background: #EBEBEB url(../../images/masthead1.gif);
-	height:55px;
 	border-bottom: 1px solid #999;
 	min-width:800px;
 	margin-bottom: 24px;
 }
 #viewheader_div .view_header h1 {
 	font-size:1.5em;
-	padding-top: 0.5em;
 	padding-left: 0.6em;
-	float:left;
 	font-family: Arimo;
 	font-weight: bold;
+	padding-top: .2em;
+	padding-bottom: .2em;
 }
 #viewheader_div .view_header a {
 	position: absolute;
@@ -74,4 +73,12 @@
 	background-color:#900;
 	color: #FFF;
 	border: 1px solid #500;
+}
+.wrap {
+	background-color:#E4E4E4;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	border: 1px solid #999;
+	margin-bottom: 18px;
+	padding: 12px;
 }

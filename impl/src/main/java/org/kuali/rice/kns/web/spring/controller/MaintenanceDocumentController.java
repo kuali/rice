@@ -70,7 +70,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	 */
 	@Override
 	@RequestMapping(params = "methodToCall=docHandler")
-	public ModelAndView docHandler(@ModelAttribute("KualiForm") DocumentFormBase formBase, HttpServletRequest request,
+	public ModelAndView docHandler(@ModelAttribute("KualiForm") DocumentFormBase formBase, BindingResult result, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		// TODO getting double view if we call base, not sure how to handle
@@ -234,13 +234,13 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	 */
 	@Override
 	@RequestMapping(params = "methodToCall=route")
-	public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
+	public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 	    ModelAndView modelAndView;
 	    
 	    try {
-    		modelAndView = super.route(form, request, response);
+    		modelAndView = super.route(form, result, request, response);
     
 		MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
 		if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {

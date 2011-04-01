@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.BusinessObject;
+import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.service.BusinessObjectSerializerService;
@@ -56,18 +56,21 @@ public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase i
     }
 
     public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object businessObject) {
+        PropertySerializabilityEvaluator evaluator = null;
+        
         MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = 
         	KNSServiceLocator.getMaintenanceDocumentDictionaryService();
         String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(businessObject.getClass());
         MaintenanceDocumentEntry maintenanceDocumentEntry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(docTypeName);
         List<MaintainableSectionDefinition> maintainableSectionDefinitions = maintenanceDocumentEntry.getMaintainableSections();
-        if (maintainableSectionDefinitions == null) {
-            return new AlwaysTruePropertySerializibilityEvaluator();
+        if(CollectionUtils.isEmpty(maintainableSectionDefinitions)) {
+            evaluator = new AlwaysTruePropertySerializibilityEvaluator();
         }
         else {
-            PropertySerializabilityEvaluator evaluator = new MaintenanceDocumentPropertySerializibilityEvaluator();
+            evaluator = new MaintenanceDocumentPropertySerializibilityEvaluator();
             evaluator.initializeEvaluator(businessObject);
-            return evaluator;
         }
+        
+        return evaluator;
     }
 }

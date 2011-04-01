@@ -46,6 +46,7 @@ import org.kuali.rice.kns.util.SessionTicket;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -90,7 +91,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	 * the document type.
 	 */
 	@RequestMapping(params = "methodToCall=docHandler")
-	public ModelAndView docHandler(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
+	public ModelAndView docHandler(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String command = form.getCommand();
 
@@ -173,7 +174,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	 * Saves the <code>Document</code> instance
 	 */
 	@RequestMapping(params = "methodToCall=save")
-	public ModelAndView save(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
+	public ModelAndView save(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		doProcessingAfterPost(form, request);
@@ -205,7 +206,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	 * Routes the <code>Document</code> instance using the document service
 	 */
 	@RequestMapping(params = "methodToCall=route")
-	public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, HttpServletRequest request,
+	public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		doProcessingAfterPost(form, request);
 

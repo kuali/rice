@@ -43,6 +43,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="FormView" abstract="true" parent="FormView-parentBean"/>
   <bean id="FormView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
+    <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.AuthorizerBase"/>
+    <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.PresentationControllerBase"/>
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
       <property name="onSubmitScript" value="createLoading(true);return hasFormAlreadyBeenSubmitted();"/>
       <property name="footer">
@@ -69,6 +71,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="FormView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.InquiryPresentationControllerBase" />
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.InquiryAuthorizerBase" />
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
      <property name="defaultBindingObjectPath" value="bo"/>
      <property name="readOnly" value="true"/>
@@ -145,6 +149,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="MaintenanceView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
      <property name="viewName" value="default"/>
      <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentPresentationControllerBase" />
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentAuthorizerBase" />
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
      <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
      <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>

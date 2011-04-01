@@ -124,7 +124,10 @@
     <property name="description" value="Subsidized Percent"/>
     <property name="controlField">
       <bean parent="TextControl" p:size="6"/>
-    </property>    
+    </property>
+    <property name="validationPattern">
+      <bean parent="FixedPointValidationPattern" p:precision="5" p:allowNegative="false" p:scale="2"/>
+    </property>
   </bean>
   
   <bean id="TravelAccount-createDate" parent="AttributeReferenceDummy-genericDate">

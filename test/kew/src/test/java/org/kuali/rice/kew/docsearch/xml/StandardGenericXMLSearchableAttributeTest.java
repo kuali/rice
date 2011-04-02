@@ -36,6 +36,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.test.BaselineTestCase;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
@@ -60,6 +61,7 @@ import static org.junit.Assert.*;
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTestBase {
 
     protected void loadTestData() throws Exception {
@@ -86,15 +88,14 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
             fail("Document should be unroutable with invalid searchable attribute value");
         } catch (Exception e) {
             e.printStackTrace();
-            /*
-             * The call to TestUtilities below is needed because when exception routing spawns a new thread (see
-             * TestExceptionRoutingServiceImpl class) the next test will begin before the exception thread is complete and
-             * cause errors. This was originally discovered because the test method
-             * testXMLStandardSearchableAttributesWithDataType() would run and get errors loading xml data for workgroups
-             * perhaps because the exception thread was keeping the cache around and now allowing it to be cleared?
-             */
-            TestUtilities.waitForExceptionRouting();
         }
+        /*
+         * The call to TestUtilities below is needed because when exception routing spawns a new thread (see
+         * TestExceptionRoutingServiceImpl class) the next test will begin before the exception thread is complete and
+         * cause errors. This was originally discovered because the test method
+         * testXMLStandardSearchableAttributesWithDataType() would run and get errors loading xml data for workgroups
+         * perhaps because the exception thread was keeping the cache around and now allowing it to be cleared?
+         */
         TestUtilities.waitForExceptionRouting();
     }
 
@@ -544,7 +545,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             workflowDocument.routeDocument("routing this document.");
             fail("routeDocument succeeded with malformed XML");
-        } catch (WorkflowException we) {
+        } catch (Exception we) {
             // An exception is thrown in DTOConverter/XmlUtils.appendXml at the time of this writing
             // so I will just assume that is the expected behavior
         }

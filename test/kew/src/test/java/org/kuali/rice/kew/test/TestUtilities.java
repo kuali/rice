@@ -294,6 +294,9 @@ public final class TestUtilities {
     }
 
     public static void waitForExceptionRouting(long milliseconds) {
+    	if (getExceptionThreader() == null) {
+    		return;
+    	}
     	try {
     		getExceptionThreader().join(milliseconds);
     	} catch (InterruptedException e) {

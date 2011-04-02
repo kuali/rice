@@ -55,7 +55,7 @@ public class MessageServiceInvoker implements Runnable {
         LOG.debug("calling service from persisted message " + getMessage().getRouteQueueId());
         Object result = null;
         try {
-            result = KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback() {
+            result = KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback<Object>() {
                 public Object doInTransaction(TransactionStatus status) {
                     AsynchronousCall methodCall = getMessage().getPayload().getMethodCall();
                     Object result = null;

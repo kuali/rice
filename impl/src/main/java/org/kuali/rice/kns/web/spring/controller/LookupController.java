@@ -103,11 +103,16 @@ public class LookupController extends UifControllerBase {
     /**
      * Just returns as if return with no value was selected.
      */
+	@Override
     @RequestMapping(params = "methodToCall=cancel")
-	public ModelAndView cancel(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+	    LookupForm lookupForm = (LookupForm)form;
+	    
     	Properties props = new Properties();
     	props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
-    	props.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
+    	if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
+            props.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
+        }
     	if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
         	props.put(UifParameters.DOC_NUM, lookupForm.getDocNum());
     	}

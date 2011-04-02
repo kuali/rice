@@ -202,7 +202,7 @@ public class Inquiry extends WidgetBase {
         }
 
         String objectLabel = KNSServiceLocator.getDataDictionaryService().getDataDictionary()
-                .getBusinessObjectEntry(dataObjectClass.getName()).getObjectLabel();
+                .getDataObjectEntry(dataObjectClass.getName()).getObjectLabel();
         if (StringUtils.isNotBlank(objectLabel)) {
             titleText += objectLabel + " ";
         }

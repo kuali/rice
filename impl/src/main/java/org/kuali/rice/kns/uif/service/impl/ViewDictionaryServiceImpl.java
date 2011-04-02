@@ -41,10 +41,10 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
      * @see org.kuali.rice.kns.uif.service.ViewDictionaryService#getInquirable(java.lang.Class,
      *      java.lang.String)
      */
-    public Inquirable<?> getInquirable(Class<?> dataObjectClass, String viewName) {
+    public Inquirable getInquirable(Class<?> dataObjectClass, String viewName) {
         List<View> inquiryViews = getDataDictionary().getViewsForType(UifConstants.ViewType.INQUIRY);
 
-        Inquirable<?> inquirable = null;
+        Inquirable inquirable = null;
         for (View view : inquiryViews) {
             InquiryView inquiryView = (InquiryView) view;
 
@@ -52,7 +52,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
                 if (StringUtils.equals(inquiryView.getViewName(), viewName)
                         || (StringUtils.isBlank(viewName) && StringUtils.equals(inquiryView.getViewName(),
                                 UifConstants.DEFAULT_VIEW_NAME))) {
-                    inquirable = (Inquirable<?>) inquiryView.getViewHelperService();
+                    inquirable = (Inquirable) inquiryView.getViewHelperService();
                     break;
                 }
             }

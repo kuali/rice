@@ -15,13 +15,11 @@
  */
 package edu.sampleu.travel.service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl;
-
-import edu.sampleu.travel.dto.FiscalOfficerInfo;
 
 /**
  * 
@@ -30,9 +28,9 @@ import edu.sampleu.travel.dto.FiscalOfficerInfo;
 public class FiscalOfficerInfoLookupViewHelperServiceImpl extends LookupViewHelperServiceImpl {
 
     @Override
-    public Collection<FiscalOfficerInfo> performSearch(Map<String, String> criteriaFieldsForLookup, boolean bounded) {
+    protected List<?> getSearchResultsWithBounding(Map<String, String> fieldValues, boolean unbounded) {
         FiscalOfficerService service = GlobalResourceLoader.getService("fiscalOfficerService");
-        return service.lookupFiscalOfficer(criteriaFieldsForLookup);
+        return service.lookupFiscalOfficer(fieldValues);
     }
 
 }

@@ -40,7 +40,7 @@ public interface ViewDictionaryService {
 	 * @return Inquirable<?> configured inquirable for the view, or null if view
 	 *         is not found
 	 */
-	public Inquirable<?> getInquirable(Class<?> dataObjectClass, String viewName);
+	public Inquirable getInquirable(Class<?> dataObjectClass, String viewName);
 
 	/**
 	 * Indicates whether the given data object class has an associated

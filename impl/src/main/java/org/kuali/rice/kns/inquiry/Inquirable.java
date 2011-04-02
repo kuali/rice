@@ -26,12 +26,56 @@ import org.kuali.rice.kns.uif.widget.Inquiry;
 /**
  * This interface defines the methods for inquirables.
  */
-public interface Inquirable<ObjectType> extends ViewHelperService {
-
-    public ObjectType getBusinessObject(Map fieldValues);
+public interface Inquirable extends ViewHelperService {
+    
+    /**
+     * This method is responsible for retrieving the data object from its data source
+     * (database, service call, etc).
+     * 
+     * @param fieldValues a map of string field names and values
+     * @return the data object or null if not found
+     */
+    public Object getDataObject(Map fieldValues);
+    
+    /**
+     * This method will be called before getDataObject(Map).  This is useful for implementing
+     * inquirables that can handle multiple data object types.
+     * 
+     * @param dataObjectClass the class of the dataObject that this inquirable should retrieve
+     */
+    public void setDataObjectClass(Class<?> dataObjectClass);
+    
+    /**
+     * Invoked by the <code>ViewHelperService</code> to build a link to the
+     * inquiry
+     * 
+     * <p>
+     * Note this is used primarily for custom <code>Inquirable</code>
+     * implementations to customize the inquiry class or parameters for an
+     * inquiry. Instead of building the full inquiry link, implementations can
+     * make a callback to
+     * org.kuali.rice.kns.uif.widget.Inquiry.buildInquiryLink(Object, String,
+     * Class<?>, Map<String, String>) given an inquiry class and parameters to
+     * build the link field.
+     * </p>
+     * 
+     * @param dataObject
+     *            - parent object for the inquiry property
+     * @param propertyName
+     *            - name of the property the inquiry is being built for
+     * @param inquiry
+     *            - instance of the inquiry widget being built for the property
+     */
+    public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry);
     
     @Deprecated
-    public HtmlData getInquiryUrl(ObjectType businessObject, String attributeName, boolean forceInquiry);	
+    public void setBusinessObjectClass(Class businessObjectClass);
+    
+    @Deprecated
+    public BusinessObject getBusinessObject(Map fieldValues);
+    
+    @Deprecated
+    public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry);	
     
     @Deprecated
     public String getHtmlMenuBar();
@@ -42,10 +86,8 @@ public interface Inquirable<ObjectType> extends ViewHelperService {
     @Deprecated
     public List getSections(BusinessObject bo);
 
-    public void setBusinessObjectClass(Class businessObjectClass);
-
     @Deprecated
-    public void addAdditionalSections(List columns, ObjectType bo);
+    public void addAdditionalSections(List columns, BusinessObject bo);
     
     /**
      * Indicates whether inactive records for the given collection should be display.
@@ -71,28 +113,5 @@ public interface Inquirable<ObjectType> extends ViewHelperService {
      */
     @Deprecated
     public void setShowInactiveRecords(String collectionName, boolean showInactive);
-    
-    /**
-     * Invoked by the <code>ViewHelperService</code> to build a link to the
-     * inquiry
-     * 
-     * <p>
-     * Note this is used primarily for custom <code>Inquirable</code>
-     * implementations to customize the inquiry class or parameters for an
-     * inquiry. Instead of building the full inquiry link, implementations can
-     * make a callback to
-     * org.kuali.rice.kns.uif.widget.Inquiry.buildInquiryLink(Object, String,
-     * Class<?>, Map<String, String>) given an inquiry class and parameters to
-     * build the link field.
-     * </p>
-     * 
-     * @param dataObject
-     *            - parent object for the inquiry property
-     * @param propertyName
-     *            - name of the property the inquiry is being built for
-     * @param inquiry
-     *            - instance of the inquiry widget being built for the property
-     */
-    public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry);
     
 }

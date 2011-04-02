@@ -108,5 +108,16 @@ public interface DataObjectMetaDataService {
 	 * @return RelationshipDefinition for the attribute, or null if not found
 	 */
 	public RelationshipDefinition getDictionaryRelationship(Class<?> dataObjectClass, String attributeName);
+	
+	/**
+     * Returns the attribute to be associated with for object level markings.  This would
+     * be the field chosen for inquiry links etc.
+     * 
+     * @param dataObjectClass - data object class to obtain title attribute of
+     * @return property name of title attribute or null if data object entry not found
+     * @throws IllegalArgumentException
+     *             if the given Class is null
+     */
+    public String getTitleAttribute(Class<?> dataObjectClass);
 
 }

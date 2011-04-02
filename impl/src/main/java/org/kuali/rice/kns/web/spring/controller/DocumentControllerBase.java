@@ -29,6 +29,7 @@ import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
+import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
@@ -193,11 +194,16 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 			return new ModelAndView(viewName);
 		}
 
-		// save in workflow
-		getDocumentService().saveDocument(document);
-
-		GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SAVED);
-		form.setAnnotation("");
+		try {
+    		// save in workflow
+    		getDocumentService().saveDocument(document);
+    
+    		GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SAVED);
+    		form.setAnnotation("");
+		}
+		catch(ValidationException vex) {
+		    // swallow exception so screen will draw with errors
+		}
 
 		return getUIFModelAndView(form);
 	}

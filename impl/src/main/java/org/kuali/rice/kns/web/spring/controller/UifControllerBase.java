@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -248,6 +249,34 @@ public abstract class UifControllerBase {
 
 		return getUIFModelAndView(uifForm);
 	}
+	
+	/**
+     * Just returns as if return with no value was selected.
+     */
+    @RequestMapping(params = "methodToCall=cancel")
+    public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        return close(form, result, request, response);
+    }
+    
+    /**
+     * Just returns as if return with no value was selected.
+     */
+    @RequestMapping(params = "methodToCall=close")
+    public ModelAndView close(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        Properties props = new Properties();
+        props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
+        if (StringUtils.isNotBlank(form.getReturnFormKey())) {
+            props.put(UifParameters.FORM_KEY, form.getReturnFormKey());
+        }
+        
+        // TODO this needs setup for lightbox and possible home location property
+        String returnUrl = form.getReturnLocation();
+        if(StringUtils.isBlank(returnUrl)) {
+            returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.APPLICATION_URL_KEY);
+        }
+        
+        return performRedirect(form, returnUrl, props);
+    }
 
 	/**
 	 * Handles menu navigation between view pages

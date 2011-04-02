@@ -761,17 +761,19 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	protected List<HtmlData> getCustomActionUrls(Object dataObject, List<String> pkNames) {
 		List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
 		// TODO delyea - DOCUMENT THE FOLLOWING CHANGES FROM KNSConstants to UifConstants
+		// TODO delyea - sgibson just hacked in the link text, probably should come
+		//               from somewhere
 		if (allowsMaintenanceEditAction(dataObject)) {
 			// htmlDataList.add(getUrlData(dataObject, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
-			htmlDataList.add(getUrlData(dataObject, MaintenanceDocumentController.METHOD_TO_CALL_EDIT, pkNames));
+			htmlDataList.add(getUrlData(dataObject, MaintenanceDocumentController.METHOD_TO_CALL_EDIT, "edit", pkNames));
 		}
 		if (allowsMaintenanceNewOrCopyAction()) {
 			// htmlDataList.add(getUrlData(dataObject, KNSConstants.MAINTENANCE_COPY_METHOD_TO_CALL, pkNames));
-			htmlDataList.add(getUrlData(dataObject, MaintenanceDocumentController.METHOD_TO_CALL_COPY, pkNames));
+			htmlDataList.add(getUrlData(dataObject, MaintenanceDocumentController.METHOD_TO_CALL_COPY, "copy", pkNames));
 		}
 		if (allowsMaintenanceDeleteAction(dataObject)) {
 			// htmlDataList.add(getUrlData(dataObject, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL, pkNames));
-			htmlDataList.add(getUrlData(dataObject, MaintenanceDocumentController.METHOD_TO_CALL_DELETE, pkNames));
+			htmlDataList.add(getUrlData(dataObject, MaintenanceDocumentController.METHOD_TO_CALL_DELETE, "delete", pkNames));
 		}
 		return htmlDataList;
 	}

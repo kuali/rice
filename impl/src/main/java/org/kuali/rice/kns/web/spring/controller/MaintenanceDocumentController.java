@@ -15,15 +15,10 @@
  */
 package org.kuali.rice.kns.web.spring.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.PersistableAttachment;
@@ -35,15 +30,12 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
-import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.web.spring.form.DocumentFormBase;
 import org.kuali.rice.kns.web.spring.form.MaintenanceForm;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.AutoPopulatingList;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -241,27 +233,25 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
 	 */
 	@Override
 	@RequestMapping(params = "methodToCall=route")
-	public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+    public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
 
-	    ModelAndView modelAndView;
-	    
-	    try {
-    		modelAndView = super.route(form, result, request, response);
-    
-		MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
-		if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
-			PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve(
-					(PersistableBusinessObject) document.getNewMaintainableObject().getDataObject());
-			request.setAttribute("fileName", bo.getFileName());
-		}
-	    }
-	    catch(ValidationException vex) {
-	        modelAndView = getUIFModelAndView(form);
-	    }
+        ModelAndView modelAndView;
 
-		return modelAndView;
-	}
+        try {
+            modelAndView = super.route(form, result, request, response);
+
+            MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+            if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
+                PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService().retrieve((PersistableBusinessObject) document.getNewMaintainableObject().getDataObject());
+                request.setAttribute("fileName", bo.getFileName());
+            }
+        } catch (ValidationException vex) {
+            modelAndView = getUIFModelAndView(form);
+        }
+
+        return modelAndView;
+    }
 	
 	@Override
     protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {

@@ -288,6 +288,7 @@ public interface BusinessObjectDictionaryService {
     /**
      * the attribute to be associated with for object level markings
      */
+    @Deprecated
     public String getTitleAttribute(Class businessObjectClass);
 
 

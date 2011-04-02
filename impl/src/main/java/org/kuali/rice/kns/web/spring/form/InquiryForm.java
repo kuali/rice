@@ -72,12 +72,13 @@ public class InquiryForm extends UifFormBase {
     public void postBind(HttpServletRequest request) {
 		// if the action is download attachment then skip the following populate
 		// logic
-		if (!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(getMethodToCall())) {
+		if (!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(getMethodToCall()) &&
+		        !KNSConstants.CLOSE_METHOD.equals(getMethodToCall())) {
 			super.postBind(request);
 
 			inquirable = (Inquirable) getView().getViewHelperService();
 			try {
-				inquirable.setBusinessObjectClass(Class.forName(dataObjectClassName));
+				inquirable.setDataObjectClass(Class.forName(dataObjectClassName));
 			}
 			catch (ClassNotFoundException e) {
 				throw new RuntimeException("Unable to get new instance for object class: " + dataObjectClassName, e);

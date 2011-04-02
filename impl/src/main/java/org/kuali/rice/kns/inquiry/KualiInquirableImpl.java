@@ -72,7 +72,7 @@ import org.kuali.rice.kns.web.ui.SectionBridge;
  * in Spring, make sure that this is not a singleton service, or serious errors
  * may occur.
  */
-public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquirable<BusinessObject> {
+public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquirable {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquirableImpl.class);
 
 	protected LookupService lookupService;
@@ -84,7 +84,7 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
 	protected KualiConfigurationService kualiConfigurationService;
 	protected static BusinessObjectService businessObjectService;
 
-	protected Class businessObjectClass;
+	protected Class<?> dataObjectClass;
 
 	protected Map<String, Boolean> inactiveRecordDisplay;
 
@@ -105,39 +105,45 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
 		inactiveRecordDisplay = new HashMap<String, Boolean>();
 	}
 
-	/**
+	@Override
+    public Object getDataObject(Map fieldValues) {
+	    if (getDataObjectClass() == null) {
+            LOG.error("Data object class not set in inquirable.");
+            throw new RuntimeException("Data object class not set in inquirable.");
+        }
+
+        CollectionIncomplete searchResults = null;
+        ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(
+                getDataObjectClass());
+        if (moduleService != null && moduleService.isExternalizable(getDataObjectClass())) {
+            BusinessObject bo = moduleService.getExternalizableBusinessObject(getBusinessObjectClass(), fieldValues);
+            if (bo != null) {
+                ArrayList list = new ArrayList(1);
+                list.add(bo);
+                searchResults = new CollectionIncomplete(list, 1L);
+            }
+        }
+        else {
+            // CHECK THIS: If this is to get a single BO, why using the lookup
+            // service?
+            searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(),
+                    fieldValues);
+        }
+        BusinessObject foundObject = null;
+        if (searchResults != null && searchResults.size() > 0) {
+            foundObject = (BusinessObject) searchResults.get(0);
+        }
+        return foundObject;
+    }
+
+    /**
 	 * Return a business object by searching with map, the map keys should be a
 	 * property name of the business object, with the map value as the value to
 	 * search for.
 	 */
+    @Deprecated
 	public BusinessObject getBusinessObject(Map fieldValues) {
-		if (getBusinessObjectClass() == null) {
-			LOG.error("Business object class not set in inquirable.");
-			throw new RuntimeException("Business object class not set in inquirable.");
-		}
-
-		CollectionIncomplete searchResults = null;
-		ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(
-				getBusinessObjectClass());
-		if (moduleService != null && moduleService.isExternalizable(getBusinessObjectClass())) {
-			BusinessObject bo = moduleService.getExternalizableBusinessObject(getBusinessObjectClass(), fieldValues);
-			if (bo != null) {
-				ArrayList list = new ArrayList(1);
-				list.add(bo);
-				searchResults = new CollectionIncomplete(list, 1L);
-			}
-		}
-		else {
-			// CHECK THIS: If this is to get a single BO, why using the lookup
-			// service?
-			searchResults = (CollectionIncomplete) getLookupService().findCollectionBySearch(getBusinessObjectClass(),
-					fieldValues);
-		}
-		BusinessObject foundObject = null;
-		if (searchResults != null && searchResults.size() > 0) {
-			foundObject = (BusinessObject) searchResults.get(0);
-		}
-		return foundObject;
+		return (BusinessObject)getDataObject(fieldValues);
 	}
 
 	/**
@@ -177,9 +183,9 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
         Class<?> inquiryObjectClass = null;
 
         // inquiry into data object class if property is title attribute
-        Class<?> dataObjectClass = ObjectUtils.materializeClassForProxiedObject(dataObject);
-        if (propertyName.equals(getBusinessObjectDictionaryService().getTitleAttribute(dataObjectClass))) {
-            inquiryObjectClass = dataObjectClass;
+        Class<?> objectClass = ObjectUtils.materializeClassForProxiedObject(dataObject);
+        if (propertyName.equals(getBusinessObjectMetaDataService().getTitleAttribute(objectClass))) {
+            inquiryObjectClass = objectClass;
         }
         else if (ObjectUtils.isNestedAttribute(propertyName)) {
             String nestedPropertyName = ObjectUtils.getNestedAttributePrefix(propertyName);
@@ -189,8 +195,7 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
                 String nestedPropertyPrimitive = ObjectUtils.getNestedAttributePrimitive(propertyName);
                 Class<?> nestedPropertyObjectClass = ObjectUtils.materializeClassForProxiedObject(nestedPropertyObject);
 
-                if (nestedPropertyPrimitive.equals(getBusinessObjectDictionaryService().getTitleAttribute(
-                        nestedPropertyObjectClass))) {
+                if (nestedPropertyPrimitive.equals(getBusinessObjectMetaDataService().getTitleAttribute(nestedPropertyObjectClass))) {
                     inquiryObjectClass = nestedPropertyObjectClass;
                 }
             }
@@ -199,7 +204,7 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
 		// if not title, then get primary relationship
 		BusinessObjectRelationship relationship = null;
 		if (inquiryObjectClass == null) {
-			relationship = getBusinessObjectMetaDataService().getDataObjectRelationship(dataObject, dataObjectClass,
+			relationship = getBusinessObjectMetaDataService().getDataObjectRelationship(dataObject, objectClass,
 					propertyName, "", true, false, true);
 			if (relationship != null) {
 				inquiryObjectClass = relationship.getRelatedClass();
@@ -561,21 +566,35 @@ public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquir
 		return getBusinessObjectDictionaryService().getInquiryTitle(getBusinessObjectClass());
 	}
 
-	/**
-	 * @return Returns the businessObjectClass.
-	 */
-	public Class getBusinessObjectClass() {
-		return businessObjectClass;
+	public Class<?> getDataObjectClass() {
+	    return dataObjectClass;
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.inquiry.Inquirable#setDataObjectClass(java.lang.Class)
+	 */
+	@Override
+    public void setDataObjectClass(Class<?> dataObjectClass) {
+	    this.dataObjectClass = dataObjectClass;
+    }
+
+    /**
 	 * @param businessObjectClass
 	 *            The businessObjectClass to set.
 	 */
+	@Deprecated
 	public void setBusinessObjectClass(Class businessObjectClass) {
-		this.businessObjectClass = businessObjectClass;
+		this.dataObjectClass = businessObjectClass;
 	}
 
+	/**
+     * @return Returns the businessObjectClass.
+     */
+    @Deprecated
+    public Class getBusinessObjectClass() {
+        return dataObjectClass;
+    }
+    
 	/**
 	 * @see org.kuali.rice.kns.inquiry.Inquirable#getInactiveRecordDisplay()
 	 */

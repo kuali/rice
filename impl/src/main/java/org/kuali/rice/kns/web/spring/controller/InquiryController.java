@@ -84,7 +84,7 @@ public class InquiryController extends UifControllerBase {
 		Inquirable kualiInquirable = inquiryForm.getInquirable();
 
 		// retrieve the business object
-		Object  inquiryObject = kualiInquirable.getBusinessObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
+		Object  inquiryObject = kualiInquirable.getDataObject(inquiryForm.retrieveInquiryDecryptedPrimaryKeys());
 		if (inquiryObject == null) {
 			LOG.error("No records found in inquiry action.");
 			GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);

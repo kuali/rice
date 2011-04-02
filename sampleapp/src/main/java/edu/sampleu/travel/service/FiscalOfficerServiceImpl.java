@@ -18,6 +18,7 @@ package edu.sampleu.travel.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,8 @@ import edu.sampleu.travel.dto.TravelAccountInfo;
  */
 public class FiscalOfficerServiceImpl implements FiscalOfficerService {
 
+    protected static String[] FOI_SKIP = { "accounts" };
+    
     protected BusinessObjectService businessObjectService;
     protected LookupService lookupService;
     
@@ -95,11 +98,44 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
     protected FiscalOfficer toFiscalOfficerUpdate(FiscalOfficerInfo fiscalOfficerInfo,
             FiscalOfficer fiscalOfficer) {
         
-        fiscalOfficer.setFirstName(fiscalOfficerInfo.getFirstName());
-        fiscalOfficer.setId(fiscalOfficerInfo.getId());
-        fiscalOfficer.setUserName(fiscalOfficerInfo.getUserName());
-        fiscalOfficer.setObjectId(fiscalOfficerInfo.getObjectId());
-        fiscalOfficer.setVersionNumber(fiscalOfficerInfo.getVersionNumber());
+        BeanUtils.copyProperties(fiscalOfficerInfo, fiscalOfficer, FOI_SKIP);
+        
+        List<TravelAccountInfo> newAccounts = new ArrayList<TravelAccountInfo>();
+        Map<String, TravelAccountInfo> accountInfoMap = new HashMap<String, TravelAccountInfo>();
+        
+        // create a map of accounts that are being edited and list of accounts to be added
+        for(TravelAccountInfo accountInfo : fiscalOfficerInfo.getAccounts()) {
+            if(accountInfo.getVersionNumber() == null) {
+                newAccounts.add(accountInfo);
+            }
+            else {
+                accountInfoMap.put(accountInfo.getNumber(), accountInfo);
+            }
+        }
+        
+        // iterator the accounts from the db, updating or removing if necessary
+        Iterator<TravelAccount> iterator = fiscalOfficer.getAccounts().iterator();
+        while(iterator.hasNext()) {
+            TravelAccount account = iterator.next();
+            TravelAccountInfo accountInfo = accountInfoMap.get(account.getNumber());
+            
+            if(accountInfo == null) {
+                // this really isnt the best example data set, so just orphan
+                // instead of actually deleting
+                //iterator.remove();
+                
+                account.setFoId(null);
+                account.setFiscalOfficer(null);
+            }
+            else {
+                BeanUtils.copyProperties(accountInfo, account);
+            }
+        }
+        
+        // add the new accounts to the list
+        for(TravelAccountInfo accountInfo : newAccounts) {
+            fiscalOfficer.getAccounts().add(toTravelAccount(accountInfo));
+        }
         
         return fiscalOfficer;
     }
@@ -107,20 +143,14 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
     protected FiscalOfficer toFiscalOfficer(FiscalOfficerInfo fiscalOfficerInfo) {
         FiscalOfficer fiscalOfficer = new FiscalOfficer();
         
-        fiscalOfficer.setFirstName(fiscalOfficerInfo.getFirstName());
-        fiscalOfficer.setId(fiscalOfficerInfo.getId());
-        fiscalOfficer.setUserName(fiscalOfficerInfo.getUserName());
-        fiscalOfficer.setObjectId(fiscalOfficerInfo.getObjectId());
-        fiscalOfficer.setVersionNumber(fiscalOfficerInfo.getVersionNumber());
+        BeanUtils.copyProperties(fiscalOfficerInfo, fiscalOfficer, FOI_SKIP);
         
         if(fiscalOfficerInfo.getAccounts() != null) {
             for(TravelAccountInfo accountInfo : fiscalOfficerInfo.getAccounts()) {
-                TravelAccount travelAccount = new TravelAccount();
-                BeanUtils.copyProperties(accountInfo, travelAccount);
-                fiscalOfficer.getAccounts().add(travelAccount);
+                fiscalOfficer.getAccounts().add(toTravelAccount(accountInfo));
             }
         }
-        
+       
         return fiscalOfficer;
     }
     
@@ -130,11 +160,7 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
         if(fiscalOfficer != null) {
             fiscalOfficerInfo = new FiscalOfficerInfo();
             
-            fiscalOfficerInfo.setFirstName(fiscalOfficer.getFirstName());
-            fiscalOfficerInfo.setId(fiscalOfficer.getId());
-            fiscalOfficerInfo.setUserName(fiscalOfficer.getUserName());
-            fiscalOfficerInfo.setObjectId(fiscalOfficer.getObjectId());
-            fiscalOfficerInfo.setVersionNumber(fiscalOfficer.getVersionNumber());
+            BeanUtils.copyProperties(fiscalOfficer, fiscalOfficerInfo, FOI_SKIP);
             
             if(fiscalOfficer.getAccounts() != null) {
                 List<TravelAccountInfo> accountInfoList = new ArrayList<TravelAccountInfo>();
@@ -153,13 +179,17 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
     protected TravelAccountInfo toTravelAccountInfo(TravelAccount travelAccount) {
         TravelAccountInfo travelAccountInfo = new TravelAccountInfo();
         
-        travelAccountInfo.setCreateDate(travelAccount.getCreateDate());
-        travelAccountInfo.setName(travelAccount.getName());
-        travelAccountInfo.setNumber(travelAccount.getNumber());
-        travelAccountInfo.setObjectId(travelAccount.getObjectId());
-        travelAccountInfo.setVersionNumber(travelAccount.getVersionNumber());
+        BeanUtils.copyProperties(travelAccount, travelAccountInfo);
         
         return travelAccountInfo;
+    }
+    
+    protected TravelAccount toTravelAccount(TravelAccountInfo travelAccountInfo) {
+        TravelAccount travelAccount = new TravelAccount();
+        
+        BeanUtils.copyProperties(travelAccountInfo, travelAccount);
+        
+        return travelAccount;
     }
 
     protected BusinessObjectService getBusinessObjectService() {

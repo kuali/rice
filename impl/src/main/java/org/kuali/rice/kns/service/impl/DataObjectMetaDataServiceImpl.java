@@ -19,7 +19,9 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
+import org.kuali.rice.kns.datadictionary.DataObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.SupportAttributeDefinition;
@@ -333,6 +335,41 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         }
 
         return businessObjectRelationship;
+    }
+
+    
+    
+    /**
+     * @see org.kuali.rice.kns.service.DataObjectMetaDataService#getTitleAttribute(java.lang.Class)
+     */
+    @Override
+    public String getTitleAttribute(Class<?> dataObjectClass) {
+        String titleAttribute = null;
+
+        DataObjectEntry entry = getDataObjectEntry(dataObjectClass);
+        if (entry != null) {
+            titleAttribute = entry.getTitleAttribute();
+        }
+
+        return titleAttribute;
+    }
+    
+    /**
+     * @param dataObjectClass
+     * @return DataObjectEntry for the given dataObjectClass, or null if
+     *         there is none
+     * @throws IllegalArgumentException
+     *             if the given Class is null
+     */
+    protected DataObjectEntry getDataObjectEntry(Class<?> dataObjectClass) {
+        if (dataObjectClass == null) {
+            throw new IllegalArgumentException("invalid (null) dataObjectClass");
+        }
+
+        DataObjectEntry entry = getDataDictionaryService().getDataDictionary()
+                .getDataObjectEntry(dataObjectClass.getName());
+        
+        return entry;
     }
 
     /**

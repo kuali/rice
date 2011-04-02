@@ -635,7 +635,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      *      java.lang.String, org.kuali.rice.kns.uif.widget.Inquiry)
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry) {
-        Inquirable<?> inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(),
+        Inquirable inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(),
                 inquiry.getViewName());
         if (inquirable != null) {
             inquirable.buildInquirableLink(dataObject, propertyName, inquiry);

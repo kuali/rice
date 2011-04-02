@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -33,8 +34,6 @@ import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
-import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
-import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
@@ -655,7 +654,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // if the Maintainable object is a PBO and there is a legacy maintDefinition
         // then use the old validation methods
         if(newBo instanceof PersistableBusinessObject &&
-                maintDocDictionaryService.getMaintainableSections(document.getDocumentHeader().getWorkflowDocument().getDocumentType()) != null) {
+                CollectionUtils.isNotEmpty(maintDocDictionaryService.getMaintainableSections(document.getDocumentHeader().getWorkflowDocument().getDocumentType()))) {
             
             BusinessObject businessObject = (BusinessObject)newBo;
             

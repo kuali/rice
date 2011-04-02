@@ -69,7 +69,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	 *
 	 */
 	@Ignore
-	@Test public void testPersistableBusinessObjectSearch() {
+	@Test public void testPersistableBusinessObjectSearch() throws Exception {
 		Map<String, String> parameterPK = new HashMap<String, String>();
 		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);
 		parameterPK.put("componentCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
@@ -77,51 +77,43 @@ public class LookupResultsServiceTest extends KNSTestCase {
 		final ParameterBo parameter = (ParameterBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
 		final LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
 		
-		try {
-			Set<String> parameterIds = new HashSet<String>();
-			parameterIds.add(lookupResultsService.getLookupId(parameter));
-			lookupResultsService.persistSelectedObjectIds("testPBOSearch", parameterIds, LookupResultsServiceTest.MOCK_PERSON);
+		Set<String> parameterIds = new HashSet<String>();
+		parameterIds.add(lookupResultsService.getLookupId(parameter));
+		lookupResultsService.persistSelectedObjectIds("testPBOSearch", parameterIds, LookupResultsServiceTest.MOCK_PERSON);
 			
-			// now try to retrieve
-			Collection<ParameterBo> retrievedParameters = lookupResultsService.retrieveSelectedResultBOs("testPBOSearch", ParameterBo.class, LookupResultsServiceTest.MOCK_PERSON);
-			org.junit.Assert.assertNotNull("We have a collection of retrieved Parameters", retrievedParameters);
-			org.junit.Assert.assertEquals("Retrieved parameters collection size is 1", new Integer(1), new Integer(retrievedParameters.size()));
-			final Iterator<ParameterBo> parameterIterator = retrievedParameters.iterator();
-			final ParameterBo retrievedParameter = parameterIterator.next();
-			while (parameterIterator.hasNext()) {
-				parameterIterator.next(); // just in case!!
-			}
-			org.junit.Assert.assertTrue("Parameter was one which was saved", retrievedParameter.getNamespaceCode().equals(MOCK_PARAMETER_NMSPC) && retrievedParameter.getComponentCode().equals(MOCK_PARAMETER_DETAIL_TYPE_CODE) && retrievedParameter.getName().equals(MOCK_PARAMETER_NAME));
-		} catch (Exception e) {
-			org.junit.Assert.fail("Exception was thrown: "+e.toString());
+		// now try to retrieve
+		Collection<ParameterBo> retrievedParameters = lookupResultsService.retrieveSelectedResultBOs("testPBOSearch", ParameterBo.class, LookupResultsServiceTest.MOCK_PERSON);
+		org.junit.Assert.assertNotNull("We have a collection of retrieved Parameters", retrievedParameters);
+		org.junit.Assert.assertEquals("Retrieved parameters collection size is 1", new Integer(1), new Integer(retrievedParameters.size()));
+		final Iterator<ParameterBo> parameterIterator = retrievedParameters.iterator();
+		final ParameterBo retrievedParameter = parameterIterator.next();
+		while (parameterIterator.hasNext()) {
+			parameterIterator.next(); // just in case!!
 		}
+		org.junit.Assert.assertTrue("Parameter was one which was saved", retrievedParameter.getNamespaceCode().equals(MOCK_PARAMETER_NMSPC) && retrievedParameter.getComponentCode().equals(MOCK_PARAMETER_DETAIL_TYPE_CODE) && retrievedParameter.getName().equals(MOCK_PARAMETER_NAME));
 	}
 	
 	/**
 	 * Tests that PersistableBusinessObjectSearches work
 	 *
 	 */
-	@Test public void testDataDictionaryBusinessObjectSearch() {
+	@Test public void testDataDictionaryBusinessObjectSearch() throws Exception {
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("gorilla");
 		final LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
 		
-		try {
-			Set<String> ddBoIds = new HashSet<String>();
-			ddBoIds.add(lookupResultsService.getLookupId(ddBo));
-			lookupResultsService.persistSelectedObjectIds("testDDBOSearch", ddBoIds, LookupResultsServiceTest.MOCK_PERSON);
+		Set<String> ddBoIds = new HashSet<String>();
+		ddBoIds.add(lookupResultsService.getLookupId(ddBo));
+		lookupResultsService.persistSelectedObjectIds("testDDBOSearch", ddBoIds, LookupResultsServiceTest.MOCK_PERSON);
 			
-			Collection<LookupResultsDDBo> retrievedDDBos = lookupResultsService.retrieveSelectedResultBOs("testDDBOSearch", LookupResultsDDBo.class, LookupResultsServiceTest.MOCK_PERSON);
-			org.junit.Assert.assertNotNull("We have a collection of retrieved Parameters", retrievedDDBos);
-			org.junit.Assert.assertEquals("Retrieved parameters collection size is 1", new Integer(1), new Integer(retrievedDDBos.size()));
-			final Iterator<LookupResultsDDBo> ddBosIterator = retrievedDDBos.iterator();
-			final LookupResultsDDBo retrievedDDBo = ddBosIterator.next();
-			while (ddBosIterator.hasNext()) {
-				ddBosIterator.next(); // just in case!!
-			}
-			org.junit.Assert.assertEquals("LookupResultsDDBo lookup worked as expected", "gorilla", retrievedDDBo.getSomeValue());
-		} catch (Exception e) {
-			org.junit.Assert.fail("Exception was thrown: "+e.toString());
+		Collection<LookupResultsDDBo> retrievedDDBos = lookupResultsService.retrieveSelectedResultBOs("testDDBOSearch", LookupResultsDDBo.class, LookupResultsServiceTest.MOCK_PERSON);
+		org.junit.Assert.assertNotNull("We have a collection of retrieved Parameters", retrievedDDBos);
+		org.junit.Assert.assertEquals("Retrieved parameters collection size is 1", new Integer(1), new Integer(retrievedDDBos.size()));
+		final Iterator<LookupResultsDDBo> ddBosIterator = retrievedDDBos.iterator();
+		final LookupResultsDDBo retrievedDDBo = ddBosIterator.next();
+		while (ddBosIterator.hasNext()) {
+			ddBosIterator.next(); // just in case!!
 		}
+		org.junit.Assert.assertEquals("LookupResultsDDBo lookup worked as expected", "gorilla", retrievedDDBo.getSomeValue());
 	}
 	
 	/**

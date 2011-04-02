@@ -16,7 +16,21 @@
 
 package org.kuali.rice.kew.doctype;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import mocks.MockPostProcessor;
+
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,6 +45,8 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.postprocessor.PostProcessor;
+import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -43,14 +59,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.test.BaselineTestCase;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentTypeTest extends KEWTestCase {
@@ -559,7 +567,9 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertEquals("Incorrect PostProcessor", MockPostProcessor.class, ppTestParent1.getPostProcessor().getClass());
     	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestParent2.getPostProcessor().getClass());
     	assertEquals("Incorrect PostProcessor", MockPostProcessor.class, ppTestChild1.getPostProcessor().getClass());
-    	assertEquals("Incorrect PostProcessor", EDocLitePostProcessor.class, ppTestChild2.getPostProcessor().getClass());
+    	PostProcessor testChild2PP = ppTestChild2.getPostProcessor();
+    	assertEquals("Incorrect PostProcessor", PostProcessorRemoteAdapter.class, testChild2PP.getClass());
+    	assertEquals("Incorrect PostProcessorRemote", EDocLitePostProcessor.class, ((PostProcessorRemoteAdapter)testChild2PP).getPostProcessorRemote().getClass());
     	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestChild3.getPostProcessor().getClass());
     }
 

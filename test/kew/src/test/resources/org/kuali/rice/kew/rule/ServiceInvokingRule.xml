@@ -44,7 +44,7 @@
             <description>ServiceInvocationRule mandatory description</description>
             <expression type="BSF:groovy">
                 import org.kuali.rice.kew.rule.RuleExpressionResult
-                import org.kuali.rice.core.resourceloader.*
+                import org.kuali.rice.core.api.resourceloader.*
                 import org.kuali.rice.kew.test.FakeService
                 import javax.xml.namespace.QName
 

@@ -16,7 +16,7 @@
             <name>PCITestChild2</name>
             <parent>PCITestParent1</parent>
             <label>PCITestChild2</label>
-            <postProcessorName>org.kuali.rice.edl.impl.EDocLitePostProcessor</postProcessorName>
+            <postProcessorName>org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor</postProcessorName>
         </documentType>
         <documentType overwriteMode="true">
             <name>PCITestParent2</name>

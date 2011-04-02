@@ -69,4 +69,8 @@ public class PostProcessorRemoteAdapter implements PostProcessor {
     	}
     	return Arrays.asList(documentIdsToLock);
     }
+    
+    public PostProcessorRemote getPostProcessorRemote() {
+    	return postProcessor;
+    }
 }

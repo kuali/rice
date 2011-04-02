@@ -20,7 +20,7 @@
       <name>OfficeOfAffirmativeAction</name>
       <description>Office Of Affirmative Action Documents</description>
       <label>Offic Of Affirmative Action Documents</label>
-      <postProcessorName>org.kuali.rice.edl.impl.EDocLitePostProcessor</postProcessorName>
+      <postProcessorName>org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor</postProcessorName>
       <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
       <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
       <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>

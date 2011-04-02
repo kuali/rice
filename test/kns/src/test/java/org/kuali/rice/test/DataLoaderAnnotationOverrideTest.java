@@ -36,7 +36,7 @@ import org.kuali.rice.test.data.UnitTestData;
 @PerSuiteUnitTestData(
         overrideSuperClasses = true,
         value = {@UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
-        @UnitTestData(filename = "classpath:org/kuali/rice/core/test/DataLoaderAnnotationTestData.sql")
+        @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql")
 })
 @DataLoaderAnnotationOverrideTest.Nothing
 public class DataLoaderAnnotationOverrideTest extends AnnotationTestParent {

@@ -37,7 +37,7 @@ import static org.junit.Assert.*;
  */
 @PerSuiteUnitTestData({
         @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('1')"),
-        @UnitTestData(filename = "classpath:org/kuali/rice/core/test/AnnotationTestParentData.sql")
+        @UnitTestData(filename = "classpath:org/kuali/rice/test/AnnotationTestParentData.sql")
 })
 public abstract class AnnotationTestParent extends KNSTestCase {
 

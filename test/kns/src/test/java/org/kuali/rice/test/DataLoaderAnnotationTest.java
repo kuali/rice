@@ -28,7 +28,7 @@ import org.kuali.rice.test.data.UnitTestData;
  */
 @PerSuiteUnitTestData({
         @UnitTestData("insert into " + AnnotationTestParent.TEST_TABLE_NAME + " (COL) values ('3')"),
-        @UnitTestData(filename = "classpath:org/kuali/rice/core/test/DataLoaderAnnotationTestData.sql")
+        @UnitTestData(filename = "classpath:org/kuali/rice/test/DataLoaderAnnotationTestData.sql")
 })
 public class DataLoaderAnnotationTest extends AnnotationTestParent {
     

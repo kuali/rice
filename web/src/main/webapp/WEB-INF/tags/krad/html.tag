@@ -77,7 +77,7 @@
 
   <body>
     <krad:div component="${view}">
-      <span id="view_div">
+      <div id="view_div">
 
       <krad:backdoor/>
 
@@ -110,7 +110,7 @@
          <jsp:doBody/>
       </c:if>  
     
-      </span>
+      </div>
     </krad:div> 
   </body>
 </html>

@@ -46,8 +46,6 @@
                 renderAlternatingHeaderColumns="false"/>
   </tbody>
 </table>
-
-<br/><br/>
  
 <%-- invoke table tools widget --%>
 <krad:template component="${manager.tableTools}" componentId="${manager.id}"/>    

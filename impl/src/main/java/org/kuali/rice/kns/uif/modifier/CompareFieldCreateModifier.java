@@ -124,6 +124,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 						comparable.getBindingObjectPath());
 				if (comparable.isReadOnly()) {
 					compareItem.setReadOnly(true);
+					compareItem.setConditionalReadOnly("");
 				}
 
 				ComponentUtils.updateIdsWithSuffix(compareItem, getIdSuffix(comparable, defaultSuffix++));

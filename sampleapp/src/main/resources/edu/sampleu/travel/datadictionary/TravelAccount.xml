@@ -153,6 +153,7 @@
 
   <bean id="TravelAccount-extension.accountType.codeAndDescription-parentBean" abstract="true" parent="TravelAccountType-codeAndDescription">
     <property name="name" value="extension.accountType.codeAndDescription"/>
+    <property name="required" value="false"/>
   </bean>
   <bean id="TravelAccount-foId" parent="TravelAccount-foId-parentBean"/>
 

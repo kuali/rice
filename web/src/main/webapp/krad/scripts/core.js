@@ -493,16 +493,14 @@ function writeHiddenToForm(propertyName, propertyValue) {
  * Expands all the accordion divs on the page
  */
 function expandAccordions() {
-	//jq("span[id$='_accordion']").slideDown(100);
-	jq('img[alt="expand"]').click();
+	jq('img[alt="collapse"]').click();
 }
 
 /**
  * Collapses all the accordion divs on the page
  */
 function collapseAccordions() {
-	//jq("span[id$='_accordion']").slideUp(100);
-	jq('img[alt="collapse"]').click();
+	jq('img[alt="expand"]').click();
 }
 
 /**

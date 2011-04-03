@@ -67,7 +67,7 @@ div.grouping-header-expandable img {
 
 /*EXPANDABLE NESTED HEADER BEGIN*/
 
-div.grouping-header-expandableh3 {
+div.grouping-header-expandable h3 {
 	background-color:#333;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
@@ -77,34 +77,35 @@ div.grouping-header-expandableh3 {
 	background-position: 0px;
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
-div.grouping-header-expandableh3 a {
+div.grouping-header-expandable h3 a {
 	color:#FFF;
 	text-decoration: none;
 	font-weight: normal;
 }
-div.grouping-header-expandableh3 img {
+div.grouping-header-expandable h3 img {
 	margin-right:6px
 }
 /*EXPANDABLE NESTED HEADER END*/
 
 
 /*KFS STYLE DOC HEADER*/
-#viewpage_div .page_header .grouping-header-expandable h2 {
+#viewpage_div .grouping-header-expandable h2 {
 	margin-top:10px;
-	margin-left:6px;
+	margin-left:3px;
 	margin-bottom: 10px;
+	vertical-align: middle;
 }
 #viewpage_div .page_header .grouping-header-expandable h3 {
 	font-size: 0.9em;
 	color: #FFF;
 	/* [disabled]font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; */
 	background: #666;
-	padding: 6px;
 }
 #viewpage_div .page_header {
 	padding-bottom: 60px;
 }
-#viewpage_div .page_header .grouping-header-expandable #panel1 h4 {
+
+#viewpage_div .grouping-header-expandable h4 {
 	font-size: 0.9em;
 	/* [disabled]font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; */
 	background: #d6d6d6;
@@ -112,4 +113,19 @@ div.grouping-header-expandableh3 img {
 	border-right: 1px solid #999;
 	border-left: 1px solid #999;
 	color: #333;
+}
+
+.collection-header h4 {
+	font-size: 0.9em;
+	background: #C3C3C3;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+	border-top: 1px solid #999;
+	color: #333;	
+	padding: 3px;
+	font-weight: bold;
+}
+
+.header-valign-middle {
+	vertical-align: middle;
 }

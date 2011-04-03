@@ -22,19 +22,21 @@
   <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
   <krad:template component="${group.header}"/>
   
-  <%-- group summary text --%>
-  <krad:template component="${group.summaryMessageField}"/>
-  <krad:template component="${group.errorsField}"/>
+  <div id="${group.id}_accordion">
+    <%-- group summary text --%>
+    <krad:template component="${group.summaryMessageField}"/>
+    <krad:template component="${group.errorsField}"/>
   
-  <%-- render items through layout manager --%>
-  <tiles:insertTemplate template="${group.layoutManager.template}">
+    <%-- render items through layout manager --%>
+    <tiles:insertTemplate template="${group.layoutManager.template}">
         <tiles:putAttribute name="items" value="${group.items}"/>
         <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
         <tiles:putAttribute name="container" value="${group}"/>
-  </tiles:insertTemplate>
+    </tiles:insertTemplate>
 
-  <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
-  <krad:template component="${group.footer}"/>
+    <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
+    <krad:template component="${group.footer}"/>
+  </div>
     
 </krad:div>
 

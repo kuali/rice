@@ -368,16 +368,10 @@ function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandI
   	var groupToggleLinkId = groupId + "_toggle";
   	var groupToggleLink = "<a href='#' id='" + groupToggleLinkId + "'></a>";
   	
-  	var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand'/>";
-  	var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse'/>";
+  	var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='expand_collapse-buttons'/>";
+  	var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='expand_collapse-buttons'/>";
  
-  	// wrap the contents of the group after the header
   	var groupAccordionSpanId = groupId + "_accordion";
-  	
-  	// remove script elements so they do not execute again on wrap
-  	jq("#" + groupId + "_div script").remove();
-
-  	jq("#" + groupId + "_div").children().first().siblings().wrapAll("<span id='" + groupAccordionSpanId + "'/>");
   	
   	// perform initial open/close and insert toggle link and image
   	if (defaultOpen) {
@@ -426,7 +420,7 @@ function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandI
  */
 function createLoading(showLoading) {
 	if (showLoading) {
-	  jq("#view_div").showLoading();
+	  jq("#view_div").showLoading({'hPos': 'center', 'vPos': 'center'});
 	}
 	else {
 		jq("#view_div").hideLoading();

@@ -211,7 +211,7 @@
   <bean id="MaintenanceCompareModifier" parent="MaintenanceCompareModifier-parentBean"/>
   <bean id="MaintenanceCompareModifier-parentBean" abstract="true" parent="CompareFieldCreateModifier">
       <property name="headerFieldPrototype">
-         <bean parent="HeaderFour" p:colSpan="2" p:headerStyleClasses="fill"/>
+         <bean parent="HeaderFour" p:colSpan="2" p:styleClasses="collection-header"/>
       </property>
       <property name="comparables">
          <list>

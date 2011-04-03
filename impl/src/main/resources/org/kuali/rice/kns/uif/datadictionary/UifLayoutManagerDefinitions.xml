@@ -78,9 +78,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>  
   
   <bean id="StackedGroupPrototype" parent="StackedGroupPrototype-parentBean"/> 
-  <bean id="StackedGroupPrototype-parentBean" abstract="true" parent="GroupGridLayout" p:styleClasses="wrap">
+  <bean id="StackedGroupPrototype-parentBean" abstract="true" parent="GroupGridLayout">
       <property name="header">
-         <bean parent="HeaderThree"/>
+         <bean parent="HeaderFour" p:styleClasses="collection-header"/>
       </property>
       <property name="footer">
          <bean parent="Footer"/>

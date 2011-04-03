@@ -135,9 +135,23 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="defaultBindingObjectPath" value="document"/>
      <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.DocumentPresentationControllerBase"/>
      <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.DocumentAuthorizerBase"/>
+     <property name="header">
+        <bean parent="HeaderViewDocument"/>
+     </property>
+     <property name="page">
+        <bean parent="Page_Accordion"/>
+     </property> 
      <property name="footer">
         <bean parent="FooterDocument"/>
-     </property>     
+     </property>  
+     <property name="itemOrderingSequence" value="11"/>
+     <property name="items">
+       <list>
+          <bean parent="Group_DocumentOverview" p:order="10"/>
+          <bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false" p:order="30"/>  
+          <bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false" p:order="40"/>  
+       </list>
+     </property>  
   </bean>
   
   <bean id="MaintenanceView" abstract="true" parent="MaintenanceView-parentBean"/>
@@ -150,20 +164,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
      <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
      <property name="singlePageView" value="true"/>
-     <property name="header">
-        <bean parent="HeaderViewDocument"/>
-     </property>
-     <property name="page">
-        <bean parent="Page_Accordion"/>
-     </property> 
-     <property name="itemOrderingSequence" value="11"/>
-     <property name="items">
-       <list>
-          <bean parent="Group_DocumentOverview" p:order="10"/>
-          <bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false" p:order="30"/>  
-          <bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false" p:order="40"/>  
-       </list>
-     </property>         
   </bean>
   
   <!-- Base Pages -->

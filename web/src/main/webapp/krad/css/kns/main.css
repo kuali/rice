@@ -1,10 +1,16 @@
+#viewheader_div .doc_view_header {
+	background: #EBEBEB url(../../images/masthead1.gif);
+	border-bottom: 1px solid #999;
+	min-width:800px;
+	margin-bottom: 65px;
+}
 #viewheader_div .view_header {
 	background: #EBEBEB url(../../images/masthead1.gif);
 	border-bottom: 1px solid #999;
 	min-width:800px;
-	margin-bottom: 24px;
+	margin-bottom: 15px;
 }
-#viewheader_div .view_header h1 {
+#viewheader_div h1 {
 	font-size:1.2em;
 	padding-left: 0.6em;
 	font-family: Arimo;
@@ -12,22 +18,23 @@
 	padding-top: 0.4em;
 	padding-bottom: 0.4em;
 }
-#viewheader_div .view_header a {
+#viewheader_div a {
 	position: absolute;
 	padding-top:18px;
 	padding-left:6px;
 }
-#viewheader_div .view_header div.doc-info {
+#viewheader_div div.doc-info {
 	float:right;
 }
-.view_header td {
+#viewheader_div td {
 	background-color: #FFFFFF;
 	border-left: 1px solid #999999;
 	border-top: 1px solid #999999;
 	padding-left: 0.3em;
 	padding-right: 1em;
+	vertical-align: middle;
 }
-.view_header th {
+#viewheader_div th {
 	background-color: #DEDEDE;
 	border-left: 1px solid #999999;
 	border-top: 1px solid #999999;
@@ -35,7 +42,9 @@
 	padding-left: 1em;
 	padding-right: 0.3em;
 	text-align: right;
+	vertical-align: middle;
 }
+
 #viewpage_div {
 	margin-left:20px;
 	margin-right:20px;
@@ -68,7 +77,7 @@
 	background: #FFF url(../../images/button-bevel.png) 0px 0px;
 }
 
-div.globalbuttons { text-align:center;	padding-top: 20px;}
+div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 
 .globalbuttons .ui-state-default.ui-corner-all.ui-state-hover {
 	background-color:#900;
@@ -86,7 +95,7 @@ div.globalbuttons { text-align:center;	padding-top: 20px;}
 
 .summary {
 	font-size: 12px;
-	margin-bottom: auto;
+	margin-bottom: 2px;
 	display: block;
 }
 
@@ -96,4 +105,25 @@ div.globalbuttons { text-align:center;	padding-top: 20px;}
 	margin-bottom: 5px;
 	margin-top: 5px;
 	display: block;
+}
+
+.group_docheader {
+	float: right;
+	font-size: .9em;
+	border-bottom: 1px solid #999;
+}
+
+.left {
+}
+.right {
+	float:right;
+}
+
+.group_expandclose #msg_reqind_span {
+	display:block;
+	font-size: 90%;
+}
+
+.expand_collapse-buttons {
+    margin-right: 3px;	
 }

@@ -87,22 +87,25 @@ public class BoxLayoutManager extends LayoutManagerBase {
         this.addStyleClass("fieldLine");
         this.addStyleClass("clearfix");
         
-        for(Component c: container.getNestedComponents()){
-            if(c != null){
-                if(StringUtils.equals(orientation, Orientation.HORIZONTAL)){
-                    //horizontal items get a special class
+        for (Component c : container.getItems()) {
+            if (c != null) {
+                if (StringUtils.equals(orientation, Orientation.HORIZONTAL)) {
+                    // horizontal items get a special class
                     c.addStyleClass("boxLayoutHorizontalItem");
                     c.appendToStyle(itemStyle);
-                    //in a horizontal box layout errors are placed in a div next to all fields,
-                    //set the errorsField to know that we are using an alternate container for them
-                    if(c instanceof AttributeField){
+
+                    // in a horizontal box layout errors are placed in a div
+                    // next to all fields,
+                    // set the errorsField to know that we are using an
+                    // alternate container for them
+                    if (c instanceof AttributeField) {
                         ((AttributeField) c).getErrorsField().setAlternateContainer(true);
                         layoutFieldErrors = true;
                     }
                 }
-                
-                if(container.isFieldContainer()){
-                    if(c instanceof AttributeField){
+
+                if (container.isFieldContainer()) {
+                    if (c instanceof AttributeField) {
                         ((AttributeField) c).getErrorsField().setAlternateContainer(true);
                         layoutFieldErrors = true;
                     }

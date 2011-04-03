@@ -45,10 +45,10 @@ public class AttachmentServiceImpl implements AttachmentService {
 		String internalFileIndicator = attachment.getFileName().replace('.', '_');
 		String fileName = ATTACHMENT_PREPEND + attachment.getNote().getRouteHeaderId() + "_" + internalFileIndicator + "_" + uniqueId;
 		File file = File.createTempFile(fileName, null, new File(attachmentDir));
-		if(LOG.isDebugEnabled()) {
-			LOG.debug("atttachment filename: " + fileName);
-			LOG.debug("attachment directory: " + attachmentDir);
-		}      
+		LOG.info("Persisting attachment at: " + file.getAbsolutePath());
+		if (!file.canWrite()) {
+			throw new RuntimeException("Do not have permissions to write to attachment file at: " + file.getAbsolutePath());
+		}
 		FileOutputStream streamOut = null;
         BufferedOutputStream bufferedStreamOut = null;
         try {
@@ -88,7 +88,13 @@ public class AttachmentServiceImpl implements AttachmentService {
 		File attachDir = new File(attachmentDir);
 		if (! attachDir.exists()) {
 			LOG.warn("No attachment directory found.  Attempting to create directory " + attachmentDir);
-			attachDir.mkdirs();
+			boolean directoriesCreated = attachDir.mkdirs();
+			if (!directoriesCreated) {
+				throw new RuntimeException("Failed to create directory for attachments at: " + attachDir.getAbsolutePath());
+			}
+		}
+		if (!attachDir.canWrite()) {
+			throw new RuntimeException("Do not have permission to write to: " + attachDir.getAbsolutePath());
 		}
 	}
 

@@ -17,19 +17,24 @@
 package org.kuali.rice.kew.actions;
 
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
+@BaselineMode(Mode.CLEAR_DB)
 public class SaveActionEventTest extends KEWTestCase {
     
     public static final String DOCUMENT_TYPE_NAME = "SaveActionEventTest";

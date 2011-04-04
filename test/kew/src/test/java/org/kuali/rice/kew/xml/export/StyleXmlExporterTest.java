@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.xml.export;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
@@ -59,13 +60,13 @@ public class StyleXmlExporterTest extends XmlExporterTestCase {
     }
 
     protected void assertExport() throws Exception {
-        List<Style> oldStyles = CoreApiServiceLocator.getStyleService().getStyles();
+        List<String> oldStyleNames = CoreApiServiceLocator.getStyleService().getAllStyleNames();
         
-        System.err.println("Styles: " + oldStyles.size());
-
         StyleExportDataSet dataSet = new StyleExportDataSet();
-        for (Style style : oldStyles) {
-        	dataSet.getStyles().add(StyleBo.from(style));
+        for (String oldStyleName : oldStyleNames) {
+        	Style oldStyle = CoreApiServiceLocator.getStyleService().getStyle(oldStyleName);
+        	assertNotNull(oldStyle);
+        	dataSet.getStyles().add(StyleBo.from(oldStyle));
         }
 
         byte[] xmlBytes = CoreApiServiceLocator.getXmlExporterService().export(dataSet.createExportDataSet());
@@ -79,13 +80,17 @@ public class StyleXmlExporterTest extends XmlExporterTestCase {
         // import the exported xml
         loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));
 
-        List<Style> newStyles = CoreApiServiceLocator.getStyleService().getStyles();
-        assertEquals("Should have same number of old and new Styles.", oldStyles.size(), newStyles.size());
-        for (Iterator<Style> iterator = oldStyles.iterator(); iterator.hasNext();) {
-            Style oldStyleEntry = iterator.next();
+        List<String> newStyleNames = CoreApiServiceLocator.getStyleService().getAllStyleNames();
+        assertEquals("Should have same number of old and new Styles.", oldStyleNames.size(), newStyleNames.size());
+        for (Iterator<String> iterator = oldStyleNames.iterator(); iterator.hasNext();) {
+            String oldStyleName = iterator.next();
+            Style oldStyleEntry = CoreApiServiceLocator.getStyleService().getStyle(oldStyleName);
+            assertNotNull(oldStyleEntry);
             boolean foundAttribute = false;
-            for (Style newStyleEntry: newStyles) {
-                if (oldStyleEntry.getName().equals(newStyleEntry.getName())) {
+            for (String newStyleName : newStyleNames) {
+                if (oldStyleEntry.getName().equals(newStyleName)) {
+                	Style newStyleEntry = CoreApiServiceLocator.getStyleService().getStyle(newStyleName);
+                	assertNotNull(newStyleEntry);
                     // NOTE: xmlns="http://www.w3.org/1999/xhtml" must be set on elements that contain HTML; exporter will automatically append an empty
                     // attribute, which will result in trivially unmatching content
                     assertEquals(canonicalize(oldStyleEntry.getXmlContent()),

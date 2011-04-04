@@ -19,6 +19,7 @@ package org.kuali.rice.core.impl.style;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import javax.xml.transform.Templates;
 
@@ -129,6 +130,11 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
         }
         dao.saveStyle(styleBo);
         removeStyleFromCache(styleBo.getName());
+    }
+    
+    @Override
+    public List<String> getAllStyleNames() {
+        return dao.getAllStyleNames();
     }
     
     // cache helper methods

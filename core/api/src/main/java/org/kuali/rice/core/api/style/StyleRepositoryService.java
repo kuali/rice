@@ -17,6 +17,8 @@
 
 package org.kuali.rice.core.api.style;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -52,5 +54,9 @@ public interface StyleRepositoryService {
 
 	@WebMethod(operationName = "saveStyle")
 	public void saveStyle(@WebParam(name = "style") Style style);
+	
+	@WebMethod(operationName="getStyleNames")
+    @WebResult(name = "styleNames")
+    public List<String> getAllStyleNames();
 
 }

@@ -16,7 +16,17 @@
 
 package org.kuali.rice.kew.clientapp;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -24,23 +34,12 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.config.ThinClientResourceLoader;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-
-import javax.xml.namespace.QName;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * 
@@ -55,6 +54,7 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Ignore(value="KULRICE-5061")
 public class ThinClientTest extends KEWTestCase {
 	private static final Logger LOG = Logger.getLogger(ThinClientTest.class);
 

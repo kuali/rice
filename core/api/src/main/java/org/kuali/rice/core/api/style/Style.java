@@ -158,9 +158,13 @@ public final class Style implements StyleContract, ModelObjectComplete {
          * Creates a style builder with the given required values.  This class
          * is the only means by which a {@link Style} object can be created.
          * 
+         * <p>Will default the active flag to true.
+         * 
          * @param name the name of the style to create, must not be null or blank
          * 
          * @return a builder with the required values already initialized
+         * 
+         * @throws IllegalArgumentException if the given name is null or blank
          */
         public static Builder create(String name) {
         	return new Builder(name);
@@ -185,6 +189,7 @@ public final class Style implements StyleContract, ModelObjectComplete {
         	return builder;
         }
         
+        @Override
         public Style build() {
         	return new Style(this);
         }
@@ -194,6 +199,11 @@ public final class Style implements StyleContract, ModelObjectComplete {
 			return this.styleId;
 		}
 
+        /**
+         * Sets the styleId for the style that will be returned by this builder.
+         * 
+         * @param styleId the styleId to set
+         */
 		public void setStyleId(Long styleId) {
 			this.styleId = styleId;
 		}
@@ -203,6 +213,15 @@ public final class Style implements StyleContract, ModelObjectComplete {
 			return this.name;
 		}
 
+		/**
+         * Sets the name for the style that will be returned by this builder.
+         * The name must not be blank or null.
+         * 
+         * @param name the name to set on this builder, must not be null or
+         * blank
+         * 
+         * @throws IllegalArgumentException if the given name is null or blank
+         */
 		public void setName(String name) {
 			if (StringUtils.isBlank(name)) {
 				throw new IllegalArgumentException("name is blank");
@@ -215,6 +234,12 @@ public final class Style implements StyleContract, ModelObjectComplete {
 			return this.xmlContent;
 		}
 
+		/**
+		 * Sets the XML content for the style that will be returned by this
+		 * builder.
+		 * 
+		 * @param xmlContent the xmlContent to set on this builder
+		 */
 		public void setXmlContent(String xmlContent) {
 			this.xmlContent = xmlContent;
 		}
@@ -224,6 +249,12 @@ public final class Style implements StyleContract, ModelObjectComplete {
 			return this.active;
 		}
 
+		/**
+         * Sets the active flag for the style that will be returned by this
+         * builder.
+         * 
+         * @param active the active flag to set
+         */
 		public void setActive(boolean active) {
 			this.active = active;
 		}
@@ -233,6 +264,16 @@ public final class Style implements StyleContract, ModelObjectComplete {
 			return this.versionNumber;
 		}
 
+		/**
+         * Sets the version number for the style that will be returned by this
+         * builder.
+         * 
+         * <p>In general, this value should not be manually set on the builder,
+         * but rather copied from an existing {@link StyleContract} when
+         * invoking {@link Builder#create(StyleContract)}.
+         * 
+         * @param versionNumber the version number to set
+         */
 		public void setVersionNumber(Long versionNumber) {
 			this.versionNumber = versionNumber;
 		}
@@ -242,6 +283,16 @@ public final class Style implements StyleContract, ModelObjectComplete {
 			return objectId;
 		}
 		
+		/**
+         * Sets the globally unique object ID for the style that will be
+         * returned by this builder.
+         * 
+         * <p>In general, this value should not be manually set on the builder,
+         * but rather copied from an existing {@link StyleContract} when
+         * invoking {@link Builder#create(StyleContract)}.
+         * 
+         * @param objectId the object ID to set
+         */
 		public void setObjectId(String objectId) {
 			this.objectId = objectId;
 		}

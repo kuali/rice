@@ -16,17 +16,19 @@
  */
 package org.kuali.rice.kew.routing;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import org.junit.Test;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.test.BaselineTestCase.BaselineMode;
+import org.kuali.rice.test.BaselineTestCase.Mode;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+@BaselineMode(Mode.CLEAR_DB)
 public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
@@ -39,7 +41,7 @@ public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
             doc.routeDocument("");
             fail("document should have thrown routing exception");
         } catch (Exception e) {
-            
+            e.printStackTrace();
         }
         TestUtilities.getExceptionThreader().join();//wait for doc to go into exception routing
         doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());

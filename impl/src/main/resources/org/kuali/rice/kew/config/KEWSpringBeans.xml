@@ -155,7 +155,6 @@
                 <idref local="enImmediateEmailReminderService" />
                 <idref local="enActionListEmailService" />
                 <idref local="enWorkflowUtilityService" />
-                <idref local="enWorkflowDocumentActionsService" />
                 <idref local="enQuickLinksService" />
                 <idref local="enDocumentRequeuerService"/>
                 <!-- it's important that this service remains non-transactionally proxied for various reasons

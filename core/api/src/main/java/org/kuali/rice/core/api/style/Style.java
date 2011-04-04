@@ -35,6 +35,14 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
+/**
+ * An immutable representation of a Style.  A style is essentially a block of
+ * XML containing and XSL stylesheet. These can be used in various places for
+ * the transformation of XML data from one form to another.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 @XmlRootElement(name = Style.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Style.Constants.TYPE_NAME, propOrder = {

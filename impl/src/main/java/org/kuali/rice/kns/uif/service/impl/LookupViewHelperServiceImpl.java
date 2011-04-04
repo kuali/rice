@@ -938,7 +938,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		Properties props = getReturnUrlParameters(dataObject, getFieldConversions(), lookupView.getViewHelperServiceBeanId(), returnKeys);
 		// TODO delyea - Multiple value returns are not yet implemented
 		// if(StringUtils.isEmpty(lookupForm.getHtmlDataType()) || HtmlData.ANCHOR_HTML_DATA_TYPE.equals(lookupForm.getHtmlDataType())) {
-		return getReturnAnchorHtmlData(dataObject, props, context, returnKeys, businessObjectRestrictions);
+		return getReturnAnchorHtmlData(dataObject, props, context, returnKeys, businessObjectRestrictions, lookupView.isDialogMode());
 		// } else {
 		// return getReturnInputHtmlData(businessObject, props, context, returnKeys, businessObjectRestrictions);
 		// }
@@ -965,12 +965,14 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		return null;
 	}
 
-	protected HtmlData getReturnAnchorHtmlData(Object dataObject, Properties props, Map<String, Object> context, List<String> returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
+	protected HtmlData getReturnAnchorHtmlData(Object dataObject, Properties props, Map<String, Object> context, List<String> returnKeys, BusinessObjectRestrictions businessObjectRestrictions, boolean dialogMode) {
 		String returnUrlAnchorLabel = KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
 		AnchorHtmlData anchor = new AnchorHtmlData(getReturnHrefUsingParameters(props, context, returnKeys), HtmlData.getTitleText(returnUrlAnchorLabel, dataObject, returnKeys,
 		        businessObjectRestrictions));
 		anchor.setDisplayText(returnUrlAnchorLabel);
-		anchor.setTarget(RETURN_TARGET_FRAME);
+		if (dialogMode && !getReturnLocation().endsWith("lookup")) {
+			anchor.setTarget(RETURN_TARGET_FRAME);
+		}
 		return anchor;
 	}
 

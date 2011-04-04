@@ -327,7 +327,7 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
             		// Add the returned URL to the FancyBox href setting
             		options['href'] = data;
         			jq.fancybox(options);
-        			jq.watermark.showAll();        			
+        			jq.watermark.showAll();    
         		}
         	});            
         });
@@ -337,10 +337,16 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
 				for (var key in actionParameterMapString) {
 			 	 	writeHiddenToForm(key , actionParameterMapString[key]);
 			 	}
-			});
+			});			
     	}
         
     });		
+}
+
+function setIsDialogMode() {
+	if (jq("#fancybox-frame", parent.document).length) {
+		writeHiddenToForm('dialogMode' , 'true');
+	}
 }
 
 /**

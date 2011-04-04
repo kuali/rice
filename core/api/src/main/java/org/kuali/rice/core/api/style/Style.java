@@ -80,6 +80,9 @@ public final class Style implements StyleContract, ModelObjectComplete {
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 	
+    /**
+     * Private constructor used only by JAXB.
+     */
     private Style() {
     	this.styleId = null;
     	this.name = null;
@@ -128,6 +131,13 @@ public final class Style implements StyleContract, ModelObjectComplete {
 		return this.objectId;
 	}
 
+	/**
+	 * A builder which can be used to construct Style instances.  Endorces the
+	 * constraints of the {@link StyleContract}.
+	 * 
+	 * @author Kuali Rice Team (rice.collab@kuali.org)
+	 *
+	 */
 	public static final class Builder implements StyleContract, ModelBuilder, Serializable  {
     	
     	private static final long serialVersionUID = -219369603932108436L;
@@ -144,10 +154,27 @@ public final class Style implements StyleContract, ModelObjectComplete {
         	setActive(true);
         }
         
+        /**
+         * Creates a style builder with the given required values.  This class
+         * is the only means by which a {@link Style} object can be created.
+         * 
+         * @param name the name of the style to create, must not be null or blank
+         * 
+         * @return a builder with the required values already initialized
+         */
         public static Builder create(String name) {
         	return new Builder(name);
         }
         
+        /**
+         * Creates a populates a builder with the data on the given StyleContract.
+         * This is similar in nature to a "copy constructor" for Style.
+         * 
+         * @param contract an object implementing the StyleContract from which
+         * to copy property values
+         *  
+         * @return a builder with the values from the contract already initialized
+         */
         public static Builder create(StyleContract contract) {
         	Builder builder = create(contract.getName());
         	builder.setStyleId(contract.getStyleId());

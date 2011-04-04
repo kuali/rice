@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-
-import javax.xml.namespace.QName;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
+import javax.xml.namespace.QName;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 /**
  * This class creates a proxy for services deployed on KSB. A 
@@ -59,7 +58,7 @@ private static final Logger LOG = Logger.getLogger(KSBClientProxy.class);
         try {
 	        return method.invoke(service, args);
 	    } catch (InvocationTargetException e) {
-	        throw ExceptionUtils.getCause(e);
+	        throw e.getCause();
 	    }
     }
 

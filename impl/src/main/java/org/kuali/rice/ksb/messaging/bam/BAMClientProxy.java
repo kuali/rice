@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.ksb.messaging.bam;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.kuali.rice.core.impl.proxy.BaseTargetedInvocationHandler;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 
 /**
@@ -54,7 +53,9 @@ public class BAMClientProxy extends BaseTargetedInvocationHandler {
 		try {
 			return method.invoke(getTarget(), arguments);	
 		} catch (Throwable throwable) {
-			throwable = ExceptionUtils.getCause(throwable);
+			if (throwable instanceof InvocationTargetException) {
+				throwable = throwable.getCause();
+			}
 			KSBServiceLocator.getBAMService().recordClientInvocationError(throwable, bamTargetEntry);
 			throw throwable;
 		}

@@ -16,7 +16,12 @@
  */
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -41,12 +46,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 
 public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRoutingService {
 
@@ -57,10 +56,10 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
  	 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
  	 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
  	 	RouteContext routeContext = establishRouteContext(document, null);
- 	 	List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderId);
+ 	 	List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderId);
  	 	if (!activeNodeInstances.isEmpty()) {
  	 		// take the first active nodeInstance found.
- 	 		nodeInstance = (RouteNodeInstance) activeNodeInstances.get(0);
+ 	 		nodeInstance = activeNodeInstances.get(0);
  	 	}
  	 	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, true);
  	 }
@@ -95,13 +94,12 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
         try {
 
             // mark all active requests to initialized and delete the action items
-            List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeaderId);
-            for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-                ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+            List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeaderId);
+            for (ActionRequestValue actionRequest : actionRequests) {
                 if (actionRequest.isActive()) {
                     actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
-                    for (Iterator iterator = actionRequest.getActionItems().iterator(); iterator.hasNext();) {
-                        KEWServiceLocator.getActionListService().deleteActionItem((ActionItem) iterator.next());
+                    for (ActionItem actionItem : actionRequest.getActionItems()) {
+                        KEWServiceLocator.getActionListService().deleteActionItem(actionItem);
                     }
                     KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
                 }
@@ -218,7 +216,9 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     }
 
     private Throwable unwrapRouteManagerExceptionIfPossible(Throwable throwable) {
-    	throwable = ExceptionUtils.getCause(throwable);
+    	if (throwable instanceof InvocationTargetException) {
+    		throwable = throwable.getCause();
+    	}
     	if (throwable != null && (! (throwable instanceof RouteManagerException)) && throwable.getCause() instanceof RouteManagerException) {
     		throwable = throwable.getCause();
     	}
@@ -244,7 +244,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             routeContext = rmException.getRouteContext();
         } else {
         	routeContext.setDocument(document);
-            List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+            List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
             if (!activeNodeInstances.isEmpty()) {
                 // take the first active nodeInstance found.
                 RouteNodeInstance nodeInstance = (RouteNodeInstance) activeNodeInstances.get(0);

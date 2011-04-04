@@ -16,9 +16,8 @@
  */
 package org.kuali.rice.core.impl.proxy;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -58,8 +57,8 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 		}
 		try {
 			return invokeInternal(proxy, method, arguments);
-		} catch (Throwable t) {
-			throw ExceptionUtils.getCause(t);
+		} catch (InvocationTargetException e) {
+			throw e.getCause();
 		}
 	}
 

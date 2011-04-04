@@ -16,20 +16,6 @@
         <module>rice-shareddata-web</module>
     </modules>
     <dependencies>
-        <!-- Rice Deps -->
-        <!--
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>rice-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>rice-core-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        -->
-
         <!-- Third Party Deps -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>

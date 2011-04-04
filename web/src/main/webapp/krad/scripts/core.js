@@ -486,7 +486,11 @@ function setMethodToCall(methodToCall) {
 function writeHiddenToForm(propertyName, propertyValue) {
 	//removing because of performFinalize bug
 	jq('input[name="' +propertyName + '"]').remove();
-	jq("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo(jq("#formComplete"));
+	if (propertyValue.indexOf("'") != -1) {
+		jq("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jq("#formComplete"));
+	}else{
+		jq("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo(jq("#formComplete"));
+	}
 }
 
 /**

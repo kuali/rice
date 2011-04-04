@@ -178,8 +178,13 @@ public final class Style implements StyleContract, ModelObjectComplete {
          * to copy property values
          *  
          * @return a builder with the values from the contract already initialized
+         * 
+         * @throws IllegalArgumentException if the given contract is null
          */
         public static Builder create(StyleContract contract) {
+        	if (contract == null) {
+        		throw new IllegalArgumentException("contract was null");
+        	}
         	Builder builder = create(contract.getName());
         	builder.setStyleId(contract.getStyleId());
         	builder.setXmlContent(contract.getXmlContent());

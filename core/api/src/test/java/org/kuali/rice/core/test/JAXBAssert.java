@@ -70,7 +70,7 @@ public final class JAXBAssert {
 		  Object actual = unmarshaller.unmarshal(new StringReader(stringWriter.toString()));
 		  assertEquals("Unmarshalled object should be equal to original objectToMarshall.", objectToMarshal, actual);
 		  
-		  Object expected = unmarshaller.unmarshal(new StringReader(expectedXml));
+		  Object expected = unmarshaller.unmarshal(new StringReader(expectedXml.trim()));
 		  assertEquals("Unmarshalled objects should be equal.", expected, actual);
 		} catch (Throwable e) {
 			System.err.println("Outputting marshaled XML from failed assertion:\n" + marshaledXml);

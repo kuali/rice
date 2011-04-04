@@ -17,18 +17,12 @@
 
 package org.kuali.rice.core.api.style;
 
-import java.util.List;
-
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
 public interface StyleService {
 		
     public Style getStyle(String styleName);
-    
-    public List<String> getStyleNames();
-    
-    public List<Style> getStyles();
         
     public Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
     

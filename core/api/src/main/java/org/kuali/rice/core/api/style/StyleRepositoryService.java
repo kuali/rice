@@ -17,8 +17,6 @@
 
 package org.kuali.rice.core.api.style;
 
-import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -27,23 +25,32 @@ import javax.jws.soap.SOAPBinding;
 
 import org.kuali.rice.core.api.CoreConstants;
 
+/**
+ * Service for interacting with {@link Style} data. This service primarily
+ * consists of pure data-access operations on a repository of styles which are
+ * accessible based on their name or id which are both unique.
+ * 
+ * @author Eric Westfall
+ */
 @WebService(name = "styleRepositoryServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface StyleRepositoryService {
-	    
-	@WebMethod(operationName="getStyle")
-    @WebResult(name = "style")
-    public Style getStyle(@WebParam(name = "styleName") String styleName);
-    
-	@WebMethod(operationName="getStyleNames")
-    @WebResult(name = "styleNames")
-    public List<String> getStyleNames();
-    
-	@WebMethod(operationName="getStyles")
-    @WebResult(name = "styles")
-    public List<Style> getStyles();
-    
-	@WebMethod(operationName="saveStyle")
-    public void saveStyle(@WebParam(name = "style") Style style);
-    
+
+	/**
+	 * Returns the style with the given name.  If no style with the given name
+	 * can be found, this method will return null.
+	 * 
+	 * @param styleName the name of the style to retrieve, must not be null or blank
+	 * 
+	 * @return the style with the given name, or null if no style with the given name could be found
+	 * 
+	 * @throws IllegalArgumentException if the given styleName is null or blank
+	 */
+	@WebMethod(operationName = "getStyle")
+	@WebResult(name = "style")
+	public Style getStyle(@WebParam(name = "styleName") String styleName);
+
+	@WebMethod(operationName = "saveStyle")
+	public void saveStyle(@WebParam(name = "style") Style style);
+
 }

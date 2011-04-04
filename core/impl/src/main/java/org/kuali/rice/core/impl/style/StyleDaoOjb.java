@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.core.impl.style;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -27,41 +23,17 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class StyleDaoOjb extends PersistenceBrokerDaoSupport implements StyleDao {
 
+	@Override
     public void saveStyle(StyleBo styleData) {
         this.getPersistenceBrokerTemplate().store(styleData);
     }
 
+	@Override
     public StyleBo getStyle(String styleName) {
         Criteria criteria = new Criteria();
         criteria.addEqualTo("name", styleName);
         criteria.addEqualTo("active", Boolean.TRUE);
         return (StyleBo) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(StyleBo.class, criteria));
-    }
-
-    /**
-     * Returns names of all active Styles
-     */
-    public List<String> getStyleNames() {
-        List<StyleBo> styles = getStyles();
-        List<String> styleNames = new ArrayList<String>(styles.size());
-        for (StyleBo style: styles) {
-            styleNames.add(style.getName());
-        }
-        return styleNames;
-    }
-
-    /**
-     * Returns all active Styles
-     */
-    public List<StyleBo> getStyles() {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo("active", Boolean.TRUE);
-        Iterator it = this.getPersistenceBrokerTemplate().getIteratorByQuery(new QueryByCriteria(StyleBo.class, criteria));
-        List<StyleBo> styles = new ArrayList<StyleBo>();
-        while (it.hasNext()) {
-            styles.add((StyleBo) it.next());
-        }
-        return styles;
     }
 
 }

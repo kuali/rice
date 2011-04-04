@@ -19,8 +19,6 @@ package org.kuali.rice.core.impl.style;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.transform.Templates;
 
@@ -102,29 +100,6 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     private String getUnableToLoadMessage(String propertyName, String location) {
         return "unable to load resource at '" + location +
                 "' specified by configuration parameter '" + propertyName + "'";
-    }
-
-    /**
-     * Returns all styles
-     */
-    @Override
-    public List<Style> getStyles() {
-        List<StyleBo> styleBos = dao.getStyles();
-        List<Style> styles = new ArrayList<Style>();
-        if (styleBos != null) {
-        	for (StyleBo styleBo : styleBos) {
-        		styles.add(StyleBo.to(styleBo));
-        	}
-        }
-        return styles;
-    }
-
-    /**
-     * Returns all style names
-     */
-    @Override
-    public List<String> getStyleNames() {
-        return dao.getStyleNames();
     }
 
     /**

@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.core.impl.style;
 
-import java.util.List;
 
 
 public interface StyleDao {
@@ -24,9 +23,5 @@ public interface StyleDao {
     void saveStyle(StyleBo style);
 
     StyleBo getStyle(String styleName);
-
-    List<String> getStyleNames();
-    
-    List<StyleBo> getStyles();
 
 }

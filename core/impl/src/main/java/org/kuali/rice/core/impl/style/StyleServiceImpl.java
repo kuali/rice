@@ -17,7 +17,6 @@
 package org.kuali.rice.core.impl.style;
 
 import java.io.StringReader;
-import java.util.List;
 import java.util.Properties;
 
 import javax.xml.transform.Templates;
@@ -101,22 +100,6 @@ public class StyleServiceImpl implements StyleService {
             putTemplatesInCache(name, translet);
         }
         return translet;
-    }
-
-    /**
-     * Returns all styles
-     */
-    @Override
-    public List<Style> getStyles() {
-        return styleRepositoryService.getStyles();
-    }
-
-    /**
-     * Returns all style names
-     */
-    @Override
-    public List<String> getStyleNames() {
-        return styleRepositoryService.getStyleNames();
     }
 
     @Override

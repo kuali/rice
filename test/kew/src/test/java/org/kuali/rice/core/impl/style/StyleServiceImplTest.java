@@ -63,8 +63,6 @@ public class StyleServiceImplTest extends KEWTestCase {
         StyleService styleService = CoreApiServiceLocator.getStyleService();
         assertNotNull("Style 'an_arbitrary_style' not found", styleService.getStyle("an_arbitrary_style"));
 
-        assertTrue("Style not found among all styles", styleService.getStyleNames().contains("an_arbitrary_style"));
-
         Style style = styleService.getStyle("an_arbitrary_style");
         assertNotNull("'an_arbitrary_style' style not found", style);
         assertEquals("an_arbitrary_style", style.getName());

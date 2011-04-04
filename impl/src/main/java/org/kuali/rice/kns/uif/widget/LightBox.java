@@ -25,8 +25,9 @@ import org.apache.commons.lang.StringUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LightBox extends WidgetBase {
+	private static final long serialVersionUID = -4004284762546700975L;
 
-	public LightBox() {
+    public LightBox() {
 		super();
 	}
 

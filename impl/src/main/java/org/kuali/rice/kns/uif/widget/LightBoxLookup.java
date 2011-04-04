@@ -25,8 +25,9 @@ import org.apache.commons.lang.StringUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LightBoxLookup extends WidgetBase {
-
-	private String actionParameterMapString;
+	private static final long serialVersionUID = -8571541274489677888L;
+	
+    private String actionParameterMapString;
 	
 	public LightBoxLookup() {
 		super();

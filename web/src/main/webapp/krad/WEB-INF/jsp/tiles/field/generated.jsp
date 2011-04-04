@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.IframeField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.GeneratedField"/>
 
 <%--
     Template writes out the contents of the renderOutput

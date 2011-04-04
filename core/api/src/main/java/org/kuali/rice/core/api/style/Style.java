@@ -40,7 +40,7 @@ import org.w3c.dom.Element;
  * XML containing and XSL stylesheet. These can be used in various places for
  * the transformation of XML data from one form to another.
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Eric Westfall
  *
  */
 @XmlRootElement(name = Style.Constants.ROOT_ELEMENT_NAME)
@@ -132,7 +132,7 @@ public final class Style implements StyleContract, ModelObjectComplete {
 	}
 
 	/**
-	 * A builder which can be used to construct Style instances.  Endorces the
+	 * A builder which can be used to construct Style instances.  Enforces the
 	 * constraints of the {@link StyleContract}.
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)

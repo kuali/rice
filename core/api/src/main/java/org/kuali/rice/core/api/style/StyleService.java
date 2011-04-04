@@ -22,14 +22,46 @@ import java.util.List;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 
+/**
+ * Service for working with stylesheets.  This service provides pure data-oriented
+ * operations as well as operations dealing with pre-compiled stylesheets.  It's
+ * intended that most clients will interact with this service in lieu of the
+ * lower-level {@link StyleRepositoryService}.
+ * 
+ * @see Style
+ * @see StyleRepositoryService
+ * 
+ * @author Eric Westfall
+ *
+ */
 public interface StyleService {
 		
+	/**
+	 * @see StyleRepositoryService#getStyle(String)
+	 */
     public Style getStyle(String styleName);
-    
+
+    /**
+     * @see StyleRepositoryService#getAllStyleNames()
+     */
     public List<String> getAllStyleNames();
-        
-    public Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
-    
+
+    /**
+     * @see StyleRepositoryService#saveStyle(Style)
+     */
     public void saveStyle(Style data);
+    
+    /**
+     * Gets a compiled version of the style with the given name.
+     * 
+     * @param styleName the name of the style for which to retrieve a compiled version
+     * 
+     * @return a compiled version of the stylesheet as a {@link Templates} instance
+     * 
+     * @throws TransformerConfigurationException if compilation of the stylesheet fails
+     * @throws IllegalArgumentException if the given styleName is null or blank
+     */
+    public Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
+
 	
 }

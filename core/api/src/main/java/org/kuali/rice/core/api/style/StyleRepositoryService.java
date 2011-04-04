@@ -42,9 +42,11 @@ public interface StyleRepositoryService {
 	 * Returns the style with the given name.  If no style with the given name
 	 * can be found, this method will return null.
 	 * 
-	 * @param styleName the name of the style to retrieve, must not be null or blank
+	 * @param styleName the name of the style to retrieve, must not be null or
+	 * blank
 	 * 
-	 * @return the style with the given name, or null if no style with the given name could be found
+	 * @return the style with the given name, or null if no style with the given
+	 * name could be found
 	 * 
 	 * @throws IllegalArgumentException if the given styleName is null or blank
 	 */
@@ -52,9 +54,33 @@ public interface StyleRepositoryService {
 	@WebResult(name = "style")
 	public Style getStyle(@WebParam(name = "styleName") String styleName);
 
+	/**
+	 * Creates or updates the Style represented by the given record.  If the
+	 * styleId on the style is not null, then it will update the existing
+	 * style record which has that id.  Otherwise it will create a new style in
+	 * the repository.
+	 * 
+	 * <p>When updating an existing style, the caller needs to ensure that the
+	 * styleId, versionNumber, and objectId values are set on the given Style
+	 * object.
+	 * 
+	 * @param style the style data to create or update in the repository
+	 * 
+	 * @return the style with the given name, or null if no style with the given
+	 * name could be found
+	 * 
+	 * @throws IllegalArgumentException if the given style is null
+	 */
 	@WebMethod(operationName = "saveStyle")
 	public void saveStyle(@WebParam(name = "style") Style style);
 	
+	/**
+	 * Returns a list of the names for all active styles in the repository. If
+	 * there are no active styles, this list will be empty.  It will never
+	 * return null.
+	 * 
+	 * @return the list of names for all active styles
+	 */
 	@WebMethod(operationName="getStyleNames")
     @WebResult(name = "styleNames")
     public List<String> getAllStyleNames();

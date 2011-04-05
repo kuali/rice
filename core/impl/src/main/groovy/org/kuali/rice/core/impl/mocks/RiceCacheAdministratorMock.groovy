@@ -25,9 +25,9 @@ import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
  */
 class RiceCacheAdministratorMock implements RiceCacheAdministrator {
 
-	def Map<String, Object> cache = new HashMap<String, Object>();
-	def Map<String, Set<String>> keyToGroupMap = new HashMap<String, Set<String>>();
-	def Map<String, Set<String>> groupToKeyMap = new HashMap<String, Set<String>>();
+	Map<String, Object> cache = new HashMap<String, Object>();
+	Map<String, Set<String>> keyToGroupMap = new HashMap<String, Set<String>>();
+	Map<String, Set<String>> groupToKeyMap = new HashMap<String, Set<String>>();
 	
 	@Override
 	public void start() throws Exception {}
@@ -49,11 +49,11 @@ class RiceCacheAdministratorMock implements RiceCacheAdministrator {
 	public synchronized void putInCache(String key, Object content, String[] groups) {
 		cache.put(key, content);
 		if (groups != null && groups.length > 0) {
-			synchronized (groupMap) {
-				Set<String> currentGroups = groupMap.get(key);
+			synchronized (keyToGroupMap) {
+				Set<String> currentGroups = keyToGroupMap.get(key);
 				if (currentGroups == null) {
 					currentGroups = new HashSet<String>();
-					groupMap.put(key, currentGroups);
+					keyToGroupMap.put(key, currentGroups);
 				}
 				for (String group : groups) {
 					currentGroups.add(group);
@@ -71,7 +71,7 @@ class RiceCacheAdministratorMock implements RiceCacheAdministrator {
 	@Override
 	public synchronized void putInCache(String key, Object content, String group) {
 		if (group != null) {
-			putInCache(key, content, { group });
+			putInCache(key, content, [ group ] as String[]);
 		}
 	}
 
@@ -88,7 +88,7 @@ class RiceCacheAdministratorMock implements RiceCacheAdministrator {
 
 	@Override
 	public synchronized void flushGroup(String group) {
-		List<String> groupKeys = groupToKeyMap.get(group);
+		Set<String> groupKeys = groupToKeyMap.get(group);
 		if (groupKeys != null) {
 			for (String groupKey : groupKeys) {
 				flushEntry(groupKey);

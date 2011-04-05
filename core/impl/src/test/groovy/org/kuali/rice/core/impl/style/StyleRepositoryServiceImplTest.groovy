@@ -156,8 +156,7 @@ class StyleRepositoryServiceImplTest {
 		verifyMocks()
 		
 	}
-	
-	@Ignore
+
 	@Test
 	void testSaveStyle_removeFromCache() {
 		def style = createStyle()

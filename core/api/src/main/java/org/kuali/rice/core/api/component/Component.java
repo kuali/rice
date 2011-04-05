@@ -35,7 +35,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * An immutable representation of an Component.
+ * An immutable representation of an {@link ComponentContract}.
  *
  * Use the class {@link Component.Builder} to construct an Component object.
  * 

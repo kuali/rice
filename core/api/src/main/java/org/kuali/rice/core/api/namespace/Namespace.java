@@ -36,7 +36,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 /**
- * An immutable representation of a Namespace.
+ * An immutable representation of a {@link NamespaceContract}.
  *
  * <p>To construct an instance of a Namespace, use the {@link Namespace.Builder} class.
  * 

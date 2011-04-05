@@ -35,6 +35,13 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
+/**
+ * An immutable representation of a {@link CountyContract}.
+ *
+ * <p>To construct an instance of a County, use the {@link County.Builder} class.
+ *
+ * @see CountyContract
+ */
 @XmlRootElement(name = County.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = County.Constants.TYPE_NAME, propOrder = {

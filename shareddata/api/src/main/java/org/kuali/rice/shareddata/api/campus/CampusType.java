@@ -34,6 +34,13 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * An immutable representation of a {@link CampusTypeContract}.
+ *
+ * <p>To construct an instance of a CampusType, use the {@link CampusType.Builder} class.
+ *
+ * @see CampusTypeContract
+ */
 @XmlRootElement(name = CampusType.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = CampusType.Constants.TYPE_NAME, propOrder = {

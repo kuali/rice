@@ -35,7 +35,13 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
-
+/**
+ * An immutable representation of a {@link CampusContract}.
+ *
+ * <p>To construct an instance of a Campus, use the {@link Campus.Builder} class.
+ *
+ * @see CampusContract
+ */
 @XmlRootElement(name = Campus.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Campus.Constants.TYPE_NAME, propOrder = {

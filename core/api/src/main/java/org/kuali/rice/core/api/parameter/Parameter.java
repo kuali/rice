@@ -34,6 +34,13 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * An immutable representation of a {@link ParameterContract}.
+ *
+ * <p>To construct an instance of a Parameter, use the {@link Parameter.Builder} class.
+ *
+ * @see ParameterContract
+ */
 @XmlRootElement(name = Parameter.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Parameter.Constants.TYPE_NAME, propOrder = {

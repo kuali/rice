@@ -35,6 +35,13 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * An immutable representation of a {@link PostalCodeContract}.
+ *
+ * <p>To construct an instance of a PostalCode, use the {@link PostalCode.Builder} class.
+ *
+ * @see PostalCodeContract
+ */
 @XmlRootElement(name = PostalCode.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PostalCode.Constants.TYPE_NAME, propOrder = {

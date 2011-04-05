@@ -36,7 +36,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 /**
- * An immutable representation of a parameter type.
+ * An immutable representation of a {@link ParameterTypeContract}.
  *
  * <p>To construct an instance of a ParameterType, use the {@link ParameterType.Builder} class.
  * 

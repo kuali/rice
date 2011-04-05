@@ -30,7 +30,7 @@ import org.kuali.rice.core.api.impex.ExportDataSet;
  * @see ExportDataSet
  * @see StyleBo
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleExportDataSet {
 

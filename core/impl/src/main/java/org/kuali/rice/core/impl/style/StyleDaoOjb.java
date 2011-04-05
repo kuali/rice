@@ -26,7 +26,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 /**
  * An OJB implementation of the {@link StyleDao}.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class StyleDaoOjb extends PersistenceBrokerDaoSupport implements StyleDao {

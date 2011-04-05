@@ -23,7 +23,7 @@ import java.util.List;
  * 
  * @see StyleBo
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface StyleDao {

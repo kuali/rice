@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.mo.Versioned;
  * This is the contract for a Style.  A style represents a stylesheet that is used for transforming data from
  * one format to another (currently only XSL is supported).
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface StyleContract extends Versioned, GloballyUnique {

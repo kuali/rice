@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.Person;
  * class during ingestion which can cause problems if that application isn't online and
  * available. 
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class LazyLoadSecurityAttribute implements SecurityAttribute {

@@ -40,7 +40,7 @@ import org.w3c.dom.Element;
  * XML containing and XSL stylesheet. These can be used in various places for
  * the transformation of XML data from one form to another.
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @XmlRootElement(name = Style.Constants.ROOT_ELEMENT_NAME)

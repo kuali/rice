@@ -31,7 +31,7 @@ import javax.xml.transform.TransformerConfigurationException;
  * @see Style
  * @see StyleRepositoryService
  * 
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface StyleService {

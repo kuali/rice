@@ -34,7 +34,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @see ExportDataSet
  * @see StyleBo
  *
- * @author Eric Westfall
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleDataExporter implements Exporter {
 

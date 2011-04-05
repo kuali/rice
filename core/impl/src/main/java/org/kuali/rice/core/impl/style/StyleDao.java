@@ -18,14 +18,37 @@ package org.kuali.rice.core.impl.style;
 
 import java.util.List;
 
-
-
+/**
+ * Defines data access operations related to {@link StyleBo}.
+ * 
+ * @see StyleBo
+ * 
+ * @author Eric Westfall
+ *
+ */
 public interface StyleDao {
 	
+	/**
+	 * Updates or creates the given style in the data store. 
+	 * 
+	 * @param style the style to save, if null then this method will do nothing
+	 */
     void saveStyle(StyleBo style);
 
+    /**
+     * Returns the style with the given name from the data store.
+     * 
+     * @param styleName the name of the style to retrieve
+     * @return the style with the given name, or null if it does not exist
+     */
     StyleBo getStyle(String styleName);
     
+    /**
+     * Return a list of the names of all styles that exist in the data store.
+     * This method ...
+     * 
+     * @return
+     */
     List<String> getAllStyleNames();
 
 }

@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Service for interacting with {@link PostalCode PostalCodes}.
  */
-@WebService(name = "postalCodeServiceSoap", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
+@WebService(name = "PostalCodeService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PostalCodeService {
 

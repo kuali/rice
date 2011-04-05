@@ -32,7 +32,8 @@ import org.kuali.rice.core.api.style.StyleContract;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
- * TODO
+ * A BusinessObject implementation of the StyleContract which is mapped to the
+ * database for persistence.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

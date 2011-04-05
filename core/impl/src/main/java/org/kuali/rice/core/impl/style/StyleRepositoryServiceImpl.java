@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.xml.transform.Templates;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -43,11 +44,11 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     static final String TEMPLATES_CACHE_GROUP_NAME = "Templates";
     private static final String STYLE_CONFIG_PREFIX = "edl.style";
 
-    private StyleDao dao;
+    private StyleDao styleDao;
     private RiceCacheAdministrator cache;
 
-    public void setStyleDao(StyleDao dao) {
-        this.dao = dao;
+    public void setStyleDao(StyleDao styleDao) {
+        this.styleDao = styleDao;
     }
     
     public void setCache(RiceCacheAdministrator cache) {
@@ -62,8 +63,12 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
      */
     @Override
     public Style getStyle(String styleName) {
+    	if (StringUtils.isBlank(styleName)) {
+    		throw new IllegalArgumentException("styleName was null or blank");
+    	}
+    	
     	// try to fetch the style from the database
-        StyleBo style = dao.getStyle(styleName);
+        StyleBo style = styleDao.getStyle(styleName);
         // if it's null, look for a config param specifiying a file to load
         if (style == null) {
             String propertyName = STYLE_CONFIG_PREFIX + "." + styleName;
@@ -123,18 +128,18 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     }
     
     protected void saveStyleBo(StyleBo styleBo) {
-    	StyleBo existingData = dao.getStyle(styleBo.getName());
+    	StyleBo existingData = styleDao.getStyle(styleBo.getName());
         if (existingData != null) {
             existingData.setActive(false);
-            dao.saveStyle(existingData);
+            styleDao.saveStyle(existingData);
         }
-        dao.saveStyle(styleBo);
+        styleDao.saveStyle(styleBo);
         removeStyleFromCache(styleBo.getName());
     }
     
     @Override
     public List<String> getAllStyleNames() {
-        return dao.getAllStyleNames();
+        return styleDao.getAllStyleNames();
     }
     
     // cache helper methods

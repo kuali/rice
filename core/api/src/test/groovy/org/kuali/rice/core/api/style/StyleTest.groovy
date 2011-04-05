@@ -38,8 +38,6 @@ class StyleTest {
         </style>
     """
 
-    
-
     @Test(expected=IllegalArgumentException.class)
     void testBuilderCreate_fail_null() {
         Style.Builder.create((String)null);

@@ -21,7 +21,12 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.shareddata.api.postalcode.PostalCode;
 import org.kuali.rice.shareddata.api.postalcode.PostalCodeService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PostalCodeServiceImpl implements PostalCodeService {
 

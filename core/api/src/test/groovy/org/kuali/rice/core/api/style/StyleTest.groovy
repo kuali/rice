@@ -106,6 +106,17 @@ class StyleTest {
 	public void test_Xml_Marshal_Unmarshal() {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Style.class)
 	}
+	
+	/**
+	 * Ensures that toString executes cleanly.
+	 */
+	@Test
+	public void testToString() {
+		def Style style = create();
+		def toString = style.toString()
+		Assert.assertNotNull toString
+		System.out.println(toString);
+	}
 
     private create() {
 		return Style.Builder.create(new StyleContract() {

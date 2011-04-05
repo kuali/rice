@@ -28,9 +28,13 @@ import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
- * TODO
+ * An implementation of the {@link Exporter} class which facilitates exporting
+ * of {@link StyleBo} data from the GUI.
+ * 
+ * @see ExportDataSet
+ * @see StyleBo
  *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Eric Westfall
  */
 public class StyleDataExporter implements Exporter {
 
@@ -40,9 +44,7 @@ public class StyleDataExporter implements Exporter {
 		supportedFormats.add(KNSConstants.XML_FORMAT);
 	}
 
-	/**
-	 * Export the given List of BusinessObjects of the specified type to XML.
-	 */
+	@Override
 	public void export(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects, String exportFormat, OutputStream outputStream) throws IOException {
 		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
 			throw new ExportNotSupportedException("The given export format of " + exportFormat + " is not supported by the KEW XML Exporter!");
@@ -52,6 +54,7 @@ public class StyleDataExporter implements Exporter {
 		outputStream.flush();
 	}
 
+	@Override
 	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass) {
 		return supportedFormats;
 	}

@@ -105,6 +105,12 @@ public class StyleBo extends PersistableBusinessObjectBase implements StyleContr
         this.active = active;
     }
     
+    /**
+     * Converts the given StyleBo to a Style object.
+     * 
+     * @param styleBo the StyleBo to convert
+     * @return the resulting Style object, or null if the given styleBo was null
+     */
     public static Style to(StyleBo styleBo) {
     	if (styleBo == null) {
     		return null;
@@ -112,6 +118,12 @@ public class StyleBo extends PersistableBusinessObjectBase implements StyleContr
     	return Style.Builder.create(styleBo).build();
     }
     
+    /**
+     * Constructs a StyleBo from the given Style.
+     * 
+     * @param style the Style to convert
+     * @return the resulting StyleBo object, or null if the given style was null
+     */
     public static StyleBo from(Style style) {
     	if (style == null) {
     		return null;

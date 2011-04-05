@@ -25,9 +25,9 @@ import org.junit.Test
 class StateTest {
 
     private static final String CODE = "MI";
-	private static final String NAME = "Michigan";
-	private static final String COUNTRY_CODE = "US";
-	private static final String ACTIVE = "true";
+    private static final String NAME = "Michigan";
+    private static final String COUNTRY_CODE = "US";
+    private static final String ACTIVE = "true";
     private static final Long VERSION_NUMBER = new Long(1);
 
     private static final String XML = """
@@ -40,52 +40,52 @@ class StateTest {
     </state>
     """
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_all_null() {
         State.Builder.create(null, null, null);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_first_null() {
         State.Builder.create(null, NAME, COUNTRY_CODE);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
         State.Builder.create("", NAME, COUNTRY_CODE);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
         State.Builder.create("  ", NAME, COUNTRY_CODE);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
         State.Builder.create(CODE, null, COUNTRY_CODE);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_second_empty() {
         State.Builder.create(CODE, "", COUNTRY_CODE);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_second_whitespace() {
         State.Builder.create(CODE, "  ", COUNTRY_CODE);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_third_null() {
         State.Builder.create(CODE, NAME, null);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_third_empty() {
         State.Builder.create(CODE, NAME, "");
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_third_whitespace() {
         State.Builder.create(CODE, NAME, "  ");
     }
@@ -101,28 +101,28 @@ class StateTest {
     }
 
     @Test
-	public void test_Xml_Marshal_Unmarshal() {
-	  def jc = JAXBContext.newInstance(State.class)
-	  def marshaller = jc.createMarshaller()
-	  def sw = new StringWriter()
+    public void test_Xml_Marshal_Unmarshal() {
+        def jc = JAXBContext.newInstance(State.class)
+        def marshaller = jc.createMarshaller()
+        def sw = new StringWriter()
 
-	  def param = this.create()
-	  marshaller.marshal(param,sw)
+        def param = this.create()
+        marshaller.marshal(param, sw)
 
-	  def unmarshaller = jc.createUnmarshaller();
-	  def actual = unmarshaller.unmarshal(new StringReader(sw.toString()))
-	  def expected = unmarshaller.unmarshal(new StringReader(XML))
+        def unmarshaller = jc.createUnmarshaller();
+        def actual = unmarshaller.unmarshal(new StringReader(sw.toString()))
+        def expected = unmarshaller.unmarshal(new StringReader(XML))
 
-	  Assert.assertEquals(expected,actual)
-	}
+        Assert.assertEquals(expected, actual)
+    }
 
     private create() {
-		return State.Builder.create(new StateContract() {
-			def String name = StateTest.NAME
+        return State.Builder.create(new StateContract() {
+            def String name = StateTest.NAME
             def String code = StateTest.CODE
             def String countryCode = StateTest.COUNTRY_CODE
             def boolean active = StateTest.ACTIVE.toBoolean()
             def Long versionNumber = StateTest.VERSION_NUMBER
         }).build()
-	}
+    }
 }

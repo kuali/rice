@@ -116,9 +116,9 @@ public final class KrmsAttributeDefinition implements KrmsAttributeDefinitionCon
 		private String id;
         private String name;
         private String namespace;
-        private String label = "";
+        private String label;
         private boolean active;
-        private String componentName = "";
+        private String componentName;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.

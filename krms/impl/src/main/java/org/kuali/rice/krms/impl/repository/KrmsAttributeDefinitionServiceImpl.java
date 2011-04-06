@@ -33,9 +33,10 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 		if (attributeDefinition == null){
 	        throw new IllegalArgumentException("attributeDefinition is null");
 		}
-		final String idKey = attributeDefinition.getId();
-		final KrmsAttributeDefinition existing = getAttributeDefinitionById(idKey);
-		if (existing != null && existing.getId().equals(idKey)){
+		final String nameKey = attributeDefinition.getName();
+		final String namespaceKey = attributeDefinition.getNamespace();
+		final KrmsAttributeDefinition existing = getAttributeDefinitionByNameAndNamespace(nameKey, namespaceKey);
+		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
             throw new IllegalStateException("the krms attribute definition to create already exists: " + attributeDefinition);			
 		}
 		businessObjectService.save(KrmsAttributeDefinitionBo.from(attributeDefinition));

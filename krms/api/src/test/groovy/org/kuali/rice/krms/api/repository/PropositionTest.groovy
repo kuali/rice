@@ -245,6 +245,7 @@ class PropositionTest {
 			def List<? extends Proposition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
 		})
 	}
+	
 	@Test
 	void test_Builder_create_and_build_compound_proposition_success() {
 		Proposition.Builder.create(new PropositionContract () {

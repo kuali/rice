@@ -79,7 +79,9 @@ public final class KrmsTypeAttribute implements KrmsTypeAttributeContract, Model
         this.attributeDefinitionId = builder.getAttributeDefinitionId();
         this.sequenceNumber = builder.getSequenceNumber();
         this.active = builder.isActive();
-        this.attributeDefinition = builder.getAttributeDefinition().build();
+        if (builder.getAttributeDefinition() != null) {
+        	this.attributeDefinition = builder.getAttributeDefinition().build();
+        }
     }
     
 	public String getId() {
@@ -190,6 +192,9 @@ public final class KrmsTypeAttribute implements KrmsTypeAttributeContract, Model
 		}
 		
 		public void setSequenceNumber(Integer sequenceNumber) {
+			if (sequenceNumber == null){
+				 throw new IllegalArgumentException("the sequence number is null");
+			}
 			this.sequenceNumber = sequenceNumber;
 		}
 		

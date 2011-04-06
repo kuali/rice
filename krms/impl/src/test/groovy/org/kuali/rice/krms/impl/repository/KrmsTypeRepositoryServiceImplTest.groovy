@@ -27,9 +27,9 @@ import org.junit.Test
 import org.kuali.rice.kns.service.BusinessObjectService
 import org.kuali.rice.kns.util.KNSPropertyConstants
 import org.kuali.rice.krms.api.repository.KrmsType
-import org.kuali.rice.krms.api.repository.KrmsTypeService
+import org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService
 
-class KrmsTypeServiceImplTest {
+class KrmsTypeRepositoryServiceImplTest {
 
   private final shouldFail = new GroovyTestCase().&shouldFail
 
@@ -39,8 +39,8 @@ class KrmsTypeServiceImplTest {
 
   @BeforeClass
   static void createSampleTypeBOs() {
-    KrmsTypeBo defaultBo = new KrmsTypeBo(active: true, id: "1", name: "DEFAULT", namespace: "KRMS_TEST", serviceName: "KrmsTypeServiceImpl")
-    KrmsTypeBo studentBo = new KrmsTypeBo(active: true, id: "2", name: "Student", namespace: "KRMS_TEST", serviceName: "KrmsTypeServiceImpl")
+    KrmsTypeBo defaultBo = new KrmsTypeBo(active: true, id: "1", name: "DEFAULT", namespace: "KRMS_TEST", serviceName: "KrmsTypeRepositoryServiceImpl")
+    KrmsTypeBo studentBo = new KrmsTypeBo(active: true, id: "2", name: "Student", namespace: "KRMS_TEST", serviceName: "KrmsTypeRepositoryServiceImpl")
     KrmsTypeBo ifopalBo = new KrmsTypeBo(active: true, id: "3", name: "IFOPAL", namespace: "KC_TEST", serviceName: null)
     for (bo in [defaultBo, studentBo, ifopalBo]) {
       sampleTypes.put(bo.id, bo)
@@ -62,7 +62,7 @@ class KrmsTypeServiceImplTest {
 
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    KrmsTypeService service = new KrmsTypeServiceImpl()
+    KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
     service.setBusinessObjectService(bos)
     KrmsType myType = service.getTypeById("1")
 
@@ -73,14 +73,14 @@ class KrmsTypeServiceImplTest {
   @Test
   public void testGetByPrimaryIdEmptyTypeId() {
       shouldFail(IllegalArgumentException.class) {
-        new KrmsTypeServiceImpl().getTypeById("")
+        new KrmsTypeRepositoryServiceImpl().getTypeById("")
       }
   }
 
   @Test
   public void testGetByPrimaryIdNullTypeId() {
       shouldFail(IllegalArgumentException.class) {
-        new KrmsTypeServiceImpl().getTypeById(null)
+        new KrmsTypeRepositoryServiceImpl().getTypeById(null)
       }
   }
 
@@ -94,7 +94,7 @@ class KrmsTypeServiceImplTest {
 //    }
 //    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 //
-//    KrmsTypeService service = new KrmsTypeServiceImpl()
+//    KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
 //    service.setBusinessObjectService(bos)
 //    KrmsType myType = service.getTypeByNameAndNamespace("Student","KRMS_TEST")
 //
@@ -153,7 +153,7 @@ class KrmsTypeServiceImplTest {
       Class clazz, Map map -> [sampleTypes.get("1"), sampleTypes.get("2")]
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-    KrmsTypeService service = new KrmsTypeServiceImpl()
+    KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
     service.setBusinessObjectService(bos)
     service.findAllTypesByNamespace()
 
@@ -167,7 +167,7 @@ class KrmsTypeServiceImplTest {
     }
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-    KrmsTypeService service = new KrmsTypeServiceImpl()
+    KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
     service.setBusinessObjectService(bos)
     service.findAllTypes()
 

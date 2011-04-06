@@ -20,13 +20,64 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.KrmsType;
-import org.kuali.rice.krms.api.repository.KrmsTypeService;
+import org.kuali.rice.krms.api.repository.KrmsTypeAttribute;
+import org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService;
+import org.kuali.rice.krms.api.repository.Proposition;
 
 import java.util.*;
 
-public final class KrmsTypeServiceImpl implements KrmsTypeService {
+public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositoryService {
 
     private BusinessObjectService businessObjectService;
+
+	/**
+	 * This overridden method creates a KrmsType if it does not 
+	 * already exist in the repository.
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.repository.KrmsType)
+	 */
+	@Override
+	public void createKrmsType(KrmsType krmsType) {
+		if (krmsType == null){
+	        throw new IllegalArgumentException("krmsType is null");
+		}
+		final String nameKey = krmsType.getName();
+		final String namespaceKey = krmsType.getNamespace();
+		final KrmsType existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
+		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
+            throw new IllegalStateException("the KRMS Type to create already exists: " + krmsType);			
+		}
+		
+		businessObjectService.save(KrmsTypeBo.from(krmsType));
+	}
+
+	/**
+	 * This overridden method updates an existing KrmsType
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.repository.KrmsType)
+	 */
+	@Override
+	public void updateKrmsType(KrmsType krmsType) {
+        if (krmsType == null) {
+            throw new IllegalArgumentException("krmsType is null");
+        }
+		final String nameKey = krmsType.getName();
+		final String namespaceKey = krmsType.getNamespace();
+		final KrmsType existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
+        if (existing == null) {
+            throw new IllegalStateException("the KRMS type does not exist: " + krmsType);
+        }
+        final KrmsType toUpdate;
+        if (!existing.getId().equals(krmsType.getId())){
+        	final KrmsType.Builder builder = KrmsType.Builder.create(krmsType);
+        	builder.setId(existing.getId());
+        	toUpdate = builder.build();
+        } else {
+        	toUpdate = krmsType;
+        }
+        
+        businessObjectService.save(KrmsTypeBo.from(toUpdate));
+	}
 
     @Override
     public KrmsType getTypeById(final String id) {
@@ -90,10 +141,10 @@ public final class KrmsTypeServiceImpl implements KrmsTypeService {
     }
 
     /**
-     * Converts a List<CountryBo> to an Unmodifiable List<Country>
+     * Converts a List<KrmsTypeBo> to an Unmodifiable List<KrmsType>
      *
-     * @param countryBos a mutable List<CountryBo> to made completely immutable.
-     * @return An unmodifiable List<Country>
+     * @param KrmsTypeBos a mutable List<KrmsTypeBo> to made completely immutable.
+     * @return An unmodifiable List<KrmsType>
      */
     List<KrmsType> convertListOfBosToImmutables(final Collection<KrmsTypeBo> krmsTypeBos) {
         ArrayList<KrmsType> krmsTypes = new ArrayList<KrmsType>();
@@ -103,4 +154,26 @@ public final class KrmsTypeServiceImpl implements KrmsTypeService {
         }
         return Collections.unmodifiableList(krmsTypes);
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#createKrmsTypeAttribute(org.kuali.rice.krms.api.repository.KrmsTypeAttribute)
+	 */
+	@Override
+	public void createKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {
+		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
+		
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#updateKrmsTypeAttribute(org.kuali.rice.krms.api.repository.KrmsTypeAttribute)
+	 */
+	@Override
+	public void updateKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {
+		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
+		
+	}
 }

@@ -26,7 +26,27 @@ import java.util.List;
 
 @WebService(name = "KRMSTypeService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface KrmsTypeService {
+public interface KrmsTypeRepositoryService {
+
+    /**
+     * This will create a {@link KrmsType} exactly like the parameter passed in.
+     *
+     * @param krmsType - KrmsType
+     * @throws IllegalArgumentException if the krmsType is null
+     * @throws IllegalStateException if the KrmsType already exists in the system
+     */
+    @WebMethod(operationName="createKrmsType")
+    void createKrmsType(@WebParam(name = "krmsType") KrmsType krmsType);
+
+    /**
+     * This will update an existing {@link KrmsType}
+     *
+     * @param krmsType - KrmsType
+     * @throws IllegalArgumentException if the krmsType is null
+     * @throws IllegalStateException if the KrmsType does not exist in the system
+     */
+    @WebMethod(operationName="updateKrmsType")
+    void updateKrmsType(@WebParam(name = "krmsType") KrmsType krmsType);
 
     /**
      * Lookup a krms type based on the given id.
@@ -72,4 +92,26 @@ public interface KrmsTypeService {
     @WebMethod(operationName = "findAllTypes")
     @WebResult(name = "allTypes")
     List<KrmsType> findAllTypes();
+    
+    /**
+     * This will create a {@link KrmsTypeAttribute} exactly like the parameter passed in.
+     *
+     * @param krmsTypeAttribute - KrmsTypeAttribute
+     * @throws IllegalArgumentException if the krmsTypeAttribute is null
+     * @throws IllegalStateException if the KrmsTypeAttribute already exists in the system
+     */
+    @WebMethod(operationName="createKrmsTypeAttribute")
+    void createKrmsTypeAttribute(@WebParam(name = "krmsTypeAttribute") KrmsTypeAttribute krmsTypeAttribute);
+
+    /**
+     * This will update an existing {@link KrmsTypeAttribute}
+     *
+     * @param krmsType - KrmsTypeAttribute
+     * @throws IllegalArgumentException if the krmsTypeAttribute is null
+     * @throws IllegalStateException if the KrmsTypeAttribute does not exist in the system
+     */
+    @WebMethod(operationName="updateKrmsTypeAttribute")
+    void updateKrmsTypeAttribute(@WebParam(name = "krmsTypeAttribute") KrmsTypeAttribute krmsTypeAttribute);
+
+
 }

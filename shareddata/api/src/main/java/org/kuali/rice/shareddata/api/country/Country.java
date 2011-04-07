@@ -165,6 +165,10 @@ public final class Country implements CountryContract, ModelObjectComplete {
             this.setActive(active);
         }
 
+        public static Builder create(String code, String name) {
+            return new Builder(code, null, name, false, true);
+        }
+
         public static Builder create(String code, String alternatePostalCode, String name,
                                      boolean restricted, boolean active) {
             return new Builder(code, alternatePostalCode, name, restricted, active);

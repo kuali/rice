@@ -50,6 +50,11 @@ class CountryTest {
   private final shouldFail = new GroovyTestCase().&shouldFail
 
   @Test
+  void test_create_only_required_two_arg_create_factory_method() {
+    Country.Builder.create(Country.Builder.create(CODE, NAME)).build();
+  }
+
+  @Test
   void test_create_only_required() {
     Country.Builder.create(Country.Builder.create(CODE, null, NAME, false, true)).build();
   }

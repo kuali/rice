@@ -58,6 +58,9 @@ public final class CoreConstants {
         public static final String FUTURE_ELEMENTS = "_futureElements";
         public static final String VERSION_NUMBER = "versionNumber";
         public static final String OBJECT_ID = "objectId";
+        public static final String ACTIVE = "active";
+        public static final String ACTIVE_FROM_DATE = "activeFromDate";
+        public static final String ACTIVE_TO_DATE = "activeToDate";
 
         private CommonElements() {
 		    throw new UnsupportedOperationException("do not call");

@@ -6,19 +6,25 @@
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
-    <groupId>org.kuali.rice</groupId>
-    <artifactId>kim-api</artifactId>
-    <name>kim-api</name>
+    <artifactId>rice-kim-api</artifactId>
+    <name>rice-kim-api</name>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>rice-core-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>rice-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

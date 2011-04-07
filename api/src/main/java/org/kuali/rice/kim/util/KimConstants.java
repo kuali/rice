@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.util;
 
+import org.kuali.rice.core.api.CoreConstants;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -331,4 +333,10 @@ public final class KimConstants {
 	private KimConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}
+
+    public final static class Namespaces {
+        public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/kim";
+
+        public static final String KIM_NAMESPACE_2_0 = KIM_NAMESPACE_PREFIX + "/" + CoreConstants.Namespaces.VERSION_2_0;
+    }
 }

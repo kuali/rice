@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/client-contrib.iml" filepath="$PROJECT_DIR$/client-contrib.iml" />
       <module fileurl="file://$PROJECT_DIR$/kim.iml" filepath="$PROJECT_DIR$/kim.iml" group="kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/kim-api.iml" filepath="$PROJECT_DIR$/kim-api.iml" group="kim and modules" />
-      <module fileurl="file://$PROJECT_DIR$/kim-impl.iml" filepath="$PROJECT_DIR$/kim-impl.iml" group="kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/krad.iml" filepath="$PROJECT_DIR$/krad.iml" group="krad and modules" />
       <module fileurl="file://$PROJECT_DIR$/krad-app-framework.iml" filepath="$PROJECT_DIR$/krad-app-framework.iml" group="krad and modules" />
       <module fileurl="file://$PROJECT_DIR$/krad-web-framework.iml" filepath="$PROJECT_DIR$/krad-web-framework.iml" group="krad and modules" />
@@ -34,6 +32,8 @@
       <module fileurl="file://$PROJECT_DIR$/../../../kew/rice-kew.iml" filepath="$PROJECT_DIR$/../../../kew/rice-kew.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../kew/framework/rice-kew-framework.iml" filepath="$PROJECT_DIR$/../../../kew/framework/rice-kew-framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-kew-test.iml" filepath="$PROJECT_DIR$/rice-kew-test.iml" group="rice-test and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-api.iml" filepath="$PROJECT_DIR$/rice-kim-api.iml" group="kim and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-kim-impl.iml" filepath="$PROJECT_DIR$/rice-kim-impl.iml" group="kim and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kim-test.iml" filepath="$PROJECT_DIR$/rice-kim-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kns-test.iml" filepath="$PROJECT_DIR$/rice-kns-test.iml" group="rice-test and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-krms.iml" filepath="$PROJECT_DIR$/rice-krms.iml" group="rice-krms and modules" />
@@ -51,6 +51,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-shareddata-api.iml" filepath="$PROJECT_DIR$/rice-shareddata-api.iml" group="rice-shareddata and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-shareddata-framework.iml" filepath="$PROJECT_DIR$/rice-shareddata-framework.iml" group="rice-shareddata and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-shareddata-impl.iml" filepath="$PROJECT_DIR$/rice-shareddata-impl.iml" group="rice-shareddata and modules" />
+      <module fileurl="file://$PROJECT_DIR$/../../../test/shareddata/rice-shareddata-test.iml" filepath="$PROJECT_DIR$/../../../test/shareddata/rice-shareddata-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-shareddata-web.iml" filepath="$PROJECT_DIR$/rice-shareddata-web.iml" group="rice-shareddata and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-standalone.iml" filepath="$PROJECT_DIR$/rice-standalone.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-test.iml" filepath="$PROJECT_DIR$/rice-test.iml" group="rice-test and modules" />

@@ -108,8 +108,8 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         this.name = builder.getName();
         this.shortName = builder.getShortName();
         if (builder.campusType != null) {
-        	this.campusType = builder.campusType.build();
-        }   else {
+        	this.campusType = builder.getCampusType().build();
+        } else {
             this.campusType = null;
         }
         this.active = builder.isActive();

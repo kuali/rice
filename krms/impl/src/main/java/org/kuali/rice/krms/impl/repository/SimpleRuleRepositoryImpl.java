@@ -2,20 +2,20 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.kuali.rice.krms.framework.repository.ContextDefinition;
-import org.kuali.rice.krms.framework.repository.RuleRepository;
+import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 
 /**
  * This impl has some concurrency issues to consider 
  * @author gilesp
  *
  */
-public class SimpleRuleRepositoryImpl implements RuleRepository {
+public class SimpleRuleRepositoryImpl implements RuleRepositoryService {
 	
 	ConcurrentMap<String, Set<ContextDefinition>> contextDefinitions = new ConcurrentHashMap<String, Set<ContextDefinition>>();
 	

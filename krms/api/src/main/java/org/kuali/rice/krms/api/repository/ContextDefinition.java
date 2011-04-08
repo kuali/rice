@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.framework.repository;
+package org.kuali.rice.krms.api.repository;
 
 public class ContextDefinition {
 		

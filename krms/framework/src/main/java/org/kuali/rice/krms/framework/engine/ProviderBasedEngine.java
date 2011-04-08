@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.kuali.rice.krms.api.Asset;
 import org.kuali.rice.krms.api.Context;
-import org.kuali.rice.krms.api.ContextProvider;
 import org.kuali.rice.krms.api.Engine;
 import org.kuali.rice.krms.api.EngineResults;
 import org.kuali.rice.krms.api.ExecutionEnvironment;

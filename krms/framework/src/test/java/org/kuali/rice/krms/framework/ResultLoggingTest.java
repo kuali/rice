@@ -14,7 +14,6 @@ import org.kuali.rice.krms.api.Agenda;
 import org.kuali.rice.krms.api.Asset;
 import org.kuali.rice.krms.api.AssetResolver;
 import org.kuali.rice.krms.api.Context;
-import org.kuali.rice.krms.api.ContextProvider;
 import org.kuali.rice.krms.api.EngineResults;
 import org.kuali.rice.krms.api.ExecutionOptions;
 import org.kuali.rice.krms.api.LogicalOperator;
@@ -28,6 +27,7 @@ import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.ComparableTermBasedProposition;
 import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.CompoundProposition;
+import org.kuali.rice.krms.framework.engine.ContextProvider;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 

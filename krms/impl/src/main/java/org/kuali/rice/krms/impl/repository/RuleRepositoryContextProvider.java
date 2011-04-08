@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.kuali.rice.krms.api.Asset;
 import org.kuali.rice.krms.api.Context;
-import org.kuali.rice.krms.api.ContextProvider;
 import org.kuali.rice.krms.api.SelectionCriteria;
+import org.kuali.rice.krms.framework.engine.ContextProvider;
 import org.kuali.rice.krms.framework.repository.ContextDefinition;
 import org.kuali.rice.krms.framework.repository.RuleRepository;
 

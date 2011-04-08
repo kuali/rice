@@ -1,6 +1,10 @@
-package org.kuali.rice.krms.api;
+package org.kuali.rice.krms.framework.engine;
 
 import java.util.Map;
+
+import org.kuali.rice.krms.api.Asset;
+import org.kuali.rice.krms.api.Context;
+import org.kuali.rice.krms.api.SelectionCriteria;
 
 /**
  * Loads a {@link Context} for the given set of criteria.  Applications who
@@ -29,9 +33,10 @@ public interface ContextProvider {
 	 * this method should never be null.  However, they might be empty.
 	 * 
 	 * @param selectionCriteria the criteria to use during the selection phase of engine operation
-	 * @param facts
-	 * @param executionOptions
-	 * @return
+	 * @param facts the set of facts that are supplied to the engine at execution time
+	 * @param executionOptions a collection of options that can be used to customize engine execution behavior
+	 * 
+	 * @return the context which matches the given criteria, or null if no context matches
 	 */
 	public Context loadContext(SelectionCriteria selectionCriteria, Map<Asset, Object> facts, Map<String, String> executionOptions);
 	

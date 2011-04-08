@@ -15,8 +15,9 @@ public class RuleRepositoryContextProvider implements ContextProvider {
 	
 	@Override
 	public Context loadContext(SelectionCriteria selectionCriteria, Map<Asset, Object> facts, Map<String, String> executionOptions) {
-		ContextDefinition contextDefinition = ruleRepositoryService.selectContext(selectionCriteria.getContextQualifiers());
-		return loadContextFromDefinition(contextDefinition);
+//		ContextDefinition contextDefinition = ruleRepositoryService.selectContext(selectionCriteria.getContextQualifiers());
+//		return loadContextFromDefinition(contextDefinition);
+		return null; // for now
 	}
 	
 	protected Context loadContextFromDefinition(ContextDefinition contextDefinition) {

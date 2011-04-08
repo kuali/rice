@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 
 /**
@@ -19,7 +20,19 @@ public class SimpleRuleRepositoryImpl implements RuleRepositoryService {
 	
 	ConcurrentMap<String, Set<ContextDefinition>> contextDefinitions = new ConcurrentHashMap<String, Set<ContextDefinition>>();
 	
+	
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.RuleRepositoryService#selectContext(org.kuali.rice.krms.api.repository.ContextSelectionCriteria)
+	 */
 	@Override
+	public ContextDefinition selectContext(
+			ContextSelectionCriteria contextSelectionCriteria) {
+		return selectContext(contextSelectionCriteria.getContextQualifiers());
+	}
+
 	public ContextDefinition selectContext(Map<String, String> contextQualifiers) {
 		Set<ContextDefinition> results = null;
 		if (contextQualifiers != null) for (Entry<String,String> entry : contextQualifiers.entrySet()) {

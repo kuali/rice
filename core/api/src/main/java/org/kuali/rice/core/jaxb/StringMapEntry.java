@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.core.jaxb;
 
+import java.io.Serializable;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Single String-String key-value pair for 
@@ -29,37 +33,43 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class StringMapEntry {
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "StringMapEntryType")
+public final class StringMapEntry implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -9609663434312103L;
+
+	@XmlAttribute (name = "key")
+	private final String key;
 	
-	@XmlAttribute
-	String key;
-	
-	@XmlElement(required=true) // maxoccurs == minoccurs == 1
-	String value;
-	
-	/**
-	 *
-	 */
-	public StringMapEntry() {}
+	@XmlElement(name = "value", required=true)
+	private final String value;
 	
 	/**
-	 * @param name
-	 * @param value
+	 * Used only by JAXB.
 	 */
+	@SuppressWarnings("unused")
+	private StringMapEntry() {
+		this.key = null;
+		this.value = null;
+	}
+	
 	public StringMapEntry(String key, String value) {
 	    this.key = key;
 	    this.value = value;
 	}
 
-	/**
-	 * This constructs a ...
-	 * 
-	 * @param e
-	 */
 	public StringMapEntry(Map.Entry<String, String> e) {
 	    this.key = e.getKey();
 	    this.value = e.getValue();
 	}
+
+	public String getKey() {
+		return this.key;
+	}
+
+	public String getValue() {
+		return this.value;
+	}
+	
 }

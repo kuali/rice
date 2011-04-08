@@ -1,7 +1,8 @@
 package org.kuali.rice.krms.api.repository;
 
-import java.util.Map;
-
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -16,6 +17,14 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleRepositoryService {
 
-	public ContextDefinition selectContext(Map<String, String> contextQualifiers);
+	/**
+	 * Locates a ContextDefinition based on the given map of context qualifiers.
+	 * 
+	 * @param contextQualifiers
+	 * @return
+	 */
+	@WebMethod(operationName = "selectContext")
+	@WebResult(name = "contextDefinition")
+	public ContextDefinition selectContext(@WebParam(name = "contextSelectionCriteria") ContextSelectionCriteria contextSelectionCriteria);
 	
 }

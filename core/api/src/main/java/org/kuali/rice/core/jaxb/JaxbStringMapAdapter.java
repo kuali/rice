@@ -54,7 +54,7 @@ public class JaxbStringMapAdapter extends XmlAdapter<StringMapEntryList, Map<Str
 		if (null == entryList) return null;
 		Map<String, String> resultMap = new HashMap<String, String>();
 		for (StringMapEntry entry : entryList.getEntries()) {
-			resultMap.put(entry.key, entry.value);
+			resultMap.put(entry.getKey(), entry.getValue());
 		}
 		return resultMap;
 	}

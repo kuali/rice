@@ -21,18 +21,18 @@ import java.util.Map;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
+ * Do JAXB mapping of Map<String, String> to a format like the following:
+ * 
+ * <pre>
+ * {@code
+ * 
+ * }
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class MapStringStringAdapter extends XmlAdapter<StringMapEntry[], Map<String, String>> {
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
-	 */
 	@Override
 	public StringMapEntry[] marshal(Map<String, String> map) throws Exception {
 		if(null == map) return null;
@@ -56,7 +56,7 @@ public class MapStringStringAdapter extends XmlAdapter<StringMapEntry[], Map<Str
 		Map<String, String> resultMap = new HashMap<String, String>(entryArray.length);
 		for (int i = 0; i < entryArray.length; i++) {
 			StringMapEntry stringMapEntry = entryArray[i];
-			resultMap.put(stringMapEntry.key, stringMapEntry.value);
+			resultMap.put(stringMapEntry.getKey(), stringMapEntry.getValue());
 		}
 		return resultMap;
 	}

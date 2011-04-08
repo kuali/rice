@@ -53,7 +53,7 @@ public class AttributeSetAdapter extends XmlAdapter<StringMapEntry[], AttributeS
 		AttributeSet resultMap = new AttributeSet(entryArray.length);
 		for (int i = 0; i < entryArray.length; i++) {
 			StringMapEntry stringMapEntry = entryArray[i];
-			resultMap.put(stringMapEntry.key, stringMapEntry.value);
+			resultMap.put(stringMapEntry.getKey(), stringMapEntry.getValue());
 		}
 		return resultMap;
 	}

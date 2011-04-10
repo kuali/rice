@@ -6,12 +6,14 @@ package org.kuali.rice.shareddata.impl;
  * section or can be overridden on the java/maven invocation by passing in
  * -Djaxws.endpoint.publish.test.address=${your.url}
  */
-class ServiceEndpointLocation {
+final class ServiceEndpointLocation {
     static String ENDPOINT_URL = "http://localhost:23000/service"; //Default URL
     static {
-        String endpoint = System.getProperty("jaxws.endpoint.publish.test.address");
-        if (endpoint != null) {
-            ENDPOINT_URL = endpoint;
+        String endpointUrl = System.getProperty("jaxws.endpointUrl.publish.test.address");
+        if (endpointUrl != null) {
+            ENDPOINT_URL = endpointUrl;
         }
     }
+
+    private ServiceEndpointLocation() {}
 }

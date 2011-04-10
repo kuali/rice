@@ -1,42 +1,35 @@
 package org.kuali.rice.shareddata.impl;
 
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.shareddata.api.campus.CampusService;
 import org.kuali.rice.shareddata.impl.campus.CampusServiceImplTest;
 
-import javax.xml.ws.Endpoint;
 import javax.xml.ws.soap.SOAPFaultException;
 
 public class CampusServiceRemoteTest extends CampusServiceImplTest {
 
-    Endpoint endpoint;
+    RemoteTestHarness harness = new RemoteTestHarness();
 
     @Before
     @Override
     public void setupServiceUnderTest() {
         super.setupServiceUnderTest();
-
-        JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
-        factory.setServiceClass(CampusService.class);
-        factory.setAddress(ServiceEndpointLocation.ENDPOINT_URL);
-        this.setCampusService((CampusService) factory.create());
-
-        //Note: Endpoint.publish only starts up an internal (jetty) server the first time it is invoked.
-        endpoint = Endpoint.publish(ServiceEndpointLocation.ENDPOINT_URL, this.getCampusServiceImpl());
+        CampusService remoteProxy =
+                harness.publishEndpointAndReturnProxy(CampusService.class, this.getCampusServiceImpl());
+        super.setCampusService(remoteProxy);
     }
 
     @After
     public void unPublishEndpoint() {
-        endpoint.stop();
+        harness.stopEndpoint();
     }
+
 
     /*
      * All tests methods overridden are done so to expect SoapFaultException instead of a specific exception
      */
-
     @Override
     @Test(expected = SOAPFaultException.class)
     public void testGetCampusEmptyCode() {

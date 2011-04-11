@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krms.api.repository;
 
+import java.util.Set;
+
 import org.kuali.rice.core.api.mo.Versioned;
 
 /**
@@ -59,5 +61,14 @@ public interface ContextDefinitionContract extends Versioned {
 	 * @return the type id for the context definition, or null if this context definition is of the default type
 	 */
 	String getTypeId();
+	
+	
+	/**
+	 * Returns the set of agendas contained within the context definition. 
+	 * This method should never return null but can return null.
+	 * 
+	 * @return the set of agendas on the context definition
+	 */
+	Set<? extends AgendaDefinitionContract> getAgendas();
 	
 }

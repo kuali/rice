@@ -2,11 +2,15 @@ package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -41,6 +45,7 @@ import org.w3c.dom.Element;
 		ContextDefinition.Elements.NAMESPACE_CODE,
 		ContextDefinition.Elements.NAME,
 		ContextDefinition.Elements.TYPE_ID,
+		ContextDefinition.Elements.AGENDAS,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
@@ -59,6 +64,9 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 	
 	@XmlElement(name = Elements.TYPE_ID, required = false)
     private final String typeId;
+	
+	@XmlElementWrapper(name = Elements.AGENDAS, required = false)
+	private final Set<AgendaDefinition> agendas;
 	    
 	@XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
@@ -75,6 +83,7 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
     	this.name = null;
     	this.namespaceCode = null;
     	this.typeId = null;
+    	this.agendas = null;
     	this.versionNumber = null;
     }
     
@@ -83,7 +92,18 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
     	this.name = builder.getName();
     	this.namespaceCode = builder.getNamespaceCode();
     	this.typeId = builder.getTypeId();
+    	this.agendas = constructAgendas(builder.getAgendas());
     	this.versionNumber = builder.getVersionNumber();
+    }
+    
+    private static Set<AgendaDefinition> constructAgendas(Set<AgendaDefinition.Builder> agendaBuilders) {
+    	Set<AgendaDefinition> agendas = new HashSet<AgendaDefinition>();
+    	if (agendaBuilders != null) {
+    		for (AgendaDefinition.Builder agendaBuilder : agendaBuilders) {
+    			agendas.add(agendaBuilder.build());
+    		}
+    	}
+    	return agendas;
     }
     
     @Override
@@ -105,7 +125,12 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 	public String getTypeId() {
 		return typeId;
 	}
-    
+	
+	@Override
+	public Set<AgendaDefinition> getAgendas() {
+		return Collections.unmodifiableSet(this.agendas);
+	}
+	
 	@Override
 	public Long getVersionNumber() {
 		return versionNumber;
@@ -127,11 +152,13 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 		private String namespaceCode;
         private String name;
         private String typeId;
+        private Set<AgendaDefinition.Builder> agendas;
         private Long versionNumber;
         
         private Builder(String namespaceCode, String name) {
         	setNamespaceCode(namespaceCode);
         	setName(name);
+        	setAgendas(new HashSet<AgendaDefinition.Builder>());
         }
         
         /**
@@ -168,6 +195,7 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
         	builder.setContextDefinitionId(contract.getContextDefinitionId());
         	builder.setTypeId(contract.getTypeId());
         	builder.setVersionNumber(contract.getVersionNumber());
+        	builder.setAgendas(contract.getAgendas());
         	return builder;
         }
         
@@ -199,6 +227,11 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 		@Override
 		public String getTypeId() {
 			return this.typeId;
+		}
+		
+		@Override
+		public Set<AgendaDefinition.Builder> getAgendas() {
+			return agendas;
 		}
 
 		/**
@@ -250,6 +283,13 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 		public void setTypeId(String typeId) {
 			this.typeId = typeId;
 		}
+		
+		public void setAgendas(Set<? extends AgendaDefinitionContract> agendaContracts) {
+			this.agendas = new HashSet<AgendaDefinition.Builder>();
+			for (AgendaDefinitionContract agendaContract : agendaContracts) {
+				this.agendas.add(AgendaDefinition.Builder.create(agendaContract));
+			}
+		}
 
 		/**
          * Sets the version number for the style that will be returned by this
@@ -300,6 +340,7 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
         final static String NAMESPACE_CODE = "namespaceCode";
         final static String NAME = "name";
         final static String TYPE_ID = "typeId";
+        final static String AGENDAS = "agendas";
     }
 		
 	

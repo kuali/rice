@@ -71,6 +71,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="36"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="12"/>
+    </property>      
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="notePostedTimestamp"/>
     <property name="label" value="Posted Date/Time Stamp"/>
@@ -88,6 +91,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="3"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="3"/>
+    </property>     
     <property name="summary" value="notePurgeCode"/>
     <property name="name" value="notePurgeCode"/>
     <property name="label" value="Note Purge Code"/>
@@ -106,6 +112,9 @@
     <property name="control">
       <bean parent="TextareaControlDefinition" p:cols="50" p:rows="3"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextAreaControl" p:cols="50" p:rows="3"/>
+    </property>     
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="noteText"/>
     <property name="label" value="Note Text"/>
@@ -121,6 +130,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="20"/>
+    </property>     
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="noteTopicText"/>
     <property name="label" value="Note Topic"/>
@@ -138,6 +150,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="6"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="6"/>
+    </property>    
     <property name="summary" value="noteTypeCode"/>
     <property name="name" value="noteTypeCode"/>
     <property name="label" value="Note Type Code"/>
@@ -169,6 +184,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="36"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="36"/>
+    </property>     
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="attachment"/>
     <property name="label" value="Attachment"/>

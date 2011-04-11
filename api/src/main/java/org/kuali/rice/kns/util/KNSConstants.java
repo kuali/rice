@@ -584,6 +584,7 @@ public final class KNSConstants {
     public static final String DATA_TYPE_DATE = "datetime";
     public static final String DATA_TYPE_LONG = "long";
     public static final String DATA_TYPE_FLOAT = "float";
+    public static final String DATA_TYPE_BOOLEAN = "boolean";
   	
 	private KNSConstants() {
 		throw new UnsupportedOperationException("do not call");

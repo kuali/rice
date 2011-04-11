@@ -23,13 +23,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name="TRV_ACCT_TYPE")
 public class TravelAccountType extends PersistableBusinessObjectBase {
+    private static final long serialVersionUID = 413236253897119667L;
     
-    @Id
+	@Id
 	@Column(name="acct_type")
 	private String accountTypeCode;
     @Column(name="acct_type_name")
@@ -56,6 +55,10 @@ public class TravelAccountType extends PersistableBusinessObjectBase {
 	}
 
 	public String getCodeAndDescription() {
-		return accountTypeCode + " - " + name;
+        if (accountTypeCode != null) {
+            return accountTypeCode + " - " + name;
+        }
+
+        return "";
 	}
 }

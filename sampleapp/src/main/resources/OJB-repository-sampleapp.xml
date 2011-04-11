@@ -59,9 +59,17 @@
 	<class-descriptor class="edu.sampleu.travel.bo.TravelAccount" table="TRV_ACCT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
-		<field-descriptor name="foId" column="acct_fo_id" jdbc-type="BIGINT" nullable="false" />
+		<field-descriptor name="foId" column="acct_fo_id" jdbc-type="BIGINT" nillable="false" />
+    
+        <field-descriptor name="subAccount" column="sub_acct" jdbc-type="VARCHAR" />
+        <field-descriptor name="subAccountName" column="sub_acct_name" jdbc-type="VARCHAR" />
+        <field-descriptor name="createDate" column="create_dt" jbdc-type="TIMESTAMP" />
+        <field-descriptor name="subsidizedPercent" column="subsidized_pct" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiPercentFieldConversion"/>
+        
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 
-		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer">
+		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
 			<foreignkey field-ref="foId" />
 		</reference-descriptor>
 
@@ -95,6 +103,8 @@
 		<field-descriptor name="id" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
 		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
 		<field-descriptor name="firstName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 
 		<collection-descriptor name="accounts" element-class-ref="edu.sampleu.travel.bo.TravelAccount" auto-retrieve="true" auto-update="true" auto-delete="false" >
 			<inverse-foreignkey field-ref="foId" />

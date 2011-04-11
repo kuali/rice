@@ -1120,4 +1120,28 @@ public final class ObjectUtils {
 
         return b;
     }
+    
+    /**
+     * Helper method for creating a new instance of the given class
+     * 
+     * @param clazz
+     *            - class of object to create
+     * @return T object of type given by the clazz parameter
+     */
+    public static <T> T newInstance(Class<T> clazz) {
+        T object = null;
+        try {
+            object = clazz.newInstance();
+        }
+        catch (InstantiationException e) {
+            LOG.error("Unable to create new instance of class: " + clazz.getName());
+            throw new RuntimeException(e);
+        }
+        catch (IllegalAccessException e) {
+            LOG.error("Unable to create new instance of class: " + clazz.getName());
+            throw new RuntimeException(e);
+        }
+
+        return object;
+    }
 }

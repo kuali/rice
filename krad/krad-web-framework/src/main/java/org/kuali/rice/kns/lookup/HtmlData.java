@@ -26,8 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -169,20 +169,20 @@ public abstract class HtmlData implements Serializable {
 	 * KFSMI-658 This method gets the title text for a link/control
 	 * 
 	 * @param prependText
-	 * @param bo
-	 * @param keys
-	 * @param businessObjectRestrictions
+	 * @param dataObject
+	 * @param fieldConversions
+	 * @param returnKeys
 	 * @return title text
 	 */
-	public static String getTitleText(String prependText, BusinessObject bo, List keys, BusinessObjectRestrictions businessObjectRestrictions) {
-		if (bo == null)
+	public static String getTitleText(String prependText, Object dataObject, List<String> keys, BusinessObjectRestrictions businessObjectRestrictions) {
+		if (dataObject == null)
 			return KNSConstants.EMPTY_STRING;
 
 		Map<String, String> keyValueMap = new HashMap<String, String>();
 		Iterator keysIt = keys.iterator();
 		while (keysIt.hasNext()) {
 			String fieldNm = (String) keysIt.next();
-			Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
+			Object fieldVal = ObjectUtils.getPropertyValue(dataObject, fieldNm);
 			
 			FieldRestriction fieldRestriction = null;
 			if (businessObjectRestrictions != null) {
@@ -199,7 +199,7 @@ public abstract class HtmlData implements Serializable {
 			}
 			keyValueMap.put(fieldNm, fieldVal.toString());
 		}
-		return getTitleText(prependText, bo.getClass(), keyValueMap);
+		return getTitleText(prependText, dataObject.getClass(), keyValueMap);
 	}
 	
 	private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
@@ -210,14 +210,13 @@ public abstract class HtmlData implements Serializable {
 		return businessObjectAuthorizationService;
 	}
 
-	public static String getTitleText(String prependText, Class element, Map<String, String> keyValueMap) {
-		Class elementClass = element;
+	public static String getTitleText(String prependText, Class<?> dataObjectClass, Map<String, String> keyValueMap) {
 		StringBuffer titleText = new StringBuffer(prependText);
 		for (String key : keyValueMap.keySet()) {
 			String fieldVal = keyValueMap.get(key).toString();
 			
 			titleText.append(KNSServiceLocatorWeb.getDataDictionaryService()
-					.getAttributeLabel(element, key)
+					.getAttributeLabel(dataObjectClass, key)
 					+ "=" + fieldVal.toString() + " ");
 		}
 		return titleText.toString();
@@ -234,6 +233,8 @@ public abstract class HtmlData implements Serializable {
 		public static final String TARGET_BLANK = "_blank";
 		protected String href = "";
 		protected String target = "";
+		protected String style = "";
+		protected String styleClass ="";
 
 		/**
 		 * Needed by inquiry framework
@@ -278,6 +279,10 @@ public abstract class HtmlData implements Serializable {
 						+ " href=\""
 						+ getHref()
 						+ "\""
+						+ getStyle()
+						+ " "
+						+ getStyleClass()
+						+ " "
 						+ (StringUtils.isEmpty(getTarget()) ? "" : " target=\""
 								+ getTarget() + "\" ") + ">" + getDisplayText()
 						+ "</a>" + getAppendDisplayText();
@@ -298,6 +303,34 @@ public abstract class HtmlData implements Serializable {
 		public void setTarget(String target) {
 			this.target = target;
 		}
+
+		/**
+         * @return the style
+         */
+        public String getStyle() {
+        	return this.style;
+        }
+
+		/**
+         * @param style the style to set
+         */
+        public void setStyle(String style) {
+        	this.style = style;
+        }
+
+		/**
+         * @return the styleClass
+         */
+        public String getStyleClass() {
+        	return this.styleClass;
+        }
+
+		/**
+         * @param styleClass the styleClass to set
+         */
+        public void setStyleClass(String styleClass) {
+        	this.styleClass = styleClass;
+        }
 
 		/**
 		 * @return the href

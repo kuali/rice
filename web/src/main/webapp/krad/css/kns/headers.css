@@ -1,0 +1,131 @@
+/*body {
+	background-color: #FFF;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+}*/
+div#wrap {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	margin-top: 20px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	font-size: 1em;
+}
+div#maincontent {
+	position: relative;
+	margin-left: 150px;
+}
+div#maincontent h1 {
+	color:#333;
+	font-size: 1.8em;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+div#maincontent h2 {
+	color:#060;
+	font-size: 1.2em;
+	padding-top: 0px;
+	padding-bottom: 6px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999;
+}
+
+div#maincontent h3 {
+	color:#333;
+	font-size: 1em;
+	padding-top: 0px;
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #999;
+	margin-bottom: 6px;
+}
+
+/*EXPANDABLE HEADER BEGIN*/
+
+div.grouping-header-expandable {
+	border-radius: 8px;
+	margin-bottom: 18px;
+}
+div.grouping-header-expandable a {
+	color:#000;
+	text-decoration: none;
+	/* [disabled]font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; */
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 12px;
+	margin-left: 12px;
+}
+div.grouping-header-expandable img {
+	margin-right:6px
+}
+/*EXPANDABLE HEADER END*/
+
+/*EXPANDABLE NESTED HEADER BEGIN*/
+
+div.grouping-header-expandable h3 {
+	background-color:#333;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	border: 1px solid #999;
+	padding: 8px;
+	margin-bottom: 8px;
+	background-position: 0px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+div.grouping-header-expandable h3 a {
+	color:#FFF;
+	text-decoration: none;
+	font-weight: normal;
+}
+div.grouping-header-expandable h3 img {
+	margin-right:6px
+}
+/*EXPANDABLE NESTED HEADER END*/
+
+
+/*KFS STYLE DOC HEADER*/
+#viewpage_div .grouping-header-expandable h2 {
+	margin-top:10px;
+	margin-left:3px;
+	margin-bottom: 10px;
+	vertical-align: middle;
+}
+#viewpage_div .page_header .grouping-header-expandable h3 {
+	font-size: 0.9em;
+	color: #FFF;
+	/* [disabled]font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; */
+	background: #666;
+}
+#viewpage_div .page_header {
+	padding-bottom: 60px;
+}
+
+#viewpage_div .grouping-header-expandable h4 {
+	font-size: 0.9em;
+	/* [disabled]font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; */
+	background: #d6d6d6;
+	padding: 6px;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+	color: #333;
+}
+
+.collection-header h4 {
+	font-size: 0.9em;
+	background: #C3C3C3;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+	border-top: 1px solid #999;
+	color: #333;	
+	padding: 3px;
+	font-weight: bold;
+}
+
+.header-valign-middle {
+	vertical-align: middle;
+}

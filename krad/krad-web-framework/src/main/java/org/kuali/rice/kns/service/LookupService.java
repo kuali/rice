@@ -19,39 +19,40 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * This interface defines methods that a Lookup Service must provide.
+ * Defines business logic methods that support the Lookup framework
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LookupService {
-    
+
     /**
-     * 
-     * Returns a collection of objects based on the given search parameters. Will not limit results, so the returned Collection
-     * could be huge.
+     * Returns a collection of objects based on the given search parameters.
+     * Will not limit results, so the returned Collection could be huge.
      * 
      * @param example
      * @param formProps
      * @return
      */
-    public Collection findCollectionBySearchUnbounded(Class example, Map formProps);
-
+    public <T extends Object> Collection<T> findCollectionBySearchUnbounded(Class<T> example,
+            Map<String, String> formProps);
 
     /**
      * Returns a collection of objects based on the given search parameters.
      * 
      * @return Collection returned from the search
      */
-    public Collection findCollectionBySearch(Class example, Map formProps);
-    
-    public Collection findCollectionBySearchHelper(Class example, Map formProperties, boolean unbounded);
+    public <T extends Object> Collection<T> findCollectionBySearch(Class<T> example, Map<String, String> formProps);
+
+    public <T extends Object> Collection<T> findCollectionBySearchHelper(Class<T> example,
+            Map<String, String> formProperties, boolean unbounded);
 
     /**
-     * Retrieves a Object based on the search criteria, which should uniquely identify a record.
+     * Retrieves a Object based on the search criteria, which should uniquely
+     * identify a record.
      * 
      * @return Object returned from the search
      */
-    public Object findObjectBySearch(Class example, Map formProps);
-    
-    public boolean allPrimaryKeyValuesPresentAndNotWildcard(Class boClass, Map formProps);
+    public <T extends Object> T findObjectBySearch(Class<T> example, Map<String, String> formProps);
+
+    public boolean allPrimaryKeyValuesPresentAndNotWildcard(Class<?> boClass, Map<String, String> formProps);
 }

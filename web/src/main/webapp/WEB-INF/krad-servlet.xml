@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <context:component-scan base-package="org.kuali.rice.kns" />
+  <context:component-scan base-package="edu.sampleu.travel.krad" />
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 
+    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+    <property name="prefix" value="/krad/WEB-INF/jsp/" />
+    <property name="suffix" value=".jsp" />
+  </bean>
+  
+  <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    <property name="interceptors">
+      <ref bean="uifControllerHandlerInterceptor"/>
+    </property>
+  </bean>
+
+  <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.kns.web.spring.UifControllerHandlerInterceptor" />
+  
+  <bean class="org.kuali.rice.kns.web.spring.UifAnnotationMethodHandleAdapter">
+    <property name="webBindingInitializer">
+      <ref bean="kradConfigurableWebBindingInitializer"/>
+    </property>
+  </bean>
+
+  <bean id="kradConfigurableWebBindingInitializer" class="org.kuali.rice.kns.web.spring.UifConfigurableWebBindingInitializer"/>
+
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="100000"/>
+  </bean>
+  
+</beans>

@@ -15,14 +15,22 @@
  */
 package edu.sampleu.travel.bo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.framework.persistence.jpa.annotations.Sequence;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-
-import javax.persistence.*;
-import java.util.List;
 
 /**
  * FiscalOfficer
@@ -31,7 +39,6 @@ import java.util.List;
 @Table(name="TRV_ACCT_FO")
 @Sequence(name="seq_acct_fo_id", property="id")
 public class FiscalOfficer extends PersistableBusinessObjectBase {
-	
 	private static final long serialVersionUID = -4645124696676896963L;
 
 	@Id
@@ -46,6 +53,10 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
 
 	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER, mappedBy="fiscalOfficer")
 	private List<TravelAccount> accounts;
+	
+	public FiscalOfficer() {
+		accounts = new ArrayList<TravelAccount>();
+	}
 
 	/**
 	 * @return the firstName

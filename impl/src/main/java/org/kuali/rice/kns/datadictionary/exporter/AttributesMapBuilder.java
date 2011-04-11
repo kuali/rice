@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.datadictionary.exporter;
 
-import java.math.BigDecimal;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
@@ -24,7 +22,6 @@ import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
-import org.kuali.rice.kns.datadictionary.mask.MaskFormatterLiteral;
 
 /**
  * AttributesMapBuilder
@@ -64,13 +61,13 @@ public class AttributesMapBuilder {
         attributeMap.set("shortLabel", attribute.getShortLabel());
        
         attributeMap.set("maxLength", attribute.getMaxLength().toString());
-        final BigDecimal exclusiveMin = attribute.getExclusiveMin();
+        String exclusiveMin = attribute.getExclusiveMin();
         if (exclusiveMin != null) {
-            attributeMap.set("exclusiveMin", exclusiveMin.toString());
+            attributeMap.set("exclusiveMin", exclusiveMin/*.toString()*/);
         }
-        final BigDecimal exclusiveMax = attribute.getInclusiveMax();
+        String exclusiveMax = attribute.getInclusiveMax();
         if (exclusiveMax != null) {
-            attributeMap.set("exclusiveMax", exclusiveMax.toString());
+            attributeMap.set("exclusiveMax", exclusiveMax/*.toString()*/);
         }
 
         attributeMap.set("required", attribute.isRequired().toString());

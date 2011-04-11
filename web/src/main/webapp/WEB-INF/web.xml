@@ -39,6 +39,8 @@
 		<filter-name>UserPreferencesFilter</filter-name>
 		<filter-class>org.kuali.rice.kew.web.UserPreferencesFilter</filter-class>
 	</filter>
+	
+
 
 	<filter-mapping>
         <filter-name>HideWebInfFilter</filter-name>
@@ -79,6 +81,13 @@
         <filter-name>UserPreferencesFilter</filter-name>
        <servlet-name>notification</servlet-name>
     </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>UserLoginFilter</filter-name>
+        <servlet-name>krad</servlet-name>
+    </filter-mapping>     
+    
+    
     
     <!-- for KCB Spring Web MVC pages -->
     <filter-mapping>
@@ -122,6 +131,10 @@
 	<listener>
 		<listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener</listener-class>
 	</listener>
+	
+    <listener>
+       <listener-class>org.apache.tiles.web.startup.simple.SimpleTilesListener</listener-class>
+    </listener> 	
 
 	<servlet>
 		<servlet-name>action</servlet-name>
@@ -225,6 +238,12 @@
 		<servlet-name>edoclite</servlet-name>
 		<servlet-class>org.kuali.rice.edl.impl.EDLServlet</servlet-class>
 	</servlet>
+	
+    <servlet>
+       <servlet-name>krad</servlet-name>
+       <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+       <load-on-startup>3</load-on-startup>
+    </servlet> 	
 
 	<servlet-mapping>
 		<servlet-name>remoting</servlet-name>
@@ -270,6 +289,11 @@
 		<servlet-name>edoclite</servlet-name>
 		<url-pattern>/kew/EDocLite</url-pattern>
 	</servlet-mapping>
+	
+    <servlet-mapping>
+      <servlet-name>krad</servlet-name>
+      <url-pattern>/spring/*</url-pattern>
+    </servlet-mapping> 	
 
 	<session-config>
 		<session-timeout>60</session-timeout>

@@ -1,0 +1,94 @@
+body {
+	background-color: #FFF;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+}
+div#wrap {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	margin-top: 20px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	font-size: .8em;
+}
+div#maincontent {
+	position: relative;
+	margin-left: 150px;
+}
+div#maincontent h1 {
+	color:#333;
+	font-size: 1.8em;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+div#maincontent h2 {
+	color:#060;
+	font-size: .8em;
+	padding-top: 0px;
+	padding-bottom: 6px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999;
+}
+
+div#maincontent h3 {
+	color:#333;
+	font-size: 1em;
+	padding-top: 0px;
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #999;
+	margin-bottom: 6px;
+}
+
+/*EXPANDABLE HEADER BEGIN*/
+
+div.grouping-header-expandable {
+	background-color:#900;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	border: 1px solid #999;
+	padding: 8px;
+	margin-bottom: 8px;
+	background-image: url(../../images/bg-carbo-red.png);
+	background-position: 0px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 1.2em;
+}
+div.grouping-header-expandable a {
+	color:#FFF;
+	text-decoration: none;
+}
+div.grouping-header-expandable img {
+	margin-right:6px
+}
+/*EXPANDABLE HEADER END*/
+
+/*EXPANDABLE NESTED HEADER BEGIN*/
+
+div.grouping-header-expandableh3 {
+	background-color:#333;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	border: 1px solid #999;
+	padding: 8px;
+	margin-bottom: 8px;
+	background-position: 0px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+div.grouping-header-expandableh3 a {
+	color:#FFF;
+	text-decoration: none;
+	font-weight: normal;
+}
+div.grouping-header-expandableh3 img {
+	margin-right:6px
+}
+/*EXPANDABLE NESTED HEADER END*/
+
+
+/*KFS STYLE DOC HEADER*/

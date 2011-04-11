@@ -55,7 +55,11 @@ import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -416,11 +420,11 @@ public class KimTypeServiceBase implements KimTypeService {
         return null;
 	}
     
-	protected BigDecimal getAttributeExclusiveMin(AttributeDefinition definition) {
+	protected String getAttributeExclusiveMin(AttributeDefinition definition) {
         return definition == null ? null : definition.getExclusiveMin();
     }
 
-	protected BigDecimal getAttributeInclusiveMax(AttributeDefinition definition) {
+	protected String getAttributeInclusiveMax(AttributeDefinition definition) {
         return definition == null ? null : definition.getInclusiveMax();
     }
 	
@@ -471,10 +475,11 @@ public class KimTypeServiceBase implements KimTypeService {
                     return;
                 }
             }
-            BigDecimal exclusiveMin = getAttributeExclusiveMin(definition);
-            if (exclusiveMin != null) {
+            String exclusiveMin = getAttributeExclusiveMin(definition);
+            if (StringUtils.isNotBlank(exclusiveMin)) {
                 try {
-                    if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
+                	BigDecimal exclusiveMinBigDecimal = new BigDecimal(exclusiveMin);
+                    if (exclusiveMinBigDecimal.compareTo(new BigDecimal(attributeValue)) >= 0) {
                         GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, exclusiveMin.toString() });
@@ -485,10 +490,11 @@ public class KimTypeServiceBase implements KimTypeService {
                     // quash; this indicates that the DD contained a min for a non-numeric attribute
                 }
             }
-            BigDecimal inclusiveMax = getAttributeInclusiveMax(definition);
-            if (inclusiveMax != null) {
+            String inclusiveMax = getAttributeInclusiveMax(definition);
+            if (StringUtils.isNotBlank(inclusiveMax)) {
                 try {
-                    if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
+                	BigDecimal inclusiveMaxBigDecimal = new BigDecimal(inclusiveMax);
+                    if (inclusiveMaxBigDecimal.compareTo(new BigDecimal(attributeValue)) < 0) {
                         GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, inclusiveMax.toString() });

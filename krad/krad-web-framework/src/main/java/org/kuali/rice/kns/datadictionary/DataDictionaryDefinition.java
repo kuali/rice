@@ -20,10 +20,9 @@ import java.io.Serializable;
 
 /**
  * Defines methods common to all DataDictionaryDefinition types.
- * 
- * 
  */
 public interface DataDictionaryDefinition extends Serializable {
+	
     /**
      * Performs complete intra-definition validation which couldn't be done earlier - for example, verifies that field references
      * refer to actual fields of some specific class.
@@ -32,7 +31,7 @@ public interface DataDictionaryDefinition extends Serializable {
      * @param otherBusinessObjectClass other stuff required to complete validation
      * @throws org.kuali.rice.kns.datadictionary.exception.CompletionException if a problem arises during validation-completion
      */
-    public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass);
+    public void completeValidation(Class<?> rootBusinessObjectClass, Class<?> otherBusinessObjectClass);
     
     public String getId();
 }

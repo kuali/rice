@@ -65,6 +65,7 @@
 
   <bean id="Country-alternateCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="alternateCode"/>
+    <property name="dataType" value="STRING"/>
     <property name="forceUppercase" value="true"/>
     <property name="label" value="Alternate Country Code"/>
     <property name="shortLabel" value="Alt Country Code"/>
@@ -173,4 +174,28 @@
       </list>
     </property>
   </bean>
+  
+  <!-- KRAD Inquiry Definition --> 
+  
+  <bean id="Country-InquiryView" parent="InquiryView">
+     <property name="title" value="Country Inquiry"/>
+     <property name="dataObjectClassName" value="org.kuali.rice.shareddata.impl.country.CountryBo"/>
+     <property name="Items">
+         <list>
+           <bean parent="GroupSectionGridLayout">
+             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="items">
+               <list>
+                <bean parent="AttributeField" p:propertyName="code"/>
+                <bean parent="AttributeField" p:propertyName="name"/>
+                <bean parent="AttributeField" p:propertyName="alternateCode"/>
+                <bean parent="AttributeField" p:propertyName="postalCountryRestrictedIndicator"/>
+                <bean parent="AttributeField" p:propertyName="active"/>
+               </list>
+             </property>
+             <property name="title" value="Country Information"/>
+           </bean>               
+         </list>
+     </property>
+  </bean> 
 </beans>

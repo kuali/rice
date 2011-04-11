@@ -16,6 +16,12 @@
 
 package org.kuali.rice.kns.lookup;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -23,12 +29,6 @@ import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSTestConstants.TestConstants;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the KualiLookupable methods.
@@ -52,7 +52,7 @@ public class KualiLookupableTest extends KNSTestCase {
      * @throws Exception
      */
     @Test public void testReturnUrl() throws Exception {
-    	Map<String, Object> lookupProps = new HashMap<String, Object>();
+    	Map<String, String> lookupProps = new HashMap<String, String>();
     	lookupProps.put("number", "a1");
     	lookupProps.put("name", "a1");
     	

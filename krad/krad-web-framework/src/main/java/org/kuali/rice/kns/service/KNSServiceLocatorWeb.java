@@ -1,11 +1,13 @@
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
+import org.kuali.rice.kns.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.kns.uif.service.ViewDictionaryService;
+import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 
@@ -37,6 +39,10 @@ public class KNSServiceLocatorWeb {
     public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
     public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
     public static final String RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE = "riceApplicationConfigurationMediationService";
+    public static final String DATA_OBJECT_METADATA_SERVICE = "dataObjectMetaDataService";
+    public static final String EXPRESSION_EVALUATOR_SERVICE = "expressionEvaluatorService";
+    public static final String VIEW_SERVICE = "viewService";
+    public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -146,7 +152,23 @@ public class KNSServiceLocatorWeb {
     	return (RiceApplicationConfigurationMediationService) getService(RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE);
     }
 
-    public static Question getQuestion(String questionName) {
-	return (Question) getService(questionName);
-    }
+	public static Question getQuestion(String questionName) {
+		return (Question) getService(questionName);
+	}
+
+	public static DataObjectMetaDataService getDataObjectMetaDataService() {
+		return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
+	}
+
+	public static ExpressionEvaluatorService getExpressionEvaluatorService() {
+		return (ExpressionEvaluatorService) getService(EXPRESSION_EVALUATOR_SERVICE);
+	}
+
+	public static ViewService getViewService() {
+		return (ViewService) getService(VIEW_SERVICE);
+	}
+
+	public static ViewDictionaryService getViewDictionaryService() {
+		return (ViewDictionaryService) getService(VIEW_DICTIONARY_SERVICE);
+	}
 }

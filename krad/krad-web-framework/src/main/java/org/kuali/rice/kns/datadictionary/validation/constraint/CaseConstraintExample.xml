@@ -1,0 +1,16 @@
+ <!-- This a property that can be placed on a spring bean AttributeDefinition -->
+ 
+ 	<property name="caseConstraint">
+		<bean parent="caseConstraint">
+			<property name="whenConstraint">
+				<bean parent="whenConstraint">
+					<property name="value" value="USA"/>
+					<property name="constraint">
+						<bean parent="prequisiteConstraint">
+							<property name="attributePath" value="origin"/>
+						</bean>
+					</property>
+				</bean>
+			</property>
+		</bean>
+	</property>

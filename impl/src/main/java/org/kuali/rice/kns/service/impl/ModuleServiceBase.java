@@ -19,6 +19,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -31,7 +32,14 @@ import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectNotLookupableException;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -44,7 +52,6 @@ import org.springframework.context.ApplicationContext;
  * This class implements ModuleService interface.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class ModuleServiceBase implements ModuleService {
 
@@ -126,7 +133,16 @@ public class ModuleServiceBase implements ModuleService {
 			Class<T> externalizableBusinessObjectClass, Map<String, Object> fieldValues, boolean unbounded) {
 		Class<? extends ExternalizableBusinessObject> implementationClass = getExternalizableBusinessObjectImplementation(externalizableBusinessObjectClass);
 		if (isExternalizableBusinessObjectLookupable(implementationClass)) {
-		    return (List<T>) getLookupService().findCollectionBySearchHelper(implementationClass, fieldValues, unbounded);
+			Map<String, String> searchCriteria = new HashMap<String, String>();
+			for (Entry<String, Object> fieldValue : fieldValues.entrySet()) {
+				if (fieldValue.getValue() != null) {
+					searchCriteria.put(fieldValue.getKey(), fieldValue.getValue().toString());
+				}
+				else {
+					searchCriteria.put(fieldValue.getKey(), null);
+				}
+			}
+		    return (List<T>) getLookupService().findCollectionBySearchHelper(implementationClass, searchCriteria, unbounded);
 		} else {
 		   throw new BusinessObjectNotLookupableException("External business object is not a Lookupable:  " + implementationClass);
 		}

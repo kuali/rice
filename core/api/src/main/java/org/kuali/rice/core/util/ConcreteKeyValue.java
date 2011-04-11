@@ -29,7 +29,8 @@ import org.apache.commons.lang.builder.CompareToBuilder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ConcreteKeyValue extends AbstractKeyValue implements Comparable<KeyValue> {
-	
+	private static final long serialVersionUID = 1176799455504861488L;
+
 	public ConcreteKeyValue() {
 		super();
 	}

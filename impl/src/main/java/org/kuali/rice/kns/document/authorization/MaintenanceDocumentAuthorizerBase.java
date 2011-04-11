@@ -23,7 +23,6 @@ import java.util.Set;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -37,7 +36,6 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	transient protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
-	@SuppressWarnings("unchecked")
 	public final boolean canCreate(Class boClass, Person user) {
 		AttributeSet permissionDetails = new AttributeSet();
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
@@ -56,19 +54,18 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 								permissionDetails, new AttributeSet());
 	}
 
-	@SuppressWarnings("unchecked")
-	public final boolean canMaintain(BusinessObject businessObject, Person user) {
+	public final boolean canMaintain(Object dataObject, Person user) {
 		Map<String, String> permissionDetails = new HashMap<String, String>(2);
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
-						businessObject.getClass()));
+						dataObject.getClass()));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
 				KNSConstants.MAINTENANCE_EDIT_ACTION);
 		return !permissionExistsByTemplate(KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
 				permissionDetails)
 				|| isAuthorizedByTemplate(
-						businessObject,
+						dataObject,
 						KNSConstants.KNS_NAMESPACE,
 						KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
 						user.getPrincipalId(), permissionDetails, null);
@@ -96,10 +93,10 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void addRoleQualification(BusinessObject businessObject, Map<String, String> attributes) {
-		super.addRoleQualification(businessObject, attributes);
-		if (businessObject instanceof MaintenanceDocument) {
-			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
+	protected void addRoleQualification(Object dataObject, Map<String, String> attributes) {
+		super.addRoleQualification(dataObject, attributes);
+		if (dataObject instanceof MaintenanceDocument) {
+			MaintenanceDocument maintDoc = (MaintenanceDocument)dataObject;
 			if ( maintDoc.getNewMaintainableObject() != null ) {			
 				attributes.putAll(KNSUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
 			}
@@ -108,10 +105,10 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void addPermissionDetails(BusinessObject businessObject, Map<String, String> attributes) {
-		super.addPermissionDetails(businessObject, attributes);
-		if (businessObject instanceof MaintenanceDocument) {
-			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
+	protected void addPermissionDetails(Object dataObject, Map<String, String> attributes) {
+		super.addPermissionDetails(dataObject, attributes);
+		if (dataObject instanceof MaintenanceDocument) {
+			MaintenanceDocument maintDoc = (MaintenanceDocument)dataObject;
 			if ( maintDoc.getNewMaintainableObject() != null ) {			
 				attributes.putAll(KNSUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
 				attributes.put(KNSConstants.MAINTENANCE_ACTN,maintDoc.getNewMaintainableObject().getMaintenanceAction());

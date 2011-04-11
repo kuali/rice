@@ -22,67 +22,89 @@ import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.maintenance.Maintainable;
 
 /**
- * This interface defines methods that a Maintenance Document Service must provide.
- * 
- * 
+ * Provides methods for working with <code>MaintenanceDocument</code>(s).
  */
 public interface MaintenanceDocumentService {
 
-    /**
-     * 
-     * This method attempts to find any other active documents that are pending on the same maintenance record.
-     * 
-     * If any are pending and locked, thereby blocking this document, then the docHeaderId/documentNumber of the blocking
-     * locked document is returned.
-     * 
-     * Otherwise, if nothing is blocking, then null is returned.
-     * 
-     * @param document - document to test
-     * @return A String representing the docHeaderId of any blocking document, or null if none are blocking
-     * 
-     */
-    public String getLockingDocumentId(MaintenanceDocument document);
+	/**
+	 * Prepares the <code>MaintenanceDocument</code> on initial request
+	 * 
+	 * <p>
+	 * This includes retrieving the data object for edit or copy, clearing
+	 * fields
+	 * </p>
+	 * 
+	 * @param objectClassName
+	 *            - class name for the object being maintained
+	 * @param docTypeName
+	 *            - workflow doc type for the maintenance document requested
+	 * @param maintenanceAction
+	 *            - indicates whether this is a new, copy, or edit maintenance
+	 *            action
+	 * @return MaintenanceDocument prepared document instance
+	 */
+	public MaintenanceDocument setupNewMaintenanceDocument(
+			String objectClassName, String docTypeName, String maintenanceAction);
 
-    /**
-     * This method attempts to find any other active documents that are pending on the same maintenance record.
-     * 
-     * If any are pending and locked, thereby blocking this document, then the docHeaderId/documentNumber of the blocking
-     * locked document is returned.
-     * 
-     * Otherwise, if nothing is blocking, then null is returned.
-     * 
-     * @param maintainable - maintainable representing the document to test
-     * @param documentNumber - the documentNumber/docHeaderId of the document to test
-     * @return A String representing the docHeaderId of any blocking document, or null if none are blocking
-     */
-    public String getLockingDocumentId(Maintainable maintainable, String documentNumber);
+	/**
+	 * Attempts to find any other active documents that are pending on the same
+	 * maintenance record.
+	 * 
+	 * If any are pending and locked, thereby blocking this document, then the
+	 * docHeaderId/documentNumber of the blocking locked document is returned.
+	 * 
+	 * Otherwise, if nothing is blocking, then null is returned.
+	 * 
+	 * @param document
+	 *            - document to test
+	 * @return A String representing the docHeaderId of any blocking document,
+	 *         or null if none are blocking
+	 * 
+	 */
+	public String getLockingDocumentId(MaintenanceDocument document);
 
-//    /**
-//     * Retrieves maintenance documents locked by the given bo class name, then materializes the pending changes to objects of the
-//     * given class.
-//     * 
-//     * @param businessObjectClass
-//     * @return
-//     */
-//    public List getPendingObjects(Class businessObjectClass);
+	/**
+	 * Attempts to find any other active documents that are pending on the same
+	 * maintenance record.
+	 * 
+	 * If any are pending and locked, thereby blocking this document, then the
+	 * docHeaderId/documentNumber of the blocking locked document is returned.
+	 * 
+	 * Otherwise, if nothing is blocking, then null is returned.
+	 * 
+	 * @param maintainable
+	 *            - maintainable representing the document to test
+	 * @param documentNumber
+	 *            - the documentNumber/docHeaderId of the document to test
+	 * @return A String representing the docHeaderId of any blocking document,
+	 *         or null if none are blocking
+	 */
+	public String getLockingDocumentId(Maintainable maintainable,
+			String documentNumber);
 
-    /**
-     * This method is here to call the same-named method in the Dao, since the service has access to the Dao, but the caller doesn't.
-     * 
-     * This method deletes the locks for the given document number.  It is called when the document is final,
-     * thus it can be unlocked, or when the locks need to be regenerated (thus they get cleared first).
-     * 
-     * @param documentNumber - document number whose locks should be deleted
-     */
-    public void deleteLocks(String documentNumber);
+	/**
+	 * Call the same-named method in the Dao, since the service has access to
+	 * the Dao, but the caller doesn't.
+	 * 
+	 * This method deletes the locks for the given document number. It is called
+	 * when the document is final, thus it can be unlocked, or when the locks
+	 * need to be regenerated (thus they get cleared first).
+	 * 
+	 * @param documentNumber
+	 *            - document number whose locks should be deleted
+	 */
+	public void deleteLocks(String documentNumber);
 
-    /**
-     * This method is here to call the same-named method in the Dao, since the service has access to the Dao, but the caller doesn't.
-     * 
-     * This method stores the given list of maintenance locks.  Typically these will all be for the same document.
-     * 
-     * @param maintenanceLocks - the list of maintenance locks to be stored
-     */
-    public void storeLocks(List<MaintenanceLock> maintenanceLocks);
+	/**
+	 * Call the same-named method in the Dao, since the service has access to
+	 * the Dao, but the caller doesn't.
+	 * 
+	 * This method stores the given list of maintenance locks. Typically these
+	 * will all be for the same document.
+	 * 
+	 * @param maintenanceLocks
+	 *            - the list of maintenance locks to be stored
+	 */
+	public void storeLocks(List<MaintenanceLock> maintenanceLocks);
 
 }

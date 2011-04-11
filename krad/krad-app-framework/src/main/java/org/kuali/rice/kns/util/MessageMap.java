@@ -536,6 +536,120 @@ public class MessageMap implements Serializable {
     public AutoPopulatingList<ErrorMessage> getInfoMessagesForProperty(String propertyName) {
     	return infoMessages.get(propertyName);
     }
+    
+	/**
+	 * Gets a list of lists that represent errors that matched by the
+	 * propertyName passed in (multiple lists because the wildcard can match
+	 * multiple keys). If wildcard is true, the propertyName ends with a
+	 * wildcard character. Otherwise, it will only match on the single key and
+	 * return a list with one list
+	 * 
+	 * @param propertyName
+	 * @param allowWildcard
+	 * @return
+	 */
+	public List<AutoPopulatingList<ErrorMessage>> getErrorMessagesForProperty(
+			String propertyName, boolean allowWildcard) {
+		List<AutoPopulatingList<ErrorMessage>> foundMessages = new ArrayList<AutoPopulatingList<ErrorMessage>>();
+		if (allowWildcard) {
+			boolean wildcard = false;
+			if (propertyName.endsWith("*")) {
+				wildcard = true;
+				propertyName = propertyName.substring(0,
+						propertyName.length() - 1);
+			}
+			for (Iterator<String> keys = errorMessages.keySet().iterator(); keys
+					.hasNext();) {
+				String key = keys.next();
+				if (!wildcard && propertyName.equals(key)) {
+					foundMessages.add(errorMessages.get(key));
+					break;
+				} else if (wildcard && key.startsWith(propertyName)) {
+					foundMessages.add(errorMessages.get(key));
+				}
+			}
+		} else {
+			foundMessages.add(getErrorMessagesForProperty(propertyName));
+		}
+
+		return foundMessages;
+	}
+
+	/**
+	 * Gets a list of lists that represent warnings that matched by the
+	 * propertyName passed in (multiple lists because the wildcard can match
+	 * multiple keys). If wildcard is true, the propertyName ends with a
+	 * wildcard character. Otherwise, it will only match on the single key and
+	 * return a list with one list.
+	 * 
+	 * @param propertyName
+	 * @param allowWildcard
+	 * @return
+	 */
+	public List<AutoPopulatingList<ErrorMessage>> getWarningMessagesForProperty(
+			String propertyName, boolean allowWildcard) {
+		List<AutoPopulatingList<ErrorMessage>> foundMessages = new ArrayList<AutoPopulatingList<ErrorMessage>>();
+		if (allowWildcard) {
+			boolean wildcard = false;
+			if (propertyName.endsWith("*")) {
+				wildcard = true;
+				propertyName = propertyName.substring(0,
+						propertyName.length() - 1);
+			}
+			for (Iterator<String> keys = warningMessages.keySet().iterator(); keys
+					.hasNext();) {
+				String key = keys.next();
+				if (!wildcard && propertyName.equals(key)) {
+					foundMessages.add(warningMessages.get(key));
+					break;
+				} else if (wildcard && key.startsWith(propertyName)) {
+					foundMessages.add(warningMessages.get(key));
+				}
+			}
+		} else {
+			foundMessages.add(getWarningMessagesForProperty(propertyName));
+		}
+
+		return foundMessages;
+	}
+
+	/**
+	 * Gets a list of lists that represent info messages that matched by the
+	 * propertyName passed in (multiple lists because the wildcard can match
+	 * multiple keys). If wildcard is true, the propertyName ends with a
+	 * wildcard character. If it is false, it will only match on the single key
+	 * and return a list with one list.
+	 * 
+	 * @param propertyName
+	 * @param allowWildcard
+	 * @return
+	 */
+	public List<AutoPopulatingList<ErrorMessage>> getInfoMessagesForProperty(
+			String propertyName, boolean allowWildcard) {
+		List<AutoPopulatingList<ErrorMessage>> foundMessages = new ArrayList<AutoPopulatingList<ErrorMessage>>();
+		if (allowWildcard) {
+			boolean wildcard = false;
+			if (propertyName.endsWith("*")) {
+				wildcard = true;
+				propertyName = propertyName.substring(0,
+						propertyName.length() - 1);
+			}
+			for (Iterator<String> keys = infoMessages.keySet().iterator(); keys
+					.hasNext();) {
+				String key = keys.next();
+				if (!wildcard && propertyName.equals(key)) {
+					foundMessages.add(infoMessages.get(key));
+					break;
+				} else if (wildcard && key.startsWith(propertyName)) {
+					foundMessages.add(infoMessages.get(key));
+				}
+			}
+		} else {
+			foundMessages.add(getInfoMessagesForProperty(propertyName));
+		}
+
+		return foundMessages;
+	}
 
     public boolean hasErrors() {
     	return !errorMessages.isEmpty();

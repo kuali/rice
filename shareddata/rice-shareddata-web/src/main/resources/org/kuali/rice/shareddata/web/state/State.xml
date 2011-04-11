@@ -146,4 +146,27 @@
       </list>
     </property>
   </bean>
+  
+  <!-- KRAD Inquiry Definition -->   
+  
+  <bean id="State-InquiryView" parent="InquiryView">
+     <property name="title" value="State Inquiry"/>
+     <property name="dataObjectClassName" value="org.kuali.rice.shareddata.impl.state.StateBo"/>
+     <property name="Items">
+         <list>
+           <bean parent="GroupSectionGridLayout">
+             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="items">
+               <list>
+                <bean parent="AttributeField" p:propertyName="countryCode"/>
+                <bean parent="AttributeField" p:propertyName="code"/>
+                <bean parent="AttributeField" p:propertyName="name"/>
+                <bean parent="AttributeField" p:propertyName="active"/>
+               </list>
+             </property>
+             <property name="title" value="State Information"/>
+           </bean>               
+         </list>
+     </property>
+  </bean> 
 </beans>

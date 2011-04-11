@@ -1,0 +1,634 @@
+{toc}
+
+This tutorial is designed to start with the concept of a page in a KRAD application and build all of the configuration to turn that page into an actual View. In this example, we'll build a conference reservation form, starting with a sketch of what we want the form to look like and then building up the pieces of the configuration.
+
+First, we look at the Java classes we need to create to handle data mapping for our page: a form, a controller, and a view.  Then we build the configuration which maps the data objects we want to populate with data to the view - first splitting the page into major groups and then associating fields with properties.
+
+h1. Views, Controllers, and Forms
+
+KRAD uses Spring MVC to interact with the web, and so it makes a lot of sense that the first design decisions in building a KRAD page all have to do with the M, the V, and the C: the Model (called, in KRAD, a Form); the View; and the Controller.
+
+h2. Base Data Model and Forms
+
+The Form is an excellent place to start.  Looking back at our page, we have to expect that several data objects already exist to put data into the database.  There must be a Contact business object, as well as a ConferenceGuest that we have a collection of.  Some wise developer likely created a single record, ConferenceParty, to meld that information together.  ConferenceParty then has a many-to-many relationship with ConferenceTracks to hold the "Interests" section, and there's likely an optional AcademicInstitution object.  In short, the classes probably look like this:
+
+{code:java}
+class Contact {
+    protected Integer contactId;
+    protected String companyName;
+    protected String contactName;
+    protected String contactEmail;
+    protected String contactPhone;
+    protected String addressLine1;
+    protected String addressLine2;
+    protected String city;
+    protected String state;
+    
+    // getters and setters for all!
+}
+
+class ConferenceGuest {
+    protected Integer conferencePartyId;
+    protected Integer partySequenceNumber;
+    protected String name;
+    protected String email;
+    protected String phone;
+    
+    // getters, setters
+}
+
+class ConferenceTrack {
+    protected String trackCode;
+    protected String trackName;
+    protected String sortCode;
+    
+    public final static String SORT_PROPERTY = "sortCode";
+    
+    // getters and setters
+}
+
+class AcademicInstitutionInformation {
+    protected Integer institutionInformationId;
+    protected String institutionFundingTypeCode;
+    protected String name;
+    protected Integer numberOfStudents;
+    
+    // getters and setters
+}
+
+class ConferencePartyInterests {
+    protected Integer conferencePartyId;
+    protected String trackCode;
+    
+    // setters and getters
+}
+
+class ConferenceParty {
+    protected Integer conferencePartyId;
+    protected Integer contactId;
+    
+    protected Contact contact;
+    protected List<ConferenceGuest> guests;
+    protected List<ConferencePartyInterests> interests; // sorted by ConferenceTrack.sortCode
+    protected AcademicInstitutionInformation academicInstitutionInformation;
+    
+    // these need getters and setters
+}
+{code}
+
+All of these classes are instrumented either with JPA annotations or OJB metadata, and they likely have more relationships than spelled out here.  Also, data dictionary entries should be created for each of these data objects.  [ ANY NEED TO SHOW THESE CONFIGURATIONS? ]  Still: this is an excellent start to the data model.
+
+A KRAD form is simply a class which extends org.kuali.rice.kns.web.spring.form.UifFormBase.  The form wraps the data model into an convenient object associated with the page.  In this case, our form will definitely need to hold a ConferenceParty data object since that is the data that the page is meant to populate.
+
+This particular form, though, needs to hold more than that.  Any data exposed on the View should exist on the form.  What other data is there?  First, there's that "Academic Institution" check box, which determines if the Academic Institution group is visible or not.  This isn't held by any of the data objects above, but it needs to be held somewhere.
+
+There's also the case of lists shown on the screen.  In the case of "State," there should be a values finder which will provide the state codes; a similar situation exists with the funding type for the Academic Institution.  However, in the case of Interests, we need to hold a list of all the ConferenceTrack objects sorted.  [ JAMES - TRUE THAT? COULD THIS BE A VALUES FINDER AS WELL? ]  This List will be held on the form as well.
+
+Given that, our form should look something like:
+
+{code:java, title=edu.sampleu.conferencesignup.web.spring.form.ConferenceSignupForm}
+ 1. class ConferenceSignupForm extends UifFormBase {
+ 2.    protected ConferenceParty conferenceParty;
+ 3.    protected List<ConferenceTrack> conferenceTracks;
+ 4.    protected boolean academicInstitution;
+ 5.    protected BusinessObjectService businessObjectService;
+ 6.
+ 7.    /** Always Javadoc! */
+ 8.    public ConferenceParty getConferenceParty() {
+ 9.      return conferenceParty;
+10.    }
+11.
+12.    public void setConferenceParty(ConferenceParty conferenceParty) {
+13.      this.conferenceParty = conferenceParty;
+14.    }
+15.
+16.    public boolean isAcademicInstitution() {
+17.      return academicInstitution;
+18.    }
+19.
+20.    public void setAcademicInstitution(boolean academicInstitution) {
+21.      this.academicInstitution = academicInstitution;
+22.    }
+23.
+24.    public List<ConferenceTrack> getConferenceTracks() {
+25.      if (conferenceTracks == null) {
+26.        conferenceTracks = (List<ConferenceTrack>)businessObjectService.findAllOrderBy(ConferenceTrack.class, ConferenceTrack.SORT_PROPERTY, true);
+27.      }
+28.      return conferenceTracks;
+29.    }
+30.
+31.    public BusinessObjectService getBusinessObjectService() {
+32.      return businessObjectService;
+33.    }
+34.
+35.    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+36.      this.businessObjectService = businessObjectService;
+37.    }
+38. }
+{code}
+
+Not hard at all, but it holds all the data needed to properly render the View.  [ FORMS ARE SPRING BEANS, RIGHT?  HOW TO INJECT SERVICES?  WHY DOES DOCUMENT CONTROLLER USE KNSLOCATOR? ]
+
+h2. Controllers
+
+Next is the controller.  In this case, we extend org.kuali.rice.kns.web.spring.controller.UifControllerBase.  Unlike with UifFormBase, UifControllerBase has an abstract method which we are forced to override: createInitialForm.  This method takes in the request as a parameter and returns a child of UifFormBase.  Since ConferenceSignupForm is already complete, this shouldn't be any problem.
+
+UifControllerBase also has a number of methods which we can call from our View.  For instance, it has an addLine method which it would be helpful to call for adding guests to that collection.  However, it does not contain methods which respond to our submit, save, and cancel buttons.  Basically, any element on our View which could initiate a post back to the server should have a method on the controller for it.  The names for these methods change but they all have:
+* a standard annotation associated with the method: @RequestMapping, which takes a method (the HTTP method to use), and params, which should include the "methodToCall" parameter which should initiate a call to the given controller method
+* a standard return type - controller methods responding to View actions should always return an instance of org.springframework.web.servlet.ModelAndView
+* a set of standard parameters: one for the form, for the BindingResult, and for the request and response.  The form parameter should be annotated with @ModelAttribute("KualiForm"), which means that the form will be pulled from either the request via the key "KualiForm" [ JERRY - TRUE THAT? ]
+
+Finally, a Spring MVC controller class must have the @Controller annotation assigned to it as well as a class-wide @RequestMapping parameter which gives the URL (or at least, the portion of the URL after the server name) which will result in calls to the controller class.  This can be configured in Spring XML as well, but throughout Rice, annotations have been used.
+
+Given that, let's take a look at our controller:
+
+{code:java,title=edu.sampleu.conferencesignup.web.spring.controller.ConferenceSignupController}
+ 1  @Controller
+ 2. @RequestMapping(value = "/conferenceSignup")
+ 3. class ConferenceSignupController extends UifControllerBase {
+ 4.   public UifFormBase createInitialForm(HttpServletRequest request) {
+ 5.     return new ConferenceSignupForm();
+ 6.   }
+ 7.  
+ 8.   @RequestMapping(method=RequestMethod.POST, params="methodToCall=submit")
+ 9.   public ModelAndView submit(@ModelAttribute UifFormBase uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+10.     // do submit stuff...
+11.     return getUIFModelAndView(uifForm);
+12.   }
+13.  
+14.   @RequestMapping(method=RequestMethod.POST, params="methodToCall=save")
+15.   public ModelAndView save(@ModelAttribute UifFormBase uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+16.     // do save stuff...
+17.     return getUIFModelAndView(uifForm);
+18.   }
+19.  
+20.   @RequestMapping(method=RequestMethod.POST, params="methodToCall=cancel")
+21.   public ModelAndView cancel(@ModelAttribute UifFormBase uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+22.     // do cancel stuff...
+23.     return getUIFModelAndView(uifForm);
+24.   }
+25. }
+{code}
+
+[ WHAT ABOUT START METHOD THAT INQUIRY CONTROLLER USES?  IS THERE A BASE "GET" METHOD DEFINED, WITH NO METHODTOCALL PARAM? ]
+
+Of course, in practice, this code would have thorough documentation; the controller, as well, would likely delegate most of the work for the submit, save, and cancel methods out to a separate service defined in Spring [JERRY, ARE WE STILL RECOMMENDING THIS NOW THAT THE CONTROLLER LIVES IN SPRING?  I'M GUESSING SO JUST FOR THE SAKE OF GRANULARITY]  However, this code, while incomplete, does offer several interesting features.  First, on line 1, the @Controller annotation lets Spring know that this class is a controller, and on line 2, the @RequestMapping tells Spring that any request which goes to /conferenceSignup should be calling methods on an instance of this controller class.
+
+As can be seen from lines 6-7, lines 12-13, and lines 18-19, each method defined has the @RequestMapping annotation, they all return ModelAndView objects, and they have the standard set of parameters.  The params portion of the @RequestMapping on those lines is very important.  No matter which button is pushed, it will always route to the same URL: /conferenceSignup.  There needs to be some way for the button to differentiate precisely which controller method it wants to use.  KRAD's ActionField will do that by rendering a query parameter with a methodToCall value.  For instance, the "Submit" button will route to "/conferenceSignup?methodToCall=submit".  That will match the @RequestMapping's params value, and the submit method will be called.
+
+On lines 9, 15, and 21, that UifControllerBase provides a convenience method, getUIFModelAndView, which takes the UifFormBase and builds the ModelAndView object to return. 
+
+That completes the controller.  Finally, we turn to View: the easiest of all, since only Spring configuration is needed to set the View up.
+
+h2. Views
+
+When a Rice application is created, there are typically three directories for each module which hold data dictionary files: one for data object definitions including business objects; one for document definitions; and one for UIF definitions.  In the UIF definitions' folder, a new file should be created - ConferenceSignupView.xml.  In that, a bean will be created which defines the "look" of the page, as well as mapping it to ConferenceSignupView as well as the url that ConferenceSignupController responds to.
+
+{code:xml,title=ConferenceSignupView.xml}
+ 1. <?xml version="1.0" encoding="UTF-8"?>
+ 2. <beans xmlns="http://www.springframework.org/schema/beans"
+ 3.   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ 4.   xmlns:p="http://www.springframework.org/schema/p" 
+ 5.   xsi:schemaLocation="http://www.springframework.org/schema/beans         
+ 6.                       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 7.
+ 8.  <bean id="CondferenceSignupView" parent="ConferenceSignupView-parentBean" />
+ 9.  <bean id="ConferenceSignupView-parentBean" abstract="true" parent="FormView">
+10.    <property name="id" value="ConferenceSignupView" />
+11.    <property name="title" value="Conference Signup" />
+12.    <property name="items">
+13.      <list>
+14.        <!-- this will be filled in over time -->
+15.      </list>
+16.    </property>
+17.    <property name="formClass" value="edu.sampleu.conferencesignup.web.spring.form.ConferenceSignupForm" />
+18.    <property name="controllerRequestMapping" value="conferenceSignup" />
+19.    <property name="footer">
+20.      <!-- This will be filled in -->
+21.    </property>
+22.    <property name="singlePageView" value="true"/>
+23.    <property name="viewName" value="default"/>
+24.  </bean>                           
+25.
+26. </beans>
+{code}
+
+As promised, in line 17, the View is associated with the ConferenceSignupForm created earlier.  On line 18, the View is associated with the controllerRequestMapping of "conferenceSignup" - which matches the "/conferenceSignup" url we specified in the controller.
+
+On line 10, the view is also given an id.  This id should be unique among all views in the system.  It is used for a number of purposes: it is worked into the actual html "id" attribute for all rendered elements on the page.  Also, if a data model has different views, the viewId can be passed as a url parameter with the id value and override the default view of the form and controller combination:
+
+{code}
+/conferenceSignup?viewId=DifferentConferenceSignupView
+{code}
+
+This would have the ConferenceSignup form and controller show the page configured by DifferentConferenceSignupView instead. [ JERRY - TRUE THAT? ]  Also, on line 23, the viewName for this View is set to "default", which tells KRAD that ConferenceSignupView is the default View to associated with the ConferenceSignup form and controller [ JERRY - TRUE THAT? ]
+
+On line 11, the title for the page is specified, and on line 22, KRAD is notified that there is only one page associated with this View.
+
+Since this was a one-off page, ConferenceSignupView-parentView, on line 9, extends FormView, the Chronos-like parent bean of all View beans.  Sometimes common View information is shared among many pages - for instance, Inquiries or Lookups.  Further information about how to set up custom view classes is in the [Custom Views|#Custom Views] section.
+
+That leaves lines 12-16 and 19-21 - which the developer has, in comments, promised will be filled in over time.  These are the properties which get the groups which actually display text, buttons, and controls on the page.  Very important properties indeed!  The next section covers what beans will go into those properties.
+
+h1. Splitting into Groups
+
+To complete View configuration, though, the visual design is going to have to be split into group configurations.
+
+There are three big identifiers that a section of a View should be separated into its own Group.  First, if a section has its own header and/or footer, then that visual section needs to be configured into its own Group.  In the page sketch above, we can see there this covers four visual sections: the one labeled Contact Info, the one labeled Members of Party, the one labeled Interests, and the one labeled Academic Institution.  Each has a big header text to separate it from everything else - that's the easiest way to tell that a visual section should be its own group.
+
+The second identifier is if a major visual section may or may not be present on the page.  It has already been decided that "Academic Institution" will be its own group, but too: it is conditional if that Group will be rendered, based on if the Academic Institution checkbox is checked.  Twice over, "Academic Institution" needs to be its own Group.
+
+Finally, Groups have their own autonomous layout.  If a layout drastically changes within a visual section, that's an indicator that a sub-group needs to be created there.  These sub-groups typically lack headers and footers, and therefore, they are added via GroupFields.  In the page sketch, note that the fields for Contact Address break the label on the left, control on the right layout of the rest of the Contact Info Group (the "City" and "State" fields especially).  Therefore, Contact Address is going to have to live within its own GroupField.
+
+What about the buttons at the bottom?  The buttons are special because a View, too, has a header and footer.  The "Submit", "Save", and "Cancel" buttons will all be part of the View's footer.  And it just so happens that the Footer will the the last group which needs to be defined for the page.
+
+[ JERRY - SUGGESTED LAYOUTS? ]
+The Groups have been identified.  Next, two determinations need to be made.  First, is the Group a common Group that a definition already exists for?  For instance, common tabs that appear across KRAD documents have Groups already defined in impl/src/main/resources/org/kuali/rice/kns/uif/datadictionary/UifGroupDefinitions.xml, such as Group_DocumentRouteLog (the tab which shows past, current, and future KEW action requests on a document); Group_DocumentNotes (the notes tab); Group_DocumentOverview and Group_DocumentHeader which display the top portions of a document.  More common Group definitions are sure to be created as more functionality is added to KRAD.
+
+Also, there are Groups defined which have certain layouts and certain decorators already applied.  For example, GroupSection_Accordion applies to AccordionDecorator to a Group, making the Group collapsible.  In this case, the user should really be filling everything out, so the collapsible behavior won't be used.  There's also CollectionGroup, a pre-configured Group which provides, for instance, the add line button and correctly labels the add line, and there is CollectionGroupTableLayout which will display a collection in a table layout.  That sounds just great for the "Members of Party" Group.  GroupGridLayout configures a basic grid layout; since the "Contact Information" has two columns of fields, GroupGridLayout is probably necessary there (it isn't configured but the default GridLayout uses two columns).  The Address field, too, has two columns, though the top two address fields span both columns; in any case, this is still GridLayout.  Finally, plainly named GroupSection provides a simple VERTICAL box layout - most of the other Groups need that layout.  The only Group left will be the buttons in the footer; in that case, the layout - a HORIZONTAL box layout - will have be configured manually.  Aw.  However, it will extend the abstract bean definition for Group which does a lot of configuration for every Group that exists in KRAD.
+
+Here's what the View configuration looks like now that the Groups have been added.
+
+{code:xml,title=ConferenceSignupView.xml}
+ 1. <?xml version="1.0" encoding="UTF-8"?>
+ 2. <beans xmlns="http://www.springframework.org/schema/beans"
+ 3.   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ 4.   xmlns:p="http://www.springframework.org/schema/p" 
+ 5.   xsi:schemaLocation="http://www.springframework.org/schema/beans         
+ 6.                       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 7.
+ 8.  <bean id="CondferenceSignupView" parent="ConferenceSignupView-parentBean" />
+ 9.  <bean id="ConferenceSignupView-parentBean" abstract="true" parent="FormView">
+10.    <property name="id" value="ConferenceSignupView" />
+11.    <property name="title" value="Conference Signup" />
+12.    <property name="items">
+13.      <list>
+14.       <bean parent="ConferenceSignupView-ContactInformationGroup" /> 
+15.       <bean parent="ConferenceSignupView-PartyMembersGroup" />
+16.       <bean parent="ConferenceSignupView-InterestsGroup" />
+17.       <bean parent="ConferenceSignupView-AcademicInformation" /> <!-- eventually, this needs to be conditional -->
+18.      </list>
+19.    </property>
+20.    <property name="renderHeader" value="false" />
+21.    <property name="formClass" value="edu.sampleu.conferencesignup.web.spring.form.ConferenceSignupForm" />
+22.    <property name="controllerRequestMapping" value="conferenceSignup" />
+23.    <property name="footer">
+24.      <bean parent="ConferenceSignupView-Footer" />
+25.    </property>
+26.    <property name="singlePageView" value="true"/>
+27.    <property name="viewName" value="default"/>
+28.  </bean>                           
+29.
+30. <bean id="ConferenceSignupView-ContactInformationGroup" parent="GroupGridLayout">
+31.   <property name="header.headerText" value="Contact Information" />
+32.   <property name="layoutManager.numberOfColumns" value="2" />
+33.   <property name="items">
+34.     <list>
+35.       <!-- this will be filled in in the Fields section -->
+36.     </list>
+37.   </property>
+38. </bean>
+39.
+40. <bean id="ConferenceSignupView-PartyMembersGroup" parent="CollectionGroupTableLayout">
+41.   <property name="header.headerText" value="Members of Party" />
+42.   <property name="propertyName" value="conferenceParty.guests" />
+43.   <property name="layoutManager.renderSequenceField" value="true" />
+44.   <property name="renderAddLine" value="true" />
+45.   <property name="collectionObjectClass" value="edu.sampleu.conferencesignup.businessobject.ConferenceGuest" />
+46.   <property name="items">
+47.     <list>
+48.       <!-- this will be filled in in the Fields section -->
+49.     </list>
+50.   </property>
+51. </bean>
+52. 
+53. <bean id="ConferenceSignupView-InterestsGroup" parent="GroupSection">
+54.   <property name="header.headerText" value="Interests" />
+55.   <property name="items">
+56.     <list>
+57.       <!-- this will be filled in in the Fields section -->
+58.     </list>
+59.   </property>
+60. </bean>
+61. 
+62. <bean id="ConferenceSignupView-AcademicInstitution" parent="GroupSection">
+63.   <property name="header.headerText" value="Academic Institution" />
+64.   <property name="items">
+65.     <list>
+66.       <!-- this will be filled in in the Fields section -->
+67.    </list>
+68.   </property>
+69. </bean>
+70. 
+71. <bean id="ConferenceSignupView-Footer" parent="Group">
+72.   <property name="styleClasses" value="wrap" />
+73.   <property name="layoutManager">
+74.      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL" />
+75.   </property>
+76.   <property name="items">
+77.     <list>
+78.       <!-- this still needs to be filled in! -->
+79.     </list>
+80.   </property>
+81. </bean>
+82. 
+83. <bean id="ConferenceSignupView-AddressField-Group" parent="GroupGridLayout">
+84.   <property name="items">
+85.     <list>
+86.       <!-- this still needs to be filled in! -->
+87.     </list>
+88.   </property>
+89. </bean>
+90. </beans>
+{code}
+
+[ JERRY - BEST PRACTICE SPECIFYING TITLES? JAMES - CHECK OUT TRAVEL-TESTVIEW1.PROPERTIES ]
+
+The configuration is certainly getting longer.  There's several areas to focus on.
+
+In lines 12-19, ConferenceSignupView finally has its items to render - four groups, defined below in the page.  Lines 23-25 define the Group to use as the footer, and on line 20, header rendering is turned off (since the mockup does not show a title for this page).
+
+In lines 30-38, the first Group is defined: ConferenceSignupView-ContactInformationGroup, which displays the Contact Information.  A title is specified for the Group via the header.headerText property on line 31.  On line 32, the number of columns on the layout manager (again, a grid layout) is set to be 2 - though this is not strictly necessary, since GridLayout defaults to 2 columns.
+
+ConferenceSignupView-PartyMembersGroup also defines a title and then defines several properties which are unique to CollectionGroups.  On line 42, the property for the collection to render is given; obviously, every CollectionGroup will need to have this set.  Line 43 instructs the TableLayoutManger to render sequence fields so there will be a 1, 2, 3, etc. in front of added members.  Line 44 tells the CollectionGroup that an add line should be rendered - ie, the blank line at the top where more data can be entered.  On line 45, a hint is set to tell KRAD what the class of each object in the collection is; it's best practice to set that. [ JERRY - TRUE THAT? ]
+
+ConferenceSignupView-InterestsGroup and ConferenceSignupView-AcademicInstitution are very simple Groups - Group configuration is actually pretty easy.  ConferenceSignupView-AddressField-Group uses GroupGridLayout; this is two columns, but again, GridLayout defaults to that, so in this case, best practice will be followed and no numberOfColumns will be set.  ConferenceSignupView-Footer has one interesting property: it sets the styleClass to wrap on line 72, so that the rendered HTML will wrap the buttons around if they do not fit within their div.  Also, since the Footer's parent is Group, a layout manager needs to be set.  On lines 73-75, a HORIZONTAL BoxLayoutManager, setting each button side by side, is injected into the Group.
+
+Groups are easy to set up but there's still a fair amount of missing configuration: all of the fields.
+
+h1. Fields
+
+For every label and control, an AttributeField needs to be configured.  Thankfully, if the property the AttributeField maps to an AttributeDefinition within the data object's data dictionary entry, fields can be incredibly easy to configure.  For instance, in the Contact Information Group and in the Address Group which is inside it, there is no need to override the AttributeDefinitions for any of the given fields.  In that case, the two groups can be configured simply as follows:
+
+{code:xml}
+ 1. <bean id="ConferenceSignupView-ContactInformationGroup" parent="GroupGridLayout">
+ 2.   <property name="header.headerText" value="Contact Information" />
+ 3.   <property name="layoutManager.numberOfColumns" value="2" />
+ 4.   <property name="items">
+ 5.     <list>
+ 6.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.companyName" p:required="true" />
+ 7.       <bean class="org.kuali.rice.kns.uif.field.BlankField" />
+ 8.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.contactName" p:required="true" />
+ 9.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.contactEmail" p:required="true" />
+10.       <bean parent="GroupField" p:rowSpan="3">
+11.         <property name="group">
+12.           <bean parent="ConferenceSignupView-AddressField-Group" />
+13.         </property>
+14.         <property name="labelField">
+15.           <bean parent="LabelField">
+16.             <property name="labelText" value="Contact Address" />
+17.           </bean>
+18.         </property>
+19.       </bean>
+20.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.contactPhone" p:required="true" />
+21.       <bean parent="AttributeField_Form" p:propertyName="academicInstitution" p:label="Academic Institution?" p:labelPlacement="RIGHT">
+22.         <property name="control">
+23.           <bean parent="CheckboxControl"/>
+24.         </property>
+25.       </bean>
+26.     </list>
+27.   </property>
+28. </bean>
+29. 
+30. <bean id="ConferenceSignupView-AddressField-Group" parent="GroupGridLayout">
+31.   <property name="items">
+32.     <list>
+33.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.addressLine1" p:required="true" p:labelFieldRendered="false" p:colSpan="2"/>
+34.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.addressLine2" p:required="true" p:labelFieldRendered="false" p:colSpan="2"/>
+35.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.city" p:required="true"/>
+36.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.state" p:required="true"/>
+37.     </list>
+38.   </property>
+39. </bean>
+{code}
+
+Already, there's a lot going on. However, it's all very straightforward stuff.  Let's start with ConferenceSignupView-AddressField-Group.  Basically, every Group is defined by the items which sit inside it.  In the case of ConferenceSignupView-AddressField-Group, there are four fields (lines 33-36).  Each has a parent bean of AttributeField_Form.  Be careful in choosing a parent of AttributeFields.  There are two very common ones: AttributeField and AttributeField_Form; AttributeField_Form extends AttributeField but turns on binding for the properties they display.  That's very important for forms like this (less important for, say, Groups in InquiryViews which are read only).
+
+Each AttributeField_Form has a propertyName set, with the path from the form class to the attribute which should be displayed.  These fields are all required, so the required property has been set to true for all; it defaults to false.  Looking through the configuration for ConferenceSignupView-ContactInformationGroup, practically all the AttributeField_Forms defined share these properties.
+
+Lines 33 and 34 have two extra properties, though.  p:labelFieldRendered="false" tells KRAD not to render a label for these fields; the mockup doesn't have a label so none should be rendered.  Also, the colSpan for each of these fields has been set to 2, so that the control spans the width of both grid columns [ JERRY - SHOULD THAT HAVE BEEN 4? ]
+
+On line 7, there's an interesting field: org.kuali.rice.kns.uif.field.BlankField.  This field simply fills out a space in the grid, pushing down the contactName attribute to the next line as the mockup shows.
+
+Since the address is its own group, there needs to be a way to embed that group within the parent group.  Groups embedded within other Groups needed to be embedded first into a GroupField, as was done above in lines 10-19.  Simply inject the Group to be inside the Field (lines 11-13).  In this case, a LabelField is also added (lines 14-18) so that the word "Address" shows up next to the field.  Since this Group should take up three rows of the grid, a rowSpan of 3 is set on line 10.
+
+That works for all the fields which have been defined in AttributeFields.  However, the academicInstitution property was declared on the form - it has no AttributeDefinition associated with it in the data dictionary.  In this case, the AttributeField_Form must be created "from scratch"; all the information KRAD needs to know about the attribute will be defined in the AttributeField_Form definition: including the control for the attribute (a checkbox, just as the mockup indicates), the label for the attribute, and since the label goes to the right of the checkbox, the labelPlacement property has been set to "RIGHT" ("LEFT" is the default; "TOP" and "BOTTOM" are also valid choices). [ JERRY - ANY MISSED REQUIRED FIELDS IN THAT DEFINITION? ]
+
+Just as an AttributeField can be created without an AttributeDefinition - as the academicInstitution property did - an AttributeField can be used to override any property. For example, in line 36 above, the state is shown.  Let's say that the control for the state is a text field - whereas the bizarre down arrow on the mockup seems to suggest that a drop down was intended.  That can be easily overridden as so:
+{code:xml}
+35.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.city" p:required="true"/>
+36.       <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.state" p:required="true">
+37.          <property name="control">
+38.            <bean parent="SelectControl">
+39.              <property name="options">
+40.                <bean class="StateCodeNameList" />
+41.              </property>
+42.            </bean>
+43.          </property>
+44.        </bean>
+45.     </list>
+{code}
+
+Of course, a bean with the id StateCodeNameList and the KeyLabelPairs for all the state codes will need to be defined.  That would look something like:
+
+{code:xml}
+<bean id="StateCodeNameList" class="org.springframework.beans.factory.config.ListFactoryBean">
+  <property name="sourceList">
+    <list>
+      <bean class="org.kuali.rice.core.util.KeyLabelPair" p:label="">
+        <property name="key">
+          <null />
+        </property>
+      </bean>
+      <bean class="org.kuali.rice.core.util.KeyLabelPair" p:key="AK" p:label="AK" />
+      <bean class="org.kuali.rice.core.util.KeyLabelPair" p:key="AL" p:label="AL" />
+      <bean class="org.kuali.rice.core.util.KeyLabelPair" p:key="AR" p:label="AR" />
+      <bean class="org.kuali.rice.core.util.KeyLabelPair" p:key="AZ" p:label="AZ" />
+      ... there are a lot of states. like fifty, and territories on top of that ...
+      <bean class="org.kuali.rice.core.util.KeyLabelPair" p:key="WY" p:label="WY" />
+    </list>
+  </property>
+</bean>
+{code}
+
+What about errors? There needs to be some way for the ConferenceSignupView-ContactInformationGroup to display errors associated with the attributes inside the Group.
+
+Since errors are rendered in a specific location in the Group - below the header but above any attributes - Groups have a special property called "errorsField" which allows an instance of org.kuali.rice.kns.uif.field.ErrorsField to be declared for the Group.  The "Group" bean which all Groups inherit from actually defines an "ErrorsField_Group" to put into the errorsField.  KRAD will automatically keep track of which attributes are rendered in the Group and associate error keys with them - no additional work is necessary beyond the configuration above.
+
+Of course, if there's a need to configure additional error keys, that can be done by overriding the errorsField property and in the extension of the "ErrorsField_Group" bean, setting the "addtionalKeysToMatch" property. This property uses the same wildcard system that was used in the KNS; for instance, the key "attendees*" will match any error which has an attribute that starts with the name "attendees", such as "attendees.firstName".  Be aware, as well, that Views have errorFields associated as well which can have the same property overridden.
+
+Since there's no extra configuration for errors, that does it for the "Contact Information Group" and the Address GroupField within it.  Next is the PartyMembersGroup.  That configuration is as follows:
+
+{code:xml}
+ 1. <bean id="ConferenceSignupView-PartyMembersGroup" parent="CollectionGroupTableLayout">
+ 2.   <property name="header.headerText" value="Members of Party" />
+ 3.   <property name="propertyName" value="conferenceParty.guests" />
+ 4.   <property name="layoutManager.renderSequenceField" value="true" />
+ 5.   <property name="renderAddLine" value="true" />
+ 6.   <property name="collectionObjectClass" value="edu.sampleu.conferencesignup.businessobject.ConferenceGuest" />
+ 7.   <property name="items">
+ 8.     <list>
+ 9.       <bean parent="AttributeField_Form" p:propertyName="name" p:required="true" />
+10.       <bean parent="AttributeField_Form" p:propertyName="email" p:required="true" />
+11.       <bean parent="AttributeField_Form" p:propertyName="phone" p:required="true" />
+12.     </list>
+13.   </property>
+14. </bean>
+{code}
+
+The twist here is that all of the AttributeField_Form property names (lines 9-11) are relative not the form - as was the case with ContactInformation - but relative to the ConferenceGroup object. [ JERRY - TRUE THAT? ]  This only makes sense: since each of the items will be shown once per line, the full attribute propertyName is not really known at configuration time.  However, since the propertyName for the CollectionGroup in general is "conferenceParty.guests", KRAD knows it needs to iterate over all of those objects, and thus, for the items that will display on each line, only the property name relative to that is necessary.
+
+Jumping ahead, the Footer needs some interesting configuration since it doesn't have any attributes at all, but rather buttons. What does the configuration for that look like?
+
+{code:xml}
+ 1. <bean id="ConferenceSignupView-Footer" parent="Group">
+ 2.   <property name="styleClasses" value="wrap" />
+ 3.   <property name="layoutManager">
+ 4.      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL" />
+ 5.   </property>
+ 6.   <property name="items">
+ 7.     <list>
+ 8.       <bean parent="ActionField" p:methodToCall="submit" p:actionLabel="Submit"/>
+ 9.       <bean parent="ActionField" p:methodToCall="save" p:actionLabel="Save"/>
+10.       <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+11.     </list>
+12.   </property>
+13. </bean>
+{code}
+
+The only difference between the fields in this Group and the AttributeField_Forms of other Groups is that these fields are extensions of the ActionField bean (lines 8-10).  Two properties need to be set.  The methodToCall, of course, makes sure that the button adds a "methodToCall" parameter with the request, which the controller we defined above then leverages to figure out which controller method to call.  Buttons have been defined here for each of the three controller methods: submit, save, and cancel.  Also, an actionLabel property needs to be defined; that label is the text which is rendered on the button itself.
+
+Here's the full configuration once the fields are added:
+
+{code:xml,title=Complete ConferenceSignupView.xml}
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+<bean id="CondferenceSignupView" parent="ConferenceSignupView-parentBean" />
+<bean id="ConferenceSignupView-parentBean" abstract="true" parent="FormView">
+<property name="id" value="ConferenceSignupView" />
+  <property name="title" value="Conference Signup" />
+  <property name="items">
+    <list>
+     <bean parent="ConferenceSignupView-ContactInformationGroup" /> 
+     <bean parent="ConferenceSignupView-PartyMembersGroup" />
+     <bean parent="ConferenceSignupView-InterestsGroup" />
+     <bean parent="ConferenceSignupView-AcademicInformation" /> <!-- eventually, this needs to be conditional -->
+    </list>
+  </property>
+  <property name="renderHeader" value="false" />
+  <property name="formClass" value="edu.sampleu.conferencesignup.web.spring.form.ConferenceSignupForm" />
+  <property name="controllerRequestMapping" value="conferenceSignup" />
+  <property name="footer">
+    <bean parent="ConferenceSignupView-Footer" />
+  </property>
+  <property name="singlePageView" value="true"/>
+  <property name="viewName" value="default"/>
+</bean>                           
+
+<bean id="ConferenceSignupView-ContactInformationGroup" parent="GroupGridLayout">
+ <property name="header.headerText" value="Contact Information" />
+ <property name="layoutManager.numberOfColumns" value="2" />
+ <property name="items">
+   <list>
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.companyName" p:required="true" />
+     <bean class="org.kuali.rice.kns.uif.field.BlankField" />
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.contactName" p:required="true" />
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.contactEmail" p:required="true" />
+     <bean parent="GroupField" p:rowSpan="3">
+       <property name="group">
+         <bean parent="ConferenceSignupView-AddressField-Group" />
+       </property>
+       <property name="labelField">
+         <bean parent="LabelField">
+           <property name="labelText" value="Contact Address" />
+         </bean>
+       </property>
+     </bean>
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.contactPhone" p:required="true" />
+     <bean parent="AttributeField_Form" p:propertyName="academicInstitution" p:label="Academic Institution?" p:labelPlacement="RIGHT">
+       <property name="control">
+         <bean parent="CheckboxControl"/>
+       </property>
+     </bean>
+   </list>
+ </property>
+</bean>
+ 
+<bean id="ConferenceSignupView-AddressField-Group" parent="GroupGridLayout">
+ <property name="items">
+   <list>
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.addressLine1" p:required="true" p:labelFieldRendered="false" p:colSpan="2"/>
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.addressLine2" p:required="true" p:labelFieldRendered="false" p:colSpan="2"/>
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.city" p:required="true"/>
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.contact.state" p:required="true"/>
+   </list>
+ </property>
+</bean>
+
+<bean id="ConferenceSignupView-PartyMembersGroup" parent="CollectionGroupTableLayout">
+ <property name="header.headerText" value="Members of Party" />
+ <property name="propertyName" value="conferenceParty.guests" />
+ <property name="layoutManager.renderSequenceField" value="true" />
+ <property name="renderAddLine" value="true" />
+ <property name="collectionObjectClass" value="edu.sampleu.conferencesignup.businessobject.ConferenceGuest" />
+ <property name="items">
+   <list>
+     <bean parent="AttributeField_Form" p:propertyName="name" p:required="true" />
+     <bean parent="AttributeField_Form" p:propertyName="email" p:required="true" />
+     <bean parent="AttributeField_Form" p:propertyName="phone" p:required="true" />
+   </list>
+ </property>
+</bean>
+
+<bean id="ConferenceSignupView-InterestsGroup" parent="GroupSection">
+ <property name="header.headerText" value="Interests" />
+ <property name="items">
+   <list>
+     <!-- [ JERRY - I AM COMPLETELY UNSURE OF THIS ONE. MAYBE I SHOULD GET RID OF IT? ] -->
+   </list>
+ </property>
+</bean>
+
+<bean id="ConferenceSignupView-AcademicInstitution" parent="GroupSection">
+ <property name="header.headerText" value="Academic Institution" />
+ <property name="items">
+   <list>
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.academicInstitutionInformation.institutionFundingTypeCode" />
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.academicInstitutionInformation.name" />
+     <bean parent="AttributeField_Form" p:propertyName="conferenceParty.academicInstitutionInformation.numberOfStudents" />
+  </list>
+ </property>
+</bean>
+
+<bean id="ConferenceSignupView-Footer" parent="Group">
+ <property name="styleClasses" value="wrap" />
+ <property name="layoutManager">
+    <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL" />
+ </property>
+ <property name="items">
+   <list>
+     <bean parent="ActionField" p:methodToCall="submit" p:actionLabel="Submit"/>
+     <bean parent="ActionField" p:methodToCall="save" p:actionLabel="Save"/>
+     <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+   </list>
+ </property>
+</bean>
+</beans>
+{code}
+
+And with that, a new KRAD View has been created!  [ JERRY - TRUE THAT? HOW CAN WE MAKE THE ACADEMIC INTERESTS GROUP CONDITIONAL? ]
+
+h1. Common Cases
+
+Some Views have a common look throughout all KRAD applications.  These views can be overridden, of course, but in most cases, the "out of the box" version of the View will be all a client application needs.  Let's explore each of these common views and how to configure them.
+
+h2. Inquiry
+h2. Lookup
+h2. Document
+h2. {anchor}Custom Views{anchor}
+h2. View Helper Services
+[IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]

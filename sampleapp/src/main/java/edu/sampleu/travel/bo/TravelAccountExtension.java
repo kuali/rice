@@ -23,8 +23,9 @@ import javax.persistence.*;
 @Entity
 @Table(name="TRV_ACCT_EXT")
 public class TravelAccountExtension extends PersistableBusinessObjectExtensionBase {
-    
-    @Id
+    private static final long serialVersionUID = -520222959801026298L;
+
+	@Id
 	@Column(name="acct_num")
 	private String number;
     

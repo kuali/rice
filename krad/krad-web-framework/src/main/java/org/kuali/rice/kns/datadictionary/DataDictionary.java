@@ -36,11 +36,16 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
+import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.util.ComponentIdBeanPostProcessor;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
@@ -48,13 +53,11 @@ import org.springframework.core.io.Resource;
  * Collection of named BusinessObjectEntry objects, each of which contains
  * information relating to the display, validation, and general maintenance of a
  * BusinessObject.
- * 
- * 
  */
-public class DataDictionary {
+public class DataDictionary  {
 
-    private DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
-    private XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
+	protected DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
+    protected XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
 
 	// logger
 	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
@@ -62,19 +65,21 @@ public class DataDictionary {
 	/**
 	 * The encapsulation of DataDictionary indices
 	 */
-	private DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
+	protected DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
+	
+	// View indices
+	protected ViewDictionaryIndex viewIndex = new ViewDictionaryIndex(ddBeans);
 
 	/**
 	 * The DataDictionaryMapper
 	 * The default mapper simply consults the initialized indices
 	 * on workflow document type
 	 */
-	private DataDictionaryMapper ddMapper = new DataDictionaryIndexMapper();
+	protected DataDictionaryMapper ddMapper = new DataDictionaryIndexMapper();
 
-	private List<String> configFileLocations = new ArrayList<String>();
+	protected List<String> configFileLocations = new ArrayList<String>();
+	
 
-    public DataDictionary() { }
-    
 	public List<String> getConfigFileLocations() {
         return this.configFileLocations;
     }
@@ -116,12 +121,13 @@ public class DataDictionary {
             if (! resource.exists()) {
                 throw new DataDictionaryException("DD Resource " + sourceName + " not found");  
             }
+            
             String indexName = sourceName.substring(sourceName.lastIndexOf("/") + 1, sourceName.indexOf(".xml"));
             configFileLocations.add( sourceName );
         }
     }    
 
-    private Resource getFileResource(String sourceName) {
+    protected Resource getFileResource(String sourceName) {
         DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
         return resourceLoader.getResource(sourceName);
     }
@@ -141,9 +147,22 @@ public class DataDictionary {
     }
     
     public void parseDataDictionaryConfigurationFiles( boolean allowConcurrentValidation ) {
+		// configure the bean factory, setup component decorator post processor
+		// and allow Spring EL
+		try {
+			BeanPostProcessor idPostProcessor = ComponentIdBeanPostProcessor.class.newInstance();
+			ddBeans.addBeanPostProcessor(idPostProcessor);
+			
+			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
+		}
+		catch (Exception e1) {
+			LOG.error("Cannot create component decorator post processor: " + e1.getMessage(), e1);
+			throw new RuntimeException("Cannot create component decorator post processor: " + e1.getMessage(), e1);
+		}
+    	
         // expand configuration locations into files
-
         LOG.info( "Starting DD XML File Load" );
+        
         String[] configFileLocationsArray = new String[configFileLocations.size()];
         configFileLocationsArray = configFileLocations.toArray( configFileLocationsArray );
         configFileLocations.clear(); // empty the list out so other items can be added
@@ -157,17 +176,21 @@ public class DataDictionary {
         if ( allowConcurrentValidation ) {
             Thread t = new Thread(ddIndex);
             t.start();
+            
+            Thread t2 = new Thread(viewIndex);
+            t2.start();   
         } else {
             ddIndex.run();
+            viewIndex.run();
         }
     }
-	    
-    static boolean validateEBOs = true;
+
+	static boolean validateEBOs = true;
     
     public void validateDD( boolean validateEbos ) {
     	DataDictionary.validateEBOs = validateEbos;
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
+    	Map<String,DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
+        for ( DataObjectEntry entry : doBeans.values() ) {
             entry.completeValidation();
         }
         Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
@@ -177,24 +200,25 @@ public class DataDictionary {
     }
     
     public void validateDD() {
-    	DataDictionary.validateEBOs = true;
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
-            entry.completeValidation();
-        }
-        Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
-        for ( DocumentEntry entry : docBeans.values() ) {
-            entry.completeValidation();
-        }
+    	validateDD(true);
     }
 
 	/**
 	 * @param className
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
+    @Deprecated
 	public BusinessObjectEntry getBusinessObjectEntry(String className ) {
 		return ddMapper.getBusinessObjectEntry(ddIndex, className);
 	}
+
+	/**
+     * @param className
+     * @return BusinessObjectEntry for the named class, or null if none exists
+     */
+    public DataObjectEntry getDataObjectEntry(String className ) {
+        return ddMapper.getDataObjectEntry(ddIndex, className);
+    }
 
 	/**
 	 * This method gets the business object entry for a concrete class
@@ -258,12 +282,50 @@ public class DataDictionary {
 	 * @return DocumentEntry associated with the given Class, or null if there
 	 *         is none
 	 */
-	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(Class businessObjectClass) {
+	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(Class<?> businessObjectClass) {
 		return ddMapper.getMaintenanceDocumentEntryForBusinessObjectClass(ddIndex, businessObjectClass);
 	}
 
 	public Map<String, DocumentEntry> getDocumentEntries() {
 		return ddMapper.getDocumentEntries(ddIndex);
+	}
+	
+	/**
+	 * Returns the View entry identified by the given id
+	 * 
+	 * @param viewId - unique id for view
+	 * @return View instance associated with the id
+	 */
+	public View getViewById(String viewId) {
+		return ddMapper.getViewById(viewIndex, viewId);
+	}
+	
+	/**
+	 * Returns View instance identified by the view type name and index
+	 * 
+	 * @param viewTypeName
+	 *            - type name for the view
+	 * @param indexKey
+	 *            - Map of index key parameters, these are the parameters the
+	 *            indexer used to index the view initially and needs to identify
+	 *            an unique view instance
+	 * @return View instance that matches the given index
+	 */
+	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
+		return ddMapper.getViewByTypeIndex(viewIndex, viewTypeName, indexKey);
+	}
+	
+	/**
+	 * Gets all <code>View</code> prototypes configured for the given view type
+	 * name
+	 * 
+	 * @param viewTypeName
+	 *            - view type name to retrieve
+	 * @return List<View> view prototypes with the given type name, or empty
+	 *         list
+	 */
+	public List<View> getViewsForType(String viewTypeName) {
+		return ddMapper.getViewsForType(viewIndex, viewTypeName);
 	}
 
     /**

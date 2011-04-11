@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -33,7 +32,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  * 
  * @see ExportDataSet
  * @see StyleBo
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleDataExporter implements Exporter {
@@ -45,30 +44,37 @@ public class StyleDataExporter implements Exporter {
 	}
 
 	@Override
-	public void export(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects, String exportFormat, OutputStream outputStream) throws IOException {
+	public void export(Class<?> dataObjectClass,
+			List<? extends Object> dataObjects, String exportFormat,
+			OutputStream outputStream) throws IOException {
 		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
-			throw new ExportNotSupportedException("The given export format of " + exportFormat + " is not supported by the KEW XML Exporter!");
+			throw new ExportNotSupportedException("The given export format of "
+					+ exportFormat
+					+ " is not supported by the KEW XML Exporter!");
 		}
-		ExportDataSet dataSet = buildExportDataSet(businessObjectClass, businessObjects);
-		outputStream.write(CoreApiServiceLocator.getXmlExporterService().export(dataSet));
+		ExportDataSet dataSet = buildExportDataSet(dataObjectClass, dataObjects);
+		outputStream.write(CoreApiServiceLocator.getXmlExporterService()
+				.export(dataSet));
 		outputStream.flush();
 	}
 
 	@Override
-	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass) {
+	public List<String> getSupportedFormats(Class<?> dataObjectClass) {
 		return supportedFormats;
 	}
 
 	/**
 	 * Builds the ExportDataSet based on the BusinessObjects passed in.
 	 */
-	protected ExportDataSet buildExportDataSet(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects) {
+	protected ExportDataSet buildExportDataSet(Class<?> dataObjectClass,
+			List<? extends Object> dataObjects) {
 		StyleExportDataSet dataSet = new StyleExportDataSet();
-		for (BusinessObject businessObject : businessObjects) {
-			if (businessObjectClass.equals(StyleBo.class)) {
-				dataSet.getStyles().add((StyleBo)businessObject);
-			}    
+		for (Object dataObject : dataObjects) {
+			if (dataObjectClass.equals(StyleBo.class)) {
+				dataSet.getStyles().add((StyleBo) dataObject);
+			}
 		}
+
 		return dataSet.createExportDataSet();
 	}
 

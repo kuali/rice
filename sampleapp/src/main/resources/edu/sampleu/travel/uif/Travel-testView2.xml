@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+Copyright 2007-2009 The Kuali Foundation
+
+Licensed under the Educational Community License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.opensource.org/licenses/ecl2.php
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<bean id="Travel-testView2" parent="Travel-testView1">
+    <property name="id" value="Travel-testView2"/>
+    <property name="title" value="Test View 2"/>
+    <property name="entryPageId" value="page1"/>
+    <property name="additionalCssFiles" ref="ks-css"/>
+	<property name="errorsField">
+        <bean parent="ErrorsField_View">
+	       	<property name="additionalKeysToMatch">
+			  	<list merge="true">
+			  		<value>TEST_*</value>
+			  	</list>
+		  	</property>
+        </bean>
+    </property>
+    <property name="navigation">
+        <ref bean="testViewMenu"/>
+    </property>
+    <property name="items">
+        <list>
+            <bean parent="Page" p:id="page1" p:title="Test Course">
+                <property name="items">
+                    <list>
+                        <ref bean="testValidationSection1"/>
+						<ref bean="testValidationSection2"/>
+						<ref bean="testValidationSection3"/>
+						<ref bean="testValidationSection4"/>
+						<ref bean="test2Section4"/>
+                    </list>
+                </property>
+            </bean>
+            <bean parent="Page" p:id="page2" p:title="Test Course">
+                <property name="items">
+                    <list>
+                        <ref bean="test2Section6"/>
+                    </list>
+                </property>
+            </bean>
+            <bean parent="Page" p:id="page3" p:title="Test Course">
+                <property name="items">
+                    <list>
+                        <ref bean="test2Section4"/>
+                    </list>
+                </property>
+            </bean>
+            <bean parent="Page" p:id="page4" p:title="Test Course">
+                <property name="items">
+                    <list>
+                        <ref bean="test2Section3"/>
+                    </list>
+                </property>
+            </bean>
+        </list>
+    </property>
+</bean>
+
+<bean id="testViewMenu" parent="NavigationGroupTabMenu">
+    <property name="items">
+        <list>
+            <!-- <bean parent="HeaderTwo" p:headerText="Navigation"/> -->
+            <bean parent="ActionLinkField" p:navigateToPageId="page1" p:actionLabel="Page 1"/>
+            <bean parent="ActionLinkField" p:navigateToPageId="page2" p:actionLabel="Page 2"/>
+            <bean parent="ActionLinkField" p:navigateToPageId="page3" p:actionLabel="Page 3"/>
+            <bean parent="ActionLinkField" p:navigateToPageId="page4" p:actionLabel="Page 4"/>
+        </list>
+    </property>
+    <property name="componentOptions">
+        <map>
+            <entry key="animate" value="true"/>
+            <entry key="slideout" value="true"/>
+        </map>
+    </property>
+</bean>
+
+<bean id="testValidationSection1" parent="Group">
+    <property name="id" value="testSection1"/>
+    <property name="title" value="Test Section 1"/>
+    <property name="accordion.render" value="false"/>
+    <property name="styleClasses" value="group_header"/>    
+    <property name="items">
+        <list>
+            <ref bean="testValidationGroup1"/>
+        </list>
+    </property>
+</bean>
+
+<bean id="testValidationSection2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+  <property name="title" value="Test Section 2"/> 
+  <property name="summary" value="Horizontal Layout test"/> 
+  <property name="accordion.render" value="false"/>
+  <property name="styleClasses" value="group_header"/>  
+  <property name="items">
+    <list>
+      <bean parent="AttributeField_Form" p:label="Field 1" p:propertyName="hField1" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+	  	  	<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+            </property>
+	  </bean>
+      <bean parent="AttributeField_Form" p:label="Field 2" p:propertyName="hField2" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+      	  	<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field2"/>
+            </property>
+	  </bean>
+	  <bean parent="AttributeField_Form" p:label="Field 3" p:propertyName="hField3" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+           	<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field3"/>
+            </property>
+	  </bean>
+    </list>
+  </property> 
+</bean>
+
+<bean id="testValidationSection4" parent="Group" p:layoutManager.orientation="VERTICAL">
+  <property name="title" value="Test Section 3"/> 
+  <property name="summary" value="Testing icons, highlighting off, allowMessageRepeat off"/> 
+  <property name="accordion.render" value="false"/>
+  <property name="styleClasses" value="group_header"/>  
+  <property name="errorsField">
+    <bean parent="ErrorsField_Group">
+    	<property name="displayMessages" value="true"/>
+       	<property name="allowMessageRepeat" value="false"/>
+    </bean>
+  </property>
+  <property name="items">
+    <list>
+      <bean parent="AttributeField_Form" p:label="Field 1" p:propertyName="vField4" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+  		  <property name="control">
+                <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+          </property>
+		  <property name="errorsField">
+		    <bean parent="ErrorsField">
+				<property name="highlightOnError" value="false"/>
+				<property name="displayFieldErrorIcon" value="true"/>
+		    </bean>
+		  </property>
+	  </bean>
+      <bean parent="AttributeField_Form" p:label="Field 2" p:propertyName="vField5" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" >
+	  		<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field2"/>
+            </property>
+			<property name="errorsField">
+			    <bean parent="ErrorsField">
+					<property name="highlightOnError" value="false"/>
+					<property name="displayFieldErrorIcon" value="true"/>
+			    </bean>
+		  	</property>
+	  </bean>
+	  <bean parent="AttributeField_Form" p:label="Field 3" p:propertyName="vField6" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+	  		<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field3"/>
+            </property>
+			<property name="errorsField">
+			    <bean parent="ErrorsField">
+					<property name="highlightOnError" value="false"/>
+					<property name="displayFieldErrorIcon" value="true"/>
+			    </bean>
+		  	</property>
+	  </bean>
+    </list>
+  </property> 
+</bean>
+
+<bean id="testValidationSection3" parent="Group" p:layoutManager.orientation="VERTICAL">
+  <property name="title" value="Test Section 3"/> 
+  <property name="summary" value="Vertical layout test"/> 
+  <property name="accordion.render" value="false"/>
+  <property name="styleClasses" value="group_header"/>
+  <property name="items">
+    <list>
+      <bean parent="AttributeField_Form" p:label="Field 1" p:propertyName="vField1" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:constraint="Only alphanumeric, underscore, period allowed">
+      		<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+            </property>
+			<property name="validCharactersConstraint">
+                    <bean parent="AlphaNumericPatternConstraint" p:allowUnderscore="true" p:allowPeriod="true"/>
+            </property>
+	  </bean>
+      <bean parent="AttributeField_Form" p:label="Field 2" p:propertyName="vField2" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+	  		<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field2"/>
+            </property>
+	  </bean>
+	  <bean parent="AttributeField_Form" p:label="Field 3" p:propertyName="vField3" p:labelPlacement="TOP" 
+      p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
+	  		<property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field3"/>
+            </property>
+	  </bean>
+    </list>
+  </property> 
+</bean> 
+
+<bean id="testValidationGroup1" parent="GroupGridLayout">
+    <property name="id" value="testValidationGroup1"/>
+    <property name="title" value="Validation Test Group 1"/>
+    <property name="summary" value="Constraint text will tell you what is being tested"/>
+    <property name="accordion.render" value="false"/>
+    <property name="styleClasses" value="group_header"/>
+    <property name="items">
+        <list>
+            
+            <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="30" p:minLength="4" p:summary="This title is used for identifying the proposal through the apporval process." p:constraint="Alphanumeric only, Must be 4-30 chars">
+                <property name="control">
+                    <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+                </property>
+                <property name="validCharactersConstraint">
+                    <bean parent="AlphaNumericPatternConstraint"/>
+                </property>
+            </bean>
+            
+            <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Pet Type" p:required="true" p:constraint="Required">
+                <property name="control">
+                    <bean parent="RadioGroupControl">
+                        <property name="options">
+                            <list>
+                                <bean parent="KeyLabelPair" p:key="cat_pet" p:value="Cat"/>
+                                <bean parent="KeyLabelPair" p:key="dog_pet" p:value="Dog"/>
+                                <bean parent="KeyLabelPair" p:key="lizard_pet" p:value="Lizard"/>
+								<bean parent="KeyLabelPair" p:key="server_error" p:value="Cause Server Errors"/>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+                
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Whisker Length (in)" p:maxLength="3" p:constraint="Required when cat is selected (also adds exclusive min 1 and max 50, Digits only">
+                <property name="control">
+                    <bean parent="TextControl" p:size="3" p:watermarkText="#"/>
+                </property>
+                <property name="validCharactersConstraint">
+                    <bean parent="DigitsPatternConstraint"/>
+                </property>
+                <property name="caseConstraint">
+                    <bean parent="CaseConstraint">
+                        <property name="fieldPath" value="field2"/>
+                        <property name="whenConstraint">
+                            <list>
+                                <bean parent="WhenConstraint">
+                                    <property name="value" value="cat_pet"/>
+                                    <property name="constraint">
+                                        <bean parent="SimpleConstraint">
+                                            <property name="required" value="true"/>
+                                            <property name="exclusiveMin" value="1"/>
+                                            <property name="inclusiveMax" value="50"/>
+                                        </bean>
+                                    </property>
+                                </bean>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Breed" p:maxLength="10" p:constraint="Required when dog is selected, only letters">
+                <property name="control">
+                    <bean parent="TextControl" p:size="8" p:watermarkText="Beagle"/>
+                </property>
+                <property name="validCharactersConstraint">
+                    <bean parent="LettersOnlyPatternConstraint"/>
+                </property>
+                <property name="caseConstraint">
+                    <bean parent="CaseConstraint">
+                        <property name="fieldPath" value="field2"/>
+                        <property name="whenConstraint">
+                            <list>
+                                <bean parent="WhenConstraint">
+                                    <property name="value" value="dog_pet"/>
+                                    <property name="constraint">
+                                        <bean parent="RequiredConstraint"/>
+                                    </property>
+                                </bean>
+                                
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field13" p:label="Weight" p:maxLength="10" p:inclusiveMax="500" p:constraint="Only numbers, max value 500">
+                <property name="control">
+                    <bean parent="TextControl" p:size="4" p:watermarkText="25"/>
+                </property>
+                <property name="validCharactersConstraint">
+                    <bean parent="FloatingPointNumberPatternConstraint"/>
+                </property>
+                <property name="dependencyConstraints">
+                    <list>
+                        <bean parent="PrerequisiteConstraint" p:attributePath="field14"/>
+                    </list>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field14" p:label="Units" p:constraint="Required when weight is filled out AND Units requires weight is filled out">
+                <property name="control">
+                    <bean parent="TextControl" p:size="4" p:watermarkText="lbs"/>
+                </property>
+                <property name="dependencyConstraints">
+                    <list>
+                        <bean parent="PrerequisiteConstraint" p:attributePath="field13"/>
+                    </list>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field15" p:label="Address 1" p:maxLength="40">
+                <property name="control">
+                    <bean parent="TextControl"/>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field16" p:label="City" p:maxLength="20">
+                <property name="control">
+                    <bean parent="TextControl"/>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field17" p:label="State" p:minLength="2" p:maxLength="2" p:constraint="Must be 2 letters">
+                <property name="control">
+                    <bean parent="TextControl"/>
+                </property>
+                <property name="validCharactersConstraint">
+                    <bean parent="LettersOnlyPatternConstraint"/>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field18" p:label="Zip" p:minLength="5" p:maxLength="5" p:constraint="Must be 5 digits only, This field requires that Address 1, City, and State MUST OCCUR before it can be filled out">
+                <property name="control">
+                    <bean parent="TextControl"/>
+                </property>
+                <property name="validCharactersConstraint">
+                    <bean parent="DigitsPatternConstraint"/>
+                </property>
+                <property name="mustOccurConstraints">
+                    <list>
+                        <bean parent="MustOccurConstraint">
+                            <property name="min" value="3"/>
+                            <property name="max" value="3"/>
+                            <property name="prerequisiteConstraints">
+                                <list>
+                                    <bean parent="PrerequisiteConstraint" p:attributePath="field15"/>
+                                    <bean parent="PrerequisiteConstraint" p:attributePath="field16"/>
+                                    <bean parent="PrerequisiteConstraint" p:attributePath="field17"/>
+                                </list>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field19" p:label="Hunting Dog?" p:maxLength="1" p:constraint="Custom Valid characters test: Accepts only y or n. &lt;br&gt; Nested case constraint test: if pet is dog AND breed is beagle this field is Required">
+                <property name="control">
+                    <bean parent="TextControl"/>
+                </property>
+                <property name="validCharactersConstraint">
+                    <bean parent="ValidCharactersConstraint" p:labelKey="yOrN" p:jsValue="/^[ynYN]$/"/>
+                </property>
+                <property name="caseConstraint">
+                    <bean parent="CaseConstraint">
+                        <property name="fieldPath" value="field2"/>
+                        <property name="whenConstraint">
+                            <list>
+                                <bean parent="WhenConstraint">
+                                    <property name="value" value="dog_pet"/>
+                                    <property name="constraint">
+                                        <bean parent="CaseConstraint">
+                                            <property name="fieldPath" value="field4"/>
+                                            <property name="whenConstraint">
+                                                <list>
+                                                    <bean parent="WhenConstraint">
+                                                        <property name="value" value="beagle"/>
+                                                        <property name="constraint">
+                                                            <bean parent="RequiredConstraint"/>
+                                                        </property>
+                                                    </bean>
+                                                </list>
+                                            </property>
+                                        </bean>
+                                    </property>
+                                </bean>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field34" p:label="Whisker Color" p:constraint="Nested prereq in case test: When pet is cat, this field requires that whisker length be filled out &lt;br&gt; Multiple when constraints in case test: in addition when pet is cat, this field is required">
+                <property name="control">
+                    <bean parent="TextControl"/>
+                </property>
+                <property name="caseConstraint">
+                    <bean parent="CaseConstraint">
+                        <property name="fieldPath" value="field2"/>
+                        <property name="whenConstraint">
+                            <list>
+                                <bean parent="WhenConstraint">
+                                    <property name="value" value="cat_pet"/>
+                                    <property name="constraint">
+                                    	<bean parent="PrerequisiteConstraint" p:attributePath="field3"/>
+                                    </property>
+                                </bean>
+                                <bean parent="WhenConstraint">
+                                    <property name="value" value="cat_pet"/>
+                                    <property name="constraint">
+                                        <bean parent="RequiredConstraint"/>
+                                    </property>
+                                </bean>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+            <bean parent="AttributeField_Form" p:propertyName="field35" p:label="Vet City" p:constraint="Multiple values on when: case applies when dog or cat is selected &lt;br&gt;Nested mustOccurs in caseConstraint test: When the case applies, this field requires that city and state OR zip be filled out first before it can be filled out">
+                <property name="control">
+                    <bean parent="TextControl"/>
+                </property>
+                <property name="caseConstraint">
+                    <bean parent="CaseConstraint">
+                        <property name="fieldPath" value="field2"/>
+                        <property name="whenConstraint">
+                            <list>
+                                <bean parent="WhenConstraint">
+                                    <property name="values">
+                                        <list>
+                                            <value>cat_pet</value>
+                                            <value>dog_pet</value>
+                                        </list>
+                                    </property>
+                                    <property name="constraint">
+                                        <bean parent="MustOccurConstraint">
+                                            <property name="min" value="2"/>
+                                            <property name="max" value="3"/>
+                                            <property name="prerequisiteConstraints">
+                                                <list>
+                                                    <bean parent="PrerequisiteConstraint" p:attributePath="field16"/>
+                                                    <bean parent="PrerequisiteConstraint" p:attributePath="field17"/>
+                                                </list>
+                                            </property>
+                                            <property name="mustOccurConstraints">
+                                                <list>
+                                                    <bean parent="MustOccurConstraint">
+                                                        <property name="min" value="1"/>
+                                                        <property name="max" value="1"/>
+                                                        <property name="prerequisiteConstraints">
+                                                            <list>
+                                                                <bean parent="PrerequisiteConstraint" p:attributePath="field18"/>
+                                                            </list>
+                                                        </property>
+                                                    </bean>
+                                                </list>
+                                            </property>
+                                        </bean>
+                                    </property>
+                                </bean>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </list>
+    </property>
+</bean>
+
+   <bean id="test2Section4" parent="testSection4">
+      <property name="accordion.render" value="false"/>
+      <property name="styleClasses" value="group_header"/>
+   </bean>
+   
+  <bean id="test2Section6" parent="Group">
+      <property name="title" value="Test Collections"/>
+      <property name="accordion.render" value="false"/>
+      <property name="styleClasses" value="group_header"/> 
+      <property name="items">
+        <list>
+          <ref bean="testGroup4"/>
+          <ref bean="testGroup6"/>
+        </list>
+      </property> 
+   </bean>
+   
+   <bean id="test2Section3" parent="testSection3">
+      <property name="accordion.render" value="false"/>
+      <property name="styleClasses" value="group_header"/>
+   </bean>  
+
+</beans>

@@ -1,20 +1,29 @@
 /*
- * Copyright 2006-2011 The Kuali Foundation
- *
+ * Copyright 2005-2007 The Kuali Foundation
+ * 
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.opensource.org/licenses/ecl2.php
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.kns.service.impl;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -45,18 +54,8 @@ import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * This class is the service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and
@@ -64,16 +63,16 @@ import java.util.regex.Pattern;
  */
 public class DataDictionaryServiceImpl implements DataDictionaryService {
     private static final Logger LOG = Logger.getLogger( DataDictionaryServiceImpl.class );
-
-
+    
+    
     private DataDictionary dataDictionary;
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
     private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
-    private KualiWorkflowInfo workflowInfoService;
+    private KualiWorkflowInfo workflowInfoService; 
 
-
+    
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#setBaselinePackages(java.lang.String)
      */
@@ -87,7 +86,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public DataDictionaryServiceImpl() {
         this.dataDictionary = new DataDictionary();
     }
-
+    
     public DataDictionaryServiceImpl(DataDictionary dataDictionary) {
         this.dataDictionary = dataDictionary;
     }
@@ -98,7 +97,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     public DataDictionary getDataDictionary() {
         return dataDictionary;
     }
-
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getAttributeControlDefinition(java.lang.String)
      */
@@ -131,6 +130,20 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getAttributeMinLength(java.lang.String)
+     */
+    public Integer getAttributeMinLength(String entryName, String attributeName) {
+        Integer minLength = null;
+
+        AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
+        if (attributeDefinition != null) {
+        	minLength = attributeDefinition.getMinLength();
+        }
+
+        return minLength;
+    }
+    
+    /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getAttributeMaxLength(java.lang.String)
      */
     public Integer getAttributeMaxLength(String entryName, String attributeName) {
@@ -147,7 +160,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeExclusiveMin
      */
-    public BigDecimal getAttributeExclusiveMin(String entryName, String attributeName) {
+    public String getAttributeExclusiveMin(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         return attributeDefinition == null ? null : attributeDefinition.getExclusiveMin();
     }
@@ -155,7 +168,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeInclusiveMax
      */
-    public BigDecimal getAttributeInclusiveMax(String entryName, String attributeName) {
+    public String getAttributeInclusiveMax(String entryName, String attributeName) {
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         return attributeDefinition == null ? null : attributeDefinition.getInclusiveMax();
     }
@@ -260,7 +273,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return forceUppercase;
     }
-
+    
     /**
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAttributeDisplayMask(java.lang.String, java.lang.String)
      */
@@ -517,7 +530,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      * @throws IllegalArgumentException
      *             if the given Class is null or is not a BusinessObject class
      */
-    private AttributeDefinition getAttributeDefinition(String entryName, String attributeName) {
+    public AttributeDefinition getAttributeDefinition(String entryName, String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }
@@ -530,7 +543,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         return attributeDefinition;
     }
-
+	
+    
     /**
      * @param entryName
      * @param collectionName
@@ -851,7 +865,15 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return preRulesCheckClass;
     }
 
-    public void addDataDictionaryLocation(String location) throws IOException {
+	public View getViewById(String viewId) {
+		return dataDictionary.getViewById(viewId);
+	}
+    
+	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
+		return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
+	}
+
+	public void addDataDictionaryLocation(String location) throws IOException {
         dataDictionary.addConfigFileLocation(location);
     }
 
@@ -860,7 +882,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             addDataDictionaryLocation(location);
         }
     }
-
+    
     public Map getDataDictionaryMap() {
         return dataDictionaryMap;
     }
@@ -883,7 +905,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     /**
      * Returns all of the inactivation blocks registered for a particular business object
-     *
+     * 
      * @see org.kuali.rice.kns.service.DataDictionaryService#getAllInactivationBlockingDefinitions(java.lang.Class)
      */
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass) {
@@ -900,4 +922,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 		}
 		return workflowInfoService;
 	}
+
+
 }

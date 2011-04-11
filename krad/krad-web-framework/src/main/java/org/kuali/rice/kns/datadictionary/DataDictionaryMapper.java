@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
+import org.kuali.rice.kns.uif.container.View;
+
 /**
  * Maps one Document type to other document Type.
  * 
@@ -35,22 +38,41 @@ public interface DataDictionaryMapper {
 	 * @param className
 	 * @return
 	 */
+    @Deprecated
 	public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(DataDictionaryIndex index, String className);
 	
 	/**
+     * This method gets the DataOjectEntry (or subclass) for a concrete class
+     * 
+     * @param className
+     * @return the DataObjectEntry for the class or null if not found
+     */
+    public DataObjectEntry getDataObjectEntryForConcreteClass(DataDictionaryIndex index, String className);
+    
+    
+	/**
 	 * @return List of businessObject classnames
 	 */
+    @Deprecated
 	public List<String> getBusinessObjectClassNames(DataDictionaryIndex index);
 
 	/**
 	 * @param className
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
+	@Deprecated
 	public BusinessObjectEntry getBusinessObjectEntry(DataDictionaryIndex index, String className );
+
+	/**
+     * @param className
+     * @return DataObjectEntry for the named class, or null if none exists
+     */
+    public DataObjectEntry getDataObjectEntry(DataDictionaryIndex index, String className );
 
 	/**
 	 * @return Map of (classname, BusinessObjectEntry) pairs
 	 */
+    @Deprecated
 	public Map<String, BusinessObjectEntry> getBusinessObjectEntries(DataDictionaryIndex index);
 	
 	/**
@@ -87,11 +109,11 @@ public interface DataDictionaryMapper {
 	 * @return DocumentEntry associated with the given Class, or null if there
 	 *         is none
 	 */
-	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(DataDictionaryIndex index, Class businessObjectClass);
+	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(DataDictionaryIndex index, Class<?> businessObjectClass);
 		
 	public Map<String, DocumentEntry> getDocumentEntries(DataDictionaryIndex index);
 
-	public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(DataDictionaryIndex index, Class blockedClass);
+	public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(DataDictionaryIndex index, Class<?> blockedClass);
 	
 	/**
 	 * Returns mapped document type based on the given document type.
@@ -108,4 +130,40 @@ public interface DataDictionaryMapper {
 	 * @return the class of the mapped document type or null if given documentType was not found.
 	 */
 	//public Class getDocumentTypeClass(String documentTypeName);
+	
+	/**
+	 * Returns the View entry identified by the given id
+	 * 
+	 * @param index - the view dictionary index
+	 * @param viewId - unique id for view
+	 * @return View instance associated with the id
+	 */
+	public View getViewById(ViewDictionaryIndex index, String viewId);
+	
+	/**
+	 * Called to retrieve a <code>View</code> instance that is of the given type
+	 * based on the index key
+	 * 
+	 * @param index - the view dictionary index
+	 * @param viewTypeName
+	 *            - type name for the view
+	 * @param indexKey
+	 *            - Map of index key parameters, these are the parameters the
+	 *            indexer used to index the view initially and needs to identify
+	 *            an unique view instance
+	 * @return View instance that matches the given index
+	 */
+	public View getViewByTypeIndex(ViewDictionaryIndex index, String viewTypeName, Map<String, String> indexKey);
+	
+	/**
+	 * Gets all <code>View</code> prototypes configured for the given view type
+	 * name
+	 * 
+	 * @param index - the view dictionary index
+	 * @param viewTypeName
+	 *            - view type name to retrieve
+	 * @return List<View> view prototypes with the given type name, or empty
+	 *         list
+	 */
+	public List<View> getViewsForType(ViewDictionaryIndex index, String viewTypeName);
 }

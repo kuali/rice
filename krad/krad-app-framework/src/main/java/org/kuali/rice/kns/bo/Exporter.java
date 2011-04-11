@@ -22,34 +22,45 @@ import java.util.List;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
 
 /**
- * An Exporter provides the ability to export a List of BusinessObjects to a supported ExportFormat.
+ * An Exporter provides the ability to export a List of BusinessObjects to a
+ * supported ExportFormat.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface Exporter {
 
 	/**
-	 * Exports the List of BusinessObjects to the specified ExportFormat.  The resulting output of the export operation
-	 * should be written to the given OutputStream.
+	 * Exports the List of BusinessObjects to the specified ExportFormat. The
+	 * resulting output of the export operation should be written to the given
+	 * OutputStream.
 	 * 
-	 * @param businessObjectClass the type of BusinessObjects being exported
-	 * @param data a List of BusinessObjects to export
-	 * @param exportFormat the export format in which to export the BusinessObjects
-	 * @param outputStream the OutputStream to write the exported data to
+	 * @param dataObjectClass
+	 *            the type of DataObjects being exported
+	 * @param data
+	 *            a List of DataObjects to export
+	 * @param exportFormat
+	 *            the export format in which to export the DataObjects
+	 * @param outputStream
+	 *            the OutputStream to write the exported data to
 	 * 
-	 * @throws IOException if the process encounters an I/O issue
-	 * @throws ExportNotSupportedException if the given ExportFormat is not supported 
+	 * @throws IOException
+	 *             if the process encounters an I/O issue
+	 * @throws ExportNotSupportedException
+	 *             if the given ExportFormat is not supported
 	 */
-	public void export(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> data, String exportFormat, OutputStream outputStream) throws IOException, ExportNotSupportedException;
-	
+	public void export(Class<?> dataObjectClass,
+			List<? extends Object> dataObjects, String exportFormat,
+			OutputStream outputStream) throws IOException,
+			ExportNotSupportedException;
+
 	/**
-	 * Returns a List of ExportFormats supported by this Exporter for the given BusinessOject class. 
-	 * This method ...
+	 * Returns a List of ExportFormats supported by this Exporter for the given
+	 * DataOject class.
 	 * 
-	 * @param businessObjectClass the class of the BusinessObjects being exported
+	 * @param dataObjectClass
+	 *            the class of the DataObjects being exported
 	 * @return a List of supported ExportFormats
 	 */
-	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass);
-	
+	public List<String> getSupportedFormats(Class<?> dataObjectClass);
+
 }

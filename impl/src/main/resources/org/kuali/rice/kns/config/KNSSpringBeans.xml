@@ -204,6 +204,13 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
+				<value>classpath:org/kuali/rice/kns/uif/UifControlDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifFieldDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifGroupDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifHeaderFooterDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifLayoutManagerDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifMiscDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifViewPageDefinitions.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -245,6 +252,13 @@
                 <value>classpath:org/kuali/rice/core/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/shareddata/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/shareddata/web/state/StateMaintenanceDocument.xml</value>
+				<value>classpath:org/kuali/rice/kns/uif/UifControlDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifFieldDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifGroupDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifHeaderFooterDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifLayoutManagerDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifMiscDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifViewPageDefinitions.xml</value>                
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -319,6 +333,13 @@
 				<value>classpath:org/kuali/rice/shareddata/web/county/CountyMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/shareddata/web/state/StateMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/shareddata/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
+				<value>classpath:org/kuali/rice/kns/uif/UifControlDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifFieldDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifGroupDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifHeaderFooterDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifLayoutManagerDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifMiscDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/uif/UifViewPageDefinitions.xml</value>				
 			</list>
 		</property>
 	</bean>
@@ -448,12 +469,6 @@
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
-		<property name="dataDictionaryService">
-			<ref bean="dataDictionaryService" />
-		</property>
-		<property name="persistenceStructureService">
-			<ref bean="persistenceStructureService" />
-		</property>
 	</bean>
 
 	<bean id="workflowDocumentService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowDocumentServiceImpl">
@@ -466,6 +481,15 @@
 		<property name="maintenanceDocumentDao">
 			<ref bean="maintenanceDocumentDao" />
 		</property>
+        <property name="maintenanceDocumentDictionaryService">
+            <ref bean="maintenanceDocumentDictionaryService" />
+        </property> 
+        <property name="businessObjectAuthorizationService">
+            <ref bean="businessObjectAuthorizationService" />
+        </property>   
+        <property name="documentService">
+            <ref bean="documentService" />
+        </property>  		
 	</bean>
 
 	<bean id="noteService" class="org.kuali.rice.kns.service.impl.NoteServiceImpl">
@@ -524,6 +548,32 @@
         <property name="jcdAlias" value="knsApplicationDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />    
     </bean>
+    
+ 	<bean id="dictionaryValidationDefinitionConstraintResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver"/>
+	
+	<bean id="dictionaryValidationCaseConstraintResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.CaseConstraintResolver"/>
+	
+	<bean id="dictionaryValidationValidCharactersConstraintResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.ValidCharactersConstraintResolver"/>
+
+	<bean id="dictionaryValidationPrerequisiteConstraintsResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.PrerequisiteConstraintsResolver"/>
+		
+	<bean id="dictionaryValidationMustOccurConstraintsResolver"
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.resolver.MustOccurConstraintsResolver"/>
+
+	<bean id="mandatoryElementConstraintProcessor"
+		class="org.kuali.rice.kns.datadictionary.validation.processor.MandatoryElementConstraintProcessor"
+		abstract="true">
+		<property name="dataDictionaryService">
+			<ref bean="dataDictionaryService" />
+		</property>
+		<property name="dateTimeService">
+		 	<ref bean="dateTimeService" />
+		</property>
+	</bean>   
 
 	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
 		<property name="dataDictionaryService">
@@ -544,6 +594,84 @@
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService"/>
 		</property>
+		<!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint --> 
+		<property name="collectionConstraintProcessors">
+			<list>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/>
+			</list>
+		</property>
+		<!-- Element constraint processors are classes that determine if a passed value is valid for a specific constraint at the individual object or object attribute level -->
+		<property name="elementConstraintProcessors">
+			<list>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor" 
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.RangeConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.LengthConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.ValidCharactersConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.PrerequisiteConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor"
+					parent="mandatoryElementConstraintProcessor"/>
+			</list>
+		</property>
+		<!-- Constraint providers are classes that map specific constraint types to a constraint resolver, which takes a constrainable definition -->
+		<property name="constraintProviders">
+			<list>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider">
+					<!-- 
+						individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
+						resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above
+					-->
+					<property name="resolverMap">
+						<map>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+								<ref bean="dictionaryValidationCaseConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
+								<ref bean="dictionaryValidationValidCharactersConstraintResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
+								<ref bean="dictionaryValidationPrerequisiteConstraintsResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+								<ref bean="dictionaryValidationMustOccurConstraintsResolver"/>
+							</entry>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint">
+								<ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+							</entry>
+						</map>
+					</property>
+				</bean>
+				<bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.DataObjectEntryConstraintProvider">
+					<!-- 
+						individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
+						resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above
+					-->
+					<property name="resolverMap">
+						<map>
+							<entry key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+								<ref bean="dictionaryValidationMustOccurConstraintsResolver"/>
+							</entry>
+						</map>
+					</property>
+				</bean>
+			</list>
+		</property>		
 	</bean>
 
 	<bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.SequenceAccessorDaoJdbc"/>
@@ -690,7 +818,26 @@
 		<property name="kualiModuleService">
 			<ref bean="kualiModuleService" />
 		</property>
+        <property name="viewDictionaryService">
+            <ref bean="viewDictionaryService" />
+        </property> 		
 	</bean>
+	
+    <bean id="dataObjectMetaDataService" class="org.kuali.rice.kns.service.impl.DataObjectMetaDataServiceImpl">
+        <property name="dataDictionaryService">
+            <ref bean="dataDictionaryService" />
+        </property>
+        <property name="persistenceStructureService">
+            <ref bean="persistenceStructureService" />
+        </property>
+        <property name="kualiModuleService">
+            <ref bean="kualiModuleService" />
+        </property>
+        <property name="viewDictionaryService">
+            <ref bean="viewDictionaryService" />
+        </property>        
+    </bean>
+    	
     <bean id="namespaceService" class="org.kuali.rice.core.impl.namespace.NamespaceServiceImpl">
         <property name="businessObjectService" ref="businessObjectService" />
     </bean>	
@@ -810,7 +957,46 @@
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
+        <property name="dataDictionaryService">
+            <ref bean="dataDictionaryService" />
+        </property>    		
 	</bean>
+	
+    <bean id="kualiMaintainable" class="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" scope="prototype">
+        <property name="persistenceStructureService">
+            <ref bean="persistenceStructureService" />
+        </property>
+        <property name="maintenanceDocumentDictionaryService">
+            <ref bean="maintenanceDocumentDictionaryService" />
+        </property>      
+        <property name="dataDictionaryService">
+            <ref bean="dataDictionaryService" />
+        </property>
+        <property name="businessObjectService">
+            <ref bean="businessObjectService" />
+        </property>     
+        <property name="businessObjectDictionaryService">
+            <ref bean="businessObjectDictionaryService" />
+        </property>
+        <property name="encryptionService">
+            <ref bean="encryptionService" />
+        </property>   
+        <property name="businessObjectMetaDataService">
+            <ref bean="businessObjectMetaDataService" />
+        </property>   
+        <property name="businessObjectAuthorizationService">
+            <ref bean="businessObjectAuthorizationService" />
+        </property>   
+        <property name="maintenanceDocumentService">
+            <ref bean="maintenanceDocumentService" />
+        </property>
+        <property name="documentHelperService">
+            <ref bean="documentHelperService" />
+        </property>  
+        <property name="lookupService">
+            <ref bean="lookupService" />
+        </property>                                
+    </bean>	
 
 	<bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
 
@@ -1191,6 +1377,10 @@
 		<property name="constantClass" value="org.kuali.rice.kns.authorization.AuthorizationConstants"/>
 	</bean>
 	
+	<bean id="UifConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.kns.uif.UifConstants"/>
+	</bean>	
+	
 	<bean id="ConfigProperties" class="org.kuali.rice.kns.util.JstlPropertyHolder">
 		<property name="properties" value="#{kualiConfigurationService.allProperties}"/>
 	</bean>
@@ -1205,7 +1395,57 @@
 				<entry key="AuthorizationConstants" value-ref="AuthorizationConstants"/>
 				<entry key="DataDictionary" value="#{dataDictionaryService.dataDictionaryMap}" />
 				<entry key="ConfigProperties" value-ref="ConfigProperties"/>
+				<entry key="UifConstants" value-ref="UifConstants"/>
 			</map>
 		</property>
 	</bean>
+	
+  <bean id="viewService" class="org.kuali.rice.kns.uif.service.impl.ViewServiceImpl">
+      <property name="dataDictionaryService" ref="dataDictionaryService"/>
+      <property name="viewTypeServices">
+        <list>
+          <ref bean="inquiryViewTypeService"/>
+          <ref bean="lookupViewTypeService"/>
+          <ref bean="maintenanceViewTypeService"/>
+        </list>
+      </property>
+  </bean>
+  
+  <bean id="viewHelperService"  class="org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl">
+      <property name="dataDictionaryService" ref="dataDictionaryService"/>
+      <property name="expressionEvaluatorService" ref="expressionEvaluatorService"/>
+      <property name="viewDictionaryService" ref="viewDictionaryService"/>
+  </bean>
+  
+  <bean id="expressionEvaluatorService"  class="org.kuali.rice.kns.uif.service.impl.ExpressionEvaluatorServiceImpl">
+  </bean>
+  
+  <bean id="lookupViewHelperService" class="org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl" 
+        scope="prototype" parent="viewHelperService">
+      <property name="persistenceStructureService" ref="persistenceStructureService"/>
+      <property name="lookupService" ref="lookupService"/>
+      <property name="encryptionService" ref="encryptionService"/>
+      <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
+      <property name="dataObjectMetaDataService" ref="dataObjectMetaDataService"/>
+      <property name="businessObjectAuthorizationService" ref="businessObjectAuthorizationService"/>
+  </bean>
+
+  <bean id="inquiryViewTypeService" class="org.kuali.rice.kns.uif.service.impl.InquiryViewTypeServiceImpl"/>
+  
+  <bean id="lookupViewTypeService" class="org.kuali.rice.kns.uif.service.impl.LookupViewTypeServiceImpl"/>
+  
+  <bean id="maintenanceViewTypeService" class="org.kuali.rice.kns.uif.service.impl.MaintenanceViewTypeServiceImpl">
+      <property name="documentService">
+          <ref bean="documentService" />
+      </property> 
+      <property name="maintenanceDocumentDictionaryService">
+          <ref bean="maintenanceDocumentDictionaryService" />
+      </property>       
+  </bean>
+  
+  <bean id="viewDictionaryService" class="org.kuali.rice.kns.uif.service.impl.ViewDictionaryServiceImpl">
+      <property name="dataDictionaryService">
+          <ref bean="dataDictionaryService" />
+      </property> 
+  </bean>  	
 </beans>

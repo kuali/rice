@@ -1,0 +1,85 @@
+.panelslider_control {
+	position:absolute;
+	left:-40px;
+	width:30px;
+	height:30px;
+}
+.panelslider_control a.open {
+	width:30px;
+	height:30px;
+	background-color:#F00
+	background-image: url(../images/slide-control.png);
+	background-position: top;
+}
+
+
+a#controlbtn {
+	color: #333;
+	text-decoration: none;
+	display: inline-block;
+	padding-left: 20px;
+}
+a#controlbtn.open {
+	background: transparent url(images/toggle_minus.png) no-repeat left center;
+}
+a#controlbtn.close {
+	background: transparent url(images/toggle_plus.png) no-repeat left center;
+}
+div#linkblock {
+	float: left;
+	width: 140px;
+	margin-left: -150px;
+	/* [disabled]border-right: solid 1px #DDDDDD; */
+	/*background-color:#E6E6E6;*/
+	background-color:#EDEDED;
+	padding:0px;
+	min-height:500px
+}
+
+
+.left-navcontainer h4 {
+	background-color:#ededed;
+	font-size: 1.1em;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	padding-left: 6px;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #efefef;
+	color:#000
+}
+
+
+.left-navcontainer ul {
+
+	list-style-type: none;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #eee; font-size:.9em;
+}
+
+.left-navcontainer a {
+	display: block;
+	width: 134px;
+	background-color: #FFF;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #eee;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	padding-left: 6px;
+}
+
+
+
+
+
+
+.left-navcontainer a:link, .navlist a:visited {
+	color: #666;
+	text-decoration: none;
+}
+.left-navcontainer a:hover {
+	background-color: #060;
+	color: #fff;
+}

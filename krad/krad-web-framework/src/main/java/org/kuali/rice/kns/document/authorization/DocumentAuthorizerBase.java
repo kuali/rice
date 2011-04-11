@@ -27,12 +27,9 @@ import org.kuali.rice.kew.dto.ProcessDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizerBase;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -270,20 +267,20 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	}
 
 	@Override
-	protected void addPermissionDetails(BusinessObject businessObject,
+	protected void addPermissionDetails(Object dataObject,
 			Map<String, String> attributes) {
-		super.addPermissionDetails(businessObject, attributes);
-		if (businessObject instanceof Document) {
-			addStandardAttributes((Document) businessObject, attributes);
+		super.addPermissionDetails(dataObject, attributes);
+		if (dataObject instanceof Document) {
+			addStandardAttributes((Document) dataObject, attributes);
 		}
 	}
 
 	@Override
-	protected void addRoleQualification(BusinessObject businessObject,
+	protected void addRoleQualification(Object dataObject,
 			Map<String, String> attributes) {
-		super.addRoleQualification(businessObject, attributes);
-		if (businessObject instanceof Document) {
-			addStandardAttributes((Document) businessObject, attributes);
+		super.addRoleQualification(dataObject, attributes);
+		if (dataObject instanceof Document) {
+			addStandardAttributes((Document) dataObject, attributes);
 		}
 	}
 

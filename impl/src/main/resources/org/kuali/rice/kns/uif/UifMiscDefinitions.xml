@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util 
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <!-- CSS Profiles -->
+  
+  <util:list id="kns-css">
+     <value>/krad/css/kns/reset.css</value>
+     <value>/krad/css/kns/main.css</value>
+     <value>/krad/css/kns/fonts.css</value>
+     <value>/krad/css/kns/headers.css</value>
+     <value>/krad/css/kns/tables.css</value>
+     <value>/krad/css/kns/jquery-ui-1.8.11.css</value>
+     <value>/krad/css/kuali-stacked.css</value>
+  </util:list>
+  
+  <util:list id="ka-css">
+     <value>/krad/css/ka/kuali-clean.css</value>
+     <value>/krad/css/ka/form.css</value>
+     <value>/krad/css/ka/jquery-ui-1.8.5.css</value>
+     <value>/krad/css/ka/jquery.ui.theme.css</value>
+     <value>/krad/css/navigationMenu.css</value>
+     <value>/krad/css/kuali-stacked.css</value>
+  </util:list>  
+  
+  <util:list id="ks-css">
+     <value>/krad/css/ks/kuali-clean.css</value>
+     <value>/krad/css/ks/form.css</value>
+     <value>/krad/css/ks/jquery-ui-1.8.5.css</value>
+     <value>/krad/css/ks/jquery.ui.theme.css</value>
+     <value>/krad/css/navigationMenu.css</value>
+     <value>/krad/css/kuali-stacked.css</value>
+  </util:list>    
+  
+  <!-- Widgets -->
+  
+  <bean id="DatePicker" parent="DatePicker-parentBean"/>
+  <bean id="DatePicker-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.DatePicker" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/datePicker.jsp"/>
+      <property name="styleClasses" value="calendar"/>
+      <property name="componentOptions">
+          <map>
+              <entry key="showOn" value="button"/>
+              <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+              <entry key="buttonImageOnly" value="true"/>
+              <entry key="showAnim" value="slide"/>
+              <entry key="showButtonPanel" value="true"/>
+              <entry key="changeMonth" value="true"/>
+              <entry key="changeYear" value="true"/>
+          </map>
+      </property>
+  </bean> 
+  
+  <bean id="LightBox" parent="LightBox-parentBean"/>
+  <bean id="LightBox-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.LightBox" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
+      <property name="componentOptions">
+          <map>
+              <entry key="autoScale" value="true"/>              
+              <entry key="centerOnScroll" value="false"/>
+              <!--
+              <entry key="width" value="5"/>
+              <entry key="height" value="5"/>
+              -->
+              <entry key="type" value="iframe"/>    
+               <!-- Set the position to the top of the root viewport - avoid it centering out of view --> 
+              <!--  Remove the resize event to avoid repositioning : jq(window).unbind('resize.fb');  -->      
+              <entry key="onComplete" value="function () {var top = parent.document.documentElement.scrollTop;if (top&lt;20){top=20;}else{top=top-20;};jq('#fancybox-wrap').css({ 'top': top + 'px'});jq(window).unbind('resize.fb');}"/>          		
+          </map>
+      </property>
+  </bean> 
+  
+  <bean id="LightBoxLookup" parent="LightBoxLookup-parentBean"/>
+  <bean id="LightBoxLookup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.LightBoxLookup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxLookup.jsp"/>
+      <!-- <property name="styleClasses" value="calendar"/>  -->
+      <property name="componentOptions">
+          <map>
+              <entry key="autoScale" value="false"/>
+              <entry key="centerOnScroll" value="false"/>
+              <entry key="type" value="iframe"/>    
+              <entry key="width" value="6"/>
+              <entry key="height" value="6"/>              
+              <!-- <entry key="onClosed" value="function () {}"/>  -->
+              <entry key="onComplete" value="function () {var top = parent.document.documentElement.scrollTop;if (top&lt;20){top=20;}else{top=top-20;};jq('#fancybox-wrap').css({ 'top': top + 'px'});jq(window).unbind('resize.fb');}"/>
+          </map>
+      </property>
+  </bean>    
+  
+  <bean id="TableTools-Paging" parent="TableTools-Paging-parentBean"/>
+  
+  <bean id="TableTools-Paging-parentBean" parent="TableTools-parentBean" scope="prototype">
+		<property name="componentOptions">
+          <map merge="true">
+		  	 <entry key="sScrollX" value="100%"/>
+		  	 <entry key="bScrollCollapse" value="true"/>
+		  </map>
+		</property>  	 
+  </bean>
+  
+  <bean id="TableTools-ScrollInfinite" parent="TableTools-ScrollInfinite-parentBean"/>
+  
+  <bean id="TableTools-ScrollInfinite-parentBean" parent="TableTools-parentBean" scope="prototype">
+  	 <property name="componentOptions">
+          <map merge="true">
+          	 <entry key="bScrollInfinite" value="true"/>
+          	 <entry key="bScrollCollapse" value="true"/>
+		  	 <entry key="sScrollY" value="100%"/>
+		  </map>
+		</property>
+  </bean>
+  
+  <bean id="TableTools" parent="TableTools-parentBean"/>
+  <bean id="TableTools-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.TableTools" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tableTools.jsp"/>
+      <property name="componentOptions">
+          <map>
+              <entry key="sDom" value="lfTrtip"/>   
+              <entry key="bRetrieve " value="true"/>   
+              <entry key="oTableTools" value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;/kr-dev/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
+          </map>      
+      </property>
+      <property name="emptyTableMessage" value="No records found"/>
+      <property name="showSearchAndExportOptions" value="false"/>
+  </bean>
+  
+  <bean id="QuickFinder" parent="QuickFinder-parentBean"/>
+  <bean id="QuickFinder-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.QuickFinder" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/quickFinder.jsp"/>
+      <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/spring/lookup"/>
+      <property name="quickfinderActionField">
+        <bean parent="ActionField" p:methodToCall="performLookup" p:actionImageField-ref="QuickFinderImageField">
+        	<property name="lightBoxLookup">
+        		<ref bean="LightBoxLookup"/>
+      		</property>
+      	</bean>        
+      </property>
+      <property name="conditionalRender" value="!#parent.readOnly"/>
+  </bean>  
+  
+  <bean id="Inquiry" parent="Inquiry-parentBean"/>
+  <bean id="Inquiry-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Inquiry" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/inquiry.jsp"/>
+      <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
+      <property name="inquiryLinkField">
+        <bean parent="LinkField" p:styleClasses="action">
+        	<property name="lightBox">
+        		<ref bean="LightBox"/>
+      		</property>
+      	</bean>
+      </property>
+      <property name="conditionalRender" value="#parent.readOnly"/>
+  </bean>  
+  
+  <bean id="Accordion" parent="Accordion-parentBean"/>
+  <bean id="Accordion-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Accordion" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/accordion.jsp"/>
+      <property name="collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}icon_expand.png"/>
+      <property name="expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}icon_collapse.png"/>
+      <property name="animationSpeed" value="500"/>
+      <property name="defaultOpen" value="true"/>
+  </bean>    
+  
+  <!-- Modifiers -->
+  
+  <bean id="CompareFieldCreateModifier" parent="CompareFieldCreateModifier-parentBean"/>
+  <bean id="CompareFieldCreateModifier-parentBean" abstract="true" class="org.kuali.rice.kns.uif.modifier.CompareFieldCreateModifier" scope="prototype"/>
+  
+  <bean id="LabelFieldSeparateModifier" parent="LabelFieldSeparateModifier-parentBean"/>
+  <bean id="LabelFieldSeparateModifier-parentBean" abstract="true" class="org.kuali.rice.kns.uif.modifier.LabelFieldSeparateModifier" scope="prototype"/>
+  
+  <bean id="ComponentConvertModifier" parent="ComponentConvertModifier-parentBean"/>
+  <bean id="ComponentConvertModifier-parentBean" abstract="true" class="org.kuali.rice.kns.uif.modifier.ComponentConvertModifier" scope="prototype"/>
+  
+  <bean id="CheckboxToRadioConvertModifier" parent="CheckboxToRadioConvertModifier-parentBean"/>
+  <bean id="CheckboxToRadioConvertModifier-parentBean" abstract="true" parent="ComponentConvertModifier">
+      <property name="componentTypeToReplace" value="org.kuali.rice.kns.uif.control.CheckboxControl"/>
+      <property name="componentReplacementPrototype">
+         <bean parent="RadioGroupControl">
+            <property name="options">
+              <list>
+                <bean parent="KeyLabelPair" p:key="Y" p:value="Yes"/>
+                <bean parent="KeyLabelPair" p:key="N" p:value="No"/>
+                <bean parent="KeyLabelPair" p:key="" p:value="Both"/>
+              </list>
+            </property>
+         </bean>
+      </property>
+  </bean>  
+  
+  <bean id="MaintenanceCompareModifier" parent="MaintenanceCompareModifier-parentBean"/>
+  <bean id="MaintenanceCompareModifier-parentBean" abstract="true" parent="CompareFieldCreateModifier">
+      <property name="headerFieldPrototype">
+         <bean parent="HeaderFour" p:colSpan="2" p:styleClasses="collection-header"/>
+      </property>
+      <property name="comparables">
+         <list>
+            <bean parent="ComparableInfo" p:readOnly="true" p:headerText="Old"
+                  p:bindingObjectPath="document.oldMaintainableObject.dataObject"/>
+            <bean parent="ComparableInfo" p:headerText="New"
+                  p:bindingObjectPath="document.newMaintainableObject.dataObject"/>                            
+         </list>
+      </property>
+  </bean>
+  
+  <!-- Other -->
+  
+  <bean id="BindingInfo" class="org.kuali.rice.kns.uif.core.BindingInfo" scope="prototype"/>
+  
+  <bean id="ComparableInfo" class="org.kuali.rice.kns.uif.modifier.ComparableInfo" scope="prototype"/>
+  
+  <bean id="KeyLabelPair" class="org.kuali.rice.core.util.ConcreteKeyValue" scope="prototype"/>
+  
+  <bean id="MethodInvoker" class="org.springframework.util.MethodInvoker" scope="prototype"/>
+  
+  <bean id="PropertyReplacer" class="org.kuali.rice.kns.uif.core.PropertyReplacer" scope="prototype"/>
+  
+</beans>

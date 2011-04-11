@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+   <bean id="Travel-testView1" parent="FormView">
+      <property name="id" value="Travel-testView1"/>
+      <property name="title" value="Test View 1"/>
+      <property name="entryPageId" value="page1"/>
+      <property name="items">
+        <list>
+          <bean parent="Page_Accordion" p:id="page1">
+             <property name="items">
+               <list>
+                 <ref bean="testSection1"/>
+                 <ref bean="testSection6"/>
+                 <ref bean="testSection5"/>
+                 <ref bean="testSection2"/>
+                 <ref bean="testSection4"/>
+               </list>
+             </property> 
+          </bean>
+          <bean parent="Page_Accordion" p:id="page2">
+             <property name="items">
+               <list>
+                 <ref bean="testSection3"/>
+               </list>
+             </property> 
+          </bean>          
+        </list>
+      </property>    
+      <property name="additionalCssFiles" ref="ka-css"/>
+      <property name="formClass" value="edu.sampleu.travel.krad.form.UITestForm"/>
+      <property name="defaultBindingObjectPath" value="travelAccount1"/>
+   </bean>
+   
+   <bean id="testSection1" parent="GroupSection">
+      <property name="title" value="Test Section 1"/> 
+      <property name="items">
+        <list>
+          <ref bean="testGroup1"/>
+          <ref bean="testGroup2"/>
+        </list>
+      </property> 
+   </bean>
+   
+   <bean id="testSection7" parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" >
+      <property name="title" value="Comparison Section"/> 
+      <property name="items">
+        <list>
+          <bean parent="testGroup1" p:title="Old" p:summary=""/>
+          <bean parent="testGroup1" p:title="New" p:summary=""/>
+        </list>
+      </property> 
+   </bean>   
+   
+   <bean id="testGroup1" parent="GroupGridLayout">   
+      <property name="title" value="Test Group @{travelAccount1.name}"/> 
+      <property name="items">
+        <list>
+          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4" p:minLength="2"
+               p:summary="This title is used for identifying the proposal through the apporval process." p:constraint="Must be 4 chars">
+            <property name="control">
+              <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
+            </property>
+            <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldLookup.fieldConversions">
+              <map>
+                <entry key="number" value="field1"/>
+              </map>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:required="true" p:maxLength="25">
+            <property name="control">
+              <bean parent="TextControl" p:size="26"/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Field 3" p:maxLength="9">
+            <property name="control">
+              <bean parent="DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Field 4">
+            <property name="control">
+              <bean parent="SelectControl"/>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"/>
+            </property>
+          </bean>                        
+        </list>
+      </property> 
+      <property name="summary" value="Group with grid layout and 2 columns, @{#ConfigProperties['krad.externalizable.images.url']}"/>      
+   </bean>
+   
+   <bean id="testGroup2" parent="GroupGridLayout" p:layoutManager.style="width: 50%">   
+      <property name="title" value="Test Group 2"/> 
+      <property name="layoutManager.numberOfColumns" value="4"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField_Form" p:propertyName="field5" p:readOnly="true" p:label="Field 5" p:width="auto" p:maxLength="4" p:conditionalReadOnly="">
+            <property name="control">
+              <bean parent="TextControl" p:size="5"/>
+            </property>            
+            <property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldInquiry.inquiryParameters">
+              <map>
+                <entry key="field5" value="number"/>
+              </map>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field6" p:label="Field 6" p:readOnly="true" p:required="true" p:width="auto" p:maxLength="25">
+            <property name="control">
+              <bean parent="TextControl" p:size="26"/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field7" p:label="Field 8" p:width="auto" p:maxLength="9">
+            <property name="control">
+              <bean parent="TextControl" p:size="10"/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field34" p:label="Field 34" p:width="auto">
+            <property name="control">
+              <bean parent="CheckboxControl"/>
+            </property>
+          </bean>                              
+        </list>
+      </property> 
+      <property name="componentModifiers">
+         <list merge="true">
+            <bean parent="CheckboxToRadioConvertModifier" p:runCondition="#component.layoutManager.numberOfColumns eq 4"/>
+         </list>
+      </property>  
+      <property name="propertyReplacers">
+         <list>
+            <bean parent="PropertyReplacer" p:propertyName="title"
+                  p:condition="#view.id eq 'Travel-testView1'" p:replacement="Subs Test Group"/>
+         </list>
+      </property>           
+      <property name="summary" value="Group with grid layout, @{2+2} columns, 50% centered"/>       
+   </bean>  
+   
+   <bean id="testSection6" parent="GroupSection">
+      <property name="title" value="Test Collections"/> 
+      <property name="items">
+        <list>
+          <ref bean="testGroup4"/>
+          <ref bean="testGroup6"/>
+          <ref bean="testGroup5"/>
+          <ref bean="testGroup10"/>
+          <ref bean="testGroup11"/>           
+        </list>
+      </property> 
+   </bean>   
+   
+   <bean id="testGroup4" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
+      <property name="title" value="Collection Group 1"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="FieldGroup" p:label="Sub Account">
+            <property name="items">
+              <list>         
+               <bean parent="AttributeField" p:propertyName="subAccount" p:showLabel="false"/>
+               <bean parent="AttributeField" p:propertyName="subAccountName" 
+                     p:readOnly="true" p:showLabel="false" p:conditionalRender="#line?.subAccount eq 'i84n'"/>
+              </list>
+            </property>
+          </bean>
+          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+          <bean parent="AttributeField" p:propertyName="createDate"/>
+          <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
+        </list>
+      </property> 
+      <property name="propertyReplacers">
+         <list>
+            <bean parent="PropertyReplacer" p:propertyName="layoutManager.actionFieldPrototype"
+                  p:condition="#view.id eq 'Travel-testView1'">
+              <property name="replacement">
+                <bean parent="FieldGroup" p:align="center" p:required="false" 
+                      p:label="Actions!" p:shortLabel="Actions!"/>
+              </property>
+            </bean>      
+         </list>
+      </property>           
+      <property name="summary" value="Group with collection and table layout"/>  
+   </bean>
+   
+   <bean id="testGroup6" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="4">
+      <property name="id" value="testGroup6"/>
+      <property name="title" value="Collection Group - Infinite scrolling"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="addLineLabel" value="New Account"/>
+      <property name="layoutManager.tableTools">
+        <bean parent="TableTools-ScrollInfinite"/>
+      </property>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+          <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
+        </list>
+      </property>      
+      <property name="summary" value="Group with collection and table layout with infinite scrolling"/>  
+   </bean>
+   
+   <bean id="testGroup5" parent="CollectionGroup">
+      <property name="title" value="Collection Group 2"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="bindingInfo.bindingObjectPath" value="travelAccount2"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number"/>
+          <bean parent="AttributeField" p:propertyName="name" p:conditionalReadOnly="#index eq 1"/>
+          <bean parent="AttributeField" p:propertyName="foId"/>
+        </list>
+      </property>  
+      <property name="addLineLabel" value="New @{#component.title}"/>     
+      <property name="layoutManager.summaryTitle" value="Account"/> 
+      <property name="layoutManager.summaryFields">
+        <list>
+          <value>number</value>
+          <value>name</value>
+        </list>
+      </property>
+      <property name="summary" value="Group with collection and stacked layout"/>  
+   </bean> 
+   
+   <bean id="testGroup10" parent="CollectionGroup">
+      <property name="title" value="Sub Collections Stacked"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="AttributeField" p:propertyName="foId"/>
+        </list>
+      </property>  
+      <property name="addLineLabel" value="New Account"/>     
+      <property name="layoutManager.summaryTitle" value="Account"/> 
+      <property name="layoutManager.summaryFields">
+        <list>
+          <value>number</value>
+          <value>name</value>
+        </list>
+      </property>
+      <property name="subCollections">
+        <list>
+           <bean parent="testGroup5">
+             <property name="title" value="Sub Collection 1"/>  
+             <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
+             <property name="summary" value="Sub collection stacked layout"/>  
+           </bean> 
+        </list>
+      </property>      
+      <property name="summary" value="Group with sub-collections and stacked layout"/>  
+   </bean> 
+   
+   <bean id="testGroup11" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
+      <property name="title" value="Sub Collection Table"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="propertyName" value="fiscalOfficer.accounts"/>
+      <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="FieldGroup" p:label="Sub Account">
+            <property name="items">
+              <list>         
+               <bean parent="AttributeField" p:propertyName="subAccount" p:showLabel="false"/>
+               <bean parent="AttributeField" p:propertyName="subAccountName" 
+                     p:readOnly="true" p:showLabel="false"/>
+              </list>
+            </property>
+          </bean>
+          <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+          <bean parent="AttributeField" p:propertyName="createDate"/>
+          <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
+        </list>
+      </property> 
+      <property name="subCollections">
+        <list>
+           <bean parent="testGroup6">
+             <property name="title" value="Sub Collection 1"/>  
+             <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
+             <property name="summary" value="Sub collection table layout"/>  
+           </bean>       
+        </list>
+      </property>                  
+      <property name="summary" value="Group with sub-collection and table layout"/>  
+   </bean>   
+   
+   <bean id="testGroup3" parent="GroupGridLayout" p:layoutManager.numberOfColumns="4">   
+      <property name="title" value="Test Group 3"/> 
+      <property name="items">
+        <list>
+          <bean parent="AttributeField_Form" p:propertyName="field33" p:label="@{field18}">
+            <property name="control">
+              <bean parent="TextControl" p:size="5"/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field13" p:label="Bank Name" p:required="true">
+            <property name="control">
+              <bean parent="TextControl" p:size="26"/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field14" p:label="Bank Route Number" p:colSpan="2" p:labelField.colSpan="2" p:maxLength="29">
+            <property name="control">
+               <bean parent="TextControl" p:size="30" p:watermarkText="XXXXYYYYC"/>
+            </property>
+          </bean>  
+          <bean parent="AttributeField_Form" p:propertyName="field15" p:label="Bank Address" p:colSpan="3" p:labelField.colSpan="1" p:maxLength="69">
+            <property name="control">
+              <bean parent="TextControl" p:size="70"/>
+            </property>
+          </bean>           
+          <bean parent="AttributeField_Form" p:propertyName="field16" p:label="Bank Zip" p:colSpan="2" p:labelField.colSpan="2" p:maxLength="4">
+            <property name="control">
+              <bean parent="TextControl" p:size="5" p:watermarkText="00000"/>
+            </property>
+          </bean>            
+          <bean parent="AttributeField_Form" p:propertyName="field17" p:label="Bank Description" p:rowSpan="2" p:labelField.rowSpan="2">
+            <property name="control">
+              <bean parent="TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="Key in bank description here..."/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field18" p:label="Bank Type" p:maxLength="9">
+            <property name="control">
+              <bean parent="DateControl" p:size="10"/>
+            </property>
+          </bean>
+          <bean parent="AttributeField_Form" p:propertyName="field19" p:label="Bank Rating" p:maxLength="9">
+            <property name="control">
+              <bean parent="DateControl" p:size="10"/>
+            </property>
+          </bean>         
+        </list>
+      </property> 
+      <property name="summary" value="Group with grid layout and various col/row spans"/>      
+   </bean> 
+   
+   <bean id="testSection5" parent="GroupSection">
+      <property name="title" value="Banking Info"/> 
+      <property name="items">
+        <list>
+          <ref bean="testGroup3"/>
+        </list>
+      </property> 
+   </bean>   
+   
+   <bean id="testSection2" parent="GroupSection" p:layoutManager.styleClasses="layout_center">
+      <property name="title" value="Test Section 2"/> 
+      <property name="fieldBindingObjectPath" value="travelAccount3"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number" p:labelPlacement="TOP" 
+          p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
+          <bean parent="AttributeField" p:propertyName="name" p:labelPlacement="TOP" 
+          p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
+        </list>
+      </property> 
+      <property name="summary" value="Section without nested group, labels top"/> 
+   </bean> 
+   
+   <bean id="testSection4" parent="GroupSectionGridLayout">
+      <property name="title" value="Test Section 4"/> 
+      <property name="layoutManager.numberOfColumns" value="4"/>
+      <property name="items">
+        <list>
+          <bean parent="FieldGroup" p:label="Field Group 1" p:width="40%" p:labelField.width="10%">
+            <property name="items">
+              <list>
+                <bean parent="AttributeField_Form" p:propertyName="field20" p:label="Field 11" p:maxLength="4" p:required="true">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="5"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField_Form" p:propertyName="field21" p:label="Field 12" p:maxLength="20">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="21"/>
+                  </property>
+                </bean>                
+                <bean parent="AttributeField_Form" p:propertyName="field22" p:label="Field 13">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>  
+                <bean parent="AttributeField_Form" p:propertyName="field23" p:label="Field 14" p:maxLength="9">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="10"/>
+                  </property>
+                </bean>                                        
+              </list>
+            </property>
+          </bean>
+          <bean parent="FieldGroup" p:label="Currency Type" p:width="40%" p:labelField.width="10%">
+            <property name="items">
+              <list>
+                <bean parent="AttributeField_Form" p:propertyName="field24" p:label="Checks" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField_Form" p:propertyName="field25" p:label="Dollars" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                
+                <bean parent="AttributeField_Form" p:propertyName="field26" p:label="Coins" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                        
+              </list>
+            </property>
+          </bean>
+          <bean parent="FieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%" p:conditionalRender="field28 eq 'joe'">
+            <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+            <property name="items">
+              <list>
+                <bean parent="AttributeField_Form" p:propertyName="field28" p:label="Field 11" p:showLabel="false" p:maxLength="4" p:required="true">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="5"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField_Form" p:propertyName="field32" p:label="Field 12" p:showLabel="false" p:maxLength="20" p:required="true">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="21"/>
+                  </property>
+                </bean>                
+              </list>
+            </property>
+          </bean>
+          <bean parent="FieldGroup" p:label="Field Group 4" p:width="40%" p:labelField.width="10%">
+            <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+            <property name="items">
+              <list>
+                <bean parent="AttributeField_Form" p:propertyName="field29" p:label="Field 8" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField_Form" p:propertyName="field30" p:label="Field 9" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                
+                <bean parent="AttributeField_Form" p:propertyName="field31" p:label="Field 10" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                        
+              </list>
+            </property>
+          </bean>          
+        </list>
+      </property> 
+      <property name="summary" value="Section with some field groups"/> 
+   </bean> 
+   
+   <bean id="testSection3" parent="GroupSectionGridLayout">
+      <property name="title" value="Test Section 3"/> 
+      <property name="fieldBindingObjectPath" value="travelAccount3"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number" p:required="true">
+            <property name="control">
+              <bean parent="RadioGroupControl"/>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"/>
+            </property>            
+          </bean>
+          <bean parent="AttributeField" p:propertyName="name" p:label="Account File" p:required="true">
+            <property name="control">
+              <bean parent="FileControl" p:size="30"/>
+            </property>
+          </bean>
+        </list>
+      </property> 
+      <property name="summary" value="Section without nested group, grid layout"/> 
+   </bean>       
+
+</beans>

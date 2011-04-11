@@ -65,14 +65,14 @@
 
 	<script type="text/javascript">var jsContextPath = "${pageContext.request.contextPath}";</script>
 	<title><bean:message key="app.title" /> :: ${headerTitle}</title>
-	<c:forEach items="${fn:split(ConfigProperties.css.files, ',')}"
+	<c:forEach items="${fn:split(ConfigProperties.kns.css.files, ',')}"
 		var="cssFile">
 <c:if test="${fn:length(fn:trim(cssFile)) > 0}">
 			<link href="${pageContext.request.contextPath}/${cssFile}"
 				rel="stylesheet" type="text/css" />
 </c:if>
 </c:forEach>
-	<c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}"
+	<c:forEach items="${fn:split(ConfigProperties.kns.javascript.files, ',')}"
 		var="javascriptFile">
 <c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
 			<script language="JavaScript" type="text/javascript"

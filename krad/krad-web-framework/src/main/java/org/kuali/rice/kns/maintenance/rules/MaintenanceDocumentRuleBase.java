@@ -16,14 +16,25 @@
 
 package org.kuali.rice.kns.maintenance.rules;
 
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -61,20 +72,11 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.util.AutoPopulatingList;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 
 /**
- * This class contains all of the business rules that are common to all maintenance documents.
+ * Contains all of the business rules that are common to all maintenance documents.
  *
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements MaintenanceDocumentRule, AddCollectionLineRule {
     protected static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentRuleBase.class);
@@ -630,38 +632,56 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return true if it passes DD validation, false otherwise
      */
     protected boolean dataDictionaryValidate(MaintenanceDocument document) {
-
         LOG.debug("MaintenanceDocument validation beginning");
 
-        // explicitly put the errorPath that the dictionaryValidationService requires
+        // explicitly put the errorPath that the dictionaryValidationService
+        // requires
         GlobalVariables.getMessageMap().addToErrorPath("document.newMaintainableObject");
 
         // document must have a newMaintainable object
         Maintainable newMaintainable = document.getNewMaintainableObject();
         if (newMaintainable == null) {
             GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
-            throw new ValidationException("Maintainable object from Maintenance Document '" + document.getDocumentTitle() + "' is null, unable to proceed.");
+            throw new ValidationException("Maintainable object from Maintenance Document '"
+                    + document.getDocumentTitle() + "' is null, unable to proceed.");
         }
 
         // document's newMaintainable must contain an object (ie, not null)
-        PersistableBusinessObject businessObject = newMaintainable.getBusinessObject();
-        if (businessObject == null) {
+        Object dataObject = newMaintainable.getDataObject();
+        if (dataObject == null) {
             GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject.");
             throw new ValidationException("Maintainable's component business object is null.");
         }
 
-        // run required check from maintenance data dictionary
-        maintDocDictionaryService.validateMaintenanceRequiredFields(document);
+        // if the Maintainable object is a PBO and there is a legacy
+        // maintDefinition
+        // then use the old validation methods
+        if (newBo instanceof PersistableBusinessObject
+                && CollectionUtils.isNotEmpty(maintDocDictionaryService.getMaintainableSections(document
+                        .getDocumentHeader().getWorkflowDocument().getDocumentType()))) {
 
-        //check for duplicate entries in collections if necessary
-        maintDocDictionaryService.validateMaintainableCollectionsForDuplicateEntries(document);
+            BusinessObject businessObject = (BusinessObject) newBo;
 
-        // run the DD DictionaryValidation (non-recursive)
-        dictionaryValidationService.validateBusinessObjectOnMaintenanceDocument(businessObject,
-        		document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+            // run required check from maintenance data dictionary
+            maintDocDictionaryService.validateMaintenanceRequiredFields(document);
 
-        // do default (ie, mandatory) existence checks
-        dictionaryValidationService.validateDefaultExistenceChecks(businessObject);
+            // check for duplicate entries in collections if necessary
+            maintDocDictionaryService.validateMaintainableCollectionsForDuplicateEntries(document);
+
+            // run the DD DictionaryValidation (non-recursive)
+            dictionaryValidationService.validateBusinessObjectOnMaintenanceDocument(businessObject, document
+                    .getDocumentHeader().getWorkflowDocument().getDocumentType());
+
+            // do default (ie, mandatory) existence checks
+            dictionaryValidationService.validateDefaultExistenceChecks(businessObject);
+        } else {
+            GlobalVariables.getMessageMap().addToErrorPath("dataObject");
+
+            dictionaryValidationService.validate(newBo);
+
+            GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
+        }
+
 
         // explicitly remove the errorPath we've added
         GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");

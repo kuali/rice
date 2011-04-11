@@ -96,6 +96,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="12"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="12"/>
+    </property>      
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="genericSystemId"/>
     <property name="label" value="Generic SystemID Attribute"/>

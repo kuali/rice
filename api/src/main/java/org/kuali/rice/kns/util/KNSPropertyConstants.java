@@ -55,6 +55,7 @@ public final class KNSPropertyConstants {
 	public static final String DOCUMENT = "document";
 	public static final String DOCUMENT_DESCRIPTION = "documentDescription";
 	public static final String DOCUMENT_EXPLANATION = "documentExplanation";
+	public static final String DOC_ID = "docId";
 	public static final String DOCUMENT_HEADER = "documentHeader";
 	public static final String DOCUMENT_NUMBER = "documentNumber";
 	public static final String DOCUMENT_TEMPLATE_NUMBER = "documentTemplateNumber";

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <!-- Base Views -->
+  
+  <bean id="View" abstract="true" parent="View-parentBean"/>
+  <bean id="View-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
+      <property name="viewHelperServiceBeanId" value="viewHelperService"/>
+      <property name="styleClasses" value="workarea"/>
+      <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.PresentationControllerBase"/>
+      <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.AuthorizerBase"/>
+	  <property name="errorsField">
+        <bean parent="ErrorsField_View"/>
+      </property>
+      <property name="header">
+        <bean parent="HeaderView"/>
+      </property> 
+      <property name="footer">
+        <bean parent="Footer"/>
+      </property> 
+      <property name="expressionVariables">
+        <map>
+          <entry key="editModes" value="#view.editModes"/>
+          <entry key="actionFlags" value="#view.actionFlags"/>
+        </map>
+      </property>
+      <property name="conditionalReadOnly" value="!#actionFlags.contains('canEdit')"/>
+  </bean>
+  
+  <bean id="FormView" abstract="true" parent="FormView-parentBean"/>
+  <bean id="FormView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.FormView" parent="View">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/view/view.jsp"/>
+      <property name="onSubmitScript" value="createLoading(true);return hasFormAlreadyBeenSubmitted();"/>
+      <property name="footer">
+        <ref bean="Footer_SaveCloseCancel"/>
+      </property>
+  </bean>
+  
+  <bean id="KNSFormView" abstract="true" parent="FormView">
+      <property name="additionalCssFiles" ref="kns-css"/>
+  </bean>
+
+  <!-- Common Views -->
+  
+  <bean id="InquiryView" abstract="true" parent="InquiryView-parentBean"/>
+  <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="KNSFormView">
+     <property name="viewName" value="default"/>
+     <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.InquiryPresentationControllerBase"/>
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.InquiryAuthorizerBase"/>
+     <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
+     <property name="defaultBindingObjectPath" value="bo"/>
+     <property name="conditionalReadOnly" value="true"/>
+     <property name="singlePageView" value="true"/>
+     <property name="page">
+        <bean parent="PageInquiry"/>
+     </property>
+     <property name="footer">
+        <bean parent="FooterInquiry"/>
+     </property>     
+  </bean>
+  
+  <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
+  <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="KNSFormView">
+     <property name="viewName" value="default"/>
+     <property name="viewHelperServiceBeanId" value="lookupViewHelperService"/>
+     <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
+     <property name="readOnly" value="false"/>
+     <property name="singlePageView" value="true"/>
+     <property name="page">
+       <bean parent="PageLookup"/>
+     </property>
+     <property name="footer">
+       <bean parent="Footer"/>
+     </property>
+
+    <!-- BELOW WILL BE COPIED OUT TO COMMON BEAN DEFINITIONS -->
+
+    <property name="criteriaGroup">
+      <bean parent="GroupGridLayout">
+        <property name="renderHeader" value="false"/>
+        <property name="title" value="Lookup Criteria"/>
+        <property name="fieldBindingObjectPath" value="criteriaFields"/>
+        <property name="layoutManager.numberOfColumns" value="2"/>
+        <property name="footer">
+          <bean parent="FooterLookup" />
+        </property>
+      </bean>
+    </property>  
+    <property name="resultsActionsField">
+      <bean parent="GeneratedField">
+        <property name="label" value="Actions" />
+        <property name="renderingMethodToCall" value="getActionUrlsFromField" />
+        <property name="styleClasses" value="field_attribute"/>
+      </bean>
+    </property>
+    <property name="resultsReturnField">
+      <bean parent="GeneratedField">
+        <property name="label" value="Return Value" />
+        <property name="renderingMethodToCall" value="getReturnUrlForResults" />
+        <property name="styleClasses" value="field_attribute"/>
+      </bean>
+    </property>
+    <property name="resultsGroup">
+      <bean parent="CollectionGroupTableLayout" p:layoutManager.matchColumnsToFieldCount="true">
+        <property name="propertyName" value="searchResults"/>
+        <property name="layoutManager.renderSequenceField" value="false"/>
+        <property name="renderAddLine" value="false"/>
+        <property name="conditionalReadOnly" value="true"/>
+        <property name="accordion.render" value="false"/>
+      </bean>
+    </property>
+  </bean>
+  
+  <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>
+  <bean id="DocumentView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.DocumentView" parent="KNSFormView">
+     <property name="formClass" value="org.kuali.rice.kns.web.spring.form.DocumentFormBase"/>
+     <property name="defaultBindingObjectPath" value="document"/>
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.DocumentPresentationControllerBase"/>
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.DocumentAuthorizerBase"/>
+     <property name="header">
+        <bean parent="HeaderViewDocument"/>
+     </property>
+     <property name="page">
+        <bean parent="Page_Accordion"/>
+     </property> 
+     <property name="footer">
+        <bean parent="FooterDocument"/>
+     </property>  
+     <property name="itemOrderingSequence" value="11"/>
+     <property name="items">
+       <list>
+          <bean parent="Group_DocumentOverview" p:order="10"/>
+          <bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false" p:order="30"/>  
+          <bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false" p:order="40"/>  
+       </list>
+     </property>  
+  </bean>
+  
+  <bean id="MaintenanceView" abstract="true" parent="MaintenanceView-parentBean"/>
+  <bean id="MaintenanceView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
+     <property name="viewName" value="default"/>
+     <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
+     <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentPresentationControllerBase"/>
+     <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentAuthorizerBase"/>
+     <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
+     <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
+     <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
+     <property name="singlePageView" value="true"/>
+  </bean>
+  
+  <!-- Base Pages -->
+   
+  <bean id="Page" parent="Page-parentBean"/>
+  <bean id="Page-parentBean" abstract="true" parent="Group">
+      <property name="header">
+        <bean parent="HeaderPage"/>
+      </property>
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property>  
+      <property name="accordion.render" value="false"/>   
+  </bean>   
+   
+  <!-- Common Pages --> 
+  
+  <bean id="Page_Accordion" parent="Page_Accordion-parentBean"/>
+  <bean id="Page_Accordion-parentBean" abstract="true" parent="Page">
+      <property name="header">
+         <ref bean="HeaderPage_AccordionEdit"/>
+      </property>
+  </bean>
+  
+  <bean id="PageInquiry" parent="PageInquiry-parentBean"/>
+  <bean id="PageInquiry-parentBean" abstract="true" parent="Page">
+      <property name="header">
+         <ref bean="HeaderPage_AccordionReadOnly"/>
+      </property>
+  </bean>
+     
+  <bean id="PageLookup" parent="PageLookup-parentBean"/>          
+  <bean id="PageLookup-parentBean" abstract="true" parent="Page">
+    <property name="renderFooter" value="false"/>
+      <property name="header">
+        <ref bean="HeaderPage_Lookup"/>
+      </property>
+  </bean>
+  
+</beans>

@@ -25,12 +25,12 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 
 public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer, InquiryOrMaintenanceDocumentAuthorizer {
 
-    public boolean canCreate(Class boClass, Person user);
+	public boolean canCreate(Class boClass, Person user);
 
-    public boolean canMaintain(BusinessObject businessObject, Person user);
+	public boolean canMaintain(Object dataObject, Person user);
 
-    public boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument,
-                                       Person user);
+	public boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument,
+			Person user);
 
-    public Set<String> getSecurePotentiallyReadOnlySectionIds();
+	public Set<String> getSecurePotentiallyReadOnlySectionIds();
 }

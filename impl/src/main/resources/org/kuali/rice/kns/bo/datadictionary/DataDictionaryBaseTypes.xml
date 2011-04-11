@@ -76,6 +76,8 @@
 		abstract="true" />
 	<bean id="AttributeDefinition" class="org.kuali.rice.kns.datadictionary.AttributeDefinition"
 		abstract="true" />
+	<bean id="ComplexAttributeDefinition" class="org.kuali.rice.kns.datadictionary.ComplexAttributeDefinition"
+		abstract="true" />		
 	<bean id="HiddenControlDefinition"
 		class="org.kuali.rice.kns.datadictionary.control.HiddenControlDefinition"
 		abstract="true" />
@@ -120,6 +122,8 @@
 		abstract="true" />
 	<bean id="BusinessObjectEntry" class="org.kuali.rice.kns.datadictionary.BusinessObjectEntry"
 		abstract="true" />
+	<bean id="DataObjectEntry" class="org.kuali.rice.kns.datadictionary.DataObjectEntry"
+		abstract="true" />		
 	<bean id="Mask" class="org.kuali.rice.kns.datadictionary.mask.Mask"
 		abstract="true" />
 	<bean id="CurrencyControlDefinition"
@@ -244,7 +248,108 @@
 		<property name="propertyName"><null /></property>
 		<property name="element"><null /></property>
 		<property name="replaceWith"><null /></property>
-	</bean>  
+	</bean> 
+	
+	<!--Constraints-->
+	<bean id="ValidCharactersConstraint" 
+		abstract="true" 
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint" />
+		
+	<bean id="EmailPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="email"
+		p:value="regex:^[A-Za-z0-9][A-Za-z0-9_.\-]*[A-Za-z0-9]@([A-Za-z0-9][A-Za-z0-9_-]*\\.)+[A-Za-z]{2,}$"/>
+	
+	<bean id="FloatingPointNumberPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="number"
+		p:value="regex:^([0-9]*\\.)?[0-9]+$"/>
+	
+	<!-- Client side only - Warning:
+	none of these have their Java equivalent and we may want to redo their js definition,
+	as well -->
+	<bean id="UrlPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="url"/>
+	
+	<bean id="DatePatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="date"/>
+	
+	<bean id="DigitsPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="digits"/>
+		
+	<bean id="CreditcardPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="creditcard"/>
+	
+	<bean id="LettersWithPuncPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="letterswithbasicpunc"/>
+	
+	<bean id="LettersOnlyPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="lettersonly"/>
+	
+	<bean id="NoWhitespacePatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="nowhitespace"/>
+	
+	<bean id="IntegerPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="integer"/>
+
+	<bean id="PhoneUSPatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="phoneUS"/>
+		
+	<bean id="TimePatternConstraint" 
+	    parent="ValidCharactersConstraint"
+		abstract="true" 
+		p:labelKey="time"/>
+	
+	<!-- end clientside only constraints -->
+	
+	<bean id="AlphaNumericPatternConstraint" 
+		abstract="true" 
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.AlphaNumericPatternConstraint" />
+	
+	<bean id="MustOccurConstraint" 
+		abstract="true" 
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint" />
+		
+	<bean id="CaseConstraint" 
+		abstract="true" 
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint" />
+		
+	<bean id="WhenConstraint" 
+		abstract="true" 
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint" />
+	
+	<bean id="PrerequisiteConstraint" 
+		abstract="true" 
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" />
+		
+	<bean id="SimpleConstraint" 
+		abstract="true" 
+		class="org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint" />
+	
+	<bean id="RequiredConstraint" 
+		abstract="true"
+		parent="SimpleConstraint"
+		p:required="true"/>	 
 	
 </beans>
 

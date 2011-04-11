@@ -69,6 +69,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="2"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="2"/>
+    </property>      
     <property name="summary" value="Campus Code"/>
     <property name="name" value="code"/>
     <property name="label" value="Campus Code"/>
@@ -83,6 +86,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>      
     <property name="summary" value="Campus Name"/>
     <property name="name" value="name"/>
     <property name="label" value="Campus Name"/>
@@ -195,4 +201,28 @@
     </property>
     <property name="title" value="Campus Lookup"/>
   </bean>
+  
+  <!-- KRAD Inquiry Definition --> 
+
+  <bean id="Campus-InquiryView" parent="InquiryView">
+     <property name="title" value="Campus Inquiry"/>
+     <property name="dataObjectClassName" value="org.kuali.rice.shareddata.impl.campus.CampusBo"/>
+     <property name="Items">
+         <list>
+           <bean parent="GroupSectionGridLayout">
+             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="items">
+               <list>
+                <bean parent="AttributeField" p:propertyName="code"/>
+                <bean parent="AttributeField" p:propertyName="name"/>
+                <bean parent="AttributeField" p:propertyName="shortName"/>
+                <bean parent="AttributeField" p:propertyName="campusTypeCode"/>
+                <bean parent="AttributeField" p:propertyName="active"/>
+               </list>
+             </property>
+             <property name="title" value="Campus Information"/>
+           </bean>               
+         </list>
+     </property>
+  </bean>  
 </beans>

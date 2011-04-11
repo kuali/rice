@@ -19,40 +19,50 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * This interface defines basic methods that Lookup Dao's must provide
+ * Defines basic methods that Lookup Dao's must provide
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LookupDao {
-    public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly);
+	public <T extends Object> Collection<T> findCollectionBySearchHelper(
+			Class<T> example, Map<String, String> formProps, boolean unbounded,
+			boolean usePrimaryKeyValuesOnly);
 
-    public Collection findCollectionBySearchHelper(Class example, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly, Object additionalCriteria );
-    
-    /**
-     * Retrieves a Object based on the search criteria, which should uniquely identify a record.
-     * 
-     * @return Object returned from the search
-     */
-    public Object findObjectByMap(Object example, Map formProps);
+	public <T extends Object> Collection<T> findCollectionBySearchHelper(
+			Class<T> example, Map<String, String> formProps, boolean unbounded,
+			boolean usePrimaryKeyValuesOnly, Object additionalCriteria);
 
-    /**
-     * Returns a count of objects based on the given search parameters.
-     * 
-     * @return Long returned from the search
-     */
-    public Long findCountByMap(Object example, Map formProps);
+	/**
+	 * Retrieves a Object based on the search criteria, which should uniquely
+	 * identify a record.
+	 * 
+	 * @return Object returned from the search
+	 */
+	public <T extends Object> T findObjectByMap(T example, Map<String, String> formProps);
 
-    /**
-     * Create OJB criteria based on business object, search field and value
-     * 
-     * @return true if the criteria is created successfully; otherwise, return false
-     */
-    public boolean createCriteria(Object example, String searchValue, String propertyName, Object criteria);
+	/**
+	 * Returns a count of objects based on the given search parameters.
+	 * 
+	 * @return Long returned from the search
+	 */
+	public Long findCountByMap(Object example, Map<String, String> formProps);
 
-    /**
-     * Create OJB criteria based on business object, search field and value
-     * 
-     * @return true if the criteria is created successfully; otherwise, return false
-     */
-    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria);
+	/**
+	 * Create OJB criteria based on business object, search field and value
+	 * 
+	 * @return true if the criteria is created successfully; otherwise, return
+	 *         false
+	 */
+	public boolean createCriteria(Object example, String searchValue,
+			String propertyName, Object criteria);
+
+	/**
+	 * Create OJB criteria based on business object, search field and value
+	 * 
+	 * @return true if the criteria is created successfully; otherwise, return
+	 *         false
+	 */
+	public boolean createCriteria(Object example, String searchValue,
+			String propertyName, boolean caseInsensitive,
+			boolean treatWildcardsAndOperatorsAsLiteral, Object criteria);
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <bean id="TravelAccount-LookupView" parent="LookupView">
+    <property name="title" value="Travel Account Lookup" />
+    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+    <property name="criteriaFields">
+      <list>
+<!-- p:dictionaryObjectEntry=edu.sampleu.travel.bo.TravelAccount -->
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="number" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="subAccount" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="subAccountName" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="createDate" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="subsidizedPercent" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="foId" /> <!-- p:forceLookup="true" -->
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="extension.accountTypeCode">
+          <property name="control">
+            <bean parent="SelectControl" />
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="number" /> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:propertyName="name" /> <!-- p:forceInquiry="true" -->
+<!--
+        <bean parent="FieldGroup" p:label="Sub Account">
+          <property name="readOnly" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="subAccount" p:readOnly="true" p:showLabel="false"/>
+              <bean parent="AttributeField" p:propertyName="subAccountName" p:readOnly="true" p:showLabel="false"/>
+            </list>
+          </property>
+        </bean>
+-->
+        <bean parent="AttributeField" p:propertyName="subAccount" />
+        <bean parent="AttributeField" p:propertyName="subAccountName" />
+        <bean parent="AttributeField" p:propertyName="subsidizedPercent" />
+        <bean parent="AttributeField" p:propertyName="createDate" />
+        <bean parent="AttributeField" p:propertyName="extension.accountType.codeAndDescription" /> <!-- p:forceInquiry="true" -->
+        <bean parent="AttributeField" p:propertyName="foId" /> <!-- p:forceInquiry="true" -->
+      </list>
+    </property>
+  </bean>
+
+</beans>

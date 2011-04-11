@@ -26,6 +26,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "TRV_ACCT_USE_RT")
 public class TravelAccountUseRate extends InactivatableFromToImpl {
+	private static final long serialVersionUID = 7433417595650091555L;
 
 	@Id
 	@Column(name = "id")

@@ -1,0 +1,77 @@
+#viewpage_div .page_header .grouping-header-expandable .panel-content table {
+	border-collapse:collapse;
+	width:100%;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+#viewheader_div .view_header .doc-info table {
+	height:55px;
+	border-left: 1px solid #999;
+}
+.view_header td, th {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.view_header td  { background-color:#FFF
+}
+
+.view_header th  {
+	background-color:#DEDEDE;
+	font-weight: bold;
+}
+
+
+table.datatable th {
+	background-color:#f1f1f1;
+	font-weight:bold;
+	border-top: 1px solid #999;
+	border-left: 1px solid #999;
+	padding-left:1em;
+	padding-right:0.3em;
+	vertical-align: middle;
+	
+}
+table.datatable td {
+	background-color:#fff;
+	border-top: 1px solid #999;
+	border-left: 1px solid #999;
+	padding-right:1em;
+	padding-left:.3em;
+	vertical-align: middle;
+}
+
+table.datatable td, th {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	vertical-align: middle;
+}
+
+table.datatable th[scope="row"].collection-header {
+	padding: 0em;
+	text-align: left;
+}	
+
+table.datatable td.collection-header {
+	padding: 0em;
+	text-align: left;
+}	
+
+table.datatable th[scope="col"] { text-align:center
+}
+
+table.datatable th[scope="row"] { 
+	text-align:right;
+	vertical-align: middle;
+}
+
+.collection-header th[scope="row"] { 
+	text-align: left;
+	vertical-align: middle;
+}
+
+
+table.datatable {border-collapse:collapse;
+	width:100%;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;}

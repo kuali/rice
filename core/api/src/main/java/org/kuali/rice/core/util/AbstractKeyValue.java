@@ -23,7 +23,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AbstractKeyValue implements KeyValue {
-
+	private static final long serialVersionUID = -8093251322740055977L;
+	
 	protected String key;
 	protected String value;
 	

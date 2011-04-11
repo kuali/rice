@@ -16,17 +16,20 @@
 package org.kuali.rice.core.framework.persistence.jdbc.sql;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.LogicalOperator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -315,6 +318,97 @@ public final class SQLUtils {
     public static String cleanString(String string) {
         for (LogicalOperator op : LogicalOperator.QUERY_CHARACTERS) {
             string = StringUtils.replace(string, op.op(), "");
+        }
+        return string;
+    }
+    
+    /**
+     * Splits the values then cleans them of any other query characters like *?!><...
+     *
+     * @param valueEntered
+     * @param propertyDataType
+     * @return
+     */
+    public static List<String> getCleanedSearchableValues(String valueEntered, String propertyDataType) {
+  	   List<String> lRet = null;
+  	   List<String> lTemp = getSearchableValues(valueEntered);
+  	   if(lTemp != null && !lTemp.isEmpty()){
+  		   lRet = new ArrayList<String>();
+  		   for(String val: lTemp){
+  			   // Clean the wildcards appropriately, depending on the field's data type.
+  			   if (KNSConstants.DATA_TYPE_STRING.equals(propertyDataType)) {
+  				   lRet.add(clean(val));
+  			   } else if (KNSConstants.DATA_TYPE_FLOAT.equals(propertyDataType) || KNSConstants.DATA_TYPE_LONG.equals(propertyDataType)) {
+  				   lRet.add(SQLUtils.cleanNumericOfValidOperators(val));
+  			   } else if (KNSConstants.DATA_TYPE_DATE.equals(propertyDataType)) {
+  				   lRet.add(SQLUtils.cleanDate(val));
+  			   } else {
+  				   lRet.add(clean(val));
+  			   }
+  		   }
+  	   }
+  	   return lRet;
+    }
+    
+    /**
+    * Splits the valueEntered on locical operators and, or, and between
+    *
+    * @param valueEntered
+    * @return
+    */
+ 	private static List<String> getSearchableValues(String valueEntered) {
+ 		List<String> lRet = new ArrayList<String>();
+ 		getSearchableValueRecursive(valueEntered, lRet);
+ 		return lRet;
+ 	}
+
+ 	private static void getSearchableValueRecursive(String valueEntered, List lRet) {
+ 		if(valueEntered == null) {
+ 			return;
+ 		}
+
+ 		valueEntered = valueEntered.trim();
+
+ 		if(lRet == null){
+ 			throw new NullPointerException("The list passed in is by reference and should never be null.");
+ 		}
+
+ 		if (StringUtils.contains(valueEntered, LogicalOperator.BETWEEN.op())) {
+ 			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
+ 			for(String value : l){
+ 				getSearchableValueRecursive(value,lRet);
+ 			}
+ 			return;
+ 		}
+ 		if (StringUtils.contains(valueEntered, LogicalOperator.OR.op())) {
+ 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.OR.op()));
+ 			for(String value : l){
+ 				getSearchableValueRecursive(value,lRet);
+ 			}
+ 			return;
+ 		}
+ 		if (StringUtils.contains(valueEntered, LogicalOperator.AND.op())) {
+ 			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND.op())));
+ 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.AND.op()));
+ 			for(String value : l){
+ 				getSearchableValueRecursive(value,lRet);
+ 			}
+ 			return;
+ 		}
+
+ 		// lRet is pass by ref and should NEVER be null
+ 		lRet.add(valueEntered);
+   }
+ 	
+    /**
+     * Removes all query characters from a string.
+     *
+     * @param string
+     * @return Cleaned string
+     */
+    private static String clean(String string) {
+        for (int i = 0; i < KNSConstants.QUERY_CHARACTERS.length; i++) {
+            string = StringUtils.replace(string, KNSConstants.QUERY_CHARACTERS[i], KNSConstants.EMPTY_STRING);
         }
         return string;
     }

@@ -175,7 +175,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
         return "MaintenanceDocumentEntry for documentType " + getDocumentTypeName();
     }
 
-
+    @Deprecated
     public String getAdditionalSectionsFile() {
         return additionalSectionsFile;
     }
@@ -187,6 +187,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
             after the generation sections but before the notes.
             The location semantics are those of jsp:include.
      */
+    @Deprecated
     public void setAdditionalSectionsFile(String additionalSectionsFile) {
         this.additionalSectionsFile = additionalSectionsFile;
     }
@@ -225,6 +226,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
             The corresponding value for each entry is a maintainableSection ExportMap.
             See MaintenanceDocumentEntryMapper.java.
      */
+    @Deprecated
     public void setMaintainableSections(List<MaintainableSectionDefinition> maintainableSections) {
         maintainableSectionMap.clear();
         for ( MaintainableSectionDefinition maintainableSectionDefinition : maintainableSections ) {
@@ -272,10 +274,12 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 		this.allowsRecordDeletion = allowsRecordDeletion;
 	}
 
+	@Deprecated
 	public boolean isTranslateCodes() {
 		return this.translateCodes;
 	}
 
+	@Deprecated
 	public void setTranslateCodes(boolean translateCodes) {
 		this.translateCodes = translateCodes;
 	}

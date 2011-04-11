@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,21 +23,20 @@ import java.util.regex.Pattern;
 
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
+import org.kuali.rice.kns.uif.container.View;
 
 
 /**
- * This interface defines the API for interacting with the data dictionary.
- * 
- * 
+ * Defines the API for interacting with the data dictionary.
  */
 public interface DataDictionaryService {
     /**
@@ -110,7 +108,6 @@ public interface DataDictionaryService {
      */
     public Class<? extends Formatter> getAttributeFormatter(Class businessObjectClass, String attributeName);
 
-
     /**
      * indicates whether or not to force input text into uppercase
      */
@@ -164,6 +161,7 @@ public interface DataDictionaryService {
      */
     public String getCollectionDescription(Class businessObjectClass, String collectionName);
 
+    
     /**
      * the html control type used to render the field
      */
@@ -175,7 +173,11 @@ public interface DataDictionaryService {
      */
     public Integer getAttributeSize(String entryName, String attributeName);
 
-
+    /**
+     * the min length defined for the given attribute name.
+     */
+    public Integer getAttributeMinLength(String entryName, String attributeName);
+    
     /**
      * the max length defined for the given attribute name.
      */
@@ -186,21 +188,20 @@ public interface DataDictionaryService {
      * @param attributeName
      * @return the exclusive minimum for the specified attribute, or <code>null</code> if none.
      */
-    public BigDecimal getAttributeExclusiveMin(String entryName, String attributeName);
+    public /*BigDecimal*/ String getAttributeExclusiveMin(String entryName, String attributeName);
 
     /**
      * @param entryName
      * @param attributeName
      * @return the inclusive maximum for the specified attribute, or <code>null</code> if none.
      */
-    public BigDecimal getAttributeInclusiveMax(String entryName, String attributeName);
+    public /*BigDecimal*/ String getAttributeInclusiveMax(String entryName, String attributeName);
 
 
     /**
      * the regular expression defined to validate the given attribute name.
      */
     public Pattern getAttributeValidatingExpression(String entryName, String attributeName);
-
 
     /**
      * the label to be used for displaying the attribute.
@@ -265,12 +266,16 @@ public interface DataDictionaryService {
      * the Class that returns a values list for this attribute
      */
     public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(String entryName, String attributeName);
+    
+    /**
+     * AttributeDefinition associated with the given attributeName within the given entry
+     */
+    public AttributeDefinition getAttributeDefinition(String entryName, String attributeName);
 
     /**
      * the label to be used for displaying the collection.
      */
     public String getCollectionLabel(String entryName, String collectionName);
-
 
     /**
      * the short label to be used for displaying the collection.
@@ -438,4 +443,25 @@ public interface DataDictionaryService {
      * @return a set of all registered inactivation blocks for a particular business object
      */
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass);
+    
+	/**
+	 * Returns the View entry identified by the given id
+	 * 
+	 * @param viewId - unique id for view
+	 * @return View instance associated with the id
+	 */
+	public View getViewById(String viewId);
+	
+	/**
+	 * Returns View instance identified by the view type name and index
+	 * 
+	 * @param viewTypeName
+	 *            - type name for the view
+	 * @param indexKey
+	 *            - Map of index key parameters, these are the parameters the
+	 *            indexer used to index the view initially and needs to identify
+	 *            an unique view instance
+	 * @return View instance that matches the given index
+	 */
+	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey);
 }

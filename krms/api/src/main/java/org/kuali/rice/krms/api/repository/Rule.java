@@ -29,7 +29,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  *
  * @see RuleContract
  */
-@XmlRootElement(name = Rule.Constants.ROOT_ELEMENT_NAME, namespace = Rule.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = Rule.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Rule.Constants.TYPE_NAME, propOrder = {
 		Rule.Elements.ID,
@@ -44,19 +44,19 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 public final class Rule implements RuleContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.ID, required=true, namespace = Rule.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true)
 	private String ruleId;
-	@XmlElement(name = Elements.NAME, required=true, namespace = Rule.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAME, required=true)
 	private String name;
-	@XmlElement(name = Elements.NAMESPACE, required=true, namespace = Rule.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAMESPACE, required=true)
 	private String namespace;
-	@XmlElement(name = Elements.TYPE_ID, required=true, namespace = Rule.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
-	@XmlElement(name = Elements.PROPOSITION, required=true, namespace = Rule.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.PROPOSITION, required=true)
 	private Proposition proposition;
-	@XmlElement(name = Elements.ACTION, required=false, namespace = Rule.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ACTION, required=false)
 	private Action action;
-	@XmlElement(name = Elements.ATTRIBUTES, required=false, namespace = Rule.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ATTRIBUTES, required=false)
 	private List<RuleAttribute> attributes;
 	
 	@SuppressWarnings("unused")
@@ -108,7 +108,7 @@ public final class Rule implements RuleContract, ModelObjectComplete{
     
 	@Override
 	public String getRuleId() {
-		return this.actionId;
+		return this.ruleId;
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 		
 		@Override
 		public String getRuleId() {
-			return actionId;
+			return ruleId;
 		}
 
 		@Override
@@ -362,7 +362,6 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "Rule";
 		final static String TYPE_NAME = "RuleType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };

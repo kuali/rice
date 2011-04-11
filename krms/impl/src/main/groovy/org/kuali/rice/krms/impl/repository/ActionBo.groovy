@@ -7,12 +7,12 @@ import org.kuali.rice.krms.api.repository.ActionContract
 
 public class ActionBo extends PersistableBusinessObjectBase implements ActionContract {
 
-	def String actionId;
-	def String namespace;
-	def String name;
-	def String description;
-	def String typeId;
-	def List<ActionAttributeBo> attributes;
+	def String actionId
+	def String namespace
+	def String name
+	def String description
+	def String typeId
+	def List<ActionAttributeBo> attributes
 	
 	
 	/**
@@ -22,7 +22,7 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionCon
 	*/
    static Action to(ActionBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.Action.Builder.create(bo).build();
+	   return org.kuali.rice.krms.api.repository.Action.Builder.create(bo).build()
    }
 
    /**

@@ -59,7 +59,7 @@ public interface AgendaItemContract {
 	public String getSubAgendaId();
 	
 	public RuleContract getRule();
-	public AgendaContract getSubAgenda();
+	public AgendaDefinitionContract getSubAgenda();
 	public AgendaItemContract getNextTrue();
 	public AgendaItemContract getNextFalse();
 	public AgendaItemContract getNextAfter();

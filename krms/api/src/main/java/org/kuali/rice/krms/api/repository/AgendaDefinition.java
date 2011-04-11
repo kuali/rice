@@ -27,21 +27,21 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * immutable. 
  * Instances of Agenda can be (un)marshalled to and from XML.
  *
- * @see AgendaContract
+ * @see AgendaDefinitionContract
  */
-@XmlRootElement(name = Agenda.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = AgendaDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Agenda.Constants.TYPE_NAME, propOrder = {
-		Agenda.Elements.AGENDA_ID,
-		Agenda.Elements.NAME,
-		Agenda.Elements.NAMESPACE,
-		Agenda.Elements.TYPE_ID,
-		Agenda.Elements.CONTEXT_ID,
-		Agenda.Elements.FIRST_ITEM_ID, 
-		Agenda.Elements.ATTRIBUTES,
+@XmlType(name = AgendaDefinition.Constants.TYPE_NAME, propOrder = {
+		AgendaDefinition.Elements.AGENDA_ID,
+		AgendaDefinition.Elements.NAME,
+		AgendaDefinition.Elements.NAMESPACE,
+		AgendaDefinition.Elements.TYPE_ID,
+		AgendaDefinition.Elements.CONTEXT_ID,
+		AgendaDefinition.Elements.FIRST_ITEM_ID, 
+		AgendaDefinition.Elements.ATTRIBUTES,
 		"_elements"
 })
-public final class Agenda implements AgendaContract, ModelObjectComplete{
+public final class AgendaDefinition implements AgendaDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.AGENDA_ID, required=true)
@@ -67,7 +67,7 @@ public final class Agenda implements AgendaContract, ModelObjectComplete{
      * This constructor should never be called.  
      * It is only present for use during JAXB unmarshalling. 
      */
-    private Agenda() {
+    private AgendaDefinition() {
     	this.agendaId = null;
     	this.name = null;
     	this.namespace = null;
@@ -83,7 +83,7 @@ public final class Agenda implements AgendaContract, ModelObjectComplete{
 	 * 
 	 * @param builder the Builder from which to construct the Agenda
 	 */
-    private Agenda(Builder builder) {
+    private AgendaDefinition(Builder builder) {
         this.agendaId = builder.getAgendaId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
@@ -133,9 +133,9 @@ public final class Agenda implements AgendaContract, ModelObjectComplete{
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS Repository Agenda.  It enforces the constraints of the {@link AgendaContract}.
+     * This builder is used to construct instances of KRMS Repository Agenda.  It enforces the constraints of the {@link AgendaDefinitionContract}.
      */
-    public static class Builder implements AgendaContract, ModelBuilder, Serializable {
+    public static class Builder implements AgendaDefinitionContract, ModelBuilder, Serializable {
 		
         private String agendaId;
         private String name;
@@ -160,12 +160,12 @@ public final class Agenda implements AgendaContract, ModelObjectComplete{
         	return new Builder(agendaId, name, namespace, typeId, contextId);
         }
         /**
-         * Creates a builder by populating it with data from the given {@link AgendaContract}.
+         * Creates a builder by populating it with data from the given {@link AgendaDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(AgendaContract contract) {
+        public static Builder create(AgendaDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -276,8 +276,8 @@ public final class Agenda implements AgendaContract, ModelObjectComplete{
 		 * @return the fully-constructed Agenda
 		 */
         @Override
-        public Agenda build() {
-            return new Agenda(this);
+        public AgendaDefinition build() {
+            return new AgendaDefinition(this);
         }
 		
     }

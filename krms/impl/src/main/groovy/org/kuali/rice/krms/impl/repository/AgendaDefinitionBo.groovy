@@ -3,7 +3,7 @@ package org.kuali.rice.krms.impl.repository
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
 
-public class AgendaBo extends PersistableBusinessObjectBase {
+public class AgendaDefinitionBo extends PersistableBusinessObjectBase {
 
 	def String agendaId
 	def String namespace

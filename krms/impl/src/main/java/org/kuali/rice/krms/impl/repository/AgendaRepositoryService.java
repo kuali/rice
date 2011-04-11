@@ -22,7 +22,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.kuali.rice.krms.api.repository.Agenda;
+import org.kuali.rice.krms.api.repository.AgendaDefinition;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public interface AgendaRepositoryService {
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-	public Agenda to(AgendaBo bo);
+	public AgendaDefinition to(AgendaDefinitionBo bo);
 
    /**
 	* Converts a immutable object to it's mutable bo counterpart
@@ -41,5 +41,5 @@ public interface AgendaRepositoryService {
 	* @param im immutable object
 	* @return the mutable bo
 	*/
- 	public AgendaBo from(Agenda im);
+ 	public AgendaDefinitionBo from(AgendaDefinition im);
 }

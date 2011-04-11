@@ -19,7 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.Agenda;
+import org.kuali.rice.krms.api.repository.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.AgendaAttribute;
 
 import java.util.*;
@@ -33,7 +33,7 @@ public final class AgendaRepositoryServiceImpl implements AgendaRepositoryServic
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   public Agenda to(AgendaBo bo) {
+   public AgendaDefinition to(AgendaDefinitionBo bo) {
 	   if (bo == null) { return null; }
 	   // TODO implement
 	   return null;
@@ -45,10 +45,10 @@ public final class AgendaRepositoryServiceImpl implements AgendaRepositoryServic
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   public AgendaBo from(Agenda im) {
+   public AgendaDefinitionBo from(AgendaDefinition im) {
 	   if (im == null) { return null; }
 
-	   AgendaBo bo = new AgendaBo();
+	   AgendaDefinitionBo bo = new AgendaDefinitionBo();
 	   bo.setAgendaId( im.getAgendaId() );
 	   bo.setNamespace( im.getNamespace() );
 	   bo.setName( im.getName() );
@@ -79,10 +79,10 @@ public final class AgendaRepositoryServiceImpl implements AgendaRepositoryServic
      * @param AgendaBos a mutable List<AgendaBo> to made completely immutable.
      * @return An unmodifiable List<Agenda>
      */
-    List<Agenda> convertListOfBosToImmutables(final Collection<AgendaBo> agendaBos) {
-        ArrayList<Agenda> agendas = new ArrayList<Agenda>();
-        for (AgendaBo bo : agendaBos) {
-            Agenda agenda = to(bo);
+    List<AgendaDefinition> convertListOfBosToImmutables(final Collection<AgendaDefinitionBo> agendaBos) {
+        ArrayList<AgendaDefinition> agendas = new ArrayList<AgendaDefinition>();
+        for (AgendaDefinitionBo bo : agendaBos) {
+            AgendaDefinition agenda = to(bo);
             agendas.add(agenda);
         }
         return Collections.unmodifiableList(agendas);

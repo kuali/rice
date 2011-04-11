@@ -63,7 +63,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 	@XmlElement(name = Elements.RULE, required=false)
 	private Rule rule;;
 	@XmlElement(name = Elements.SUB_AGENDA, required=false)
-	private Agenda subAgenda;
+	private AgendaDefinition subAgenda;
 	@XmlElement(name = Elements.NEXT_TRUE, required=false)
 	private AgendaItem nextTrue;
 	@XmlElement(name = Elements.NEXT_FALSE, required=false)
@@ -154,7 +154,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 	}
 
 	@Override
-	public Agenda getSubAgenda() {
+	public AgendaDefinition getSubAgenda() {
 		return this.subAgenda; 
 	}
 
@@ -186,7 +186,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
         private String subAgendaId;
         
         private Rule.Builder rule;
-        private Agenda.Builder subAgenda;
+        private AgendaDefinition.Builder subAgenda;
         
         private AgendaItem.Builder nextTrue;
         private AgendaItem.Builder nextFalse;
@@ -218,7 +218,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
         		builder.setRule(Rule.Builder.create( contract.getRule() ));
         	}
         	if (contract.getSubAgenda() != null){
-        		builder.setSubAgenda( Agenda.Builder.create( contract.getSubAgenda()));
+        		builder.setSubAgenda( AgendaDefinition.Builder.create( contract.getSubAgenda()));
         	}
         	if (contract.getNextTrue() != null){
         		builder.setNextTrue( AgendaItem.Builder.create( contract.getNextTrue()));
@@ -296,7 +296,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 			this.rule = rule;
 		}
 
-		public void setSubAgenda(Agenda.Builder subAgenda) {
+		public void setSubAgenda(AgendaDefinition.Builder subAgenda) {
 			this.subAgenda = subAgenda;
 		}
 
@@ -350,7 +350,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 		}
 
 		@Override
-		public Agenda.Builder getSubAgenda() {
+		public AgendaDefinition.Builder getSubAgenda() {
 			return subAgenda;
 		}
 

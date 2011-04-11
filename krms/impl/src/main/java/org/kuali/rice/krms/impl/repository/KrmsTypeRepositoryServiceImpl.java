@@ -22,7 +22,6 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.KrmsType;
 import org.kuali.rice.krms.api.repository.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService;
-import org.kuali.rice.krms.api.repository.Proposition;
 
 import java.util.*;
 

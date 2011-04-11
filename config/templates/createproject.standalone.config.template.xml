@@ -5,6 +5,7 @@
 	<param name="app.context.name">${app.code}-${environment}</param>
 	<param name="production.environment.code">PRD</param>
 	<param name="http.port">8082</param>
+	${SAMPLEAPP_PARAM}
 
 	<!-- configure the rice standalone server url -->
 	<param name="rice.url">http://localhost:8080/kr-dev</param>

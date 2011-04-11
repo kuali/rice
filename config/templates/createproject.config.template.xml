@@ -4,6 +4,8 @@
 	<param name="app.code">${PROJECT_NAME}</param>
 	<param name="app.context.name">${app.code}-${environment}</param>
 	<param name="production.environment.code">PRD</param>
+	<param name="http.port">8082</param>
+	${SAMPLEAPP_PARAM}
 
 	<!-- Misc parameters -->
 	<param name="institution">iu</param>

@@ -45,8 +45,9 @@ TEMPLATE_BINDING = [
 	"\${APP_NAMESPACE}":projectNameUpper,
 	"\${RICE_VERSION}":riceVersion,
 	"\${USER_HOME}":System.getProperty('user.home'),
-	"\${bootstrap.spring.file}":"SpringBeans.xml"
-] 
+	"\${bootstrap.spring.file}":"SpringBeans.xml",
+	"\${SAMPLEAPP_PARAM}": SAMPLEAPP ? "<param name=\"portal.show.sample.app\">true</param>" : ""
+]
 println warningtext()
 
 input = new BufferedReader(new InputStreamReader(System.in))
@@ -386,7 +387,7 @@ def instructionstext() {
 6. Start the application using the eclipse launch configuration.
    In the eclipse Run menu, choose 'Run...' and select the
    configuration named 'Launch Web App'
-7. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.jsp
+7. Open a brower to http://localhost:8082/${PROJECT_NAME}-dev/index.jsp
 
    
    These instructions can also be found in the instructions.txt file

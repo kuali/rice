@@ -23,6 +23,4 @@
 	<param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
 	<param name="config.location">classpath:META-INF/common-config-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
-
-    <param name="portal.show.sample.app">true</param>
 </config>

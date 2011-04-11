@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -23,7 +24,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * Instances of RuleAttribute can be (un)marshalled to and from XML.
  *
  */
-@XmlRootElement(name = RuleAttribute.Constants.ROOT_ELEMENT_NAME, namespace = RuleAttribute.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = RuleAttribute.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RuleAttribute.Constants.TYPE_NAME, propOrder = {
 		RuleAttribute.Elements.ID,
@@ -31,25 +32,25 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		RuleAttribute.Elements.ATTR_DEFN_ID,
 		RuleAttribute.Elements.VALUE,
 		RuleAttribute.Elements.ATTR_DEFN,
-		"_elements"
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RuleAttribute implements RuleAttributeContract, ModelObjectComplete{		
 	private static final long serialVersionUID = 2988399046412505534L;
 
-	@XmlElement(name = Elements.ID, required=true, namespace = RuleAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true)
 	private String id;
-	@XmlElement(name = Elements.RULE_ID, required=true, namespace = RuleAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.RULE_ID, required=true)
 	private String ruleId;
-	@XmlElement(name = Elements.ATTR_DEFN_ID, required=true, namespace = RuleAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ATTR_DEFN_ID, required=true)
 	private String attributeDefinitionId;
-	@XmlElement(name = Elements.VALUE, required=true, namespace = RuleAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.VALUE, required=true)
 	private String value;
-	@XmlElement(name = Elements.ATTR_DEFN, required=false, namespace = RuleAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ATTR_DEFN, required=false)
 	private KrmsAttributeDefinition attributeDefinition;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -246,10 +247,9 @@ public final class RuleAttribute implements RuleAttributeContract, ModelObjectCo
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "RuleAttribute";
 		final static String TYPE_NAME = "RuleAttributeType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**

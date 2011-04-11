@@ -1,7 +1,5 @@
 package org.kuali.rice.krms.api.repository;
 
-import java.util.List;
-
 public interface ActionAttributeContract {
 	/**
 	 * This is the ID for the ActionAttribute 
@@ -39,6 +37,13 @@ public interface ActionAttributeContract {
 	 * @return the value of the AAttribute
 	 */
 	public String getValue();
+
+	/**
+	 * This is the id of the action type of the attribute
+	 * 
+	 * @return the action type id of the Attribute
+	 */
+	public String getActionTypeId();
 
 	/**
 	 * This is the definition of the attribute

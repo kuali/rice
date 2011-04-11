@@ -2,7 +2,6 @@ package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -28,7 +28,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  *
  * @see ActionContract
  */
-@XmlRootElement(name = Action.Constants.ROOT_ELEMENT_NAME, namespace = Action.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = Action.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Action.Constants.TYPE_NAME, propOrder = {
 		Action.Elements.ID,
@@ -36,28 +36,34 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		Action.Elements.NAMESPACE,
 		Action.Elements.DESC,
 		Action.Elements.TYPE_ID,
+		Action.Elements.RULE_ID,
+		Action.Elements.SEQUENCE_NUMBER,
 		Action.Elements.ATTRIBUTES,
-		"_elements"
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Action implements ActionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.ID, required=true, namespace = Action.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true)
 	private String actionId;
-	@XmlElement(name = Elements.NAME, required=true, namespace = Action.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAME, required=true)
 	private String name;
-	@XmlElement(name = Elements.NAMESPACE, required=true, namespace = Action.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.NAMESPACE, required=true)
 	private String namespace;
-	@XmlElement(name = Elements.DESC, required=true, namespace = Action.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.DESC, required=true)
 	private String description;
-	@XmlElement(name = Elements.TYPE_ID, required=true, namespace = Action.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
-	@XmlElement(name = Elements.ATTRIBUTES, required=false, namespace = Action.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.RULE_ID, required=true)
+	private String ruleId;
+	@XmlElement(name = Elements.SEQUENCE_NUMBER, required=true)
+	private Integer sequenceNumber;
+	@XmlElement(name = Elements.ATTRIBUTES, required=false)
 	private List<ActionAttribute> attributes;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	
 	 /** 
@@ -70,6 +76,8 @@ public final class Action implements ActionContract, ModelObjectComplete{
     	this.namespace = null;
     	this.description = null;
     	this.typeId = null;
+    	this.ruleId = null;
+    	this.sequenceNumber = null;
     	this.attributes = null;
     }
     
@@ -85,6 +93,8 @@ public final class Action implements ActionContract, ModelObjectComplete{
         this.namespace = builder.getNamespace();
         this.description = builder.getDescription();
         this.typeId = builder.getTypeId();
+        this.ruleId = builder.getRuleId();
+        this.sequenceNumber = builder.getSequenceNumber();
         List<ActionAttribute> attrList = new ArrayList<ActionAttribute>();
         for (ActionAttribute.Builder b : builder.attributes){
         	attrList.add(b.build());
@@ -118,6 +128,16 @@ public final class Action implements ActionContract, ModelObjectComplete{
 	}
 
 	@Override
+	public String getRuleId() {
+		return this.ruleId;
+	}
+
+	@Override
+	public Integer getSequenceNumber() {
+		return this.sequenceNumber;
+	}
+
+	@Override
 	public List<ActionAttribute> getAttributes() {
 		return this.attributes; 
 	}
@@ -126,22 +146,27 @@ public final class Action implements ActionContract, ModelObjectComplete{
      * This builder is used to construct instances of KRMS Repository Action.  It enforces the constraints of the {@link ActionContract}.
      */
     public static class Builder implements ActionContract, ModelBuilder, Serializable {
-		
+        private static final long serialVersionUID = -6773634512570180267L;
+
         private String actionId;
         private String name;
         private String namespace;
         private String description;
         private String typeId;
+        private String ruleId;
+        private Integer sequenceNumber;
         private List<ActionAttribute.Builder> attributes;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String actionId, String name, String namespace, String typeId) {
+        private Builder(String actionId, String name, String namespace, String typeId, String ruleId, Integer sequenceNumber) {
             setActionId(actionId);
             setName(name);
             setNamespace(namespace);
             setTypeId(typeId);
+            setRuleId(ruleId);
+            setSequenceNumber(sequenceNumber);
         }
         
         public Builder description (String description){
@@ -153,8 +178,8 @@ public final class Action implements ActionContract, ModelObjectComplete{
         	return this;
         }
  
-        public static Builder create(String actionId, String name, String namespace, String typeId){
-        	return new Builder(actionId, name, namespace, typeId);
+        public static Builder create(String actionId, String name, String namespace, String typeId, String ruleId, Integer sequenceNumber){
+        	return new Builder(actionId, name, namespace, typeId, ruleId, sequenceNumber);
         }
         /**
          * Creates a builder by populating it with data from the given {@link ActionContract}.
@@ -174,7 +199,8 @@ public final class Action implements ActionContract, ModelObjectComplete{
         		}
         	}
             Builder builder =  new Builder(contract.getActionId(), contract.getName(),
-            		contract.getNamespace(), contract.getTypeId())
+            		contract.getNamespace(), contract.getTypeId(), contract.getRuleId(),
+            		contract.getSequenceNumber())
             			.description(contract.getDescription())
             			.attributes(attrBuilderList);
             return builder;
@@ -222,6 +248,20 @@ public final class Action implements ActionContract, ModelObjectComplete{
 			this.typeId = typeId;
 		}
 		
+		public void setRuleId(String ruleId) {
+			if (StringUtils.isBlank(ruleId)) {
+	                throw new IllegalArgumentException("rule id is blank");
+			}
+			this.ruleId = ruleId;
+		}
+		
+		public void setSequenceNumber(Integer sequenceNumber) {
+			if (sequenceNumber == null) {
+	                throw new IllegalArgumentException("sequence number is null");
+			}
+			this.sequenceNumber = sequenceNumber;
+		}
+		
 		public void setAttributes(List<ActionAttribute.Builder> attributes){
 			if (attributes == null){
 				this.attributes = Collections.unmodifiableList(new ArrayList<ActionAttribute.Builder>());
@@ -253,6 +293,16 @@ public final class Action implements ActionContract, ModelObjectComplete{
 		@Override
 		public String getTypeId() {
 			return typeId;
+		}
+
+		@Override
+		public String getRuleId() {
+			return ruleId;
+		}
+
+		@Override
+		public Integer getSequenceNumber() {
+			return sequenceNumber;
 		}
 
 		@Override
@@ -290,10 +340,9 @@ public final class Action implements ActionContract, ModelObjectComplete{
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "Action";
 		final static String TYPE_NAME = "ActionType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**
@@ -306,6 +355,8 @@ public final class Action implements ActionContract, ModelObjectComplete{
 		final static String NAMESPACE = "namespace";
 		final static String DESC = "description";
 		final static String TYPE_ID = "typeId";
+		final static String RULE_ID = "ruleId";
+		final static String SEQUENCE_NUMBER = "sequenceNumber";
 		final static String ATTRIBUTES = "attribute";
 	}
 

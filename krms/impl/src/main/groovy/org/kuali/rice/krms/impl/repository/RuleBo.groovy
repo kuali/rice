@@ -2,6 +2,7 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
+import org.kuali.rice.krms.api.repository.Action
 import org.kuali.rice.krms.api.repository.Rule
 import org.kuali.rice.krms.api.repository.RuleContract
 import org.kuali.rice.krms.api.repository.RuleAttribute
@@ -14,12 +15,10 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleContrac
 	def String name
 	def String typeId
 	def String propId
-	def String actionId
 
-	def PropositionBo proposition;
+	def PropositionBo proposition
+	def List<Action> actions	
 	def List<RuleAttributeBo> attributes
-	def ActionBo action
-	
 	
 	/**
 	* Converts a mutable bo to it's immutable counterpart
@@ -44,14 +43,15 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleContrac
 	   bo.namespace = im.namespace
 	   bo.name = im.name
 	   bo.typeId = im.typeId
-	   bo.actionId = im.actionId
 	   bo.propId = im.propId
 	   bo.attributes = new ArrayList<RuleAttributeBo>()
 	   for (attr in im.attributes){
 		   bo.attributes.add ( RuleAttributeBo.from(attr) )
 	   }
-	   bo.
-	   bo.action = ActionBo.from(im.action)
+	   bo.actions = new ArrayList<ActionBo>()
+	   for (action in im.actions){
+		   bo.actions.add( ActionBo.from(action) )
+	   }
 	   return bo
    }
  
@@ -59,7 +59,4 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleContrac
 	   return proposition
    }
    
-   public ActionBo getAction(){
-	   return action
-   }
 } 

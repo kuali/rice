@@ -12,6 +12,7 @@ public class ActionAttributeBo extends PersistableBusinessObjectBase implements 
 	def String actionId
 	def String attributeDefinitionId
 	def String value
+	def String actionTypeId
 	def KrmsAttributeDefinition attributeDefinition
 	
 	/**
@@ -37,6 +38,7 @@ public class ActionAttributeBo extends PersistableBusinessObjectBase implements 
 	   bo.actionId = im.actionId
 	   bo.attributeDefinitionId = im.attributeDefinitionId
 	   bo.value = im.value
+	   bo.actionTypeId = im.actionTypeId
 	   bo.attributeDefinition = KrmsAttributeDefinitionBo.from(im.attributeDefinition)
 	   return bo
    }

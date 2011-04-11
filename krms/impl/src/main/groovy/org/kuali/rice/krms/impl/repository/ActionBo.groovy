@@ -12,6 +12,8 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionCon
 	def String name
 	def String description
 	def String typeId
+	def String ruleId
+	def Integer sequenceNumber
 	def List<ActionAttributeBo> attributes
 	
 	
@@ -39,6 +41,7 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionCon
 	   bo.name = im.name
 	   bo.typeId = im.typeId
 	   bo.description = im.description
+	   bo.ruleId = im.ruleId
 	   bo.attributes = new ArrayList<ActionAttributeBo>()
 	   for (attr in im.attributes){
 		   bo.attributes.add (ActionAttributeBo.from(attr))

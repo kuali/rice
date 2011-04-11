@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -23,33 +24,36 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * Instances of ActionAttribute can be (un)marshalled to and from XML.
  *
  */
-@XmlRootElement(name = ActionAttribute.Constants.ROOT_ELEMENT_NAME, namespace = ActionAttribute.Constants.KRMSNAMESPACE)
+@XmlRootElement(name = ActionAttribute.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ActionAttribute.Constants.TYPE_NAME, propOrder = {
 		ActionAttribute.Elements.ID,
 		ActionAttribute.Elements.ACTION_ID,
 		ActionAttribute.Elements.ATTR_DEFN_ID,
 		ActionAttribute.Elements.VALUE,
+		ActionAttribute.Elements.ACTION_TYPE_ID,
 		ActionAttribute.Elements.ATTR_DEFN,
-		"_elements"
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class ActionAttribute implements ActionAttributeContract, ModelObjectComplete{	
-	private static final long serialVersionUID = 3861710013942660403L;
+	private static final long serialVersionUID = -6126133049308968098L;
 	
-	@XmlElement(name = Elements.ID, required=true, namespace = ActionAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ID, required=true)
 	private String id;
-	@XmlElement(name = Elements.ACTION_ID, required=true, namespace = ActionAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ACTION_ID, required=true)
 	private String actionId;
-	@XmlElement(name = Elements.ATTR_DEFN_ID, required=true, namespace = ActionAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ATTR_DEFN_ID, required=true)
 	private String attributeDefinitionId;
-	@XmlElement(name = Elements.VALUE, required=true, namespace = ActionAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.VALUE, required=false)
 	private String value;
-	@XmlElement(name = Elements.ATTR_DEFN, required=false, namespace = ActionAttribute.Constants.KRMSNAMESPACE)
+	@XmlElement(name = Elements.ACTION_TYPE_ID, required=true)
+	private String actionTypeId;
+	@XmlElement(name = Elements.ATTR_DEFN, required=false)
 	private KrmsAttributeDefinition attributeDefinition;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
@@ -59,6 +63,7 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
     	this.actionId = null;
     	this.attributeDefinitionId = null;
     	this.value = null;
+    	this.actionTypeId = null;
     	this.attributeDefinition = null;
     }
     
@@ -73,6 +78,7 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
         this.actionId = builder.getActionId();
         this.attributeDefinitionId = builder.getAttributeDefinitionId();
         this.value = builder.getValue();
+        this.actionTypeId = builder.getActionTypeId();
         this.attributeDefinition = builder.getAttributeDefinition().build();
     }
     
@@ -97,6 +103,11 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
 	}
 	
 	@Override
+	public String getActionTypeId() {
+		return this.actionTypeId;
+	}
+	
+	@Override
 	public KrmsAttributeDefinition getAttributeDefinition() {
 		return this.attributeDefinition;
 	}
@@ -104,23 +115,25 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
 	/**
      * This builder is used to construct instances of ActionAttribute.  
      */
-    public static class Builder implements ActionAttributeContract, ModelBuilder, Serializable {
-		private static final long serialVersionUID = 7460424268906859210L;
-		
+    public static class Builder implements ActionAttributeContract, ModelBuilder, Serializable {		
+		private static final long serialVersionUID = 5799994031051731535L;
+
 		private String id;
         private String actionId;
         private String attributeDefinitionId;
         private String value;
+        private String actionTypeId;
         private KrmsAttributeDefinition.Builder attributeDefinition;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String id, String actionId, String attributeDefinitionId, String value) {
+        private Builder(String id, String actionId, String attributeDefinitionId, String actionTypeId, String value) {
             setId(id);
             setActionId(actionId);
             setAttributeDefinitionId(attributeDefinitionId);
             setValue(value);
+            setActionTypeId(actionTypeId);
         }
 
         public Builder attributeDefinition(KrmsAttributeDefinition.Builder attributeDefinition){
@@ -138,8 +151,8 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
          * @return an instance of the builder with the fields already populated
          * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
          */
-        public static Builder create(String id, String actionId, String attributeDefinitionId, String value) {
-            return new Builder(id, actionId, attributeDefinitionId, value);
+        public static Builder create(String id, String actionId, String attributeDefinitionId, String actionTypeId, String value) {
+            return new Builder(id, actionId, attributeDefinitionId, actionTypeId, value);
         }
         
         public static Builder create(ActionAttributeContract contract){
@@ -149,7 +162,8 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
         	Builder builder = new Builder(contract.getId(), 
         			contract.getActionId(),
         			contract.getAttributeDefinitionId(),
-        			contract.getValue())
+        			contract.getValue(),
+        			contract.getActionTypeId())
         			.attributeDefinition(KrmsAttributeDefinition.Builder
         					.create(contract.getAttributeDefinition()));
         	return builder;
@@ -186,6 +200,10 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
 			this.value = value;
 		}
 		
+		public void setActionTypeId(String actionTypeId) {
+			this.actionTypeId = actionTypeId;
+		}
+		
 		public void setAttributeDefinition(KrmsAttributeDefinition.Builder attributeDefinition) {
 			this.attributeDefinition = attributeDefinition;
 			//TODO: verify that the attributeDefinitionID field matches the id field in the builder
@@ -209,6 +227,11 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
 		@Override
 		public String getValue() {
 			return value;
+		}
+
+		@Override
+		public String getActionTypeId() {
+			return actionTypeId;
 		}
 
 		@Override
@@ -246,10 +269,9 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String KRMSNAMESPACE = "http://rice.kuali.org/schema/krms";		
 		final static String ROOT_ELEMENT_NAME = "ActionAttribute";
 		final static String TYPE_NAME = "ActionAttributeType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**
@@ -261,6 +283,7 @@ public final class ActionAttribute implements ActionAttributeContract, ModelObje
 		final static String ACTION_ID = "actionId";
 		final static String ATTR_DEFN_ID = "attributeDefinitionId";
 		final static String VALUE = "value";
+		final static String ACTION_TYPE_ID = "actionTypeId";
 		final static String ATTR_DEFN = "attributeDefinition";
 	}
 }

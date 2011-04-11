@@ -45,6 +45,21 @@ public interface ActionContract {
 	 * @return id for KRMS type related of the Action
 	 */
 	public String getTypeId();
+	
+	/**
+	 * This method returns the id of the rule associated with the action
+	 * 
+	 * @return id for the Rule associated with the action.
+	 */
+	public String getRuleId();
+	
+	/**
+	 * This method returns the id of the rule associated with the action
+	 * 
+	 * @return id for the Rule associated with the action.
+	 */
+	public Integer getSequenceNumber();
+	
 	/**
 	 * This method returns a list of attributes associated with the 
 	 * Action

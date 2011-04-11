@@ -44,9 +44,8 @@ public interface RuleContract {
 	
 	public PropositionContract getProposition();
 	
-	public String getActionId();
-	
-	public ActionContract getAction();
+	public List<? extends ActionContract> getActions();
+
 	/**
 	 * This method returns a list of attributes associated with the 
 	 * Rule

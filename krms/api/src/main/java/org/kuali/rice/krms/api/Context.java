@@ -3,7 +3,7 @@ package org.kuali.rice.krms.api;
 import java.util.List;
 
 /**
- * The context represents the area(s) of an organization’s activity where a
+ * The context represents the area(s) of an organization's activity where a
  * rule applies and where the terms used to create the rule are defined and relevant.
  * An equivalent phrase often used is business domain. Rules only make sense in a
  * particular context and because they must be evaluated against the information in

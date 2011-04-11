@@ -27,7 +27,8 @@ public interface ContextDefinitionContract extends Versioned {
 
 	/**
 	 * Returns the id of the context definition.  This id should be unique amongst
-	 * the set of all context definitions.
+	 * the set of all context definitions.  If the id is null, that usually means
+	 * this context definition has not yet been assigned an id.
 	 * 
 	 * @return the id of the context definition
 	 */
@@ -36,24 +37,26 @@ public interface ContextDefinitionContract extends Versioned {
 	/**
 	 * Returns the namespace code of the context definition.  The combination of
 	 * namespaceCode and name represent a unique business key for the context
-	 * definition.
+	 * definition.  The namespace code should never be null or blank.
 	 * 
-	 * @return the namespace code of the context definition
+	 * @return the namespace code of the context definition, should never be null or blank
 	 */
 	String getNamespaceCode();
 	
 	/**
 	 * Returns the name of the context definition.  The combination of name and namespaceCode
-	 * represent a unique business key for the context definition.
+	 * represent a unique business key for the context definition.  The name should never be
+	 * null or blank.
 	 * 
-	 * @return the name of the context definition
+	 * @return the name of the context definition, should never be null or blank
 	 */
 	String getName();
 	
 	/**
-	 * Returns the type id for the context definition.
+	 * Returns the type id for the context definition.  If the type id is null, that means
+	 * this context definition is of the default type.
 	 * 
-	 * @return the type id for the context definition
+	 * @return the type id for the context definition, or null if this context definition is of the default type
 	 */
 	String getTypeId();
 	

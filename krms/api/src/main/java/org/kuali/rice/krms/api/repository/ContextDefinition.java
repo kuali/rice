@@ -17,8 +17,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.style.StyleContract;
-import org.kuali.rice.core.api.style.Style.Constants;
 import org.kuali.rice.krms.api.Context;
 import org.w3c.dom.Element;
 
@@ -258,8 +256,8 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
          * builder.
          * 
          * <p>In general, this value should not be manually set on the builder,
-         * but rather copied from an existing {@link StyleContract} when
-         * invoking {@link Builder#create(StyleContract)}.
+         * but rather copied from an existing {@link ContextDefinitionContract} when
+         * invoking {@link Builder#create(ContextDefinitionContract)}.
          * 
          * @param versionNumber the version number to set
          */

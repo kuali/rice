@@ -26,9 +26,9 @@ import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.edl.impl.UserAction;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -207,7 +207,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 	    boolean editable = false;
 	    editable = listContainsItems(actions, UserAction.EDITABLE_ACTIONS);
 	    // reset editable flag to true if edoclite specifies <param name="alwaysEditable">true</param>
-	    Document edlDom = KEWServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
+	    Document edlDom = EdlServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
 	    // use xpath to check for attribute value on Config param element.
 	    XPath xpath = XPathFactory.newInstance().newXPath();
 	    String xpathExpression = "//config/param[@name='alwaysEditable']"; 

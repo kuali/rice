@@ -57,6 +57,7 @@ import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.mail.EmailStyleHelper;
@@ -309,7 +310,7 @@ public class NoteConfigComponent implements EDLModelComponent {
             // add ability to send emails when a note is saved. 
             boolean sendEmailOnNoteSave = false;
 			// Check if edoclite specifies <param name="sendEmailOnNoteSave">
-			Document edlDom = KEWServiceLocator.getEDocLiteService()
+			Document edlDom = EdlServiceLocator.getEDocLiteService()
 					.getDefinitionXml(edlContext.getEdocLiteAssociation());
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			String xpathExpression = "//config/param[@name='sendEmailOnNoteSave']";

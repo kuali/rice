@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -50,7 +50,7 @@ public class EDLServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		try {
-			KEWServiceLocator.getEDocLiteService().initEDLGlobalConfig();
+			EdlServiceLocator.getEDocLiteService().initEDLGlobalConfig();
 		} catch (Exception e) {
 			LOG.error("Error initializing EDL", e);
 		}
@@ -87,9 +87,9 @@ public class EDLServlet extends HttpServlet {
 		        	}
 		        }
 		        requestParser.setAttribute("docId", documentId);
-		        edlController = KEWServiceLocator.getEDocLiteService().getEDLController(new Long(documentId));
+		        edlController = EdlServiceLocator.getEDocLiteService().getEDLController(new Long(documentId));
 		    } else {
-		        edlController = KEWServiceLocator.getEDocLiteService().getEDLController(edlName);
+		        edlController = EdlServiceLocator.getEDocLiteService().getEDLController(edlName);
 		    }
 
 		    //TODO Fix this in a better way (reworking the command structure maybe?)

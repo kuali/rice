@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.xml.export;
+package org.kuali.rice.edl.impl.xml.export;
 
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_ACTIVE;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_ASSOCIATION;
@@ -44,8 +44,7 @@ import org.kuali.rice.core.util.XmlRenderer;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 /**
  * Exports EDocLite definitions to XML.
  *
@@ -65,7 +64,7 @@ public class EDocLiteXmlExporter implements XmlExporter {
 	}
 	
 	public Element export(ExportDataSet exportDataSet) {
-		KewExportDataSet dataSet = KewExportDataSet.fromExportDataSet(exportDataSet);
+		EdlExportDataSet dataSet = EdlExportDataSet.fromExportDataSet(exportDataSet);
 		if (!dataSet.getEdocLites().isEmpty()) {
 			Element rootElement = renderer.renderElement(null, EDL_EDOCLITE);
 			rootElement.setAttribute(SCHEMA_LOCATION_ATTR, EDL_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
@@ -89,7 +88,7 @@ public class EDocLiteXmlExporter implements XmlExporter {
 	private void exportEdlDefinitions(Element parentEl, EDocLiteAssociation edl) {
 
 		try {
-			EDocLiteService edlService = KEWServiceLocator.getEDocLiteService();
+			EDocLiteService edlService = EdlServiceLocator.getEDocLiteService();
 			if (edl.getDefinition() != null) {  //this probably shouldn't be supported on the entry side...
 				EDocLiteDefinition def = edlService.getEDocLiteDefinition(edl.getDefinition());
 				if (def == null) {

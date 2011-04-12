@@ -21,7 +21,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -54,7 +53,6 @@ public class KewExportDataSet {
 	private List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
 	private List<RuleDelegation> ruleDelegations = new ArrayList<RuleDelegation>();
 	private List<HelpEntry> help = new ArrayList<HelpEntry>();
-	private List<EDocLiteAssociation> edocLites = new ArrayList<EDocLiteAssociation>();
 
 	public List<DocumentType> getDocumentTypes() {
 		return documentTypes;
@@ -74,10 +72,6 @@ public class KewExportDataSet {
 
 	public List<RuleTemplate> getRuleTemplates() {
 		return ruleTemplates;
-	}
-
-	public List<EDocLiteAssociation> getEdocLites() {
-		return edocLites;
 	}
 
 	public List<Group> getGroups() {
@@ -113,9 +107,6 @@ public class KewExportDataSet {
 		}
 		if (help != null && !help.isEmpty()) {
 			exportDataSet.addDataSet(HELP, help);
-		}
-		if (edocLites != null && !edocLites.isEmpty()) {
-			exportDataSet.addDataSet(EDOCLITES, edocLites);
 		}
 	}
 	
@@ -155,10 +146,6 @@ public class KewExportDataSet {
 		List<HelpEntry> help = (List<HelpEntry>)exportDataSet.getDataSets().get(HELP);
 		if (help != null) {
 			kewExportDataSet.getHelp().addAll(help);
-		}
-		List<EDocLiteAssociation> edocLites = (List<EDocLiteAssociation>)exportDataSet.getDataSets().get(EDOCLITES);
-		if (edocLites != null) {
-			kewExportDataSet.getEdocLites().addAll(edocLites);
 		}
 		
 		return kewExportDataSet;

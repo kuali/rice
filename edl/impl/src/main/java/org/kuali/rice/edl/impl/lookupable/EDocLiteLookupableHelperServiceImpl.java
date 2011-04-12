@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kew.lookupable;
+package org.kuali.rice.edl.impl.lookupable;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.edl.impl.UserAction;

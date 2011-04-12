@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
-import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -78,25 +77,22 @@ public class DataExporter implements Exporter {
 	protected ExportDataSet buildExportDataSet(Class<?> dataObjectClass,
 			List<? extends Object> dataObjects) {
 		KewExportDataSet dataSet = new KewExportDataSet();
-
-		for (Object dataObject : dataObjects) {
-			if (dataObjectClass.equals(RuleAttribute.class)) {
-				dataSet.getRuleAttributes().add((RuleAttribute) dataObject);
-			} else if (dataObjectClass.equals(RuleTemplate.class)) {
-				dataSet.getRuleTemplates().add((RuleTemplate) dataObject);
-			} else if (dataObjectClass.equals(DocumentType.class)) {
-				dataSet.getDocumentTypes().add((DocumentType) dataObject);
-			} else if (dataObjectClass.equals(EDocLiteAssociation.class)) {
-				dataSet.getEdocLites().add((EDocLiteAssociation) dataObject);
-			} else if (dataObjectClass.equals(HelpEntry.class)) {
-				dataSet.getHelp().add((HelpEntry) dataObject);
-			} else if (dataObjectClass.equals(RuleBaseValues.class)) {
-				dataSet.getRules().add((RuleBaseValues) dataObject);
-			} else if (dataObjectClass.equals(RuleDelegation.class)) {
-				dataSet.getRuleDelegations().add((RuleDelegation) dataObject);
-			} else if (dataObjectClass.equals(GroupImpl.class)) {
-				dataSet.getGroups().add((GroupImpl) dataObject);
-			}
+		for (BusinessObject businessObject : businessObjects) {
+			if (businessObjectClass.equals(RuleAttribute.class)) {
+				dataSet.getRuleAttributes().add((RuleAttribute)businessObject);
+			} else if (businessObjectClass.equals(RuleTemplate.class)) {
+				dataSet.getRuleTemplates().add((RuleTemplate)businessObject);
+			} else if (businessObjectClass.equals(DocumentType.class)) {
+				dataSet.getDocumentTypes().add((DocumentType)businessObject);
+			} else if (businessObjectClass.equals(HelpEntry.class)) {
+				dataSet.getHelp().add((HelpEntry)businessObject);
+			} else if (businessObjectClass.equals(RuleBaseValues.class)) {
+				dataSet.getRules().add((RuleBaseValues)businessObject);
+			} else if (businessObjectClass.equals(RuleDelegation.class)) {
+				dataSet.getRuleDelegations().add((RuleDelegation)businessObject);
+			} else if (businessObjectClass.equals(GroupImpl.class)) {
+				dataSet.getGroups().add((GroupImpl)businessObject);
+			}    
 		}
 
 		ExportDataSet exportDataSet = new ExportDataSet();

@@ -23,12 +23,12 @@ import javax.xml.xpath.XPathConstants;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.RequestParser;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -60,7 +60,7 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 			WorkflowDocument document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
 			//			 clear attribute content so that duplicate attribute values are not added during submission of a new EDL form values version
 			document.clearAttributeContent();
-			Document edlDef = KEWServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
+			Document edlDef = EdlServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
 			XPath xpath = XPathHelper.newXPath(edlDef);
 			NodeList attributeNodes = (NodeList)xpath.evaluate("/edl/attributes/attribute", edlDef, XPathConstants.NODESET);
 			for (int index = 0; index < attributeNodes.getLength(); index++) {

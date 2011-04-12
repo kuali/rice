@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.edl.framework.extract.ExtractService;
-import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.ActionRegistry;
@@ -184,8 +183,6 @@ public final class KEWServiceLocator {
     public static final String SIMULATION_ENGINE = "simulationEngine";
 	
 	public static final String BLANKET_APPROVE_ENGINE_FACTORY = "blanketApproveEngineFactory";
-
-	public static final String EDOCLITE_SERVICE = "enEDocLiteService";
 
 	public static final String ACTION_LIST_EMAIL_SERVICE = "enActionListEmailService";
 
@@ -352,10 +349,6 @@ public final class KEWServiceLocator {
 
 	public static BlanketApproveEngineFactory getBlanketApproveEngineFactory() {
 		return (BlanketApproveEngineFactory) getBean(BLANKET_APPROVE_ENGINE_FACTORY);
-	}
-	
-	public static EDocLiteService getEDocLiteService() {
-		return (EDocLiteService) getBean(EDOCLITE_SERVICE);
 	}
 
 	public static WorkflowDocumentExceptionRoutingService getExceptionRoutingService() {

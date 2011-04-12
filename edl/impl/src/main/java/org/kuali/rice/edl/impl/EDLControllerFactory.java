@@ -21,6 +21,7 @@ import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -165,7 +166,7 @@ public class EDLControllerFactory {
 	}
 
 	private static EDocLiteService getEDLService() {
-		return KEWServiceLocator.getEDocLiteService();
+		return EdlServiceLocator.getEDocLiteService();
 	}
 
 	private static Document getDefaultDOM(EDocLiteAssociation edlAssociation) throws Exception {

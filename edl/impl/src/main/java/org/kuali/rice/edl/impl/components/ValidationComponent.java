@@ -27,9 +27,9 @@ import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -56,7 +56,7 @@ public class ValidationComponent extends SimpleWorkflowEDLConfigComponent implem
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 		if (edlContext.getUserAction().isValidatableAction()) {
 			try {
-				Document edlDef = KEWServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
+				Document edlDef = EdlServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
 				List<EDLValidation> validations = parseValidations(edlDef);
 				if (!validations.isEmpty()) {
 					XPath xpath = XPathHelper.newXPath(dom);

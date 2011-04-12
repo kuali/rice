@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.xml;
+package org.kuali.rice.edl.impl.xml;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -38,6 +38,7 @@ import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.w3c.dom.Document;
@@ -252,7 +253,7 @@ public class EDocLiteXmlParser {
     }
 
     private static EDocLiteService getEDLService() {
-    	return KEWServiceLocator.getEDocLiteService();
+    	return EdlServiceLocator.getEDocLiteService();
     }
     
     private static StyleService getStyleService() {

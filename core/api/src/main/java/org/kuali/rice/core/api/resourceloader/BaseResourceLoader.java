@@ -19,8 +19,6 @@ package org.kuali.rice.core.api.resourceloader;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 

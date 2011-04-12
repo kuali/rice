@@ -832,3 +832,12 @@
 }
 
 .ui-datepicker-trigger{ cursor: pointer;}
+
+/*	
+*	Watermark plugin for jQuery
+*	Version: 3.0.6
+*	Dual licensed under the MIT or GPL Version 2 licenses.
+*/
+/* Water mark text color. If it's not set, textarea displays in black instead of default gray watermark color. 
+*/
+.watermark {color:#999}

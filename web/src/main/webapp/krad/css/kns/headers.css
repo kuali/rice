@@ -105,14 +105,16 @@ div.grouping-header-expandable h3 img {
 	padding-bottom: 60px;
 }
 
-#viewpage_div .grouping-header-expandable h4 {
+#viewpage_div h4 {
 	font-size: 0.9em;
 	/* [disabled]font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; */
 	background: #d6d6d6;
 	padding: 6px;
+	margin: 0px;
 	border-right: 1px solid #999;
 	border-left: 1px solid #999;
 	color: #333;
+	font-weight: bold;
 }
 
 .collection-header h4 {
@@ -126,6 +128,5 @@ div.grouping-header-expandable h3 img {
 	font-weight: bold;
 }
 
-.header-valign-middle {
-	vertical-align: middle;
+.header {
 }

@@ -3,9 +3,7 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.List;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.api.engine.Proposition;
 import org.kuali.rice.krms.api.engine.ResultEvent;
-import org.kuali.rice.krms.api.engine.Rule;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
 public class BasicRule implements Rule {

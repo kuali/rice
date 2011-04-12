@@ -11,8 +11,6 @@ import java.util.Set;
 import org.junit.Test;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
-import org.kuali.rice.krms.api.engine.Proposition;
-import org.kuali.rice.krms.api.engine.Rule;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolver;
@@ -29,8 +27,10 @@ import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.CompoundProposition;
 import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.ContextProvider;
+import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
+import org.kuali.rice.krms.framework.engine.Rule;
 
 public class ResultLoggingTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();

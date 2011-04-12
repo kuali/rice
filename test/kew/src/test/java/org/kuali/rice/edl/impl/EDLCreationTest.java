@@ -16,23 +16,20 @@
  */
 package org.kuali.rice.edl.impl;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.kuali.rice.edl.impl.EDLContext;
-import org.kuali.rice.edl.impl.EDLController;
-import org.kuali.rice.edl.impl.RequestParser;
-import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kns.UserSession;
-import org.w3c.dom.Document;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.kuali.rice.edl.impl.service.EDocLiteService;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kns.UserSession;
+import org.w3c.dom.Document;
 
 
 public class EDLCreationTest extends KEWTestCase {
@@ -117,7 +114,7 @@ public class EDLCreationTest extends KEWTestCase {
 	}
 
 	private EDocLiteService getEDLService() {
-		return (EDocLiteService)KEWServiceLocator.getEDocLiteService();
+		return EdlServiceLocator.getEDocLiteService();
 	}
 
 }

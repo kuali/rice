@@ -41,7 +41,7 @@ import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.test.BaselineTestCase;
@@ -58,7 +58,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         loadXmlFile("EDocLiteContent.xml");
         loadXmlFile("edlstyle.xml");
 
-        EDocLiteService edls = KEWServiceLocator.getEDocLiteService();
+        EDocLiteService edls = EdlServiceLocator.getEDocLiteService();
         StyleService styleService = CoreApiServiceLocator.getStyleService();
         //edls.loadXml(new FileInputStream("conf/examples/xml/EDocLiteContent.xml"));
         assertTrue("Definition not found", edls.getEDocLiteDefinitions().contains("profile"));
@@ -78,7 +78,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     }
 
     @Test public void testLoadBadDefinition() throws FileNotFoundException {
-        EDocLiteService edls = KEWServiceLocator.getEDocLiteService();
+        EDocLiteService edls = EdlServiceLocator.getEDocLiteService();
         try {
             edls.loadXml(TestUtilities.loadResource(getClass(), "BadDefinition.xml"), null);
             fail("BadDefinition was successfully parsed.");
@@ -90,7 +90,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     }
 
     @Test public void testStoreDefinition() {
-        EDocLiteService edls = KEWServiceLocator.getEDocLiteService();
+        EDocLiteService edls = EdlServiceLocator.getEDocLiteService();
         String defXml = "<edl></edl>";
         try {
             edls.saveEDocLiteDefinition(new ByteArrayInputStream(defXml.getBytes()));
@@ -106,7 +106,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     }
 
     @Test public void testStoreAssociation() {
-        EDocLiteService edls = KEWServiceLocator.getEDocLiteService();
+        EDocLiteService edls = EdlServiceLocator.getEDocLiteService();
         String assocXml = "<association></association>";
         try {
             edls.saveEDocLiteAssociation(new ByteArrayInputStream(assocXml.getBytes()));
@@ -178,7 +178,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     	assertNull("Config should not be cached initially.", config);
 
     	// fetch the edl controller which should result in caching
-		EDLController edlController = KEWServiceLocator.getEDocLiteService().getEDLController("EDocLiteDocType");
+		EDLController edlController = EdlServiceLocator.getEDocLiteService().getEDLController("EDocLiteDocType");
 		assertNotNull(edlController);
 
 		config = EDLControllerFactory.fetchConfigFromCache("profile");
@@ -198,7 +198,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     	assertNull("Config should no longer be cached.", config);
 
     	// fetch again and we should be back in action
-		edlController = KEWServiceLocator.getEDocLiteService().getEDLController("EDocLiteDocType");
+		edlController = EdlServiceLocator.getEDocLiteService().getEDLController("EDocLiteDocType");
 		assertNotNull(edlController);
 		config = EDLControllerFactory.fetchConfigFromCache("profile");
     	assertNotNull("Config should now be cached.", config);
@@ -222,9 +222,9 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
 //        assertNull("The default style template should not be cached yet.", cachedTemplates);
 
         // fetch the Templates object from the service
-        EDocLiteAssociation association = KEWServiceLocator.getEDocLiteService().getEDocLiteAssociation("EDocLiteDocType");
+        EDocLiteAssociation association = EdlServiceLocator.getEDocLiteService().getEDocLiteAssociation("EDocLiteDocType");
         assertNull("We should be using the Default style.", association.getStyle());
-        Templates templates = KEWServiceLocator.getEDocLiteService().getStyleAsTranslet(association.getStyle());
+        Templates templates = EdlServiceLocator.getEDocLiteService().getStyleAsTranslet(association.getStyle());
         assertNotNull("Templates should not be null.", templates);
 
         // the Templates should now be cached
@@ -240,7 +240,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
 //        assertNull("After re-import, the Default style Templates should no longer be cached.", cachedTemplates);
 
         // re-fetch the templates from the service and verify they are in the cache
-        Templates newTemplates = KEWServiceLocator.getEDocLiteService().getStyleAsTranslet(association.getStyle());
+        Templates newTemplates = EdlServiceLocator.getEDocLiteService().getStyleAsTranslet(association.getStyle());
         assertNotNull("Templates should not be null.", templates);
 //        cachedTemplates = new EDocLiteServiceImpl().fetchTemplatesFromCache("Default");
 //        assertNotNull("Templates should now be cached.", cachedTemplates);

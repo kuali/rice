@@ -16,18 +16,20 @@
 
 package org.kuali.rice.edl.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Map;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.w3c.dom.Element;
-
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 
 public class EDLControllerTest extends KEWTestCase {
@@ -74,7 +76,7 @@ public class EDLControllerTest extends KEWTestCase {
 	}
 
 	private EDocLiteService getEDLService() {
-		return (EDocLiteService)KEWServiceLocator.getEDocLiteService();
+		return EdlServiceLocator.getEDocLiteService();
 	}
 
 }

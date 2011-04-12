@@ -37,8 +37,8 @@ import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.edl.impl.service.EdlServiceLocator;
+import org.kuali.rice.edl.impl.xml.export.EdlExportDataSet;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -133,10 +133,10 @@ public class XmlIngestionTest extends KEWTestCase {
             //throw new RuntimeException(e);
         }
 
-        KewExportDataSet dataSet = new KewExportDataSet();
+        EdlExportDataSet dataSet = new EdlExportDataSet();
 
         //Cast this for now
-        List<EDocLiteAssociation> edla = KEWServiceLocator.getEDocLiteService().getEDocLiteAssociations();     
+        List<EDocLiteAssociation> edla = EdlServiceLocator.getEDocLiteService().getEDocLiteAssociations();     
         String style = null;
         for (EDocLiteAssociation edl : edla) {
             if (edl != null) {

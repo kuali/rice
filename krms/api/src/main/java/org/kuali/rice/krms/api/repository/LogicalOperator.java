@@ -1,15 +1,22 @@
-package org.kuali.rice.krms.api.engine;
+package org.kuali.rice.krms.api.repository;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(name = "LogicalOperatorType")
+@XmlEnum(String.class)
 public enum LogicalOperator {
 	
-	AND("&"),
-	OR("|");
+	@XmlEnumValue(value="&") AND("&"),
+	@XmlEnumValue(value="|") OR("|");
 
 	private final String opCode;
+	
 	private LogicalOperator(String op){
 		this.opCode = op;
 	}

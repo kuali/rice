@@ -26,7 +26,6 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 
 /**
  * A {@link ResourceLoader} which acts as a container for other ResourceLoaders.

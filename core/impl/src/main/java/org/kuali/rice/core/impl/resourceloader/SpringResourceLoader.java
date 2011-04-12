@@ -18,7 +18,7 @@ package org.kuali.rice.core.impl.resourceloader;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.api.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

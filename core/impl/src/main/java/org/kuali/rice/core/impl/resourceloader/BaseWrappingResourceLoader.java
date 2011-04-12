@@ -19,9 +19,9 @@ package org.kuali.rice.core.impl.resourceloader;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ServiceLocator;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
 

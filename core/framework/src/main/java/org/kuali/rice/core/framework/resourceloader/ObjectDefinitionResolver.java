@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.resourceloader;
+package org.kuali.rice.core.framework.resourceloader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -30,6 +30,7 @@ import org.kuali.rice.core.api.reflect.PropertyDefinition;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
+import org.kuali.rice.core.api.resourceloader.ResourceLoaderException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.ContextClassLoaderBinder;
 

@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.plugin;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.ResourceLoaderContainer;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoaderContainer;
 

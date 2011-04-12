@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
  *       and maps them to the param map of {@link GenericXMLRuleAttribute}, which relate directly to a set of fields defined by the
  *       XML <code>&lt;routingConfig&gt;</code> configuration.</li>
  *   <li>Application of the properties defined on the WorkflowAttributeDefinition
- *       to the actual attribute is performed in  {@link org.kuali.rice.core.api.resourceloader.ObjectDefinitionResolver#invokeProperties(Object, java.util.Collection)}</li>
+ *       to the actual attribute is performed in  {@link org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver#invokeProperties(Object, java.util.Collection)}</li>
  *   <li>These params are then used to perform one of either EITHER:
  *     <ul>
  *       <li>Replace parameters of the syntax <code>%<i>field name</i>%</code> in the doc content if doc content is

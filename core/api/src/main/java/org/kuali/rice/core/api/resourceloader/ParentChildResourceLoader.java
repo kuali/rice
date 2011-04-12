@@ -16,11 +16,11 @@
 
 package org.kuali.rice.core.api.resourceloader;
 
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import java.util.List;
 
 import javax.xml.namespace.QName;
-import java.util.List;
+
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -28,55 +28,79 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-class ParentChildResourceLoader extends BaseResourceLoader {
+class ParentChildResourceLoader implements ResourceLoader {
 
-    private ResourceLoader parent;
-    private ResourceLoader child;
+    private final ResourceLoader parent;
+    private final ResourceLoader child;
+    private QName name;
 
-    public ParentChildResourceLoader(ResourceLoader parent, ResourceLoader child) {
-	super(new QName(child.getName().toString() + " to parent " + parent.getName().toString()));
-	this.parent = parent;
-	this.child = child;
+    ParentChildResourceLoader(ResourceLoader parent, ResourceLoader child) {
+    	if (parent == null) {
+    		throw new IllegalArgumentException("parent resource loader was null");
+    	}
+    	if (child == null) {
+    		throw new IllegalArgumentException("child resource loader was null");
+    	}
+    	this.parent = parent;
+    	this.child = child;
+    	this.name = new QName(child.getName().toString() + " to parent " + parent.getName().toString());
     }
 
-    public Object getObject(ObjectDefinition definition) {
-	Object object = child.getObject(definition);
-	if (object == null) {
-	    object = parent.getObject(definition);
+	@Override
+	public <T> T getObject(ObjectDefinition definition) {
+		T object = child.getObject(definition);
+    	if (object == null) {
+    		object = parent.getObject(definition);
+    	}
+    	return object;
 	}
-	return object;
+
+	@Override
+	public <T> T getService(QName qname) {
+		T service = child.getService(qname);
+		if (service == null) {
+			service = parent.getService(qname);
+		}
+		return service;
     }
 
-    public Object getService(QName qname) {
-	Object service = child.getService(qname);
-	if (service == null) {
-	    service = parent.getService(qname);
-	}
-	return service;
-    }
-
+	/**
+	 * "Starts" this resource loader.  When started, this method will simply
+	 * invoke start on the child resource loader.  It's assumed that the
+	 * parent will be started from it's context.
+	 * 
+	 * @see org.kuali.rice.core.api.lifecycle.Lifecycle#start()
+	 */
+	@Override
     public void start() throws Exception {
-	// just start the child, it will be assumed that parent will be started from it's context
-	if (!child.isStarted()) {
-	    child.start();
+		if (!child.isStarted()) {
+			child.start();
+		}
 	}
-	super.start();
-    }
 
+	/**
+	 * Just stopes the internal child resource loader.
+	 * 
+	 * @see org.kuali.rice.core.api.lifecycle.Lifecycle#stop()
+	 */
+	@Override
     public void stop() throws Exception {
-	child.stop();
-	super.stop();
+    	if (child.isStarted()) {
+    		child.stop();
+    	}
     }
 
+	@Override
     public void addResourceLoader(ResourceLoader resourceLoader) {
-	this.child.addResourceLoader(resourceLoader);
+    	this.child.addResourceLoader(resourceLoader);
     }
 
+	@Override
     public void addResourceLoaderFirst(ResourceLoader resourceLoader) {
-	this.child.addResourceLoaderFirst(resourceLoader);
+    	this.child.addResourceLoaderFirst(resourceLoader);
     }
 
- 
+	@Override
     public ResourceLoader getResourceLoader(QName name) {
     	ResourceLoader resourceLoader = this.child.getResourceLoader(name);
     	if (resourceLoader == null && parent != null) {
@@ -86,18 +110,55 @@ class ParentChildResourceLoader extends BaseResourceLoader {
     	}
     }
   
+	@Override
     public List<QName> getResourceLoaderNames() {
-	return this.child.getResourceLoaderNames();
+		return this.child.getResourceLoaderNames();
     }
 
+	@Override
     public List<ResourceLoader> getResourceLoaders() {
-	return this.child.getResourceLoaders();
+		return this.child.getResourceLoaders();
     }
 
+	@Override
     public void removeResourceLoader(QName name) {
-	this.child.removeResourceLoader(name);
+		this.child.removeResourceLoader(name);
     }
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.core.api.lifecycle.Lifecycle#isStarted()
+	 */
+	@Override
+	public boolean isStarted() {
+		// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
+		return false;
+	}
 
+	@Override
+	public void setName(QName name) {
+		this.name = name;
+	}
+
+	@Override
+	public QName getName() {
+		return this.name;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.core.api.resourceloader.ResourceLoader#getContents(java.lang.String, boolean)
+	 */
+	@Override
+	public String getContents(String indent, boolean servicePerLine) {
+		StringBuilder contents = new StringBuilder();
+		contents.append(parent.getContents(indent, servicePerLine)).append("\n");
+		contents.append(child.getContents(indent, servicePerLine));
+		return contents.toString();
+	}
+
+	
 
 }

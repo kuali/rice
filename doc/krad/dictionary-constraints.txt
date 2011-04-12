@@ -147,7 +147,7 @@ An occurrence constraint states that for a given attribute to be valid, a certai
 An occurrence constraint is specified via the MustOccurConstraint constraint.  Let's say that an application requires either a phone number, an e-mail address, or a time for showing up be specified as contact information.  The following example sets up that validation in the data dictionary, adding the error to the phone number attribute (though the same constraint could be copied to the other attributes just as easily):
 
 {code:xml}
-1.   <bean id="DataObject-phoneNumber" class="org.kuali.rice.kns.datadictionary.DataObjectEntry"> <!-- SCOTT! NO BEAN FOR THIS ALREADY? -->
+1.   <bean id="DataObject-phoneNumber" parent="DataObjectEntry">
 2.     <property name="objectClass" value="edu.sampleu.contact.ContactInformation" />
 3.     <property name="mustOccurConstraints">
 4.       <list>

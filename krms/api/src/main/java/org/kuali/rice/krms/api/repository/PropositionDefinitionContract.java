@@ -2,7 +2,7 @@ package org.kuali.rice.krms.api.repository;
 
 import java.util.List;
 
-public interface PropositionContract {
+public interface PropositionDefinitionContract {
 	/**
 	 * This is the ID for the KRMS proposition
 	 * @return ID for KRMS proposition.
@@ -69,5 +69,5 @@ public interface PropositionContract {
 	 * 
 	 * @return
 	 */
-	public List<? extends PropositionContract> getCompoundComponents();
+	public List<? extends PropositionDefinitionContract> getCompoundComponents();
 }

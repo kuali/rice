@@ -2,7 +2,7 @@ package org.kuali.rice.krms.api.repository;
 
 import java.util.List;
 
-public interface KrmsTypeContract {
+public interface KrmsTypeDefinitionContract {
 	/**
 	 * This is the ID for the KRMSType 
 	 *

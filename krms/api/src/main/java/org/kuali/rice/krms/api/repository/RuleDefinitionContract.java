@@ -42,7 +42,7 @@ public interface RuleDefinitionContract {
 	
 	public String getPropId();
 	
-	public PropositionContract getProposition();
+	public PropositionDefinitionContract getProposition();
 	
 	public List<? extends ActionDefinitionContract> getActions();
 

@@ -29,24 +29,24 @@ import java.util.List;
 public interface KrmsTypeRepositoryService {
 
     /**
-     * This will create a {@link KrmsType} exactly like the parameter passed in.
+     * This will create a {@link KrmsTypeDefinition} exactly like the parameter passed in.
      *
      * @param krmsType - KrmsType
      * @throws IllegalArgumentException if the krmsType is null
      * @throws IllegalStateException if the KrmsType already exists in the system
      */
     @WebMethod(operationName="createKrmsType")
-    void createKrmsType(@WebParam(name = "krmsType") KrmsType krmsType);
+    void createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType);
 
     /**
-     * This will update an existing {@link KrmsType}
+     * This will update an existing {@link KrmsTypeDefinition}
      *
      * @param krmsType - KrmsType
      * @throws IllegalArgumentException if the krmsType is null
      * @throws IllegalStateException if the KrmsType does not exist in the system
      */
     @WebMethod(operationName="updateKrmsType")
-    void updateKrmsType(@WebParam(name = "krmsType") KrmsType krmsType);
+    void updateKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType);
 
     /**
      * Lookup a krms type based on the given id.
@@ -57,7 +57,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getTypeById")
     @WebResult(name = "type")
-    KrmsType getTypeById(@WebParam(name = "id") String id);
+    KrmsTypeDefinition getTypeById(@WebParam(name = "id") String id);
 
     /**
      * Get a krms type object based on name and namespace
@@ -70,7 +70,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getTypeByNameAndNamespace")
     @WebResult(name = "type")
-    KrmsType getTypeByNameAndNamespace(
+    KrmsTypeDefinition getTypeByNameAndNamespace(
             @WebParam(name = "name") String name,
             @WebParam(name = "namespace") String namespace);
 
@@ -81,7 +81,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "findAllTypesByNamespace")
     @WebResult(name = "namespaceTypes")
-    List<KrmsType> findAllTypesByNamespace(
+    List<KrmsTypeDefinition> findAllTypesByNamespace(
     		@WebParam(name = "namespace") String namespace);
 
     /**
@@ -91,7 +91,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "findAllTypes")
     @WebResult(name = "allTypes")
-    List<KrmsType> findAllTypes();
+    List<KrmsTypeDefinition> findAllTypes();
     
     /**
      * This will create a {@link KrmsTypeAttribute} exactly like the parameter passed in.

@@ -3,11 +3,11 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.Proposition
-import org.kuali.rice.krms.api.repository.PropositionContract
+import org.kuali.rice.krms.api.repository.PropositionDefinition
+import org.kuali.rice.krms.api.repository.PropositionDefinitionContract
 
 
-public class PropositionBo extends PersistableBusinessObjectBase implements PropositionContract {
+public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
 
 	def String propId
 	def String description
@@ -25,9 +25,9 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   static Proposition to(PropositionBo bo) {
+   static PropositionDefinition to(PropositionBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.Proposition.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.PropositionDefinition.Builder.create(bo).build()
    }
 
    /**
@@ -35,7 +35,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static PropositionBo from(Proposition im) {
+   static PropositionBo from(PropositionDefinition im) {
 	   if (im == null) { return null }
 
 	   PropositionBo bo = new PropositionBo()

@@ -22,8 +22,8 @@ import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
 import org.junit.Test
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.krms.api.repository.KrmsType
-import org.kuali.rice.krms.api.repository.KrmsTypeContract
+import org.kuali.rice.krms.api.repository.KrmsTypeDefinition
+import org.kuali.rice.krms.api.repository.KrmsTypeDefinitionContract
 
 /**
  * Exercises the immutable Country class, including XML (un)marshalling
@@ -82,13 +82,13 @@ class KrmsTypeTest {
 
 	@Test
 	public void test_create_only_required() {
-		KrmsType.Builder.create(KrmsType.Builder.create(TYPE_ID, NAME, NAMESPACE))
+		KrmsTypeDefinition.Builder.create(KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE))
 			.build();
 	}
 
 	@Test	
 	public void test_create_with_service_name() {
-		KrmsType.Builder.create(KrmsType.Builder.create(TYPE_ID, NAME, NAMESPACE))
+		KrmsTypeDefinition.Builder.create(KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE))
 			.serviceName(SERVICE_NAME)
 			.build();
 	}
@@ -96,7 +96,7 @@ class KrmsTypeTest {
 	@Test
 	public void testKrmsTypeBuilderPassedInParams() {
 		//No assertions, just test whether the Builder gives us a KRMS KrmsType object
-		KrmsType myType = KrmsType.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
 			.build()
 	}
 
@@ -109,7 +109,7 @@ class KrmsTypeTest {
 		List<KrmsTypeAttribute.Builder> attrs = Arrays.asList(chartAttrBuilder, orgAttrBuilder)
 
 		// create KrmsType builder and build
-		KrmsType myType = KrmsType.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
 				.attributes(attrs)
 				.build()
 	}
@@ -117,7 +117,7 @@ class KrmsTypeTest {
 	@Test
 	public void testTypeBuilderPassedInContract() {
 		//No assertions, just test whether the Builder gives us a KRMS KrmsType object
-		KrmsType type = KrmsType.Builder.create(new KrmsTypeContract() {
+		KrmsTypeDefinition type = KrmsTypeDefinition.Builder.create(new KrmsTypeDefinitionContract() {
 					String getId() { KrmsTypeTest.TYPE_ID }
 					String getName() { KrmsTypeTest.NAME }
 					String getNamespace() { KrmsTypeTest.NAMESPACE }
@@ -130,7 +130,7 @@ class KrmsTypeTest {
 	@Test
 	public void testKrmsTypeBuilderPassedInParamsAndServiceName() {
 		//No assertions, just test whether the Builder gives us a KRMS KrmsType object
-		KrmsType myType = KrmsType.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
 			.serviceName("MyFictionalService")
 			.build()
 	}
@@ -138,24 +138,24 @@ class KrmsTypeTest {
 	@Test
 	public void testTypeBuilderNullTypeId() {
 		shouldFail(IllegalArgumentException.class) {
-			KrmsType.Builder.create(null, NAME, NAMESPACE)
+			KrmsTypeDefinition.Builder.create(null, NAME, NAMESPACE)
 		}
 	}
 
 	@Test
 	public void testTypeBuilderEmptyTypeId() {
 		shouldFail(IllegalArgumentException.class) {
-			KrmsType.Builder.create("", NAME, NAMESPACE)
+			KrmsTypeDefinition.Builder.create("", NAME, NAMESPACE)
 		}
 	}
 
 	@Test
 	public void testXmlMarshaling() {
-		JAXBContext jc = JAXBContext.newInstance(KrmsType.class)
+		JAXBContext jc = JAXBContext.newInstance(KrmsTypeDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
 
-		KrmsType myType = KrmsType.Builder.create(TYPE_ID, NAME, NAMESPACE).build()
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE).build()
 		marshaller.marshal(myType, sw)
 		String xml = sw.toString()
 
@@ -167,9 +167,9 @@ class KrmsTypeTest {
 
 	@Test
 	public void testXmlUnmarshal() {
-		JAXBContext jc = JAXBContext.newInstance(KrmsType.class)
+		JAXBContext jc = JAXBContext.newInstance(KrmsTypeDefinition.class)
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
-		KrmsType myType = (KrmsType) unmarshaller.unmarshal(new StringReader(PLAIN_TYPE_XML))
+		KrmsTypeDefinition myType = (KrmsTypeDefinition) unmarshaller.unmarshal(new StringReader(PLAIN_TYPE_XML))
 		Assert.assertEquals(TYPE_ID,myType.id)
 		Assert.assertEquals(NAME,myType.name)
 		Assert.assertEquals(NAMESPACE, myType.namespace)
@@ -178,7 +178,7 @@ class KrmsTypeTest {
 	
 	@Test
 	public void testXmlMarshalingWithAttributes() {
-		JAXBContext jc = JAXBContext.newInstance(KrmsType.class, KrmsTypeAttribute.class)
+		JAXBContext jc = JAXBContext.newInstance(KrmsTypeDefinition.class, KrmsTypeAttribute.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
 
@@ -188,7 +188,7 @@ class KrmsTypeTest {
 		List<KrmsTypeAttribute.Builder> attrs = Arrays.asList(chartAttrBuilder, orgAttrBuilder)
 		
 		// create KrmsType builder and build
-		KrmsType myType = KrmsType.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
 			.serviceName(SERVICE_NAME)
 			.attributes(attrs)
 			.build()
@@ -203,9 +203,9 @@ class KrmsTypeTest {
 
 	@Test
 	public void testXmlUnmarshalWithAttributes() {
-		JAXBContext jc = JAXBContext.newInstance(KrmsType.class, KrmsTypeAttribute.class)
+		JAXBContext jc = JAXBContext.newInstance(KrmsTypeDefinition.class, KrmsTypeAttribute.class)
 		Unmarshaller unmarshaller = jc.createUnmarshaller()
-		KrmsType myType = (KrmsType) unmarshaller.unmarshal(new StringReader(CHART_ORG_TYPE_XML))
+		KrmsTypeDefinition myType = (KrmsTypeDefinition) unmarshaller.unmarshal(new StringReader(CHART_ORG_TYPE_XML))
 		Assert.assertEquals(TYPE_ID, myType.id)
 		Assert.assertEquals(NAME,myType.name)
 		Assert.assertEquals(NAMESPACE, myType.namespace)

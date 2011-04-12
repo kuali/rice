@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.Proposition;
+import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionParameter;
 import org.kuali.rice.krms.api.repository.PropositionRepositoryService;
 
@@ -35,15 +35,15 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	 * This overridden method creates a Proposition if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#createProposition(org.kuali.rice.krms.api.repository.Proposition)
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#createProposition(org.kuali.rice.krms.api.repository.PropositionDefinition)
 	 */
 	@Override
-	public void createProposition(Proposition prop) {
+	public void createProposition(PropositionDefinition prop) {
 		if (prop == null){
 	        throw new IllegalArgumentException("proposition is null");
 		}
 		final String propIdKey = prop.getPropId();
-		final Proposition existing = getPropositionById(propIdKey);
+		final PropositionDefinition existing = getPropositionById(propIdKey);
 		if (existing != null && existing.getPropId().equals(propIdKey)){
             throw new IllegalStateException("the proposition to create already exists: " + prop);			
 		}
@@ -54,21 +54,21 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method updates an existing proposition
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#updateProposition(org.kuali.rice.krms.api.repository.Proposition)
+	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#updateProposition(org.kuali.rice.krms.api.repository.PropositionDefinition)
 	 */
 	@Override
-	public void updateProposition(Proposition prop) {
+	public void updateProposition(PropositionDefinition prop) {
         if (prop == null) {
             throw new IllegalArgumentException("proposition is null");
         }
 		final String propIdKey = prop.getPropId();
-		final Proposition existing = getPropositionById(propIdKey);
+		final PropositionDefinition existing = getPropositionById(propIdKey);
         if (existing == null) {
             throw new IllegalStateException("the proposition does not exist: " + prop);
         }
-        final Proposition toUpdate;
+        final PropositionDefinition toUpdate;
         if (!existing.getPropId().equals(prop.getPropId())){
-        	final Proposition.Builder builder = Proposition.Builder.create(prop);
+        	final PropositionDefinition.Builder builder = PropositionDefinition.Builder.create(prop);
         	builder.setPropId(existing.getPropId());
         	toUpdate = builder.build();
         } else {
@@ -84,7 +84,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	 * @see org.kuali.rice.krms.api.repository.PropositionRepositoryService#getPropositionById(java.lang.String)
 	 */
 	@Override
-	public Proposition getPropositionById(String propId) {
+	public PropositionDefinition getPropositionById(String propId) {
 		if (StringUtils.isBlank(propId)){
             throw new IllegalArgumentException("propId is null or blank");			
 		}

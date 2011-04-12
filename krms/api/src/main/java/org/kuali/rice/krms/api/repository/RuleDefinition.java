@@ -53,7 +53,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private String typeId;
 	@XmlElement(name = Elements.PROPOSITION, required=true)
-	private Proposition proposition;
+	private PropositionDefinition proposition;
 	@XmlElement(name = Elements.ACTION, required=false)
 	private List<ActionDefinition> actions;
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
@@ -132,7 +132,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	}
 
 	@Override
-	public Proposition getProposition(){
+	public PropositionDefinition getProposition(){
 		return this.proposition;
 	}
 	
@@ -157,7 +157,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         private String namespace;
         private String typeId;
         private String propId;
-        private Proposition.Builder proposition;
+        private PropositionDefinition.Builder proposition;
         private List<ActionDefinition.Builder> actions;
         private List<RuleAttribute.Builder> attributes;
 
@@ -194,7 +194,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	}
             Builder builder =  new Builder(contract.getRuleId(), contract.getName(),
             		contract.getNamespace(), contract.getTypeId(), contract.getPropId());
-            builder.setProposition(Proposition.Builder.create(contract.getProposition()));
+            builder.setProposition(PropositionDefinition.Builder.create(contract.getProposition()));
             builder.setAttributes(attrBuilderList);
             return builder;
         }
@@ -238,7 +238,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 			this.propId = propId;
 		}
 		
-		public void setProposition(Proposition.Builder prop) {
+		public void setProposition(PropositionDefinition.Builder prop) {
 			this.proposition = prop;
 			this.setPropId(prop.getPropId());
 		}
@@ -285,7 +285,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		}
 
 		@Override
-		public Proposition.Builder getProposition() {
+		public PropositionDefinition.Builder getProposition() {
 			return proposition;
 		}
 

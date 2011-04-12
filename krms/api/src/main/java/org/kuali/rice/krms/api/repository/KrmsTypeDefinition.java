@@ -20,27 +20,27 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.krms.api.repository.Proposition.Elements;
+import org.kuali.rice.krms.api.repository.PropositionDefinition.Elements;
 
 /**
  * Concrete model object implementation of KRMS KrmsType. 
  * immutable. 
  * Instances of KrmsType can be (un)marshalled to and from XML.
  *
- * @see KrmsTypeContract
+ * @see KrmsTypeDefinitionContract
  */
-@XmlRootElement(name = KrmsType.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = KrmsTypeDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = KrmsType.Constants.TYPE_NAME, propOrder = {
-		KrmsType.Elements.ID,
-		KrmsType.Elements.NAME,
-		KrmsType.Elements.NAMESPACE,
-		KrmsType.Elements.SERVICENAME,
-		KrmsType.Elements.ACTIVE,
+@XmlType(name = KrmsTypeDefinition.Constants.TYPE_NAME, propOrder = {
+		KrmsTypeDefinition.Elements.ID,
+		KrmsTypeDefinition.Elements.NAME,
+		KrmsTypeDefinition.Elements.NAMESPACE,
+		KrmsTypeDefinition.Elements.SERVICENAME,
+		KrmsTypeDefinition.Elements.ACTIVE,
 		"attributes",
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
+public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = -8314397393380856301L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -63,7 +63,7 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
      */
-    private KrmsType() {
+    private KrmsTypeDefinition() {
     	this.id = null;
     	this.name = null;
     	this.namespace = null;
@@ -78,7 +78,7 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 	 * 
 	 * @param builder the Builder from which to construct the KRMS type
 	 */
-    private KrmsType(Builder builder) {
+    private KrmsTypeDefinition(Builder builder) {
         this.id = builder.getId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
@@ -124,9 +124,9 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeContract}.
+     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeDefinitionContract}.
      */
-    public static class Builder implements KrmsTypeContract, ModelBuilder, Serializable {		
+    public static class Builder implements KrmsTypeDefinitionContract, ModelBuilder, Serializable {		
 		private static final long serialVersionUID = -3469525730879441547L;
 		
 		private String id;
@@ -170,12 +170,12 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link KrmsTypeContract}.
+         * Creates a builder by populating it with data from the given {@link KrmsTypeDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(KrmsTypeContract contract) {
+        public static Builder create(KrmsTypeDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -266,8 +266,8 @@ public final class KrmsType implements KrmsTypeContract, ModelObjectComplete{
 		 * @return the fully-constructed KrmsType
 		 */
         @Override
-        public KrmsType build() {
-            return new KrmsType(this);
+        public KrmsTypeDefinition build() {
+            return new KrmsTypeDefinition(this);
         }
 		
     }

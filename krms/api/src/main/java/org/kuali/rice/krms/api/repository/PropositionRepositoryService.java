@@ -30,17 +30,17 @@ import javax.jws.soap.SOAPBinding;
 public interface PropositionRepositoryService {
 
     /**
-     * This will create a {@link Proposition} exactly like the parameter passed in.
+     * This will create a {@link PropositionDefinition} exactly like the parameter passed in.
      *
      * @param prop the proposition to create
      * @throws IllegalArgumentException if the proposition is null
      * @throws IllegalStateException if the proposition already exists in the system
      */
     @WebMethod(operationName="createProposition")
-    void createProposition(@WebParam(name = "prop") Proposition prop);
+    void createProposition(@WebParam(name = "prop") PropositionDefinition prop);
 
     /**
-     * This will update a {@link Proposition}.
+     * This will update a {@link PropositionDefinition}.
      *
      *
      * @param prop the proposition to update
@@ -48,7 +48,7 @@ public interface PropositionRepositoryService {
      * @throws IllegalStateException if the proposition does not exist in the system
      */
     @WebMethod(operationName="updateProposition")
-    void updateProposition(@WebParam(name = "prop") Proposition prop);
+    void updateProposition(@WebParam(name = "prop") PropositionDefinition prop);
 
     /**
      * Lookup the proposition based on the given proposition id.
@@ -59,7 +59,7 @@ public interface PropositionRepositoryService {
      */
     @WebMethod(operationName = "getPropositionById")
     @WebResult(name = "prop")
-    Proposition getPropositionById(
+    PropositionDefinition getPropositionById(
             @WebParam(name = "propId") String propId);
 
 

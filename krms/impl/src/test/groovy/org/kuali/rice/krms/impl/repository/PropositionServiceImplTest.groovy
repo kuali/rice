@@ -30,8 +30,8 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject
 import org.kuali.rice.kns.service.BusinessObjectService
 import org.kuali.rice.kns.util.KNSPropertyConstants
 import org.kuali.rice.krms.api.LogicalOperator
-import org.kuali.rice.krms.api.repository.Proposition
-import org.kuali.rice.krms.api.repository.PropositionContract
+import org.kuali.rice.krms.api.repository.PropositionDefinition
+import org.kuali.rice.krms.api.repository.PropositionDefinitionContract
 import org.kuali.rice.krms.api.repository.PropositionParameter
 import org.kuali.rice.krms.api.repository.PropositionParameterContract
 import org.kuali.rice.krms.framework.engine.ComparisonOperator;
@@ -43,15 +43,15 @@ class PropositionServiceImplTest {
 
 	// Simple Proposition data structures	
 	private static final List <PropositionParameter.Builder> parmList1 = createPropositionParametersSet1()
-	private static final Proposition proposition = createProposition()
+	private static final PropositionDefinition proposition = createProposition()
 	private PropositionBo bo = PropositionBo.from(proposition)
 
 	// Compound Propositon data structures
 	private static final List <PropositionParameter.Builder> parmListA = createPropositionParametersSet2()
 	private static final List <PropositionParameter.Builder> parmListB = createPropositionParametersSet3()
-	private static final Proposition.Builder propositionABuilder = createPropositionABuilder()
-	private static final Proposition.Builder propositionBBuilder = createPropositionBBuilder()
-	private static final Proposition compoundProposition = createCompoundProposition()
+	private static final PropositionDefinition.Builder propositionABuilder = createPropositionABuilder()
+	private static final PropositionDefinition.Builder propositionBBuilder = createPropositionBBuilder()
+	private static final PropositionDefinition compoundProposition = createCompoundProposition()
 
 	// for PropositionParameter tests 	
 	static List<PropositionParameter> parmList = new ArrayList<PropositionParameter>()
@@ -414,50 +414,50 @@ class PropositionServiceImplTest {
 // private static methods for creating test data
 //		
 	private static createProposition() {
-		return Proposition.Builder.create(new PropositionContract () {
+		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "2002"
 			def String description = "Is campus type = Bloomington"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
 			def List<? extends PropositionParameterContract> parameters = PropositionServiceImplTest.parmList1
 			def String compoundOpCode = null
-			def List<? extends Proposition> compoundComponents = new ArrayList<Proposition>()
+			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 		}).build()
 	}
 		
 	private static createPropositionABuilder() {
-		return Proposition.Builder.create(new PropositionContract () {
+		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "100"
 			def String description = "Is campus type = Muir"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
 			def List<? extends PropositionParameterContract> parameters = PropositionServiceImplTest.parmListA
 			def String compoundOpCode = null
-			def List<? extends Proposition> compoundComponents = new ArrayList<Proposition>()
+			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 		})
 	}
 		
 	private static createPropositionBBuilder() {
-		return Proposition.Builder.create(new PropositionContract () {
+		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "101"
 			def String description = "Is campus type = Thurgood Marshall"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
 			def List<? extends PropositionParameterContract> parameters = PropositionServiceImplTest.parmListB
 			def String compoundOpCode = null
-			def List<? extends Proposition> compoundComponents = new ArrayList<Proposition>()
+			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 		})
 	}
 		
 	private static createCompoundProposition() {
-		return Proposition.Builder.create(new PropositionContract () {
+		return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.opCode()
-			def List<? extends Proposition> compoundComponents = Arrays.asList(PropositionServiceImplTest.propositionABuilder, PropositionServiceImplTest.propositionBBuilder)
+			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionServiceImplTest.propositionABuilder, PropositionServiceImplTest.propositionBBuilder)
 		}).build()
 	}
 		

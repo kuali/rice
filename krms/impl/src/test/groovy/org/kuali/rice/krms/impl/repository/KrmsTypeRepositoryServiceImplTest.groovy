@@ -26,7 +26,7 @@ import org.junit.Ignore
 import org.junit.Test
 import org.kuali.rice.kns.service.BusinessObjectService
 import org.kuali.rice.kns.util.KNSPropertyConstants
-import org.kuali.rice.krms.api.repository.KrmsType
+import org.kuali.rice.krms.api.repository.KrmsTypeDefinition
 import org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService
 
 class KrmsTypeRepositoryServiceImplTest {
@@ -57,14 +57,14 @@ class KrmsTypeRepositoryServiceImplTest {
   @Test
   public void test_getType() {
     mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-      Class clazz, Map map -> return sampleTypes.get(map.get(KrmsType.Elements.ID))
+      Class clazz, Map map -> return sampleTypes.get(map.get(KrmsTypeDefinition.Elements.ID))
     }
 
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
     KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
     service.setBusinessObjectService(bos)
-    KrmsType myType = service.getTypeById("1")
+    KrmsTypeDefinition myType = service.getTypeById("1")
 
     Assert.assertEquals(KrmsTypeBo.to(sampleTypes.get("1")), myType)
     mockBusinessObjectService.verify(bos)

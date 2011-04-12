@@ -19,7 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.KrmsType;
+import org.kuali.rice.krms.api.repository.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService;
 
@@ -33,16 +33,16 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	 * This overridden method creates a KrmsType if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.repository.KrmsType)
+	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.repository.KrmsTypeDefinition)
 	 */
 	@Override
-	public void createKrmsType(KrmsType krmsType) {
+	public void createKrmsType(KrmsTypeDefinition krmsType) {
 		if (krmsType == null){
 	        throw new IllegalArgumentException("krmsType is null");
 		}
 		final String nameKey = krmsType.getName();
 		final String namespaceKey = krmsType.getNamespace();
-		final KrmsType existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
+		final KrmsTypeDefinition existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
 		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
             throw new IllegalStateException("the KRMS Type to create already exists: " + krmsType);			
 		}
@@ -53,22 +53,22 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	/**
 	 * This overridden method updates an existing KrmsType
 	 * 
-	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.repository.KrmsType)
+	 * @see org.kuali.rice.krms.api.repository.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.repository.KrmsTypeDefinition)
 	 */
 	@Override
-	public void updateKrmsType(KrmsType krmsType) {
+	public void updateKrmsType(KrmsTypeDefinition krmsType) {
         if (krmsType == null) {
             throw new IllegalArgumentException("krmsType is null");
         }
 		final String nameKey = krmsType.getName();
 		final String namespaceKey = krmsType.getNamespace();
-		final KrmsType existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
+		final KrmsTypeDefinition existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
         if (existing == null) {
             throw new IllegalStateException("the KRMS type does not exist: " + krmsType);
         }
-        final KrmsType toUpdate;
+        final KrmsTypeDefinition toUpdate;
         if (!existing.getId().equals(krmsType.getId())){
-        	final KrmsType.Builder builder = KrmsType.Builder.create(krmsType);
+        	final KrmsTypeDefinition.Builder builder = KrmsTypeDefinition.Builder.create(krmsType);
         	builder.setId(existing.getId());
         	toUpdate = builder.build();
         } else {
@@ -79,7 +79,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	}
 
     @Override
-    public KrmsType getTypeById(final String id) {
+    public KrmsTypeDefinition getTypeById(final String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("id is blank");
         }
@@ -90,7 +90,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
     }
 
     @Override
-    public KrmsType getTypeByNameAndNamespace(final String name, final String namespace) {
+    public KrmsTypeDefinition getTypeByNameAndNamespace(final String name, final String namespace) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name is blank");
         }
@@ -111,7 +111,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
     }
 
     @Override
-    public List<KrmsType> findAllTypesByNamespace(final String namespace) {
+    public List<KrmsTypeDefinition> findAllTypesByNamespace(final String namespace) {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespace);
         map.put("active", Boolean.TRUE);
@@ -122,7 +122,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
     }
 
     @Override
-    public List<KrmsType> findAllTypes() {
+    public List<KrmsTypeDefinition> findAllTypes() {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("active", Boolean.TRUE);
 
@@ -145,10 +145,10 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
      * @param KrmsTypeBos a mutable List<KrmsTypeBo> to made completely immutable.
      * @return An unmodifiable List<KrmsType>
      */
-    List<KrmsType> convertListOfBosToImmutables(final Collection<KrmsTypeBo> krmsTypeBos) {
-        ArrayList<KrmsType> krmsTypes = new ArrayList<KrmsType>();
+    List<KrmsTypeDefinition> convertListOfBosToImmutables(final Collection<KrmsTypeBo> krmsTypeBos) {
+        ArrayList<KrmsTypeDefinition> krmsTypes = new ArrayList<KrmsTypeDefinition>();
         for (KrmsTypeBo bo : krmsTypeBos) {
-            KrmsType krmsType = KrmsTypeBo.to(bo);
+            KrmsTypeDefinition krmsType = KrmsTypeBo.to(bo);
             krmsTypes.add(krmsType);
         }
         return Collections.unmodifiableList(krmsTypes);

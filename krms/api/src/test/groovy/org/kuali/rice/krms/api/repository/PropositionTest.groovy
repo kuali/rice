@@ -45,8 +45,8 @@ class PropositionTest {
 	// Compound Proposition Data Structures
 	private static final List <PropositionParameter.Builder> PARM_LIST_A = createPropositionParametersSet2()
 	private static final List <PropositionParameter.Builder> PARM_LIST_B = createPropositionParametersSet3()
-	private static final Proposition.Builder PROP_A_BUILDER = createPropositionABuilder()
-	private static final Proposition.Builder PROP_B_BUILDER = createPropositionBBuilder()
+	private static final PropositionDefinition.Builder PROP_A_BUILDER = createPropositionABuilder()
+	private static final PropositionDefinition.Builder PROP_B_BUILDER = createPropositionBBuilder()
 
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String SIMPLE_PROP_XML = """
@@ -145,124 +145,124 @@ class PropositionTest {
 		
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_all_null() {
-		Proposition.Builder.create(null, null, null, null, null)
+		PropositionDefinition.Builder.create(null, null, null, null, null)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_id() {
-		Proposition.Builder.create(null, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(null, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_id() {
-		Proposition.Builder.create("", DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create("", DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_id() {
-		Proposition.Builder.create("   ", DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create("   ", DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_description() {
-		Proposition.Builder.create(PROP_ID, null, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, null, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_description() {
-		Proposition.Builder.create(PROP_ID, "", TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, "", TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_description() {
-		Proposition.Builder.create(PROP_ID, "	  ", TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, "	  ", TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_krms_type_id() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, null, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, null, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_krms_type_id() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, "", PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, "", PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_krms_type_id() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, "  ", PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, "  ", PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_proposition_type() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, null, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, null, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_proposition_type() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, "", PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, "", PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_proposition_type() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, "    ", PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, "    ", PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_invalid_proposition_type() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_BAD, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_BAD, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_parameter_list() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, null)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, null)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_parameter_list() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, EMPTY_PARM_LIST)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, EMPTY_PARM_LIST)
 	}
 
 	@Test
 	void test_Builder_create_simple_proposition_success() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 
 	@Test
 	void test_Builder_create_and_build_simple_proposition_success() {
-		Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
+		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
 	}
 
 	@Test
 	void test_Builder_create_compound_proposition_sucess() {
-		Proposition.Builder.create(new PropositionContract () {
+		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.opCode()
-			def List<? extends Proposition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
+			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
 		})
 	}
 	
 	@Test
 	void test_Builder_create_and_build_compound_proposition_success() {
-		Proposition.Builder.create(new PropositionContract () {
+		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.opCode()
-			def List<? extends Proposition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
+			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
 		}).build()
 	}
 
 	@Test
 	public void testXmlMarshaling_simple_proposition() {
- 		Proposition myProp = Proposition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
-        JAXBContext jc = JAXBContext.newInstance(Proposition.class, PropositionParameter.class)
+ 		PropositionDefinition myProp = PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
+        JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	    Marshaller marshaller = jc.createMarshaller()
 	    StringWriter sw = new StringWriter()
 	    marshaller.marshal(myProp, sw)
@@ -276,9 +276,9 @@ class PropositionTest {
 
 	@Test
 	public void testXmlUnmarshal_simple_proposition() {
-	  JAXBContext jc = JAXBContext.newInstance(Proposition.class, PropositionParameter.class)
+	  JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
-	  Proposition myProp = (Proposition) unmarshaller.unmarshal(new StringReader(SIMPLE_PROP_XML))
+	  PropositionDefinition myProp = (PropositionDefinition) unmarshaller.unmarshal(new StringReader(SIMPLE_PROP_XML))
 	  Assert.assertEquals(PROP_ID, myProp.propId)
 	  Assert.assertEquals(DESCRIPTION, myProp.description)
 	  Assert.assertEquals(TYPE_ID, myProp.typeId)
@@ -292,17 +292,17 @@ class PropositionTest {
 
 	@Test
 	public void testXmlMarshaling_compound_proposition() {
-		Proposition myProp = Proposition.Builder.create(new PropositionContract () {
+		PropositionDefinition myProp = PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 			def String propId = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
 			def String typeId = "1"
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.opCode()
-			def List<? extends Proposition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
+			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionTest.PROP_A_BUILDER, PropositionTest.PROP_B_BUILDER)
 		}).build()
 
-		JAXBContext jc = JAXBContext.newInstance(Proposition.class, PropositionParameter.class)
+		JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
 		marshaller.marshal(myProp, sw)
@@ -316,16 +316,16 @@ class PropositionTest {
 
 	@Test
 	public void testXmlUnmarshal_compound_proposition() {
-	  JAXBContext jc = JAXBContext.newInstance(Proposition.class, PropositionParameter.class)
+	  JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller();
-	  Proposition myProp = (Proposition) unmarshaller.unmarshal(new StringReader(COMPOUND_PROP_XML))
+	  PropositionDefinition myProp = (PropositionDefinition) unmarshaller.unmarshal(new StringReader(COMPOUND_PROP_XML))
 	  Assert.assertEquals("111", myProp.propId)
 	  Assert.assertEquals("Compound: Campus is Muir or Thurgood Marshall", myProp.description)
 	  Assert.assertEquals("1", myProp.typeId)
 	  Assert.assertEquals(PROPOSITION_TYPE_CD_C, myProp.propositionTypeCode)
 	  Assert.assertEquals("|", myProp.compoundOpCode)
 	  Assert.assertEquals(2, myProp.compoundComponents.size())
-	  List<Proposition> pList = new ArrayList<Proposition>()
+	  List<PropositionDefinition> pList = new ArrayList<PropositionDefinition>()
 	  for (pb in [PROP_A_BUILDER, PROP_B_BUILDER]){
 		  pList.add (pb.build())
 	  }
@@ -427,26 +427,26 @@ class PropositionTest {
 	  return propParms;
   }
   private static createPropositionABuilder() {
-	  return Proposition.Builder.create(new PropositionContract () {
+	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 		  def String propId = "100"
 		  def String description = "Is campus type = Muir"
 		  def String typeId = "1"
 		  def String propositionTypeCode = "S"
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_A
 		  def String compoundOpCode = null
-		  def List<? extends Proposition> compoundComponents = new ArrayList<Proposition>()
+		  def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 	  })
   }
 	  
   private static createPropositionBBuilder() {
-	  return Proposition.Builder.create(new PropositionContract () {
+	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
 		  def String propId = "101"
 		  def String description = "Is campus type = Thurgood Marshall"
 		  def String typeId = "1"
 		  def String propositionTypeCode = "S"
 		  def List<? extends PropositionParameterContract> parameters = PropositionTest.PARM_LIST_B
 		  def String compoundOpCode = null
-		  def List<? extends Proposition> compoundComponents = new ArrayList<Proposition>()
+		  def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 	  })
   }
 	  

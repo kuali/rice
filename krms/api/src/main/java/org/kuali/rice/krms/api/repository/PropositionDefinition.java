@@ -44,19 +44,19 @@ import org.kuali.rice.krms.api.LogicalOperator;
  * @see PropositonContract
  * @see PropositionParameterContract
  */
-@XmlRootElement(name = Proposition.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = PropositionDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Proposition.Constants.TYPE_NAME, propOrder = {
-		Proposition.Elements.PROP_ID,
-		Proposition.Elements.DESC,
-		Proposition.Elements.TYPE_ID,
-		Proposition.Elements.PROP_TYPE_CODE,
+@XmlType(name = PropositionDefinition.Constants.TYPE_NAME, propOrder = {
+		PropositionDefinition.Elements.PROP_ID,
+		PropositionDefinition.Elements.DESC,
+		PropositionDefinition.Elements.TYPE_ID,
+		PropositionDefinition.Elements.PROP_TYPE_CODE,
 		"parameters",									// xml element name differs from class property name
-		Proposition.Elements.CMPND_OP_CODE,
+		PropositionDefinition.Elements.CMPND_OP_CODE,
 		"compoundComponents",							// xml element name differs from class property name
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Proposition implements PropositionContract, ModelObjectComplete{
+public final class PropositionDefinition implements PropositionDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.PROP_ID, required=true)
@@ -78,7 +78,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	private String compoundOpCode;
 	
 	@XmlElement(name = Elements.CMPND_COMPONENTS, required=false)
-	private List<Proposition> compoundComponents;
+	private List<PropositionDefinition> compoundComponents;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -88,7 +88,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	 /** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
      */
-    private Proposition() {
+    private PropositionDefinition() {
     	this.propId = null;
     	this.description = null;
     	this.typeId = null;
@@ -104,7 +104,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	 * 
 	 * @param builder the Builder from which to construct the KRMS Proposition
 	 */
-    private Proposition(Builder builder) {
+    private PropositionDefinition(Builder builder) {
         this.propId = builder.getPropId();
         this.description = builder.getDescription();
         this.typeId = builder.getTypeId();
@@ -119,9 +119,9 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         
         // Build Compound Proposition properties
         this.compoundOpCode = builder.getCompoundOpCode();
-        List <Proposition> componentList = new ArrayList<Proposition>();
+        List <PropositionDefinition> componentList = new ArrayList<PropositionDefinition>();
         if (builder.compoundComponents != null){
-        	for (Proposition.Builder b : builder.compoundComponents){
+        	for (PropositionDefinition.Builder b : builder.compoundComponents){
         		componentList.add(b.build());
         	}
         }
@@ -159,14 +159,14 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 	}
 
 	@Override
-	public List<Proposition> getCompoundComponents() {
+	public List<PropositionDefinition> getCompoundComponents() {
 		return this.compoundComponents; 
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionContract}.
+     * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionDefinitionContract}.
      */
-    public static class Builder implements PropositionContract, ModelBuilder, Serializable {
+    public static class Builder implements PropositionDefinitionContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
 		
         private String propId;
@@ -175,7 +175,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         private String propositionTypeCode;
         private List<PropositionParameter.Builder> parameters;
         private String compoundOpCode;
-        private List<Proposition.Builder> compoundComponents;
+        private List<PropositionDefinition.Builder> compoundComponents;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -193,7 +193,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         	return this;
         }
         
-        public Builder compoundComponents (List<Proposition.Builder> components){
+        public Builder compoundComponents (List<PropositionDefinition.Builder> components){
         	setCompoundComponents(components);
         	return this;
         }
@@ -202,12 +202,12 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         	return new Builder(propId, desc, typeId, propTypeCode, parameters);
         }
         /**
-         * Creates a builder by populating it with data from the given {@link PropositionContract}.
+         * Creates a builder by populating it with data from the given {@link PropositionDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(PropositionContract contract) {
+        public static Builder create(PropositionDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -218,10 +218,10 @@ public final class Proposition implements PropositionContract, ModelObjectComple
         			paramBuilderList.add(myBuilder);
         		}
         	}
-        	List <Proposition.Builder> componentBuilderList = new ArrayList<Proposition.Builder>();
+        	List <PropositionDefinition.Builder> componentBuilderList = new ArrayList<PropositionDefinition.Builder>();
         	if (contract.getCompoundComponents() != null) {
-        		for (PropositionContract cContract : contract.getCompoundComponents()){
-        			Proposition.Builder pBuilder = Proposition.Builder.create(cContract);
+        		for (PropositionDefinitionContract cContract : contract.getCompoundComponents()){
+        			PropositionDefinition.Builder pBuilder = PropositionDefinition.Builder.create(cContract);
         			componentBuilderList.add(pBuilder);
         		}
         	}
@@ -293,9 +293,9 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 			this.compoundOpCode = opCode;
 		}
 
-		public void setCompoundComponents(List<Proposition.Builder> components){
+		public void setCompoundComponents(List<PropositionDefinition.Builder> components){
 			if (components == null || components.isEmpty()){
-				this.compoundComponents = Collections.unmodifiableList(new ArrayList<Proposition.Builder>());
+				this.compoundComponents = Collections.unmodifiableList(new ArrayList<PropositionDefinition.Builder>());
 				return;
 			}
 			this.compoundComponents = Collections.unmodifiableList(components);
@@ -333,7 +333,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 		}
 		
 		@Override
-		public List<Proposition.Builder> getCompoundComponents() {
+		public List<PropositionDefinition.Builder> getCompoundComponents() {
 			return compoundComponents;
 		}
 
@@ -343,8 +343,8 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 		 * @return the fully-constructed Proposition
 		 */
         @Override
-        public Proposition build() {
-            return new Proposition(this);
+        public PropositionDefinition build() {
+            return new PropositionDefinition(this);
         }
 		
     }
@@ -403,7 +403,7 @@ public final class Proposition implements PropositionContract, ModelObjectComple
 		private PropositionTypes(String code){
 			this.code = code;
 		}
-		public static final Collection<Proposition.PropositionTypes> VALID_TYPES =
+		public static final Collection<PropositionDefinition.PropositionTypes> VALID_TYPES =
 			Collections.unmodifiableCollection(Arrays.asList(SIMPLE, PARAMETERIZED, COMPOUND));
 			
 		public static final Collection<String> VALID_TYPE_CODES =

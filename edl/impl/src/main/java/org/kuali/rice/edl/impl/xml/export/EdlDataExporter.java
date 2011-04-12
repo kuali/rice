@@ -53,32 +53,38 @@ public class EdlDataExporter implements Exporter {
 	}
 
 	@Override
-	public void export(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects, String exportFormat, OutputStream outputStream) throws IOException {
-		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
-			throw new ExportNotSupportedException("The given export format of " + exportFormat + " is not supported by the EDocLite XML Exporter!");
-		}
-		ExportDataSet dataSet = buildExportDataSet(businessObjectClass, businessObjects);
-		outputStream.write(CoreApiServiceLocator.getXmlExporterService().export(dataSet));
-		outputStream.flush();
-	}
-
-	@Override
-	public List<String> getSupportedFormats(Class<? extends BusinessObject> businessObjectClass) {
+	public List<String> getSupportedFormats(Class<?> dataObjectClass) {
 		return supportedFormats;
 	}
 
 	/**
 	 * Builds the ExportDataSet based on the BusinessObjects passed in.
 	 */
-	protected ExportDataSet buildExportDataSet(Class<? extends BusinessObject> businessObjectClass, List<BusinessObject> businessObjects) {
+	protected ExportDataSet buildExportDataSet(Class<?> dataObjectClass, List<? extends Object> dataObjects) {
 		EdlExportDataSet dataSet = new EdlExportDataSet();
-		for (BusinessObject businessObject : businessObjects) {
-			if (businessObjectClass.equals(EDocLiteAssociation.class)) {
-				dataSet.getEdocLites().add((EDocLiteAssociation)businessObject);
+		for (Object dataObject : dataObjects) {
+			if (dataObjectClass.equals(EDocLiteAssociation.class)) {
+				dataSet.getEdocLites().add((EDocLiteAssociation)dataObject);
 			}   
 		}
 
 		return  dataSet.createExportDataSet();
 	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.Exporter#export(java.lang.Class, java.util.List, java.lang.String, java.io.OutputStream)
+	 */
+	@Override
+	public void export(Class<?> dataObjectClass, List<? extends Object> dataObjects, String exportFormat, OutputStream outputStream) throws IOException,
+			ExportNotSupportedException {
+		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
+			throw new ExportNotSupportedException("The given export format of " + exportFormat + " is not supported by the EDocLite XML Exporter!");
+		}
+		ExportDataSet dataSet = buildExportDataSet(dataObjectClass, dataObjects);
+		outputStream.write(CoreApiServiceLocator.getXmlExporterService().export(dataSet));
+		outputStream.flush();
+		
+	}
 }

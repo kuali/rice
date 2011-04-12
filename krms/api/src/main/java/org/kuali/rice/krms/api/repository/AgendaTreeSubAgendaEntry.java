@@ -147,8 +147,8 @@ public final class AgendaTreeSubAgendaEntry implements AgendaTreeEntryDefinition
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "agendaTreeRuleEntry";
-		final static String TYPE_NAME = "AgendaTreeRuleEntryType";
+		final static String ROOT_ELEMENT_NAME = "agendaTreeSubAgendaEntry";
+		final static String TYPE_NAME = "AgendaTreeSubAgendaEntryType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
 	}
 	
@@ -156,8 +156,8 @@ public final class AgendaTreeSubAgendaEntry implements AgendaTreeEntryDefinition
 	 * A private class which exposes constants which define the XML element names to use
 	 * when this object is marshalled to XML.
 	 */
-	public static class Elements {
-		final static String AGENDA_ITEM_ID = "agendaId";
+	static class Elements {
+		final static String AGENDA_ITEM_ID = "agendaItemId";
 		final static String SUB_AGENDA_ID = "subAgendaId";
 	}
 

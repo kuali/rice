@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
 import org.kuali.rice.krms.api.repository.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -32,6 +33,21 @@ public class SimpleRuleRepositoryImpl implements RuleRepositoryService {
 			ContextSelectionCriteria contextSelectionCriteria) {
 		return selectContext(contextSelectionCriteria.getContextQualifiers());
 	}
+	
+	
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.api.repository.RuleRepositoryService#getAgendaTree(java.lang.String)
+	 */
+	@Override
+	public AgendaTreeDefinition getAgendaTree(String agendaId) {
+		// TODO
+		throw new UnsupportedOperationException("TODO!");
+	}
+
+
 
 	public ContextDefinition selectContext(Map<String, String> contextQualifiers) {
 		Set<ContextDefinition> results = null;

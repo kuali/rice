@@ -27,4 +27,18 @@ public interface RuleRepositoryService {
 	@WebResult(name = "contextDefinition")
 	public ContextDefinition selectContext(@WebParam(name = "contextSelectionCriteria") ContextSelectionCriteria contextSelectionCriteria);
 	
+	/**
+	 * Loads the agenda tree for the given agendaId.  The agenda tree includes
+	 * the entire agenda definition in the appropriate order and with the
+	 * defined agenda branching.
+	 * 
+	 * @param agendaId the id of the agenda for which to load the agenda tree
+	 * @return the agenda tree, or null if no agenda could be located for the given agendaId
+	 * 
+	 * @throws IllegalArgumentException if the given agendaId is null
+	 */
+	@WebMethod(operationName = "getAgendaTree")
+	@WebResult(name = "agendaTree")
+	public AgendaTreeDefinition getAgendaTree(@WebParam(name = "agendaId") String agendaId);
+	
 }

@@ -194,8 +194,8 @@ public final class AgendaTreeRuleEntry implements AgendaTreeEntryDefinition {
 	 * A private class which exposes constants which define the XML element names to use
 	 * when this object is marshalled to XML.
 	 */
-	public static class Elements {
-		final static String AGENDA_ITEM_ID = "agendaId";
+	static class Elements {
+		final static String AGENDA_ITEM_ID = "agendaItemId";
 		final static String RULE_ID = "ruleId";
 		final static String IF_TRUE = "ifTrue";
 		final static String IF_FALSE = "ifFalse";

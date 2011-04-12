@@ -30,7 +30,8 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  */
 @XmlRootElement(name = AgendaTreeDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = AgendaTreeDefinition.Constants.TYPE_NAME, propOrder = {	
+@XmlType(name = AgendaTreeDefinition.Constants.TYPE_NAME, propOrder = {
+		AgendaTreeDefinition.Elements.ENTRIES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class AgendaTreeDefinition implements ModelObjectComplete{
@@ -133,7 +134,8 @@ public final class AgendaTreeDefinition implements ModelObjectComplete{
 	 * A private class which exposes constants which define the XML element names to use
 	 * when this object is marshalled to XML.
 	 */
-	public static class Elements {
+	static class Elements {
+		final static String ENTRIES = "entries";
 		final static String RULE = "rule";
 		final static String SUB_AGENDA = "subAgenda";
 	}

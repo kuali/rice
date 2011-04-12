@@ -52,29 +52,10 @@ public class DataExporter implements Exporter {
 	}
 
 	/**
-	 * Export the given List of BusinessObjects of the specified type to XML.
-	 * 
-	 * @see org.kuali.rice.kns.bo.Exporter#export(java.lang.Class, java.util.List, java.lang.String, java.io.OutputStream)
-	 */
-	@Override
-	public void export(Class<? extends BusinessObject> dataObjectClass, List<BusinessObject> dataObjects, String exportFormat, OutputStream outputStream) throws IOException, ExportNotSupportedException {
-		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
-			throw new ExportNotSupportedException("The given export format of "
-					+ exportFormat
-					+ " is not supported by the KEW XML Exporter!");
-		}
-		ExportDataSet dataSet = buildExportDataSet(dataObjectClass, dataObjects);
-		outputStream.write(CoreApiServiceLocator.getXmlExporterService()
-				.export(dataSet));
-		outputStream.flush();
-		
-	}
-
-	/**
 	 * @see org.kuali.rice.kns.bo.Exporter#getSupportedFormats(java.lang.Class)
 	 */
 	@Override
-	public List<String> getSupportedFormats(Class<? extends BusinessObject> dataObjectClass) {
+	public List<String> getSupportedFormats(Class<?> dataObjectClass) {
 		return supportedFormats;
 	}
 
@@ -104,5 +85,25 @@ public class DataExporter implements Exporter {
 		ExportDataSet exportDataSet = new ExportDataSet();
 		dataSet.populateExportDataSet(exportDataSet);
 		return exportDataSet;
+	}
+
+	/**
+	 * Export the given List of Objects of the specified type to XML.
+	 * 
+	 * @see org.kuali.rice.kns.bo.Exporter#export(java.lang.Class, java.util.List, java.lang.String, java.io.OutputStream)
+	 */
+	@Override
+	public void export(Class<?> dataObjectClass, List<? extends Object> dataObjects, String exportFormat, OutputStream outputStream) throws IOException,
+			ExportNotSupportedException {
+		if (!KNSConstants.XML_FORMAT.equals(exportFormat)) {
+			throw new ExportNotSupportedException("The given export format of "
+					+ exportFormat
+					+ " is not supported by the KEW XML Exporter!");
+		}
+		ExportDataSet dataSet = buildExportDataSet(dataObjectClass, dataObjects);
+		outputStream.write(CoreApiServiceLocator.getXmlExporterService()
+				.export(dataSet));
+		outputStream.flush();
+		
 	}
 }

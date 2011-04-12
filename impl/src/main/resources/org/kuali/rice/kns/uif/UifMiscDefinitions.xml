@@ -45,14 +45,18 @@
   
   <util:list id="ks-css">
      <value>/krad/css/ks/kuali-clean.css</value>
+	 <value>/krad/css/ks/jquery-ui-1.8.11.custom.css</value>
      <value>/krad/css/ks/form.css</value>
-     <value>/krad/css/ks/jquery-ui-1.8.5.css</value>
-     <value>/krad/css/ks/jquery.ui.theme.css</value>
      <value>/krad/css/navigationMenu.css</value>
      <value>/krad/css/kuali-stacked.css</value>
-  </util:list>    
+  </util:list>   
   
   <!-- Widgets -->
+  
+  <bean id="Tabs" parent="Tabs-parentBean"/>
+  <bean id="Tabs-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.Tabs" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tabs.jsp"/>
+  </bean>
   
   <bean id="DatePicker" parent="DatePicker-parentBean"/>
   <bean id="DatePicker-parentBean" abstract="true" class="org.kuali.rice.kns.uif.widget.DatePicker" scope="prototype">
@@ -136,7 +140,7 @@
       <property name="componentOptions">
           <map>
               <entry key="sDom" value="lfTrtip"/>   
-              <entry key="bRetrieve " value="true"/>   
+              <entry key="bRetrieve" value="true"/>   
               <entry key="oTableTools" value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;/kr-dev/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
           </map>      
       </property>

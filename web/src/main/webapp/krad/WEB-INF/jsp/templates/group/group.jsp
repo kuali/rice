@@ -22,7 +22,7 @@
   <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
   <krad:template component="${group.header}"/>
   
-  <div id="${group.id}_accordion">
+  <div id="${group.id}_group">
     <%-- group summary text --%>
     <krad:template component="${group.summaryMessageField}"/>
     <krad:template component="${group.errorsField}"/>

@@ -42,9 +42,7 @@ limitations under the License.
                 <property name="items">
                     <list>
                         <ref bean="testValidationSection1"/>
-						<ref bean="testValidationSection2"/>
-						<ref bean="testValidationSection3"/>
-						<ref bean="testValidationSection4"/>
+						<ref bean="tabTest"/>
 						<ref bean="test2Section4"/>
                     </list>
                 </property>
@@ -89,6 +87,17 @@ limitations under the License.
             <entry key="animate" value="true"/>
             <entry key="slideout" value="true"/>
         </map>
+    </property>
+</bean>
+
+<bean id="tabTest" parent="TabGroup">
+    <property name="title" value="Tab Test"/>   
+    <property name="items">
+        <list>
+            <ref bean="testValidationSection2"/>
+			<ref bean="testValidationSection3"/>
+			<ref bean="testValidationSection4"/>
+        </list>
     </property>
 </bean>
 

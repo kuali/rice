@@ -1093,7 +1093,12 @@ Tab menu
     padding: 0;
     position: relative;
     top: 2px;
+	*top: 1px;
     white-space: nowrap;
+	clear: none;
+}
+
+.ui-tabs li{
 	clear: none;
 }
 
@@ -1105,7 +1110,7 @@ Tab menu
 
 .tab-navigation-block li.ui-state-active{
 	border-bottom: 1px solid #F6F6F6;
-	background-color: #F6F6F6;
+	background: none;
 }
 
 .tab-navigation-block li.ui-state-active a{
@@ -1115,3 +1120,12 @@ Tab menu
 .ui-datepicker-trigger{ 
 	cursor: pointer;
 }
+
+/*	
+*	Watermark plugin for jQuery
+*	Version: 3.0.6
+*	Dual licensed under the MIT or GPL Version 2 licenses.
+*/
+/* Water mark text color. If it's not set, textarea displays in black instead of default gray watermark color. 
+*/
+.watermark {color:#999}

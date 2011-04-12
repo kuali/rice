@@ -73,6 +73,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
   </bean>
   
+  <bean id="TabGroup" abstract="true" parent="TabGroup-parentBean"/>
+  <bean id="TabGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.TabGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
+	  <property name="accordion">
+        <bean parent="Accordion" p:render="false"/>
+      </property>  
+	  <property name="tabsWidget">
+        <bean parent="Tabs"/>
+      </property>
+  </bean>
+  
   <bean id="NavigationGroup" abstract="true" parent="NavigationGroup-parentBean"/>
   <bean id="NavigationGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/navigationGroup.jsp"/>

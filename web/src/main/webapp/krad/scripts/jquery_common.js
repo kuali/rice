@@ -380,7 +380,7 @@ function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandI
   	var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='expand_collapse-buttons'/>";
   	var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='expand_collapse-buttons'/>";
  
-  	var groupAccordionSpanId = groupId + "_accordion";
+  	var groupAccordionSpanId = groupId + "_group";
   	
   	// perform initial open/close and insert toggle link and image
   	if (defaultOpen) {
@@ -521,3 +521,12 @@ function showFieldIcon(errorsDivId, errorCount){
 	}
 }
 
+//Applies the watermark to the input with the id specified
+function createWatermark(id, watermark){
+	jq("#" + id).watermark(watermark);
+}
+
+//Creates tabs for the tabs div id specified, this div is created by tabGroup
+function createTabs(id, options){
+	jq("#" + id + "_tabs").tabs(options);
+}

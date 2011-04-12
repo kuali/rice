@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krms.api.repository;
+package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
@@ -23,6 +23,11 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.krms.api.repository.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.PropositionParameter;
+import org.kuali.rice.krms.api.repository.RepositoryConstants;
+import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
 
 
 @WebService(name = "PropositionRepositoryService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)

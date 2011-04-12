@@ -19,8 +19,8 @@ import org.junit.Test;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
@@ -29,11 +29,11 @@ import org.kuali.rice.kim.test.KIMTestCase;
  */
 public class IdentityServiceImplTest extends KIMTestCase {
 
-	private IdentityServiceImpl identityService;
+	private IdentityService identityService;
 
 	public void setUp() throws Exception {
 		super.setUp();
-		identityService = (IdentityServiceImpl) KIMServiceLocator.getBean("kimIdentityDelegateService");
+		identityService = (IdentityService) KIMServiceLocator.getBean("kimIdentityDelegateService");
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
 	public void testGetContainedAttributes() {
 		KimPrincipal principal = identityService.getPrincipal("p1");
 		
-		KimEntity entity = identityService.getEntityImpl( principal.getEntityId() );
+		KimEntity entity = identityService.getEntityInfo( principal.getEntityId() );
 		assertNotNull( "Entity Must not be null", entity );
 		KimEntityEntityType eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityEntityType Must not be null", eet );

@@ -1,10 +1,10 @@
 package org.kuali.rice.krms.framework.engine;
 
-import org.kuali.rice.krms.api.ExecutionEnvironment;
-import org.kuali.rice.krms.api.Proposition;
-import org.kuali.rice.krms.api.ResultEvent;
-import org.kuali.rice.krms.api.Term;
-import org.kuali.rice.krms.api.TermResolutionException;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.Proposition;
+import org.kuali.rice.krms.engine.ResultEvent;
+import org.kuali.rice.krms.engine.Term;
+import org.kuali.rice.krms.engine.TermResolutionException;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
 public class ComparableTermBasedProposition<T> implements Proposition {

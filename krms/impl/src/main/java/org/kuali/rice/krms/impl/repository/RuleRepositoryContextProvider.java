@@ -2,11 +2,11 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.Map;
 
-import org.kuali.rice.krms.api.Context;
-import org.kuali.rice.krms.api.SelectionCriteria;
-import org.kuali.rice.krms.api.Term;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
+import org.kuali.rice.krms.engine.Context;
+import org.kuali.rice.krms.engine.SelectionCriteria;
+import org.kuali.rice.krms.engine.Term;
 import org.kuali.rice.krms.framework.engine.ContextProvider;
 
 public class RuleRepositoryContextProvider implements ContextProvider {

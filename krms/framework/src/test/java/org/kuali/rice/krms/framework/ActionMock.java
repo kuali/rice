@@ -18,8 +18,8 @@ package org.kuali.rice.krms.framework;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.krms.api.Action;
-import org.kuali.rice.krms.api.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.Action;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
 
 /**
  * Used to help test agendas
@@ -50,7 +50,7 @@ public class ActionMock implements Action {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krms.api.Action#executeSimulation(org.kuali.rice.krms.api.ExecutionEnvironment)
+	 * @see org.kuali.rice.krms.engine.Action#executeSimulation(org.kuali.rice.krms.engine.ExecutionEnvironment)
 	 */
 	@Override
 	public void executeSimulation(ExecutionEnvironment environment) {

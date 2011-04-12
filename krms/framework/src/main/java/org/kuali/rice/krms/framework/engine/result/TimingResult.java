@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.EventObject;
 
-import org.kuali.rice.krms.api.ExecutionEnvironment;
-import org.kuali.rice.krms.api.ResultEvent;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.ResultEvent;
 
 public class TimingResult extends EventObject implements ResultEvent {
 	private String type;

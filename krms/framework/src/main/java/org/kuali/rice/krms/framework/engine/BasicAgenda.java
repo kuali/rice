@@ -2,8 +2,8 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.Map;
 
-import org.kuali.rice.krms.api.Agenda;
-import org.kuali.rice.krms.api.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.Agenda;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
 
 public class BasicAgenda implements Agenda {
 

@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.api;
+package org.kuali.rice.krms.engine;
 
 /**
  * Interface for the engine that is used to resolve {@link Term}s.

@@ -2,10 +2,10 @@ package org.kuali.rice.krms.framework.engine;
 
 import javax.swing.event.EventListenerList;
 
-import org.kuali.rice.krms.api.ExecutionEnvironment;
-import org.kuali.rice.krms.api.ResultEvent;
-import org.kuali.rice.krms.api.ResultListener;
-import org.kuali.rice.krms.api.ExecutionOptions;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.ExecutionOptions;
+import org.kuali.rice.krms.engine.ResultEvent;
+import org.kuali.rice.krms.engine.ResultListener;
 import org.kuali.rice.krms.framework.engine.result.EngineResultListener;
 import org.kuali.rice.krms.framework.engine.result.Log4jResultListener;
 

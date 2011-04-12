@@ -2,9 +2,9 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.ExecutionEnvironment;
-import org.kuali.rice.krms.api.LogicalOperator;
-import org.kuali.rice.krms.api.Proposition;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.LogicalOperator;
+import org.kuali.rice.krms.engine.Proposition;
 
 public class CompoundProposition implements Proposition {
 

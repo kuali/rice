@@ -1,6 +1,6 @@
 package org.kuali.rice.krms.framework.engine;
 
-import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.engine.Term;
 
 // TODO: remove?  ComparableTermBasedProposition does this generically
 public class StringTermBasedProposition extends ComparableTermBasedProposition<String> {

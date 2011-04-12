@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.krms.api.TermResolutionEngine;
-import org.kuali.rice.krms.api.TermResolver;
-import org.kuali.rice.krms.api.EngineResults;
-import org.kuali.rice.krms.api.ExecutionEnvironment;
-import org.kuali.rice.krms.api.SelectionCriteria;
-import org.kuali.rice.krms.api.Term;
-import org.kuali.rice.krms.api.TermResolutionException;
+import org.kuali.rice.krms.engine.EngineResults;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.SelectionCriteria;
+import org.kuali.rice.krms.engine.Term;
+import org.kuali.rice.krms.engine.TermResolutionEngine;
+import org.kuali.rice.krms.engine.TermResolutionException;
+import org.kuali.rice.krms.engine.TermResolver;
 
 public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 

@@ -23,7 +23,7 @@ import javax.xml.bind.Unmarshaller
 import org.junit.Test
 import org.junit.Assert
 
-import org.kuali.rice.krms.api.LogicalOperator
+import org.kuali.rice.krms.engine.LogicalOperator;
 
 /**
  * This is a description of what this class does - dseibert don't forget to fill this in. 

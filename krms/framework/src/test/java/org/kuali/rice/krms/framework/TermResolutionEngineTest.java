@@ -16,11 +16,11 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krms.api.TermResolutionEngine;
-import org.kuali.rice.krms.api.Term;
-import org.kuali.rice.krms.api.TermResolutionException;
-import org.kuali.rice.krms.api.TermResolver;
-import org.kuali.rice.krms.api.TermSpecification;
+import org.kuali.rice.krms.engine.Term;
+import org.kuali.rice.krms.engine.TermResolutionEngine;
+import org.kuali.rice.krms.engine.TermResolutionException;
+import org.kuali.rice.krms.engine.TermResolver;
+import org.kuali.rice.krms.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
 import org.springframework.util.CollectionUtils;
 

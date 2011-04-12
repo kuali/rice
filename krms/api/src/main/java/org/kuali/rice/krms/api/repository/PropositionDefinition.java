@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
-import org.kuali.rice.krms.api.LogicalOperator;
+import org.kuali.rice.krms.engine.LogicalOperator;
 
 /**
  * Concrete model object implementation of KRMS Proposition. 

@@ -3,8 +3,8 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.krms.api.EngineResults;
-import org.kuali.rice.krms.api.ResultEvent;
+import org.kuali.rice.krms.engine.EngineResults;
+import org.kuali.rice.krms.engine.ResultEvent;
 
 public class EngineResultsImpl implements EngineResults {
 	private List<ResultEvent> results = new ArrayList<ResultEvent>();

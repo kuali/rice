@@ -2,8 +2,8 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.Action;
-import org.kuali.rice.krms.api.Proposition;
+import org.kuali.rice.krms.engine.Action;
+import org.kuali.rice.krms.engine.Proposition;
 
 public class FalseTriggeredRule extends BasicRule {
 

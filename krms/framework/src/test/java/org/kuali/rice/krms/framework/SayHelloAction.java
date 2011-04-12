@@ -1,8 +1,8 @@
 package org.kuali.rice.krms.framework;
 
-import org.kuali.rice.krms.api.Action;
-import org.kuali.rice.krms.api.ExecutionEnvironment;
-import org.kuali.rice.krms.api.ResultEvent;
+import org.kuali.rice.krms.engine.Action;
+import org.kuali.rice.krms.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.engine.ResultEvent;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 

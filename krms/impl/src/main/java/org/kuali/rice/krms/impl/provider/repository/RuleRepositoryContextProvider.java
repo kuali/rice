@@ -16,7 +16,6 @@ public class RuleRepositoryContextProvider implements ContextProvider {
 	
 	@Override
 	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
-		ruleRepositoryService.selectContext()
 //		ContextDefinition contextDefinition = ruleRepositoryService.selectContext(selectionCriteria.getContextQualifiers());
 //		return loadContextFromDefinition(contextDefinition);
 		return null; // for now
@@ -32,7 +31,7 @@ public class RuleRepositoryContextProvider implements ContextProvider {
 	}
 	
 	protected ContextSelectionCriteria constructContextSelectionCriteria(SelectionCriteria selectionCriteria) {
-		
+		return null;
 	}
 
 }

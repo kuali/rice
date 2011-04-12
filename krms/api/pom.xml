@@ -30,4 +30,26 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-java2ws-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>ruleRepositoryService-wsdl</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.kuali.rice.krms.api.repository.RuleRepositoryService</className>
+							<outputFile>${project.build.directory}/generated-sources/wsdl/RuleRepositoryService.wsdl</outputFile>
+							<serviceName>RuleRepositoryService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

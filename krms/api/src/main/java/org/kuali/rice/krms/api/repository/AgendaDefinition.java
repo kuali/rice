@@ -2,7 +2,6 @@ package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -11,14 +10,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -34,34 +34,41 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 @XmlType(name = AgendaDefinition.Constants.TYPE_NAME, propOrder = {
 		AgendaDefinition.Elements.AGENDA_ID,
 		AgendaDefinition.Elements.NAME,
-		AgendaDefinition.Elements.NAMESPACE,
+		AgendaDefinition.Elements.NAMESPACE_CODE,
 		AgendaDefinition.Elements.TYPE_ID,
 		AgendaDefinition.Elements.CONTEXT_ID,
 		AgendaDefinition.Elements.FIRST_ITEM_ID, 
 		AgendaDefinition.Elements.ATTRIBUTES,
-		"_elements"
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class AgendaDefinition implements AgendaDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
-	@XmlElement(name = Elements.AGENDA_ID, required=true)
-	private String agendaId;
-	@XmlElement(name = Elements.NAME, required=true)
-	private String name;
-	@XmlElement(name = Elements.NAMESPACE, required=true)
-	private String namespace;
-	@XmlElement(name = Elements.TYPE_ID, required=true)
-	private String typeId;
-	@XmlElement(name = Elements.CONTEXT_ID, required=true)
-	private String contextId;
-	@XmlElement(name = Elements.FIRST_ITEM_ID, required=true)
-	private String firstItemId;
-	@XmlElement(name = Elements.ATTRIBUTES, required=false)
+	@XmlElement(name = Elements.AGENDA_ID, required = false)
+	private final String agendaId;
+	
+	@XmlElement(name = Elements.NAME, required = true)
+	private final String name;
+	
+	@XmlElement(name = Elements.NAMESPACE_CODE, required = true)
+	private final String namespaceCode;
+	
+	@XmlElement(name = Elements.TYPE_ID, required = false)
+	private final String typeId;
+	
+	@XmlElement(name = Elements.CONTEXT_ID, required = true)
+	private final String contextId;
+	
+	@XmlElement(name = Elements.FIRST_ITEM_ID, required = false)
+	private final String firstItemId;
+	
+	@XmlElementWrapper(name = Elements.ATTRIBUTES)
+	@XmlElement(name = Elements.ATTRIBUTE, required = false)
 	private List<AgendaAttribute> attributes;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<org.w3c.dom.Element> _elements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	/** 
      * This constructor should never be called.  
@@ -70,7 +77,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     private AgendaDefinition() {
     	this.agendaId = null;
     	this.name = null;
-    	this.namespace = null;
+    	this.namespaceCode = null;
     	this.typeId = null;
     	this.contextId = null;
     	this.firstItemId = null;
@@ -86,7 +93,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     private AgendaDefinition(Builder builder) {
         this.agendaId = builder.getAgendaId();
         this.name = builder.getName();
-        this.namespace = builder.getNamespace();
+        this.namespaceCode = builder.getNamespaceCode();
         this.typeId = builder.getTypeId();
         this.contextId = builder.getContextId();
         this.firstItemId = builder.getFirstItemId();
@@ -108,8 +115,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	}
 
 	@Override
-	public String getNamespace() {
-		return this.namespace;
+	public String getNamespaceCode() {
+		return this.namespaceCode;
 	}
 
 	@Override
@@ -137,9 +144,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
      */
     public static class Builder implements AgendaDefinitionContract, ModelBuilder, Serializable {
 		
-        private String agendaId;
+        private static final long serialVersionUID = -8862851720709537839L;
+        
+		private String agendaId;
         private String name;
-        private String namespace;
+        private String namespaceCode;
         private String typeId;
         private String contextId;
         private String firstItemId;
@@ -148,16 +157,16 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String agendaId, String name, String namespace, String typeId, String contextId) {
+        private Builder(String agendaId, String name, String namespaceCode, String typeId, String contextId) {
             setAgendaId(agendaId);
             setName(name);
-            setNamespace(namespace);
+            setNamespaceCode(namespaceCode);
             setTypeId(typeId);
             setContextId(contextId);
         }
         
-        public static Builder create(String agendaId, String name, String namespace, String typeId, String contextId){
-        	return new Builder(agendaId, name, namespace, typeId, contextId);
+        public static Builder create(String agendaId, String name, String namespaceCode, String typeId, String contextId){
+        	return new Builder(agendaId, name, namespaceCode, typeId, contextId);
         }
         /**
          * Creates a builder by populating it with data from the given {@link AgendaDefinitionContract}.
@@ -177,7 +186,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         		}
         	}
             Builder builder =  new Builder(contract.getAgendaId(), contract.getName(),
-            		contract.getNamespace(), contract.getTypeId(), contract.getContextId());
+            		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
             builder.setFirstItemId( contract.getFirstItemId() );
             builder.setAttributes( attrBuilderList );
             return builder;
@@ -204,11 +213,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 			this.name = name;
 		}
      
-        public void setNamespace(String namespace) {
-            if (StringUtils.isBlank(namespace)) {
+        public void setNamespaceCode(String namespaceCode) {
+            if (StringUtils.isBlank(namespaceCode)) {
                 throw new IllegalArgumentException("namespace is blank");
             }
-			this.namespace = namespace;
+			this.namespaceCode = namespaceCode;
 		}
      
 		public void setTypeId(String typeId) {
@@ -246,8 +255,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		}
 
 		@Override
-		public String getNamespace() {
-			return namespace;
+		public String getNamespaceCode() {
+			return namespaceCode;
 		}
 
 		@Override
@@ -312,11 +321,12 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	public static class Elements {
 		final static String AGENDA_ID = "agendaId";
 		final static String NAME = "name";
-		final static String NAMESPACE = "namespace";
+		final static String NAMESPACE_CODE = "namespaceCode";
 		final static String TYPE_ID = "typeId";
 		final static String CONTEXT_ID = "contextId";
 		final static String FIRST_ITEM_ID = "firstItemId";
-		final static String ATTRIBUTES = "attribute";
+		final static String ATTRIBUTES = "attributes";
+		final static String ATTRIBUTE = "attribute";
 	}
 
 }

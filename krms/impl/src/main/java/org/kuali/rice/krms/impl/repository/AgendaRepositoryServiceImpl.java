@@ -50,7 +50,7 @@ public final class AgendaRepositoryServiceImpl implements AgendaRepositoryServic
 
 	   AgendaDefinitionBo bo = new AgendaDefinitionBo();
 	   bo.setAgendaId( im.getAgendaId() );
-	   bo.setNamespace( im.getNamespace() );
+	   bo.setNamespace( im.getNamespaceCode() );
 	   bo.setName( im.getName() );
 	   bo.setTypeId( im.getTypeId() );
 	   bo.setContextId( im.getContextId() );

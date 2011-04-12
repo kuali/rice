@@ -31,7 +31,7 @@ public interface AgendaDefinitionContract {
 	 * </p>
 	 * @return the namespace of the Agenda
 	 */
-	public String getNamespace();
+	public String getNamespaceCode();
 
 	/**
 	 * This is the KrmsType of the Agenda

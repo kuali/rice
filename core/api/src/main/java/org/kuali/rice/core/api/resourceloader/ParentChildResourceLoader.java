@@ -48,18 +48,18 @@ class ParentChildResourceLoader implements ResourceLoader {
 
 	@Override
 	public <T> T getObject(ObjectDefinition definition) {
-		T object = child.getObject(definition);
+		T object = child.<T>getObject(definition);
     	if (object == null) {
-    		object = parent.getObject(definition);
+    		object = parent.<T>getObject(definition);
     	}
     	return object;
 	}
 
 	@Override
 	public <T> T getService(QName qname) {
-		T service = child.getService(qname);
+		T service = child.<T>getService(qname);
 		if (service == null) {
-			service = parent.getService(qname);
+			service = parent.<T>getService(qname);
 		}
 		return service;
     }

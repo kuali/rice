@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.krms.impl.repository;
 
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.krms.api.repository.ActionDefinition;
+import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleAttribute;
 
@@ -26,7 +27,7 @@ import java.util.*;
 
 public final class RuleBoServiceImpl implements RuleBoService {
 
-    private BusinessObjectService businessObjectService;
+	private BusinessObjectService businessObjectService;
 
 	/**
 	 * This overridden method ...
@@ -35,8 +36,15 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	 */
 	@Override
 	public void createRule(RuleDefinition rule) {
-		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		
+		if (rule == null){
+			throw new IllegalArgumentException("rule is null");
+		}
+		final String ruleIdKey = rule.getRuleId();
+		final RuleDefinition existing = getRuleByRuleId(ruleIdKey);
+		if (existing != null){
+			throw new IllegalStateException("the rule to create already exists: " + rule);			
+		}	
+		businessObjectService.save(from(rule));
 	}
 
 	/**
@@ -46,8 +54,25 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	 */
 	@Override
 	public void updateRule(RuleDefinition rule) {
-		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		
+		if (rule == null){
+			throw new IllegalArgumentException("rule is null");
+		}
+		final String ruleIdKey = rule.getRuleId();
+		final RuleDefinition existing = getRuleByRuleId(ruleIdKey);
+		if (existing == null) {
+			throw new IllegalStateException("the rule does not exist: " + rule);
+		}
+		final RuleDefinition toUpdate;
+		if (!existing.getRuleId().equals(rule.getRuleId())){
+			final RuleDefinition.Builder builder = RuleDefinition.Builder.create(rule);
+			builder.setRuleId(existing.getRuleId());
+			toUpdate = builder.build();
+		} else {
+			toUpdate = rule;
+		}
+
+		businessObjectService.save(from(toUpdate));
+
 	}
 
 	/**
@@ -57,8 +82,11 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	 */
 	@Override
 	public RuleDefinition getRuleByRuleId(String ruleId) {
-		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		return null;
+		if (StringUtils.isBlank(ruleId)){
+			return null;			
+		}
+		RuleBo bo = businessObjectService.findBySinglePrimaryKey(RuleBo.class, ruleId);
+		return to(bo);
 	}
 
 	/**
@@ -67,9 +95,17 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRuleAttribute(org.kuali.rice.krms.api.repository.RuleAttribute)
 	 */
 	@Override
-	public void createRuleAttribute(RuleAttribute ruleAttribute) {
-		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		
+	public void createRuleAttribute(RuleAttribute attribute) {
+		if (attribute == null){
+			throw new IllegalArgumentException("rule attribute is null");
+		}
+		final String attrIdKey = attribute.getId();
+		final RuleAttribute existing = getRuleAttributeById(attrIdKey);
+		if (existing != null){
+			throw new IllegalStateException("the rule attribute to create already exists: " + attribute);			
+		}
+
+		businessObjectService.save(RuleAttributeBo.from(attribute));		
 	}
 
 	/**
@@ -78,67 +114,126 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRuleAttribute(org.kuali.rice.krms.api.repository.RuleAttribute)
 	 */
 	@Override
-	public void updateRuleAttribute(RuleAttribute ruleAttribute) {
-		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		
+	public void updateRuleAttribute(RuleAttribute attribute) {
+		if (attribute == null){
+			throw new IllegalArgumentException("rule attribute is null");
+		}
+		final String attrIdKey = attribute.getId();
+		final RuleAttribute existing = getRuleAttributeById(attrIdKey);
+		if (existing == null) {
+			throw new IllegalStateException("the rule attribute does not exist: " + attribute);
+		}
+		final RuleAttribute toUpdate;
+		if (!existing.getId().equals(attribute.getRuleId())){
+			final RuleAttribute.Builder builder = RuleAttribute.Builder.create(attribute);
+			builder.setId(existing.getId());
+			toUpdate = builder.build();
+		} else {
+			toUpdate = attribute;
+		}
+
+		businessObjectService.save(RuleAttributeBo.from(toUpdate));
 	}
 
 	/**
-	* Converts a mutable bo to it's immutable counterpart
-	* @param bo the mutable business object
-	* @return the immutable object
-	*/
-   public RuleDefinition to(RuleBo bo) {
-	   if (bo == null) { return null; }
-	   // TODO implement
-	   return null;
-   }
+	 * This method ...
+	 * 
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#getRuleAttributeById(java.lang.String)
+	 */
+	public RuleAttribute getRuleAttributeById(String attrId) {
+		if (StringUtils.isBlank(attrId)){
+			return null;			
+		}
+		RuleAttributeBo bo = businessObjectService.findBySinglePrimaryKey(RuleAttributeBo.class, attrId);
+		return RuleAttributeBo.to(bo);
+	}
 
-   /**
-	* Converts a immutable object to it's mutable bo counterpart
-	* TODO: move to() and from() to impl service
-	* @param im immutable object
-	* @return the mutable bo
-	*/
-   public RuleBo from(RuleDefinition im) {
-	   if (im == null) { return null; }
+	/**
+	 * Converts a mutable bo to it's immutable counterpart
+	 * @param bo the mutable business object
+	 * @return the immutable object
+	 */
+	public RuleDefinition to(RuleBo bo) {
+		if (bo == null) { return null; }
+		RuleDefinition.Builder builder = RuleDefinition.Builder.create(
+				bo.getRuleId(), bo.getName(), bo.getNamespace(),
+				bo.getTypeId(), bo.getPropId());
+		if (bo.getProposition() != null){
+			PropositionDefinition.Builder propBuilder = PropositionDefinition.Builder.create(bo.getProposition());
+			builder.setProposition(propBuilder);
+		}
+		List <ActionDefinition.Builder> actionList = new ArrayList<ActionDefinition.Builder>();
+		if (bo.getActions() != null){
+			for (ActionBo action : bo.getActions()) {
+				ActionDefinition.Builder actionBuilder = ActionDefinition.Builder.create(action);
+				actionList.add(actionBuilder);
+			}
+		}
+		builder.setActions(actionList);			
+		List<RuleAttribute.Builder> attrBuilderList = new ArrayList <RuleAttribute.Builder>();
+		if (bo.getAttributes() != null){
+			for (RuleAttributeBo attrBo : bo.getAttributes() ){
+				RuleAttribute.Builder attrBuilder = 
+					RuleAttribute.Builder.create(attrBo);
+				attrBuilderList.add(attrBuilder);
+			}
+		}
+		builder.setAttributes(attrBuilderList);
+		return builder.build();
+	}
 
-	   RuleBo bo = new RuleBo();
-	   bo.setRuleId( im.getRuleId() );
-	   bo.setNamespace( im.getNamespace() );
-	   bo.setName( im.getName() );
-	   bo.setTypeId( im.getTypeId() );
-	   List<RuleAttributeBo> attrList = new ArrayList<RuleAttributeBo>();
-	   for (RuleAttribute attr : im.getAttributes()){
-		   attrList.add ( RuleAttributeBo.from(attr) );
-	   }
-	   bo.setAttributes(attrList);
-	   return bo;
-   }
- 
+	/**
+	 * Converts a immutable object to it's mutable bo counterpart
+	 * TODO: move to() and from() to impl service
+	 * @param im immutable object
+	 * @return the mutable bo
+	 */
+	public RuleBo from(RuleDefinition im) {
+		if (im == null) { return null; }
 
-    /**
-     * Sets the businessObjectService attribute value.
-     *
-     * @param businessObjectService The businessObjectService to set.
-     */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
+		RuleBo bo = new RuleBo();
+		bo.setRuleId( im.getRuleId() );
+		bo.setNamespace( im.getNamespace() );
+		bo.setName( im.getName() );
+		bo.setTypeId( im.getTypeId() );
+		bo.setPropId( im.getPropId() );
+		bo.setProposition(PropositionBo.from(im.getProposition()));
+		List<ActionBo> actionList = new ArrayList<ActionBo>();
+		for (ActionDefinition action : im.getActions()){
+			actionList.add ( ActionBo.from(action) );
+		}
+		bo.setActions(actionList);		
+		List<RuleAttributeBo> attrList = new ArrayList<RuleAttributeBo>();
+		for (RuleAttribute attr : im.getAttributes()){
+			attrList.add ( RuleAttributeBo.from(attr) );
+		}
+		bo.setAttributes(attrList);
+		return bo;
+	}
 
-    /**
-     * Converts a List<RuleBo> to an Unmodifiable List<Rule>
-     *
-     * @param RuleBos a mutable List<RuleBo> to made completely immutable.
-     * @return An unmodifiable List<Rule>
-     */
-    List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos) {
-        ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
-        for (RuleBo bo : ruleBos) {
-            RuleDefinition rule = to(bo);
-            rules.add(rule);
-        }
-        return Collections.unmodifiableList(rules);
-    }
+
+	/**
+	 * Sets the businessObjectService attribute value.
+	 *
+	 * @param businessObjectService The businessObjectService to set.
+	 */
+	public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
+		this.businessObjectService = businessObjectService;
+	}
+
+	/**
+	 * Converts a List<RuleBo> to an Unmodifiable List<Rule>
+	 *
+	 * @param RuleBos a mutable List<RuleBo> to made completely immutable.
+	 * @return An unmodifiable List<Rule>
+	 */
+	public List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos) {
+		ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
+		for (RuleBo bo : ruleBos) {
+			RuleDefinition rule = to(bo);
+			rules.add(rule);
+		}
+		return Collections.unmodifiableList(rules);
+	}
 
 }

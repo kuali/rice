@@ -166,8 +166,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
         	toUpdate = attribute;
         }
         
-        businessObjectService.save(ActionAttributeBo.from(toUpdate));
-		
+        businessObjectService.save(ActionAttributeBo.from(toUpdate));		
 	}
 	
 	
@@ -191,7 +190,6 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	 */
 	public ActionDefinition to(ActionBo bo) {
 		if (bo == null) { return null; }
-		// TODO implement
 		ActionDefinition.Builder builder = ActionDefinition.Builder.create( bo.getActionId(), bo.getName(), bo.getNamespace(),
 				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
 		builder.setDescription(bo.getDescription());

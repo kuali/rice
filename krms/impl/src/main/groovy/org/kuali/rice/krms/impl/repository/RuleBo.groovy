@@ -17,7 +17,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	def String propId
 
 	def PropositionBo proposition
-	def List<ActionDefinition> actions	
+	def List<ActionBo> actions	
 	def List<RuleAttributeBo> attributes
 	
 	/**

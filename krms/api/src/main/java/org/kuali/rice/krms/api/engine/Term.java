@@ -1,5 +1,6 @@
 package org.kuali.rice.krms.api.engine;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -102,13 +103,17 @@ public final class Term implements Comparable<Term> {
 		return getClass().getSimpleName()+"("+specification.toString() + sb.toString() + ")";
 	}
 	
-	private static class TreeMapComparator<T extends Comparable, V extends Comparable> implements Comparator<Map<T,V>> {
+	@SuppressWarnings("rawtypes")
+	private static class TreeMapComparator<T extends Comparable, V extends Comparable> implements Comparator<Map<T,V>>, Serializable {
 		
+		private static final long serialVersionUID = 1L;
+
 		/**
-		 * This overridden method ...
+		 * This overridden method compares two {@link TreeMap}s whose keys and elements are both {@link Comparable}
 		 * 
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
+		@SuppressWarnings("unchecked")
 		public int compare(Map<T,V> o1, Map<T,V> o2) {
 			if (CollectionUtils.isEmpty(o1)) {
 				if (CollectionUtils.isEmpty(o2)) return 0;
@@ -117,6 +122,8 @@ public final class Term implements Comparable<Term> {
 				return 1;
 			}
 			
+			// neither one is empty.  Iterate through both.
+
 			Iterator<Entry<T,V>> o1Iter = o1.entrySet().iterator();
 			Iterator<Entry<T,V>> o2Iter = o2.entrySet().iterator();
 			
@@ -132,17 +139,21 @@ public final class Term implements Comparable<Term> {
 				T o2ElemKey = o2Elem.getKey();
 				if (o1ElemKey == null) {
 					if (o2ElemKey != null) return -1;
+					// if they're both null, fall through
+				} else {
+					int elemKeyCompare = o1ElemKey.compareTo(o2ElemKey);
+					if (elemKeyCompare != 0) return elemKeyCompare;
 				}
-				int elemKeyCompare = o1ElemKey.compareTo(o2ElemKey);
-				if (elemKeyCompare != 0) return elemKeyCompare;
 				
 				V o1ElemValue = o1Elem.getValue();
 				V o2ElemValue = o2Elem.getValue();
 				if (o1ElemValue == null) {
 					if (o2ElemValue != null) return -1;
+					// if they're both null, fall through
+				} else {
+					int elemValueCompare = o1ElemValue.compareTo(o2ElemValue);
+					if (elemValueCompare != 0) return elemValueCompare;
 				}
-				int elemValueCompare = o1ElemValue.compareTo(o2ElemValue);
-				if (elemValueCompare != 0) return elemValueCompare;
 			}
 			
 			if (o1Iter.hasNext()) return 1;

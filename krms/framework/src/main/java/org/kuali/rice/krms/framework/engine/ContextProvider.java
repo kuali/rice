@@ -2,9 +2,9 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.Map;
 
-import org.kuali.rice.krms.api.Asset;
 import org.kuali.rice.krms.api.Context;
 import org.kuali.rice.krms.api.SelectionCriteria;
+import org.kuali.rice.krms.api.Term;
 
 /**
  * Loads a {@link Context} for the given set of criteria.  Applications who
@@ -38,6 +38,6 @@ public interface ContextProvider {
 	 * 
 	 * @return the context which matches the given criteria, or null if no context matches
 	 */
-	public Context loadContext(SelectionCriteria selectionCriteria, Map<Asset, Object> facts, Map<String, String> executionOptions);
+	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions);
 	
 }

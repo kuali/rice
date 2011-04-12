@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krms.api.Agenda;
-import org.kuali.rice.krms.api.AssetResolver;
+import org.kuali.rice.krms.api.TermResolver;
 import org.kuali.rice.krms.api.Context;
 import org.kuali.rice.krms.api.ExecutionEnvironment;
 
@@ -14,18 +14,18 @@ public class BasicContext implements Context {
 	
 	private Map<String, String> qualifiers;
 	private List<Agenda> agendas;
-	private List<AssetResolver<?>> assetResolvers;
+	private List<TermResolver<?>> termResolvers;
 	
-	public BasicContext(Map<String, String> qualifiers, List<Agenda> agendas, List<AssetResolver<?>> assetResolvers) {
+	public BasicContext(Map<String, String> qualifiers, List<Agenda> agendas, List<TermResolver<?>> termResolvers) {
 		this.qualifiers = qualifiers;
 		this.agendas = agendas;
-		this.assetResolvers = assetResolvers;
+		this.termResolvers = termResolvers;
 	}
 	
 	@Override
 	public void execute(ExecutionEnvironment environment) {
-		if (assetResolvers != null) for (AssetResolver<?> assetResolver : assetResolvers) {
-			environment.addAssetResolver(assetResolver);
+		if (termResolvers != null) for (TermResolver<?> termResolver : termResolvers) {
+			environment.addTermResolver(termResolver);
 		}
 		List<Agenda> matchingAgendas = findMatchingAgendas(environment);
 		for (Agenda matchingAgenda : matchingAgendas) {
@@ -55,8 +55,8 @@ public class BasicContext implements Context {
 		return true;
 	}
 	
-	public List<AssetResolver<?>> getAssetResolvers() {
-		return Collections.unmodifiableList(assetResolvers);
+	public List<TermResolver<?>> getTermResolvers() {
+		return Collections.unmodifiableList(termResolvers);
 	}
 
 }

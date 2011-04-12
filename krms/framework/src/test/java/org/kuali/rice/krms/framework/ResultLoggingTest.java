@@ -11,8 +11,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.kuali.rice.krms.api.Action;
 import org.kuali.rice.krms.api.Agenda;
-import org.kuali.rice.krms.api.Asset;
-import org.kuali.rice.krms.api.AssetResolver;
+import org.kuali.rice.krms.api.TermResolver;
 import org.kuali.rice.krms.api.Context;
 import org.kuali.rice.krms.api.EngineResults;
 import org.kuali.rice.krms.api.ExecutionOptions;
@@ -20,6 +19,8 @@ import org.kuali.rice.krms.api.LogicalOperator;
 import org.kuali.rice.krms.api.Proposition;
 import org.kuali.rice.krms.api.Rule;
 import org.kuali.rice.krms.api.SelectionCriteria;
+import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.api.TermSpecification;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.engine.BasicContext;
@@ -38,8 +39,8 @@ public class ResultLoggingTest {
 	public void integrationTest() {
 
 		// build a simple rule
-		Proposition prop1 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostAsset, Integer.valueOf(1));
-		Proposition prop2 = new ComparableTermBasedProposition(ComparisonOperator.LESS_THAN, totalCostAsset, Integer.valueOf(1000));
+		Proposition prop1 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1));
+		Proposition prop2 = new ComparableTermBasedProposition(ComparisonOperator.LESS_THAN, totalCostTerm, Integer.valueOf(1000));
 		CompoundProposition compoundProp1 = new CompoundProposition(LogicalOperator.AND, Arrays.asList(prop1, prop2));
 		
 		Action action1 = new SayHelloAction();
@@ -51,7 +52,7 @@ public class ResultLoggingTest {
 		Map<String, String> contextQualifiers = new HashMap<String, String>();
 		contextQualifiers.put("docTypeName", "Proposal");
 		
-		List<AssetResolver<?>> testResolvers = new ArrayList<AssetResolver<?>>();
+		List<TermResolver<?>> testResolvers = new ArrayList<TermResolver<?>>();
 		testResolvers.add(testResolver);
 		
 		Context context = new BasicContext(contextQualifiers, Arrays.asList(agenda), testResolvers);
@@ -67,25 +68,30 @@ public class ResultLoggingTest {
 		xOptions.put(ExecutionOptions.LOG_EXECUTION.toString(), Boolean.toString(true));
 		
 		LOG.init();
-		EngineResults results = engine.execute(selectionCriteria, new HashMap<Asset, Object>(), xOptions);
+		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), xOptions);
 		
 	}
 	
-	private static final Asset totalCostAsset = new Asset("totalCost","Integer");
+	private static final Term totalCostTerm = new Term(new TermSpecification("totalCost","Integer"));
 	
-	private static final AssetResolver<Integer> testResolver = new AssetResolver<Integer>(){
+	private static final TermResolver<Integer> testResolver = new TermResolver<Integer>(){
 		
 		@Override
 		public int getCost() { return 1; }
 		
 		@Override
-		public Asset getOutput() { return totalCostAsset; }
+		public TermSpecification getOutput() { return totalCostTerm.getSpecification(); }
 		
 		@Override
-		public Set<Asset> getPrerequisites() { return Collections.emptySet(); }
+		public Set<TermSpecification> getPrerequisites() { return Collections.emptySet(); }
 		
 		@Override
-		public Integer resolve(Map<Asset, Object> resolvedPrereqs) {
+		public Set<String> getParameterNames() {
+			return Collections.emptySet();
+		}
+		
+		@Override
+		public Integer resolve(Map<TermSpecification, Object> resolvedPrereqs, Map<String, String> parameters) {
 			return 5;
 		}
 	};

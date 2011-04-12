@@ -14,14 +14,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krms.api.Action;
 import org.kuali.rice.krms.api.Agenda;
-import org.kuali.rice.krms.api.Asset;
-import org.kuali.rice.krms.api.AssetResolver;
+import org.kuali.rice.krms.api.TermResolver;
 import org.kuali.rice.krms.api.Context;
 import org.kuali.rice.krms.api.EngineResults;
 import org.kuali.rice.krms.api.ExecutionOptions;
 import org.kuali.rice.krms.api.Proposition;
 import org.kuali.rice.krms.api.Rule;
 import org.kuali.rice.krms.api.SelectionCriteria;
+import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.api.TermSpecification;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.engine.BasicContext;
@@ -100,11 +101,11 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 	/**
 	 * @param agenda
 	 */
-	private void execute(Agenda agenda, AssetResolver ... assetResolvers) {
+	private void execute(Agenda agenda, TermResolver ... termResolvers) {
 		Map<String, String> contextQualifiers = new HashMap<String, String>();
 		contextQualifiers.put("docTypeName", "Proposal");
 		
-		List<AssetResolver<?>> testResolvers = Arrays.<AssetResolver<?>>asList(assetResolvers);
+		List<TermResolver<?>> testResolvers = Arrays.<TermResolver<?>>asList(termResolvers);
 		
 		Context context = new BasicContext(contextQualifiers, Arrays.asList(agenda), testResolvers);
 		ContextProvider contextProvider = new ManualContextProvider(context);
@@ -119,26 +120,26 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 		xOptions.put(ExecutionOptions.LOG_EXECUTION.toString(), Boolean.toString(true));
 		
 		LOG.init();
-		EngineResults results = engine.execute(selectionCriteria, new HashMap<Asset, Object>(), xOptions);
+		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), xOptions);
 	}
 	
-	private void assertRuleTrue(List<Float> assetValue,
+	private void assertRuleTrue(List<Float> termValue,
 			CollectionOperator collectionOper,
 			ComparisonOperator comparisonOper, Float compareValue) {
-		assertRule(assetValue, collectionOper, comparisonOper, compareValue, true);
+		assertRule(termValue, collectionOper, comparisonOper, compareValue, true);
 	}
 	
-	private void assertRuleFalse(List<Float> assetValue,
+	private void assertRuleFalse(List<Float> termValue,
 			CollectionOperator collectionOper,
 			ComparisonOperator comparisonOper, Float compareValue) {
-		assertRule(assetValue, collectionOper, comparisonOper, compareValue, false);
+		assertRule(termValue, collectionOper, comparisonOper, compareValue, false);
 	}
 	
-	private void assertRule(List<Float> assetValue,
+	private void assertRule(List<Float> termValue,
 			CollectionOperator collectionOper,
 			ComparisonOperator comparisonOper, Float compareValue, boolean assertTrue) {
 		
-		boolean actionFired = executeTestAgenda(assetValue, collectionOper, comparisonOper, compareValue).actionFired();
+		boolean actionFired = executeTestAgenda(termValue, collectionOper, comparisonOper, compareValue).actionFired();
 		
 		if (assertTrue) { 
 			assertTrue(actionFired); 
@@ -152,19 +153,19 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 	/**
 	 * This method ...
 	 * 
-	 * @param assetValue
+	 * @param termValue
 	 * @param collectionOper
 	 * @param comparisonOper
 	 * @param compareValue
 	 * @return
 	 */
-	private ActionMock executeTestAgenda(List<Float> assetValue,
+	private ActionMock executeTestAgenda(List<Float> termValue,
 			CollectionOperator collectionOper,
 			ComparisonOperator comparisonOper, Float compareValue) {
-		Asset expensesAsset = new Asset("expenses","Collection<Float>");
-		AssetResolver<Collection<Float>> expensesResolver = new AssetResolverMock<Collection<Float>>(expensesAsset, assetValue); 
+		Term expensesTerm = new Term(new TermSpecification("expenses","Collection<Float>"));
+		TermResolver<Collection<Float>> expensesResolver = new TermResolverMock<Collection<Float>>(expensesTerm.getSpecification(), termValue); 
 		
-		Proposition prop1 = new CollectionOfComparablesTermBasedProposition(collectionOper, comparisonOper, expensesAsset, compareValue);
+		Proposition prop1 = new CollectionOfComparablesTermBasedProposition(collectionOper, comparisonOper, expensesTerm, compareValue);
 		ActionMock prop1Action = new ActionMock("prop1Action");
 		
 		Rule rule = new BasicRule("ALL", prop1, Collections.<Action>singletonList(prop1Action));

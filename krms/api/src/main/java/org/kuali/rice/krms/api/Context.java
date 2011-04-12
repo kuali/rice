@@ -21,7 +21,7 @@ public interface Context {
 
 	void execute(ExecutionEnvironment environment);
 	
-	List<AssetResolver<?>> getAssetResolvers();
+	List<TermResolver<?>> getTermResolvers();
 	
 	boolean appliesTo(ExecutionEnvironment environment);
 	

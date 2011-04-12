@@ -6,12 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 import org.kuali.rice.krms.api.Agenda;
-import org.kuali.rice.krms.api.Asset;
-import org.kuali.rice.krms.api.AssetResolver;
+import org.kuali.rice.krms.api.TermResolver;
 import org.kuali.rice.krms.api.Context;
 import org.kuali.rice.krms.api.EngineResults;
 import org.kuali.rice.krms.api.ExecutionOptions;
@@ -19,6 +17,8 @@ import org.kuali.rice.krms.api.LogicalOperator;
 import org.kuali.rice.krms.api.Proposition;
 import org.kuali.rice.krms.api.Rule;
 import org.kuali.rice.krms.api.SelectionCriteria;
+import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.api.TermSpecification;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.engine.BasicContext;
@@ -36,9 +36,9 @@ public class KRMSTest {
 	@Test
 	public void compoundPropositionTest() {
 
-		Proposition prop1 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostAsset, Integer.valueOf(1));
-		Proposition prop2 = new ComparableTermBasedProposition(ComparisonOperator.LESS_THAN, totalCostAsset, Integer.valueOf(1000));
-		Proposition prop3 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostAsset, Integer.valueOf(1000));
+		Proposition prop1 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1));
+		Proposition prop2 = new ComparableTermBasedProposition(ComparisonOperator.LESS_THAN, totalCostTerm, Integer.valueOf(1000));
+		Proposition prop3 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1000));
 		CompoundProposition compoundProp1 = new CompoundProposition(LogicalOperator.AND, Arrays.asList(prop1, prop2, prop3));
 		
 		Rule rule = new BasicRule("InBetween",compoundProp1, null);
@@ -49,7 +49,7 @@ public class KRMSTest {
 		Map<String, String> contextQualifiers = new HashMap<String, String>();
 		contextQualifiers.put("docTypeName", "Proposal");
 		
-		List<AssetResolver<?>> testResolvers = new ArrayList<AssetResolver<?>>();
+		List<TermResolver<?>> testResolvers = new ArrayList<TermResolver<?>>();
 		testResolvers.add(testResolver);
 		
 		Context context = new BasicContext(contextQualifiers, Arrays.asList(agenda), testResolvers);
@@ -65,12 +65,12 @@ public class KRMSTest {
 		xOptions.put(ExecutionOptions.LOG_EXECUTION.toString(), Boolean.toString(true));
 		
 		LOG.init();
-		EngineResults results = engine.execute(selectionCriteria, new HashMap<Asset, Object>(), xOptions);
+		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), xOptions);
 		
 	}
 	
 	
-	private static final Asset totalCostAsset = new Asset("totalCost","Integer");
+	private static final Term totalCostTerm = new Term(new TermSpecification("totalCost","Integer"));
 
-	private static final AssetResolver<Integer> testResolver = new AssetResolverMock<Integer>(totalCostAsset, 1);
+	private static final TermResolver<Integer> testResolver = new TermResolverMock<Integer>(totalCostTerm.getSpecification(), 1);
 }

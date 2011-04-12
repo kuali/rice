@@ -1,25 +1,31 @@
 package org.kuali.rice.krms.api;
 
+import org.apache.commons.lang.builder.CompareToBuilder;
+
 /**
- * identifies a (hopefully) resolvable asset
+ * Specifies name and type for Terms.  
  * @author gilesp
- *
  */
-public final class Asset implements Comparable<Asset> {
+public final class TermSpecification implements Comparable<TermSpecification> {
 	
 	private final String name;
 	private final String type;
-	private final String comparatorHelper;
 	
-	public Asset(String name, String type) {
+	/**
+	 * This constructs a TermSpecification, which defines a (blech) type of data that is most likely obtainable 
+	 * through the {@link TermResolutionEngine}.  Or perhaps more accurately, it maps a kind of data item to a 
+	 * specific service (a {@link TermResolver}) to resolve instances of it.
+	 * 
+	 * @param name
+	 * @param type
+	 */
+	public TermSpecification(String name, String type) {
 		if (name == null) throw new IllegalArgumentException("name is required");
 		if (name.contains("!")) throw new IllegalArgumentException("name contains illegal character '!'");
 		if (type == null) throw new IllegalArgumentException("type is required");
 		if (type.contains("!")) throw new IllegalArgumentException("type contains illegal character '!'");
 		this.name = name;
 		this.type = type;
-		// for lexicographic total ordering
-		this.comparatorHelper = name + "!" + type;
 	}
 	
 	public String getName() { return name; }
@@ -48,25 +54,24 @@ public final class Asset implements Comparable<Asset> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Asset other = (Asset) obj;
+		TermSpecification other = (TermSpecification) obj;
 		return this.compareTo(other) == 0;
 	}
 
 	@Override
-	public int compareTo(Asset o) {
+	public int compareTo(TermSpecification o) {
 		if (o == null) return 1;
 		if (this == o) return 0;
-		return (comparatorHelper.compareTo(o.comparatorHelper));
+
+		return new CompareToBuilder()
+			.append(this.name, o.name)
+			.append(this.type, o.type)
+			.toComparison();
 	}
 	
-	public String getComparatorHelper() {
-		return comparatorHelper;
-	}
-
 	@Override
 	public String toString() {
-		// TODO make this pretty
-		return getClass().getSimpleName()+"("+getComparatorHelper()+")";
+		return getClass().getSimpleName() + "(name: " + name + ", type: " + type + ")";
 	}
 	
 }

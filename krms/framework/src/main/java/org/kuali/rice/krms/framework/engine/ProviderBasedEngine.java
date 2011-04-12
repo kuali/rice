@@ -3,18 +3,19 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.Date;
 import java.util.Map;
 
-import org.kuali.rice.krms.api.Asset;
 import org.kuali.rice.krms.api.Context;
 import org.kuali.rice.krms.api.Engine;
 import org.kuali.rice.krms.api.EngineResults;
 import org.kuali.rice.krms.api.ExecutionEnvironment;
 import org.kuali.rice.krms.api.ResultEvent;
 import org.kuali.rice.krms.api.SelectionCriteria;
+import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.api.TermSpecification;
 import org.kuali.rice.krms.framework.engine.result.TimingResult;
 
 public class ProviderBasedEngine implements Engine {
 
-	private static final Asset effectiveExecutionTimeAsset = new Asset("effectiveExecutionTime", "java.lang.Long");
+	private static final Term effectiveExecutionTimeTerm = new Term(new TermSpecification("effectiveExecutionTime", "java.lang.Long"), null);
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ProviderBasedEngine.class);
 	private static final ResultLogger KLog = ResultLogger.getInstance();
@@ -22,7 +23,7 @@ public class ProviderBasedEngine implements Engine {
 	private ContextProvider contextProvider;
 	
 	@Override
-	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Asset, Object> facts, Map<String, String> executionOptions) {
+	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
 		Date start, end;
 		start = new Date();
 		ExecutionEnvironment environment = establishExecutionEnvironment(selectionCriteria, facts, executionOptions);
@@ -30,7 +31,7 @@ public class ProviderBasedEngine implements Engine {
 		// set execution time
 		Long effectiveExecutionTime = environment.getSelectionCriteria().getEffectiveExecutionTime();
 		if (effectiveExecutionTime == null) { effectiveExecutionTime = System.currentTimeMillis(); }
-		environment.publishFact(effectiveExecutionTimeAsset, effectiveExecutionTime);
+		environment.publishFact(effectiveExecutionTimeTerm, effectiveExecutionTime);
 
 		Context context = selectContext(selectionCriteria, facts, executionOptions);
 		if (context == null) {
@@ -45,11 +46,11 @@ public class ProviderBasedEngine implements Engine {
 		return environment.getEngineResults();
 	}
 	
-	protected ExecutionEnvironment establishExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Asset, Object> facts, Map<String, String> executionOptions) {
+	protected ExecutionEnvironment establishExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
 		return new BasicExecutionEnvironment(selectionCriteria, facts, executionOptions);
 	}
 	
-	protected Context selectContext(SelectionCriteria selectionCriteria, Map<Asset, Object> facts, Map<String, String> executionOptions) {
+	protected Context selectContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
 		if (contextProvider == null) {
 			throw new IllegalStateException("No ContextProvider was configured.");
 		}

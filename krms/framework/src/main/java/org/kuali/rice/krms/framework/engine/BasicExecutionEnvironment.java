@@ -5,23 +5,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.krms.api.Asset;
-import org.kuali.rice.krms.api.AssetResolutionEngine;
-import org.kuali.rice.krms.api.AssetResolutionException;
-import org.kuali.rice.krms.api.AssetResolver;
+import org.kuali.rice.krms.api.TermResolutionEngine;
+import org.kuali.rice.krms.api.TermResolver;
 import org.kuali.rice.krms.api.EngineResults;
 import org.kuali.rice.krms.api.ExecutionEnvironment;
 import org.kuali.rice.krms.api.SelectionCriteria;
+import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.api.TermResolutionException;
 
 public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 
 	private final SelectionCriteria selectionCriteria;
-	private final Map<Asset, Object> facts;
+	private final Map<Term, Object> facts;
 	private final Map<String, String> executionOptions;
 	private final EngineResults engineResults;
-	private final AssetResolutionEngine assetResolutionService;
+	private final TermResolutionEngine termResolutionEngine;
 	
-	public BasicExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Asset, Object> facts, Map<String, String> executionOptions) {
+	public BasicExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
 		if (selectionCriteria == null) {
 			throw new IllegalArgumentException("Selection criteria must not be null.");
 		}
@@ -29,13 +29,13 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 			throw new IllegalArgumentException("Facts must not be null.");
 		}
 		this.selectionCriteria = selectionCriteria;
-		this.facts = new HashMap<Asset, Object>(facts.size());
+		this.facts = new HashMap<Term, Object>(facts.size());
 		this.facts.putAll(facts);
 		this.executionOptions = new HashMap<String, String>(executionOptions.size());
 		this.executionOptions.putAll(executionOptions);
 		this.engineResults = new EngineResultsImpl();
 		// TODO: inject this (will have to make it non-final)
-		this.assetResolutionService = new AssetResolutionEngineImpl();
+		this.termResolutionEngine = new TermResolutionEngineImpl();
 	}
 	
 	@Override
@@ -44,34 +44,34 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 	}
 	
 	@Override
-	public Map<Asset, Object> getFacts() {
+	public Map<Term, Object> getFacts() {
 		return Collections.unmodifiableMap(facts);
 	}
 	
 	@Override
-	public void addAssetResolver(AssetResolver<?> assetResolver) {
-		assetResolutionService.addAssetResolver(assetResolver);
+	public void addTermResolver(TermResolver<?> termResolver) {
+		termResolutionEngine.addTermResolver(termResolver);
 	}
 	
 	@Override
-	public <T> T resolveTerm(Asset asset) throws AssetResolutionException {
+	public <T> T resolveTerm(Term term) throws TermResolutionException {
 		T value;
 		
 		// This looks funny, but works around a javac bug: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6302954
 		// Specifically, using <T> below works around it.
-		value = assetResolutionService.<T>resolveAsset(asset);
+		value = termResolutionEngine.<T>resolveTerm(term);
 		
-		publishFact(asset, value);
+		publishFact(term, value);
 		return value;
 	}
 
 	@Override
-	public boolean publishFact(Asset factName, Object factValue) {
+	public boolean publishFact(Term factName, Object factValue) {
 		if (facts.containsKey(factName) && ObjectUtils.equals(facts.get(factName), factValue)) {
 			return false;
 		}
 		facts.put(factName, factValue);
-		assetResolutionService.addAssetValue(factName, factValue);
+		termResolutionEngine.addTermValue(factName, factValue);
 		return true;
 	}
 

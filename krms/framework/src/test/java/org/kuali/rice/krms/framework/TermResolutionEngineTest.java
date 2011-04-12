@@ -5,6 +5,8 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,27 +16,29 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krms.api.Asset;
-import org.kuali.rice.krms.api.AssetResolutionEngine;
-import org.kuali.rice.krms.api.AssetResolutionException;
-import org.kuali.rice.krms.api.AssetResolver;
-import org.kuali.rice.krms.framework.engine.AssetResolutionEngineImpl;
+import org.kuali.rice.krms.api.TermResolutionEngine;
+import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.api.TermResolutionException;
+import org.kuali.rice.krms.api.TermResolver;
+import org.kuali.rice.krms.api.TermSpecification;
+import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
+import org.springframework.util.CollectionUtils;
 
 
-public class AssetResolutionEngineTest {
+public class TermResolutionEngineTest {
 	
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AssetResolutionEngineTest.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TermResolutionEngineTest.class);
 
-	private AssetResolutionEngine assetResolutionService = null;
+	private TermResolutionEngine termResolutionEngine = null;
 	
 	@Before
 	public void setUp() {
-		assetResolutionService = new AssetResolutionEngineImpl();
+		termResolutionEngine = new TermResolutionEngineImpl();
 	}
 	
 	@Test
 	public void testNoResolution() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 		
 		// GIVENS:
 		testHelper.addGivens("A");
@@ -46,7 +50,7 @@ public class AssetResolutionEngineTest {
 	
 	@Test
 	public void testSimpleResolution() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 		
 		// GIVENS:
 		testHelper.addGivens("A");
@@ -61,7 +65,7 @@ public class AssetResolutionEngineTest {
 	
 	@Test
 	public void testTwoStepResolution() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 		
 		// GIVENS:
 		testHelper.addGivens("A");
@@ -77,7 +81,7 @@ public class AssetResolutionEngineTest {
 
 	@Test
 	public void testForkingResolution() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 
 		// GIVENS:
 		testHelper.addGivens("A", "Z");
@@ -94,7 +98,7 @@ public class AssetResolutionEngineTest {
 	
 	@Test
 	public void testMultipleValidPaths() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 		
 		// GIVENS:
 		testHelper.addGivens("A", "Z");
@@ -112,7 +116,7 @@ public class AssetResolutionEngineTest {
 	
 	@Test
 	public void testDiamond() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 
 		// GIVENS:
 		testHelper.addGivens("A");
@@ -130,7 +134,7 @@ public class AssetResolutionEngineTest {
 
 	@Test
 	public void testComplexPath() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 
 		// GIVENS:
 		testHelper.addGivens("Q","R","S");
@@ -154,7 +158,7 @@ public class AssetResolutionEngineTest {
 
 	@Test
 	public void testCycle() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 
 		// GIVENS:
 		// none
@@ -171,8 +175,8 @@ public class AssetResolutionEngineTest {
 	
 
 	@Test
-	public void testUnreachableAsset() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+	public void testUnreachableTerm() {
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 
 		// GIVENS:
 		// none
@@ -189,7 +193,7 @@ public class AssetResolutionEngineTest {
 	
 	@Test
 	public void testRedHerringPath() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 
 		// GIVENS:
 		testHelper.addGivens("Q");
@@ -207,12 +211,54 @@ public class AssetResolutionEngineTest {
 		testHelper.assertSuccess("A");
 	}
 	
-	private static class WhiteBoxAssetResolutionServiceImpl extends AssetResolutionEngineImpl {
+	@Test
+	public void testResolveParamaterizedTerm() {
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
+
+		// GIVENS:
+		testHelper.addGivens("Q");
+		
+		// RESOLVERS:
+		testHelper.addResolver(1, "A", new String[] {"param"}, /* <-- */ "B");
+		testHelper.addResolver("B", /* <-- */ "Q");
+		
+		testHelper.logScenarioDescription();
+		
+		Map<String,String> params = new HashMap();
+		params.put("param", "value");
+		testHelper.assertSuccess(testHelper.getTerm("A", params));
+
+		// term A needs parameters, so this shouldn't work
+		testHelper.assertException(new Term(testHelper.getTermSpec("A"), null));
+
+	}
+	
+	@Test
+	public void testIntermediateParamaterizedTerm() {
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
+
+		// GIVENS:
+		testHelper.addGivens("Q");
+		
+		// RESOLVERS:
+		testHelper.addResolver(1, "A", new String[] {"foo"}, /* <-- */ "B");
+		testHelper.addResolver(1, "B", new String[] {"bar"},  /* <-- */ "Q");
+		
+		testHelper.logScenarioDescription();
+		
+		Map<String,String> params = new HashMap();
+		params.put("foo", "foovalue");
+
+		// Resolver for term b requires parameters, so this shouldn't work
+		testHelper.assertException(testHelper.getTerm("A", params));
+	}
+	
+	private static class WhiteBoxTermResolutionEngineImpl extends TermResolutionEngineImpl {
 		
 		// expose this for testing purposes
 		@Override
-		public List<AssetResolverKey> buildAssetResolutionPlan(Asset asset) {
-			return super.buildAssetResolutionPlan(asset);
+		public List<TermResolverKey> buildTermResolutionPlan(TermSpecification term) {
+			return super.buildTermResolutionPlan(term);
 		}
 	}
 	
@@ -220,8 +266,8 @@ public class AssetResolutionEngineTest {
 	@Test
 	public void testShortestPath() {
 		
-		WhiteBoxAssetResolutionServiceImpl whiteBoxAssetResolutionService = new WhiteBoxAssetResolutionServiceImpl();
-		TestScenarioHelper testHelper = new TestScenarioHelper(whiteBoxAssetResolutionService);
+		WhiteBoxTermResolutionEngineImpl whiteBoxTermResolutionService = new WhiteBoxTermResolutionEngineImpl();
+		TestScenarioHelper testHelper = new TestScenarioHelper(whiteBoxTermResolutionService);
 
 		// GIVENS:
 		testHelper.addGivens("Q");
@@ -238,31 +284,30 @@ public class AssetResolutionEngineTest {
 		
 		testHelper.logScenarioDescription();
 		
-		List<?> plan = whiteBoxAssetResolutionService.buildAssetResolutionPlan(testHelper.getAsset("A"));
+		List<?> plan = whiteBoxTermResolutionService.buildTermResolutionPlan(testHelper.getTermSpec("A"));
 		LOG.info("resolutionPlan: " + StringUtils.join(plan, ", ") + " <-- should be length 1!");
 		assertTrue("didn't choose the shortest resolution path (of length 1)", plan.size() == 1);
-	}	
-	
+	}
 	
 	/*
 	 *  TODO: test exception variants:
-	 *  - AssetResolver throws AssetResolutionException
-	 *  - AssetResolutionService is passed a null asset
+	 *  - TermResolver throws TermResolutionException
+	 *  - TermResolutionEngine is passed a null term
 	 */
 	
-	// TODO: what should the AssetResolutionService do if a resolver throws a RuntimeException?
+	// TODO: what should the TermResolutionEngine do if a resolver throws a RuntimeException?
 	/*
 	@Test
 	public void testExplodingResolver() {
-		TestScenarioHelper testHelper = new TestScenarioHelper(assetResolutionService);
+		TestScenarioHelper testHelper = new TestScenarioHelper(termResolutionEngine);
 
 		// GIVENS:
 		testHelper.addGivens("Q");
 		
 		// RESOLVERS:
-		AssetResolverMock exploder = new AssetResolverMock(testHelper.getAsset("A"), testHelper.getResult("A"), testHelper.getAsset("Q"));
+		TermResolverMock exploder = new TermResolverMock(testHelper.getTerm("A"), testHelper.getResult("A"), testHelper.getTerm("Q"));
 		exploder.setIsExploder(true);
-		assetResolutionService.addAssetResolver(exploder);
+		termResolutionEngine.addTermResolver(exploder);
 		
 		testHelper.logScenarioDescription();
 		
@@ -271,17 +316,23 @@ public class AssetResolutionEngineTest {
 	*/
 	
 	
-	private static class AssetResolverMock<T> implements AssetResolver<T> {
-		private Asset output;
+	private static class TermResolverMock<T> implements TermResolver<T> {
+		private TermSpecification output;
+		private Set<String> params;
 		private T result;
-		private Set<Asset> prereqs;
+		private Set<TermSpecification> prereqs;
 		private int cost;
 		private boolean isExploder = false;
+
+		public TermResolverMock(TermSpecification output, T result, int cost, TermSpecification ... prereqs) {
+			this(output, null, result, cost, prereqs);
+		}
 		
-		public AssetResolverMock(Asset output, T result, int cost, Asset ... prereqs) {
+		public TermResolverMock(TermSpecification output, Set<String> params, T result, int cost, TermSpecification ... prereqs) {
 			this.output = output;
+			this.params = Collections.unmodifiableSet(params);
 			this.result = result;
-			this.prereqs = new HashSet<Asset>(Arrays.asList(prereqs));
+			this.prereqs = new HashSet<TermSpecification>(Arrays.asList(prereqs));
 			this.cost = cost;
 		}
 		
@@ -291,13 +342,18 @@ public class AssetResolutionEngineTest {
 		}
 		
 		@Override
-		public Asset getOutput() {
+		public TermSpecification getOutput() {
 			return output;
 		}
 		
 		@Override
-		public Set<Asset> getPrerequisites() {
+		public Set<TermSpecification> getPrerequisites() {
 			return prereqs;
+		}
+		
+		@Override
+		public Set<String> getParameterNames() {
+			return params;
 		}
 		
 		public void setIsExploder(boolean isExploder) {
@@ -305,14 +361,14 @@ public class AssetResolutionEngineTest {
 		}
 		
 		@Override
-		public T resolve(Map<Asset, Object> resolvedPrereqs) {
+		public T resolve(Map<TermSpecification, Object> resolvedPrereqs, Map<String, String> parameters) {
 			
 			if (isExploder) {
 				throw new RuntimeException("I'm the exploder, coo coo catchoo");
 			}
 			
 			// get all prereqs first
-			for (Asset prereq : prereqs) {
+			for (TermSpecification prereq : prereqs) {
 				Object result = resolvedPrereqs.get(prereq);
 				if (result == null) fail("got back null for prereq " + prereq);
 			}
@@ -323,7 +379,11 @@ public class AssetResolutionEngineTest {
 		
 		@Override
 		public String toString() {
-			return getClass().getSimpleName()+"[ "+output+ " <- " + StringUtils.join(prereqs.iterator(), ",") + " ]";
+			String paramStr = "";
+			if (!CollectionUtils.isEmpty(params)) {
+				paramStr = "+(" + StringUtils.join(params, ",") + ")";
+			}
+			return getClass().getSimpleName()+"[ "+output+paramStr+ " <- " + StringUtils.join(prereqs.iterator(), ",") + " ]";
 		}
 
 	}
@@ -331,41 +391,56 @@ public class AssetResolutionEngineTest {
 
 	private static class TestScenarioHelper {
 		
-		private final AssetResolutionEngine ars;
+		private final TermResolutionEngine ars;
 		
 		private List<String> givens = new LinkedList<String>();
 		private List<String> resolvers = new LinkedList<String>();
 
-		public TestScenarioHelper(AssetResolutionEngine ars) {
-			this.ars = ars;
+		public TestScenarioHelper(TermResolutionEngine tre) {
+			this.ars = tre;
 		}
 		
 		public void addGivens(String ... names) {
 			for (String name : names) {
-				Asset given = getAsset(name); // empty String type for less clutter
-				ars.addAssetValue(given, getResult(name));
+				TermSpecification given = getTermSpec(name); // empty String type for less clutter
+				ars.addTermValue(new Term(given, null), getResult(name));
 				givens.add(name);
 			}
 		}
 		
 		public String getResult(String name) {
-			return name+"-result";
+			return getResult(new Term(getTermSpec(name), null));
 		}
 		
-		public Asset getAsset(String name) {
-			return new Asset(name, "");
+		public String getResult(Term term) {
+			return term.getSpecification().getName()+"-result";
+		}
+		
+		public TermSpecification getTermSpec(String name) {
+			return new TermSpecification(name, "");
+		}
+		
+		public Term getTerm(String name, Map<String,String> params) {
+			return new Term(new TermSpecification(name, ""), params);
 		}
 		
 		public void addResolver(String out, String ... prereqs) {
 			addResolver(1, out, prereqs);
 		}
-		
+
 		public void addResolver(int cost, String out, String ... prereqs) {
-			Asset [] prereqAssets = new Asset [prereqs.length];
+			addResolver(1, out, null, prereqs);
+		}
+		
+		public void addResolver(int cost, String out, String[] params, String ... prereqs) {
+			TermSpecification [] prereqTerms = new TermSpecification [prereqs.length];
 			
-			for (int i=0; i<prereqs.length; i++) prereqAssets[i] = getAsset(prereqs[i]);
+			for (int i=0; i<prereqs.length; i++) prereqTerms[i] = getTermSpec(prereqs[i]);
 			
-			ars.addAssetResolver(new AssetResolverMock<Object>(getAsset(out), getResult(out), cost, prereqAssets));
+			Set<String> paramSet = Collections.emptySet();
+			if (params != null) paramSet = new HashSet<String>(Arrays.asList(params));
+			
+			ars.addTermResolver(new TermResolverMock<Object>(getTermSpec(out), paramSet, getResult(out), cost, prereqTerms));
 			resolvers.add("(" + out + " <- " + StringUtils.join(prereqs, ",") + ")");
 		}
 		
@@ -385,21 +460,29 @@ public class AssetResolutionEngineTest {
 		}
 		
 		public void assertSuccess(String toResolve) {
+			assertSuccess(new Term(getTermSpec(toResolve), null));
+		}
+		
+		public void assertSuccess(Term toResolve) {
 			LOG.info("Testing resolution of " + toResolve);
 			try {
-				assertEquals(getResult(toResolve), ars.resolveAsset(getAsset(toResolve)));
+				assertEquals(getResult(toResolve), ars.resolveTerm(toResolve));
 				LOG.info("Success!");
-			} catch (AssetResolutionException e) {
-				fail("Should resolve the asset w/o exceptions");
+			} catch (TermResolutionException e) {
+				fail("Should resolve the term w/o exceptions");
 			}
 		}
 
 		public void assertException(String toResolve) {
+			assertException(new Term(getTermSpec(toResolve), null));
+		}
+			
+		public void assertException(Term toResolve) {
 			LOG.info("Testing resolution of " + toResolve);
 			try {
-				ars.resolveAsset(getAsset(toResolve));
-				fail("Should throw AssetResolutionException");
-			} catch (AssetResolutionException e) {
+				ars.resolveTerm(toResolve);
+				fail("Should throw TermResolutionException");
+			} catch (TermResolutionException e) {
 				LOG.info("Success! threw " + e);
 				// Good, this is what we expect
 			}

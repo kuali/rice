@@ -2,19 +2,19 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.Collection;
 
-import org.kuali.rice.krms.api.Asset;
-import org.kuali.rice.krms.api.AssetResolutionException;
 import org.kuali.rice.krms.api.ExecutionEnvironment;
 import org.kuali.rice.krms.api.ResultEvent;
+import org.kuali.rice.krms.api.Term;
+import org.kuali.rice.krms.api.TermResolutionException;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
 public class CollectionOfComparablesTermBasedProposition<T> extends ComparableTermBasedProposition<T> {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 
 	private CollectionOperator collectionOper;
-	private Asset term;
+	private Term term;
 	
-	public CollectionOfComparablesTermBasedProposition(CollectionOperator collectionOper, ComparisonOperator compareOper, Asset term, T expectedValue) {
+	public CollectionOfComparablesTermBasedProposition(CollectionOperator collectionOper, ComparisonOperator compareOper, Term term, T expectedValue) {
 		super(compareOper, term, expectedValue);
 		this.term = term;
 		this.collectionOper = collectionOper;
@@ -27,7 +27,7 @@ public class CollectionOfComparablesTermBasedProposition<T> extends ComparableTe
 		Collection<? extends Comparable<T>> termValue;
 		try {
 			termValue = environment.resolveTerm(term);
-		} catch (AssetResolutionException e) {
+		} catch (TermResolutionException e) {
 			// TODO Something better than this
 			throw new RuntimeException(e);
 		}

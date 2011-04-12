@@ -16,7 +16,7 @@ public interface ExecutionEnvironment {
 	 * 
 	 * @return the facts in this environment
 	 */
-	public Map<Asset, Object> getFacts();
+	public Map<Term, Object> getFacts();
 
 	/**
 	 * Publishes a new fact
@@ -26,11 +26,11 @@ public interface ExecutionEnvironment {
 	 * // TODO: we don't support updating facts, refactor this method
 	 * @return true if an existing fact was updated, false if this was a new fact
 	 */
-	public boolean publishFact(Asset factName, Object factValue);
+	public boolean publishFact(Term factName, Object factValue);
 	
-	public void addAssetResolver(AssetResolver<?> assetResolver);
+	public void addTermResolver(TermResolver<?> termResolver);
 
-	public <T> T resolveTerm(Asset asset) throws AssetResolutionException;
+	public <T> T resolveTerm(Term term) throws TermResolutionException;
 	
 	public Map<String, String> getExecutionOptions();
 	

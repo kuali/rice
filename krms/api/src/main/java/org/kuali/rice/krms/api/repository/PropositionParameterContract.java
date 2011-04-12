@@ -37,7 +37,7 @@ public interface PropositionParameterContract {
 	 * This is the type of the parameter.
 	 * Proposition parameters are one of the following types:
 	 *    Constant Values:  numbers, strings, dates, etc.
-	 *    Terms: data available in the execution environment or provided by an asset resolver
+	 *    Terms: data available in the execution environment or provided by a term resolver
 	 *    Functions: custom functions that resolve to a value, 
 	 *    	or standard operators (equals, greater than, less than, ...)
 	 *

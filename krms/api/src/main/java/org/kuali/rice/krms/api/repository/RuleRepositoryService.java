@@ -40,5 +40,5 @@ public interface RuleRepositoryService {
 	@WebMethod(operationName = "getAgendaTree")
 	@WebResult(name = "agendaTree")
 	public AgendaTreeDefinition getAgendaTree(@WebParam(name = "agendaId") String agendaId);
-	
+
 }

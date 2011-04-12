@@ -77,7 +77,10 @@ public final class ContextSelectionCriteria {
 	public ContextSelectionCriteria(String namespaceCode, String name, Map<String, String> contextQualifiers) {
 		this.namespaceCode = namespaceCode;
 		this.name = name;
-		this.contextQualifiers = new HashMap<String, String>(contextQualifiers);
+		this.contextQualifiers = new HashMap<String, String>();
+		if (contextQualifiers != null) {
+			this.contextQualifiers.putAll(contextQualifiers);
+		}
 	}
 	
 	public ContextSelectionCriteria(String namespaceCode, Map<String, String> contextQualifiers) {

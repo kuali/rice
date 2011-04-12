@@ -2,14 +2,14 @@ package org.kuali.rice.core.jaxb;
 
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Arrays;
 
 /**
  * Handles JAXB mapping that ensures that any List created from unmarshalled XML will be immutable.
  */
-public class ImmutableListAdapter extends XmlAdapter<Object[],List<?>> {
+public class ImmutableListAdapter extends XmlAdapter<Object[], List<?>> {
 
     /**
      * Returns an immutable List when a List is meant to be unmarshalled from XML.  This is done to ensure service

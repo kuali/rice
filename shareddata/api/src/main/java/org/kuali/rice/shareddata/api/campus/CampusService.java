@@ -16,6 +16,7 @@
 
 package org.kuali.rice.shareddata.api.campus;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public interface CampusService {
      * specific code
      */
     @WebMethod(operationName="getCampus")
-    Campus getCampus(@WebParam(name = "code") String code);
+    Campus getCampus(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**
      * This will return all {@link Campus}.
@@ -51,12 +52,13 @@ public interface CampusService {
      * This will return a {@link CampusType}.
      *
      * @param code the code of the campus type to return
+     * @return CampusType object represented by the passed in code
      * @throws IllegalArgumentException if the code is null
      * @throws IllegalStateException if the campus does not exist in the system under the
      * specific code
      */
     @WebMethod(operationName="getCampusType")
-    CampusType getCampusType(@WebParam(name = "code") String code);
+    CampusType getCampusType(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**
      * This will return all {@link CampusType}.

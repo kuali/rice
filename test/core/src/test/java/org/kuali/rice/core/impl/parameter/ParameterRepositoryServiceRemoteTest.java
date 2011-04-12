@@ -1,22 +1,21 @@
-package org.kuali.rice.shareddata.impl;
+package org.kuali.rice.core.impl.parameter;
 
 import org.junit.After;
 import org.junit.Before;
+import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
 import org.kuali.rice.shareddata.api.country.CountryService;
-import org.kuali.rice.shareddata.impl.country.CountryServiceImplTest;
 import org.kuali.rice.test.remote.RemoteTestHarness;
 
-public class CountryServiceRemoteTest extends CountryServiceImplTest {
-
+public class ParameterRepositoryServiceRemoteTest extends ParameterRepositoryServiceImplTest {
     RemoteTestHarness harness = new RemoteTestHarness();
 
     @Before
     @Override
     public void setupServiceUnderTest() {
         super.setupServiceUnderTest();
-        CountryService remoteProxy =
-                harness.publishEndpointAndReturnProxy(CountryService.class, this.getCountryServiceImpl());
-        super.setCountryService(remoteProxy);
+        ParameterRepositoryService remoteProxy = harness.publishEndpointAndReturnProxy(
+                ParameterRepositoryService.class, this.getPserviceImpl());
+        super.setPservice(remoteProxy);
     }
 
     @After

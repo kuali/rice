@@ -70,7 +70,7 @@ class PostalCodeServiceImplTest {
     @Test
     void test_get_postal_code_null_countryCode() {
         injectBusinessObjectServiceIntoCountryService()
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             postalCodeService.getPostalCode(null, "48848")
         }
         mockBoService.verify(boService)
@@ -79,7 +79,7 @@ class PostalCodeServiceImplTest {
     @Test
     void test_get_postal_code_null_code() {
         injectBusinessObjectServiceIntoCountryService()
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             postalCodeService.getPostalCode("US", null)
         }
         mockBoService.verify(boService)
@@ -104,7 +104,7 @@ class PostalCodeServiceImplTest {
     @Test
     void test_find_all_postal_codes_in_country_null_countryCode() {
         injectBusinessObjectServiceIntoCountryService()
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             postalCodeService.findAllPostalCodesInCountry(null)
         }
         mockBoService.verify(boService)
@@ -118,7 +118,7 @@ class PostalCodeServiceImplTest {
         Assert.assertEquals(samplePostalCodesPerCountry["US"].collect { PostalCodeBo.to(it) }, values)
 
         //is this unmodifiable?
-        shouldFail(RuntimeException) {
+        shouldFail(UnsupportedOperationException) {
             values.add(PostalCodeBo.to(samplePostalCodes[["CA", "604"]]))
         }
         mockBoService.verify(boService)
@@ -132,7 +132,7 @@ class PostalCodeServiceImplTest {
         Assert.assertEquals([], values)
 
         //is this unmodifiable?
-        shouldFail(UnsupportedOperationException.class) {
+        shouldFail(UnsupportedOperationException) {
             values.add(PostalCodeBo.to(samplePostalCodes[["CA", "604"]]))
         }
 

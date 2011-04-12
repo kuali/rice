@@ -1,4 +1,4 @@
-package org.kuali.rice.shareddata.impl;
+package org.kuali.rice.test.remote;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 

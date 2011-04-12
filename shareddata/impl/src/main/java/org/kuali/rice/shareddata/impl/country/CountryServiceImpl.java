@@ -18,6 +18,8 @@ package org.kuali.rice.shareddata.impl.country;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.shareddata.api.country.Country;
@@ -37,7 +39,7 @@ public final class CountryServiceImpl implements CountryService {
     @Override
     public Country getCountry(final String code) {
         if (StringUtils.isBlank(code)) {
-            throw new IllegalArgumentException("code is blank");
+            throw new RiceIllegalArgumentException("code is blank");
         }
 
         CountryBo countryBo = businessObjectService.findByPrimaryKey(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.POSTAL_COUNTRY_CODE, code));
@@ -48,7 +50,7 @@ public final class CountryServiceImpl implements CountryService {
     @Override
     public Country getCountryByAlternateCode(final String alternateCode) {
         if (StringUtils.isBlank(alternateCode)) {
-            throw new IllegalArgumentException("alt code is blank");
+            throw new RiceIllegalArgumentException("alt code is blank");
         }
 
         Collection<CountryBo> countryList = businessObjectService.findMatching(CountryBo.class, Collections.singletonMap(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode));
@@ -56,7 +58,7 @@ public final class CountryServiceImpl implements CountryService {
             return null;
         } else if (countryList.size() == 1) {
             return CountryBo.to(countryList.iterator().next());
-        } else throw new IllegalStateException("Multiple countries found with same alternateCode");
+        } else throw new RiceIllegalStateException("Multiple countries found with same alternateCode");
     }
 
     @Override

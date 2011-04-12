@@ -13,7 +13,9 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <name>rice-test</name>
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -24,6 +26,7 @@
     <artifactId>rice-test</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>core</module>
         <module>kns</module>
         <module>ksb</module>
         <module>kim</module>
@@ -33,11 +36,11 @@
         <module>impl</module>
         <module>edl</module>
         <module>shareddata</module>
-  </modules>
+    </modules>
     <properties>
-      <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->
-      <maven.surefire.skip>true</maven.surefire.skip>
-      <maven.failsafe.skip>true</maven.failsafe.skip>
+        <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->
+        <maven.surefire.skip>true</maven.surefire.skip>
+        <maven.failsafe.skip>true</maven.failsafe.skip>
     </properties>
 
     <profiles>
@@ -46,9 +49,9 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-		    <properties>
-		      <maven.failsafe.skip>false</maven.failsafe.skip>
-		    </properties>
+            <properties>
+                <maven.failsafe.skip>false</maven.failsafe.skip>
+            </properties>
         </profile>
     </profiles>
 </project>

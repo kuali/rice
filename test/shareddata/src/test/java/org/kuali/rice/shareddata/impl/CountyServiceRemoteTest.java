@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.kuali.rice.shareddata.api.county.CountyService;
 import org.kuali.rice.shareddata.impl.county.CountyServiceImplTest;
+import org.kuali.rice.test.remote.RemoteTestHarness;
 
 public class CountyServiceRemoteTest extends CountyServiceImplTest {
 

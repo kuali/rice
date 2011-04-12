@@ -18,6 +18,8 @@ package org.kuali.rice.core.impl.parameter;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterKey;
 import org.kuali.rice.core.api.parameter.ParameterQueryResults;
@@ -39,13 +41,13 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     @Override 
     public void createParameter(Parameter parameter) {
         if (parameter == null) {
-            throw new IllegalArgumentException("parameter is null");
+            throw new RiceIllegalArgumentException("parameter is null");
         }
 
         final ParameterKey key = ParameterKey.create(parameter.getApplicationCode(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
         final Parameter existing = getParameter(key);
         if (existing != null && existing.getApplicationCode().equals(parameter.getApplicationCode())) {
-            throw new IllegalStateException("the parameter to create already exists: " + parameter);
+            throw new RiceIllegalStateException("the parameter to create already exists: " + parameter);
         }
 
         businessObjectService.save(ParameterBo.from(parameter));
@@ -54,13 +56,13 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     @Override
     public void updateParameter(Parameter parameter) {
         if (parameter == null) {
-            throw new IllegalArgumentException("parameter is null");
+            throw new RiceIllegalArgumentException("parameter is null");
         }
 
         final ParameterKey key = ParameterKey.create(parameter.getApplicationCode(), parameter.getNamespaceCode(), parameter.getComponentCode(), parameter.getName());
         final Parameter existing = getParameter(key);
         if (existing == null) {
-            throw new IllegalStateException("the parameter does not exist: " + parameter);
+            throw new RiceIllegalStateException("the parameter does not exist: " + parameter);
         }
 
         final Parameter toUpdate;
@@ -78,7 +80,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     @Override
     public Parameter getParameter(ParameterKey key) {
         if (key == null) {
-            throw new IllegalArgumentException("key is null");
+            throw new RiceIllegalArgumentException("key is null");
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();
@@ -129,7 +131,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     @Override
     public String getSubParameterValueAsString(ParameterKey key, String subParameterName) {
         if (StringUtils.isBlank(subParameterName)) {
-            throw new IllegalArgumentException("subParameterName is blank");
+            throw new RiceIllegalArgumentException("subParameterName is blank");
         }
 
         Collection<String> values = getParameterValuesAsString(key);
@@ -152,7 +154,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
 
     private Collection<String> splitOn(String strValues, String delim) {
         if (StringUtils.isEmpty(delim)) {
-            throw new IllegalArgumentException("delim is empty");
+            throw new RiceIllegalArgumentException("delim is empty");
         }
 
         if (strValues == null || StringUtils.isBlank(strValues)) {

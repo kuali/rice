@@ -23,9 +23,13 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.jaxb.ImmutableCollectionAdapter;
 
 /**
  * Service for interacting with {@link Parameter Parameters}.
@@ -42,7 +46,8 @@ public interface ParameterRepositoryService {
      * @throws IllegalStateException if the parameter is already existing in the system
      */
     @WebMethod(operationName="createParameter")
-    void createParameter(@WebParam(name = "parameter") Parameter parameter);
+    void createParameter(@WebParam(name = "parameter") Parameter parameter)
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * This will update a {@link Parameter}.
@@ -60,7 +65,8 @@ public interface ParameterRepositoryService {
      * specific application code or default rice application code
      */
     @WebMethod(operationName="updateParameter")
-    void updateParameter(@WebParam(name = "parameter") Parameter parameter);
+    void updateParameter(@WebParam(name = "parameter") Parameter parameter)
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Gets a {@link Parameter} from a {@link ParameterKey}.
@@ -82,7 +88,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getParameter")
     @WebResult(name = "parameter")
-    Parameter getParameter(@WebParam(name = "key") ParameterKey key);
+    Parameter getParameter(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link ParameterContract#getValue()} from a {@link ParameterKey}.
@@ -163,6 +169,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getParameterValuesAsString")
     @WebResult(name = "values")
+    @XmlJavaTypeAdapter(ImmutableCollectionAdapter.class)
     Collection<String> getParameterValuesAsString(@WebParam(name = "key") ParameterKey key);
 
     /**
@@ -202,7 +209,9 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getSubParameterValueAsString")
     @WebResult(name = "value")
-    String getSubParameterValueAsString(@WebParam(name = "key") ParameterKey key, @WebParam(name = "subParameterName") String subParameterName);
+    String getSubParameterValueAsString(@WebParam(name = "key") ParameterKey key,
+                                        @WebParam(name = "subParameterName") String subParameterName)
+            throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link ParameterContract#getValue()} from a {@link ParameterKey}
@@ -250,7 +259,10 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getSubParameterValuesAsString")
     @WebResult(name = "values")
-    Collection<String> getSubParameterValuesAsString(@WebParam(name = "key") ParameterKey key, @WebParam(name = "subParameterName") String subParameterName);
+    @XmlJavaTypeAdapter(ImmutableCollectionAdapter.class)
+    Collection<String> getSubParameterValuesAsString(@WebParam(name = "key") ParameterKey key,
+                                                     @WebParam(name = "subParameterName") String subParameterName)
+            throws RiceIllegalArgumentException;
     
     @WebMethod(operationName="findParameters")
     @WebResult(name = "results")

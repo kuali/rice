@@ -1,4 +1,4 @@
-package org.kuali.rice.shareddata.impl;
+package org.kuali.rice.test.remote;
 
 /**
  * Class used for tests within shareddata module just to find an appropriate http endpoint to publish each service on.

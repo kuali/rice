@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.kuali.rice.shareddata.api.state.StateService;
 import org.kuali.rice.shareddata.impl.state.StateServiceImplTest;
+import org.kuali.rice.test.remote.RemoteTestHarness;
 
 public class StateServiceRemoteTest extends StateServiceImplTest {
 

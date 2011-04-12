@@ -16,6 +16,7 @@
 
 package org.kuali.rice.shareddata.api.state;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
@@ -52,7 +53,8 @@ public interface StateService {
      */
     @WebMethod(operationName = "getState")
     @WebResult(name = "state")
-    State getState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code);
+    State getState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code)
+            throws RiceIllegalArgumentException;
 
     /**
      * Finds all the {@link State States} for postal country code.
@@ -73,5 +75,6 @@ public interface StateService {
     @WebMethod(operationName = "findAllStatesInCountry")
     @WebResult(name = "states")
     @XmlJavaTypeAdapter(ImmutableListAdapter.class)
-    List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode);
+    List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode)
+            throws RiceIllegalArgumentException;
 }

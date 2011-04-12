@@ -26,6 +26,7 @@ import javax.xml.transform.Templates;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleRepositoryService;
@@ -64,7 +65,7 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     @Override
     public Style getStyle(String styleName) {
     	if (StringUtils.isBlank(styleName)) {
-    		throw new IllegalArgumentException("styleName was null or blank");
+    		throw new RiceIllegalArgumentException("styleName was null or blank");
     	}
     	
     	// try to fetch the style from the database
@@ -121,7 +122,7 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     @Override
     public void saveStyle(Style data) {
     	if (data == null) {
-    		throw new IllegalArgumentException("The given style was null.");
+    		throw new RiceIllegalArgumentException("The given style was null.");
     	}
     	StyleBo styleToUpdate = StyleBo.from(data);
     	saveStyleBo(styleToUpdate);

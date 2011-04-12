@@ -16,6 +16,7 @@
 
 package org.kuali.rice.shareddata.api.county;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
@@ -50,7 +51,8 @@ public interface CountyService {
      */
     @WebMethod(operationName="getCounty")
     @WebResult(name = "county")
-    County getCounty(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode, @WebParam(name = "code") String code);
+    County getCounty(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode, @WebParam(name = "code") String code)
+            throws RiceIllegalArgumentException;
 
     /**
      * Gets all the {@link County County} for postal country code & postal state code.
@@ -72,5 +74,6 @@ public interface CountyService {
     @WebMethod(operationName="findAllCountiesInCountryAndState")
     @WebResult(name = "counties")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
-    List<County> findAllCountiesInCountryAndState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode);
+    List<County> findAllCountiesInCountryAndState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode)
+            throws RiceIllegalArgumentException;
 }

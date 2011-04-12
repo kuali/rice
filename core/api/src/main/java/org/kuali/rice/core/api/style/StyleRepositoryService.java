@@ -26,6 +26,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 /**
  * Service for interacting with {@link Style} data. This service primarily
@@ -52,7 +53,7 @@ public interface StyleRepositoryService {
 	 */
 	@WebMethod(operationName = "getStyle")
 	@WebResult(name = "style")
-	public Style getStyle(@WebParam(name = "styleName") String styleName);
+	public Style getStyle(@WebParam(name = "styleName") String styleName) throws RiceIllegalArgumentException;
 
 	/**
 	 * Creates or updates the Style represented by the given record.  If the
@@ -72,7 +73,7 @@ public interface StyleRepositoryService {
 	 * @throws IllegalArgumentException if the given style is null
 	 */
 	@WebMethod(operationName = "saveStyle")
-	public void saveStyle(@WebParam(name = "style") Style style);
+	public void saveStyle(@WebParam(name = "style") Style style) throws RiceIllegalArgumentException;
 	
 	/**
 	 * Returns a list of the names for all active styles in the repository. If

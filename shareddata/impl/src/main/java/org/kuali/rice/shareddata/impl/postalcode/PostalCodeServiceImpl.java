@@ -17,6 +17,7 @@
 package org.kuali.rice.shareddata.impl.postalcode;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.shareddata.api.postalcode.PostalCode;
 import org.kuali.rice.shareddata.api.postalcode.PostalCodeService;
@@ -35,11 +36,11 @@ public class PostalCodeServiceImpl implements PostalCodeService {
     @Override
     public PostalCode getPostalCode(String countryCode, String code) {
         if (StringUtils.isBlank(countryCode)) {
-            throw new IllegalArgumentException(("countryCode is null"));
+            throw new RiceIllegalArgumentException(("countryCode is null"));
         }
 
         if (StringUtils.isBlank(code)) {
-            throw new IllegalArgumentException(("code is null"));
+            throw new RiceIllegalArgumentException(("code is null"));
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();
@@ -52,7 +53,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
     @Override
     public List<PostalCode> findAllPostalCodesInCountry(String countryCode) {
         if (StringUtils.isBlank(countryCode)) {
-            throw new IllegalArgumentException(("countryCode is null"));
+            throw new RiceIllegalArgumentException(("countryCode is null"));
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();

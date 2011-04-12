@@ -75,7 +75,7 @@ class StateServiceImplTest {
     void test_get_state_null_countryCode() {
         injectBusinessObjectServiceIntoStateService()
 
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             stateService.getState(null, "MI")
         }
         mockBoService.verify(boService)
@@ -85,7 +85,7 @@ class StateServiceImplTest {
     void test_get_state_null_code() {
         injectBusinessObjectServiceIntoStateService()
 
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             stateService.getState("US", null)
         }
         mockBoService.verify(boService)
@@ -111,7 +111,7 @@ class StateServiceImplTest {
     void test_find_all_states_in_country_null_countryCode() {
         injectBusinessObjectServiceIntoStateService()
 
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             stateService.findAllStatesInCountry(null)
         }
         mockBoService.verify(boService)
@@ -125,7 +125,7 @@ class StateServiceImplTest {
         Assert.assertEquals(sampleStatesPerCountry["US"].collect { StateBo.to(it) }, values)
 
         //is this unmodifiable?
-        shouldFail(RuntimeException) {
+        shouldFail(UnsupportedOperationException) {
             values.add(StateBo.to(sampleStates[["CA", "BC"]]))
         }
         mockBoService.verify(boService)
@@ -139,7 +139,7 @@ class StateServiceImplTest {
         Assert.assertEquals([], values)
 
         //is this unmodifiable?
-        shouldFail(RuntimeException) {
+        shouldFail(UnsupportedOperationException) {
             values.add(StateBo.to(sampleStates[["CA", "BC"]]))
         }
 

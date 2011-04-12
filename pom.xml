@@ -63,6 +63,7 @@
         <aopalliance.version>1.0</aopalliance.version>
         <asm.version>3.2</asm.version>
         <bcprov.version>1.45</bcprov.version>
+
         <!-- the 3.x codebase is completely different - switching will require rewriting much code -->
         <bsf.version>2.4.0</bsf.version>
         <casclient.version>2.1.1</casclient.version>

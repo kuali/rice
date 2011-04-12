@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.kuali.rice.shareddata.api.postalcode.PostalCodeService;
 import org.kuali.rice.shareddata.impl.postalcode.PostalCodeServiceImplTest;
+import org.kuali.rice.test.remote.RemoteTestHarness;
 
 public class PostalCodeServiceRemoteTest extends PostalCodeServiceImplTest {
     RemoteTestHarness harness = new RemoteTestHarness();

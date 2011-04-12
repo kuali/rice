@@ -84,14 +84,14 @@ class CountryServiceImplTest {
 
     @Test
     public void testGetByPrimaryIdEmptyCountryCode() {
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             countryService.getCountry("")
         }
     }
 
     @Test
     public void testGetByPrimaryIdNullCountryCode() {
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             countryService.getCountry(null)
         }
     }
@@ -128,7 +128,7 @@ class CountryServiceImplTest {
         }
         injectBusinessObjectServiceIntoCountryService()
 
-        shouldFail() {
+        shouldFail(IllegalStateException) {
             countryService.getCountryByAlternateCode("US")
         }
         businessObjectServiceMockFor.verify(bos)
@@ -136,14 +136,14 @@ class CountryServiceImplTest {
 
     @Test
     public void testGetByAlternateCodeWithEmptyCode() {
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             countryService.getCountryByAlternateCode(" ")
         }
     }
 
     @Test
     public void testGetByAlternateCodeWithNullCode() {
-        shouldFail(RuntimeException) {
+        shouldFail(IllegalArgumentException) {
             countryService.getCountryByAlternateCode(null)
         }
     }
@@ -167,7 +167,7 @@ class CountryServiceImplTest {
         injectBusinessObjectServiceIntoCountryService()
 
         List<Country> countries = countryService.findAllCountriesNotRestricted()
-        shouldFail(RuntimeException) {
+        shouldFail(UnsupportedOperationException) {
             countries.add(null);
         }
         businessObjectServiceMockFor.verify(bos)
@@ -192,7 +192,7 @@ class CountryServiceImplTest {
         injectBusinessObjectServiceIntoCountryService()
 
         List<Country> countries = countryService.findAllCountriesNotRestricted()
-        shouldFail(RuntimeException) {
+        shouldFail(UnsupportedOperationException) {
             countries.add(null)
         }
         businessObjectServiceMockFor.verify(bos)

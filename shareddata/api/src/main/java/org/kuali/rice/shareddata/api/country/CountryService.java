@@ -16,6 +16,8 @@
 
 package org.kuali.rice.shareddata.api.country;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
@@ -41,7 +43,7 @@ public interface CountryService {
      */
     @WebMethod(operationName = "getCountry")
     @WebResult(name = "country")
-    Country getCountry(@WebParam(name = "code") String code);
+    Country getCountry(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
 
     /**
      * Get a country object based on an alternate country code
@@ -50,11 +52,12 @@ public interface CountryService {
      * @return A country object with the given alternate country code if a country with that alternate country code
      *         exists.  Otherwise, null is returned.
      * @throws IllegalStateException if multiple Countries exist with the same passed in alternateCode
+     * @throws IllegalArgumentException if alternateCode is null or is a whitespace only string.
      */
     @WebMethod(operationName = "getCountryByAlternateCode")
     @WebResult(name = "country")
-    Country getCountryByAlternateCode(
-            @WebParam(name = "alternateCode") String alternateCode);
+    Country getCountryByAlternateCode(@WebParam(name = "alternateCode") String alternateCode)
+            throws RiceIllegalStateException, RiceIllegalArgumentException;
 
    /**
      * Returns all Countries that are not restricted.

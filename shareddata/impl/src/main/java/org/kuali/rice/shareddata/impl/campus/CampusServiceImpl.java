@@ -17,6 +17,7 @@
 package org.kuali.rice.shareddata.impl.campus;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.shareddata.api.campus.Campus;
 import org.kuali.rice.shareddata.api.campus.CampusService;
@@ -38,7 +39,7 @@ public class CampusServiceImpl implements CampusService {
 	@Override
 	public Campus getCampus(String code) {
 		if (StringUtils.isBlank(code)) {
-            throw new IllegalArgumentException("code is blank");
+            throw new RiceIllegalArgumentException("code is blank");
         }
 
         CampusBo campusBo = boService.findByPrimaryKey(CampusBo.class, singletonMap("code", code));
@@ -62,7 +63,7 @@ public class CampusServiceImpl implements CampusService {
 	@Override
 	public CampusType getCampusType(String code) {
 		if (StringUtils.isBlank(code)) {
-            throw new IllegalArgumentException("code is blank");
+            throw new RiceIllegalArgumentException("code is blank");
         }
 
 		CampusTypeBo campusTypeBo = boService.findByPrimaryKey(CampusTypeBo.class, singletonMap("code", code));

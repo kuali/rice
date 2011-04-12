@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 /**
@@ -28,6 +30,8 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
  */
 public class DocumentFormBase extends UifFormBase {
 	private static final long serialVersionUID = 2190268505427404480L;
+	
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentFormBase.class);
 
 	private String annotation = "";
 	private String command;
@@ -39,6 +43,8 @@ public class DocumentFormBase extends UifFormBase {
 
 	public DocumentFormBase() {
 	    super();
+	    
+	    instantiateDocument();
 	}
 
 	public String getAnnotation() {
@@ -80,6 +86,25 @@ public class DocumentFormBase extends UifFormBase {
 	public void setDocId(String docId) {
 		this.docId = docId;
 	}
+	
+    protected String getDefaultDocumentTypeName() {
+        return "";
+    }
+
+    protected void instantiateDocument() {
+        if (document == null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
+            Class<? extends Document> documentClass = KNSServiceLocatorWeb.getDataDictionaryService()
+                    .getDocumentClassByTypeName(getDefaultDocumentTypeName());
+            try {
+                Document newDocument = documentClass.newInstance();
+                setDocument(newDocument);
+            } catch (Exception e) {
+                LOG.error("Unable to instantiate document class " + documentClass.getName() + " document type "
+                        + getDefaultDocumentTypeName());
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
 	/**
 	 * Retrieves the principal name (network id) for the document's initiator

@@ -148,12 +148,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             oldMaintainableObject = (Maintainable) clazz.newInstance();
             newMaintainableObject = (Maintainable) clazz.newInstance();
 
-            // initialize maintainable with a business object
-            Class boClazz = getMaintenanceDocumentDictionaryService().getBusinessObjectClass(documentTypeName);
-            oldMaintainableObject.setBusinessObject((PersistableBusinessObject) boClazz.newInstance());
+            // initialize maintainable with a data object
+            Class<?> boClazz = getMaintenanceDocumentDictionaryService().getBusinessObjectClass(documentTypeName);
+            oldMaintainableObject.setDataObject(boClazz.newInstance());
             oldMaintainableObject.setBoClass(boClazz);
-            newMaintainableObject.setBusinessObject((PersistableBusinessObject) boClazz.newInstance());
+            newMaintainableObject.setDataObject(boClazz.newInstance());
             newMaintainableObject.setBoClass(boClazz);
+            
         } catch (InstantiationException e) {
             LOG.error("Unable to initialize maintainables of type " + clazz.getName());
             throw new RuntimeException("Unable to initialize maintainables of type " + clazz.getName());
@@ -179,7 +180,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         // TODO - build out with bo label once we get the data dictionary stuff in place
         // build out the right classname
-        String className = newMaintainableObject.getBusinessObject().getClass().getName();
+        String className = newMaintainableObject.getDataObject().getClass().getName();
         String truncatedClassName = className.substring(className.lastIndexOf('.') + 1);
         if (isOldBusinessObjectInDocument()) {
             documentTitle = "Edit ";
@@ -258,17 +259,17 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 String clazz = xmlDocument.getDocumentElement().getAttribute(MAINTAINABLE_IMPL_CLASS);
                 if (isOldMaintainableInDocument(xmlDocument)) {
                     oldMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
-                    PersistableBusinessObject bo = getBusinessObjectFromXML(OLD_MAINTAINABLE_TAG_NAME);
+                    Object bo = getBusinessObjectFromXML(OLD_MAINTAINABLE_TAG_NAME);
 
                     String oldMaintenanceAction = getMaintenanceAction(xmlDocument, OLD_MAINTAINABLE_TAG_NAME);
                     oldMaintainableObject.setMaintenanceAction(oldMaintenanceAction);
 
-                    oldMaintainableObject.setBusinessObject(bo);
+                    oldMaintainableObject.setDataObject(bo);
                     oldMaintainableObject.setBoClass(bo.getClass());
                 }
                 newMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
-                PersistableBusinessObject bo = getBusinessObjectFromXML(NEW_MAINTAINABLE_TAG_NAME);
-                newMaintainableObject.setBusinessObject(bo);
+                Object bo = getBusinessObjectFromXML(NEW_MAINTAINABLE_TAG_NAME);
+                newMaintainableObject.setDataObject(bo);
                 newMaintainableObject.setBoClass(bo.getClass());
 
                 String newMaintenanceAction = getMaintenanceAction(xmlDocument, NEW_MAINTAINABLE_TAG_NAME);
@@ -350,9 +351,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * Retrieves substring of document contents from maintainable tag name. Then use xml service to translate xml into a business
      * object.
      */
-    protected PersistableBusinessObject getBusinessObjectFromXML(String maintainableTagName) {
+    protected Object getBusinessObjectFromXML(String maintainableTagName) {
         String maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">", "</" + maintainableTagName + ">");
-        PersistableBusinessObject businessObject = (PersistableBusinessObject) KNSServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+        Object businessObject = KNSServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
         return businessObject;
     }
 
@@ -379,14 +380,17 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             docContentBuffer.append(KNSServiceLocator.getXmlObjectSerializerService().toXml(noteList));
             docContentBuffer.append("</" + NOTES_TAG_NAME + ">");
         }
-        if (oldMaintainableObject != null && oldMaintainableObject.getBusinessObject() != null) {
+        if (oldMaintainableObject != null && oldMaintainableObject.getDataObject() != null) {
             // TODO: refactor this out into a method
-
-
             docContentBuffer.append("<" + OLD_MAINTAINABLE_TAG_NAME + ">");
 
-            PersistableBusinessObject oldBo = oldMaintainableObject.getBusinessObject();
-            ObjectUtils.materializeAllSubObjects(oldBo); // hack to resolve XStream not dealing well with Proxies
+            Object oldBo = oldMaintainableObject.getDataObject();
+            
+            // hack to resolve XStream not dealing well with Proxies
+            if(oldBo instanceof PersistableBusinessObject) {
+                ObjectUtils.materializeAllSubObjects((PersistableBusinessObject)oldBo);
+            }
+            
             docContentBuffer.append(KNSServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
 
             // add the maintainable's maintenanceAction
@@ -398,8 +402,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
         docContentBuffer.append("<" + NEW_MAINTAINABLE_TAG_NAME + ">");
 
-        PersistableBusinessObject newBo = newMaintainableObject.getBusinessObject();
-        ObjectUtils.materializeAllSubObjects(newBo); // hack to resolve XStream not dealing well with Proxies
+        Object newBo = newMaintainableObject.getDataObject();
+        
+        if(newBo instanceof PersistableBusinessObject) {
+            // hack to resolve XStream not dealing well with Proxies
+            ObjectUtils.materializeAllSubObjects((PersistableBusinessObject)newBo);
+        }
+        
         docContentBuffer.append(KNSServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(newBo));
 
         // add the maintainable's maintenanceAction
@@ -710,7 +719,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         // Make sure the business object's version number matches that of the database's copy.
         if (newMaintainableObject != null) {
-            if (KNSServiceLocator.getPersistenceStructureService().isPersistable(newMaintainableObject.getBusinessObject().getClass())) {
+        	if ( KNSServiceLocator.getPersistenceStructureService().isPersistable( newMaintainableObject.getDataObject().getClass() ) ) {
                 PersistableBusinessObject pbObject = KNSServiceLocator.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
                 Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
                 Long newObjectVerNbr = newMaintainableObject.getBusinessObject().getVersionNumber();

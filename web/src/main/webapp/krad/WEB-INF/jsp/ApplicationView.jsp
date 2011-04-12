@@ -16,8 +16,30 @@
 
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%-- NOTE: Put application content here (such as a header, 
-or application navigation) to wrap all the views --%>
-
-<%-- let view handler render page --%>
-<krad:template component="${KualiForm.view}"/>
+<c:choose>
+  <c:when test="${KualiForm.renderFullView}">
+  
+     <%-- NOTE: Put application content here (such as a header, 
+          or application navigation) to wrap all the views --%>
+  
+     <%-- render full view --%>
+     <krad:template component="${KualiForm.view}"/>
+     
+  </c:when>
+  <c:otherwise>
+  
+     <%-- render page only --%>
+     <html>
+       <s:nestedPath path="KualiForm">
+         <div id="viewpage_div">
+            <krad:template component="${KualiForm.view.currentPage}"/>
+        
+            <c:if test="${KualiForm.view.renderForm}">
+              <form:hidden path="pageId"/>
+            </c:if>
+         </div>
+       </s:nestedPath>
+     </html>
+     
+  </c:otherwise>
+</c:choose>

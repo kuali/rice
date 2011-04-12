@@ -73,6 +73,11 @@
    <c:if test="${(colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)}">
      <tr>
      
+     <%-- force first cell of each row to be header --%>
+     <c:if test="${renderAlternatingHeaderColumns}">
+        <c:set var="renderHeaderColumn" value="true"/>
+     </c:if>
+     
      <%-- determine if even or add style should be applied --%>
      <c:if test="${applyAlternatingRowStyles}">
        <c:choose>

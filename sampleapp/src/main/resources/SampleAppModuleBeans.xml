@@ -96,6 +96,10 @@
         <property name="moduleConfiguration" ref="sampleAppModuleConfiguration" />
     </bean>
     
+    <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
+      <property name="localServiceName" value="SampleAppContext" />
+    </bean>
+    
     <bean id="fiscalOfficerService" class="edu.sampleu.travel.service.FiscalOfficerServiceImpl" />
     
     <bean id="fiscalOfficerInfoInquiryViewHelperService"

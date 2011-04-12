@@ -62,9 +62,12 @@ public class UifFormBase implements Serializable {
     protected String hubLocation;
     protected String hubFormKey;
     protected String homeLocation;
+    
+    protected boolean renderFullView;
 
     public UifFormBase() {
         formKey = generateFormKey();
+        renderFullView = true;
 
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
@@ -362,6 +365,20 @@ public class UifFormBase implements Serializable {
      */
     public void setFormKey(String formKey) {
         this.formKey = formKey;
+    }
+    
+    /**
+     * @return the renderFullView
+     */
+    public boolean isRenderFullView() {
+        return this.renderFullView;
+    }
+
+    /**
+     * @param renderFullView
+     */
+    public void setRenderFullView(boolean renderFullView) {
+        this.renderFullView = renderFullView;
     }
 
     /**

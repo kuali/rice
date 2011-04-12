@@ -16,13 +16,28 @@
 
 package org.kuali.rice.kns.lookup;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
@@ -40,21 +55,6 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.comparator.NullValueComparator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
-
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 /**
  * Not a static utility class for Lookup related utilities and helper methods.
@@ -97,78 +97,74 @@ public class LookupUtils {
     }
 
     /**
-     *
-     * This method uses the DataDictionary to determine whether to force uppercase the value, and if it should, then it does the
-     * uppercase, and returns the upper-cased value.
-     *
-     * @param boClass Parent BO class that the fieldName is a member of.
-     * @param fieldName Name of the field to be forced to uppercase.
-     * @param fieldValue Value of the field that may be uppercased.
-     * @return The correctly uppercased fieldValue if it should be uppercased, otherwise fieldValue is returned unchanged.
-     *
-     */
-    public static String forceUppercase(Class boClass, String fieldName, String fieldValue) {
+    * Uses the DataDictionary to determine whether to force uppercase the value, and if it should, then it does the
+    * uppercase, and returns the upper-cased value.
+    *
+    * @param dataObjectClass Parent DO class that the fieldName is a member of.
+    * @param fieldName Name of the field to be forced to uppercase.
+    * @param fieldValue Value of the field that may be uppercased.
+    * @return The correctly uppercased fieldValue if it should be uppercased, otherwise fieldValue is returned unchanged.
+    *
+    */
+   public static String forceUppercase(Class<?> dataObjectClass, String fieldName, String fieldValue) {
 
-        // short-circuit to exit if there isnt enough information to do the forceUppercase
-        if (StringUtils.isBlank(fieldValue)) {
-            return fieldValue;
-        }
+       // short-circuit to exit if there isnt enough information to do the forceUppercase
+       if (StringUtils.isBlank(fieldValue)) {
+           return fieldValue;
+       }
 
-        // parameter validation
-        if (boClass == null) {
-            throw new IllegalArgumentException("Parameter boClass passed in with null value.");
-        }
-        else if (!BusinessObject.class.isAssignableFrom(boClass)) {
-            throw new IllegalArgumentException("Parameter boClass value passed in [" + boClass.getName() + "] " + "was not a descendent of BusinessObject.");
-        }
-        if (StringUtils.isBlank(fieldName)) {
-            throw new IllegalArgumentException("Parameter fieldName passed in with empty value.");
-        }
+       // parameter validation
+       if (dataObjectClass == null) {
+           throw new IllegalArgumentException("Parameter dataObjectClass passed in with null value.");
+       }
+       
+       if (StringUtils.isBlank(fieldName)) {
+           throw new IllegalArgumentException("Parameter fieldName passed in with empty value.");
+       }
 
-        if (!dataDictionaryService.isAttributeDefined(boClass, fieldName)) {
-            return fieldValue;
-        }
+       if (!dataDictionaryService.isAttributeDefined(dataObjectClass, fieldName).booleanValue()) {
+           return fieldValue;
+       }
 
 
-        boolean forceUpperCase = false;
-        try {
-            forceUpperCase = dataDictionaryService.getAttributeForceUppercase(boClass, fieldName).booleanValue();
-        }
-        catch (UnknownBusinessClassAttributeException ubae) {
-            // do nothing, dont alter the fieldValue
-        }
-        if (forceUpperCase && !fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-            return fieldValue.toUpperCase();
-        }
-        return fieldValue;
-    }
+       boolean forceUpperCase = false;
+       try {
+           forceUpperCase = dataDictionaryService.getAttributeForceUppercase(dataObjectClass, fieldName).booleanValue();
+       }
+       catch (UnknownBusinessClassAttributeException ubae) {
+           // do nothing, don't alter the fieldValue
+       }
+       if (forceUpperCase && !fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+           return fieldValue.toUpperCase();
+       }
+       
+       return fieldValue;
+   }
 
-    /**
-     *
-     * This method uses the DataDictionary to determine whether to force uppercase the values, and if it should, then it does the
-     * uppercase, and returns the upper-cased Map of fieldname/fieldValue pairs.
-     *
-     * @param boClass Parent BO class that the fieldName is a member of.
-     * @param fieldValues A Map<String,String> where the key is the fieldName and the value is the fieldValue.
-     * @return The same Map is returned, with the appropriate values uppercased (if any).
-     *
-     */
-    public static Map<String, String> forceUppercase(Class boClass, Map<String, String> fieldValues) {
-        if (boClass == null) {
-            throw new IllegalArgumentException("Parameter boClass passed in with null value.");
-        }
-        else if (!BusinessObject.class.isAssignableFrom(boClass)) {
-            throw new IllegalArgumentException("Parameter boClass value passed in [" + boClass.getName() + "] " + "was not a descendent of BusinessObject.");
-        }
-        if (fieldValues == null) {
-            throw new IllegalArgumentException("Parameter fieldValues passed in with null value.");
-        }
+   /**
+    * Uses the DataDictionary to determine whether to force uppercase the values, and if it should, then it does the
+    * uppercase, and returns the upper-cased Map of fieldname/fieldValue pairs.
+    *
+    * @param dataObjectClass Parent DO class that the fieldName is a member of.
+    * @param fieldValues A Map<String,String> where the key is the fieldName and the value is the fieldValue.
+    * @return The same Map is returned, with the appropriate values uppercased (if any).
+    *
+    */
+   public static Map<String, String> forceUppercase(Class<?> dataObjectClass, Map<String, String> fieldValues) {
+       if (dataObjectClass == null) {
+           throw new IllegalArgumentException("Parameter boClass passed in with null value.");
+       }
+       
+       if (fieldValues == null) {
+           throw new IllegalArgumentException("Parameter fieldValues passed in with null value.");
+       }
 
-        for (String fieldName : fieldValues.keySet()) {
-            fieldValues.put(fieldName, LookupUtils.forceUppercase(boClass, fieldName, (String) fieldValues.get(fieldName)));
-        }
-        return fieldValues;
-    }
+       for (String fieldName : fieldValues.keySet()) {
+           fieldValues.put(fieldName, LookupUtils.forceUppercase(dataObjectClass, fieldName, (String) fieldValues.get(fieldName)));
+       }
+       
+       return fieldValues;
+   }
 
     /**
      * This method applies the search results limit to the search criteria for this BO
@@ -298,11 +294,13 @@ public class LookupUtils {
         return fieldConversionsMap;
     }
 
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject,
             String attributeName, Field field, List displayedFieldNames) {
         return setFieldQuickfinder( businessObject, (String)null, false, 0, attributeName, field, displayedFieldNames );
     }
 
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject,
             String attributeName, Field field, List displayedFieldNames, SelectiveReferenceRefresher srr) {
         return setFieldQuickfinder( businessObject, (String)null, false, 0, attributeName, field, displayedFieldNames, srr );
@@ -311,6 +309,7 @@ public class LookupUtils {
     /**
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
             String attributeName, Field field, List displayedFieldNames, SelectiveReferenceRefresher srr) {
         field = setFieldQuickfinder(businessObject, collectionName, addLine, index, attributeName, field, displayedFieldNames);
@@ -333,6 +332,7 @@ public class LookupUtils {
     /**
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
                                             String attributeName, Field field, List displayedFieldNames) {
         boolean noLookup = false;
@@ -349,6 +349,7 @@ public class LookupUtils {
 
     }
 
+    @Deprecated
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index, String attributeName, Field field, List displayedFieldNames, boolean noLookupField)
     {
          if (businessObject == null) {
@@ -419,6 +420,7 @@ public class LookupUtils {
     private static String BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = null;
     private static String BASE_INQUIRY_ACTION_URL = null;
     
+    @Deprecated
     public static String getBaseLookupUrl(boolean isMultipleValue) {
         ConfigurationService kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
     	if ( isMultipleValue ) {
@@ -444,6 +446,7 @@ public class LookupUtils {
     	}
     }
 
+    @Deprecated
     public static String getBaseInquiryUrl() {
     	if ( BASE_INQUIRY_ACTION_URL == null ) {
 	    	StringBuffer inquiryUrl = new StringBuffer( 
@@ -530,6 +533,7 @@ public class LookupUtils {
 
     private static Map<Class,Map<String,Map>> referencesForForeignKey = new HashMap<Class, Map<String,Map>>();
 
+    @Deprecated
     public static Map getPrimitiveReference(BusinessObject businessObject, String attributeName) {
         Map chosenReferenceByKeySize = new HashMap();
         Map chosenReferenceByFieldName = new HashMap();
@@ -639,6 +643,7 @@ public class LookupUtils {
         return null == bo ? null : bo.getClass();
     }
 
+    @Deprecated
     private static String generateFieldConversions(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
         String fieldConversions = "";
 
@@ -674,6 +679,7 @@ public class LookupUtils {
         return fieldConversions;
     }
 
+    @Deprecated
     private static String generateLookupParameters(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
 
         String lookupParameters = "";
@@ -713,7 +719,7 @@ public class LookupUtils {
         return lookupParameters;
     }
 
-
+    @Deprecated
     private static String translateToDisplayedField(Class businessObjectClass, String fieldName, List displayedFieldNames) {        
         if ( persistenceStructureService.isPersistable(businessObjectClass) ) {
             Map nestedFkMap = persistenceStructureService.getNestedForeignKeyMap(businessObjectClass);

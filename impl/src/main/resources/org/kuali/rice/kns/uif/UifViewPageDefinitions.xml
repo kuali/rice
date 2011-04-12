@@ -23,7 +23,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="View" abstract="true" parent="View-parentBean"/>
   <bean id="View-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
-      <property name="viewHelperServiceBeanId" value="viewHelperService"/>
+      <property name="viewHelperServiceClassName" value="org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl"/>
       <property name="styleClasses" value="workarea"/>
       <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.PresentationControllerBase"/>
       <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.AuthorizerBase"/>
@@ -63,7 +63,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="InquiryView" abstract="true" parent="InquiryView-parentBean"/>
   <bean id="InquiryView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.InquiryView" parent="KNSFormView">
      <property name="viewName" value="default"/>
-     <property name="viewHelperServiceBeanId" value="kualiInquirable"/>
+     <property name="viewHelperServiceClassName" value="org.kuali.rice.kns.inquiry.KualiInquirableImpl"/>
      <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.InquiryPresentationControllerBase"/>
      <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.InquiryAuthorizerBase"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.InquiryForm"/>
@@ -81,7 +81,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
   <bean id="LookupView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.LookupView" parent="KNSFormView">
      <property name="viewName" value="default"/>
-     <property name="viewHelperServiceBeanId" value="lookupViewHelperService"/>
+     <property name="viewHelperServiceClassName" value="org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.LookupForm"/>
      <property name="readOnly" value="false"/>
      <property name="singlePageView" value="true"/>
@@ -158,7 +158,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="MaintenanceView" abstract="true" parent="MaintenanceView-parentBean"/>
   <bean id="MaintenanceView-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.MaintenanceView" parent="DocumentView">
      <property name="viewName" value="default"/>
-     <property name="viewHelperServiceBeanId" value="kualiMaintainable"/>
+     <property name="viewHelperServiceClassName" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
      <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentPresentationControllerBase"/>
      <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.MaintenanceDocumentAuthorizerBase"/>
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>

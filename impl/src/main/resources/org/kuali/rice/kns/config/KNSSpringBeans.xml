@@ -1411,23 +1411,7 @@
       </property>
   </bean>
   
-  <bean id="viewHelperService"  class="org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl">
-      <property name="dataDictionaryService" ref="dataDictionaryService"/>
-      <property name="expressionEvaluatorService" ref="expressionEvaluatorService"/>
-      <property name="viewDictionaryService" ref="viewDictionaryService"/>
-  </bean>
-  
   <bean id="expressionEvaluatorService"  class="org.kuali.rice.kns.uif.service.impl.ExpressionEvaluatorServiceImpl">
-  </bean>
-  
-  <bean id="lookupViewHelperService" class="org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl" 
-        scope="prototype" parent="viewHelperService">
-      <property name="persistenceStructureService" ref="persistenceStructureService"/>
-      <property name="lookupService" ref="lookupService"/>
-      <property name="encryptionService" ref="encryptionService"/>
-      <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
-      <property name="dataObjectMetaDataService" ref="dataObjectMetaDataService"/>
-      <property name="businessObjectAuthorizationService" ref="businessObjectAuthorizationService"/>
   </bean>
 
   <bean id="inquiryViewTypeService" class="org.kuali.rice.kns.uif.service.impl.InquiryViewTypeServiceImpl"/>

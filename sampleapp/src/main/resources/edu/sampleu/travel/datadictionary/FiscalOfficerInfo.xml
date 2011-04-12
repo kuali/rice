@@ -80,7 +80,7 @@
   <bean id="FiscalOfficerInfo-InquiryView" parent="InquiryView">
     <property name="title" value="Fiscal Officer Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
-    <property name="viewHelperServiceBeanId" value="fiscalOfficerInfoInquiryViewHelperService" />
+    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl" />
 	<property name="navigation">
         <ref bean="tabMenu"/>
     </property>
@@ -143,7 +143,7 @@
   <bean id="FiscalOfficerInfo-LookupView" parent="LookupView">
     <property name="title" value="Fiscal Officer Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
-    <property name="viewHelperServiceBeanId" value="fiscalOfficerInfoLookupViewHelperService" />
+    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
@@ -161,7 +161,7 @@
   <bean id="FiscalOfficerInfo-MaintenanceView" parent="MaintenanceView">
     <property name="title" value="Fiscal Officer Maintenance" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
-    <property name="viewHelperServiceBeanId" value="fiscalOfficerInfoMaintainable" />
+    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl" />
     <property name="items">
       <list merge="true">
         <bean parent="MaintenanceGroupSectionGridLayout">

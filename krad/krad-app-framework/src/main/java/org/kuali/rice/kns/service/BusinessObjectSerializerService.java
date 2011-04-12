@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.kns.bo.BusinessObject;
 
 public interface BusinessObjectSerializerService {
     
-    public String serializeBusinessObjectToXml(BusinessObject businessObject);
+	public String serializeBusinessObjectToXml(Object businessObject);
 
 }

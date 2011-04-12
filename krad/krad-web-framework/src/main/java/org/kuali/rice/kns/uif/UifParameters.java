@@ -38,6 +38,7 @@ public class UifParameters {
 	public static final String LOOKUP_PARAMETERS = "lookupParameters";
 	public static final String READ_ONLY_FIELDS = "readOnlyFields";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
+	public static final String RENDER_FULL_VIEW = "renderFullView";
 	public static final String RETURN_LOCATION = "returnLocation";
 	public static final String RETURN_FORM_KEY = "returnFormKey";
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";

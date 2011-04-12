@@ -91,7 +91,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 			return;
 		}
 
-		LOG.info("Running compare field initializer on component: " + component.getId());
+		LOG.debug("Running compare field initializer on component: " + component.getId());
 
 		// list to hold the generated compare items
 		List<Component> comparisonItems = new ArrayList<Component>();

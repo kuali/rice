@@ -119,7 +119,15 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         // we are going to need this no matter how we get the view, so do it
         // once
         Map<String, String> parameterMap = WebUtils.translateRequestParameterMap(request.getParameterMap());
-
+        
+        // determine whether full view should be rendered or just page
+        // if not specified on the request and previous is not null, default to
+        // just page
+        // TODO: revisit and see if we can have a general pattern
+//        if ((previousView != null) && !parameterMap.containsKey(UifParameters.RENDER_FULL_VIEW)) {
+//            form.setRenderFullView(false);
+//        }
+        
         // add/override view request parameters
         parameterMap.putAll(viewRequestParameters);
         

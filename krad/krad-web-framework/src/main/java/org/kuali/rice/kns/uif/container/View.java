@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifConstants.ViewStatus;
 import org.kuali.rice.kns.uif.UifConstants.ViewType;
@@ -37,6 +35,7 @@ import org.kuali.rice.kns.uif.core.RequestParameter;
 import org.kuali.rice.kns.uif.field.LinkField;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -81,7 +80,7 @@ public class View extends ContainerBase {
     private List<String> additionalCssFiles;
 
     private String viewTypeName;
-    private String viewHelperServiceBeanId;
+    private Class<? extends ViewHelperService> viewHelperServiceClassName;
 
     private String viewStatus;
     private ViewIndex viewIndex;
@@ -490,38 +489,33 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Spring bean id of the <code>ViewHelperService</code> that handles the
-     * various phases of the Views lifecycle
+     * Class name of the <code>ViewHelperService</code> that handles the various
+     * phases of the Views lifecycle
      * 
-     * @return String id for the spring bean
+     * @return Class for the spring bean
      * @see org.kuali.rice.kns.uif.service.ViewHelperService
      */
-    public String getViewHelperServiceBeanId() {
-        return this.viewHelperServiceBeanId;
+    public Class<? extends ViewHelperService> getViewHelperServiceClassName() {
+        return this.viewHelperServiceClassName;
     }
 
     /**
-     * Setter for the <code>ViewHelperService</code> bean id
+     * Setter for the <code>ViewHelperService</code> class name
      * 
      * @param viewLifecycleService
      */
-    public void setViewHelperServiceBeanId(String viewHelperServiceBeanId) {
-        this.viewHelperServiceBeanId = viewHelperServiceBeanId;
+    public void setViewHelperServiceClassName(Class<? extends ViewHelperService> viewHelperServiceClassName) {
+        this.viewHelperServiceClassName = viewHelperServiceClassName;
     }
 
     /**
-     * Retrieves the <code>ViewHelperService</code> associated with the View
+     * Creates the <code>ViewHelperService</code> associated with the View
      * 
      * @return ViewHelperService instance
      */
     public ViewHelperService getViewHelperService() {
         if (this.viewHelperService == null) {
-            viewHelperService = GlobalResourceLoader.getService(getViewHelperServiceBeanId());
-
-            if (viewHelperService == null) {
-                throw new RuntimeException("Unable to find ViewHelperService (using bean id: "
-                        + getViewHelperServiceBeanId() + ") for view: " + getId());
-            }
+            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClassName);
         }
 
         return viewHelperService;

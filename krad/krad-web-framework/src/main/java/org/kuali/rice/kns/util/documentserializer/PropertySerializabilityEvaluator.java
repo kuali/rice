@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.util.documentserializer;
 
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
 
 /**
@@ -33,7 +32,7 @@ public interface PropertySerializabilityEvaluator {
      */
     public void initializeEvaluator(Document document);
     
-    public void initializeEvaluator(BusinessObject businessObject);
+    public void initializeEvaluator(Object businessObject);
     
     /**
      * Determines whether a child property of an object is serializable.

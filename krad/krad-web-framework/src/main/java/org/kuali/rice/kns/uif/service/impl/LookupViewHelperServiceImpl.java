@@ -936,7 +936,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 
 	protected HtmlData getReturnUrl(Object dataObject, Map<String, Object> context, List<String> returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
 		View lookupView = (View) context.get(UifConstants.ContextVariableNames.VIEW);
-		Properties props = getReturnUrlParameters(dataObject, getFieldConversions(), lookupView.getViewHelperServiceBeanId(), returnKeys);
+		Properties props = getReturnUrlParameters(dataObject, getFieldConversions(), lookupView.getViewHelperServiceClassName().getName(), returnKeys);
 		// TODO delyea - Multiple value returns are not yet implemented
 		// if(StringUtils.isEmpty(lookupForm.getHtmlDataType()) || HtmlData.ANCHOR_HTML_DATA_TYPE.equals(lookupForm.getHtmlDataType())) {
 		return getReturnAnchorHtmlData(dataObject, props, context, returnKeys, businessObjectRestrictions);

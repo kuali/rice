@@ -113,9 +113,13 @@ public class CollectionGroup extends Group implements DataBinding {
             }
         }
 
-        // initialize container items (since they are not in child list)
+        // initialize container items and sub-collections (since they are not in child list)
         for (Component item : getItems()) {
             view.getViewHelperService().performComponentInitialization(view, item);
+        }
+        
+        for (CollectionGroup collectionGroup : getSubCollections()) {
+            view.getViewHelperService().performComponentInitialization(view, collectionGroup);
         }
     }
 
@@ -161,7 +165,6 @@ public class CollectionGroup extends Group implements DataBinding {
         List<Component> components = super.getNestedComponents();
 
         components.add(addLineLabelField);
-        components.addAll(subCollections);
         components.addAll(actionFields);
         components.addAll(addLineActionFields);
 

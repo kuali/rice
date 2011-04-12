@@ -32,19 +32,23 @@
         <krad:template component="${view.navigation}" currentPageId="${view.currentPageId}"/>
      </div>
    
-     <!----------------------------------- #VIEW PAGE --------------------------------------->  
-     <div id="viewpage_div">
-     	<krad:template component="${view.errorsField}"/>
-        <krad:template component="${view.currentPage}"/>
-       
-        <%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>
-        <c:if test="${view.renderForm}">
-          <form:hidden path="viewId"/>
-          <form:hidden path="pageId"/>
-        </c:if>
-	
+     <krad:template component="${view.errorsField}"/>
+     
+     <%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>
+     <c:if test="${view.renderForm}">
+        <form:hidden path="viewId"/>
+        
         <%-- all forms will be stored in session, this is the conversation key --%>
         <form:hidden path="formKey"/>
+     </c:if>
+   
+     <!----------------------------------- #VIEW PAGE --------------------------------------->  
+     <div id="viewpage_div">
+        <krad:template component="${view.currentPage}"/>
+        
+        <c:if test="${view.renderForm}">
+          <form:hidden path="pageId"/>
+        </c:if>
      </div>
    </div>  
     

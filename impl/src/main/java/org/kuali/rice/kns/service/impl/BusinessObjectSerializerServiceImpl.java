@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.BusinessObject;
+import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.service.BusinessObjectSerializerService;
@@ -35,7 +35,7 @@ public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase i
      * 
      * @see org.kuali.rice.kns.service.DocumentSerializerService#serializeDocumentToXml(org.kuali.rice.kns.document.Document)
      */
-    public String serializeBusinessObjectToXml(BusinessObject businessObject) {
+    public String serializeBusinessObjectToXml(Object businessObject) {
         PropertySerializabilityEvaluator propertySerizabilityEvaluator = getPropertySerizabilityEvaluator(businessObject);
         evaluators.set(propertySerizabilityEvaluator);
         SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
@@ -55,19 +55,22 @@ public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase i
         return xml;
     }
 
-    public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(BusinessObject businessObject) {
+    public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object businessObject) {
+        PropertySerializabilityEvaluator evaluator = null;
+        
         MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = 
         	KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
         String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(businessObject.getClass());
         MaintenanceDocumentEntry maintenanceDocumentEntry = maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(docTypeName);
         List<MaintainableSectionDefinition> maintainableSectionDefinitions = maintenanceDocumentEntry.getMaintainableSections();
-        if (maintainableSectionDefinitions == null) {
-            return new AlwaysTruePropertySerializibilityEvaluator();
+        if(CollectionUtils.isEmpty(maintainableSectionDefinitions)) {
+            evaluator = new AlwaysTruePropertySerializibilityEvaluator();
         }
         else {
-            PropertySerializabilityEvaluator evaluator = new MaintenanceDocumentPropertySerializibilityEvaluator();
+            evaluator = new MaintenanceDocumentPropertySerializibilityEvaluator();
             evaluator.initializeEvaluator(businessObject);
-            return evaluator;
         }
+        
+        return evaluator;
     }
 }

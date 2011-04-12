@@ -50,6 +50,7 @@ import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.rules.MaintenanceDocumentRule;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -58,7 +59,6 @@ import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.ForeignKeyFieldsPopulationState;
@@ -90,7 +90,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     public static final String MAINTAINABLE_ERROR_PATH = DOCUMENT_ERROR_PREFIX + "newMaintainableObject";
 
     protected PersistenceStructureService persistenceStructureService;
-    protected PersistenceService persistenceService;
+    protected BusinessObjectMetaDataService businessObjectMetaDataService;
     protected DataDictionaryService ddService;
     protected DocumentHelperService documentHelperService;
     protected BusinessObjectService boService;
@@ -103,8 +103,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected RoleService roleService;
     protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
 
-    private PersistableBusinessObject oldBo;
-    private PersistableBusinessObject newBo;
+    private Object oldBo;
+    private Object newBo;
     private Class boClass;
 
     protected List priorErrorPath;
@@ -127,7 +127,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         try {
             this.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
             this.setDdService(KNSServiceLocatorWeb.getDataDictionaryService());
-            this.setPersistenceService(KNSServiceLocator.getPersistenceService());
+            this.setBusinessObjectMetaDataService(KNSServiceLocatorWeb.getBusinessObjectMetaDataService());
             this.setBoService(KNSServiceLocator.getBusinessObjectService());
             this.setBoDictionaryService(KNSServiceLocatorWeb.getBusinessObjectDictionaryService());
             this.setDictionaryValidationService(KNSServiceLocatorWeb.getDictionaryValidationService());
@@ -283,20 +283,23 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return true iff, based on the InactivationBlockingMetadata, the maintenance document should be allowed to route
      */
     protected boolean processInactivationBlockChecking(MaintenanceDocument maintenanceDocument, InactivationBlockingMetadata inactivationBlockingMetadata) {
-
-        String inactivationBlockingDetectionServiceBeanName = inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
-        if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
-            inactivationBlockingDetectionServiceBeanName = KNSServiceLocatorWeb.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
+        if(newBo instanceof PersistableBusinessObject) {
+            String inactivationBlockingDetectionServiceBeanName = inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
+            if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
+                inactivationBlockingDetectionServiceBeanName = KNSServiceLocatorWeb.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
+            }
+            InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocatorWeb.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
+    
+            boolean foundBlockingRecord = inactivationBlockingDetectionService.hasABlockingRecord((PersistableBusinessObject)newBo, inactivationBlockingMetadata);
+    
+            if (foundBlockingRecord) {
+                putInactivationBlockingErrorOnPage(maintenanceDocument, inactivationBlockingMetadata);
+            }
+            
+            return !foundBlockingRecord;
         }
-        InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocatorWeb.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
-
-        boolean foundBlockingRecord = inactivationBlockingDetectionService.hasABlockingRecord(newBo, inactivationBlockingMetadata);
-
-        if (foundBlockingRecord) {
-            putInactivationBlockingErrorOnPage(maintenanceDocument, inactivationBlockingMetadata);
-        }
-
-        return !foundBlockingRecord;
+        
+        return true;
     }
 
     /**
@@ -309,7 +312,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (!persistenceStructureService.hasPrimaryKeyFieldValues(newBo)) {
             throw new RuntimeException("Maintenance document did not have all primary key values filled in.");
         }
-        Map fieldValues = persistenceService.getPrimaryKeyFieldValues(newBo);
         Properties parameters = new Properties();
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, inactivationBlockingMetadata.getBlockedBusinessObjectClass().getName());
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS);
@@ -653,32 +655,31 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             throw new ValidationException("Maintainable's component business object is null.");
         }
 
-        // if the Maintainable object is a PBO and there is a legacy
-        // maintDefinition
+        // if the Maintainable object is a PBO and there is a legacy maintDefinition
         // then use the old validation methods
-        if (newBo instanceof PersistableBusinessObject
-                && CollectionUtils.isNotEmpty(maintDocDictionaryService.getMaintainableSections(document
-                        .getDocumentHeader().getWorkflowDocument().getDocumentType()))) {
-
-            BusinessObject businessObject = (BusinessObject) newBo;
-
+        if(newBo instanceof PersistableBusinessObject &&
+                CollectionUtils.isNotEmpty(maintDocDictionaryService.getMaintainableSections(document.getDocumentHeader().getWorkflowDocument().getDocumentType()))) {
+            
+            BusinessObject businessObject = (BusinessObject)newBo;
+            
             // run required check from maintenance data dictionary
             maintDocDictionaryService.validateMaintenanceRequiredFields(document);
-
-            // check for duplicate entries in collections if necessary
+    
+            //check for duplicate entries in collections if necessary
             maintDocDictionaryService.validateMaintainableCollectionsForDuplicateEntries(document);
-
+    
             // run the DD DictionaryValidation (non-recursive)
-            dictionaryValidationService.validateBusinessObjectOnMaintenanceDocument(businessObject, document
-                    .getDocumentHeader().getWorkflowDocument().getDocumentType());
-
+            dictionaryValidationService.validateBusinessObjectOnMaintenanceDocument(businessObject,
+            		document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+    
             // do default (ie, mandatory) existence checks
             dictionaryValidationService.validateDefaultExistenceChecks(businessObject);
-        } else {
+        }
+        else {
             GlobalVariables.getMessageMap().addToErrorPath("dataObject");
-
+            
             dictionaryValidationService.validate(newBo);
-
+            
             GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
         }
 
@@ -710,10 +711,10 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         // default to success if no failures
         boolean success = true;
-        Class boClass = document.getNewMaintainableObject().getBoClass();
+        Class<?> boClass = document.getNewMaintainableObject().getBoClass();
 
-        PersistableBusinessObject oldBo = document.getOldMaintainableObject().getBusinessObject();
-        PersistableBusinessObject newBo = document.getNewMaintainableObject().getBusinessObject();
+        Object oldBo = document.getOldMaintainableObject().getDataObject();
+        Object newBo = document.getNewMaintainableObject().getDataObject();
 
         // We dont do primaryKeyChecks on Global Business Object maintenance documents. This is
         // because it doesnt really make any sense to do so, given the behavior of Globals. When a
@@ -727,8 +728,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // fail and complain if the person has changed the primary keys on
         // an EDIT maintenance document.
         if (document.isEdit()) {
-            if (!ObjectUtils.equalByKeys(oldBo, newBo)) { // this is a very handy utility on our ObjectUtils
-
+            if (!businessObjectMetaDataService.equalsByPrimaryKeys(oldBo, newBo)) {
                 // add a complaint to the errors
                 putDocumentError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PRIMARY_KEYS_CHANGED_ON_EDIT, getHumanReadablePrimaryKeyFieldNames(boClass));
                 success &= false;
@@ -740,7 +740,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         else if (document.isNew()) {
 
             // get a map of the pk field names and values
-            Map newPkFields = persistenceService.getPrimaryKeyFieldValues(newBo);
+            Map<String, ?> newPkFields = businessObjectMetaDataService.getPrimaryKeyFieldValues(newBo);
 
             // TODO: Good suggestion from Aaron, dont bother checking the DB, if all of the
             // objects PK fields dont have values. If any are null or empty, then
@@ -748,8 +748,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             // DB call that may not be necessary, and we want to minimize these.
 
             // attempt to do a lookup, see if this object already exists by these Primary Keys
-            PersistableBusinessObject testBo = (PersistableBusinessObject)boService.findByPrimaryKey(boClass, newPkFields);
-
+            PersistableBusinessObject testBo = boService.findByPrimaryKey(boClass.asSubclass(PersistableBusinessObject.class), newPkFields);
+            
             // if the retrieve was successful, then this object already exists, and we need
             // to complain
             if (testBo != null) {
@@ -757,6 +757,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 success &= false;
             }
         }
+        
         return success;
     }
 
@@ -767,16 +768,17 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @param boClass
      * @return
      */
-    protected String getHumanReadablePrimaryKeyFieldNames(Class boClass) {
+    protected String getHumanReadablePrimaryKeyFieldNames(Class<?> boClass) {
 
         String delim = "";
         StringBuffer pkFieldNames = new StringBuffer();
 
         // get a list of all the primary key field names, walk through them
-        List pkFields = persistenceStructureService.getPrimaryKeys(boClass);
-        for (Iterator iter = pkFields.iterator(); iter.hasNext();) {
+        List<String> pkFields = businessObjectMetaDataService.listPrimaryKeyFieldNames(boClass);
+        for (Iterator<String> iter = pkFields.iterator(); iter.hasNext();) {
             String pkFieldName = (String) iter.next();
 
+            // TODO should this be getting labels from the view dictionary
             // use the DataDictionary service to translate field name into human-readable label
             String humanReadableFieldName = ddService.getAttributeLabel(boClass, pkFieldName);
 
@@ -956,8 +958,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         }
 
         // document's newMaintainable must contain an object (ie, not null)
-        if (newMaintainable.getBusinessObject() == null) {
-            throw new ValidationException("Maintainable's component business object is null.");
+        if (newMaintainable.getDataObject() == null) {
+            throw new ValidationException("Maintainable's component data object is null.");
         }
 
         // document's newMaintainable must contain a valid BusinessObject descendent
@@ -984,14 +986,14 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (document.getNewMaintainableObject() == null) {
             return success;
         }
-        if (document.getNewMaintainableObject().getBusinessObject() == null) {
+        if (document.getNewMaintainableObject().getDataObject() == null) {
             return success;
         }
-        if (!(document.getNewMaintainableObject().getBusinessObject() instanceof GlobalBusinessObject)) {
+        if (!(document.getNewMaintainableObject().getDataObject() instanceof GlobalBusinessObject)) {
             return success;
         }
 
-        PersistableBusinessObject bo = (PersistableBusinessObject) document.getNewMaintainableObject().getBusinessObject();
+        PersistableBusinessObject bo = (PersistableBusinessObject) document.getNewMaintainableObject().getDataObject();
         GlobalBusinessObject gbo = (GlobalBusinessObject) bo;
         return gbo.isPersistable();
     }
@@ -1138,14 +1140,16 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     public void setupBaseConvenienceObjects(MaintenanceDocument document) {
 
         // setup oldAccount convenience objects, make sure all possible sub-objects are populated
-        oldBo = (PersistableBusinessObject) document.getOldMaintainableObject().getBusinessObject();
-        if (oldBo != null) {
-            oldBo.refreshNonUpdateableReferences();
+        oldBo = document.getOldMaintainableObject().getDataObject();
+        if (oldBo != null && oldBo instanceof PersistableBusinessObject) {
+            ((PersistableBusinessObject)oldBo).refreshNonUpdateableReferences();
         }
 
         // setup newAccount convenience objects, make sure all possible sub-objects are populated
-        newBo = (PersistableBusinessObject) document.getNewMaintainableObject().getBusinessObject();
-        newBo.refreshNonUpdateableReferences();
+        newBo = document.getNewMaintainableObject().getDataObject();
+        if(newBo instanceof PersistableBusinessObject) {
+            ((PersistableBusinessObject)newBo).refreshNonUpdateableReferences();
+        }
 
         boClass = document.getNewMaintainableObject().getBoClass();
 
@@ -1170,36 +1174,36 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      *
      */
     protected boolean checkForPartiallyFilledOutReferenceForeignKeys(String referenceName) {
+        boolean success = true;
 
-        boolean success;
+        if (newBo instanceof PersistableBusinessObject) {
+            ForeignKeyFieldsPopulationState fkFieldsState;
+            fkFieldsState = persistenceStructureService.getForeignKeyFieldsPopulationState(
+                    (PersistableBusinessObject) newBo, referenceName);
 
-        ForeignKeyFieldsPopulationState fkFieldsState;
-        fkFieldsState = persistenceStructureService.getForeignKeyFieldsPopulationState(newBo, referenceName);
+            // determine result
+            if (fkFieldsState.isAnyFieldsPopulated() && !fkFieldsState.isAllFieldsPopulated()) {
+                success = false;
 
-        // determine result
-        if (fkFieldsState.isAnyFieldsPopulated() && !fkFieldsState.isAllFieldsPopulated()) {
-            success = false;
-        }
-        else {
-            success = true;
-        }
+                // add errors if appropriate
 
-        // add errors if appropriate
-        if (!success) {
+                // get the full set of foreign-keys
+                List fKeys = new ArrayList(persistenceStructureService.getForeignKeysForReference(
+                        newBo.getClass().asSubclass(PersistableBusinessObject.class), referenceName).keySet());
+                String fKeysReadable = consolidateFieldNames(fKeys, ", ").toString();
 
-            // get the full set of foreign-keys
-            List fKeys = new ArrayList(persistenceStructureService.getForeignKeysForReference(newBo.getClass(), referenceName).keySet());
-            String fKeysReadable = consolidateFieldNames(fKeys, ", ").toString();
+                // walk through the missing fields
+                for (Iterator iter = fkFieldsState.getUnpopulatedFieldNames().iterator(); iter.hasNext();) {
+                    String fieldName = (String) iter.next();
 
-            // walk through the missing fields
-            for (Iterator iter = fkFieldsState.getUnpopulatedFieldNames().iterator(); iter.hasNext();) {
-                String fieldName = (String) iter.next();
+                    // get the human-readable name
+                    String fieldNameReadable = ddService.getAttributeLabel(newBo.getClass(), fieldName);
 
-                // get the human-readable name
-                String fieldNameReadable = ddService.getAttributeLabel(newBo.getClass(), fieldName);
-
-                // add a field error
-                putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS, new String[] { fieldNameReadable, fKeysReadable });
+                    // add a field error
+                    putFieldError(fieldName,
+                            RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS, new String[]{
+                                    fieldNameReadable, fKeysReadable});
+                }
             }
         }
 
@@ -1382,11 +1386,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      *
      * @return Returns the newBo.
      */
-    protected final PersistableBusinessObject getNewBo() {
+    protected final Object getNewBo() {
         return newBo;
     }
 
-    protected void setNewBo(PersistableBusinessObject newBo) {
+    protected void setNewBo(Object newBo) {
         this.newBo = newBo;
     }
 
@@ -1395,26 +1399,26 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      *
      * @return Returns the oldBo.
      */
-    protected final PersistableBusinessObject getOldBo() {
+    protected final Object getOldBo() {
         return oldBo;
     }
 
     /**
-     * Gets the persistenceService attribute.
+     * Gets the businessObjectMetaDataService attribute.
      *
-     * @return Returns the persistenceService.
+     * @return Returns the businessObjectMetaDataService.
      */
-    protected final PersistenceService getPersistenceService() {
-        return persistenceService;
+    protected final BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+        return businessObjectMetaDataService;
     }
 
     /**
-     * Sets the persistenceService attribute value.
+     * Sets the businessObjectMetaDataService attribute value.
      *
-     * @param persistenceService The persistenceService to set.
+     * @param businessObjectMetaDataService The persistenceService to set.
      */
-    public final void setPersistenceService(PersistenceService persistenceService) {
-        this.persistenceService = persistenceService;
+    public final void setBusinessObjectMetaDataService(BusinessObjectMetaDataService businessObjectMetaDataService) {
+        this.businessObjectMetaDataService = businessObjectMetaDataService;
     }
 
     /**

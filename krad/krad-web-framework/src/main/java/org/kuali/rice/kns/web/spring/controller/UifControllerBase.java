@@ -285,6 +285,9 @@ public abstract class UifControllerBase {
 	public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 		String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
+		
+		// only refreshing page
+		form.setRenderFullView(false);
 
 		return getUIFModelAndView(form, form.getViewId(), pageId);
 	}
@@ -389,6 +392,7 @@ public abstract class UifControllerBase {
             modelAndView.addObject("redirectUrl",  redirectUrl);
             return modelAndView;
 		}  
+		
 		String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 		ModelAndView modelAndView = new ModelAndView(REDIRECT_PREFIX + redirectUrl);
 
@@ -423,6 +427,9 @@ public abstract class UifControllerBase {
 		View view = form.getView();
 		if ((view == null) || !StringUtils.equals(viewId, view.getId())) {
 			view = getViewService().getView(viewId, form.getViewRequestParameters());
+			
+			// view changed so force full render
+			form.setRenderFullView(true);
 		}
 
 		// if view status is final we need to rebuild (build fresh)

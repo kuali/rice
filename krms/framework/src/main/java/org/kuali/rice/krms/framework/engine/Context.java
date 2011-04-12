@@ -1,6 +1,9 @@
-package org.kuali.rice.krms.engine;
+package org.kuali.rice.krms.framework.engine;
 
 import java.util.List;
+
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.TermResolver;
 
 /**
  * The context represents the area(s) of an organization's activity where a

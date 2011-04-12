@@ -5,10 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.krms.engine.Agenda;
-import org.kuali.rice.krms.engine.Context;
-import org.kuali.rice.krms.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.engine.TermResolver;
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.TermResolver;
 
 public class BasicContext implements Context {
 	

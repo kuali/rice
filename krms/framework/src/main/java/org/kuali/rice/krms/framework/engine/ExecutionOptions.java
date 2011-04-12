@@ -15,7 +15,7 @@ public class ExecutionOptions {
 		executionOptions = new HashMap<String,String>();
 	}
 	
-	public boolean isFlagSet(org.kuali.rice.krms.engine.ExecutionOptions flag){
+	public boolean isFlagSet(org.kuali.rice.krms.api.engine.ExecutionOptions flag){
 		return false; 
 	}
 }

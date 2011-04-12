@@ -21,7 +21,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.krms.engine.Context;
 import org.w3c.dom.Element;
 
 /**
@@ -32,8 +31,6 @@ import org.w3c.dom.Element;
  * A context definition includes a list of agendas which are valid within the
  * context.  Typically, during rule engine execution, one or more of these
  * agendas is selected for execution based on a given set of selection criteria.
- *  
- * @see Context 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

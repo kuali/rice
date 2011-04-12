@@ -3,14 +3,13 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.Date;
 import java.util.Map;
 
-import org.kuali.rice.krms.engine.Context;
-import org.kuali.rice.krms.engine.Engine;
-import org.kuali.rice.krms.engine.EngineResults;
-import org.kuali.rice.krms.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.engine.ResultEvent;
-import org.kuali.rice.krms.engine.SelectionCriteria;
-import org.kuali.rice.krms.engine.Term;
-import org.kuali.rice.krms.engine.TermSpecification;
+import org.kuali.rice.krms.api.engine.Engine;
+import org.kuali.rice.krms.api.engine.EngineResults;
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.ResultEvent;
+import org.kuali.rice.krms.api.engine.SelectionCriteria;
+import org.kuali.rice.krms.api.engine.Term;
+import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.result.TimingResult;
 
 public class ProviderBasedEngine implements Engine {

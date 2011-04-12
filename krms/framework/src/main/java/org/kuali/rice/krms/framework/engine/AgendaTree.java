@@ -2,8 +2,8 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.List;
 
-import org.kuali.rice.krms.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.engine.Rule;
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.Rule;
 
 public class AgendaTree {
 	

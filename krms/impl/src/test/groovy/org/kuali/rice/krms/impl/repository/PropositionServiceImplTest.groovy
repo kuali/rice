@@ -33,7 +33,7 @@ import org.kuali.rice.krms.api.repository.PropositionDefinition
 import org.kuali.rice.krms.api.repository.PropositionDefinitionContract
 import org.kuali.rice.krms.api.repository.PropositionParameter
 import org.kuali.rice.krms.api.repository.PropositionParameterContract
-import org.kuali.rice.krms.engine.LogicalOperator;
+import org.kuali.rice.krms.api.engine.LogicalOperator;
 import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 
 class PropositionServiceImplTest {

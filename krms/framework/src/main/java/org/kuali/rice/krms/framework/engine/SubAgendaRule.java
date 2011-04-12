@@ -1,8 +1,7 @@
 package org.kuali.rice.krms.framework.engine;
 
-import org.kuali.rice.krms.engine.Agenda;
-import org.kuali.rice.krms.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.engine.Rule;
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.Rule;
 
 public class SubAgendaRule implements Rule {
 

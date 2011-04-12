@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.kuali.rice.krms.engine.TermResolver;
-import org.kuali.rice.krms.engine.TermSpecification;
+import org.kuali.rice.krms.api.engine.TermResolver;
+import org.kuali.rice.krms.api.engine.TermSpecification;
 
 /**
  * Cheesy {@link TermResolver} implementation for testing purposes.

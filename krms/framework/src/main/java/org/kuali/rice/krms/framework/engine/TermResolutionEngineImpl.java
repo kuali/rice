@@ -17,11 +17,11 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krms.engine.Term;
-import org.kuali.rice.krms.engine.TermResolutionEngine;
-import org.kuali.rice.krms.engine.TermResolutionException;
-import org.kuali.rice.krms.engine.TermResolver;
-import org.kuali.rice.krms.engine.TermSpecification;
+import org.kuali.rice.krms.api.engine.Term;
+import org.kuali.rice.krms.api.engine.TermResolutionEngine;
+import org.kuali.rice.krms.api.engine.TermResolutionException;
+import org.kuali.rice.krms.api.engine.TermResolver;
+import org.kuali.rice.krms.api.engine.TermSpecification;
 
 public class TermResolutionEngineImpl implements TermResolutionEngine {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TermResolutionEngineImpl.class);

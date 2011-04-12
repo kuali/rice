@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.engine;
+package org.kuali.rice.krms.api.engine;
 
 public class TermResolutionException extends Exception {
 

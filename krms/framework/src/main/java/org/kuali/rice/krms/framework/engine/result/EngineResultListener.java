@@ -1,7 +1,7 @@
 package org.kuali.rice.krms.framework.engine.result;
 
-import org.kuali.rice.krms.engine.ResultEvent;
-import org.kuali.rice.krms.engine.ResultListener;
+import org.kuali.rice.krms.api.engine.ResultEvent;
+import org.kuali.rice.krms.api.engine.ResultListener;
 
 public class EngineResultListener implements ResultListener {
 

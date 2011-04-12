@@ -1,4 +1,6 @@
-package org.kuali.rice.krms.engine;
+package org.kuali.rice.krms.framework.engine;
+
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 public interface Action {
 

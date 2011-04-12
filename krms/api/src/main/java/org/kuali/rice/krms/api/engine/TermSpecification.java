@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.engine;
+package org.kuali.rice.krms.api.engine;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 

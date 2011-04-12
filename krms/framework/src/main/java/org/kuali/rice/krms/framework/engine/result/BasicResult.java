@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.EventObject;
 
-import org.kuali.rice.krms.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.engine.ResultEvent;
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.ResultEvent;
 
 public class BasicResult extends EventObject implements ResultEvent{
 	private static final long serialVersionUID = -4124200802034785921L;

@@ -27,21 +27,21 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * immutable. 
  * Instances of Rule can be (un)marshalled to and from XML.
  *
- * @see RuleContract
+ * @see RuleDefinitionContract
  */
-@XmlRootElement(name = Rule.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = RuleDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Rule.Constants.TYPE_NAME, propOrder = {
-		Rule.Elements.ID,
-		Rule.Elements.NAME,
-		Rule.Elements.NAMESPACE,
-		Rule.Elements.TYPE_ID,
-		Rule.Elements.PROPOSITION,
+@XmlType(name = RuleDefinition.Constants.TYPE_NAME, propOrder = {
+		RuleDefinition.Elements.ID,
+		RuleDefinition.Elements.NAME,
+		RuleDefinition.Elements.NAMESPACE,
+		RuleDefinition.Elements.TYPE_ID,
+		RuleDefinition.Elements.PROPOSITION,
 		"actions", 
 		"attributes",
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Rule implements RuleContract, ModelObjectComplete{
+public final class RuleDefinition implements RuleDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -55,7 +55,7 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 	@XmlElement(name = Elements.PROPOSITION, required=true)
 	private Proposition proposition;
 	@XmlElement(name = Elements.ACTION, required=false)
-	private List<Action> actions;
+	private List<ActionDefinition> actions;
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
 	private List<RuleAttribute> attributes;
 	
@@ -70,7 +70,7 @@ public final class Rule implements RuleContract, ModelObjectComplete{
      * This constructor should never be called.  
      * It is only present for use during JAXB unmarshalling. 
      */
-    private Rule() {
+    private RuleDefinition() {
     	this.ruleId = null;
     	this.name = null;
     	this.namespace = null;
@@ -87,15 +87,15 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 	 * 
 	 * @param builder the Builder from which to construct the Rule
 	 */
-    private Rule(Builder builder) {
+    private RuleDefinition(Builder builder) {
         this.ruleId = builder.getRuleId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
         this.typeId = builder.getTypeId();
         this.propId = builder.getPropId();
         this.proposition = builder.getProposition().build();
-        List<Action> actionList = new ArrayList<Action> ();
-        for (Action.Builder b : builder.actions){
+        List<ActionDefinition> actionList = new ArrayList<ActionDefinition> ();
+        for (ActionDefinition.Builder b : builder.actions){
         	actionList.add(b.build());
         }
         this.actions = Collections.unmodifiableList(actionList);
@@ -137,7 +137,7 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 	}
 	
 	@Override
-	public List<Action> getActions(){
+	public List<ActionDefinition> getActions(){
 		return this.actions;
 	}
 		
@@ -147,9 +147,9 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS Repository Rule.  It enforces the constraints of the {@link RuleContract}.
+     * This builder is used to construct instances of KRMS Repository Rule.  It enforces the constraints of the {@link RuleDefinitionContract}.
      */
-    public static class Builder implements RuleContract, ModelBuilder, Serializable {		
+    public static class Builder implements RuleDefinitionContract, ModelBuilder, Serializable {		
         private static final long serialVersionUID = -7850514191699945347L;
         
 		private String ruleId;
@@ -158,7 +158,7 @@ public final class Rule implements RuleContract, ModelObjectComplete{
         private String typeId;
         private String propId;
         private Proposition.Builder proposition;
-        private List<Action.Builder> actions;
+        private List<ActionDefinition.Builder> actions;
         private List<RuleAttribute.Builder> attributes;
 
 		/**
@@ -176,12 +176,12 @@ public final class Rule implements RuleContract, ModelObjectComplete{
         	return new Builder(ruleId, name, namespace, typeId, propId);
         }
         /**
-         * Creates a builder by populating it with data from the given {@link RuleContract}.
+         * Creates a builder by populating it with data from the given {@link RuleDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(RuleContract contract) {
+        public static Builder create(RuleDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -243,9 +243,9 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 			this.setPropId(prop.getPropId());
 		}
 		
-		public void setActions(List<Action.Builder> actions) {
+		public void setActions(List<ActionDefinition.Builder> actions) {
 			if (actions == null){
-				this.actions = Collections.unmodifiableList(new ArrayList<Action.Builder>());
+				this.actions = Collections.unmodifiableList(new ArrayList<ActionDefinition.Builder>());
 				return;
 			}
 			this.actions = Collections.unmodifiableList(actions);
@@ -290,7 +290,7 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 		}
 
 		@Override
-		public List<Action.Builder> getActions(){
+		public List<ActionDefinition.Builder> getActions(){
 			return actions;
 		}
 		@Override
@@ -304,8 +304,8 @@ public final class Rule implements RuleContract, ModelObjectComplete{
 		 * @return the fully-constructed Rule
 		 */
         @Override
-        public Rule build() {
-            return new Rule(this);
+        public RuleDefinition build() {
+            return new RuleDefinition(this);
         }
 		
     }

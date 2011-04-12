@@ -19,7 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.Rule;
+import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleAttribute;
 
 import java.util.*;
@@ -31,10 +31,10 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRule(org.kuali.rice.krms.api.repository.Rule)
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRule(org.kuali.rice.krms.api.repository.RuleDefinition)
 	 */
 	@Override
-	public void createRule(Rule rule) {
+	public void createRule(RuleDefinition rule) {
 		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
 		
 	}
@@ -42,10 +42,10 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRule(org.kuali.rice.krms.api.repository.Rule)
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRule(org.kuali.rice.krms.api.repository.RuleDefinition)
 	 */
 	@Override
-	public void updateRule(Rule rule) {
+	public void updateRule(RuleDefinition rule) {
 		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
 		
 	}
@@ -56,7 +56,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#getRuleByRuleId(java.lang.String)
 	 */
 	@Override
-	public Rule getRuleByRuleId(String ruleId) {
+	public RuleDefinition getRuleByRuleId(String ruleId) {
 		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
 		return null;
 	}
@@ -88,7 +88,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   public Rule to(RuleBo bo) {
+   public RuleDefinition to(RuleBo bo) {
 	   if (bo == null) { return null; }
 	   // TODO implement
 	   return null;
@@ -100,7 +100,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   public RuleBo from(Rule im) {
+   public RuleBo from(RuleDefinition im) {
 	   if (im == null) { return null; }
 
 	   RuleBo bo = new RuleBo();
@@ -132,10 +132,10 @@ public final class RuleBoServiceImpl implements RuleBoService {
      * @param RuleBos a mutable List<RuleBo> to made completely immutable.
      * @return An unmodifiable List<Rule>
      */
-    List<Rule> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos) {
-        ArrayList<Rule> rules = new ArrayList<Rule>();
+    List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos) {
+        ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
         for (RuleBo bo : ruleBos) {
-            Rule rule = to(bo);
+            RuleDefinition rule = to(bo);
             rules.add(rule);
         }
         return Collections.unmodifiableList(rules);

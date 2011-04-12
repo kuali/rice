@@ -2,10 +2,10 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.Action
-import org.kuali.rice.krms.api.repository.ActionContract
+import org.kuali.rice.krms.api.repository.ActionDefinition
+import org.kuali.rice.krms.api.repository.ActionDefinitionContract
 
-public class ActionBo extends PersistableBusinessObjectBase implements ActionContract {
+public class ActionBo extends PersistableBusinessObjectBase implements ActionDefinitionContract {
 
 	def String actionId
 	def String namespace
@@ -22,9 +22,9 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionCon
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   static Action to(ActionBo bo) {
+   static ActionDefinition to(ActionBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.Action.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.ActionDefinition.Builder.create(bo).build()
    }
 
    /**
@@ -32,7 +32,7 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionCon
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static ActionBo from(Action im) {
+   static ActionBo from(ActionDefinition im) {
 	   if (im == null) { return null }
 
 	   ActionBo bo = new ActionBo()

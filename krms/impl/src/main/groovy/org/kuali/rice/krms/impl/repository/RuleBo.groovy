@@ -2,13 +2,13 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.Action
-import org.kuali.rice.krms.api.repository.Rule
-import org.kuali.rice.krms.api.repository.RuleContract
+import org.kuali.rice.krms.api.repository.ActionDefinition
+import org.kuali.rice.krms.api.repository.RuleDefinition
+import org.kuali.rice.krms.api.repository.RuleDefinitionContract
 import org.kuali.rice.krms.api.repository.RuleAttribute
 
 
-public class RuleBo extends PersistableBusinessObjectBase implements RuleContract {
+public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
 
 	def String ruleId
 	def String namespace
@@ -17,7 +17,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleContrac
 	def String propId
 
 	def PropositionBo proposition
-	def List<Action> actions	
+	def List<ActionDefinition> actions	
 	def List<RuleAttributeBo> attributes
 	
 	/**
@@ -25,9 +25,9 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleContrac
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   static Rule to(RuleBo bo) {
+   static RuleDefinition to(RuleBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.Rule.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.RuleDefinition.Builder.create(bo).build()
    }
 
    /**
@@ -35,7 +35,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleContrac
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static RuleBo from(Rule im) {
+   static RuleBo from(RuleDefinition im) {
 	   if (im == null) { return null }
 
 	   RuleBo bo = new RuleBo()

@@ -61,7 +61,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 	private String subAgendaId;
 	
 	@XmlElement(name = Elements.RULE, required=false)
-	private Rule rule;;
+	private RuleDefinition rule;;
 	@XmlElement(name = Elements.SUB_AGENDA, required=false)
 	private AgendaDefinition subAgenda;
 	@XmlElement(name = Elements.NEXT_TRUE, required=false)
@@ -149,7 +149,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 	}
 
 	@Override
-	public Rule getRule() {
+	public RuleDefinition getRule() {
 		return this.rule; 
 	}
 
@@ -185,7 +185,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
         private String ruleId;
         private String subAgendaId;
         
-        private Rule.Builder rule;
+        private RuleDefinition.Builder rule;
         private AgendaDefinition.Builder subAgenda;
         
         private AgendaItem.Builder nextTrue;
@@ -215,7 +215,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
         	Builder builder =  new Builder(contract.getId(), contract.getAgendaId(),
         			contract.getPriorItemId(), contract.getEntryCondition());
         	if (contract.getRule() != null){
-        		builder.setRule(Rule.Builder.create( contract.getRule() ));
+        		builder.setRule(RuleDefinition.Builder.create( contract.getRule() ));
         	}
         	if (contract.getSubAgenda() != null){
         		builder.setSubAgenda( AgendaDefinition.Builder.create( contract.getSubAgenda()));
@@ -292,7 +292,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 			this.subAgendaId = subAgendaId;
 		}
 
-		public void setRule(Rule.Builder rule) {
+		public void setRule(RuleDefinition.Builder rule) {
 			this.rule = rule;
 		}
 
@@ -345,7 +345,7 @@ public final class AgendaItem implements AgendaItemContract, ModelObjectComplete
 		}
 
 		@Override
-		public Rule.Builder getRule() {
+		public RuleDefinition.Builder getRule() {
 			return rule;
 		}
 

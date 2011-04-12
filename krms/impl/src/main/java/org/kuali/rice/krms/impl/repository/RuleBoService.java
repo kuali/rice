@@ -17,7 +17,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.Rule;
+import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleAttribute;
 
 /**
@@ -27,10 +27,10 @@ import org.kuali.rice.krms.api.repository.RuleAttribute;
  *
  */
 public interface RuleBoService {
-	public void createRule(Rule rule);
-	public void updateRule(Rule rule);
+	public void createRule(RuleDefinition rule);
+	public void updateRule(RuleDefinition rule);
 	
-	public Rule getRuleByRuleId(String ruleId);
+	public RuleDefinition getRuleByRuleId(String ruleId);
 	
 	public void createRuleAttribute(RuleAttribute ruleAttribute);
 	public void updateRuleAttribute(RuleAttribute ruleAttribute);
@@ -41,12 +41,12 @@ public interface RuleBoService {
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-	public Rule to( RuleBo bo);
+	public RuleDefinition to( RuleBo bo);
 
    /**
 	* Converts a immutable object to it's mutable bo counterpart
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-	public RuleBo from( Rule im );
+	public RuleBo from( RuleDefinition im );
 }

@@ -19,7 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.Action;
+import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.ActionAttribute;
 
 import java.util.*;
@@ -31,15 +31,15 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#createAction(org.kuali.rice.krms.api.repository.Action)
+	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#createAction(org.kuali.rice.krms.api.repository.ActionDefinition)
 	 */
 	@Override
-	public void createAction(Action action) {
+	public void createAction(ActionDefinition action) {
 		if (action == null){
 	        throw new IllegalArgumentException("action is null");
 		}
 		final String actionIdKey = action.getActionId();
-		final Action existing = getActionByActionId(actionIdKey);
+		final ActionDefinition existing = getActionByActionId(actionIdKey);
 		if (existing != null){
             throw new IllegalStateException("the action to create already exists: " + action);			
 		}	
@@ -49,21 +49,21 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#updateAction(org.kuali.rice.krms.api.repository.Action)
+	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#updateAction(org.kuali.rice.krms.api.repository.ActionDefinition)
 	 */
 	@Override
-	public void updateAction(Action action) {
+	public void updateAction(ActionDefinition action) {
 		if (action == null){
 	        throw new IllegalArgumentException("action is null");
 		}
 		final String actionIdKey = action.getActionId();
-		final Action existing = getActionByActionId(actionIdKey);
+		final ActionDefinition existing = getActionByActionId(actionIdKey);
         if (existing == null) {
             throw new IllegalStateException("the action does not exist: " + action);
         }
-        final Action toUpdate;
+        final ActionDefinition toUpdate;
         if (!existing.getActionId().equals(action.getActionId())){
-        	final Action.Builder builder = Action.Builder.create(action);
+        	final ActionDefinition.Builder builder = ActionDefinition.Builder.create(action);
         	builder.setActionId(existing.getActionId());
         	toUpdate = builder.build();
         } else {
@@ -79,7 +79,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#getActionsByRuleId(java.lang.String)
 	 */
 	@Override
-	public Action getActionByActionId(String actionId) {
+	public ActionDefinition getActionByActionId(String actionId) {
 		if (StringUtils.isBlank(actionId)){
             return null;			
 		}
@@ -93,7 +93,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#getActionsByRuleId(java.lang.String)
 	 */
 	@Override
-	public List<Action> getActionsByRuleId(String ruleId) {
+	public List<ActionDefinition> getActionsByRuleId(String ruleId) {
 		if (StringUtils.isBlank(ruleId)){
             throw new IllegalArgumentException("ruleId is null or blank");			
 		}
@@ -109,7 +109,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#getActionByRuleIdAndSequenceNumber(java.lang.String, java.lang.Integer)
 	 */
 	@Override
-	public Action getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber) {
+	public ActionDefinition getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber) {
 		if (StringUtils.isBlank(ruleId)) {
             throw new IllegalArgumentException("ruleId is null or blank");
 		}
@@ -189,10 +189,10 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	 * @param bo the mutable business object
 	 * @return the immutable object
 	 */
-	public Action to(ActionBo bo) {
+	public ActionDefinition to(ActionBo bo) {
 		if (bo == null) { return null; }
 		// TODO implement
-		Action.Builder builder = Action.Builder.create( bo.getActionId(), bo.getName(), bo.getNamespace(),
+		ActionDefinition.Builder builder = ActionDefinition.Builder.create( bo.getActionId(), bo.getName(), bo.getNamespace(),
 				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
 		builder.setDescription(bo.getDescription());
 		
@@ -214,7 +214,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   public ActionBo from(Action im) {
+   public ActionBo from(ActionDefinition im) {
 	   if (im == null) { return null; }
 
 	   ActionBo bo = new ActionBo();
@@ -249,10 +249,10 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
      * @param ActionBos a mutable List<ActionBo> to made completely immutable.
      * @return An unmodifiable List<Action>
      */
-    List<Action> convertListOfBosToImmutables(final Collection<ActionBo> ActionBos) {
-        ArrayList<Action> actions = new ArrayList<Action>();
+    List<ActionDefinition> convertListOfBosToImmutables(final Collection<ActionBo> ActionBos) {
+        ArrayList<ActionDefinition> actions = new ArrayList<ActionDefinition>();
         for (ActionBo bo : ActionBos) {
-            Action action = to(bo);
+            ActionDefinition action = to(bo);
             actions.add(action);
         }
         return Collections.unmodifiableList(actions);

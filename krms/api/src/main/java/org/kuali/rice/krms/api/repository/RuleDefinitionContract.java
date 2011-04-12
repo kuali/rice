@@ -2,7 +2,7 @@ package org.kuali.rice.krms.api.repository;
 
 import java.util.List;
 
-public interface RuleContract {
+public interface RuleDefinitionContract {
 	/**
 	 * This is the ID for the Rule
 	 *
@@ -44,7 +44,7 @@ public interface RuleContract {
 	
 	public PropositionContract getProposition();
 	
-	public List<? extends ActionContract> getActions();
+	public List<? extends ActionDefinitionContract> getActions();
 
 	/**
 	 * This method returns a list of attributes associated with the 

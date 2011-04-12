@@ -17,7 +17,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.Action;
+import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.ActionAttribute;
 
 /**
@@ -27,12 +27,12 @@ import org.kuali.rice.krms.api.repository.ActionAttribute;
  *
  */
 public interface ActionRepositoryService {
-	public void createAction(Action action);
-	public void updateAction(Action action);
+	public void createAction(ActionDefinition action);
+	public void updateAction(ActionDefinition action);
 	
-	public Action getActionByActionId(String actionId);
-	public List<Action> getActionsByRuleId(String ruleId);
-	public Action getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber);
+	public ActionDefinition getActionByActionId(String actionId);
+	public List<ActionDefinition> getActionsByRuleId(String ruleId);
+	public ActionDefinition getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber);
 	
 	public void createActionAttribute(ActionAttribute actionAttribute);
 	public void updateActionAttribute(ActionAttribute actionAttribute);
@@ -43,12 +43,12 @@ public interface ActionRepositoryService {
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-	public Action to( ActionBo bo);
+	public ActionDefinition to( ActionBo bo);
 
    /**
 	* Converts a immutable object to it's mutable bo counterpart
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-	public ActionBo from( Action im );
+	public ActionBo from( ActionDefinition im );
 }

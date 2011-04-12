@@ -2,7 +2,7 @@ package org.kuali.rice.krms.api.repository;
 
 import java.util.List;
 
-public interface ActionContract {
+public interface ActionDefinitionContract {
 	/**
 	 * This is the ID for the Action
 	 *

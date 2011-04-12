@@ -26,22 +26,22 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * immutable. 
  * Instances of Action can be (un)marshalled to and from XML.
  *
- * @see ActionContract
+ * @see ActionDefinitionContract
  */
-@XmlRootElement(name = Action.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = ActionDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Action.Constants.TYPE_NAME, propOrder = {
-		Action.Elements.ID,
-		Action.Elements.NAME,
-		Action.Elements.NAMESPACE,
-		Action.Elements.DESC,
-		Action.Elements.TYPE_ID,
-		Action.Elements.RULE_ID,
-		Action.Elements.SEQUENCE_NUMBER,
-		Action.Elements.ATTRIBUTES,
+@XmlType(name = ActionDefinition.Constants.TYPE_NAME, propOrder = {
+		ActionDefinition.Elements.ID,
+		ActionDefinition.Elements.NAME,
+		ActionDefinition.Elements.NAMESPACE,
+		ActionDefinition.Elements.DESC,
+		ActionDefinition.Elements.TYPE_ID,
+		ActionDefinition.Elements.RULE_ID,
+		ActionDefinition.Elements.SEQUENCE_NUMBER,
+		ActionDefinition.Elements.ATTRIBUTES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Action implements ActionContract, ModelObjectComplete{
+public final class ActionDefinition implements ActionDefinitionContract, ModelObjectComplete{
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -70,7 +70,7 @@ public final class Action implements ActionContract, ModelObjectComplete{
      * This constructor should never be called.  
      * It is only present for use during JAXB unmarshalling. 
      */
-    private Action() {
+    private ActionDefinition() {
     	this.actionId = null;
     	this.name = null;
     	this.namespace = null;
@@ -87,7 +87,7 @@ public final class Action implements ActionContract, ModelObjectComplete{
 	 * 
 	 * @param builder the Builder from which to construct the Action
 	 */
-    private Action(Builder builder) {
+    private ActionDefinition(Builder builder) {
         this.actionId = builder.getActionId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
@@ -143,9 +143,9 @@ public final class Action implements ActionContract, ModelObjectComplete{
 	}
 
 	/**
-     * This builder is used to construct instances of KRMS Repository Action.  It enforces the constraints of the {@link ActionContract}.
+     * This builder is used to construct instances of KRMS Repository Action.  It enforces the constraints of the {@link ActionDefinitionContract}.
      */
-    public static class Builder implements ActionContract, ModelBuilder, Serializable {
+    public static class Builder implements ActionDefinitionContract, ModelBuilder, Serializable {
         private static final long serialVersionUID = -6773634512570180267L;
 
         private String actionId;
@@ -182,12 +182,12 @@ public final class Action implements ActionContract, ModelObjectComplete{
         	return new Builder(actionId, name, namespace, typeId, ruleId, sequenceNumber);
         }
         /**
-         * Creates a builder by populating it with data from the given {@link ActionContract}.
+         * Creates a builder by populating it with data from the given {@link ActionDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(ActionContract contract) {
+        public static Builder create(ActionDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -316,8 +316,8 @@ public final class Action implements ActionContract, ModelObjectComplete{
 		 * @return the fully-constructed Action
 		 */
         @Override
-        public Action build() {
-            return new Action(this);
+        public ActionDefinition build() {
+            return new ActionDefinition(this);
         }
 		
     }

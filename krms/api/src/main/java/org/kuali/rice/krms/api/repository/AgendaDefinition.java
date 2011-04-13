@@ -1,18 +1,18 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 
 /**
  * Concrete model object implementation of KRMS Repository Agenda 
@@ -37,7 +38,8 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		AgendaDefinition.Elements.NAMESPACE_CODE,
 		AgendaDefinition.Elements.TYPE_ID,
 		AgendaDefinition.Elements.CONTEXT_ID,
-		AgendaDefinition.Elements.FIRST_ITEM_ID, 
+		AgendaDefinition.Elements.FIRST_ITEM_ID,
+		AgendaDefinition.Elements.EVENT_NAME,
 		AgendaDefinition.Elements.ATTRIBUTES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
@@ -62,9 +64,12 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	@XmlElement(name = Elements.FIRST_ITEM_ID, required = false)
 	private final String firstItemId;
 	
-	@XmlElementWrapper(name = Elements.ATTRIBUTES)
-	@XmlElement(name = Elements.ATTRIBUTE, required = false)
-	private List<AgendaAttribute> attributes;
+	@XmlElement(name = Elements.EVENT_NAME, required = true)
+	private final String eventName;
+	
+	@XmlElement(name = Elements.ATTRIBUTES, required = false)
+	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	private final Map<String, String> attributes;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -81,6 +86,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     	this.typeId = null;
     	this.contextId = null;
     	this.firstItemId = null;
+    	this.eventName = null;
     	this.attributes = null;
     }
     
@@ -97,11 +103,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         this.typeId = builder.getTypeId();
         this.contextId = builder.getContextId();
         this.firstItemId = builder.getFirstItemId();
-        List<AgendaAttribute> attrList = new ArrayList<AgendaAttribute>();
-        for (AgendaAttribute.Builder b : builder.attributes){
-        	attrList.add(b.build());
-        }
-        this.attributes = Collections.unmodifiableList(attrList);
+        this.eventName = builder.getEventName();
+        this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
     }
     
 	@Override
@@ -135,7 +138,12 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	}
 	
 	@Override
-	public List<AgendaAttribute> getAttributes() {
+	public String getEventName() {
+		return this.eventName;
+	}
+	
+	@Override
+	public Map<String, String> getAttributes() {
 		return this.attributes; 
 	}
 
@@ -152,21 +160,23 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         private String typeId;
         private String contextId;
         private String firstItemId;
-        private List<AgendaAttribute.Builder> attributes;
+        private String eventName;
+        private Map<String, String> attributes;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String agendaId, String name, String namespaceCode, String typeId, String contextId) {
-            setAgendaId(agendaId);
+        private Builder(String name, String namespaceCode, String typeId, String contextId, String eventName) {
             setName(name);
             setNamespaceCode(namespaceCode);
             setTypeId(typeId);
             setContextId(contextId);
+            setEventName(eventName);
+            setAttributes(new HashMap<String, String>());
         }
         
-        public static Builder create(String agendaId, String name, String namespaceCode, String typeId, String contextId){
-        	return new Builder(agendaId, name, namespaceCode, typeId, contextId);
+        public static Builder create(String name, String namespaceCode, String typeId, String contextId, String eventName){
+        	return new Builder(name, namespaceCode, typeId, contextId, eventName);
         }
         /**
          * Creates a builder by populating it with data from the given {@link AgendaDefinitionContract}.
@@ -178,17 +188,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-        	List <AgendaAttribute.Builder> attrBuilderList = new ArrayList<AgendaAttribute.Builder>();
-        	if (contract.getAttributes() != null){
-        		for (AgendaAttributeContract attrContract : contract.getAttributes()){
-        			AgendaAttribute.Builder myBuilder = AgendaAttribute.Builder.create(attrContract);
-        			attrBuilderList.add(myBuilder);
-        		}
-        	}
             Builder builder =  new Builder(contract.getAgendaId(), contract.getName(),
             		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
             builder.setFirstItemId( contract.getFirstItemId() );
-            builder.setAttributes( attrBuilderList );
+            builder.setEventName( contract.getEventName() );
+            builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
             return builder;
         }
 
@@ -236,12 +240,18 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 			this.firstItemId = firstItemId;
 		}
 		
-		public void setAttributes(List<AgendaAttribute.Builder> attributes){
-			if (attributes == null){
-				this.attributes = Collections.unmodifiableList(new ArrayList<AgendaAttribute.Builder>());
-				return;
+		public void setEventName(String eventName) {
+			if (StringUtils.isBlank(eventName)) {
+				throw new IllegalArgumentException("eventName was blank");
 			}
-			this.attributes = Collections.unmodifiableList(attributes);
+			this.eventName = eventName;
+		}
+		
+		public void setAttributes(Map<String, String> attributes){
+			if (attributes == null) {
+				throw new IllegalArgumentException("attributes was null, consider passing an empty Map instead");
+			}
+			this.attributes = attributes;
 		}
 		
 		@Override
@@ -273,9 +283,14 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		public String getFirstItemId() {
 			return firstItemId;
 		}
+		
+		@Override
+		public String getEventName() {
+			return eventName;
+		}
 
 		@Override
-		public List<AgendaAttribute.Builder> getAttributes() {
+		public Map<String, String> getAttributes() {
 			return attributes;
 		}
 
@@ -325,8 +340,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		final static String TYPE_ID = "typeId";
 		final static String CONTEXT_ID = "contextId";
 		final static String FIRST_ITEM_ID = "firstItemId";
+		final static String EVENT_NAME = "eventName";
 		final static String ATTRIBUTES = "attributes";
-		final static String ATTRIBUTE = "attribute";
 	}
 
 }

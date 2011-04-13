@@ -17,12 +17,13 @@
 package org.kuali.rice.krms.impl.repository;
 
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.AgendaAttribute;
-
-import java.util.*;
 
 public final class AgendaRepositoryServiceImpl implements AgendaRepositoryService {
 
@@ -56,11 +57,16 @@ public final class AgendaRepositoryServiceImpl implements AgendaRepositoryServic
 	   bo.setContextId( im.getContextId() );
 	   bo.setFirstItemId( im.getFirstItemId() );
 	   List<AgendaAttributeBo> attrList = new ArrayList<AgendaAttributeBo>();
-	   for (AgendaAttribute attr : im.getAttributes()){
-		   attrList.add ( AgendaAttributeBo.from(attr) );
+	   for (String attributeName : im.getAttributes().keySet()){
+		   attrList.add ( from(attributeName, im.getAttributes().get(attributeName)) );
 	   }
 	   bo.setAttributes(attrList);
 	   return bo;
+   }
+   
+   private AgendaAttributeBo from(String attributeName, String attributeValue) {
+	   // TODO
+	   throw new UnsupportedOperationException("TODO - implement me!");
    }
  
 

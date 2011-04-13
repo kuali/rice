@@ -1,7 +1,6 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-
 import org.kuali.rice.krms.api.repository.AgendaAttribute
 import org.kuali.rice.krms.api.repository.AgendaAttributeContract
 import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition

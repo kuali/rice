@@ -3,19 +3,16 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.TermResolver;
 
-public class BasicContext implements Context {
+public final class BasicContext implements Context {
 	
-	private Map<String, String> qualifiers;
-	private List<Agenda> agendas;
-	private List<TermResolver<?>> termResolvers;
+	private final List<Agenda> agendas;
+	private final List<TermResolver<?>> termResolvers;
 	
-	public BasicContext(Map<String, String> qualifiers, List<Agenda> agendas, List<TermResolver<?>> termResolvers) {
-		this.qualifiers = qualifiers;
+	public BasicContext(List<Agenda> agendas, List<TermResolver<?>> termResolvers) {
 		this.agendas = agendas;
 		this.termResolvers = termResolvers;
 	}
@@ -31,7 +28,7 @@ public class BasicContext implements Context {
 		}
 	}
 	
-	protected List<Agenda> findMatchingAgendas(ExecutionEnvironment environment) {
+	private List<Agenda> findMatchingAgendas(ExecutionEnvironment environment) {
 		List<Agenda> matchingAgendas = new ArrayList<Agenda>();
 		for (Agenda agenda : agendas) {
 			if (agenda.appliesTo(environment)) {
@@ -39,18 +36,6 @@ public class BasicContext implements Context {
 			}
 		}
 		return matchingAgendas;
-	}
-
-	@Override
-	public boolean appliesTo(ExecutionEnvironment environment) {
-		for (String contextQualifierName : qualifiers.keySet()) {
-			String qualifierValue = qualifiers.get(contextQualifierName);
-			String environmentQualifierValue = environment.getSelectionCriteria().getContextQualifiers().get(qualifierValue);
-			if (!qualifierValue.equals(environmentQualifierValue)) {
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	public List<TermResolver<?>> getTermResolvers() {

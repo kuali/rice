@@ -53,7 +53,7 @@ public final class ContextSelectionCriteria {
 	@XmlElement(name = Elements.NAMESPACE_CODE, required = true)
 	private final String namespaceCode;
 	
-	@XmlElement(name = Elements.NAME, required = true)
+	@XmlElement(name = Elements.NAME, required = false)
 	private final String name;
 	
 	@XmlElement(name = Elements.CONTEXT_QUALIFIERS)
@@ -74,7 +74,7 @@ public final class ContextSelectionCriteria {
 		this.contextQualifiers = null;
 	}
 	
-	public ContextSelectionCriteria(String namespaceCode, String name, Map<String, String> contextQualifiers) {
+	private ContextSelectionCriteria(String namespaceCode, String name, Map<String, String> contextQualifiers) {
 		this.namespaceCode = namespaceCode;
 		this.name = name;
 		this.contextQualifiers = new HashMap<String, String>();
@@ -83,12 +83,16 @@ public final class ContextSelectionCriteria {
 		}
 	}
 	
-	public ContextSelectionCriteria(String namespaceCode, Map<String, String> contextQualifiers) {
-		this(namespaceCode, null, contextQualifiers);
+	public static ContextSelectionCriteria newCriteria(String namespaceCode, String name, Map<String, String> contextQualifiers) {
+		return new ContextSelectionCriteria(namespaceCode, name, contextQualifiers);
 	}
 	
-	public ContextSelectionCriteria(Map<String, String> contextQualifiers) {
-		this(null, contextQualifiers);
+	public static ContextSelectionCriteria newCriteria(String namespaceCode, Map<String, String> contextQualifiers) {
+		return newCriteria(namespaceCode, null, contextQualifiers);
+	}
+	
+	public static ContextSelectionCriteria newCriteria(Map<String, String> contextQualifiers) {
+		return newCriteria(null, contextQualifiers);
 	}
 	
 	public String getNamespaceCode() {

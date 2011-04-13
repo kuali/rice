@@ -1,6 +1,6 @@
 package org.kuali.rice.krms.api.repository;
 
-import java.util.List;
+import java.util.Map;
 
 public interface AgendaDefinitionContract {
 	/**
@@ -44,6 +44,8 @@ public interface AgendaDefinitionContract {
 	
 	public String getFirstItemId();
 	
+	public String getEventName();
+	
 	
 	/**
 	 * This method returns a list of attributes associated with the 
@@ -51,7 +53,7 @@ public interface AgendaDefinitionContract {
 	 * 
 	 * @return a list of AgendaAttribute objects.
 	 */
-	public List<? extends AgendaAttributeContract> getAttributes();
+	public Map<String, String> getAttributes();
 	
 
 }

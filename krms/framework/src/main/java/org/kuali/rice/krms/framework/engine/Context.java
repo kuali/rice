@@ -26,6 +26,4 @@ public interface Context {
 	
 	List<TermResolver<?>> getTermResolvers();
 	
-	boolean appliesTo(ExecutionEnvironment environment);
-	
 }

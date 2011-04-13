@@ -52,7 +52,7 @@ public class KRMSTest {
 		List<TermResolver<?>> testResolvers = new ArrayList<TermResolver<?>>();
 		testResolvers.add(testResolver);
 		
-		Context context = new BasicContext(contextQualifiers, Arrays.asList(agenda), testResolvers);
+		Context context = new BasicContext(Arrays.asList(agenda), testResolvers);
 		ContextProvider contextProvider = new ManualContextProvider(context);
 		
 		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", null, contextQualifiers, Collections.EMPTY_MAP);

@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.LogicalOperator;
+import org.kuali.rice.core.framework.logic.LogicalOperator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 

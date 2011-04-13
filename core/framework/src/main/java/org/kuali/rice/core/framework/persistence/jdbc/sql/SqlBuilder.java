@@ -23,9 +23,9 @@ import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.LogicalOperator;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.logic.LogicalOperator;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;

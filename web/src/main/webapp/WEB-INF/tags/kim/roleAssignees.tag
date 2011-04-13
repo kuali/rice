@@ -15,6 +15,8 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
+<%@ attribute name="formAction" required="false" description="The URL that the HTML form rendered on this page will be posted to." %>
+
 <c:set var="roleMemberAttributes" value="${DataDictionary.KimDocumentRoleMember.attributes}" />
 <c:set var="roleQualifierAttributes" value="${DataDictionary.KimDocumentRoleQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
@@ -154,17 +156,17 @@
       </tr>
       <tr>
         <th>&nbsp;</th> 
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" />
-        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberTypeCode&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberId&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberNamespaceCode&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberName&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberFullName${roleMemberAttributes.memberFullName[fieldName]}&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument" />
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeFromDate&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument"/>
+        <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeToDate&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument"/>
         <c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
           <c:set var="fieldName" value="${attrDefn.attributeName}" />
           <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
-          <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
+          <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.${fieldName}&amp;roleId=${KualiForm.roleId}&amp;docTypeName=IdentityManagementRoleDocument"/>
         </c:forEach>
         <c:if test="${canModifyAssignees}"> 
           <kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>

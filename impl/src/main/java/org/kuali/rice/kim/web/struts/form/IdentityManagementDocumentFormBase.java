@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
@@ -30,6 +23,10 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.PagingBannerUtils;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -64,6 +61,15 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
             memberTableMetadata.setSwitchToPageNumber(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (memberTableMetadata.getSwitchToPageNumber() == -1) {
                 throw new RuntimeException("Couldn't find page number");
+            }
+        } else if (KNSConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
+            final String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SORT_METHOD + ".";
+            memberTableMetadata.setColumnToSortIndex(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
+            if (memberTableMetadata.getColumnToSortIndex() == -1) {
+                memberTableMetadata.setColumnToSortName(PagingBannerUtils.getAlphabeticalValueAfterSubmit(paramPrefix, request.getParameterNames()));
+                if (memberTableMetadata.getColumnToSortName().isEmpty()) {
+                    throw new RuntimeException("Couldn't find page number");
+                }
             }
         }
     }

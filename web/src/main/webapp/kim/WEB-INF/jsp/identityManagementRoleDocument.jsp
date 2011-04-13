@@ -45,7 +45,7 @@
     <kim:roleOverview />
 	<kim:rolePermissions />
 	<kim:roleResponsibilities />
-	<kim:roleAssignees />
+	<kim:roleAssignees formAction="${formAction}"/>
 	<kim:roleDelegations />
 
 	<c:if test="${!inquiry}">

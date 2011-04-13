@@ -15,6 +15,8 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
+<%@ attribute name="formAction" required="false" description="The URL that the HTML form rendered on this page will be posted to." %>
+
 <c:set var="groupMemberAttributes" value="${DataDictionary.GroupDocumentMember.attributes}" />
 <c:set var="groupQualifierAttributes" value="${DataDictionary.GroupDocumentQualifier.attributes}" />
 
@@ -118,13 +120,13 @@
               </tr>
 	        	<tr>
 	        		<th>&nbsp;</th> 
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberTypeCode}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberNamespaceCode}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberFullName}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberTypeCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberTypeCode&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
+                    <kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberId&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberNamespaceCode}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberNamespace&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberName&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberFullName}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.memberFullName&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeFromDate&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" headerLink="${ConfigProperties.application.url}/kim/${formAction}.do?methodToCall.sort.activeToDate&amp;groupId=${KualiForm.groupId}&amp;docTypeName=IdentityManagementGroupDocument" />
 					<c:if test="${canAssignGroup}">	
 	            		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col" horizontal="false" />
 					</c:if>	

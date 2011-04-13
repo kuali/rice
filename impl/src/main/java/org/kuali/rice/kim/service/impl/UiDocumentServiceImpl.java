@@ -1589,16 +1589,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return documentRolePermissions;
 	}
 
-	protected static class RoleMemberNameComparator implements Comparator<KimDocumentRoleMember> {
-		/**
-		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-		 */
-		public int compare(KimDocumentRoleMember m1, KimDocumentRoleMember m2) {
-			return m1.getMemberName().compareToIgnoreCase(m2.getMemberName());
-		}
-	}
-	protected RoleMemberNameComparator roleMemberNameComparator = new RoleMemberNameComparator();
-
 	protected List<KimDocumentRoleMember> loadRoleMembers(
 			IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberImpl> members){
 		List<KimDocumentRoleMember> pndMembers = new ArrayList<KimDocumentRoleMember>();
@@ -1623,7 +1613,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 			}
 		}
-		Collections.sort(pndMembers, roleMemberNameComparator);
 		return pndMembers;
 	}
 
@@ -2501,17 +2490,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementGroupDocument.setEditing(true);
 	}
 
-	protected static class GroupMemberNameComparator implements Comparator<GroupDocumentMember> {
-		/**
-		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-		 */
-		public int compare(GroupDocumentMember m1, GroupDocumentMember m2) {
-			return m1.getMemberName().compareToIgnoreCase(m2.getMemberName());
-		}
-	}
-
-	protected GroupMemberNameComparator groupMemberNameComparator = new GroupMemberNameComparator();
-
 	protected List<GroupDocumentMember> loadGroupMembers(
 			IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMemberImpl> members){
 		List<GroupDocumentMember> pndMembers = new ArrayList<GroupDocumentMember>();
@@ -2534,7 +2512,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 			}
 		}
-		Collections.sort(pndMembers, groupMemberNameComparator);
 		return pndMembers;
 	}
 

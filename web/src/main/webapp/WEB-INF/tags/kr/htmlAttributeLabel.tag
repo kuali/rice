@@ -29,6 +29,7 @@
               this attribute and includeHelpUrl are set to false, then the KualiForm.fieldLevelHelpEnabled will control whether to render the help link." %>
 <%@ attribute name="noColon" required="false" description="Whether a colon should be rendered after the label or not." %>
 <%@ attribute name="forceRequired" required="false" description="Whether the required icon should be forced to be rendered." %>
+<%@ attribute name="labelLink" required="false" description="Allows for the label to be turned into a link for sorting purposes. Excludes the ability to include a help url" %>
 
 <c:if test="${not empty attributeEntryName}">
     <dd:evalNameToMap mapName="${attributeEntryName}" returnVar="attributeEntry"/>
@@ -40,10 +41,14 @@
 <c:if test="${not empty labelFor}"><label for="${labelFor}"></c:if
 ><c:if test="${(attributeEntry.required == true || forceRequired) && readOnly != true}">
   <font color="">${Constants.REQUIRED_FIELD_SYMBOL}&nbsp;</font></c:if
-><c:if test="${includeHelpUrl || (!skipHelpUrl && KualiForm.fieldLevelHelpEnabled)}"><a
+><c:if test="${not empty labelLink && includeHelpUrl || (!skipHelpUrl && KualiForm.fieldLevelHelpEnabled)}"><a
         href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getAttributeHelpText&amp;businessObjectClassName=${attributeEntry.fullClassName}&amp;attributeName=${attributeEntry.name}"
         tabindex="${KualiForm.nextArbitrarilyHighIndex}" target="helpWindow" title="[Help] ${attributeEntry.label}"></c:if
-><c:if test="${useShortLabel == true}"><c:out value="${attributeEntry.shortLabel}" /></c:if
+>
+<c:if test="${not empty labelLink && !skipUrl}">
+    <a href="${labelLink}" tabindex="${KualiForm.nextArbitrarilyHighIndex}" title="${attributeEntry.label}">
+</c:if>
+<c:if test="${useShortLabel == true}"><c:out value="${attributeEntry.shortLabel}" /></c:if
 ><c:if test="${useShortLabel != true}"><c:out value="${attributeEntry.label}" /></c:if
 ><c:if test="${!noColon}">:</c:if>
 <c:if test="${includeHelpUrl || (!skipHelpUrl && KualiForm.fieldLevelHelpEnabled)}"></a></c:if>

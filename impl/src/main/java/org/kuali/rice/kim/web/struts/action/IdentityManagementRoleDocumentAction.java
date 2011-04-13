@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -39,12 +29,8 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
-import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.ui.*;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
@@ -54,14 +40,21 @@ import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
+import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  *
@@ -91,7 +84,88 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 			addMethodToCallToUncheckedList(methodToCallToUncheck);
 	}
 
-	@Override
+    public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
+
+        super.createDocument(roleDocumentForm);
+        DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+
+        KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(roleDocumentForm.getRoleId());
+//    	if ( roleDocumentForm.getRoleId() == null ) {
+        if(role == null) {
+            roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
+    		roleDocumentForm.getRoleDocument().initializeDocumentForNewRole();
+    		roleDocumentForm.setRoleId( roleDocumentForm.getRoleDocument().getRoleId() );
+            roleDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
+    	} else {
+    		loadRoleIntoDocument( roleDocumentForm.getRoleId(), roleDocumentForm );
+    	}
+
+    	roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
+        roleDocumentForm.setDelegationMember(roleDocumentForm.getRoleDocument().getBlankDelegationMember());
+
+		KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
+		if (roleDocumentForm.getMemberRows() != null) {
+		    memberTableMetadata.jumpToFirstPage(roleDocumentForm.getMemberRows().size(), roleDocumentForm.getRecordsPerPage());
+		}
+
+        // mimic loading the document; consider calling the loadDocument method instead
+        Document document = roleDocumentForm.getDocument();
+        KualiWorkflowDocument workflowDocument = roleDocumentForm.getDocument().getDocumentHeader().getWorkflowDocument();
+        roleDocumentForm.populateHeaderFields(workflowDocument);
+        roleDocumentForm.setDocId(document.getDocumentNumber());
+        roleDocumentForm.setCanAssignRole(validAssignRole(roleDocumentForm.getRoleDocument()));
+        sortedRoleMembers(roleDocumentForm.getRoleDocument(), memberTableMetadata.getColumnToSortName());
+        if (KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDocumentForm.getRoleDocument().getKimType())) {
+            roleDocumentForm.setCanModifyAssignees(false);
+        }
+        GlobalVariables.getUserSession().addObject(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY, roleDocumentForm.getRoleDocument());
+        return refresh(mapping, roleDocumentForm, request, response);
+    }
+
+    private void sortedRoleMembers(IdentityManagementRoleDocument roleDocument, final String columnToSortName) {
+        final List<? extends KimAttributes> kimAttributes = roleDocument.getAttributes();
+        Collections.sort(roleDocument.getMembers(), new Comparator<KimDocumentRoleMember>() {
+
+            public int compare(final KimDocumentRoleMember m1, final KimDocumentRoleMember m2) {
+
+                if (m1 == null && m2 == null) {
+                    return 0;
+                } else if (m1 == null) {
+                    return -1;
+                } else if (m2 == null) {
+                    return 1;
+                }
+                if ("memberTypeCode".equals(columnToSortName)) {
+                    return m1.getMemberTypeCode().compareToIgnoreCase(m2.getMemberTypeCode());
+                } else if ("memberId".equals(columnToSortName)) {
+                    return m1.getMemberId().compareToIgnoreCase(m2.getMemberId());
+                }  else if ("memberNamespaceCode".equals(columnToSortName)) {
+                    return m1.getMemberNamespaceCode().compareToIgnoreCase(m2.getMemberNamespaceCode());
+                } else if ("memberName".equals(columnToSortName)) {
+                    return m1.getMemberId().compareToIgnoreCase(m2.getMemberId());
+                }else if ("memberFullName".equals(columnToSortName)) {
+                    return m1.getMemberFullName().compareToIgnoreCase(m2.getMemberFullName());
+                } else if ("activeFromDate".equals(columnToSortName)) {
+                    return m1.getActiveFromDate().compareTo(m2.getActiveFromDate());
+                } else if ("activeToDate".equals(columnToSortName)) {
+                    return m1.getActiveToDate().compareTo(m2.getActiveToDate());
+                } else
+                {
+                    AttributeSet m1QualifierAsAttributeSet = m1.getQualifierAsAttributeSet();
+                    AttributeSet m2QualifierAsAttributeSet = m2.getQualifierAsAttributeSet();
+                    if(m1QualifierAsAttributeSet.containsKey(columnToSortName) && m2QualifierAsAttributeSet.containsKey(columnToSortName))
+                    {
+                        return m1QualifierAsAttributeSet.get(columnToSortName).compareToIgnoreCase(m2QualifierAsAttributeSet.get(columnToSortName));
+                    }
+                }
+                return m1.getMemberName().compareToIgnoreCase(m2.getMemberName());
+            }
+        });
+
+    }
+
+    @Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
@@ -250,7 +324,9 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         }
 
         if (KNSServiceLocator.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
+            if (newResponsibility != null) {
         	newResponsibility.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
+            }
 	        roleDocumentForm.getRoleDocument().addResponsibility(newResponsibility);
 	        roleDocumentForm.setResponsibility(new KimDocumentRoleResponsibility());
 	        roleDocumentForm.getRoleDocument().updateMembers(newResponsibility);
@@ -468,7 +544,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     /**
-     * @see org.kuali.rice.kns.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
+     * @see org.kuali.rice.kns.web.struts.action.KualiTableRenderAction#switchToPage(org.apache.struts.action.ActionMapping,
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ActionForward jumpToRoleMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -35,7 +35,7 @@
 <%@ attribute name="anchor" required="false" description="adds a named anchor inside the header cell" %>
 <%@ attribute name="nowrap" required="false" description="add the 'nowrap' clause to the TH" %>
 <%@ attribute name="useShortLabel" required="false" description="indicate to use shortLabel or not and default to true" %>
-
+<%@ attribute name="headerLink" required="false" description="allows you to change the header lable to a link " %>
 <c:set var="scopeAttribute" value='scope="${scope}"'/>  <%-- this works for HTML output (but not for JSP execution) --%>
 <c:set var="alignAttribute" value='align="${align}"'/>
 <c:set var="widthAttribute" value='width="${width}"'/>
@@ -69,6 +69,7 @@
                 labelFor="${labelFor}"
                 forceRequired="${forceRequired}" 
                 readOnly="${hideRequiredAsterisk}" 
+                labelLink="${headerLink}"
                 />
         </c:otherwise>
     </c:choose>

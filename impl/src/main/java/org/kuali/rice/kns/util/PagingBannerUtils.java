@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.util.Enumeration;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.CollectionUtils;
+
+import java.util.Enumeration;
 
 /**
  * Utility for that is used along with the tableRenderPagingBanner.tag.
@@ -32,7 +32,17 @@ public class PagingBannerUtils {
 	private PagingBannerUtils() {
 		throw new UnsupportedOperationException("do not call");
 	}
-	
+
+    public static String getAlphabeticalValueAfterSubmit(String paramPrefix, Enumeration<String> parameterNames) {
+        for (String parameterName : CollectionUtils.toIterable(parameterNames)) {
+            if (parameterName.startsWith(paramPrefix)) {
+                parameterName = WebUtils.endsWithCoordinates(parameterName) ? parameterName : parameterName + ".x";
+                return StringUtils.substringBetween(parameterName, paramPrefix, ".");
+            }
+        }
+
+        return "";
+    }
     /**
      * find the number string in a method to call parameter with the following format parameterPrefix.1 or
      * parameterPrefix.1.bleh
@@ -42,15 +52,17 @@ public class PagingBannerUtils {
      * @return the numerical value or -1
      */
     public static int getNumbericalValueAfterPrefix(String paramPrefix, Enumeration<String> parameterNames) {
-            	
-    	for (String parameterName : CollectionUtils.toIterable(parameterNames)) {
-    		if (parameterName.startsWith(paramPrefix)) {
-            	parameterName = WebUtils.endsWithCoordinates(parameterName) ? parameterName : parameterName + ".x";
-            	String numberStr = StringUtils.substringBetween(parameterName, paramPrefix, ".");
-                return Integer.parseInt(numberStr);
+
+        for (String parameterName : CollectionUtils.toIterable(parameterNames)) {
+            if (parameterName.startsWith(paramPrefix)) {
+                parameterName = WebUtils.endsWithCoordinates(parameterName) ? parameterName : parameterName + ".x";
+                String numberStr = StringUtils.substringBetween(parameterName, paramPrefix, ".");
+                if (NumberUtils.isDigits(numberStr)) {
+                    return Integer.parseInt(numberStr);
+                }
             }
         }
-    	
-    	return -1;
+
+        return -1;
     }
 }

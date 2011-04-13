@@ -56,7 +56,7 @@
   </bean>
   
   <bean id="DocRoleMember-memberFullName" parent="DocRoleMember-memberFullName-parentBean"/>
-  <bean id="DocRoleMember-memberFullName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberFullName" p:forceUppercase="false" p:label="Member Full Name" p:shortLabel="FullName" p:maxLength="100" p:required="false">
+  <bean id="DocRoleMember-memberFullName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberFullName" p:forceUppercase="false" p:label="Member Full Name" p:shortLabel="Full Name" p:maxLength="100" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>

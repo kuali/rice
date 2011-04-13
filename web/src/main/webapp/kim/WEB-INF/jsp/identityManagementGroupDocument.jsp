@@ -43,7 +43,7 @@
     </c:if>
 	<kim:groupOverview />
 	<kim:groupAttributes />
-	<kim:groupAssignees />
+	<kim:groupAssignees formAction="${formAction}"/>
 
     <c:if test="${!inquiry}">
         <kul:adHocRecipients /> 

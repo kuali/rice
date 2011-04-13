@@ -49,6 +49,16 @@ public class KualiTableRenderFormMetadata {
      */
     private int columnToSortIndex;
 
+    private String columnToSortName;
+
+    public String getColumnToSortName() {
+        return columnToSortName;
+    }
+
+    public void setColumnToSortName(String columnToSortName) {
+        this.columnToSortName = columnToSortName;
+    }
+
     private boolean sortDescending;
     
     public KualiTableRenderFormMetadata() {

@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -37,8 +38,8 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		RuleDefinition.Elements.NAMESPACE,
 		RuleDefinition.Elements.TYPE_ID,
 		RuleDefinition.Elements.PROPOSITION,
-		RuleDefinition.Elements.ACTION,
-		RuleDefinition.Elements.ATTRIBUTE,
+		RuleDefinition.Elements.ACTIONS,
+		RuleDefinition.Elements.ATTRIBUTES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RuleDefinition implements RuleDefinitionContract, ModelObjectComplete{
@@ -54,8 +55,12 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	private String typeId;
 	@XmlElement(name = Elements.PROPOSITION, required=true)
 	private PropositionDefinition proposition;
+	
+	@XmlElementWrapper(name = Elements.ACTIONS)
 	@XmlElement(name = Elements.ACTION, required=false)
 	private List<ActionDefinition> actions;
+	
+	@XmlElementWrapper(name = Elements.ATTRIBUTES)
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
 	private List<RuleAttribute> attributes;
 	
@@ -343,7 +348,9 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		final static String NAMESPACE = "namespace";
 		final static String TYPE_ID = "typeId";
 		final static String PROPOSITION = "proposition";
+		final static String ACTIONS = "actions";
 		final static String ACTION = "action";
+		final static String ATTRIBUTES = "attributes";
 		final static String ATTRIBUTE = "attribute";
 	}
 

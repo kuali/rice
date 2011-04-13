@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -58,7 +59,9 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	private String ruleId;
 	@XmlElement(name = Elements.SEQUENCE_NUMBER, required=true)
 	private Integer sequenceNumber;
-	@XmlElement(name = Elements.ATTRIBUTES, required=false)
+	
+	@XmlElementWrapper(name = Elements.ATTRIBUTES)
+	@XmlElement(name = Elements.ATTRIBUTE, required=false)
 	private List<ActionAttribute> attributes;
 	
 	@SuppressWarnings("unused")
@@ -357,7 +360,8 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		final static String TYPE_ID = "typeId";
 		final static String RULE_ID = "ruleId";
 		final static String SEQUENCE_NUMBER = "sequenceNumber";
-		final static String ATTRIBUTES = "attribute";
+		final static String ATTRIBUTE = "attribute";
+		final static String ATTRIBUTES = "attributes";
 	}
 
 }

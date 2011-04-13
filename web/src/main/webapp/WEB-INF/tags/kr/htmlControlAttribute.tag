@@ -280,9 +280,11 @@
 
        	<logic:iterate name="KualiForm" property="${methodAndParms}" id="KeyValue">
        		<c:set var="accessibleRadioTitle" value="${accessibleTitle} - ${KeyValue.label}"/>
-            <html:radio property="${property}" style="${textStyle}" title="${accessibleRadioTitle}" tabindex="${tabindex}"
-            	value="key" idName="KeyValue" disabled="${disableField}" onclick="${onchange}"
-            	styleClass="${styleClass}"/>${KeyValue.label}
+       		<label>
+	            <html:radio property="${property}" style="${textStyle}" title="${accessibleRadioTitle}" tabindex="${tabindex}"
+	            	value="key" idName="KeyValue" disabled="${disableField}" onclick="${onchange}"
+	            	styleClass="${styleClass}"/>${KeyValue.label}
+            </label>
         </logic:iterate>
     </c:when>
 

@@ -62,7 +62,8 @@ public class LightBox extends WidgetBase {
 			//If an option value starts with { or [, it would be a nested value and it should not use quotes around it
 			// If value is a function script do not use quotes
 			if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[") 
-					|| (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}")) ){
+					|| (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}"))
+					||  optionValue.equals("true") || optionValue.equals("false")){
 				sb.append(optionValue);
 			}else{
 				sb.append("\"" + optionValue + "\"");
@@ -71,6 +72,6 @@ public class LightBox extends WidgetBase {
 
 		sb.append("}");
 		return sb.toString();
-	}	
+	}
 	
 }

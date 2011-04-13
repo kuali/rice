@@ -86,7 +86,6 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 	public static final String ACTION_URLS_CHILDREN_END = "]";
 	public static final String ACTION_URLS_SEPARATOR = "&nbsp;&nbsp;";
 	public static final String ACTION_URLS_EMPTY = "&nbsp;";
-	public static final String RETURN_TARGET_FRAME = "_parent";
 
 	private transient LookupService lookupService;
 	// TODO delyea - investigate if encryptionService is even needed due to new spring binding
@@ -939,7 +938,7 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		Properties props = getReturnUrlParameters(dataObject, getFieldConversions(), lookupView.getViewHelperServiceClassName().getName(), returnKeys);
 		// TODO delyea - Multiple value returns are not yet implemented
 		// if(StringUtils.isEmpty(lookupForm.getHtmlDataType()) || HtmlData.ANCHOR_HTML_DATA_TYPE.equals(lookupForm.getHtmlDataType())) {
-		return getReturnAnchorHtmlData(dataObject, props, context, returnKeys, businessObjectRestrictions);
+		return getReturnAnchorHtmlData(dataObject, props, context, returnKeys, businessObjectRestrictions, lookupView.getReturnTarget());
 		// } else {
 		// return getReturnInputHtmlData(businessObject, props, context, returnKeys, businessObjectRestrictions);
 		// }
@@ -966,12 +965,35 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 		return null;
 	}
 
-	protected HtmlData getReturnAnchorHtmlData(Object dataObject, Properties props, Map<String, Object> context, List<String> returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
+	protected HtmlData getReturnAnchorHtmlData(Object dataObject, Properties props, Map<String, Object> context, List<String> returnKeys, BusinessObjectRestrictions businessObjectRestrictions, String returnTarget) {
 		String returnUrlAnchorLabel = KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
 		AnchorHtmlData anchor = new AnchorHtmlData(getReturnHrefUsingParameters(props, context, returnKeys), HtmlData.getTitleText(returnUrlAnchorLabel, dataObject, returnKeys,
 		        businessObjectRestrictions));
 		anchor.setDisplayText(returnUrlAnchorLabel);
-		anchor.setTarget(RETURN_TARGET_FRAME);
+		if (returnTarget != null) {
+			anchor.setTarget(returnTarget);
+			if (!returnTarget.equals("_self")
+					&& !returnTarget.equals("_parent")) {
+				// Build up script to set the value(s) on the form and close
+				// the fancybox. Prevent default onclick for the anchor.
+				String script = "";
+				for (Object key : getFieldConversions().keySet()) {
+					if (props.containsKey(getFieldConversions().get(key))) {
+						script = script
+								.concat("parent.$(&apos;#iframeportlet&apos;).contents().find("
+										+ "&apos;[name=&quot;"
+										+ getFieldConversions().get(key)
+												.replace("'", "\\&apos;")
+										+ "&quot;]&apos;)"
+										+ ".val(&apos;"
+										+ props.get(getFieldConversions().get(
+												key)) + "&apos;);");
+					}
+				}
+				anchor.setOnclick(script
+						+ "parent.$.fancybox.close();return false");
+			}
+		}
 		return anchor;
 	}
 

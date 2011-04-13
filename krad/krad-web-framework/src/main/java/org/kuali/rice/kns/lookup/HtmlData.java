@@ -235,6 +235,7 @@ public abstract class HtmlData implements Serializable {
 		protected String target = "";
 		protected String style = "";
 		protected String styleClass ="";
+		protected String onclick ="";
 
 		/**
 		 * Needed by inquiry framework
@@ -283,6 +284,8 @@ public abstract class HtmlData implements Serializable {
 						+ " "
 						+ getStyleClass()
 						+ " "
+						+ (StringUtils.isEmpty(getOnclick()) ? "" : " onClick=\""
+							+ getOnclick() + "\" ")
 						+ (StringUtils.isEmpty(getTarget()) ? "" : " target=\""
 								+ getTarget() + "\" ") + ">" + getDisplayText()
 						+ "</a>" + getAppendDisplayText();
@@ -331,6 +334,20 @@ public abstract class HtmlData implements Serializable {
         public void setStyleClass(String styleClass) {
         	this.styleClass = styleClass;
         }
+        
+		/**
+		 * @return the onclick
+		 */
+		public String getOnclick() {
+			return this.onclick;
+		}
+
+		/**
+		 * @param onclick the onclick to set
+		 */
+		public void setOnclick(String onclick) {
+			this.onclick = onclick;
+		}        
 
 		/**
 		 * @return the href

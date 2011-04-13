@@ -105,6 +105,9 @@ public class View extends ContainerBase {
     @RequestParameter
     private boolean dialogMode;
 
+    @RequestParameter
+    private String returnTarget;
+    
     @ReferenceCopy
     private ViewHelperService viewHelperService;
 
@@ -462,6 +465,20 @@ public class View extends ContainerBase {
     public void setDialogMode(boolean dialogMode) {
         this.dialogMode = dialogMode;
     }
+    
+    /**
+	 * @param returnTarget the returnTarget to set
+	 */
+	public void setReturnTarget(String returnTarget) {
+		this.returnTarget = returnTarget;
+	}
+
+	/**
+	 * @return the returnTarget
+	 */
+	public String getReturnTarget() {
+		return returnTarget;
+	}    
 
     /**
      * View type name the view is associated with

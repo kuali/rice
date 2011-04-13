@@ -80,16 +80,16 @@
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
       <property name="componentOptions">
           <map>
-              <entry key="autoScale" value="true"/>              
-              <entry key="centerOnScroll" value="false"/>
-              <!--
-              <entry key="width" value="5"/>
-              <entry key="height" value="5"/>
-              -->
-              <entry key="type" value="iframe"/>    
-               <!-- Set the position to the top of the root viewport - avoid it centering out of view --> 
-              <!--  Remove the resize event to avoid repositioning : jq(window).unbind('resize.fb');  -->      
-              <entry key="onComplete" value="function () {var top = parent.document.documentElement.scrollTop;if (top&lt;20){top=20;}else{top=top-20;};jq('#fancybox-wrap').css({ 'top': top + 'px'});jq(window).unbind('resize.fb');}"/>          		
+<entry key="autoScale" value="false"/>              
+              <entry key="centerOnScroll" value="true"/>     
+              <entry key="transitionIn" value="fade"/>   
+              <entry key="transitionOut" value="fade"/>
+              <entry key="speedIn" value="200"/>
+              <entry key="speedOut" value="200"/> 
+              <entry key="width" value="70%"/>
+              <entry key="height" value="90%"/>              
+              <entry key="hideOnOverlayClick" value="false"/>
+              <entry key="type" value="iframe"/>                               	
           </map>
       </property>
   </bean> 
@@ -100,13 +100,16 @@
       <!-- <property name="styleClasses" value="calendar"/>  -->
       <property name="componentOptions">
           <map>
-              <entry key="autoScale" value="false"/>
-              <entry key="centerOnScroll" value="false"/>
-              <entry key="type" value="iframe"/>    
-              <entry key="width" value="6"/>
-              <entry key="height" value="6"/>              
-              <!-- <entry key="onClosed" value="function () {}"/>  -->
-              <entry key="onComplete" value="function () {var top = parent.document.documentElement.scrollTop;if (top&lt;20){top=20;}else{top=top-20;};jq('#fancybox-wrap').css({ 'top': top + 'px'});jq(window).unbind('resize.fb');}"/>
+              <entry key="autoScale" value="false"/>              
+              <entry key="centerOnScroll" value="true"/>
+              <entry key="transitionIn" value="fade"/>   
+              <entry key="transitionOut" value="fade"/>
+              <entry key="speedIn" value="200"/>
+              <entry key="speedOut" value="200"/>                 
+              <entry key="width" value="70%"/>
+              <entry key="height" value="90%"/>              
+              <entry key="hideOnOverlayClick" value="false"/>
+              <entry key="type" value="iframe"/>
           </map>
       </property>
   </bean>    

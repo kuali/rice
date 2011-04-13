@@ -293,21 +293,33 @@ function createDatePicker(controlId, options) {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createLightBox(controlId, options) {	
+function createLightBox(controlId, options) {		
     jq(function () {
+    	// Check if this is called within a lightbox
     	if (!jq("#fancybox-frame", parent.document).length) {
-    	jq("#" + controlId).fancybox(options);    	
+    		// If this is not the top frame, then create the lightbox
+    		// on the top frame to put overlay over whole window
+    		if (top == self) {
+    			jq("#" + controlId).fancybox(options);    			
+    		}else{
+    			jq("#" + controlId).click(function (e) {
+			  	   e.preventDefault(); 	  
+			  	   options['href'] = jq("#" + controlId).attr('href');
+			  	   top.$.fancybox(options);
+    			});
+    		}
     	}else{
-    		jq("#" + controlId).attr('target', '_self');
+    		jq("#" + controlId).attr('target', '_self');    		
     	}
-    	if (!jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
-    		jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true')
-    	}
+    	// Set the dialogMode = true param
+    	if (jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
+    		jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true');
+    	}    	
     });			
 }
 
 /**
- * To fix : 1. does not work in iframe 2. Get post paramaters dynamic Uses
+ * Get post paramaters dynamic Uses
  * jQuery fancybox to create lightbox for lookups. It prevents the default
  * submit and makes an ajax post. The second argument is a Map of options that
  * are available for the FancyBox. See <link>http://fancybox.net/api</link> for
@@ -319,15 +331,22 @@ function createLightBox(controlId, options) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createLightBoxLookup(controlId, options, actionParameterMapString) {
-    jq(function () {        	    	    
+    jq(function () {    
+    	// Check if this is not called within a lightbox
     	if (!jq("#fancybox-frame", parent.document).length) {
-        jq("#" + controlId).click(function (e) {
+    		jq("#" + controlId).click(function (e) {
         	// Prevent the default submit
             e.preventDefault();
             // Add the ajaxCall parameter so that the controller can avoid the redirect
-            //dialogMode=Y
-	            actionParameterMapString['actionParameters[dialogMode]'] = 'true';
+	        actionParameterMapString['actionParameters[dialogMode]'] = 'true';
             actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
+            // If this is the top frame, the page is not displayed in the iframeprotlet
+            // set the return target
+            if (top == self) {
+            	actionParameterMapString['actionParameters[returnTarget]'] = '_parent';
+            }else{
+            	actionParameterMapString['actionParameters[returnTarget]'] = 'iframeportlet';
+            }
             // Do the Ajax submit on the kualiForm form
             jq("#kualiForm").ajaxSubmit({  
             	// The additional data ie. baseLookupURL, bussObject
@@ -335,7 +354,11 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
         		success: function(data) {
             		// Add the returned URL to the FancyBox href setting
             		options['href'] = data;
-        			jq.fancybox(options);
+            		if (top == self) {
+            			jq.fancybox(options);
+            		}else{
+            			parent.$.fancybox(options);
+            		}
         			jq.watermark.showAll();        			
         		}
         	});            
@@ -343,6 +366,7 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
     	}else{
 			jq("#" + controlId).click(function (e) {
 				actionParameterMapString['actionParameters[dialogMode]'] = 'true';
+				actionParameterMapString['actionParameters[returnTarget]'] = '_self';
 				for (var key in actionParameterMapString) {
 			 	 	writeHiddenToForm(key , actionParameterMapString[key]);
 			 	}

@@ -15,29 +15,41 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
+import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
-import org.kuali.rice.krms.framework.engine.LazyAgendaTree;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * TODO... 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public final class RepositoryLazyAgendaTree extends LazyAgendaTree {
+public final class LazyAgendaTree implements AgendaTree {
 
+	private final Object mutex = new Object();
 	private final AgendaDefinition agendaDefinition;
 	private final RepositoryToEngineTranslator translator;
 	
-	public RepositoryLazyAgendaTree(AgendaDefinition agendaDefinition, RepositoryToEngineTranslator translator) {
+	private AgendaTree agendaTree;
+	
+	public LazyAgendaTree(AgendaDefinition agendaDefinition, RepositoryToEngineTranslator translator) {
 		this.agendaDefinition = agendaDefinition;
 		this.translator = translator;
 	}
+
+	public void execute(ExecutionEnvironment environment) {
+		initialize();
+		agendaTree.execute(environment);
+	}
 	
-	@Override
-	protected AgendaTree materializeAgendaTree() {
-		return translator.translateAgendaDefinitionToAgendaTree(agendaDefinition);
+	public void initialize() {
+		// could use double-checked locking here for max efficiency
+		synchronized (mutex) {
+			if (agendaTree == null) {
+				agendaTree = translator.translateAgendaDefinitionToAgendaTree(agendaDefinition);
+			}
+		}
 	}
 
 }

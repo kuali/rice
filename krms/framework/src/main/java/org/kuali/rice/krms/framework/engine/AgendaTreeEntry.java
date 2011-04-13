@@ -18,33 +18,16 @@ package org.kuali.rice.krms.framework.engine;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * TODO... 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class LazyAgendaTree {
+public interface AgendaTreeEntry {
 
-	private final Object mutex = new Object();
-	private AgendaTree agendaTree;
-
-	public void execute(ExecutionEnvironment environment) {
-		initialize();
-		agendaTree.execute(environment);
-	}
-	
-	public void initialize() {
-		// could use double-checked locking here for max efficiency
-		synchronized (mutex) {
-			if (agendaTree == null) {
-				agendaTree = materializeAgendaTree();
-			}
-		}
-	}
-	
-	protected abstract AgendaTree materializeAgendaTree();
-	
-
-	
+//	Rule getRule();
+//	AgendaTree getIfTrue();
+//	AgendaTree getIfFalse();
+	void execute(ExecutionEnvironment environment);
 	
 }

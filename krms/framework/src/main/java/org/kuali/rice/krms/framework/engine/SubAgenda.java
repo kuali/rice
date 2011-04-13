@@ -2,11 +2,11 @@ package org.kuali.rice.krms.framework.engine;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
-public class SubAgendaRule implements Rule {
+public class SubAgenda implements Rule {
 
 	private Agenda agenda;
 	
-	public SubAgendaRule(Agenda agenda) {
+	public SubAgenda(Agenda agenda) {
 		this.agenda = agenda;
 	}
 	

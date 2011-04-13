@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.provider.repository;
 
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.Context;
@@ -31,5 +32,7 @@ public interface RepositoryToEngineTranslator {
 	public Context translateContextDefinition(ContextDefinition contextDefinition);
 	
 	public AgendaTree translateAgendaDefinitionToAgendaTree(AgendaDefinition agendaDefinition);
+	
+	public AgendaTree translateAgendaTreeDefinition(AgendaTreeDefinition agendaTreeDefinition);
 	
 }

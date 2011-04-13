@@ -17,25 +17,37 @@ package org.kuali.rice.krms.impl.provider.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.AgendaTreeEntryDefinition;
+import org.kuali.rice.krms.api.repository.AgendaTreeRuleEntry;
+import org.kuali.rice.krms.api.repository.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
+import org.kuali.rice.krms.framework.engine.AgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
+import org.kuali.rice.krms.framework.engine.BasicAgendaTree;
+import org.kuali.rice.krms.framework.engine.BasicAgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicContext;
 import org.kuali.rice.krms.framework.engine.Context;
+import org.kuali.rice.krms.framework.engine.Rule;
+import org.kuali.rice.krms.framework.engine.SubAgenda;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * TODO... 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RepostoryToEngineTranslatorImpl implements
-		RepositoryToEngineTranslator {
+public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTranslator {
 
+	private RuleRepositoryService ruleRepositoryService;
+	
 	@Override
 	public Context translateContextDefinition(ContextDefinition contextDefinition) {
 		if (contextDefinition == null) {
@@ -43,8 +55,7 @@ public class RepostoryToEngineTranslatorImpl implements
 		}
 		List<Agenda> agendas = new ArrayList<Agenda>();
 		for (AgendaDefinition agendaDefinition : contextDefinition.getAgendas()) {
-			AgendaTree agendaTree = translateAgendaDefinitionToAgendaTree(agendaDefinition);
-			Agenda agenda = new BasicAgenda(agendaDefinition.getEventName(), agendaDefinition.getAttributes(), agendaTree);
+			Agenda agenda = new BasicAgenda(agendaDefinition.getEventName(), agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
 			agendas.add(agenda);
 		}
 		
@@ -56,8 +67,70 @@ public class RepostoryToEngineTranslatorImpl implements
 		
 	@Override
 	public AgendaTree translateAgendaDefinitionToAgendaTree(AgendaDefinition agendaDefinition) {
+		AgendaTreeDefinition agendaTreeDefinition = ruleRepositoryService.getAgendaTree(agendaDefinition.getAgendaId());
+		return translateAgendaTreeDefinition(agendaTreeDefinition);
+	}
+	
+	@Override
+	public AgendaTree translateAgendaTreeDefinition(AgendaTreeDefinition agendaTreeDefinition) {
+	
+		List<String> ruleIds = new ArrayList<String>();
+		List<String> subAgendaIds = new ArrayList<String>();
+		for (AgendaTreeEntryDefinition entryDefinition : agendaTreeDefinition.getEntries()) {
+			if (entryDefinition instanceof AgendaTreeRuleEntry) {
+				ruleIds.add(((AgendaTreeRuleEntry)entryDefinition).getRuleId());
+			} else if (entryDefinition instanceof AgendaTreeSubAgendaEntry) {
+				subAgendaIds.add(((AgendaTreeSubAgendaEntry)entryDefinition).getSubAgendaId());
+			} else {
+				throw new IllegalStateException("Encountered invalid agenda tree entry definition class, did not understand type: " + entryDefinition);
+			}
+		}
+		
+		Map<String, Rule> rules = loadRules(ruleIds);
+		Map<String, SubAgenda> subAgendas = loadSubAgendas(subAgendaIds);
+		
+		List<AgendaTreeEntry> entries = new ArrayList<AgendaTreeEntry>();
+	
+		for (AgendaTreeEntryDefinition entryDefinition : agendaTreeDefinition.getEntries()) {
+			if (entryDefinition instanceof AgendaTreeRuleEntry) {
+				AgendaTreeRuleEntry ruleEntry = (AgendaTreeRuleEntry)entryDefinition;
+				AgendaTree ifTrue = null;
+				AgendaTree ifFalse = null;
+				if (ruleEntry.getIfTrue() != null) {
+					ifTrue = translateAgendaTreeDefinition(ruleEntry.getIfTrue());
+				}
+				if (ruleEntry.getIfTrue() != null) {
+					ifFalse = translateAgendaTreeDefinition(ruleEntry.getIfFalse());
+				}
+				Rule rule = rules.get(ruleEntry.getRuleId());
+				if (rule == null) {
+					throw new IllegalStateException("Failed to locate rule with id: " + ruleEntry.getRuleId());
+				}
+				BasicAgendaTreeEntry agendaTreeEntry = new BasicAgendaTreeEntry(rule, ifTrue, ifFalse);
+				entries.add(agendaTreeEntry);
+			} else if (entryDefinition instanceof AgendaTreeSubAgendaEntry) {
+				AgendaTreeSubAgendaEntry subAgendaEntry = (AgendaTreeSubAgendaEntry)entryDefinition;
+				SubAgenda subAgenda = subAgendas.get(subAgendaEntry.getSubAgendaId());
+				if (subAgenda == null) {
+					throw new IllegalStateException("Failed to locate sub agenda with id: " + subAgendaEntry.getSubAgendaId());
+				}
+				BasicAgendaTreeEntry agendaTreeEntry = new BasicAgendaTreeEntry(subAgenda, null, null);
+				entries.add(agendaTreeEntry);
+			} else {
+				throw new IllegalStateException("Encountered invalid agenda tree entry class, did not understand type: " + entryDefinition);
+			}
+		}
+		return new BasicAgendaTree(entries);
+	}
+	
+	public Map<String, Rule> loadRules(List<String> ruleIds) {
 		// TODO
-		return null;
+		throw new UnsupportedOperationException("TODO - implement me!");
+	}
+	
+	public Map<String, SubAgenda> loadSubAgendas(List<String> subAgendaIds) {
+		// TODO
+		throw new UnsupportedOperationException("TODO - implement me!");
 	}
 
 }

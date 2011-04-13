@@ -20,8 +20,10 @@ import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
-import org.kuali.rice.krms.framework.engine.AgendaTree;
+import org.kuali.rice.krms.framework.engine.AgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
+import org.kuali.rice.krms.framework.engine.BasicAgendaTree;
+import org.kuali.rice.krms.framework.engine.BasicAgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicContext;
 import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.ComparableTermBasedProposition;
@@ -52,7 +54,10 @@ public class AgendaTest {
 		Rule rule2 = new BasicRule("r2", falseProp, Collections.<Action>singletonList(new ActionMock("a2")));
 		Rule rule3 = new BasicRule("r3", trueProp, Collections.<Action>singletonList(new ActionMock("a3")));
 		
-		AgendaTree agendaTree = new AgendaTree(Arrays.asList(rule1, rule2, rule3), null, null, null); 
+		AgendaTreeEntry entry1 = new BasicAgendaTreeEntry(rule1);
+		AgendaTreeEntry entry2 = new BasicAgendaTreeEntry(rule2);
+		AgendaTreeEntry entry3 = new BasicAgendaTreeEntry(rule3);
+		BasicAgendaTree agendaTree = new BasicAgendaTree(entry1, entry2, entry3); 
 		Agenda agenda = new BasicAgenda("test", new HashMap<String, String>(), agendaTree);
 		
 		execute(agenda);
@@ -69,8 +74,8 @@ public class AgendaTest {
 		Rule rule2 = new BasicRule("r2", falseProp, Collections.<Action>singletonList(new ActionMock("a2")));
 		Rule subRule1 = new BasicRule("r1s1", trueProp, Collections.<Action>singletonList(new ActionMock("a3")));
 		
-		AgendaTree subAgendaTree1 = new AgendaTree(Arrays.asList(subRule1), null, null, null);
-		AgendaTree agendaTree1 = new AgendaTree(Arrays.asList(rule1), subAgendaTree1, null, null); 
+		BasicAgendaTree subAgendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
+		BasicAgendaTree agendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule1, subAgendaTree1, null)); 
 		Agenda agenda1 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree1);
 		
 		execute(agenda1);
@@ -81,8 +86,8 @@ public class AgendaTest {
 		// RESET
 		ActionMock.resetActionsFired();
 		
-		AgendaTree subAgendaTree2 = new AgendaTree(Arrays.asList(subRule1), null, null, null);
-		AgendaTree agendaTree2 = new AgendaTree(Arrays.asList(rule2), subAgendaTree2, null, null); 
+		BasicAgendaTree subAgendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
+		BasicAgendaTree agendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule2, subAgendaTree2, null)); 
 		Agenda agenda2 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree2);
 		
 		execute(agenda2);
@@ -98,8 +103,8 @@ public class AgendaTest {
 		Rule rule2 = new BasicRule("r2", falseProp, Collections.<Action>singletonList(new ActionMock("a2")));
 		Rule subRule1 = new BasicRule("r1s1", trueProp, Collections.<Action>singletonList(new ActionMock("a3")));
 		
-		AgendaTree subAgendaTree1 = new AgendaTree(Arrays.asList(subRule1), null, null, null);
-		AgendaTree agendaTree1 = new AgendaTree(Arrays.asList(rule1), null, subAgendaTree1, null); 
+		BasicAgendaTree subAgendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
+		BasicAgendaTree agendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule1, null, subAgendaTree1)); 
 		Agenda agenda1 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree1);
 		
 		execute(agenda1);
@@ -110,8 +115,8 @@ public class AgendaTest {
 		// RESET
 		ActionMock.resetActionsFired();
 		
-		AgendaTree subAgendaTree2 = new AgendaTree(Arrays.asList(subRule1), null, null, null);
-		AgendaTree agendaTree2 = new AgendaTree(Arrays.asList(rule2), null, subAgendaTree2, null); 
+		BasicAgendaTree subAgendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
+		BasicAgendaTree agendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule2, null, subAgendaTree2)); 
 		Agenda agenda2 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree2);
 		
 		execute(agenda2);
@@ -127,8 +132,7 @@ public class AgendaTest {
 		Rule rule2 = new BasicRule("r2", falseProp, Collections.<Action>singletonList(new ActionMock("a2")));
 		Rule subRule1 = new BasicRule("r1s1", trueProp, Collections.<Action>singletonList(new ActionMock("a3")));
 		
-		AgendaTree subAgendaTree1 = new AgendaTree(Arrays.asList(subRule1), null, null, null);
-		AgendaTree agendaTree1 = new AgendaTree(Arrays.asList(rule1), null, null, subAgendaTree1); 
+		BasicAgendaTree agendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule1), new BasicAgendaTreeEntry(subRule1)); 
 		Agenda agenda1 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree1);
 		
 		execute(agenda1);
@@ -139,8 +143,7 @@ public class AgendaTest {
 		// RESET
 		ActionMock.resetActionsFired();
 		
-		AgendaTree subAgendaTree2 = new AgendaTree(Arrays.asList(subRule1), null, null, null);
-		AgendaTree agendaTree2 = new AgendaTree(Arrays.asList(rule2), null, null, subAgendaTree2); 
+		BasicAgendaTree agendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule2), new BasicAgendaTreeEntry(subRule1)); 
 		Agenda agenda2 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree2);
 		
 		execute(agenda2);

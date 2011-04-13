@@ -20,8 +20,9 @@ import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
-import org.kuali.rice.krms.framework.engine.AgendaTree;
+import org.kuali.rice.krms.framework.engine.BasicAgendaTree;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
+import org.kuali.rice.krms.framework.engine.BasicAgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicContext;
 import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.CollectionOfComparablesTermBasedProposition;
@@ -170,7 +171,7 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 		
 		Rule rule = new BasicRule("ALL", prop1, Collections.<Action>singletonList(prop1Action));
 		
-		AgendaTree agendaTree = new AgendaTree(Arrays.asList(rule), null, null, null); 
+		BasicAgendaTree agendaTree = new BasicAgendaTree(new BasicAgendaTreeEntry(rule)); 
 		Agenda agenda = new BasicAgenda("test", new HashMap<String, String>(), agendaTree);
 		
 		execute(agenda, expensesResolver);

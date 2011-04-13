@@ -350,7 +350,7 @@
 	<!--  RoleService -->
 	<bean id="enRoleService" class="org.kuali.rice.kew.role.service.impl.RoleServiceImpl"  lazy-init="true"/>
 
-    <bean id="edlLookupHelperService" class="org.kuali.rice.kew.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>
+    <bean id="edlLookupHelperService" class="org.kuali.rice.edl.impl.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>
 
     <bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
 	  <property name="lookupableHelperService">

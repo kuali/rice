@@ -4,15 +4,15 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 public class SubAgenda implements Rule {
 
-	private Agenda agenda;
+	private AgendaTree agendaTree;
 	
-	public SubAgenda(Agenda agenda) {
-		this.agenda = agenda;
+	public SubAgenda(AgendaTree agendaTree) {
+		this.agendaTree = agendaTree;
 	}
 	
 	@Override
 	public boolean evaluate(ExecutionEnvironment environment) {
-		agenda.execute(environment);
+		agendaTree.execute(environment);
 		return true;
 	}
 

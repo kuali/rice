@@ -67,6 +67,11 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 		
 		return new BasicContext(agendas, termResolvers); 
 	}
+	
+	@Override
+	public Agenda translateAgendaDefinition(AgendaDefinition agendaDefinition) {
+		return new BasicAgenda(agendaDefinition.getEventName(), agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
+	}
 		
 	@Override
 	public AgendaTree translateAgendaDefinitionToAgendaTree(AgendaDefinition agendaDefinition) {
@@ -198,8 +203,7 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	
 	@Override
 	public SubAgenda translateAgendaTreeDefinitionToSubAgenda(AgendaTreeDefinition subAgendaDefinition) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!");
+		return new SubAgenda(translateAgendaTreeDefinition(subAgendaDefinition));
 	}
 
 }

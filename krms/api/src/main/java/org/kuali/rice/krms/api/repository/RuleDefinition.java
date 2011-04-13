@@ -37,8 +37,8 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		RuleDefinition.Elements.NAMESPACE,
 		RuleDefinition.Elements.TYPE_ID,
 		RuleDefinition.Elements.PROPOSITION,
-		"actions", 
-		"attributes",
+		RuleDefinition.Elements.ACTION,
+		RuleDefinition.Elements.ATTRIBUTE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RuleDefinition implements RuleDefinitionContract, ModelObjectComplete{

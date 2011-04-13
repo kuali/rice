@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.provider.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ import org.kuali.rice.krms.api.repository.AgendaTreeEntryDefinition;
 import org.kuali.rice.krms.api.repository.AgendaTreeRuleEntry;
 import org.kuali.rice.krms.api.repository.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.RepositoryDataException;
+import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
@@ -124,9 +127,35 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	}
 	
 	public Map<String, Rule> loadRules(List<String> ruleIds) {
+		List<RuleDefinition> ruleDefinitions = ruleRepositoryService.getRules(ruleIds);
+		validateRuleDefinitions(ruleIds, ruleDefinitions);
 		// TODO
 		throw new UnsupportedOperationException("TODO - implement me!");
 	}
+	
+	/**
+	 * Ensures that there is a rule definition for every rule id in the original list.
+	 */
+	private void validateRuleDefinitions(List<String> ruleIds, List<RuleDefinition> ruleDefinitions) {
+		if (ruleIds.size() != ruleDefinitions.size()) {
+			Map<String, RuleDefinition> indexedRuleDefinitions = indexRuleDefinitions(ruleDefinitions);
+			for (String ruleId : ruleIds) {
+				if (!indexedRuleDefinitions.containsKey(ruleId)) {
+					throw new RepositoryDataException("Failed to locate a rule with id '" + ruleId + "' in the repository.");
+				}
+			}
+		}
+	}
+	
+	private Map<String, RuleDefinition> indexRuleDefinitions(List<RuleDefinition> ruleDefinitions) {
+		Map<String, RuleDefinition> ruleDefinitionMap = new HashMap<String, RuleDefinition>();
+		for (RuleDefinition ruleDefinition : ruleDefinitions) {
+			ruleDefinitionMap.put(ruleDefinition.getRuleId(), ruleDefinition);
+		}
+		return ruleDefinitionMap;
+	}
+	
+	
 	
 	public Map<String, SubAgenda> loadSubAgendas(List<String> subAgendaIds) {
 		// TODO

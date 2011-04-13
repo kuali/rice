@@ -624,11 +624,43 @@ And with that, a new KRAD View has been created!  [ JERRY - TRUE THAT? HOW CAN W
 
 h1. Common Cases
 
-Some Views have a common look throughout all KRAD applications.  These views can be overridden, of course, but in most cases, the "out of the box" version of the View will be all a client application needs.  Let's explore each of these common views and how to configure them.
+Some Views have a common look throughout all KRAD applications.  These views were generally treated specially in the Nervous System, so that configuration for them was easy to accomplish - since these views always looked the same, much could be standardized.  However, as KC and KFS were built, there were often attempts to expand beyond what the standard configuration provided: maintenance documents could show tags, for instance, and lookups could be configured to give fairly different looks.  This created a tension in KNS applications: stay with standard, plain vanilla views or complicated to configure free-for-all views.
+
+KRAD mitigates this tension.  It provides base Views for the standard KNS pages which make configuration of a standard version a snap.  At the same time, though, these custom Views are simply Views - they can be traded out for more complex Views.  Because such choices can be made on the basis of each data object, a great deal of freedom has been granted the developer.
+
+Each standard View will be explored.
 
 h2. Inquiry
+
+Inquiries are read only presentations of reference data.  In the search results for lookups, fields from a DataObject will be linked - those links open the Inquiry views for the DataObject itself or related DataObjects.
+
+Most inquiries, therefore, are pretty simple affairs: tabs with two columns - a label column and the read only value.  And configuration for the InquiryView is standard as well.  Each InquiryView should set an id (as is standard with Views) and a title.  It should also set a dataObjectClassName, the name of the class this particular inquiry will work for.  Finally, the groups which make up the Inquiry should be set with an AttributeField for each attribute to display.  [ JAMES - FIND AN EXAMPLE ]
+[ JAMES - HERE! ]
+
+There are a couple differences between the properties to set on InquiryView versus those that were set in KNS InquiryDefinitions.  The biggest difference is how to set the Inquirable implementation.  InquiryView's property which holds the Inquirable implementation is viewHelperServiceClassName.  Inquirables are the ViewHelperServices for Inquiry views - so the work that is done during the rendering lifecycle by the ViewHelperService can be overridden in any Inquirable.  ViewHelperServices are covered in more detail [a bit later on|#View Helper Services].
+
+InquiryViews can also have custom presentationControllerClass and authorizerClass properties set to determine what values to hide and show on the Inquiry.  The page and footer property are pre-injected with the standard PageInquiry and FooterInquiry groups but if wildly different looks are necessary, these Groups can be overridden.
+
+[ JERRY - LIGHTBOX? ]
+
 h2. Lookup
-h2. Document
+h2. MaintenanceDocument
 h2. {anchor}Custom Views{anchor}
-h2. View Helper Services
+
+Can applications create their own custom specialized Views?  Certainly - in fact, that's expected.  KFS, for instance, may have an AccountingDocumentView, since a vast number of KFS's transactional documents have a unified look and feel which presents accounting lines.  Indeed, most applications will have a set of documents or pages which share a look and feel, where it would be nice to standardize the configuration of the View.  Given that, the creation of standard specialized Views is not going to be uncommon at all. But what goes in to making a custom View?
+
+Not all that much, really.  Let's take a look at an example.
+
+[ JAMES - HERE ]
+
+h2. {anchor}View Helper Services{anchor}
+
+Customization can also be carried out by creating a custom implementation of org.kuali.rice.kns.uif.service.ViewHelperService.  This service is responsible for acting on a View while it goes through its four major stages of rendering:
+
+* population of View from the request - carried out by populateViewFromRequestParameters.  In the default implementation in org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl, reflection is used to find any properties on the View that have a @RequestParameter annotation.  For those properties, the parameter is sought in the Request and if found, the View is populated with that parameter.  This is overridden by org.kuali.rice.kns.uif.service.impl.LookupViewHelperServiceImpl to set all the request parameters on the LookupView itself to act as search keys.
+* initialization - carried out by performInitialization.  This simply calls performComponentInitialization  on the View itself; this, in turn has the View perform its own initialization (which initializes the layout manager and sets up the single page view if one exists).  Then all nested components are initialized recursively.  This, by the way, is where AttributeFields have any missing data populated from corresponding AttributeDefinitions.
+* applying the model - carried out by performApplyModel.  This invokes the presentationController and authorizer on the View and then calls the apply model on the View itself.
+* finalization - carried out by performFinalize.  Calls performComponentFinalize on the View, which basically finalizes nested Components.
+[ JAMES - HERE ]
+
 [IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]

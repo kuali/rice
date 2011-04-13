@@ -222,15 +222,24 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	
 	@Override
 	public Proposition translatePropositionDefinition(PropositionDefinition propositionDefinition) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!!!");
+		if (propositionDefinition.getTypeId() == null) {
+			throw new RepositoryDataException("Given PropositionDefinition does not have a typeId, propositionId was: " + propositionDefinition.getPropId());
+		}
+		KrmsTypeDefinition typeDefinition = typeRepositoryService.getTypeById(propositionDefinition.getTypeId());
+		if (typeDefinition == null) {
+			throw new RepositoryDataException("Failed to locate a type definition for proposition typeId: " + propositionDefinition.getTypeId());
+		}
+		return new LazyProposition(propositionDefinition, typeDefinition);
 	}
 	
 	@Override
 	public Action translateActionDefinition(ActionDefinition actionDefinition) {
+		if (actionDefinition.getTypeId() == null) {
+			throw new RepositoryDataException("Given ActionDefinition does not have a typeId, actionId was: " + actionDefinition.getActionId());
+		}
 		KrmsTypeDefinition typeDefinition = typeRepositoryService.getTypeById(actionDefinition.getTypeId());
 		if (typeDefinition == null) {
-			throw new RepositoryDataException("Failed to locate a type definition for typeId: " + actionDefinition.getTypeId());
+			throw new RepositoryDataException("Failed to locate a type definition for agenda typeId: " + actionDefinition.getTypeId());
 		}
 		return new LazyAction(actionDefinition, typeDefinition);
 	}

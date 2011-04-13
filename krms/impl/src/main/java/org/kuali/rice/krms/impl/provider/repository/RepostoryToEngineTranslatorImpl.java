@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krms.api.engine.EngineResourceUnavailableException;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
@@ -32,6 +36,8 @@ import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
+import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
@@ -45,6 +51,7 @@ import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
+import org.kuali.rice.krms.framework.type.ActionTypeService;
 
 /**
  * TODO... 
@@ -55,6 +62,7 @@ import org.kuali.rice.krms.framework.engine.SubAgenda;
 public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTranslator {
 
 	private RuleRepositoryService ruleRepositoryService;
+	private KrmsTypeRepositoryService typeRepositoryService;
 	
 	@Override
 	public Context translateContextDefinition(ContextDefinition contextDefinition) {
@@ -220,8 +228,11 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	
 	@Override
 	public Action translateActionDefinition(ActionDefinition actionDefinition) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!!!");
+		KrmsTypeDefinition typeDefinition = typeRepositoryService.getTypeById(actionDefinition.getTypeId());
+		if (typeDefinition == null) {
+			throw new RepositoryDataException("Failed to locate a type definition for typeId: " + actionDefinition.getTypeId());
+		}
+		return new LazyAction(actionDefinition, typeDefinition);
 	}
 	
 	@Override

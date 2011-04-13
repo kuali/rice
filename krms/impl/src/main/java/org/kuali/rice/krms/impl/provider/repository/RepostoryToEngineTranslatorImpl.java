@@ -58,7 +58,7 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 		}
 		List<Agenda> agendas = new ArrayList<Agenda>();
 		for (AgendaDefinition agendaDefinition : contextDefinition.getAgendas()) {
-			Agenda agenda = new BasicAgenda(agendaDefinition.getEventName(), agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
+			Agenda agenda = translateAgendaDefinition(agendaDefinition);
 			agendas.add(agenda);
 		}
 		

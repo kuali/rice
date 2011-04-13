@@ -18,8 +18,11 @@ package org.kuali.rice.krms.impl.provider.repository;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.Context;
+import org.kuali.rice.krms.framework.engine.Rule;
+import org.kuali.rice.krms.framework.engine.SubAgenda;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -34,5 +37,9 @@ public interface RepositoryToEngineTranslator {
 	public AgendaTree translateAgendaDefinitionToAgendaTree(AgendaDefinition agendaDefinition);
 	
 	public AgendaTree translateAgendaTreeDefinition(AgendaTreeDefinition agendaTreeDefinition);
+		
+	public Rule translateRuleDefinition(RuleDefinition ruleDefinition);
+	
+	public SubAgenda translateAgendaTreeDefinitionToSubAgenda(AgendaTreeDefinition subAgendaDefinition);
 	
 }

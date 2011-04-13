@@ -126,11 +126,14 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 		return new BasicAgendaTree(entries);
 	}
 	
-	public Map<String, Rule> loadRules(List<String> ruleIds) {
+	protected Map<String, Rule> loadRules(List<String> ruleIds) {
 		List<RuleDefinition> ruleDefinitions = ruleRepositoryService.getRules(ruleIds);
 		validateRuleDefinitions(ruleIds, ruleDefinitions);
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!");
+		Map<String, Rule> rules = new HashMap<String, Rule>();
+		for (RuleDefinition ruleDefinition : ruleDefinitions) {
+			rules.put(ruleDefinition.getRuleId(), translateRuleDefinition(ruleDefinition));
+		}
+		return rules;
 	}
 	
 	/**
@@ -155,9 +158,46 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 		return ruleDefinitionMap;
 	}
 	
+	protected Map<String, SubAgenda> loadSubAgendas(List<String> subAgendaIds) {
+		List<AgendaTreeDefinition> subAgendaDefinitions = ruleRepositoryService.getAgendaTrees(subAgendaIds);
+		validateSubAgendaDefinitions(subAgendaIds, subAgendaDefinitions);
+		Map<String, SubAgenda> subAgendas = new HashMap<String, SubAgenda>();
+		for (AgendaTreeDefinition subAgendaDefinition : subAgendaDefinitions) {
+			subAgendas.put(subAgendaDefinition.getAgendaId(), translateAgendaTreeDefinitionToSubAgenda(subAgendaDefinition));
+		}
+		return subAgendas;
+	}
 	
+	/**
+	 * Ensures that there is a rule definition for every rule id in the original list.
+	 */
+	private void validateSubAgendaDefinitions(List<String> subAgendaIds, List<AgendaTreeDefinition> subAgendaDefinitions) {
+		if (subAgendaIds.size() != subAgendaDefinitions.size()) {
+			Map<String, AgendaTreeDefinition> indexedSubAgendaDefinitions = indexSubAgendaDefinitions(subAgendaDefinitions);
+			for (String subAgendaId : subAgendaIds) {
+				if (!indexedSubAgendaDefinitions.containsKey(subAgendaId)) {
+					throw new RepositoryDataException("Failed to locate an agenda with id '" + subAgendaId + "' in the repository.");
+				}
+			}
+		}
+	}
 	
-	public Map<String, SubAgenda> loadSubAgendas(List<String> subAgendaIds) {
+	private Map<String, AgendaTreeDefinition> indexSubAgendaDefinitions(List<AgendaTreeDefinition> subAgendaDefinitions) {
+		Map<String, AgendaTreeDefinition> subAgendaDefinitionMap = new HashMap<String, AgendaTreeDefinition>();
+		for (AgendaTreeDefinition subAgendaDefinition : subAgendaDefinitions) {
+			subAgendaDefinitionMap.put(subAgendaDefinition.getAgendaId(), subAgendaDefinition);
+		}
+		return subAgendaDefinitionMap;
+	}
+	
+	@Override
+	public Rule translateRuleDefinition(RuleDefinition ruleDefinition) {
+		// TODO
+		throw new UnsupportedOperationException("TODO - implement me!");
+	}
+	
+	@Override
+	public SubAgenda translateAgendaTreeDefinitionToSubAgenda(AgendaTreeDefinition subAgendaDefinition) {
 		// TODO
 		throw new UnsupportedOperationException("TODO - implement me!");
 	}

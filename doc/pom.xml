@@ -25,9 +25,10 @@
 
 
 	<properties>
-		<reldate>February 2011</reldate>
+		<reldate>August 2011</reldate>
 		<previous.version>1.0.3</previous.version>
 		<previous.reldate>October 2010</previous.reldate>
+		<branchdir>rice-release-2-0-0-br</branchdir>
 	</properties>
 
 	<build>

@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<!DOCTYPE book [
+<!ENTITY UG_Global SYSTEM "UG/UG_Global.xml">
+<!ENTITY UG_KEN SYSTEM "UG/UG_KEN.xml">
+<!ENTITY UG_KEW SYSTEM "UG/UG_KEW.xml">
+<!ENTITY UG_KIM SYSTEM "UG/UG_KIM.xml">
+<!ENTITY UG_KNS SYSTEM "UG/UG_KNS.xml">
+<!ENTITY UG_KSB SYSTEM "UG/UG_KSB.xml">
+<!ENTITY rice_glossary SYSTEM "common/glossary.xml">
+]>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <info>
+        <title>Kuali Rice ${pom.version} User Guide</title>
+        <author>
+            <orgname>Kuali Rice</orgname>
+            <email>rice.collab@kuali.org</email>
+        </author>       
+    </info>
+
+    &UG_Global;
+    &UG_KEN;
+    &UG_KEW;
+    &UG_KIM;
+    &UG_KNS;
+    &UG_KSB;
+
+    &rice_glossary;
+</book>

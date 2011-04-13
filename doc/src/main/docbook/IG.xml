@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<!DOCTYPE book [
+<!ENTITY IG SYSTEM "IG/IG.xml">
+<!ENTITY IG_appendix SYSTEM "IG/IG_appendix.xml">
+<!ENTITY rice_glossary SYSTEM "common/glossary.xml">
+]>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <info>
+        <title>Kuali Rice ${pom.version} Installation Guide </title>
+        <author>
+            <orgname>Kuali Rice</orgname>
+            <email>rice.collab@kuali.org</email>
+        </author>
+        
+    </info>
+
+    &IG;
+    &IG_appendix;
+
+    &rice_glossary;
+</book>

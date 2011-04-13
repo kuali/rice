@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.api.repository;
+package org.kuali.rice.krms.api.type;
 
 import java.util.List;
 

@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krms.api.repository;
+package org.kuali.rice.krms.api.type;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.krms.api.repository.RepositoryConstants;
+import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
+
 import java.util.List;
 
 

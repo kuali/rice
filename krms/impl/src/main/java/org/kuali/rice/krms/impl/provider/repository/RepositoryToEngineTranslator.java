@@ -15,13 +15,17 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
+import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
+import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.Context;
+import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
 
@@ -44,5 +48,9 @@ public interface RepositoryToEngineTranslator {
 	public Rule translateRuleDefinition(RuleDefinition ruleDefinition);
 	
 	public SubAgenda translateAgendaTreeDefinitionToSubAgenda(AgendaTreeDefinition subAgendaDefinition);
+	
+	public Proposition translatePropositionDefinition(PropositionDefinition propositionDefinition);
+	
+	public Action translateActionDefinition(ActionDefinition actionDefinition);
 	
 }

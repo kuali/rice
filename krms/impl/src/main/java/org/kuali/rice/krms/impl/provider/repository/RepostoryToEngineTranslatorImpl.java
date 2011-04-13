@@ -21,15 +21,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krms.api.engine.TermResolver;
+import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.AgendaTreeEntryDefinition;
 import org.kuali.rice.krms.api.repository.AgendaTreeRuleEntry;
 import org.kuali.rice.krms.api.repository.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
+import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.AgendaTreeEntry;
@@ -37,7 +40,9 @@ import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.engine.BasicAgendaTree;
 import org.kuali.rice.krms.framework.engine.BasicAgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicContext;
+import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.Context;
+import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
 
@@ -197,8 +202,26 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	
 	@Override
 	public Rule translateRuleDefinition(RuleDefinition ruleDefinition) {
+		Proposition condition = translatePropositionDefinition(ruleDefinition.getProposition());
+		List<Action> actions = new ArrayList<Action>();
+		if (ruleDefinition.getActions() != null) {
+			for (ActionDefinition actionDefinition : ruleDefinition.getActions()) {
+				actions.add(translateActionDefinition(actionDefinition));
+			}
+		}
+		return new BasicRule(condition, actions);
+	}
+	
+	@Override
+	public Proposition translatePropositionDefinition(PropositionDefinition propositionDefinition) {
 		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!");
+		throw new UnsupportedOperationException("TODO - implement me!!!");
+	}
+	
+	@Override
+	public Action translateActionDefinition(ActionDefinition actionDefinition) {
+		// TODO
+		throw new UnsupportedOperationException("TODO - implement me!!!");
 	}
 	
 	@Override

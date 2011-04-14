@@ -4,7 +4,6 @@
 /*RESET CSS BEGIN*/ 
 
 html {
-	background-color: #F6F6F6;
 	font-family: Helvetica, Arial, sans-serif;
 	margin: 0px;
 }
@@ -30,7 +29,6 @@ caption, th {
 	text-align:left;
 }
 h1, h2, h3, h4, h5, h6 {
-	font-size:100%;
 	font-weight:normal;
 }
 q:before, q:after {
@@ -108,14 +106,7 @@ div.fill {
 /*EXPANDABLE HEADER BEGIN*/
 
 div.grouping-header-expandable {
-	-moz-border-radius: 8px;
-	border-radius: 8px;
-	padding: 4px;
-	margin-bottom: 4px;
-	background-position: 0px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: 1.2em;
-	color:#636D05;
+
 }
 div.grouping-header-expandable a {
 	color:#FFF;
@@ -151,31 +142,38 @@ div.tab-newh3 img { margin-right:6px
 
 .view_header {
 	height:40px;
-	background-color: #FFF;
-	color:#000;
 	padding-left: 12px;
-	background-image: url(../../images/toptexture.png);
+	margin-top: 20px;
+	margin-bottom: 40px;
+	padding-left: 20px;	
+}
+
+a{
+	color: #69a54d;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a:hover, a:focus{
+	text-decoration: underline;
 }
 
 .view_header h1 {
-	font-size: 1.5em;
-	padding-top: 8px;	
+	font-size: 1.8em;
 }	
 
 .page_header h1 {
-	clear:both;
-	font-size: 1.6em;
-    border-bottom-width: 3px;
-	border-bottom-style: solid;
-	border-bottom-color: #000;
+	font-size: 1.5em;
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    
 }
 
 .group_header h2 {
-	clear:both;
-	padding-top: 8px;
-	padding-bottom: 8px;
+	margin-top: 10px;
 	font-size: 1.2em;
-	color:#636D05;
+	border-bottom: 1px solid black;
+	padding-bottom: 5px;
 }
 
 .workarea table.datatable
@@ -188,18 +186,19 @@ div.tab-newh3 img { margin-right:6px
 }
 
 .summary {
-	font-size: 12px;
-	margin-bottom: auto;
+	font-size: .9em;
 	display: block;
 	padding-bottom: 5px;
+	color: #535353;
 }
 
 .constraint {
-	font-size: 10px;
-	color: gray;
+	font-size: .75em;
+	color: #848484;
 	margin-bottom: 5px;
-	margin-top: 5px;
+	margin-top: 2px;
 	display: block;
+	max-width: 40em;
 }
 
 span.required {

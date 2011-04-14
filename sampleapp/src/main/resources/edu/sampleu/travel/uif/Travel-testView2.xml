@@ -72,10 +72,10 @@ limitations under the License.
     </property>
 </bean>
 
-<bean id="testViewMenu" parent="NavigationGroupTabMenu">
+<bean id="testViewMenu" parent="NavigationGroupMenu">
     <property name="items">
         <list>
-            <!-- <bean parent="HeaderTwo" p:headerText="Navigation"/> -->
+            <bean parent="HeaderTwo" p:headerText="Navigation"/>
             <bean parent="ActionLinkField" p:navigateToPageId="page1" p:actionLabel="Page 1"/>
             <bean parent="ActionLinkField" p:navigateToPageId="page2" p:actionLabel="Page 2"/>
             <bean parent="ActionLinkField" p:navigateToPageId="page3" p:actionLabel="Page 3"/>
@@ -84,7 +84,7 @@ limitations under the License.
     </property>
     <property name="componentOptions">
         <map>
-            <entry key="animate" value="true"/>
+            <entry key="animate" value="false"/>
             <entry key="slideout" value="true"/>
         </map>
     </property>

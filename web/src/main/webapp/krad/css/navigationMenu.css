@@ -1,15 +1,15 @@
 .navigation-parent-div{
-	margin-left: 200px;
+	margin-left: 225px;
 }
 
 .navigation-div{
 	float: left;
-	margin-left: -200px;
-	width: 200px;
+	margin-left: -225px;
 }
 
 .navigation-block {
-   
+   float: left;
+   width: 200px;
 }
 
 /*
@@ -18,40 +18,40 @@ Basic Navigation Menu
 ul.basic-navigation {
     list-style: none outside none;
     padding: 0;
-    margin-top: 0px;
+    margin-left: 25px;
+    font-size: .95em;
 }
 
 ul.basic-navigation li{
     padding: 0;
+    border-bottom: 1px solid #bebebe;
 }
 
 ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2 {
-    border-top: 1px solid #D7D7D7;
-	border-bottom: 2px solid #D7D7D7;
-    color: #333333;
+    border-top: 1px solid black;
+    color: black;
     display: block;
     margin: 0;
-    padding: 13px 18px;
-    width: 150px;
-	font-weight: normal;
+    padding: 5px 10px;
+	font-weight: bold;
+	font-weight: 0.9em;
 	text-transform: uppercase;
 }
 
 ul.basic-navigation li.basic-element a {
     display: block;
-    padding: 5px 18px;
-    width: 150px;
-}
-
-ul.basic-navigation li.basic-element a:link {
-    border-bottom: 1px solid #D7D7D7;
-    color: #333333;
-    text-decoration: none;
+    padding: 5px 10px;
 }
 
 ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
-    background: none repeat scroll 0 0 #889606;
+    background: none repeat scroll 0 0 #64a142;
     color: white;
+    text-decoration: none;
+}
+
+ul.basic-navigation li.basic-element a.current {
+	background-color:#004b2a;
+	color: white;
 }
 
 /*
@@ -76,6 +76,7 @@ ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animate
     width: 150px;
 	font-weight: normal;
     margin-top: 0px;
+    font-size: .9em;
 }
 
 ul.animated-navigation li.animated-element a {
@@ -87,9 +88,6 @@ ul.animated-navigation li.animated-element a {
 	*/
     padding: 5px 18px;
     width: 150px;
-}
-
-ul.animated-navigation li.animated-element a:link {
     border: 1px solid #1A1A1A;
     color: #333333;
     text-decoration: none;
@@ -108,23 +106,14 @@ ul.animated-navigation li.animated-element a.current {
 /*
 Navigation Slide Control
 */
-.panelslider_control {
-	position:absolute;
-	left:-25px;
-	width:30px;
-	height:30px;
-	z-index: 1;
+
+.slideLink{
+	padding-left: .5em;
+	font-size: .9em;
 }
 
-a#controlbtn {
-	color: #333;
-	text-decoration: none;
-	display: inline-block;
-	padding-left: 20px;
-}
-a#controlbtn.open {
-	background: transparent url(images/toggle_minus.png) no-repeat left center;
-}
-a#controlbtn.close {
-	background: transparent url(images/toggle_plus.png) no-repeat left center;
+.collapseLink{
+	float: right;
+	font-size: .9em;
+	padding-bottom: 5px;
 }

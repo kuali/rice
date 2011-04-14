@@ -1061,7 +1061,7 @@ li label.error{
 * html .clearfix {height: 1%;}
 
 .boxLayoutHorizontalItem{
-	padding-right: 20px;
+	margin-right: 15px;
 }
 
 .boxLayoutVerticalItem{

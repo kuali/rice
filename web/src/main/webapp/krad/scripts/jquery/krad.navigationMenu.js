@@ -32,9 +32,12 @@
 				$("li", this).addClass("basic-element");
 				$(this).addClass("basic-navigation");
 			}
+			//TODO add page control here
+			$(link_elements).first().addClass("current");
 			
 			if(options.slideout === "true"){
-				$(this).before("<div class='panelslider_control' id='control'><a id='controlbtn' href='#' alt='open'><img src='/kr-dev/krad/images/slide-control-close.png' width='30' height='30' alt='close' /></a></div>");
+				$(this).before("<a id='collapseLink' class='collapseLink' alt='Close Navigation'>Collapse Navigation</a>");
+				$(".navigation-block").after("<a id='controlbtn' class='slideLink' alt='Close Navigation'><<</a>");
 			}
 			
 			//Handlers and animation
@@ -80,18 +83,43 @@
 						});
 					});
 				}
+				else{
+					$(link_elements).each(function(i){
+						$(this).click(
+							function()
+							{
+								$("li.basic-element a").removeClass("current");
+								$(this).addClass("current");
+							});
+					});
+				}
 				
 				if(options.slideout === "true"){
 					//Slideout animation
 					$("a#controlbtn", this).click(function(e) {
 			            e.preventDefault();
-			            var slidepx = $("#" + options.nav_div).width() + 5;
+			            var slidepx = $(".navigation-block").width();
 			            if (!$("#" + options.parent_div).is(':animated')) {
-			                if (parseInt($("#" + options.parent_div).css('marginLeft'), 0) + 5 < slidepx) {
-			                    $(this).removeClass('close').html('<img src="/kr-dev/krad/images/slide-control-close.png" width="30" height="30" alt="close" />');
+			                if ($(this).hasClass('closed')) {
+			                    $(this).removeClass('closed').html('<<');
 			                    margin = "+=" + slidepx;
 			                } else {
-			                    $(this).addClass('close').html('<img src="/kr-dev/krad/images/slide-control-open.png" width="30" height="30" alt="open" />');
+			                    $(this).addClass('closed').html('>>');
+			                    margin = "-=" + slidepx;
+			                }
+			                $("#" + options.parent_div).animate({marginLeft: margin}, "slow");
+			            }
+			        });
+					
+					$("a#collapseLink", this).click(function(e) {
+			            e.preventDefault();
+			            var slidepx = $(".navigation-block").width();
+			            if (!$("#" + options.parent_div).is(':animated')) {
+			                if ($("a#controlbtn").hasClass('closed')) {
+			                    $("a#controlbtn").removeClass('closed').html('<<');
+			                    margin = "+=" + slidepx;
+			                } else {
+			                    $("a#controlbtn").addClass('closed').html('>>');
 			                    margin = "-=" + slidepx;
 			                }
 			                $("#" + options.parent_div).animate({marginLeft: margin}, "slow");

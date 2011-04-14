@@ -495,7 +495,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 		if (highlightLine) {
 			if(errorNum && !clientSide){
 				highlightLine.addClass("serverError");
-				label.addClass("serverError");
+				label.addClass("serverError"); 
 			}
 			else if(errorNum){
 				highlightLine.addClass("clientError");
@@ -511,8 +511,24 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 			}
 			else{
 				//we are only removing errors client side - no knowledge of warnings/infos
-				highlightLine.removeClass("clientError");
-				label.removeClass("clientError");
+				if(div.parent().hasClass("errorsField")){
+					var error_li = div.parent().find(".errorMessages").find("li");
+					var moreErrors = false;
+					error_li.each(function(){
+						if(jq(this).is(":visible")){
+							moreErrors = true;
+						}
+					});
+					
+					label.removeClass("clientError");
+					if(!moreErrors){
+						highlightLine.removeClass("clientError");
+					}
+				}
+				else{
+					highlightLine.removeClass("clientError");
+					label.removeClass("clientError");
+				}
 			}
 		}
 	}

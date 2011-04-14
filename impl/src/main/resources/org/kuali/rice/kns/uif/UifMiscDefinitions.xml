@@ -26,19 +26,18 @@
   
   <util:list id="kns-css">
      <value>/krad/css/kns/reset.css</value>
+     <value>/krad/css/kns/jquery-ui-1.8.11.custom.css</value>
      <value>/krad/css/kns/main.css</value>
      <value>/krad/css/kns/fonts.css</value>
      <value>/krad/css/kns/headers.css</value>
      <value>/krad/css/kns/tables.css</value>
-     <value>/krad/css/kns/jquery-ui-1.8.11.css</value>
      <value>/krad/css/kuali-stacked.css</value>
   </util:list>
   
   <util:list id="ka-css">
      <value>/krad/css/ka/kuali-clean.css</value>
+     <value>/krad/css/ka/jquery-ui-1.8.11.custom.css</value>
      <value>/krad/css/ka/form.css</value>
-     <value>/krad/css/ka/jquery-ui-1.8.5.css</value>
-     <value>/krad/css/ka/jquery.ui.theme.css</value>
      <value>/krad/css/navigationMenu.css</value>
      <value>/krad/css/kuali-stacked.css</value>
   </util:list>  

@@ -975,23 +975,27 @@ public class LookupViewHelperServiceImpl extends ViewHelperServiceImpl implement
 			if (!returnTarget.equals("_self")
 					&& !returnTarget.equals("_parent")) {
 				// Build up script to set the value(s) on the form and close
-				// the fancybox. Prevent default onclick for the anchor.
-				String script = "";
+				// the fancybox. In order to trigger validation : get focus and then loose(blur()) focus.
+				// Prevent default onclick for the anchor.
+				StringBuilder script = new StringBuilder();
 				for (Object key : getFieldConversions().keySet()) {
 					if (props.containsKey(getFieldConversions().get(key))) {
+						Object fieldName = getFieldConversions().get(key)
+								.replace("'", "\\'");
+						Object value = props
+								.get(getFieldConversions().get(key));
 						script = script
-								.concat("parent.$(&apos;#iframeportlet&apos;).contents().find("
-										+ "&apos;[name=&quot;"
-										+ getFieldConversions().get(key)
-												.replace("'", "\\&apos;")
-										+ "&quot;]&apos;)"
-										+ ".val(&apos;"
-										+ props.get(getFieldConversions().get(
-												key)) + "&apos;);");
+								.append("var returnField = parent.$('#iframeportlet').contents().find("
+										+ "'[name=&quot;"
+										+ fieldName
+										+ "&quot;]');"
+										+ "returnField.val('"
+										+ value
+										+ "');"
+										+ "returnField.focus();returnField.blur();returnField.focus();");
 					}
 				}
-				anchor.setOnclick(script
-						+ "parent.$.fancybox.close();return false");
+				anchor.setOnclick(script.append("parent.$.fancybox.close();return false").toString());
 			}
 		}
 		return anchor;

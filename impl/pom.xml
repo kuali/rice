@@ -83,6 +83,18 @@
 			<artifactId>rice-edl-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        <dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-edl-web</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+        <!-- we need to remove this dependency.  -->
+        <dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-edl-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>

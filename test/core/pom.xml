@@ -8,8 +8,8 @@
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>core-test</artifactId>
-    <name>core-test</name>
+    <artifactId>rice-core-test</artifactId>
+    <name>rice-core-test</name>
 
     <dependencies>
         <dependency>

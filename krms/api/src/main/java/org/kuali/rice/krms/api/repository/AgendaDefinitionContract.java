@@ -44,8 +44,6 @@ public interface AgendaDefinitionContract {
 	
 	public String getFirstItemId();
 	
-	public String getEventName();
-	
 	
 	/**
 	 * This method returns a list of attributes associated with the 

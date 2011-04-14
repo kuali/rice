@@ -187,7 +187,7 @@ public final class AgendaTreeRuleEntry implements AgendaTreeEntryDefinition {
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "agendaTreeRuleEntry";
 		final static String TYPE_NAME = "AgendaTreeRuleEntryType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_futureElements" };
 	}
 	
 	/**

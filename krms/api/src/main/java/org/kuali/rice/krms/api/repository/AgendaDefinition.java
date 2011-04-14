@@ -39,7 +39,7 @@ import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 		AgendaDefinition.Elements.TYPE_ID,
 		AgendaDefinition.Elements.CONTEXT_ID,
 		AgendaDefinition.Elements.FIRST_ITEM_ID,
-		AgendaDefinition.Elements.EVENT_NAME,
+//		AgendaDefinition.Elements.EVENT_NAME,
 		AgendaDefinition.Elements.ATTRIBUTES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
@@ -64,8 +64,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	@XmlElement(name = Elements.FIRST_ITEM_ID, required = false)
 	private final String firstItemId;
 	
-	@XmlElement(name = Elements.EVENT_NAME, required = true)
-	private final String eventName;
+//	@XmlElement(name = Elements.EVENT_NAME, required = true)
+//	private final String eventName;
 	
 	@XmlElement(name = Elements.ATTRIBUTES, required = false)
 	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -86,7 +86,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     	this.typeId = null;
     	this.contextId = null;
     	this.firstItemId = null;
-    	this.eventName = null;
+//    	this.eventName = null;
     	this.attributes = null;
     }
     
@@ -103,7 +103,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         this.typeId = builder.getTypeId();
         this.contextId = builder.getContextId();
         this.firstItemId = builder.getFirstItemId();
-        this.eventName = builder.getEventName();
+//        this.eventName = builder.getEventName();
         this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
     }
     
@@ -137,10 +137,10 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		return this.firstItemId;
 	}
 	
-	@Override
-	public String getEventName() {
-		return this.eventName;
-	}
+//	@Override
+//	public String getEventName() {
+//		return this.eventName;
+//	}
 	
 	@Override
 	public Map<String, String> getAttributes() {
@@ -160,7 +160,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         private String typeId;
         private String contextId;
         private String firstItemId;
-        private String eventName;
         private Map<String, String> attributes;
 
 		/**
@@ -171,7 +170,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             setNamespaceCode(namespaceCode);
             setTypeId(typeId);
             setContextId(contextId);
-            setEventName(eventName);
             setAttributes(new HashMap<String, String>());
         }
         
@@ -191,7 +189,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             Builder builder =  new Builder(contract.getAgendaId(), contract.getName(),
             		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
             builder.setFirstItemId( contract.getFirstItemId() );
-            builder.setEventName( contract.getEventName() );
+//            builder.setEventName( contract.getEventName() );
             builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
             return builder;
         }
@@ -240,13 +238,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 			this.firstItemId = firstItemId;
 		}
 		
-		public void setEventName(String eventName) {
-			if (StringUtils.isBlank(eventName)) {
-				throw new IllegalArgumentException("eventName was blank");
-			}
-			this.eventName = eventName;
-		}
-		
 		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null) {
 				throw new IllegalArgumentException("attributes was null, consider passing an empty Map instead");
@@ -282,11 +273,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		@Override
 		public String getFirstItemId() {
 			return firstItemId;
-		}
-		
-		@Override
-		public String getEventName() {
-			return eventName;
 		}
 
 		@Override
@@ -326,7 +312,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "Agenda";
 		final static String TYPE_NAME = "AgendaType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_elements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_furutreElements" };
 	}
 	
 	/**
@@ -340,7 +326,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		final static String TYPE_ID = "typeId";
 		final static String CONTEXT_ID = "contextId";
 		final static String FIRST_ITEM_ID = "firstItemId";
-		final static String EVENT_NAME = "eventName";
 		final static String ATTRIBUTES = "attributes";
 	}
 

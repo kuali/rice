@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
@@ -67,7 +68,7 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
             memberTableMetadata.setColumnToSortIndex(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (memberTableMetadata.getColumnToSortIndex() == -1) {
                 memberTableMetadata.setColumnToSortName(PagingBannerUtils.getAlphabeticalValueAfterSubmit(paramPrefix, request.getParameterNames()));
-                if (memberTableMetadata.getColumnToSortName().isEmpty()) {
+                if (StringUtils.isEmpty(memberTableMetadata.getColumnToSortName())) {
                     throw new RuntimeException("Couldn't find page number");
                 }
             }

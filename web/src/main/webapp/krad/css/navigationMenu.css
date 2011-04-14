@@ -36,6 +36,7 @@ ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2
 	font-weight: bold;
 	font-weight: 0.9em;
 	text-transform: uppercase;
+	font-size: .9em;
 }
 
 ul.basic-navigation li.basic-element a {

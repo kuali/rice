@@ -1,9 +1,14 @@
 package org.kuali.rice.krms.impl.repository
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krms.api.repository.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.AgendaDefinitionContract
 
 
-public class AgendaDefinitionBo extends PersistableBusinessObjectBase {
+public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract{
 
 	def String agendaId
 	def String namespace
@@ -14,38 +19,49 @@ public class AgendaDefinitionBo extends PersistableBusinessObjectBase {
 	def String firstItemId
 	def List<AgendaAttributeBo> attributes
 
-//	
-//	/**
-//	* Converts a mutable bo to it's immutable counterpart
-//	* @param bo the mutable business object
-//	* @return the immutable object
-//	*/
-//   static Agenda to(AgendaBo bo) {
-//	   if (bo == null) { return null }
-//	   return org.kuali.rice.krms.api.repository.Agenda.Builder.create(bo).build()
-//   }
-//
-//   /**
-//	* Converts a immutable object to it's mutable bo counterpart
-//	* TODO: move to() and from() to impl service
-//	* @param im immutable object
-//	* @return the mutable bo
-//	*/
-//   static AgendaBo from(Agenda im) {
-//	   if (im == null) { return null }
-//
-//	   AgendaBo bo = new AgendaBo()
-//	   bo.agendaId = im.agendaId
-//	   bo.namespace = im.namespace
-//	   bo.name = im.name
-//	   bo.typeId = im.typeId
-//	   bo.contextId = im.contextId
-//	   bo.attributes = new ArrayList<AgendaAttributeBo>()
-//	   bo.firstItemId = im.firstItemId
-//	   for (attr in im.attributes){
-//		   bo.attributes.add ( AgendaAttributeBo.from(attr) )
-//	   }
-//   }
-// 
+	public String getNamespaceCode(){
+		return namespace
+	}
+	public Map<String,String> getAttributes(){
+		// TODO: Implement
+		Map<String, String> map = new HashMap<String,String>()
+		return null
+	}
+	
+	/**
+	 * Converts a mutable bo to it's immutable counterpart
+	 * @param bo the mutable business object
+	 * @return the immutable object
+	 */
+	static AgendaDefinition to(AgendaDefinitionBo bo) {
+		if (bo == null) { return null }
+		return org.kuali.rice.krms.api.repository.AgendaDefinition.Builder.create(bo).build()
+	}
+
+
+	/**
+	* Converts a immutable object to it's mutable bo counterpart
+	* TODO: move to() and from() to impl service
+	* @param im immutable object
+	* @return the mutable bo
+	*/
+   static public AgendaDefinitionBo from(AgendaDefinition im) {
+	   if (im == null) { return null }
+
+	   AgendaDefinitionBo bo = new AgendaDefinitionBo()
+	   bo.setAgendaId( im.getAgendaId() )
+	   bo.setNamespace( im.getNamespaceCode() )
+	   bo.setName( im.getName() )
+	   bo.setTypeId( im.getTypeId() )
+	   bo.setContextId( im.getContextId() )
+	   bo.setFirstItemId( im.getFirstItemId() )
+	   List<AgendaAttributeBo> attrList = new ArrayList<AgendaAttributeBo>()
+	   for (attr in im.getAttributes()){
+		   attrList.add ( AgendaAttributeBo.from() )
+	   }
+	   bo.setAttributes(attrList)
+	   return bo
+   }
+   
 
 } 

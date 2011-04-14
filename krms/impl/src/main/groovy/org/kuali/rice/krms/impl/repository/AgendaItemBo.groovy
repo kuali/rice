@@ -6,8 +6,14 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 
 	def String id
 	def String agendaId
-	def String priorItemId
-	def String entryCondition
 	def String ruleId
 	def String subAgendaId
+	def String nextTrueId
+	def String nextFalseId
+	def String nextAfterId 
+	
+	// consider getting full tree
+//	def AgendaItemBo nextTrue
+//	def AgendaItemBo nextFalse
+//	def AgendaItemBo nextAfter
 } 

@@ -80,7 +80,8 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	
 	@Override
 	public Agenda translateAgendaDefinition(AgendaDefinition agendaDefinition) {
-		return new BasicAgenda(agendaDefinition.getEventName(), agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
+		// TODO: Handle event name.  Is it one of attributes?
+		return new BasicAgenda("", agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
 	}
 		
 	@Override

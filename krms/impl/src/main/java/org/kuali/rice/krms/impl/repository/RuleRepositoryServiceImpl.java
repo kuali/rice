@@ -1,5 +1,9 @@
 package org.kuali.rice.krms.impl.repository;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,35 +16,74 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.krms.api.repository.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.AgendaTreeRuleEntry;
+import org.kuali.rice.krms.api.repository.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
 import org.kuali.rice.krms.api.repository.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 
 /**
- * This impl has some concurrency issues to consider 
- * @author gilesp
  *
  */
 public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	
+    private BusinessObjectService businessObjectService;
 	/**
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.krms.api.repository.RuleRepositoryService#selectContext(org.kuali.rice.krms.api.repository.ContextSelectionCriteria)
 	 */
-	@Override
-	public ContextDefinition selectContext(
-			ContextSelectionCriteria contextSelectionCriteria) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!!!");
-	}
+    @Override
+    public ContextDefinition selectContext(
+    		ContextSelectionCriteria contextSelectionCriteria) {
+    	if (contextSelectionCriteria == null){
+    		throw new IllegalArgumentException("selection criteria is null");
+    	}
+    	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
+    		throw new IllegalArgumentException("selection criteria namespace code is null or blank");
+    	}
+    	// TODO: namespace issues ?? can multiple namespaces be represented in qualifier set?
+    	// NOTE: this doesn't work 
+    	//	Hoped it would be easy like something below.
+    	//  need help building a working query.
+    	Map<String, String> contextQualifiers = contextSelectionCriteria.getContextQualifiers();
+
+    	contextQualifiers.put("namespace", contextSelectionCriteria.getNamespaceCode());
+    	List<ContextBo> resultBos = (List<ContextBo>) businessObjectService.findMatching(ContextBo.class, contextQualifiers);
+
+    	//assuming 1 ?
+    	ContextDefinition result = null;
+    	if (resultBos != null) {
+    		if (resultBos.size() == 1) {
+    			ContextBo bo = resultBos.iterator().next();
+    			return ContextBo.to(bo);
+    		}
+    		else throw new IllegalArgumentException("ambiguous qualifiers");
+    	}
+    	return result;
+    }
 
 	@Override
 	public AgendaTreeDefinition getAgendaTree(String agendaId) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!!!");
+		if (StringUtils.isBlank(agendaId)){
+    		throw new IllegalArgumentException("agenda id is null or blank");
+    	}
+		// Get agenda items from db, then build up agenda tree structure
+		AgendaDefinitionBo agendaBo = businessObjectService.findBySinglePrimaryKey(AgendaDefinitionBo.class, agendaId);
+		String agendaItemId = agendaBo.getFirstItemId();
+		
+		// walk thru the agenda items, building an agenda tree definition Builder along the way
+		AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
+		myBuilder.setAgendaId( agendaId );
+		AgendaTreeDefinition.Builder agendaTreeBuilder = walkAgendaItemTree(agendaItemId, myBuilder);
+		
+		// build the agenda tree and return it
+		return myBuilder.build();
 	}
 	
 	@Override
@@ -51,14 +94,76 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	
 	@Override
 	public RuleDefinition getRule(String ruleId) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!!!");
+		if (StringUtils.isBlank(ruleId)){
+			return null;			
+		}
+		RuleBo bo = businessObjectService.findBySinglePrimaryKey(RuleBo.class, ruleId);
+		return RuleBo.to(bo);
 	}
 	
 	@Override
 	public List<RuleDefinition> getRules(List<String> ruleIds) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!!!");
+		Map<String,String> fieldValues = new HashMap<String,String>();
+		for (String ruleId : ruleIds){
+			fieldValues.put("ruleId", ruleId);
+		}
+		Collection<RuleBo> bos = businessObjectService.findMatching(RuleBo.class, fieldValues);
+        ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
+        for (RuleBo bo : bos) {
+            RuleDefinition rule = RuleBo.to(bo);
+            rules.add(rule);
+        }
+        return Collections.unmodifiableList(rules);
 	}
 
+	/**
+	 * Recursive method to create AgendaTreeDefinition builder
+	 * 	 
+	 */
+	private AgendaTreeDefinition.Builder walkAgendaItemTree(String agendaItemId, AgendaTreeDefinition.Builder builder){
+		if (StringUtils.isBlank(agendaItemId)){
+			return null;
+		}
+		// Get AgendaItem Business Object from database
+		// NOTE: if we read agendaItem one at a time from db.   Could consider linking in OJB and getting all at once
+		AgendaItemBo agendaItemBo = businessObjectService.findBySinglePrimaryKey(AgendaItemBo.class, agendaItemId);
+		
+		// If Rule  
+		// TODO: validate that only either rule or subagenda, not both
+		if (!StringUtils.isBlank( agendaItemBo.getRuleId() )){
+			// setup new rule entry builder
+			AgendaTreeRuleEntry.Builder ruleEntryBuilder = AgendaTreeRuleEntry.Builder
+					.create(agendaItemBo.getId(), agendaItemBo.getRuleId());
+			ruleEntryBuilder.setRuleId( agendaItemBo.getRuleId() );
+			ruleEntryBuilder.setAgendaItemId( agendaItemBo.getId() );
+			if (agendaItemBo.getNextTrueId() != null){
+				// Go follow the true branch, creating AgendaTreeDefinintion Builder for the
+				// true branch level
+				AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
+				myBuilder.setAgendaId( agendaItemBo.getAgendaId() );
+				ruleEntryBuilder.setIfTrue( walkAgendaItemTree(agendaItemBo.getNextTrueId(),myBuilder));
+			}
+			if (agendaItemBo.getNextFalseId() != null){
+				// Go follow the false branch, creating AgendaTreeDefinintion Builder 
+				AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
+				myBuilder.setAgendaId( agendaItemBo.getAgendaId() );
+				ruleEntryBuilder.setIfFalse( walkAgendaItemTree(agendaItemBo.getNextFalseId(), myBuilder));
+			}
+			// Build the Rule Entry and add it to the AgendaTreeDefinition builder
+			builder.addRuleEntry( ruleEntryBuilder.build() );
+		}
+		// if SubAgenda and a sub agenda tree entry
+		if (!StringUtils.isBlank(agendaItemBo.getSubAgendaId())) {
+			AgendaTreeSubAgendaEntry.Builder subAgendaEntryBuilder = 
+				AgendaTreeSubAgendaEntry.Builder.create(agendaItemBo.getId(), agendaItemBo.getSubAgendaId());
+			builder.addSubAgendaEntry( subAgendaEntryBuilder.build() );
+			}
+
+		// if this agenda item has an "After Id", follow that branch
+		if (!StringUtils.isBlank( agendaItemBo.getNextAfterId() )){
+			builder = walkAgendaItemTree( agendaItemBo.getNextAfterId(), builder);
+			
+		}
+		return builder;
+	}
 }

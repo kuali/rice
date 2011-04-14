@@ -27,71 +27,52 @@ import org.kuali.rice.krms.api.repository.AgendaDefinition;
 
 public final class AgendaRepositoryServiceImpl implements AgendaRepositoryService {
 
-    private BusinessObjectService businessObjectService;
+	private BusinessObjectService businessObjectService;
 
 	/**
-	* Converts a mutable bo to it's immutable counterpart
-	* @param bo the mutable business object
-	* @return the immutable object
-	*/
-   public AgendaDefinition to(AgendaDefinitionBo bo) {
-	   if (bo == null) { return null; }
-	   // TODO implement
-	   return null;
-   }
+	 * Converts a mutable bo to it's immutable counterpart
+	 * @param bo the mutable business object
+	 * @return the immutable object
+	 */
+	public AgendaDefinition to(AgendaDefinitionBo bo) {
+		if (bo == null) { return null; }
+		// TODO implement
+		return null;
+	}
 
-   /**
-	* Converts a immutable object to it's mutable bo counterpart
-	* TODO: move to() and from() to impl service
-	* @param im immutable object
-	* @return the mutable bo
-	*/
-   public AgendaDefinitionBo from(AgendaDefinition im) {
-	   if (im == null) { return null; }
+	/**
+	 * Converts a immutable object to it's mutable bo counterpart
+	 * TODO: move to() and from() to impl service
+	 * @param im immutable object
+	 * @return the mutable bo
+	 */
+	public AgendaDefinitionBo from(AgendaDefinition im) {
+		return AgendaDefinitionBo.from(im);
+	}
 
-	   AgendaDefinitionBo bo = new AgendaDefinitionBo();
-	   bo.setAgendaId( im.getAgendaId() );
-	   bo.setNamespace( im.getNamespaceCode() );
-	   bo.setName( im.getName() );
-	   bo.setTypeId( im.getTypeId() );
-	   bo.setContextId( im.getContextId() );
-	   bo.setFirstItemId( im.getFirstItemId() );
-	   List<AgendaAttributeBo> attrList = new ArrayList<AgendaAttributeBo>();
-	   for (String attributeName : im.getAttributes().keySet()){
-		   attrList.add ( from(attributeName, im.getAttributes().get(attributeName)) );
-	   }
-	   bo.setAttributes(attrList);
-	   return bo;
-   }
-   
-   private AgendaAttributeBo from(String attributeName, String attributeValue) {
-	   // TODO
-	   throw new UnsupportedOperationException("TODO - implement me!");
-   }
- 
 
-    /**
-     * Sets the businessObjectService attribute value.
-     *
-     * @param businessObjectService The businessObjectService to set.
-     */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
+	/**
+	 * Sets the businessObjectService attribute value.
+	 *
+	 * @param businessObjectService The businessObjectService to set.
+	 */
+	public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
+		this.businessObjectService = businessObjectService;
+	}
 
-    /**
-     * Converts a List<AgendaBo> to an Unmodifiable List<Agenda>
-     *
-     * @param AgendaBos a mutable List<AgendaBo> to made completely immutable.
-     * @return An unmodifiable List<Agenda>
-     */
-    List<AgendaDefinition> convertListOfBosToImmutables(final Collection<AgendaDefinitionBo> agendaBos) {
-        ArrayList<AgendaDefinition> agendas = new ArrayList<AgendaDefinition>();
-        for (AgendaDefinitionBo bo : agendaBos) {
-            AgendaDefinition agenda = to(bo);
-            agendas.add(agenda);
-        }
-        return Collections.unmodifiableList(agendas);
-    }
+	/**
+	 * Converts a List<AgendaBo> to an Unmodifiable List<Agenda>
+	 *
+	 * @param AgendaBos a mutable List<AgendaBo> to made completely immutable.
+	 * @return An unmodifiable List<Agenda>
+	 */
+	List<AgendaDefinition> convertListOfBosToImmutables(final Collection<AgendaDefinitionBo> agendaBos) {
+		ArrayList<AgendaDefinition> agendas = new ArrayList<AgendaDefinition>();
+		for (AgendaDefinitionBo bo : agendaBos) {
+			AgendaDefinition agenda = to(bo);
+			agendas.add(agenda);
+		}
+		return Collections.unmodifiableList(agendas);
+	}
 
 }

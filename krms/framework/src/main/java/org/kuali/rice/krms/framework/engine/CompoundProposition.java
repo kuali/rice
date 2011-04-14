@@ -1,11 +1,12 @@
 package org.kuali.rice.krms.framework.engine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 
-public class CompoundProposition implements Proposition {
+public final class CompoundProposition implements Proposition {
 
 	private final LogicalOperator logicalOperator;
 	private final List<Proposition> propositions;
@@ -18,7 +19,7 @@ public class CompoundProposition implements Proposition {
 			throw new IllegalArgumentException("Logical operator must be non-null.");
 		}
 		this.logicalOperator = logicalOperator;
-		this.propositions = propositions;
+		this.propositions = new ArrayList<Proposition>(propositions);
 	}
 	
 	@Override

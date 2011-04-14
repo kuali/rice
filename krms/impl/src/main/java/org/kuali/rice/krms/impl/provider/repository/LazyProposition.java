@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krms.api.engine.EngineResourceUnavailableException;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
+import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
  * TODO... 
@@ -35,15 +32,17 @@ final class LazyProposition implements Proposition {
 
 	private final PropositionDefinition propositionDefinition;
 	private final KrmsTypeDefinition typeDefinition;
+	private final KrmsTypeResolver resolver;
 	
 	private final Object mutex = new Object();
 	
 	// volatile for double-checked locking idiom
 	private volatile Proposition proposition;
 	
-	LazyProposition(PropositionDefinition propositionDefinition, KrmsTypeDefinition typeDefinition) {
+	LazyProposition(PropositionDefinition propositionDefinition, KrmsTypeDefinition typeDefinition, KrmsTypeResolver resolver) {
 		this.propositionDefinition = propositionDefinition;
 		this.typeDefinition = typeDefinition;
+		this.resolver = resolver;
 		this.proposition = null;
 	}
 	
@@ -69,15 +68,8 @@ final class LazyProposition implements Proposition {
 	}
 	
 	private Proposition constructProposition() {
-		QName serviceName = QName.valueOf(typeDefinition.getServiceName());
-		Object service = GlobalResourceLoader.getService(serviceName);
-		if (service == null) {
-			throw new EngineResourceUnavailableException("Failed to locate the PropositionTypeService with name: " + serviceName);
-		}
-		if (!(service instanceof PropositionTypeService)) {
-			throw new EngineResourceUnavailableException("The service with name '" + serviceName + "' defined on typeId '" + propositionDefinition.getTypeId() + "' was not of type PropositionTypeService: " + service);
-		}
-		Proposition proposition = ((PropositionTypeService)service).loadProposition(propositionDefinition);
+		PropositionTypeService propositionTypeService = resolver.getPropositionTypeService(propositionDefinition, typeDefinition);
+		Proposition proposition = propositionTypeService.loadProposition(propositionDefinition);
 		if (proposition == null) {
 			proposition = new Proposition() {
 				@Override

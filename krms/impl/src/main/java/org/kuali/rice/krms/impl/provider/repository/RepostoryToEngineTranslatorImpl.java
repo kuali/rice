@@ -20,10 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krms.api.engine.EngineResourceUnavailableException;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
@@ -51,7 +47,7 @@ import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
-import org.kuali.rice.krms.framework.type.ActionTypeService;
+import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
  * TODO... 
@@ -63,6 +59,7 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 
 	private RuleRepositoryService ruleRepositoryService;
 	private KrmsTypeRepositoryService typeRepositoryService;
+	private KrmsTypeResolver typeResolver;
 	
 	@Override
 	public Context translateContextDefinition(ContextDefinition contextDefinition) {
@@ -222,14 +219,14 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	
 	@Override
 	public Proposition translatePropositionDefinition(PropositionDefinition propositionDefinition) {
-		if (propositionDefinition.getTypeId() == null) {
-			throw new RepositoryDataException("Given PropositionDefinition does not have a typeId, propositionId was: " + propositionDefinition.getPropId());
+		KrmsTypeDefinition typeDefinition = null;
+		if (propositionDefinition.getTypeId() != null) {
+			typeDefinition = typeRepositoryService.getTypeById(propositionDefinition.getTypeId());
+			if (typeDefinition == null) {
+				throw new RepositoryDataException("Failed to locate a type definition for proposition typeId: " + propositionDefinition.getTypeId());
+			}
 		}
-		KrmsTypeDefinition typeDefinition = typeRepositoryService.getTypeById(propositionDefinition.getTypeId());
-		if (typeDefinition == null) {
-			throw new RepositoryDataException("Failed to locate a type definition for proposition typeId: " + propositionDefinition.getTypeId());
-		}
-		return new LazyProposition(propositionDefinition, typeDefinition);
+		return new LazyProposition(propositionDefinition, typeDefinition, typeResolver);
 	}
 	
 	@Override
@@ -241,7 +238,7 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 		if (typeDefinition == null) {
 			throw new RepositoryDataException("Failed to locate a type definition for agenda typeId: " + actionDefinition.getTypeId());
 		}
-		return new LazyAction(actionDefinition, typeDefinition);
+		return new LazyAction(actionDefinition, typeDefinition, typeResolver);
 	}
 	
 	@Override

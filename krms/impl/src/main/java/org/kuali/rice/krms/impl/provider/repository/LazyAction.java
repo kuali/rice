@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krms.api.engine.EngineResourceUnavailableException;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
+import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
  * TODO... 
@@ -35,15 +32,17 @@ final class LazyAction implements Action {
 
 	private final ActionDefinition actionDefinition;
 	private final KrmsTypeDefinition typeDefinition;
+	private final KrmsTypeResolver typeResolver;
 	
 	private final Object mutex = new Object();
 	
 	// volatile for double-checked locking idiom
 	private volatile Action action;
 	
-	LazyAction(ActionDefinition actionDefinition, KrmsTypeDefinition typeDefinition) {
+	LazyAction(ActionDefinition actionDefinition, KrmsTypeDefinition typeDefinition, KrmsTypeResolver typeResolver) {
 		this.actionDefinition = actionDefinition;
 		this.typeDefinition = typeDefinition;
+		this.typeResolver = typeResolver;
 		this.action = null;
 	}
 	
@@ -74,15 +73,8 @@ final class LazyAction implements Action {
 	}
 	
 	private Action constructAction() {
-		QName serviceName = QName.valueOf(typeDefinition.getServiceName());
-		Object service = GlobalResourceLoader.getService(serviceName);
-		if (service == null) {
-			throw new EngineResourceUnavailableException("Failed to locate the ActionTypeService with name: " + serviceName);
-		}
-		if (!(service instanceof ActionTypeService)) {
-			throw new EngineResourceUnavailableException("The service with name '" + serviceName + "' defined on typeId '" + actionDefinition.getTypeId() + "' was not of type ActionTypeService: " + service);
-		}
-		Action action = ((ActionTypeService)service).loadAction(actionDefinition);
+		ActionTypeService actionTypeService = typeResolver.getActionTypeService(actionDefinition, typeDefinition);
+		Action action = actionTypeService.loadAction(actionDefinition);
 		if (action == null) {
 			action = new Action() {
 				@Override

@@ -25,7 +25,7 @@ import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * TODO... 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

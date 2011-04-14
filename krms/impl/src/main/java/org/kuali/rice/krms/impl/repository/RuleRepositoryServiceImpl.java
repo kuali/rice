@@ -80,7 +80,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		// walk thru the agenda items, building an agenda tree definition Builder along the way
 		AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
 		myBuilder.setAgendaId( agendaId );
-		AgendaTreeDefinition.Builder agendaTreeBuilder = walkAgendaItemTree(agendaItemId, myBuilder);
+		myBuilder = walkAgendaItemTree(agendaItemId, myBuilder);
 		
 		// build the agenda tree and return it
 		return myBuilder.build();

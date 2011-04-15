@@ -16,10 +16,21 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -29,19 +40,45 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@XmlRootElement(name = TermResolverDefinition.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = TermResolverDefinition.Constants.TYPE_NAME, propOrder = {
+		TermResolverDefinition.Elements.ID,
+		TermResolverDefinition.Elements.NAMESPACE_CODE,
+		TermResolverDefinition.Elements.NAME,
+		TermResolverDefinition.Elements.TYPE_ID,
+		TermResolverDefinition.Elements.OUTPUT,
+		TermResolverDefinition.Elements.PREREQUISITES,
+		TermResolverDefinition.Elements.ATTRIBUTES,
+		TermResolverDefinition.Elements.PARAMETER_NAMES,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public class TermResolverDefinition implements TermResolverDefinitionContract, ModelObjectComplete {
 	
 	private static final long serialVersionUID = 1L;
 	
+	@XmlElement(name = Elements.ID, required=false)
 	private final String id;
+	@XmlElement(name = Elements.NAMESPACE_CODE, required=true)
 	private final String namespaceCode;
+	@XmlElement(name = Elements.NAME, required=true)
 	private final String name;
+	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private final String typeId;
+	@XmlElement(name = Elements.OUTPUT, required=true)
 	private final TermSpecificationDefinition output;
+	@XmlElement(name = Elements.PREREQUISITES, required=false)
 	private final List<TermSpecificationDefinition> prerequisites;
+	@XmlElement(name = Elements.ATTRIBUTES, required=false)
 	private final List<TermResolverAttribute> attributes;
+	@XmlElement(name = Elements.PARAMETER_NAMES, required=false)
 	private final List<String> parameterNames;
 	
+	
+    @SuppressWarnings("unused")
+	@XmlAnyElement
+	private final Collection<org.w3c.dom.Element> _futureElements = null;
+    
 	/**
 	 * This private constructor is for JAXB use only, don't invoke directly.
 	 */
@@ -81,11 +118,6 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		private List<TermResolverAttribute.Builder> attributes;
 		private List<String> parameterNames;
 		
-		public static final Builder dummy = new Builder(); 
-		
-		private Builder() {
-		}
-		
 		private Builder(String id,
 				String namespaceCode,
 				String name,
@@ -94,6 +126,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 				List<TermSpecificationDefinition.Builder> prerequisites,
 				List<TermResolverAttribute.Builder> attributes,
 				List<String> parameterNames) {
+			setId(id);
 			setNamespaceCode(namespaceCode);
 			setName(name);
 			setTypeId(typeId);
@@ -114,6 +147,21 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 			setPrerequisites(BuilderUtils.transform(termResolver.getPrerequisites(), TermSpecificationDefinition.Builder.toBuilder));
 			setAttributes(BuilderUtils.transform(termResolver.getAttributes(), TermResolverAttribute.Builder.toBuilder));
 			this.setParameterNames(termResolver.getParameterNames());
+		}
+		
+		public static Builder create(TermResolverDefinitionContract termResolver) {
+			return new Builder(termResolver);
+		}
+		
+		public static Builder create(String id,
+				String namespaceCode,
+				String name,
+				String typeId,
+				TermSpecificationDefinition.Builder output,
+				List<TermSpecificationDefinition.Builder> prerequisites,
+				List<TermResolverAttribute.Builder> attributes,
+				List<String> parameterNames) {
+			return new Builder(id, namespaceCode, name, typeId, output, prerequisites, attributes, parameterNames); 
 		}
 
 		// Builder setters:
@@ -251,7 +299,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		 */
 		@Override
 		public TermResolverDefinition build() {
-			return new TermResolverDefinition();
+			return new TermResolverDefinition(this);
 		}
 		
 	}
@@ -319,5 +367,39 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		return this.parameterNames;
 	}
 	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
 	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+	
+	/**
+	 * Defines some internal constants used on this class.
+	 */
+	static class Constants {
+		final static String ROOT_ELEMENT_NAME = "TermResolverDefintion";
+		final static String TYPE_NAME = "TermResolverType";
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
+	}
+	
+	static class Elements {
+		public static final String ID = "id";
+		public static final String NAMESPACE_CODE = "namespaceCode";
+		public static final String NAME = "name";
+		public static final String TYPE_ID = "typeId";
+		public static final String OUTPUT = "output";
+		public static final String PREREQUISITES = "prerequisites";
+		public static final String ATTRIBUTES = "attributes";
+		public static final String PARAMETER_NAMES = "parameterNames";
+	}
 }

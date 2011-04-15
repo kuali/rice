@@ -15,12 +15,8 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import java.util.List;
 
-import org.kuali.rice.krms.api.repository.ActionDefinition;
-import org.kuali.rice.krms.api.repository.ActionAttribute;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
-import org.kuali.rice.krms.api.repository.ContextSelectionCriteria;
 
 /**
  * This is the interface for accessing KRMS repository Context related bos 

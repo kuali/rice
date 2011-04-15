@@ -16,15 +16,7 @@
 
 package org.kuali.rice.krms.impl.repository;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
-
-import java.util.List;
 
 
 public interface AgendaRepositoryService {

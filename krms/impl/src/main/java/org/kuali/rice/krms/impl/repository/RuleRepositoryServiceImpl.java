@@ -88,8 +88,11 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	
 	@Override
 	public List<AgendaTreeDefinition> getAgendaTrees(List<String> agendaIds) {
-		// TODO
-		throw new UnsupportedOperationException("TODO - implement me!!!");
+		List<AgendaTreeDefinition> agendaTrees = new ArrayList<AgendaTreeDefinition>();
+		for (String agendaId : agendaIds){
+			agendaTrees.add( getAgendaTree(agendaId) );
+		}
+        return Collections.unmodifiableList(agendaTrees);		
 	}
 	
 	@Override
@@ -108,7 +111,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 			fieldValues.put("ruleId", ruleId);
 		}
 		Collection<RuleBo> bos = businessObjectService.findMatching(RuleBo.class, fieldValues);
-        ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
+		ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
         for (RuleBo bo : bos) {
             RuleDefinition rule = RuleBo.to(bo);
             rules.add(rule);

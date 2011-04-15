@@ -19,10 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.ActionDefinition;
-import org.kuali.rice.krms.api.repository.ActionAttribute;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
-import org.kuali.rice.krms.api.repository.ContextSelectionCriteria;
 
 import java.util.*;
 

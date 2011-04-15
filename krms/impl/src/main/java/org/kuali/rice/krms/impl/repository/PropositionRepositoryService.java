@@ -18,20 +18,10 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionParameter;
-import org.kuali.rice.krms.api.repository.RepositoryConstants;
-import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
 
-
-@WebService(name = "PropositionRepositoryService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)
-@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PropositionRepositoryService {
 
     /**
@@ -41,8 +31,7 @@ public interface PropositionRepositoryService {
      * @throws IllegalArgumentException if the proposition is null
      * @throws IllegalStateException if the proposition already exists in the system
      */
-    @WebMethod(operationName="createProposition")
-    void createProposition(@WebParam(name = "prop") PropositionDefinition prop);
+    void createProposition(PropositionDefinition prop);
 
     /**
      * This will update a {@link PropositionDefinition}.
@@ -52,8 +41,7 @@ public interface PropositionRepositoryService {
      * @throws IllegalArgumentException if the proposition is null
      * @throws IllegalStateException if the proposition does not exist in the system
      */
-    @WebMethod(operationName="updateProposition")
-    void updateProposition(@WebParam(name = "prop") PropositionDefinition prop);
+    void updateProposition(PropositionDefinition prop);
 
     /**
      * Lookup the proposition based on the given proposition id.
@@ -62,10 +50,7 @@ public interface PropositionRepositoryService {
      * @return a proposition associated with the given proposition id.  A null reference is returned if an invalid or
      *         non-existent id is supplied.
      */
-    @WebMethod(operationName = "getPropositionById")
-    @WebResult(name = "prop")
-    PropositionDefinition getPropositionById(
-            @WebParam(name = "propId") String propId);
+    PropositionDefinition getPropositionById(String propId);
 
 
 
@@ -76,8 +61,7 @@ public interface PropositionRepositoryService {
      * @throws IllegalArgumentException if the proposition parameter is null
      * @throws IllegalStateException if the proposition parameter is already existing in the system
      */
-    @WebMethod(operationName="createParameter")
-    void createParameter(@WebParam(name = "parameter") PropositionParameter parameter);
+    void createParameter(PropositionParameter parameter);
 
     /**
      * This will update a {@link PropositionParameter}.
@@ -87,8 +71,7 @@ public interface PropositionRepositoryService {
      * @throws IllegalArgumentException if the proposition parameter is null
      * @throws IllegalStateException if the proposition parameter does not exist in the system
      */
-    @WebMethod(operationName="updateParameter")
-    void updateParameter(@WebParam(name = "parameter") PropositionParameter parameter);
+    void updateParameter(PropositionParameter parameter);
 
     /**
      * Lookup the proposition parameters based on the given proposition id.
@@ -97,10 +80,7 @@ public interface PropositionRepositoryService {
      * @return a list of PropositionParameters associated with the given proposition id.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
      */
-    @WebMethod(operationName = "getParameters")
-    @WebResult(name = "parameters")
-    List<PropositionParameter> getParameters(
-            @WebParam(name = "propId") String propId);
+    List<PropositionParameter> getParameters(String propId);
 
     /**
      * Lookup the proposition parameter based on the id.
@@ -109,10 +89,7 @@ public interface PropositionRepositoryService {
      * @return an immutable PropositionParameters associated with the given id.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
      */
-    @WebMethod(operationName = "getParameterById")
-    @WebResult(name = "parameter")
-    PropositionParameter getParameterById(
-            @WebParam(name = "id") String id);
+    PropositionParameter getParameterById(String id);
 
     /**
      * Lookup the proposition parameter based on the proposition id and sequence number.
@@ -121,11 +98,7 @@ public interface PropositionRepositoryService {
      * @return an immutable PropositionParameters associated with the given proposition id and sequence number.  A null reference is returned if an invalid or
      *         non-existant.
      */
-    @WebMethod(operationName = "getParameterByPropIdAndSequenceNumber")
-    @WebResult(name = "parameter")
-    PropositionParameter getParameterByPropIdAndSequenceNumber(
-            @WebParam(name = "propId") String propId,
-            @WebParam(name = "sequenceNumber")Integer sequenceNumber);
+    PropositionParameter getParameterByPropIdAndSequenceNumber(String propId, Integer sequenceNumber);
 
 
 }

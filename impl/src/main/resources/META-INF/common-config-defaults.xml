@@ -168,9 +168,6 @@
     <param name="mail.debug" override="false">false</param>
     <param name="mail.smtp.host" override="false">localhost</param>
 
-    <param name="edl.config.loc" override="false">classpath:META-INF/EDLConfig.xml</param>
-    <param name="edl.style.widgets" override="false">classpath:org/kuali/rice/edl/impl/default-widgets.xml</param>
-
     <!-- KEW XML-related filesystem locations -->
     <!-- These should be overridden, but the defaults are here so they do not have to
          be specified everywhere when they are not used -->

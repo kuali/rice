@@ -138,13 +138,11 @@
 				<idref local="enWorkflowDocumentService" />
 				<idref local="enRoleService" />
 				<idref local="enRoutingReportService" />
-                <idref local="enExtractService" />
-				<idref local="workflowEngine" />
+                <idref local="workflowEngine" />
 				<idref local="enRouteNodeService" />
 				<idref local="enBranchService" />
 				<idref local="enExceptionRoutingService" />
                 <idref local="enHelpService" />
-                <idref local="enEDocLiteService" />
                 <idref local="enStatsService" />
                 <idref local="enNoteService" />
                 <idref local="enDocumentRoutingService" />
@@ -274,12 +272,7 @@
 	</bean>
 
 
-  <!--  EDL Extract Service -->
-  <bean id="enExtractService" class="org.kuali.rice.edl.impl.extract.ExtractServiceImpl">
-    <property name="extractDAO">
-      <ref bean="enExtractDAO"/>
-    </property>
-  </bean>
+  
 
 	<!--  Routing Report Service -->
 	<bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"  lazy-init="true"/>
@@ -350,14 +343,6 @@
 	<!--  RoleService -->
 	<bean id="enRoleService" class="org.kuali.rice.kew.role.service.impl.RoleServiceImpl"  lazy-init="true"/>
 
-    <bean id="edlLookupHelperService" class="org.kuali.rice.edl.impl.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype"/>
-
-    <bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
-	  <property name="lookupableHelperService">
-  		<ref bean="edlLookupHelperService" />
-	  </property>
-    </bean>
-
     <bean id="ruleBaseValuesLookupHelperService" class="org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableHelperServiceImpl" scope="prototype"/>
 
     <bean id="ruleBaseValuesLookupable" class="org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl" scope="prototype">
@@ -420,11 +405,6 @@
 
     <!-- some beans shared by client and server -->
    
-    <bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl" lazy-init="true">
-        <property name="EDocLiteDAO" ref="enEDocLiteDAO"/>
-        <property name="styleService" ref="styleService"/>
-    </bean>
-
 	<!-- <bean id="styleService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="styleService" />
 	</bean>
@@ -574,8 +554,8 @@
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
-			    <value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml</value>
-			    <value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteDefinition.xml</value>
+			    <value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteAssociation.xml</value>
+			    <value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteDefinition.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/Style.xml</value>
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
@@ -731,7 +711,7 @@
              <ref local="enRuleService" />
              <ref local="enRuleDelegationService" />
              <ref local="enHelpService" />
-             <ref local="enEDocLiteService" />
+             <!--  ref local="enEDocLiteService" / -->
 		   </list>
 		</property>
 		<property name="xmlExportersToRegister">
@@ -743,7 +723,7 @@
              <ref local="enRuleService" />
              <ref local="enRuleDelegationService" />
              <ref local="enHelpService" />
-             <ref local="enEDocLiteService" />
+             <!-- ref local="enEDocLiteService" / -->
 		   </list>
 		</property>
 	</bean>

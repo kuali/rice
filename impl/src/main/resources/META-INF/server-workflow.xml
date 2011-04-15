@@ -16,9 +16,6 @@
 	<!-- default note attribute to use when none is given -->
     <param name="default.kew.note.class">DefaultNoteAttribute</param>
 
-	<!-- default edl config location -->
-	<param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
-
 	<!-- Default configurations for workgroups and users -->
 	<param name="http.port">8080</param>
 	<param name="serviceServletUrl">http://${host.ip}:${http.port}/en-${environment}/remoting/</param>

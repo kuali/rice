@@ -75,7 +75,4 @@
       enQuickLinksService
       enDocumentLinkService
   </param>
-
-  <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
-
 </config>

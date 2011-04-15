@@ -15,6 +15,11 @@
     </dependency>
   	<dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>rice-edl-web</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  	<dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rice-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -25,7 +30,7 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-edl-web</artifactId>
+      <artifactId>krad-web-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

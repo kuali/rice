@@ -93,14 +93,6 @@
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
   
-  <bean id="enEDocLiteDAO" class="org.kuali.rice.edl.impl.dao.impl.EDocLiteDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
-    <property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
-    
-  <bean id="enExtractDAO" class="org.kuali.rice.edl.impl.extract.dao.impl.ExtractDAOOjbImpl" depends-on="kewOjbConfigurer">
-    <property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
-
   <bean id="enHelpDAO" class="org.kuali.rice.kew.help.dao.impl.HelpDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>

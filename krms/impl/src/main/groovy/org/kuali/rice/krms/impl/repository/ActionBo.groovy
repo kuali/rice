@@ -14,7 +14,7 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	def String typeId
 	def String ruleId
 	def Integer sequenceNumber
-	def List<ActionAttributeBo> attributes
+	def Set<ActionAttributeBo> attributes
 	
 	
 	/**

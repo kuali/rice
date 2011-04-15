@@ -1,6 +1,6 @@
 package org.kuali.rice.krms.api.repository;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ActionDefinitionContract {
 	/**
@@ -61,12 +61,12 @@ public interface ActionDefinitionContract {
 	public Integer getSequenceNumber();
 	
 	/**
-	 * This method returns a list of attributes associated with the 
+	 * This method returns a set of attributes associated with the 
 	 * Action
 	 * 
-	 * @return a list of ActionAttribute objects.
+	 * @return a set of ActionAttribute objects.
 	 */
-	public List<? extends ActionAttributeContract> getAttributes();
+	public Set<? extends ActionAttributeContract> getAttributes();
 	
 
 }

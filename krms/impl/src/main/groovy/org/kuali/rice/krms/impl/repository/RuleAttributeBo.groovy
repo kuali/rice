@@ -38,7 +38,7 @@ public class RuleAttributeBo extends PersistableBusinessObjectBase implements Ru
 	   bo.id = im.id
 	   bo.ruleId = im.ruleId
 	   bo.attributeDefinitionId = im.attributeDefinitionId
-	   bo.attributeValue = im.value
+	   bo.value = im.value
 	   bo.attributeDefinition = KrmsAttributeDefinitionBo.from( im.attributeDefinition )
 
 	   return bo

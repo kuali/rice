@@ -1,10 +1,9 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -62,7 +61,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	
 	@XmlElementWrapper(name = Elements.ATTRIBUTES)
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
-	private List<ActionAttribute> attributes;
+	private Set<ActionAttribute> attributes;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -98,11 +97,11 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         this.typeId = builder.getTypeId();
         this.ruleId = builder.getRuleId();
         this.sequenceNumber = builder.getSequenceNumber();
-        List<ActionAttribute> attrList = new ArrayList<ActionAttribute>();
+        Set<ActionAttribute> attrSet = Collections.emptySet();
         for (ActionAttribute.Builder b : builder.attributes){
-        	attrList.add(b.build());
+        	attrSet.add(b.build());
         }
-        this.attributes = Collections.unmodifiableList(attrList);
+        this.attributes = Collections.unmodifiableSet(attrSet);
     }
     
 	@Override
@@ -141,7 +140,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	}
 
 	@Override
-	public List<ActionAttribute> getAttributes() {
+	public Set<ActionAttribute> getAttributes() {
 		return this.attributes; 
 	}
 
@@ -158,7 +157,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         private String typeId;
         private String ruleId;
         private Integer sequenceNumber;
-        private List<ActionAttribute.Builder> attributes;
+        private Set<ActionAttribute.Builder> attributes;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -176,7 +175,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         	setDescription(description);
         	return this;
         }
-        public Builder attributes (List<ActionAttribute.Builder> attributes){
+        public Builder attributes (Set<ActionAttribute.Builder> attributes){
         	setAttributes(attributes);
         	return this;
         }
@@ -194,7 +193,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-        	List <ActionAttribute.Builder> attrBuilderList = new ArrayList<ActionAttribute.Builder>();
+        	Set <ActionAttribute.Builder> attrBuilderList = Collections.emptySet();
         	if (contract.getAttributes() != null){
         		for (ActionAttributeContract attrContract : contract.getAttributes()){
         			ActionAttribute.Builder myBuilder = ActionAttribute.Builder.create(attrContract);
@@ -265,12 +264,11 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 			this.sequenceNumber = sequenceNumber;
 		}
 		
-		public void setAttributes(List<ActionAttribute.Builder> attributes){
+		public void setAttributes(Set<ActionAttribute.Builder> attributes){
 			if (attributes == null){
-				this.attributes = Collections.unmodifiableList(new ArrayList<ActionAttribute.Builder>());
-				return;
+				this.attributes = Collections.emptySet();
 			}
-			this.attributes = Collections.unmodifiableList(attributes);
+			this.attributes = Collections.unmodifiableSet(attributes);
 		}
 		
 		@Override
@@ -309,7 +307,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		}
 
 		@Override
-		public List<ActionAttribute.Builder> getAttributes() {
+		public Set<ActionAttribute.Builder> getAttributes() {
 			return attributes;
 		}
 

@@ -194,15 +194,14 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
 		builder.setDescription(bo.getDescription());
 		
-		List<ActionAttribute.Builder> attrBuilderList = new ArrayList <ActionAttribute.Builder>();
+		Set<ActionAttribute.Builder> attrBuilders = Collections.emptySet();
 		if (bo.getAttributes() != null){
 			for (ActionAttributeBo attrBo : bo.getAttributes() ){
-				ActionAttribute.Builder attrBuilder = 
-					ActionAttribute.Builder.create(attrBo);
-				attrBuilderList.add(attrBuilder);
+				ActionAttribute.Builder attrBuilder = ActionAttribute.Builder.create(attrBo);
+				attrBuilders.add(attrBuilder);
 			}
 		}
-		builder.setAttributes(attrBuilderList);
+		builder.setAttributes(attrBuilders);
 		return builder.build();
 	}
 
@@ -223,11 +222,11 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	   bo.setDescription( im.getDescription() );
 	   bo.setRuleId( im.getRuleId() );
 	   bo.setSequenceNumber( im.getSequenceNumber() );
-	   List<ActionAttributeBo> attrList = new ArrayList<ActionAttributeBo>();
+	   Set<ActionAttributeBo> attributes = Collections.emptySet();
 	   for (ActionAttribute attr : im.getAttributes()){
-		   attrList.add ( ActionAttributeBo.from(attr) );
+		   attributes.add ( ActionAttributeBo.from(attr) );
 	   }
-	   bo.setAttributes(attrList);
+	   bo.setAttributes(attributes);
 	   return bo;
    }
  

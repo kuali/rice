@@ -26,10 +26,10 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 public final class BinaryOperatorExpression implements Expression<Boolean> {
 
 	private final ComparisonOperator operator;
-	private final Expression<Object> lhs;
-	private final Expression<Object> rhs;
+	private final Expression<? extends Object> lhs;
+	private final Expression<? extends Object> rhs;
 	
-	public BinaryOperatorExpression(ComparisonOperator operator, Expression<Object> lhs, Expression<Object> rhs) {
+	public BinaryOperatorExpression(ComparisonOperator operator, Expression<? extends Object> lhs, Expression<? extends Object> rhs) {
 		this.operator = operator;
 		this.lhs = lhs;
 		this.rhs = rhs;

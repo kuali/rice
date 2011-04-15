@@ -5,12 +5,34 @@ import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 
 public enum ComparisonOperator {
 
-	EQUALS,
-	NOT_EQUALS,
-	GREATER_THAN,
-	GREATER_THAN_EQUAL,
-	LESS_THAN,
-	LESS_THAN_EQUAL;
+	EQUALS("="),
+	NOT_EQUALS("!="),
+	GREATER_THAN(">"),
+	GREATER_THAN_EQUAL(">="),
+	LESS_THAN("<"),
+	LESS_THAN_EQUAL("<=");
+	
+	private final String code;
+	
+	private ComparisonOperator(String code) {
+		this.code = code;
+	}
+	
+	public String getCode() {
+		return code;
+	}
+	
+	public static ComparisonOperator fromCode(String code) {
+		if (code == null) {
+			return null;
+		}
+		for (ComparisonOperator comparisonOperator : values()) {
+			if (comparisonOperator.code.equals(code)) {
+				return comparisonOperator;
+			}
+		}
+		throw new IllegalArgumentException("Failed to locate the ComparisionOperator with the given code: " + code);
+	}
 	
 	public boolean compare(Object lhs, Object rhs) {
 		

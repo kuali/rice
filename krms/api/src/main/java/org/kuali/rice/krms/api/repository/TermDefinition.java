@@ -31,6 +31,7 @@ import org.springframework.util.CollectionUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+// TODO: Where are the JAXB annotations?
 public class TermDefinition implements TermDefinitionContract, ModelObjectComplete {
 	
 	// TODO: javadocs here are horribly incomplete

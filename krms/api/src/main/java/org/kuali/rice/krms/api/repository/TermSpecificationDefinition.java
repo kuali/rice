@@ -43,7 +43,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 @XmlRootElement(name = TermSpecificationDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = TermSpecificationDefinition.Constants.TYPE_NAME, propOrder = {
-		TermSpecificationDefinition.Elements.ID,
+		"termSpecificationId",
 		TermSpecificationDefinition.Elements.CONTEXT_ID,
 		TermSpecificationDefinition.Elements.NAME,
 		TermSpecificationDefinition.Elements.TYPE,
@@ -143,10 +143,6 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 					termSpecification.getContextId(), 
 					termSpecification.getName(), 
 					termSpecification.getType());
-		}
-		
-		public Builder toBuilder(TermSpecificationDefinitionContract termSpecification) {
-			return create(termSpecification);
 		}
 		
 		// Setters
@@ -310,6 +306,7 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 	
 	static class Elements {
 		public static final String ID = "id";
+//		public static final String TERM_SPECIFICATION_ID = "termSpecificationId";
 		public static final String CONTEXT_ID = "contextId";
 		public static final String NAME = "name";
 		public static final String TYPE = "type";

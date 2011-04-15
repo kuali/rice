@@ -39,7 +39,7 @@ class TermSpecificationDefinitionTest {
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
 		<TermSpecification xmlns="http://rice.kuali.org/krms">
-			<Id>1001</Id>
+			<id>1001</id>
 			<contextId>1001</contextId>
 			<name>total</name>
 			<type>java.math.BigDecimal</type>
@@ -55,42 +55,12 @@ class TermSpecificationDefinitionTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_context_id() {
-		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID, null, TERM_SPEC_NAME, TERM_SPEC_TYPE);
+		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID_1, null, TERM_SPEC_NAME, TERM_SPEC_TYPE);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_id() {
-		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID, null, TERM_SPEC_NAME, TERM_SPEC_TYPE);
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_name() {
-		KrmsAttributeDefinition.Builder.create(ID_1, null, NAMESPACE)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_empty__name() {
-		KrmsAttributeDefinition.Builder.create(ID_1, "", NAMESPACE)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_whitespace__name() {
-		KrmsAttributeDefinition.Builder.create(ID_1, "   ", NAMESPACE)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_namespace() {
-		KrmsAttributeDefinition.Builder.create(ID_1, ORG_NAME, null)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_empty_namespace() {
-		KrmsAttributeDefinition.Builder.create(ID_1, ORG_NAME, "")
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_whitespace_namespace() {
-		KrmsAttributeDefinition.Builder.create(ID_1, ORG_NAME, "    ")
+		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID_1, null, TERM_SPEC_NAME, TERM_SPEC_TYPE);
 	}
 
 	@Test
@@ -110,6 +80,7 @@ class TermSpecificationDefinitionTest {
 		JAXBContext jc = JAXBContext.newInstance(TermSpecificationDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
 		marshaller.marshal(termSpecDef, sw)
 		String xml = sw.toString()
 

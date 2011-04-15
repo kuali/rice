@@ -7,6 +7,8 @@
 			options = $.extend({
 				parent_div: "viewlayout_div",
 				nav_div: "viewnavigation_div",
+				defaultSelectFirst: true,
+				currentPage: "",
 				animate: false,
 				slideout: true,
 				pad_out: 25,
@@ -32,12 +34,23 @@
 				$("li", this).addClass("basic-element");
 				$(this).addClass("basic-navigation");
 			}
-			//TODO add page control here
-			$(link_elements).first().addClass("current");
+			
+			
 			
 			if(options.slideout === "true"){
 				$(this).before("<a id='collapseLink' class='collapseLink' alt='Close Navigation'>Collapse Navigation</a>");
 				$(".navigation-block").after("<a id='controlbtn' class='slideLink' alt='Close Navigation'><<</a>");
+			}
+			
+			if(options.defaultSelectFirst && !options.currentPage){
+				$(link_elements).first().addClass("current");
+			}
+			
+			if(options.currentPage){
+				var current = $(this).find("a[name='" + options.currentPage + "']");
+				if(current){
+					current.addClass("current");
+				}
 			}
 			
 			//Handlers and animation

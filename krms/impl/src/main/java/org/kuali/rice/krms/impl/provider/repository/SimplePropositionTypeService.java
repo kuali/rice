@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.provider.repository;
 
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.framework.engine.Proposition;
+import org.kuali.rice.krms.framework.engine.expression.Expression;
+import org.kuali.rice.krms.framework.engine.expression.ExpressionBasedProposition;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 
 /**
@@ -27,16 +29,14 @@ import org.kuali.rice.krms.framework.type.PropositionTypeService;
  */
 public class SimplePropositionTypeService implements PropositionTypeService {
 
-	private RepositoryToEngineTranslator translator;
-	
 	@Override
 	public Proposition loadProposition(PropositionDefinition propositionDefinition) {
-		// TODO...
-		throw new UnsupportedOperationException("TODO - implement me!!!");
+		return new ExpressionBasedProposition(translateToExpression(propositionDefinition));
 	}
-	
-	public void setTranslator(RepositoryToEngineTranslator translator) {
-		this.translator = translator;
+		
+	private static Expression<Boolean> translateToExpression(PropositionDefinition propositionDefinition) {
+		// TODO implement me!!! this is the hard part ;)
+		return null;
 	}
 
 }

@@ -88,14 +88,7 @@
 			<artifactId>rice-edl-web</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-        <!-- commenting out.. circular dependency   -->
-        <!--<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>rice-edl-impl</artifactId>
-			<version>${project.version}</version>
-		</dependency>-->
-		
+	
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>krad-app-framework</artifactId>

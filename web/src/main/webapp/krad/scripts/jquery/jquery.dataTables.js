@@ -1009,6 +1009,14 @@
 			this.aoColumns = [];
 			
 			/*
+			 * Variable: aiSortingSkipRows
+			 * Purpose:  Skip these rows from col sorting
+			 * Scope:    jQuery.dataTable.classSettings 
+			 * Project: KRAD
+			 */
+			this.aiSortingSkipRows = [];
+			
+			/*
 			 * Variable: iNextId
 			 * Purpose:  Store the next unique id to be used for a new row
 			 * Scope:    jQuery.dataTable.classSettings 
@@ -4411,7 +4419,22 @@
 				 * positions in the original data array to provide a stable sort.
 				 */
 				var iSortLen = aaSort.length;
-				oSettings.aiDisplayMaster.sort( function ( a, b ) {
+				
+				/* KRAD - Temp array to sort the rows */
+				var aiRowIndex = [];
+				for ( i=0, iLen=oSettings.aiDisplayMaster.length ; i<iLen ; i++ )
+				{
+					aiRowIndex[i] = oSettings.aiDisplayMaster[i];
+				}
+				
+				/* KRAD - Remove the rows to be skipped in sorting prior to sorting */
+				for ( i=0, iLen=oSettings.aiSortingSkipRows.length ; i<iLen ; i++ )
+				{
+					var iaddRowIndex = aiRowIndex.indexOf(oSettings.aiSortingSkipRows[i]); // Find the index
+					if(iaddRowIndex != -1) aiRowIndex.splice(iaddRowIndex, 1); // Remove it if really found!
+				}
+				
+				aiRowIndex.sort( function ( a, b ) {
 					var iTest;
 					for ( i=0 ; i<iSortLen ; i++ )
 					{
@@ -4430,6 +4453,20 @@
 					
 					return oSort['numeric-asc']( aiOrig[a], aiOrig[b] );
 				} );
+			}
+			
+			/* KRAD - Once sorted, populate the sorted rows into aiDisplayMaster */
+			oSettings.aiDisplayMaster = [];
+			
+			for ( i=0, iLen=aiRowIndex.length ; i<iLen ; i++ )
+			{
+				oSettings.aiDisplayMaster[i] = aiRowIndex[i];
+			}
+			
+			/* KRAD - Insert back the rows skipped in sorting in to the exact pos */ 
+			for ( i=0, iLen=oSettings.aiSortingSkipRows.length ; i<iLen ; i++ )
+			{
+				oSettings.aiDisplayMaster.splice(oSettings.aiSortingSkipRows[i],0,oSettings.aiSortingSkipRows[i]);
 			}
 			
 			/* Alter the sorting classes to take account of the changes */
@@ -6496,7 +6533,8 @@
 				_fnMap( oSettings, oInit, "iDisplayLength", "_iDisplayLength" );
 				_fnMap( oSettings, oInit, "bJQueryUI", "bJUI" );
 				_fnMap( oSettings.oLanguage, oInit, "fnInfoCallback" );
-				
+				_fnMap( oSettings, oInit, 'aiSortingSkipRows' );
+							
 				/* Callback functions which are array driven */
 				if ( typeof oInit.fnDrawCallback == 'function' )
 				{

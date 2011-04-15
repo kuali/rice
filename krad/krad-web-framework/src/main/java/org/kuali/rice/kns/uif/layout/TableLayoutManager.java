@@ -147,12 +147,27 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		setNumberOfColumns(totalColumns);
 
 		if (tableTools != null) {
+			
 			/**
-			 * For Lookup and Inquiry forms, allow table tools to Auto-detect from raw data
+			 * If subcollection exists, dont allow the table sortable
 			 */
-			if (!tableTools.isDisableTableSort() && !(model instanceof InquiryForm || model instanceof LookupForm)) {
-				buildTableToolsColumnOptions(collectionGroup);
+			if (!collectionGroup.getSubCollections().isEmpty()){
+				tableTools.setDisableTableSort(true);
 			}
+
+			if (!tableTools.isDisableTableSort()){
+				/**
+				 * If rendering add line, skip that row from col sorting
+				 */
+				if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
+					tableTools.getComponentOptions().put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS, "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
+				}
+				
+				if (!collectionGroup.isReadOnly()) {
+					buildTableToolsColumnOptions(collectionGroup);
+				}
+			}
+			
 		}
 	}
 

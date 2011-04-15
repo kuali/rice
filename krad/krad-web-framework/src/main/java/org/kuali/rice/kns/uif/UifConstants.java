@@ -127,6 +127,7 @@ public class UifConstants {
 		public static final String LANGUAGE = "oLanguage";
 		public static final String EMPTY_TABLE = "sEmptyTable";
 		public static final String AO_COLUMNS = "aoColumns";
+		public static final String SORT_SKIP_ROWS = "aiSortingSkipRows";
 		public static final String SORT_DATA_TYPE = "sSortDataType";
 		public static final String SORTABLE = "bSortable";
 		public static final String SORT_TYPE = "sType";
@@ -137,5 +138,6 @@ public class UifConstants {
 		public static final String DOM_TEXT = "dom-text";
 		public static final String NUMERIC = "numeric";
 		public static final String DATE = "kuali_date";
+		public static final int ADD_ROW_DEFAULT_INDEX = 0;
 	}
 }

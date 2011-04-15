@@ -16,8 +16,10 @@
 package org.kuali.rice.kns.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
+
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.core.Component;
 
 /**
  * Decorates a HTML Table client side with various tools
@@ -56,8 +58,8 @@ public class TableTools extends WidgetBase {
 	 *
 	 */
 	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
+	public void performFinalize(View view, Object model, Component component) {
+		super.performFinalize(view,model,component);
 		
 		if (StringUtils.isNotBlank(getEmptyTableMessage())){
 			getComponentOptions().put(UifConstants.TableToolsKeys.LANGUAGE, "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");

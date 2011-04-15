@@ -89,12 +89,12 @@
 			<version>${project.version}</version>
 		</dependency>
 
-        <!-- we need to remove this dependency.  -->
-        <dependency>
+        <!-- commenting out.. circular dependency   -->
+        <!--<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-edl-impl</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency>-->
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>

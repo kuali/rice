@@ -1,11 +1,9 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -17,79 +15,79 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 
 /**
- * Concrete model object implementation of ActionAttribute. 
+ * Concrete model object implementation of {@link TermResolverAttribute}. 
  * immutable. 
- * Instances of ActionAttribute can be (un)marshalled to and from XML.
+ * Instances of {@link TermResolverAttribute} can be (un)marshalled to and from XML.
  *
  */
-@XmlRootElement(name = ActionAttribute.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = TermResolverAttribute.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = ActionAttribute.Constants.TYPE_NAME, propOrder = {
-		ActionAttribute.Elements.ID,
-		ActionAttribute.Elements.ACTION_ID,
-		ActionAttribute.Elements.ATTR_DEFN_ID,
-		ActionAttribute.Elements.VALUE,
-		ActionAttribute.Elements.ACTION_TYPE_ID,
-		ActionAttribute.Elements.ATTR_DEFN,
+@XmlType(name = TermResolverAttribute.Constants.TYPE_NAME, propOrder = {
+		TermResolverAttribute.Elements.ID,
+		TermResolverAttribute.Elements.TERM_RESOLVER_ID,
+		TermResolverAttribute.Elements.ATTR_DEFN_ID,
+		TermResolverAttribute.Elements.VALUE,
+		TermResolverAttribute.Elements.ATTR_DEFN,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ActionAttribute extends BaseAttribute implements ActionAttributeContract, ModelObjectComplete {	
+public final class TermResolverAttribute extends BaseAttribute implements TermResolverAttributeContract, ModelObjectComplete {	
 	private static final long serialVersionUID = -6126133049308968098L;
 	
-	@XmlElement(name = Elements.ACTION_ID, required=true)
-	private final String actionId;
-	@XmlElement(name = Elements.ACTION_TYPE_ID, required=true)
-	private final String actionTypeId;
-	
-	 /** 
+	@XmlElement(name = Elements.TERM_RESOLVER_ID, required=true)
+	private final String termResolverId;
+
+	/** 
      * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
      */
-    private ActionAttribute() {
+    private TermResolverAttribute() {
     	super();
-    	this.actionId = null;
-    	this.actionTypeId = null;
+    	this.termResolverId = null;
     }
     
     /**
-	 * Constructs an ActionAttribute from the given builder.  
+	 * Constructs a TermResolverAttribute from the given builder.  
 	 * This constructor is private and should only ever be invoked from the builder.
 	 * 
-	 * @param builder the Builder from which to construct the ActionAttribute
+	 * @param builder the Builder from which to construct the {@link TermResolverAttribute}
 	 */
-    private ActionAttribute(Builder builder) {
+    private TermResolverAttribute(Builder builder) {
     	super(builder);
-        this.actionId = builder.getActionId();
-        this.actionTypeId = builder.getActionTypeId();
+        this.termResolverId = builder.getTermResolverId();
     }
     
 	@Override
-	public String getActionId() {
-		return this.actionId;
+	public String getTermResolverId() {
+		return this.termResolverId;
 	}
 
-	@Override
-	public String getActionTypeId() {
-		return this.actionTypeId;
-	}
-	
 	/**
-     * This builder is used to construct instances of ActionAttribute.  
+     * This builder is used to construct instances of {@link TermResolverAttribute}.  
      */
-    public static class Builder extends BaseAttribute.Builder implements ActionAttributeContract, ModelBuilder, Serializable {		
+    public static class Builder extends BaseAttribute.Builder implements TermResolverAttributeContract, ModelBuilder, Serializable {		
 		private static final long serialVersionUID = 5799994031051731535L;
 
-        private String actionId;
-        private String actionTypeId;
+        private String termResolverId;
 
+		/**
+		 * {@link Transformer} to ease converting lists of contracts to Builders
+		 */
+		public static final Transformer<TermResolverAttributeContract, TermResolverAttribute.Builder>
+		toBuilder = new Transformer<TermResolverAttributeContract, TermResolverAttribute.Builder>() {
+			public org.kuali.rice.krms.api.repository.TermResolverAttribute.Builder transform(
+					TermResolverAttributeContract input) {
+				return TermResolverAttribute.Builder.create(input);
+			}
+		};
+        
         /**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String id, String actionId, String attributeDefinitionId, String actionTypeId, String value) {
+        private Builder(String id, String termResolverId, String attributeDefinitionId, String value) {
         	super(id, attributeDefinitionId, value);
-            setActionId(actionId);
-            setValue(value);
+            setTermResolverId(termResolverId);
         }
 
         public Builder attributeDefinition(KrmsAttributeDefinition.Builder attributeDefinition){
@@ -107,43 +105,32 @@ public final class ActionAttribute extends BaseAttribute implements ActionAttrib
          * @return an instance of the builder with the fields already populated
          * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
          */
-        public static Builder create(String id, String actionId, String attributeDefinitionId, String actionTypeId, String value) {
-            return new Builder(id, actionId, attributeDefinitionId, actionTypeId, value);
+        public static Builder create(String id, String termResolverId, String attributeDefinitionId, String value) {
+            return new Builder(id, termResolverId, attributeDefinitionId, value);
         }
         
-        public static Builder create(ActionAttributeContract contract){
+        public static Builder create(TermResolverAttributeContract contract){
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
         	Builder builder = new Builder(contract.getId(), 
-        			contract.getActionId(),
+        			contract.getTermResolverId(),
         			contract.getAttributeDefinitionId(),
-        			contract.getValue(),
-        			contract.getActionTypeId())
-        			.attributeDefinition(KrmsAttributeDefinition.Builder
+        			contract.getValue()).attributeDefinition(KrmsAttributeDefinition.Builder
         					.create(contract.getAttributeDefinition()));
         	return builder;
         }
 
-		public void setActionId(String actionId) {
-            if (StringUtils.isBlank(actionId)) {
-                throw new IllegalArgumentException("actionId is blank");
+		public void setTermResolverId(String termResolverId) {
+            if (StringUtils.isBlank(termResolverId)) {
+                throw new IllegalArgumentException("termResolverId is blank");
             }
-			this.actionId = actionId;
-		}
-
-		public void setActionTypeId(String actionTypeId) {
-			this.actionTypeId = actionTypeId;
+			this.termResolverId = termResolverId;
 		}
 		
 		@Override
-		public String getActionId() {
-			return actionId;
-		}
-
-		@Override
-		public String getActionTypeId() {
-			return actionTypeId;
+		public String getTermResolverId() {
+			return termResolverId;
 		}
 
 		/**
@@ -152,11 +139,12 @@ public final class ActionAttribute extends BaseAttribute implements ActionAttrib
 		 * @return the fully-constructed ActionAttribute
 		 */
         @Override
-        public ActionAttribute build() {
-            return new ActionAttribute(this);
+        public TermResolverAttribute build() {
+            return new TermResolverAttribute(this);
         }
 		
     }
+    
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
@@ -176,8 +164,8 @@ public final class ActionAttribute extends BaseAttribute implements ActionAttrib
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "ActionAttribute";
-		final static String TYPE_NAME = "ActionAttributeType";
+		final static String ROOT_ELEMENT_NAME = "TermResolverAttribute";
+		final static String TYPE_NAME = "TermResolverAttributeType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
@@ -186,7 +174,6 @@ public final class ActionAttribute extends BaseAttribute implements ActionAttrib
 	 * when this object is marshalled to XML.
 	 */
 	public static class Elements extends BaseAttribute.Elements {
-		final static String ACTION_ID = "actionId";
-		final static String ACTION_TYPE_ID = "actionTypeId";
+		final static String TERM_RESOLVER_ID = "termResolverId";
 	}
 }

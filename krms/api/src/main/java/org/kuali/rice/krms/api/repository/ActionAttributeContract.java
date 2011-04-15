@@ -1,15 +1,6 @@
 package org.kuali.rice.krms.api.repository;
 
-public interface ActionAttributeContract {
-	/**
-	 * This is the ID for the ActionAttribute 
-	 *
-	 * <p>
-	 * It is a ID of a ActionAttribute
-	 * </p>
-	 * @return ID for ActionAttribute
-	 */
-	public String getId();
+public interface ActionAttributeContract extends BaseAttributeContract {
 
 	/**
 	 * This is the id of the Action to which the attribute applies 
@@ -22,32 +13,10 @@ public interface ActionAttributeContract {
 	public String getActionId();
 
 	/**
-	 * This is the id of the definition of the attribute. 
-	 *
-	 * <p>
-	 * It identifies the attribute definition
-	 * </p>
-	 * @return the attribute definition id.
-	 */
-	public String getAttributeDefinitionId();
-
-	/**
-	 * This is the value of the attribute
-	 * 
-	 * @return the value of the AAttribute
-	 */
-	public String getValue();
-
-	/**
 	 * This is the id of the action type of the attribute
 	 * 
 	 * @return the action type id of the Attribute
 	 */
 	public String getActionTypeId();
-
-	/**
-	 * This is the definition of the attribute
-	 */
-	public KrmsAttributeDefinitionContract getAttributeDefinition();
 
 }

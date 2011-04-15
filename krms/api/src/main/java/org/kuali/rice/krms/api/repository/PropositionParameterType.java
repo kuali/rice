@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krms.api.repository;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * TODO... 
  * 
@@ -24,7 +27,7 @@ package org.kuali.rice.krms.api.repository;
 public enum PropositionParameterType {
 
 	CONSTANT("C"),
-	TERM("T)"),
+	TERM("T"),
 	FUNCTION("F"),
 	OPERATOR("O");
 	
@@ -36,6 +39,13 @@ public enum PropositionParameterType {
 	
 	public String getCode() {
 		return code;
+	}
+	
+	public static final Set<String> VALID_TYPE_CODES = new HashSet<String>();
+	static {
+		for (PropositionParameterType propositionParameterType : values()) {
+			VALID_TYPE_CODES.add(propositionParameterType.getCode());
+		}
 	}
 	
 	public static PropositionParameterType fromCode(String code) {

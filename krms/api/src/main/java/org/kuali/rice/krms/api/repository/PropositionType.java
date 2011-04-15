@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krms.api.repository;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
@@ -45,6 +48,13 @@ public enum PropositionType {
 	 */
 	public String getCode() {
 		return code;
+	}
+	
+	public static final Set<String> VALID_TYPE_CODES = new HashSet<String>();
+	static {
+		for (PropositionType propositionType : values()) {
+			VALID_TYPE_CODES.add(propositionType.getCode());
+		}
 	}
 	
 	public static PropositionType fromCode(String code) {

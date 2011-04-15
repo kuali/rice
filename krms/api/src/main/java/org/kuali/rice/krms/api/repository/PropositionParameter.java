@@ -1,9 +1,7 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -179,7 +177,7 @@ public final class PropositionParameter implements PropositionParameterContract,
 			if (StringUtils.isBlank(parameterType)){
 	                throw new IllegalArgumentException("parameter type is null or blank");
 			}
-			if (!PropositionParameter.ParameterTypes.VALID_TYPE_CODES.contains(parameterType)){
+			if (!PropositionParameterType.VALID_TYPE_CODES.contains(parameterType)){
                 throw new IllegalArgumentException("parameter type is invalid");				
 			}
 			// TODO: check against valid values
@@ -264,31 +262,5 @@ public final class PropositionParameter implements PropositionParameterContract,
 		final static String PARM_TYPE = "parameterType";
 		final static String SEQUENCE = "sequenceNumber";
 	}
-	
-	/**
-	 * This enumeration identifies the valid PropositionParameter parameter type codes 
-	 */
-	public enum ParameterTypes {
-		CONSTANT("C"),
-		TERM("T"),
-		FUNCTION("F");
-		
-		private final String code;
-		private ParameterTypes(String code){
-			this.code = code;
-		}
-		public static final Collection<PropositionParameter.ParameterTypes> VALID_TYPES =
-			Collections.unmodifiableCollection(Arrays.asList(CONSTANT, TERM, FUNCTION));
-			
-		public static final Collection<String> VALID_TYPE_CODES =
-			Collections.unmodifiableCollection(Arrays.asList(CONSTANT.code(), TERM.code(), FUNCTION.code()));
-			
-		public String code(){
-			return code;
-		}
-		@Override
-		public String toString() {
-			return code;
-		}		
-	}
+
 }

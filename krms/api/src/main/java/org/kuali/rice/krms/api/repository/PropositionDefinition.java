@@ -2,7 +2,6 @@ package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -264,7 +263,7 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 			if (StringUtils.isBlank(propTypeCode)) {
                 throw new IllegalArgumentException("proposition type code is blank");
 			}
-			if (!PropositionTypes.VALID_TYPE_CODES.contains(propTypeCode)) {
+			if (!PropositionType.VALID_TYPE_CODES.contains(propTypeCode)) {
                 throw new IllegalArgumentException("invalid proposition type code");
 			}
 			this.propositionTypeCode = propTypeCode;
@@ -274,7 +273,7 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 			// compound propositions have empty parameter lists
 			// Simple propositions must have a non-empty parameter list
 			if (parameters == null || parameters.isEmpty()){
-				if (PropositionTypes.COMPOUND.code().equals( this.propositionTypeCode)){
+				if (PropositionType.COMPOUND.getCode().equals( this.propositionTypeCode)){
 					this.parameters = Collections.unmodifiableList(new ArrayList<PropositionParameter.Builder>());
 					return;
 				} else {
@@ -385,35 +384,5 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 		final static String CMPND_COMPONENTS = "proposition";
 	}
 
-	/**
-	 * This enumeration identifies the valid Proposition type codes
-	 * The PropositionType enumeration lists the appropriate types of propositions
-	 * The valid types are:
-     *    Compound Propositions - a proposition consisting of other propositions and a boolean algebra operator (AND, OR) defining how to evaluate those propositions
-     *    Parameterized Propositions - a proposition which is parameterized by some set of values, evaluation logic is implemented by hand and returns true or false
-	 *    Simple Propositions - a proposition of the form lhs op rhs where lhs=left-hand side, rhs=right-hand side, and op=operator
-	 */
-	public enum PropositionTypes {
-		SIMPLE("S"),
-		PARAMETERIZED("P"),
-		COMPOUND("C");
-		
-		private final String code;
-		private PropositionTypes(String code){
-			this.code = code;
-		}
-		public static final Collection<PropositionDefinition.PropositionTypes> VALID_TYPES =
-			Collections.unmodifiableCollection(Arrays.asList(SIMPLE, PARAMETERIZED, COMPOUND));
-			
-		public static final Collection<String> VALID_TYPE_CODES =
-			Collections.unmodifiableCollection(Arrays.asList(SIMPLE.code(), PARAMETERIZED.code(), COMPOUND.code()));
-			
-		public String code(){
-			return code;
-		}
-		@Override
-		public String toString() {
-			return code;
-		}		
-	}
+	
 }

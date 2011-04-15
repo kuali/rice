@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.api.repository;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -30,8 +30,8 @@ public interface TermResolverDefinitionContract {
 	String getName();
 	String getTypeId();
 	TermSpecificationDefinitionContract getOutput();
-	List<? extends TermSpecificationDefinitionContract> getPrerequisites();
-	List<? extends TermResolverAttributeContract> getAttributes();
-	List<String> getParameterNames();
+	Set<? extends TermSpecificationDefinitionContract> getPrerequisites();
+	Set<? extends TermResolverAttributeContract> getAttributes();
+	Set<String> getParameterNames();
 	
 }

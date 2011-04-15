@@ -18,7 +18,9 @@ package org.kuali.rice.krms.api.repository;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -49,6 +51,19 @@ public class BuilderUtils {
 		}
 	} 
 	
+	@SuppressWarnings("unchecked")
+	public static <B> Set<B> convertFromBuilderSet(Set<? extends ModelBuilder> toConvert) {
+		if (CollectionUtils.isEmpty(toConvert)) {
+			return Collections.emptySet();
+		} else {
+			Set<B> results = new HashSet<B>(toConvert.size());
+			for (ModelBuilder elem : toConvert) {
+				results.add((B)elem.build());
+			}
+			return Collections.unmodifiableSet(results);
+		}
+	} 
+	
 	/**
 	 * This method is useful for converting a List&lt;? extends BlahContract&gt; to a 
 	 * List&lt;Blah.Builder&gt;.  You'll just need to implement Transformer to use it.
@@ -64,6 +79,17 @@ public class BuilderUtils {
 			return new ArrayList<B>();
 		} else {
 			List<B> results = new ArrayList<B>(toConvert.size());
+			for (A elem : toConvert) {
+				results.add(xform.transform(elem));
+			}
+			return results;
+		}
+	}
+	public static <A,B> Set<B> transform(Set<? extends A> toConvert, Transformer<A,B> xform) {
+		if (CollectionUtils.isEmpty(toConvert)) {
+			return new HashSet<B>();
+		} else {
+			Set<B> results = new HashSet<B>(toConvert.size());
 			for (A elem : toConvert) {
 				results.add(xform.transform(elem));
 			}

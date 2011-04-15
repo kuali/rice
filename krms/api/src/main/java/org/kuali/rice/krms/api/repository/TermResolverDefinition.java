@@ -18,7 +18,7 @@ package org.kuali.rice.krms.api.repository;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -69,11 +69,11 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	@XmlElement(name = Elements.OUTPUT, required=true)
 	private final TermSpecificationDefinition output;
 	@XmlElement(name = Elements.PREREQUISITES, required=false)
-	private final List<TermSpecificationDefinition> prerequisites;
+	private final Set<TermSpecificationDefinition> prerequisites;
 	@XmlElement(name = Elements.ATTRIBUTES, required=false)
-	private final List<TermResolverAttribute> attributes;
+	private final Set<TermResolverAttribute> attributes;
 	@XmlElement(name = Elements.PARAMETER_NAMES, required=false)
-	private final List<String> parameterNames;
+	private final Set<String> parameterNames;
 	
 	
     @SuppressWarnings("unused")
@@ -100,9 +100,9 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		this.name = builder.getName();
 		this.typeId = builder.getTypeId();
 		this.output = builder.getOutput().build();
-		this.prerequisites = BuilderUtils.convertFromBuilderList(builder.getPrerequisites());
-		this.attributes = BuilderUtils.convertFromBuilderList(builder.getAttributes());
-		this.parameterNames = Collections.unmodifiableList(builder.getParameterNames());
+		this.prerequisites = BuilderUtils.convertFromBuilderSet(builder.getPrerequisites());
+		this.attributes = BuilderUtils.convertFromBuilderSet(builder.getAttributes());
+		this.parameterNames = Collections.unmodifiableSet(builder.getParameterNames());
 	}
 	
 	public static class Builder implements TermResolverDefinitionContract, ModelBuilder, 
@@ -115,18 +115,18 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		private String name;
 		private String typeId;
 		private TermSpecificationDefinition.Builder output;
-		private List<TermSpecificationDefinition.Builder> prerequisites;
-		private List<TermResolverAttribute.Builder> attributes;
-		private List<String> parameterNames;
+		private Set<TermSpecificationDefinition.Builder> prerequisites;
+		private Set<TermResolverAttribute.Builder> attributes;
+		private Set<String> parameterNames;
 		
 		private Builder(String id,
 				String namespaceCode,
 				String name,
 				String typeId,
 				TermSpecificationDefinition.Builder output,
-				List<TermSpecificationDefinition.Builder> prerequisites,
-				List<TermResolverAttribute.Builder> attributes,
-				List<String> parameterNames) {
+				Set<TermSpecificationDefinition.Builder> prerequisites,
+				Set<TermResolverAttribute.Builder> attributes,
+				Set<String> parameterNames) {
 			setId(id);
 			setNamespaceCode(namespaceCode);
 			setName(name);
@@ -159,9 +159,9 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 				String name,
 				String typeId,
 				TermSpecificationDefinition.Builder output,
-				List<TermSpecificationDefinition.Builder> prerequisites,
-				List<TermResolverAttribute.Builder> attributes,
-				List<String> parameterNames) {
+				Set<TermSpecificationDefinition.Builder> prerequisites,
+				Set<TermResolverAttribute.Builder> attributes,
+				Set<String> parameterNames) {
 			return new Builder(id, namespaceCode, name, typeId, output, prerequisites, attributes, parameterNames); 
 		}
 
@@ -222,21 +222,21 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		 * @param prerequisites the prerequisites to set
 		 */
 		public void setPrerequisites(
-				List<TermSpecificationDefinition.Builder> prerequisites) {
+				Set<TermSpecificationDefinition.Builder> prerequisites) {
 			this.prerequisites = prerequisites;
 		}
 
 		/**
 		 * @param attributes the attributes to set
 		 */
-		public void setAttributes(List<TermResolverAttribute.Builder> attributes) {
+		public void setAttributes(Set<TermResolverAttribute.Builder> attributes) {
 			this.attributes = attributes;
 		}
 
 		/**
 		 * @param parameterNames the parameterNames to set
 		 */
-		public void setParameterNames(List<String> parameterNames) {
+		public void setParameterNames(Set<String> parameterNames) {
 			this.parameterNames = parameterNames;
 		}		
 		
@@ -277,19 +277,19 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		/**
 		 * @return the prerequisites
 		 */
-		public List<TermSpecificationDefinition.Builder> getPrerequisites() {
+		public Set<TermSpecificationDefinition.Builder> getPrerequisites() {
 			return this.prerequisites;
 		}
 		/**
 		 * @return the attributes
 		 */
-		public List<TermResolverAttribute.Builder> getAttributes() {
+		public Set<TermResolverAttribute.Builder> getAttributes() {
 			return this.attributes;
 		}
 		/**
 		 * @return the parameterNames
 		 */
-		public List<String> getParameterNames() {
+		public Set<String> getParameterNames() {
 			return this.parameterNames;
 		}
 		
@@ -349,14 +349,14 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	 * @return the prerequisites
 	 */
 	@Override
-	public List<TermSpecificationDefinition> getPrerequisites() {
+	public Set<TermSpecificationDefinition> getPrerequisites() {
 		return this.prerequisites;
 	}
 	/**
 	 * @return the attributes
 	 */
 	@Override
-	public List<TermResolverAttribute> getAttributes() {
+	public Set<TermResolverAttribute> getAttributes() {
 		return this.attributes;
 	}
 
@@ -364,7 +364,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	 * @return the parameterNames
 	 */
 	@Override
-	public List<String> getParameterNames() {
+	public Set<String> getParameterNames() {
 		return this.parameterNames;
 	}
 	

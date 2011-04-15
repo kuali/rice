@@ -25,7 +25,7 @@ import java.util.List;
  */
 public interface TermDefinitionContract {
 	
-	String getTermId();
+	String getId();
 	TermSpecificationDefinitionContract getSpecification();
 	List<? extends TermParameterDefinitionContract> getParameters();
 	

@@ -53,7 +53,7 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 	private static final long serialVersionUID = 1L;
 	
 	@XmlElement(name = Elements.ID, required=true)
-	private final String termParameterId;
+	private final String id;
 	
 	@XmlElement(name = Elements.NAME, required=true)
 	private final String name;
@@ -67,13 +67,13 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 	
 	// For JAXB use only, shouldn't be invoked directly
 	private TermParameterDefinition() {
-		termParameterId = null;
+		id = null;
 		name = null;
 		value = null;
 	}
 	
 	private TermParameterDefinition(Builder builder) {
-		termParameterId = builder.getTermParameterId(); 
+		id = builder.getId(); 
 		name = builder.getName();
 		value = builder.getValue();
 	}
@@ -82,25 +82,25 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 
 		private static final long serialVersionUID = 1L;
 		
-		private String termParameterId;
+		private String id;
 		private String name;
 		private String value;
 		
 		private static final String NON_NULL_NON_EMPTY_ERROR =  
 			" must be non-null and must contain non-whitespace chars";
 		
-		private Builder(String termParameterId, String name, String value) {
-			setTermParameterId(termParameterId);
+		private Builder(String id, String name, String value) {
+			setId(id);
 			setName(name);
 			setValue(value);
 		}
 		
-		public static Builder create(String termParameterId, String name, String value) {
-			return new Builder(termParameterId, name, value);
+		public static Builder create(String id, String name, String value) {
+			return new Builder(id, name, value);
 		}
 		
 		public static Builder create(TermParameterDefinitionContract termParameterDefinition) {
-			return new Builder(termParameterDefinition.getTermParameterId(), 
+			return new Builder(termParameterDefinition.getId(), 
 					termParameterDefinition.getName(), 
 					termParameterDefinition.getValue());
 		}
@@ -108,15 +108,15 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 		// Setters:
 		
 		/**
-		 * @param termParameterId the termParameterId to set.  for {@link TermParameterDefinition}s used in creational 
+		 * @param id the id to set.  for {@link TermParameterDefinition}s used in creational 
 		 * service methods, it must be null.  Otherwise, it must be non-null and contain non-whitespace chars.
-		 * @throws IllegalArgumentException if termParameterId is all whitespace chars
+		 * @throws IllegalArgumentException if id is all whitespace chars
 		 */
-		public void setTermParameterId(String termParameterId) {
-			if (termParameterId != null && StringUtils.isBlank(termParameterId)) {
-				throw new IllegalArgumentException("termParameterId" + NON_NULL_NON_EMPTY_ERROR);
+		public void setId(String id) {
+			if (id != null && StringUtils.isBlank(id)) {
+				throw new IllegalArgumentException("id" + NON_NULL_NON_EMPTY_ERROR);
 			}
-			this.termParameterId = termParameterId;
+			this.id = id;
 		}
 		
 		/**
@@ -140,15 +140,17 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 		// Getters:
 		
 		/**
-		 * @return the termParameterId
+		 * @return the id
 		 */
-		public String getTermParameterId() {
-			return this.termParameterId;
+		@Override
+		public String getId() {
+			return this.id;
 		}
 		
 		/**
 		 * @return the name
 		 */
+		@Override
 		public String getName() {
 			return this.name;
 		}
@@ -156,6 +158,7 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 		/**
 		 * @return the value
 		 */
+		@Override
 		public String getValue() {
 			return this.value;
 		}		
@@ -173,20 +176,23 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 	
 	
 	/**
-	 * @return the termParameterId
+	 * @return the id
 	 */
-	public String getTermParameterId() {
-		return this.termParameterId;
+	@Override
+	public String getId() {
+		return this.id;
 	}
 	/**
 	 * @return the name
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
 	/**
 	 * @return the value
 	 */
+	@Override
 	public String getValue() {
 		return this.value;
 	}

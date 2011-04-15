@@ -25,7 +25,7 @@ import java.util.List;
  */
 public interface TermResolverDefinitionContract {
 	
-	String getTermResolverId();
+	String getId();
 	String getNamespaceCode();
 	String getName();
 	String getTypeId();

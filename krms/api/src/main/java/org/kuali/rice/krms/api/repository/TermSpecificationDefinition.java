@@ -43,7 +43,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 @XmlRootElement(name = TermSpecificationDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = TermSpecificationDefinition.Constants.TYPE_NAME, propOrder = {
-		"termSpecificationId",
+		TermSpecificationDefinition.Elements.ID,
 		TermSpecificationDefinition.Elements.CONTEXT_ID,
 		TermSpecificationDefinition.Elements.NAME,
 		TermSpecificationDefinition.Elements.TYPE,
@@ -54,7 +54,7 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 	private static final long serialVersionUID = 1L;
 	
 	@XmlElement(name = Elements.ID, required=false)
-	private final String termSpecificationId;
+	private final String id;
 	@XmlElement(name = Elements.CONTEXT_ID, required=true)
 	private final String contextId;
 	@XmlElement(name = Elements.NAME, required=true)
@@ -70,7 +70,7 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 	 * For JAXB use only, shouldn't ever be invoked directly
 	 */
 	private TermSpecificationDefinition() {
-		termSpecificationId = null;
+		id = null;
 		contextId = null;
 		name = null;
 		type = null;
@@ -82,7 +82,7 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 	 * @param b the builder to use
 	 */
 	private TermSpecificationDefinition(Builder b) {
-		termSpecificationId = b.getTermSpecificationId();
+		id = b.getId();
 		contextId = b.getContextId();
 		name = b.getName();
 		type = b.getType();
@@ -116,7 +116,7 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 		
 		private Builder(String termSpecificationId, String contextId, String name, String type) {
 			// weird to use setters in constructor .. oh well.
-			setTermSpecificationId(termSpecificationId);
+			setId(termSpecificationId);
 			setContextId(contextId);
 			setName(name);
 			setType(type);
@@ -139,7 +139,7 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 		
 		public static Builder create(TermSpecificationDefinitionContract termSpecification) {
 			if (termSpecification == null) throw new IllegalArgumentException("termSpecification must be non-null");
-			return new Builder(termSpecification.getTermSpecificationId(), 
+			return new Builder(termSpecification.getId(), 
 					termSpecification.getContextId(), 
 					termSpecification.getName(), 
 					termSpecification.getType());
@@ -152,7 +152,7 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 		 * service methods that create {@link TermSpecificationDefinitionContract}s, and otherwise must be non-null & contain 
 		 * non-whitespace chars.
 		 */
-		public void setTermSpecificationId(String termSpecificationId) {
+		public void setId(String termSpecificationId) {
 			if (termSpecificationId != null && StringUtils.isBlank(termSpecificationId))
 				throw new IllegalArgumentException("termSpecificationId must contain non-whitespace chars");
 			this.termSpecificationId = termSpecificationId;
@@ -192,24 +192,31 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 		/**
 		 * @return the termSpecificationId
 		 */
-		public String getTermSpecificationId() {
+		@Override
+		public String getId() {
 			return this.termSpecificationId;
 		}
+
 		/**
 		 * @return the contextId
 		 */
+		@Override
 		public String getContextId() {
 			return this.contextId;
 		}
+
 		/**
 		 * @return the name
 		 */
+		@Override
 		public String getName() {
 			return this.name;
 		}
+
 		/**
 		 * @return the type
 		 */
+		@Override
 		public String getType() {
 			return this.type;
 		}
@@ -226,11 +233,11 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 
 	/**
 	 * This value will be non-null for persisted  
-	 * @see org.kuali.rice.krms.api.repository.TermSpecificationDefinitionContract#getTermSpecificationId()
+	 * @see org.kuali.rice.krms.api.repository.TermSpecificationDefinitionContract#getId()
 	 */
 	@Override
-	public String getTermSpecificationId() {
-		return termSpecificationId;
+	public String getId() {
+		return id;
 	}
 
 	/**
@@ -306,7 +313,6 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 	
 	static class Elements {
 		public static final String ID = "id";
-//		public static final String TERM_SPECIFICATION_ID = "termSpecificationId";
 		public static final String CONTEXT_ID = "contextId";
 		public static final String NAME = "name";
 		public static final String TYPE = "type";

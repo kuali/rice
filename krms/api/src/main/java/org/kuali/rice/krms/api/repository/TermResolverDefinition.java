@@ -33,7 +33,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final String termResolverId;
+	private final String id;
 	private final String namespaceCode;
 	private final String name;
 	private final String typeId;
@@ -46,7 +46,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	 * This private constructor is for JAXB use only, don't invoke directly.
 	 */
 	private TermResolverDefinition() {
-		termResolverId = null;
+		id = null;
 		namespaceCode = null;
 		name = null;
 		typeId = null;
@@ -57,7 +57,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	}
 	
 	private TermResolverDefinition(Builder builder) {
-		this.termResolverId = builder.getTermResolverId();
+		this.id = builder.getId();
 		this.namespaceCode = builder.getNamespaceCode();
 		this.name = builder.getName();
 		this.typeId = builder.getTypeId();
@@ -72,7 +72,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		
 		private static final long serialVersionUID = 1L;
 		
-		private String termResolverId;
+		private String id;
 		private String namespaceCode;
 		private String name;
 		private String typeId;
@@ -86,7 +86,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		private Builder() {
 		}
 		
-		private Builder(String termResolverId,
+		private Builder(String id,
 				String namespaceCode,
 				String name,
 				String typeId,
@@ -106,7 +106,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		
 		
 		private Builder(TermResolverDefinitionContract termResolver) {
-			setTermResolverId(termResolver.getTermResolverId());
+			setId(termResolver.getId());
 			setNamespaceCode(termResolver.getNamespaceCode());
 			setName(termResolver.getName());
 			setTypeId(termResolver.getTypeId());
@@ -120,20 +120,20 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		// TODO: proper validation & javadocs
 		
 		/**
-		 * @param termResolverId the termResolverId to set
+		 * @param id the id to set
 		 */
-		public void setTermResolverId(String termResolverId) {
-			if (termResolverId != null && StringUtils.isBlank(termResolverId)) {
+		public void setId(String id) {
+			if (id != null && StringUtils.isBlank(id)) {
 				throw new IllegalArgumentException(/* TODO */);
 			}
-			this.termResolverId = termResolverId;
+			this.id = id;
 		}
 
 		/**
 		 * @param namespaceCode the namespaceCode to set
 		 */
 		public void setNamespaceCode(String namespaceCode) {
-			if (StringUtils.isBlank(termResolverId)) {
+			if (StringUtils.isBlank(namespaceCode)) {
 				throw new IllegalArgumentException(/* TODO */);
 			}
 			this.namespaceCode = namespaceCode;
@@ -143,7 +143,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		 * @param name the name to set
 		 */
 		public void setName(String name) {
-			if (StringUtils.isBlank(termResolverId)) {
+			if (StringUtils.isBlank(name)) {
 				throw new IllegalArgumentException(/* TODO */);
 			}
 			this.name = name;
@@ -153,7 +153,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		 * @param typeId the typeId to set
 		 */
 		public void setTypeId(String typeId) {
-			if (StringUtils.isBlank(termResolverId)) {
+			if (StringUtils.isBlank(typeId)) {
 				throw new IllegalArgumentException(/* TODO */);
 			}
 			this.typeId = typeId;
@@ -195,10 +195,10 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 		// Builder getters:
 
 		/**
-		 * @return the termResolverId
+		 * @return the id
 		 */
-		public String getTermResolverId() {
-			return this.termResolverId;
+		public String getId() {
+			return this.id;
 		}
 		
 		/**
@@ -257,11 +257,11 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	}
 	
 	/**
-	 * @return the termResolverId
+	 * @return the id
 	 */
 	@Override
-	public String getTermResolverId() {
-		return this.termResolverId;
+	public String getId() {
+		return this.id;
 	}
 	
 	/**

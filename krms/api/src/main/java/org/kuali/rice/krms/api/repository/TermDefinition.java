@@ -38,7 +38,7 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final String termId;
+	private final String id;
 	private final TermSpecificationDefinition specification;
 	private final List<TermParameterDefinition> parameters;
 	
@@ -46,13 +46,13 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 	 * This constructor is for JAXB only.  Do not invoke directly.
 	 */
 	private TermDefinition() {
-		termId = null;
+		id = null;
 		specification = null;
 		parameters = null;
 	}
 	
 	private TermDefinition(Builder builder) {
-		termId = builder.getTermId();
+		id = builder.getId();
 		specification = builder.getSpecification();
 		parameters = builder.getParameters();
 	}
@@ -61,20 +61,20 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 		
 		private static final long serialVersionUID = 1L;
 		
-		private String termId;
+		private String id;
 		private TermSpecificationDefinition specification;
 		private List<TermParameterDefinition> parameters;
 		
-		private Builder(String termId, TermSpecificationDefinition termSpecificationDefinition, 
+		private Builder(String id, TermSpecificationDefinition termSpecificationDefinition, 
 				List<TermParameterDefinition> termParameters) {
-			setTermId(termId);
+			setId(id);
 			setSpecification(termSpecificationDefinition);
 			setParameters(termParameters);
 		}
 
-		public static Builder create(String termId, TermSpecificationDefinition termSpecificationDefinition, 
+		public static Builder create(String id, TermSpecificationDefinition termSpecificationDefinition, 
 				List<TermParameterDefinition> termParameters) {
-			return new Builder(termId, termSpecificationDefinition, termParameters);
+			return new Builder(id, termSpecificationDefinition, termParameters);
 		}
 		
 		public static Builder create(TermDefinitionContract term) {
@@ -90,7 +90,7 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 					outParams.add(TermParameterDefinition.Builder.create(paramContract).build());
 				}
 			}
-			return create(term.getTermId(), 
+			return create(term.getId(), 
 					// doing my TermSpecificationDefinitionContract conversion inline:
 					TermSpecificationDefinition.Builder.create(term.getSpecification()).build(),
 					// this is made immutable in the setter
@@ -103,13 +103,13 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 		// TODO: javadoc the validation rules
 		
 		/**
-		 * @param termId the termId to set
+		 * @param id the id to set
 		 */
-		public void setTermId(String termId) {
-			if (termId != null && StringUtils.isBlank(termId)) {
-				throw new IllegalArgumentException("termId must contain non-whitespace chars");
+		public void setId(String id) {
+			if (id != null && StringUtils.isBlank(id)) {
+				throw new IllegalArgumentException("id must contain non-whitespace chars");
 			}
-			this.termId = termId;
+			this.id = id;
 		}
 		
 		/**
@@ -136,11 +136,11 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 		// Builder getters:
 		
 		/**
-		 * @return the termId
+		 * @return the id
 		 */
 		@Override
-		public String getTermId() {
-			return this.termId;
+		public String getId() {
+			return this.id;
 		}
 
 		/**
@@ -175,18 +175,21 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 	/**
 	 * @return the termId
 	 */
-	public String getTermId() {
-		return this.termId;
+	@Override
+	public String getId() {
+		return this.id;
 	}
 	/**
 	 * @return the specification
 	 */
+	@Override
 	public TermSpecificationDefinition getSpecification() {
 		return this.specification;
 	}
 	/**
 	 * @return the parameters
 	 */
+	@Override
 	public List<TermParameterDefinition> getParameters() {
 		return this.parameters;
 	}

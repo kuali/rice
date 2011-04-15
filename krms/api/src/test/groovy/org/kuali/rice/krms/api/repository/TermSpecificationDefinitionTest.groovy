@@ -67,7 +67,7 @@ class TermSpecificationDefinitionTest {
 	void test_Builder_create_success_null_id() {
 		TermSpecificationDefinition termSpecDef =
 				TermSpecificationDefinition.Builder.create(null, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE).build();
-		Assert.assertEquals(null, termSpecDef.getTermSpecificationId())
+		Assert.assertEquals(null, termSpecDef.getId())
 		Assert.assertEquals(TERM_SPEC_CONTEXT_ID, termSpecDef.getContextId())
 		Assert.assertEquals(TERM_SPEC_NAME, termSpecDef.getName())
 		Assert.assertEquals(TERM_SPEC_TYPE, termSpecDef.getType())

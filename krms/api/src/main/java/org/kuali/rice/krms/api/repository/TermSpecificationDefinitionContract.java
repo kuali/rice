@@ -23,7 +23,7 @@ package org.kuali.rice.krms.api.repository;
  */
 public interface TermSpecificationDefinitionContract {
 
-	String getTermSpecificationId();
+	String getId();
 	String getContextId();
 	String getName();
 	String getType();

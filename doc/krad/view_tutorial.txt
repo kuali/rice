@@ -634,17 +634,97 @@ h2. Inquiry
 
 Inquiries are read only presentations of reference data.  In the search results for lookups, fields from a DataObject will be linked - those links open the Inquiry views for the DataObject itself or related DataObjects.
 
-Most inquiries, therefore, are pretty simple affairs: tabs with two columns - a label column and the read only value.  And configuration for the InquiryView is standard as well.  Each InquiryView should set an id (as is standard with Views) and a title.  It should also set a dataObjectClassName, the name of the class this particular inquiry will work for.  Finally, the groups which make up the Inquiry should be set with an AttributeField for each attribute to display.  [ JAMES - FIND AN EXAMPLE ]
-[ JAMES - HERE! ]
+Most inquiries, therefore, are pretty simple affairs: tabs with two columns - a label column and the read only value.  And configuration for the InquiryView is standard as well.  Each InquiryView should set an id (as is standard with Views) and a title.  It should also set a dataObjectClassName, the name of the class this particular inquiry will work for.  Finally, the groups which make up the Inquiry should be set with an AttributeField for each attribute to display.  Here's a simple example from the Travel sampleapp which comes as part of the Rice distribution (slightly simplified; at the time of this writing, the actual example in Rice uses multiple pages for the inquiry):
 
-There are a couple differences between the properties to set on InquiryView versus those that were set in KNS InquiryDefinitions.  The biggest difference is how to set the Inquirable implementation.  InquiryView's property which holds the Inquirable implementation is viewHelperServiceClassName.  Inquirables are the ViewHelperServices for Inquiry views - so the work that is done during the rendering lifecycle by the ViewHelperService can be overridden in any Inquirable.  ViewHelperServices are covered in more detail [a bit later on|#View Helper Services].
+{code:xml}
+ 1. <bean id="FiscalOfficerInfo-InquiryView" parent="InquiryView">
+ 2.   <property name="title" value="Fiscal Officer Inquiry"/>
+ 3.   <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
+ 4.   <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl" />
+ 5.   <property name="singlePageView" value="true"/>
+ 6.   <property name="items">
+ 7.     <list>
+ 8.       <ref bean="InquiryView-information"/>
+ 9.       <ref bean="InquiryView-accounts"/>
+10.     </list>
+11.   </property>
+12. </bean>
+13.  
+14. <bean id="InquiryView-information" parent="GroupSectionGridLayout">
+15.   <property name="layoutManager.numberOfColumns" value="2"/>
+16.   <property name="items">
+17.     <list>
+18.       <bean parent="AttributeField" p:propertyName="id"/>
+19.       <bean parent="AttributeField" p:propertyName="userName"/>
+20.     </list>
+21.   </property>
+22.   <property name="title" value="Fiscal Officer Information"/>
+23. </bean>
+24.
+25. <bean id="InquiryView-accounts" parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="3">
+26.   <property name="title" value="Travel Accounts"/>
+27.  	<property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
+28.  	<property name="propertyName" value="accounts"/>
+29.  	<property name="summary" value="Travel Accounts for Fiscal Officer"/>
+30.  	<property name="layoutManager.sequencePropertyName" value="number"/>
+31.  	<property name="items">
+32.  	  <list>
+33.  	    <bean parent="AttributeField" p:propertyName="number"/>
+34.  	    <bean parent="AttributeField" p:propertyName="name"/>
+35.  	    <bean parent="AttributeField" p:propertyName="createDate"/>
+36.  	  </list>
+37.  	</property>           
+38. </bean>
+{code}
+
+Lines 1 through 12 build the basic InquiryView, extending the InquiryView bean.  Line 2 sets the title for the Inquiry; line 3 sets the class name of the dataObject class this will display read only information for; and line 4 sets the Inquirable class.  The View has only a single page and then in lines 6-11, the Groups for the View are set to be InquiryView-information and InquiryView-accounts.
+
+One line 13, notice how blank the line is.  It's so completely blank.  Contrast this with line 24 which seems far less blank.
+
+Both InquiryView-information and InquiryView-accounts are normal Groups of the type we're completely used to by now.  InquiryView-information shows a grid with the default 2 columns (line 15 makes sure that 2 columns are set in any case) and then has the AttributeFields to show in the Group: id and userName. Line 22 sets the title for this Group.
+
+InquiryView-accounts is a CollectionGroup, as accounts are a Collection property on the edu.sampleu.travel.dto.FiscalOfficerInfo DataObject.  Here a title is set as well as a summary for the collection.  On line 27, the class for each Data Object in the Collection is specified and on line 28, the property where the Collection can be found in the parent object is set.  This example has the layoutManager keep track of a sequence for every line which will be stored in the variable "number".  Lines 31 through 37 set the AttributeFields, just like always: number, the sequence from the LayoutManager is shown, followed by the name of the account and the creation date.
+
+There are a couple differences between the properties to set on InquiryView versus those that were set in KNS InquiryDefinitions.  The biggest difference, quickly covered in the example above, is how to set the Inquirable implementation.  InquiryView's property which holds the Inquirable implementation is viewHelperServiceClassName.  Inquirables are the ViewHelperServices for Inquiry views - so the work that is done during the rendering lifecycle by the ViewHelperService can be overridden in any Inquirable.  [ WHY OVERRIDE INQUIRABLE ANYMORE? ]
 
 InquiryViews can also have custom presentationControllerClass and authorizerClass properties set to determine what values to hide and show on the Inquiry.  The page and footer property are pre-injected with the standard PageInquiry and FooterInquiry groups but if wildly different looks are necessary, these Groups can be overridden.
 
 [ JERRY - LIGHTBOX? ]
 
 h2. Lookup
+
+Inquiry Views display the read only fields for a DataObject.  Certainly, child collections and sub-collections may complicate things but it's all fairly easy.  The Lookup View is a bit more complicated as a View type.  Here we have the classic set of fields and labels which allow the user to search among all the members of a given DataObject; once the search is complete, a CollectionGroup of results are display - assuming the search found some matching records, of course.
+
+[  HERE JAMES ]
+
+{code:xml}
+ 1. <bean id="FiscalOfficerInfo-LookupView" parent="LookupView">
+ 2.   <property name="title" value="Fiscal Officer Lookup" />
+ 3.   <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
+ 4.   <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
+ 5.   <property name="criteriaFields">
+ 6.     <list>
+ 7.       <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
+ 8.       <bean parent="LookupCriteriaAttributeField" p:propertyName="userName" />
+ 9.     </list>
+10.   </property>
+11.   <property name="resultFields">
+12.     <list>
+13.       <bean parent="AttributeField" p:propertyName="id" />
+14.       <bean parent="AttributeField" p:propertyName="userName" />
+15.     </list>
+16.   </property>
+17. </bean>
+{code}
+
+Just as the Inquirable in InquiryView is set through the viewHelperServiceClassName, the ViewHelperService for all lookups is the implementation of org.kuali.rice.kns.uif.service.LookupViewHelperService for the lookup.  (LookupViewHelperService is an amalgamation of the KNS LookupableHelperService and Lookupable). [ HERE JAMES ]
+
+[ DOES THIS SUPPORT MULTI-VALUE LOOKUPS?  JUST CURIOUS... ]
+
 h2. MaintenanceDocument
+
+[ HERE JAMES ]
+
 h2. {anchor}Custom Views{anchor}
 
 Can applications create their own custom specialized Views?  Certainly - in fact, that's expected.  KFS, for instance, may have an AccountingDocumentView, since a vast number of KFS's transactional documents have a unified look and feel which presents accounting lines.  Indeed, most applications will have a set of documents or pages which share a look and feel, where it would be nice to standardize the configuration of the View.  Given that, the creation of standard specialized Views is not going to be uncommon at all. But what goes in to making a custom View?
@@ -661,6 +741,33 @@ Customization can also be carried out by creating a custom implementation of org
 * initialization - carried out by performInitialization.  This simply calls performComponentInitialization  on the View itself; this, in turn has the View perform its own initialization (which initializes the layout manager and sets up the single page view if one exists).  Then all nested components are initialized recursively.  This, by the way, is where AttributeFields have any missing data populated from corresponding AttributeDefinitions.
 * applying the model - carried out by performApplyModel.  This invokes the presentationController and authorizer on the View and then calls the apply model on the View itself.
 * finalization - carried out by performFinalize.  Calls performComponentFinalize on the View, which basically finalizes nested Components.
-[ JAMES - HERE ]
 
-[IN WHAT CASES DO YOU MAKE A CUSTOM VIEW CLASS?]
+There should be very few cases where a custom ViewHelperService implementation is necessary.  Already with the standard Views, very few customizations have been made at the ViewHelperService level.  However, every component also participates in the View rendering lifecycle; each Component - such as a new Field, Widget, or customized Group - has a chance to use the lifecycle hooks to customize behavior.
+
+What would a Component do in the override of a View lifecycle method?  Let's take a look at each method and see some customizations.
+
+h3. Component#performInitialization
+
+Component#performInitiation is easily the most overridden life cycle method.  Each of the standard Views above utilize it, along with ContainerBase and several other children of Component.  What all do these Components do in initialization?
+
+Most of the overrides make a lot of sense - it takes some preparation before a Component is ready for the model to be applied.  For instance, in Group's override of performInitialization, it goes through all sub-children to find AttributeFields and GroupFields; any GroupFields and AttributeFields with missing bindByNamePrefixes have those bindByNamePrefixes set.  That's terribly important; the model wouldn't be able to set properties correctly for those values if they weren't set before the Apply Model phase occurred.  AttributeField#performInitialization is also concerned with setting binding properties correctly before Apply Model.  MaintenanceView, InquiryView, and LookupView all override performInitialization to set the defaultBindingsObjectPath.
+
+While setting bindings before Apply Model is a big concern in the Initialization phase, there are other reasons to override performInitialization as well.  ContainerBase#performInitialization initializes the LayoutManager and sorts the contained items.  ActionField overrides performInitialization to set its actionLabel, the text shown on the button or link itself.
+
+Anything which needs to be completed before Apply Model should happen in performInitialization, as well as anything that does not need the model information to be completed.
+
+h3. Component#performApplyModel
+
+In opposition to Component#performInitialization, practically no Components override Component#performApplyModel.  At the time of this writing only three UIF Components in Rice do anything with this method.  ContainerBase overrides it to tell the LayoutManager to perform the Apply Model phase.  CollectionGroup overrides it because, now that it has all of the data in its collection, it can use its set CollectionGroupBuilder to add the addLine to the collection if necessary and then set all of the indexed binding properties.  LookupView overrides performApplyModel to add actions to results lines.
+
+The big theme here is performing any major data changing alterations of the model data held by the Component before performFinalize occurs.  Those cases are rare indeed.
+
+h3. Component#performFinalize
+
+Component#performFinalize may not be overridden quite as often as performInitialize but it's not too far behind.
+
+A number of Widgets override performFinalize to create sub-fields now that the Widget has the data that it needs to act upon set.  A handful of Fields override performFinalize as well.  ActionField overrides it to set the methodToCall parameter associated with the button.  Since that parameter often is associated with data from parameters, that data must be completely set before performFinalize can occur.  AttributeField overrides performFinalize to set up ids on sub-components - such as the Control, ErrorsField, and LabelField - and associates client side javascript constraints with the AttributeField
+
+The major theme with performFinalize is that all the data must be set before these changes can be made.  During the Apply Model phase, there still a chance that sub-components or other components on the page will change the data associated with the Component.  That's all done when performFinalize occurs and since all the data is stable, performFinalize gives Components a chance to set aspects that needed to know about data.
+
+And that concludes this introductory View tutorial.

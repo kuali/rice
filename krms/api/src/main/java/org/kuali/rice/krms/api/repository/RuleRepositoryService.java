@@ -48,7 +48,7 @@ public interface RuleRepositoryService {
 	 * the entire agenda definition in the appropriate order and with the
 	 * defined agenda branching.
 	 * 
-	 * <p>The list which is returned from this method may not be the same size as the list
+	 * <p>The list which is returned from this operation may not be the same size as the list
 	 * which is passed to this method.  If an agenda doesn't exist for a given agenda id then
 	 * no result for that id will be returned in the list.  As a result of this, the returned
 	 * list can be empty, but it will never be null.
@@ -78,6 +78,23 @@ public interface RuleRepositoryService {
 	@WebResult(name = "rule")
 	public RuleDefinition getRule(@WebParam(name = "ruleId") String ruleId);
 	
+	/**
+	 * Retrieves all of the rules for the given list of ruleIds.  The rule includes the propositions
+	 * which define the condition that is to be evaluated on the rule.  It also
+	 * defines a collection of actions which will be invoked if the rule succeeds.
+	 * 
+	 * <p>The list which is returned from this operation may not be the same size as the list
+	 * which is passed to this method.  If a rule doesn't exist for a given rule id then
+	 * no result for that id will be returned in the list.  As a result of this, the returned
+	 * list can be empty, but it will never be null.
+	 * 
+	 * @param ruleIds the list of rule ids for which to retrieve the rules
+	 * @return the list of rules for the given ids, this list will only contain rules for the ids
+	 * that were resolved successfully, it will never return null but could return an empty list if no
+	 * rules could be loaded for the given set of ids
+	 * 
+	 * @throws IllegalArgumentException if the given list of ruleIds is null
+	 */
 	@WebMethod(operationName = "getRules")
 	@WebResult(name = "rules")
 	public List<RuleDefinition> getRules(@WebParam(name = "ruleIds") List<String> ruleIds);

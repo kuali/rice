@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
+import org.kuali.rice.krms.framework.engine.Function;
 import org.kuali.rice.krms.framework.engine.Proposition;
 
 /**
@@ -89,12 +93,23 @@ class SimpleProposition implements Proposition {
 		
 	}
 	
-	final class Function extends Expression<Object> {
+	final class FunctionExpression extends Expression<Object> {
+		
+		Function function;
+		List<Expression<? extends Object>> arguments;
+		
+		FunctionExpression(Function function, List<Expression<? extends Object>> arguments) {
+			this.function = function;
+			this.arguments = arguments;
+		}
 		
 		@Override
 		Object invoke(ExecutionEnvironment environment) {
-			// TODO ewestfal - THIS METHOD NEEDS JAVADOCS
-			return null;
+			List<Object> argumentValues = new ArrayList<Object>(arguments.size());
+			for (Expression<? extends Object> argument : arguments) {
+				argumentValues.add(argument.invoke(environment));
+			}
+			return function.invoke(argumentValues);
 		}		
 		
 	}
@@ -131,6 +146,11 @@ class SimpleProposition implements Proposition {
 				throw new RuntimeException(e);
 			}
 		}	
+		
+	}
+	
+	// TODO this is temporary until peter gets the data model hooked up to the term service
+	final class TermResolverParmaeter {
 		
 	}
 

@@ -16,9 +16,9 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.ModelBuilder;
@@ -40,7 +40,7 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 	
 	private final String id;
 	private final TermSpecificationDefinition specification;
-	private final List<TermParameterDefinition> parameters;
+	private final Set<TermParameterDefinition> parameters;
 	
 	/**
 	 * This constructor is for JAXB only.  Do not invoke directly.
@@ -63,28 +63,28 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 		
 		private String id;
 		private TermSpecificationDefinition specification;
-		private List<TermParameterDefinition> parameters;
+		private Set<TermParameterDefinition> parameters;
 		
 		private Builder(String id, TermSpecificationDefinition termSpecificationDefinition, 
-				List<TermParameterDefinition> termParameters) {
+				Set<TermParameterDefinition> termParameters) {
 			setId(id);
 			setSpecification(termSpecificationDefinition);
 			setParameters(termParameters);
 		}
 
 		public static Builder create(String id, TermSpecificationDefinition termSpecificationDefinition, 
-				List<TermParameterDefinition> termParameters) {
+				Set<TermParameterDefinition> termParameters) {
 			return new Builder(id, termSpecificationDefinition, termParameters);
 		}
 		
 		public static Builder create(TermDefinitionContract term) {
 			// Convert TermParameterDefinitionContract to TermParameterDefinition:
-			List<? extends TermParameterDefinitionContract> paramContracts = term.getParameters();
-			List<TermParameterDefinition> outParams;
+			Set<? extends TermParameterDefinitionContract> paramContracts = term.getParameters();
+			Set<TermParameterDefinition> outParams;
 			if (CollectionUtils.isEmpty(paramContracts)) {
-				outParams = Collections.emptyList();
+				outParams = Collections.emptySet();
 			} else {
-				outParams = new ArrayList<TermParameterDefinition>(paramContracts.size());
+				outParams = new HashSet<TermParameterDefinition>(paramContracts.size());
 				
 				for (TermParameterDefinitionContract paramContract : paramContracts) {
 					outParams.add(TermParameterDefinition.Builder.create(paramContract).build());
@@ -125,11 +125,11 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 		/**
 		 * @param parameters the termParameters to set
 		 */
-		public void setParameters(List<TermParameterDefinition> parameters) {
+		public void setParameters(Set<TermParameterDefinition> parameters) {
 			if (CollectionUtils.isEmpty(parameters)) {
-				this.parameters = Collections.emptyList();
+				this.parameters = Collections.emptySet();
 			} else {
-				this.parameters = Collections.unmodifiableList(parameters);
+				this.parameters = Collections.unmodifiableSet(parameters);
 			}
 		}
 
@@ -157,7 +157,7 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 		 * @return the termParameters
 		 */
 		@Override
-		public List<TermParameterDefinition> getParameters() {
+		public Set<TermParameterDefinition> getParameters() {
 			return this.parameters;
 		}
 		
@@ -190,7 +190,7 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 	 * @return the parameters
 	 */
 	@Override
-	public List<TermParameterDefinition> getParameters() {
+	public Set<TermParameterDefinition> getParameters() {
 		return this.parameters;
 	}
 

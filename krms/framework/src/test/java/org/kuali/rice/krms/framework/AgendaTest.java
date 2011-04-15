@@ -1,6 +1,7 @@
 package org.kuali.rice.krms.framework;
 
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.Rule;
+import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
 
 public class AgendaTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
@@ -169,13 +171,14 @@ public class AgendaTest {
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);
+		engine.setTermResolutionEngine(new TermResolutionEngineImpl());
 		
 		// Set execution options to log execution
-		HashMap<String, String> xOptions = new HashMap<String, String>();
-		xOptions.put(ExecutionOptions.LOG_EXECUTION.toString(), Boolean.toString(true));
+		ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionOptions.Flag.LOG_EXECUTION, true);
 		
 		LOG.init();
-		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), xOptions);
+		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), executionOptions);
+		assertNotNull(results);
 	}
 	
 	private static final Term totalCostTerm = new Term(new TermSpecification("totalCost","Integer"));

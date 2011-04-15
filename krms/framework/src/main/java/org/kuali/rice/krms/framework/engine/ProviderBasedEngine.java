@@ -6,9 +6,11 @@ import java.util.Map;
 import org.kuali.rice.krms.api.engine.Engine;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
+import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.result.TimingResult;
 
@@ -20,9 +22,10 @@ public class ProviderBasedEngine implements Engine {
 	private static final ResultLogger KLog = ResultLogger.getInstance();
 
 	private ContextProvider contextProvider;
+	private TermResolutionEngine termResolutionEngine;
 	
 	@Override
-	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
+	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
 		Date start, end;
 		start = new Date();
 		ExecutionEnvironment environment = establishExecutionEnvironment(selectionCriteria, facts, executionOptions);
@@ -45,11 +48,11 @@ public class ProviderBasedEngine implements Engine {
 		return environment.getEngineResults();
 	}
 	
-	protected ExecutionEnvironment establishExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
-		return new BasicExecutionEnvironment(selectionCriteria, facts, executionOptions);
+	protected ExecutionEnvironment establishExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
+		return new BasicExecutionEnvironment(selectionCriteria, facts, executionOptions, termResolutionEngine);
 	}
 	
-	protected Context selectContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
+	protected Context selectContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
 		if (contextProvider == null) {
 			throw new IllegalStateException("No ContextProvider was configured.");
 		}
@@ -59,6 +62,10 @@ public class ProviderBasedEngine implements Engine {
 	
 	public void setContextProvider(ContextProvider contextProvider) {
 		this.contextProvider = contextProvider;
+	}
+	
+	public void setTermResolutionEngine(TermResolutionEngine termResolutionEngine) {
+		this.termResolutionEngine = termResolutionEngine;
 	}
 
 }

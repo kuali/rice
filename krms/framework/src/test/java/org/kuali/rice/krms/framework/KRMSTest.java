@@ -1,5 +1,7 @@
 package org.kuali.rice.krms.framework;
 
+import static junit.framework.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,12 +64,11 @@ public class KRMSTest {
 		engine.setContextProvider(contextProvider);
 		
 		// Set execution options to log execution
-		HashMap<String, String> xOptions = new HashMap<String, String>();
-		xOptions.put(ExecutionOptions.LOG_EXECUTION.toString(), Boolean.toString(true));
+		ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionOptions.Flag.LOG_EXECUTION, true);
 		
 		LOG.init();
-		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), xOptions);
-		
+		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), executionOptions);
+		assertNotNull(results);
 	}
 	
 	

@@ -51,8 +51,7 @@ public class ResultLogger {
 	}
 
 	public boolean isEnabled(ExecutionEnvironment environment){
-		String logEnabled = environment.getExecutionOptions().get(ExecutionOptions.LOG_EXECUTION.toString()); 
-		if (logEnabled != null ){
+		if (environment.getExecutionOptions().isFlagSet(ExecutionOptions.Flag.LOG_EXECUTION, false)){
 			return true;
 		}
 		return false;

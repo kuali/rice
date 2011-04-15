@@ -2,6 +2,7 @@ package org.kuali.rice.krms.framework;
 
 import java.util.Map;
 
+import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.framework.engine.Context;
@@ -16,7 +17,7 @@ public class ManualContextProvider implements ContextProvider {
 	}
 	
 	@Override
-	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
+	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
 		return context;
 	}
 

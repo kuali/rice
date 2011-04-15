@@ -2,6 +2,7 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.Map;
 
+import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 
@@ -37,6 +38,6 @@ public interface ContextProvider {
 	 * 
 	 * @return the context which matches the given criteria, or null if no context matches
 	 */
-	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions);
+	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions);
 	
 }

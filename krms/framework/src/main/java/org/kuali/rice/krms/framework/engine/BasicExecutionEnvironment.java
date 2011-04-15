@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
+import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
@@ -17,11 +18,11 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 
 	private final SelectionCriteria selectionCriteria;
 	private final Map<Term, Object> facts;
-	private final Map<String, String> executionOptions;
+	private final ExecutionOptions executionOptions;
 	private final EngineResults engineResults;
 	private final TermResolutionEngine termResolutionEngine;
 	
-	public BasicExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
+	public BasicExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions, TermResolutionEngine termResolutionEngine) {
 		if (selectionCriteria == null) {
 			throw new IllegalArgumentException("Selection criteria must not be null.");
 		}
@@ -31,8 +32,7 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 		this.selectionCriteria = selectionCriteria;
 		this.facts = new HashMap<Term, Object>(facts.size());
 		this.facts.putAll(facts);
-		this.executionOptions = new HashMap<String, String>(executionOptions.size());
-		this.executionOptions.putAll(executionOptions);
+		this.executionOptions = new ExecutionOptions(executionOptions);
 		this.engineResults = new EngineResultsImpl();
 		// TODO: inject this (will have to make it non-final)
 		this.termResolutionEngine = new TermResolutionEngineImpl();
@@ -76,7 +76,7 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 	}
 
 	@Override
-	public Map<String, String> getExecutionOptions() {
+	public ExecutionOptions getExecutionOptions() {
 		return executionOptions;
 	}
 	

@@ -3,6 +3,7 @@ package org.kuali.rice.krms.impl.provider.repository;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
@@ -21,21 +22,20 @@ public class RuleRepositoryContextProvider implements ContextProvider {
 	private RepositoryToEngineTranslator repositoryToEngineTranslator;
 	
 	@Override
-	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, Map<String, String> executionOptions) {
+	public Context loadContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
 		ContextSelectionCriteria contextSelectionCriteria = constructContextSelectionCriteria(selectionCriteria);
 		ContextDefinition contextDefinition = ruleRepositoryService.selectContext(contextSelectionCriteria);
 		
 		// TODO should have an execution option that throws an error here if a context does not exist?
 		
 		if (contextDefinition != null) {
-			return repositoryToEngineTranslator.translateContextDefinition(contextDefinition);
+			return loadContextFromDefinition(contextDefinition);
 		}
 		return null;
 	}
 	
 	protected Context loadContextFromDefinition(ContextDefinition contextDefinition) {
-		// TODO...translate repository data model to execution model
-		return null;
+		return repositoryToEngineTranslator.translateContextDefinition(contextDefinition);
 	}
 	
 	public void setRuleRepositoryService(RuleRepositoryService ruleRepositoryService) {

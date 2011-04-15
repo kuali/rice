@@ -32,7 +32,7 @@ public interface ExecutionEnvironment {
 
 	public <T> T resolveTerm(Term term) throws TermResolutionException;
 	
-	public Map<String, String> getExecutionOptions();
+	public ExecutionOptions getExecutionOptions();
 	
 	public EngineResults getEngineResults();
 	

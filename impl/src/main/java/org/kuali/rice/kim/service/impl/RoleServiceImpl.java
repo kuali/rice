@@ -171,18 +171,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	}
 
 
-	private AttributeSet populateQualifiersForExactMatch(AttributeSet defaultQualification, List<String> attributes) {
-		AttributeSet qualifiersForExactMatch = new AttributeSet();
-		if(defaultQualification != null && CollectionUtils.isNotEmpty(defaultQualification.keySet())) {
-			for(String attributeName : attributes) {
-				if(StringUtils.isNotEmpty(defaultQualification.get(attributeName))) {
-					qualifiersForExactMatch.put(attributeName, defaultQualification.get(attributeName));
-				}
-			}
-		}
-		return qualifiersForExactMatch;
-	}
-	
 	private List<RoleMemberImpl> getStoredRoleMembersUsingExactMatchOnQualification(String principalId, List<String> groupIds, List<String> roleIds, AttributeSet qualification) {
     	List<String> copyRoleIds = new ArrayList(roleIds);
     	List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
@@ -588,44 +576,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	return result;
     }
 
-    /**
-     * Retrieves the role type service associated with the given role ID
-     * 
-     * @param roleId the role ID to get the role type service for
-     * @return the Role Type Service
-     */
-    protected KimRoleTypeService getRoleTypeService( String roleId ) {
-        KimRoleTypeService service = getRoleTypeServiceCache().get( roleId );
-    	if ( service == null && !getRoleTypeServiceCache().containsKey( roleId ) ) {
-    		RoleImpl role = getRoleImpl( roleId );
-    		KimTypeInfo roleType = role.getKimRoleType();
-    		if ( roleType != null ) {
-        		service = getRoleTypeService(roleType);
-    		}
-    		getRoleTypeServiceCache().put(roleId, service);
-    	}
-    	return service;
-    }
     
-    protected KimRoleTypeService getRoleTypeService( KimTypeInfo typeInfo ) {
-		String serviceName = typeInfo.getKimTypeServiceName();
-		if ( serviceName != null ) {
-			try {
-				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
-				if ( service != null && service instanceof KimRoleTypeService) {
-					return (KimRoleTypeService)service;
-				} else {
-					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
-				}
-			} catch ( Exception ex ) {
-				LOG.error( "Unable to find role type service with name: " + serviceName );
-				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
-				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
-			}
-		}
-		return null;
-    }
-
     protected KimDelegationTypeService getDelegationTypeService( String delegationId ) {
     	KimDelegationTypeService service = getDelegationTypeServiceCache().get( delegationId );
     	if ( service == null && !getDelegationTypeServiceCache().containsKey( delegationId ) ) {

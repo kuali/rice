@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
@@ -43,6 +44,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
@@ -51,6 +53,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -69,6 +72,8 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  *
  */
 public class RoleServiceBase {
+	private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
+	
 	protected static final String ROLE_IMPL_CACHE_PREFIX = "RoleImpl-ID-";
 	protected static final String ROLE_IMPL_BY_NAME_CACHE_PREFIX = "RoleImpl-Name-";
 	protected static final String ROLE_IMPL_CACHE_GROUP = "RoleImpl";
@@ -170,6 +175,56 @@ public class RoleServiceBase {
 			default : // The daoActionToTake parameter is invalid; throw an exception.
 				throw new IllegalArgumentException("The 'roleDaoAction' parameter cannot refer to a non-role-member-related value!");
 		}
+	}
+	
+    /**
+     * Retrieves the role type service associated with the given role ID
+     * 
+     * @param roleId the role ID to get the role type service for
+     * @return the Role Type Service
+     */
+    protected KimRoleTypeService getRoleTypeService( String roleId ) {
+        KimRoleTypeService service = getRoleTypeServiceCache().get( roleId );
+    	if ( service == null && !getRoleTypeServiceCache().containsKey( roleId ) ) {
+    		RoleImpl role = getRoleImpl( roleId );
+    		KimTypeInfo roleType = role.getKimRoleType();
+    		if ( roleType != null ) {
+        		service = getRoleTypeService(roleType);
+    		}
+    		getRoleTypeServiceCache().put(roleId, service);
+    	}
+    	return service;
+    }
+
+    protected KimRoleTypeService getRoleTypeService( KimTypeInfo typeInfo ) {
+		String serviceName = typeInfo.getKimTypeServiceName();
+		if ( serviceName != null ) {
+			try {
+				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+				if ( service != null && service instanceof KimRoleTypeService) {
+					return (KimRoleTypeService)service;
+				} else {
+					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+				}
+			} catch ( Exception ex ) {
+				LOG.error( "Unable to find role type service with name: " + serviceName );
+				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
+				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+			}
+		}
+		return null;
+    }
+
+	protected AttributeSet populateQualifiersForExactMatch(AttributeSet defaultQualification, List<String> attributes) {
+		AttributeSet qualifiersForExactMatch = new AttributeSet();
+		if(defaultQualification != null && CollectionUtils.isNotEmpty(defaultQualification.keySet())) {
+			for(String attributeName : attributes) {
+				if(StringUtils.isNotEmpty(defaultQualification.get(attributeName))) {
+					qualifiersForExactMatch.put(attributeName, defaultQualification.get(attributeName));
+				}
+			}
+		}
+		return qualifiersForExactMatch;
 	}
 	
 	/**
@@ -1182,6 +1237,44 @@ public class RoleServiceBase {
 		RoleImpl result = (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
 		addRoleImplToCache( result );
 		return result;
+	}
+	
+	protected boolean doAnyMemberRecordsMatchByExactQualifier( RoleImpl role, String memberId, RoleDaoAction daoActionToTake, AttributeSet qualifier ) {
+		if(CollectionUtils.isNotEmpty(getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier))) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	protected List<RoleMemberImpl> getRoleMembersByExactQualifierMatch(RoleImpl role, String memberId, RoleDaoAction daoActionToTake, AttributeSet qualifier) {
+		List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
+		KimRoleTypeService roleTypeService = getRoleTypeService( role.getRoleId() );
+		if(roleTypeService != null) {
+    		List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+    		if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+    			switch (daoActionToTake) {
+	    			case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
+	        			rms = getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(role.getRoleId()), Collections.singletonList(memberId), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+	    				break;
+	    			case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
+	        			rms = getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(role.getRoleId()), memberId, populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+	    				break;
+	    			case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for roles as role members only.
+	    				List<RoleMemberImpl> allRoleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(Collections.singletonList(role.getRoleId()), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+	        			for(RoleMemberImpl rm : allRoleMembers) {
+	        				if ( rm.getMemberId().equals(memberId) ) { 
+	        					rms.add(rm);
+	        				}
+	        			}
+	        			break;	    				
+	    			default : // The daoActionToTake parameter is invalid; throw an exception.
+	    				throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
+    			}
+    			
+    		} 
+		}
+		return rms;
 	}
 	
 	protected boolean doAnyMemberRecordsMatch( List<RoleMemberImpl> roleMembers, String memberId, String memberTypeCode, AttributeSet qualifier ) {

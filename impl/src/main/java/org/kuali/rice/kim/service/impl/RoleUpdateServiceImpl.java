@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +53,22 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
 public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdateService {
 	private static final Logger LOG = Logger.getLogger( RoleUpdateServiceImpl.class );
 	
+	private static final Map<String, RoleDaoAction> memberTypeToRoleDaoActionMap = populateMemberTypeToRoleDaoActionMap();
+
+    private static Map<String, RoleDaoAction> populateMemberTypeToRoleDaoActionMap() {
+    	Map<String, RoleDaoAction> map = new HashMap<String, RoleDaoAction>();
+    	map.put(Role.GROUP_MEMBER_TYPE, RoleDaoAction.ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS);
+    	map.put(Role.PRINCIPAL_MEMBER_TYPE, RoleDaoAction.ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS);
+    	map.put(Role.ROLE_MEMBER_TYPE, RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS);		
+        return Collections.unmodifiableMap(map);
+    }
+
 	public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
     	// look up the role
     	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
+    	if ( doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(Role.GROUP_MEMBER_TYPE), qualifier) || 
+    			doAnyMemberRecordsMatch( role.getMembers(), groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) { 
     		return;
     	}
     	// create the new role member object
@@ -85,7 +97,8 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	role.refreshReferenceObject("members");
     	
     	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
+    	if ( doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(Role.PRINCIPAL_MEMBER_TYPE), qualifier) || 
+    			doAnyMemberRecordsMatch( role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
     		return;
     	}
     	// create the new role member object
@@ -113,7 +126,8 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	// look up the role
     	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
     	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
+    	if ( doAnyMemberRecordsMatchByExactQualifier(role, roleId, memberTypeToRoleDaoActionMap.get(Role.ROLE_MEMBER_TYPE), qualifier) || 
+    			doAnyMemberRecordsMatch( role.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
     		return;
     	}
     	// Check to make sure this doesn't create a circular membership
@@ -138,52 +152,59 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	getResponsibilityInternalService().saveRoleMember(newRoleMember);
     	getIdentityManagementNotificationService().roleUpdated();
     }
-
-	public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
-    	// look up the role
-    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// pull all the group role members
-    	// look for an exact qualifier match
-		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
+	
+	private void removeRoleMembers(List<RoleMemberImpl> members) {
+		if(CollectionUtils.isNotEmpty(members)) {
+			for ( RoleMemberImpl rm : members ) {
 		    	getResponsibilityInternalService().removeRoleMember(rm);
 			}
 		}
+	}
+
+	public List<RoleMemberImpl> getRoleMembersByDefaultStrategy(RoleImpl role, String memberId, String memberTypeCode, AttributeSet qualifier) {
+		List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
+		role.refreshReferenceObject("members");
+		for ( RoleMemberImpl rm : role.getMembers() ) {
+			if ( doesMemberMatch( rm, memberId, memberTypeCode, qualifier ) ) {
+				rms.add(rm);
+			}
+		}
+		return rms;
+	}
+
+	public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier ) {
+    	// look up the role
+    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
+    	List<RoleMemberImpl> rms = getRoleMembersByExactQualifierMatch(role, groupId, memberTypeToRoleDaoActionMap.get(Role.GROUP_MEMBER_TYPE), qualifier);
+		if(CollectionUtils.isEmpty(rms)) {
+			rms = getRoleMembersByDefaultStrategy(role, groupId, Role.GROUP_MEMBER_TYPE, qualifier);
+ 		} 
+		removeRoleMembers(rms);
 		getIdentityManagementNotificationService().roleUpdated();
-    }
+	}
 
 	public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier ) {
     	// look up the role
     	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// pull all the principal members
-    	role.refreshReferenceObject("members");
-    	// look for an exact qualifier match
-		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
+    	List<RoleMemberImpl> rms = getRoleMembersByExactQualifierMatch(role, principalId, memberTypeToRoleDaoActionMap.get(Role.PRINCIPAL_MEMBER_TYPE), qualifier);
+    	if(CollectionUtils.isEmpty(rms)) {
+			rms = getRoleMembersByDefaultStrategy(role, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier);
+ 		} 
+		removeRoleMembers(rms);
 		getIdentityManagementNotificationService().roleUpdated();
-    }
-
-	public void removeRoleFromRole(String roleId, String namespaceCode, String roleName, AttributeSet qualifier) {
+	}
+	
+	public void removeRoleFromRole(String roleId, String namespaceCode, String roleName, AttributeSet qualifier ) {
     	// look up the role
     	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// pull all the group role members
-    	// look for an exact qualifier match
-		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
+		List<RoleMemberImpl> rms = getRoleMembersByExactQualifierMatch(role, roleId, memberTypeToRoleDaoActionMap.get(Role.ROLE_MEMBER_TYPE), qualifier);
+		if(CollectionUtils.isEmpty(rms)) {
+			rms = getRoleMembersByDefaultStrategy(role, roleId, Role.ROLE_MEMBER_TYPE, qualifier);
+ 		} 
+		removeRoleMembers(rms);
 		getIdentityManagementNotificationService().roleUpdated();
-    }
+		
+	}
 
 	/**
      * 

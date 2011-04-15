@@ -148,10 +148,5 @@ class SimpleProposition implements Proposition {
 		}	
 		
 	}
-	
-	// TODO this is temporary until peter gets the data model hooked up to the term service
-	final class TermResolverParmaeter {
-		
-	}
 
 }

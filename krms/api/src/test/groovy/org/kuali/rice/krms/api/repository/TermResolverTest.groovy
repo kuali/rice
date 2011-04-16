@@ -99,9 +99,9 @@ class TermResolverTest {
 		   List<TermResolverAttribute.Builder> attributes,
 		   List<String> parameterNames) {
 */
-		java.util.List<TermSpecificationDefinition.Builder> prereqs = [prereq];
-		java.util.List<TermResolverAttribute.Builder> attributes = [attribute];
-		java.util.List<String> params = [PARAM_NAME];
+		java.util.Set<TermSpecificationDefinition.Builder> prereqs = [prereq];
+		java.util.Set<TermResolverAttribute.Builder> attributes = [attribute];
+		java.util.Set<String> params = [PARAM_NAME];
 		
 		//create(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.krms.api.repository.TermSpecificationDefinition$Builder, java.util.List, java.util.List, java.util.List)
 		TermResolverDefinition termResolver = TermResolverDefinition.Builder.create(ID, NAMESPACE_CODE, NAME, TYPE_ID, output, prereqs, attributes, params).build()

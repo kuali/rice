@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -39,7 +40,6 @@ import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 		AgendaDefinition.Elements.TYPE_ID,
 		AgendaDefinition.Elements.CONTEXT_ID,
 		AgendaDefinition.Elements.FIRST_ITEM_ID,
-//		AgendaDefinition.Elements.EVENT_NAME,
 		AgendaDefinition.Elements.ATTRIBUTES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
@@ -64,9 +64,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	@XmlElement(name = Elements.FIRST_ITEM_ID, required = false)
 	private final String firstItemId;
 	
-//	@XmlElement(name = Elements.EVENT_NAME, required = true)
-//	private final String eventName;
-	
 	@XmlElement(name = Elements.ATTRIBUTES, required = false)
 	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
 	private final Map<String, String> attributes;
@@ -86,7 +83,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     	this.typeId = null;
     	this.contextId = null;
     	this.firstItemId = null;
-//    	this.eventName = null;
     	this.attributes = null;
     }
     
@@ -103,7 +99,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         this.typeId = builder.getTypeId();
         this.contextId = builder.getContextId();
         this.firstItemId = builder.getFirstItemId();
-//        this.eventName = builder.getEventName();
         this.attributes = Collections.unmodifiableMap(new HashMap<String, String>(builder.getAttributes()));
     }
     
@@ -136,11 +131,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	public String getFirstItemId(){
 		return this.firstItemId;
 	}
-	
-//	@Override
-//	public String getEventName() {
-//		return this.eventName;
-//	}
 	
 	@Override
 	public Map<String, String> getAttributes() {
@@ -189,7 +179,6 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             Builder builder =  new Builder(contract.getAgendaId(), contract.getName(),
             		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
             builder.setFirstItemId( contract.getFirstItemId() );
-//            builder.setEventName( contract.getEventName() );
             builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
             return builder;
         }
@@ -327,6 +316,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		final static String CONTEXT_ID = "contextId";
 		final static String FIRST_ITEM_ID = "firstItemId";
 		final static String ATTRIBUTES = "attributes";
+		final static String ATTRIBUTE = "attribute";
 	}
 
 }

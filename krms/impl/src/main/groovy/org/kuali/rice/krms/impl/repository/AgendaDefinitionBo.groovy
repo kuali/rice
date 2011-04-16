@@ -1,7 +1,6 @@
 package org.kuali.rice.krms.impl.repository
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.AgendaDefinition;
@@ -17,7 +16,7 @@ public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements
 	def String contextId
 
 	def String firstItemId
-	def List<AgendaAttributeBo> attributes
+	def Set<AgendaAttributeBo> attributes
 
 	public String getNamespaceCode(){
 		return namespace

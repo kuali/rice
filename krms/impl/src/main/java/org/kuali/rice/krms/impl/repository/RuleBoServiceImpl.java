@@ -170,15 +170,15 @@ public final class RuleBoServiceImpl implements RuleBoService {
 			}
 		}
 		builder.setActions(actionList);			
-		List<RuleAttribute.Builder> attrBuilderList = new ArrayList <RuleAttribute.Builder>();
+		Set<RuleAttribute.Builder> attrBuilders = new HashSet <RuleAttribute.Builder>();
 		if (bo.getAttributes() != null){
 			for (RuleAttributeBo attrBo : bo.getAttributes() ){
 				RuleAttribute.Builder attrBuilder = 
 					RuleAttribute.Builder.create(attrBo);
-				attrBuilderList.add(attrBuilder);
+				attrBuilders.add(attrBuilder);
 			}
 		}
-		builder.setAttributes(attrBuilderList);
+		builder.setAttributes(attrBuilders);
 		return builder.build();
 	}
 
@@ -203,11 +203,11 @@ public final class RuleBoServiceImpl implements RuleBoService {
 			actionList.add ( ActionBo.from(action) );
 		}
 		bo.setActions(actionList);		
-		List<RuleAttributeBo> attrList = new ArrayList<RuleAttributeBo>();
+		Set<RuleAttributeBo> attributes = new HashSet<RuleAttributeBo>();
 		for (RuleAttribute attr : im.getAttributes()){
-			attrList.add ( RuleAttributeBo.from(attr) );
+			attributes.add ( RuleAttributeBo.from(attr) );
 		}
-		bo.setAttributes(attrList);
+		bo.setAttributes(attributes);
 		return bo;
 	}
 

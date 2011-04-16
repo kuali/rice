@@ -17,12 +17,19 @@
 package org.kuali.rice.krms.impl.repository;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.ActionAttribute;
-
-import java.util.*;
 
 public final class ActionRepositoryServiceImpl implements ActionRepositoryService {
 
@@ -194,7 +201,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
 		builder.setDescription(bo.getDescription());
 		
-		Set<ActionAttribute.Builder> attrBuilders = Collections.emptySet();
+		Set<ActionAttribute.Builder> attrBuilders = new HashSet<ActionAttribute.Builder>();
 		if (bo.getAttributes() != null){
 			for (ActionAttributeBo attrBo : bo.getAttributes() ){
 				ActionAttribute.Builder attrBuilder = ActionAttribute.Builder.create(attrBo);
@@ -222,7 +229,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	   bo.setDescription( im.getDescription() );
 	   bo.setRuleId( im.getRuleId() );
 	   bo.setSequenceNumber( im.getSequenceNumber() );
-	   Set<ActionAttributeBo> attributes = Collections.emptySet();
+	   Set<ActionAttributeBo> attributes = new HashSet<ActionAttributeBo>();
 	   for (ActionAttribute attr : im.getAttributes()){
 		   attributes.add ( ActionAttributeBo.from(attr) );
 	   }

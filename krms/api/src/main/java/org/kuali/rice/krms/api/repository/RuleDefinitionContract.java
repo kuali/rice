@@ -1,6 +1,7 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RuleDefinitionContract {
 	/**
@@ -47,12 +48,12 @@ public interface RuleDefinitionContract {
 	public List<? extends ActionDefinitionContract> getActions();
 
 	/**
-	 * This method returns a list of attributes associated with the 
+	 * This method returns a set of attributes associated with the 
 	 * Rule
 	 * 
-	 * @return a list of RuleAttribute objects.
+	 * @return a set of RuleAttribute objects.
 	 */
-	public List<? extends RuleAttributeContract> getAttributes();
+	public Set<? extends RuleAttributeContract> getAttributes();
 	
 
 }

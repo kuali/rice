@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -62,7 +64,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	
 	@XmlElementWrapper(name = Elements.ATTRIBUTES)
 	@XmlElement(name = Elements.ATTRIBUTE, required=false)
-	private List<RuleAttribute> attributes;
+	private Set<RuleAttribute> attributes;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -104,11 +106,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	actionList.add(b.build());
         }
         this.actions = Collections.unmodifiableList(actionList);
-        List<RuleAttribute> attrList = new ArrayList<RuleAttribute>();
+        Set<RuleAttribute> attributes = new HashSet<RuleAttribute>();
         for (RuleAttribute.Builder b : builder.attributes){
-        	attrList.add(b.build());
+        	attributes.add(b.build());
         }
-        this.attributes = Collections.unmodifiableList(attrList);
+        this.attributes = Collections.unmodifiableSet(attributes);
     }
     
 	@Override
@@ -147,7 +149,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	}
 		
 	@Override
-	public List<RuleAttribute> getAttributes() {
+	public Set<RuleAttribute> getAttributes() {
 		return this.attributes; 
 	}
 
@@ -164,7 +166,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         private String propId;
         private PropositionDefinition.Builder proposition;
         private List<ActionDefinition.Builder> actions;
-        private List<RuleAttribute.Builder> attributes;
+        private Set<RuleAttribute.Builder> attributes;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -190,7 +192,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-        	List <RuleAttribute.Builder> attrBuilderList = new ArrayList<RuleAttribute.Builder>();
+        	Set <RuleAttribute.Builder> attrBuilderList = new HashSet<RuleAttribute.Builder>();
         	if (contract.getAttributes() != null){
         		for (RuleAttributeContract attrContract : contract.getAttributes()){
         			RuleAttribute.Builder myBuilder = RuleAttribute.Builder.create(attrContract);
@@ -256,12 +258,12 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 			this.actions = Collections.unmodifiableList(actions);
 		}
 		
-		public void setAttributes(List<RuleAttribute.Builder> attributes){
+		public void setAttributes(Set<RuleAttribute.Builder> attributes){
 			if (attributes == null){
-				this.attributes = Collections.unmodifiableList(new ArrayList<RuleAttribute.Builder>());
+				this.attributes = Collections.emptySet();
 				return;
 			}
-			this.attributes = Collections.unmodifiableList(attributes);
+			this.attributes = Collections.unmodifiableSet(attributes);
 		}
 		
 		@Override
@@ -299,7 +301,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 			return actions;
 		}
 		@Override
-		public List<RuleAttribute.Builder> getAttributes() {
+		public Set<RuleAttribute.Builder> getAttributes() {
 			return attributes;
 		}
 

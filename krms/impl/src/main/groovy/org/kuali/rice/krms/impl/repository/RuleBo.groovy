@@ -18,7 +18,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
 	def PropositionBo proposition
 	def List<ActionBo> actions	
-	def List<RuleAttributeBo> attributes
+	def Set<RuleAttributeBo> attributes
 	
 	/**
 	* Converts a mutable bo to it's immutable counterpart
@@ -44,7 +44,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	   bo.name = im.name
 	   bo.typeId = im.typeId
 	   bo.propId = im.propId
-	   bo.attributes = new ArrayList<RuleAttributeBo>()
+	   bo.attributes = new HashSet<RuleAttributeBo>()
 	   for (attr in im.attributes){
 		   bo.attributes.add ( RuleAttributeBo.from(attr) )
 	   }

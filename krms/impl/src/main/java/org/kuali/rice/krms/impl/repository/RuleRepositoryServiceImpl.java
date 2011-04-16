@@ -116,9 +116,11 @@ public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements 
 
 	/**
 	 * Recursive method to create AgendaTreeDefinition builder
-	 * 	 
+	 * 	
+	 *  
 	 */
 	private AgendaTreeDefinition.Builder walkAgendaItemTree(String agendaItemId, AgendaTreeDefinition.Builder builder){
+		//TODO: prevent circular, endless looping
 		if (StringUtils.isBlank(agendaItemId)){
 			return null;
 		}

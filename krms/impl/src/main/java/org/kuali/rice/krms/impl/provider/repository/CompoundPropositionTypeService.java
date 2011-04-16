@@ -20,12 +20,25 @@ import java.util.List;
 
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.PropositionType;
 import org.kuali.rice.krms.framework.engine.CompoundProposition;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 
 /**
- * TODO... 
+ * An implementation of {@link PropositionTypeService} which loads a {@link Proposition}
+ * from the given {@link PropositionDefinition}.  A compound proposition contains one
+ * or more propositions which are evaluated in conjunction with a logical operator
+ * such as "AND" or "OR".
+ * 
+ * <p>The translation from a {@link PropositionDefinition} to a {@link Proposition}
+ * is performed by the given {@link RepositoryToEngineTranslator}.  This must be
+ * set on this class before it is used.
+ * 
+ * <p>This class is thread-safe and is designed to be wired as a singleton bean in
+ * Spring.
+ * 
+ * @see CompoundProposition
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -34,8 +47,20 @@ public class CompoundPropositionTypeService implements PropositionTypeService {
 
 	private RepositoryToEngineTranslator translator;
 	
+	/**
+	 * Loads the given PropositionDefinition as a compound proposition.  The given
+	 * PropositionDefinition must represent a compound proposition.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Proposition loadProposition(PropositionDefinition propositionDefinition) {
+		if (translator == null) {
+			throw new IllegalStateException("Service not configured properly, no translator available.");
+		}
+		if (PropositionType.COMPOUND != PropositionType.fromCode(propositionDefinition.getPropositionTypeCode())) {
+			throw new IllegalArgumentException("Given proposition definition was not compound, type code was: " + propositionDefinition.getPropositionTypeCode());
+		}
 		List<Proposition> propositions = new ArrayList<Proposition>();
 		for (PropositionDefinition subProp : propositionDefinition.getCompoundComponents()) {
 			propositions.add(translator.translatePropositionDefinition(subProp));
@@ -44,6 +69,11 @@ public class CompoundPropositionTypeService implements PropositionTypeService {
 		return new CompoundProposition(operator, propositions);
 	}
 	
+	/**
+	 * Sets the translator on this service to the given translator.
+	 * 
+	 * @param translator the translator to set on this service
+	 */
 	public void setTranslator(RepositoryToEngineTranslator translator) {
 		this.translator = translator;
 	}

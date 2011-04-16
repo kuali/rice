@@ -30,9 +30,8 @@ import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 /**
  *
  */
-public class RuleRepositoryServiceImpl implements RuleRepositoryService {
+public class RuleRepositoryServiceImpl extends RepositoryServiceBase implements RuleRepositoryService {
 	
-    private BusinessObjectService businessObjectService;
 	/**
 	 * This overridden method ...
 	 * 
@@ -47,14 +46,10 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
     		throw new IllegalArgumentException("selection criteria namespace code is null or blank");
     	}
-    	// TODO: namespace issues ?? can multiple namespaces be represented in qualifier set?
-    	// NOTE: this doesn't work 
-    	//	Hoped it would be easy like something below.
-    	//  need help building a working query.
-    	Map<String, String> contextQualifiers = contextSelectionCriteria.getContextQualifiers();
-
-    	contextQualifiers.put("namespace", contextSelectionCriteria.getNamespaceCode());
-    	List<ContextBo> resultBos = (List<ContextBo>) businessObjectService.findMatching(ContextBo.class, contextQualifiers);
+    	Map<String, String> contextQualifiers = convertAttributeKeys(
+    			contextSelectionCriteria.getContextQualifiers(),
+    			contextSelectionCriteria.getNamespaceCode());
+    	List<ContextBo> resultBos = (List<ContextBo>) getBusinessObjectService().findMatching(ContextBo.class, contextQualifiers);
 
     	//assuming 1 ?
     	ContextDefinition result = null;
@@ -74,7 +69,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     		throw new IllegalArgumentException("agenda id is null or blank");
     	}
 		// Get agenda items from db, then build up agenda tree structure
-		AgendaDefinitionBo agendaBo = businessObjectService.findBySinglePrimaryKey(AgendaDefinitionBo.class, agendaId);
+		AgendaDefinitionBo agendaBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaDefinitionBo.class, agendaId);
 		String agendaItemId = agendaBo.getFirstItemId();
 		
 		// walk thru the agenda items, building an agenda tree definition Builder along the way
@@ -100,7 +95,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		if (StringUtils.isBlank(ruleId)){
 			return null;			
 		}
-		RuleBo bo = businessObjectService.findBySinglePrimaryKey(RuleBo.class, ruleId);
+		RuleBo bo = getBusinessObjectService().findBySinglePrimaryKey(RuleBo.class, ruleId);
 		return RuleBo.to(bo);
 	}
 	
@@ -110,7 +105,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		for (String ruleId : ruleIds){
 			fieldValues.put("ruleId", ruleId);
 		}
-		Collection<RuleBo> bos = businessObjectService.findMatching(RuleBo.class, fieldValues);
+		Collection<RuleBo> bos = getBusinessObjectService().findMatching(RuleBo.class, fieldValues);
 		ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
         for (RuleBo bo : bos) {
             RuleDefinition rule = RuleBo.to(bo);
@@ -129,7 +124,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		}
 		// Get AgendaItem Business Object from database
 		// NOTE: if we read agendaItem one at a time from db.   Could consider linking in OJB and getting all at once
-		AgendaItemBo agendaItemBo = businessObjectService.findBySinglePrimaryKey(AgendaItemBo.class, agendaItemId);
+		AgendaItemBo agendaItemBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaItemBo.class, agendaItemId);
 		
 		// If Rule  
 		// TODO: validate that only either rule or subagenda, not both

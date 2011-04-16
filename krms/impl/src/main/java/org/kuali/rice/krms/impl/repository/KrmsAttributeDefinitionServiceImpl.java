@@ -20,7 +20,6 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition;
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinitionService;
 
 import java.util.*;
 

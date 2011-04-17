@@ -3,7 +3,7 @@ package org.kuali.rice.krms.framework.engine;
 import javax.swing.event.EventListenerList;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.api.engine.ExecutionOptions;
+import org.kuali.rice.krms.api.engine.ExecutionFlag;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.framework.engine.result.EngineResultListener;
 import org.kuali.rice.krms.framework.engine.result.Log4jResultListener;
@@ -51,7 +51,7 @@ public class ResultLogger {
 	}
 
 	public boolean isEnabled(ExecutionEnvironment environment){
-		if (environment.getExecutionOptions().isFlagSet(ExecutionOptions.Flag.LOG_EXECUTION, false)){
+		if (environment.getExecutionOptions().isFlagSet(ExecutionFlag.LOG_EXECUTION, false)){
 			return true;
 		}
 		return false;

@@ -13,6 +13,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
+import org.kuali.rice.krms.api.engine.ExecutionFlag;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolver;
@@ -67,7 +68,7 @@ public class ResultLoggingTest {
 		engine.setContextProvider(contextProvider);
 		
 		// Set execution options to log execution
-		ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionOptions.Flag.LOG_EXECUTION, true);
+		ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionFlag.LOG_EXECUTION, true);
 		
 		LOG.init();
 		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), executionOptions);

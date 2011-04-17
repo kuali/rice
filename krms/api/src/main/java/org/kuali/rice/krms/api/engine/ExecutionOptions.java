@@ -14,20 +14,20 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class ExecutionOptions {
 
-	private final Map<Flag, Boolean> flags;
+	private final Map<ExecutionFlag, Boolean> flags;
 	private final Map<String, String> options;
 	
 	public ExecutionOptions() {
-		flags = new HashMap<Flag, Boolean>();
+		flags = new HashMap<ExecutionFlag, Boolean>();
 		options = new HashMap<String, String>();
 	}
 	
 	public ExecutionOptions(ExecutionOptions executionOptions) {
-		this.flags = new HashMap<Flag, Boolean>(executionOptions.getFlags());
+		this.flags = new HashMap<ExecutionFlag, Boolean>(executionOptions.getFlags());
 		this.options = new HashMap<String, String>(executionOptions.getOptions());
 	}
 	
-	public ExecutionOptions setFlag(Flag flag, boolean value) {
+	public ExecutionOptions setFlag(ExecutionFlag flag, boolean value) {
 		if (flag == null) {
 			throw new IllegalArgumentException("flag was null");
 		}
@@ -43,7 +43,7 @@ public final class ExecutionOptions {
 		return this;
 	}
 	
-	public ExecutionOptions removeFlag(Flag flag) {
+	public ExecutionOptions removeFlag(ExecutionFlag flag) {
 		if (flag == null) {
 			throw new IllegalArgumentException("flag was null");
 		}
@@ -59,7 +59,7 @@ public final class ExecutionOptions {
 		return this;
 	}
 	
-	public boolean isFlagSet(Flag flag, boolean defaultValue) {
+	public boolean isFlagSet(ExecutionFlag flag, boolean defaultValue) {
 		if (containsFlag(flag)) {
 			return flags.get(flag).booleanValue();
 		}
@@ -70,7 +70,7 @@ public final class ExecutionOptions {
 		return options.get(option);
 	}
 	
-	public boolean containsFlag(Flag flag) {
+	public boolean containsFlag(ExecutionFlag flag) {
 		return flags.containsKey(flags);
 	}
 	
@@ -78,20 +78,13 @@ public final class ExecutionOptions {
 		return options.containsKey(option);
 	}
 
-	public Map<Flag, Boolean> getFlags() {
+	public Map<ExecutionFlag, Boolean> getFlags() {
 		return Collections.unmodifiableMap(flags);
 	}
 
 	
 	public Map<String, String> getOptions() {
 		return Collections.unmodifiableMap(options);
-	}
-		
-	public static enum Flag {
-
-		LOG_EXECUTION,
-		CONTEXT_MUST_EXIST;
-		
 	}
 	
 }

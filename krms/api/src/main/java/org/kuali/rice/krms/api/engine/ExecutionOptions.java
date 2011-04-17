@@ -78,7 +78,7 @@ public final class ExecutionOptions {
 	 * 
 	 * @throws IllegalArgumentException if the given optionName is blank
 	 */
-	public ExecutionOptions addOption(String optionName, String value) {
+	public ExecutionOptions setOption(String optionName, String value) {
 		if (StringUtils.isBlank(optionName)) {
 			throw new IllegalArgumentException("optionName was blank");
 		}
@@ -131,11 +131,11 @@ public final class ExecutionOptions {
 	 * 
 	 * @throws IllegalArgumentException if the given flag is null
 	 */
-	public boolean isFlagSet(ExecutionFlag flag, boolean defaultValue) {
+	public boolean getFlag(ExecutionFlag flag, boolean defaultValue) {
 		if (flag == null) {
 			throw new IllegalArgumentException("flag is null");
 		}
-		if (containsFlag(flag)) {
+		if (isFlagSet(flag)) {
 			return flags.get(flag).booleanValue();
 		}
 		return defaultValue;
@@ -150,7 +150,7 @@ public final class ExecutionOptions {
 	 * 
 	 * @throws IllegalArgumentException if the given optionName is blank
 	 */
-	public String getOptionValue(String optionName) {
+	public String getOption(String optionName) {
 		if (StringUtils.isBlank(optionName)) {
 			throw new IllegalArgumentException("optionName is blank");
 		}
@@ -165,11 +165,11 @@ public final class ExecutionOptions {
 	 * 
 	 * @throws IllegalArgumentException if the given flag is null
 	 */
-	public boolean containsFlag(ExecutionFlag flag) {
+	public boolean isFlagSet(ExecutionFlag flag) {
 		if (flag == null) {
 			throw new IllegalArgumentException("flag is null");
 		}
-		return flags.containsKey(flags);
+		return flags.containsKey(flag);
 	}
 	
 	/**
@@ -180,7 +180,7 @@ public final class ExecutionOptions {
 	 * 
 	 * @throws IllegalArgumentException if the given optionName is blank
 	 */
-	public boolean containsOption(String optionName) {
+	public boolean isOptionSet(String optionName) {
 		if (StringUtils.isBlank(optionName)) {
 			throw new IllegalArgumentException("optionName is blank");
 		}

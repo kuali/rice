@@ -15,9 +15,52 @@
  */
 package org.kuali.rice.krms.api.engine;
 
+/**
+ * Defines various possible flags that can be used to control how the rules
+ * engine executes and performs it's evaluation of rules.  These flags are
+ * meant to be set to either true or false.  This is done using the
+ * {@link ExecutionOptions} that are passed to the engine at execution time.
+ * 
+ * @see ExecutionOptions
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public enum ExecutionFlag {
 
-	LOG_EXECUTION,
-	CONTEXT_MUST_EXIST;
+	/**
+	 * Indicates that the engine should perform default logging by recording
+	 * each {@link ResultEvent} in the {@link EngineResults}.  Default value
+	 * is false.
+	 * 
+	 * @see EngineResults
+	 */
+	LOG_EXECUTION(false),
+	
+	/**
+	 * Indicates that the selection criteria which is passed to the engine
+	 * at the time of execution must be able to select a valid context in
+	 * order for engine execution to proceed.  Default value is false,
+	 * when false the engine will simply not execute if no valid context
+	 * can be located for the specified selection criteria.
+	 * 
+	 * @see SelectionCriteria
+	 */
+	CONTEXT_MUST_EXIST(false);
+	
+	private final boolean defaultValue;
+	
+	private ExecutionFlag(boolean defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+	
+	/**
+	 * Returns the default value for the flag if it has not been explicitly set.
+	 * 
+	 * @return the default value for the flag
+	 */
+	public boolean getDefaultValue() {
+		return this.defaultValue;
+	}
 	
 }

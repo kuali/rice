@@ -51,9 +51,6 @@ public class ResultLogger {
 	}
 
 	public boolean isEnabled(ExecutionEnvironment environment){
-		if (environment.getExecutionOptions().isFlagSet(ExecutionFlag.LOG_EXECUTION, false)){
-			return true;
-		}
-		return false;
+		return environment.getExecutionOptions().getFlag(ExecutionFlag.LOG_EXECUTION, false);
 	}
 }

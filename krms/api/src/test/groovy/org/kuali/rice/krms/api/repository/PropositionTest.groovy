@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.krms.api.repository
 
-import java.util.List;
+import java.util.List
 
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
-import org.junit.Test
+
 import org.junit.Assert
+import org.junit.Test
 
 
 /**
@@ -144,92 +145,48 @@ class PropositionTest {
 		
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_all_null() {
-		PropositionDefinition.Builder.create(null, null, null, null, null)
+		PropositionDefinition.Builder.create(null, null)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_id() {
-		PropositionDefinition.Builder.create(null, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_empty_id() {
-		PropositionDefinition.Builder.create("", DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_whitespace_id() {
-		PropositionDefinition.Builder.create("   ", DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_description() {
-		PropositionDefinition.Builder.create(PROP_ID, null, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_empty_description() {
-		PropositionDefinition.Builder.create(PROP_ID, "", TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_whitespace_description() {
-		PropositionDefinition.Builder.create(PROP_ID, "	  ", TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_krms_type_id() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, null, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_empty_krms_type_id() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, "", PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_whitespace_krms_type_id() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, "  ", PROPOSITION_TYPE_CD_S, PARM_LIST_1)
-	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_proposition_type() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, null, PARM_LIST_1)
+		PropositionDefinition.Builder.create(null, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_proposition_type() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, "", PARM_LIST_1)
+		PropositionDefinition.Builder.create("", PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_proposition_type() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, "    ", PARM_LIST_1)
+		PropositionDefinition.Builder.create("    ", PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_invalid_proposition_type() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_BAD, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_BAD, PARM_LIST_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_parameter_list() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, null)
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, null)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_parameter_list() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, EMPTY_PARM_LIST)
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, EMPTY_PARM_LIST)
 	}
 
 	@Test
 	void test_Builder_create_simple_proposition_success() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
 	}
 
 	@Test
 	void test_Builder_create_and_build_simple_proposition_success() {
-		PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
+		PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
 	}
 
 	@Test
@@ -260,7 +217,11 @@ class PropositionTest {
 
 	@Test
 	public void testXmlMarshaling_simple_proposition() {
- 		PropositionDefinition myProp = PropositionDefinition.Builder.create(PROP_ID, DESCRIPTION, TYPE_ID, PROPOSITION_TYPE_CD_S, PARM_LIST_1).build()
+ 		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROPOSITION_TYPE_CD_S, PARM_LIST_1)
+		myPropBuilder.setPropId(PROP_ID)
+		myPropBuilder.setDescription(DESCRIPTION)
+		myPropBuilder.setTypeId(TYPE_ID)
+		PropositionDefinition myProp = myPropBuilder.build()
         JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 	    Marshaller marshaller = jc.createMarshaller()
 	    StringWriter sw = new StringWriter()

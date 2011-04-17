@@ -178,10 +178,7 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String propId, String desc, String typeId, String propTypeCode, List<PropositionParameter.Builder> parameters) {
-            setPropId(propId);
-            setDescription(desc);
-            setTypeId(typeId);
+        private Builder(String propTypeCode, List<PropositionParameter.Builder> parameters) {
 			setPropositionTypeCode(propTypeCode);
 			setParameters(parameters);
         }
@@ -196,9 +193,10 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         	return this;
         }
  
-        public static Builder create(String propId, String desc, String typeId, String propTypeCode, List<PropositionParameter.Builder> parameters){
-        	return new Builder(propId, desc, typeId, propTypeCode, parameters);
+        public static Builder create(String propTypeCode, List<PropositionParameter.Builder> parameters){
+        	return new Builder(propTypeCode, parameters);
         }
+        
         /**
          * Creates a builder by populating it with data from the given {@link PropositionDefinitionContract}.
          * 
@@ -223,39 +221,30 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         			componentBuilderList.add(pBuilder);
         		}
         	}
-            Builder builder =  new Builder(contract.getPropId(), contract.getDescription(), 
-            			contract.getTypeId(), contract.getPropositionTypeCode(), paramBuilderList)
+            Builder builder =  new Builder(contract.getPropositionTypeCode(), paramBuilderList)
             			.compoundOpCode(contract.getCompoundOpCode())
             			.compoundComponents(componentBuilderList);
+            builder.setPropId(contract.getPropId());
+            builder.setTypeId(contract.getTypeId());
+            builder.setDescription(contract.getDescription());
             return builder;
         }
 
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be null or blank
-		 * @throws IllegalArgumentException if the id is null or blank
+		 * @param id the id value to set
 		 */
 
         public void setPropId(String propId) {
-            if (StringUtils.isBlank(propId)) {
-                throw new IllegalArgumentException("propId is blank");
-            }
 			this.propId = propId;
 		}
 
 		public void setDescription(String desc) {
-            if (StringUtils.isBlank(desc)) {
-                throw new IllegalArgumentException("description is blank");
-            }
 			this.description = desc;
 		}
 		
 		public void setTypeId(String typeId) {
-			if (StringUtils.isBlank(typeId)) {
-	                throw new IllegalArgumentException("KRMS type id is blank");
-			}
-			// TODO: check against valid values ?
 			this.typeId = typeId;
 		}
 		

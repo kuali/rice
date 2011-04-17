@@ -192,27 +192,142 @@ class ExecutionOptionsTest {
 		
 	@Test
 	public void testIsFlagSet() {
-		//fail("Not yet implemented");
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+		assert options.isFlagSet(ExecutionFlag.LOG_EXECUTION);
+	}
+	
+	@Test
+	public void testIsFlagSet_nonExistent() {
+		assertFalse options.isFlagSet(ExecutionFlag.CONTEXT_MUST_EXIST);
+	}
+
+	@Test(expected=IllegalArgumentException)
+	public void testIsFlagSet_null() {
+		options.isFlagSet(null);
 	}
 
 	@Test
 	public void testIsOptionSet() {
-		//fail("Not yet implemented");
+		options.setOption("myOption", "myValue");
+		assert options.isOptionSet("myOption");
+	}
+
+	@Test
+	public void testIsOptionSet_nonExistent() {
+		assertFalse options.isOptionSet("doesnotexist");
+	}
+	
+	@Test(expected=IllegalArgumentException)
+	public void testIsOptionSet_null() {
+		options.isOptionSet(null);
+	}
+	
+	@Test(expected=IllegalArgumentException)
+	public void testIsOptionSet_emptyString() {
+		options.isOptionSet("");
+	}
+
+	@Test(expected=IllegalArgumentException)
+	public void testIsOptionSet_whitespace() {
+		options.isOptionSet(" ");
 	}
 
 	@Test
 	public void testGetFlags() {
-		//fail("Not yet implemented");
+		assert options.getFlags().isEmpty();
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+		Map<ExecutionFlag, Boolean> flags = options.getFlags();
+		assertFalse flags.isEmpty();
+		assert flags.size() == 1;
+		assert flags.get(ExecutionFlag.LOG_EXECUTION);
+	}
+		
+	@Test(expected=UnsupportedOperationException)
+	public void testGetFlags_unmodifiable() {
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+		Map<ExecutionFlag, Boolean> flags = options.getFlags();
+		assert flags.size() == 1;
+		
+		// now try to modify the map
+		flags.remove(ExecutionFlag.LOG_EXECUTION);
+	}
+
+	/**
+	 * Tests that the Map is immutable once it's returned, i.e. if
+	 * the state of ExecutionOptions is mutated, the external map
+	 * should also not be modified.
+	 */
+	@Test
+	public void testGetFlags_immutable() {
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+		Map<ExecutionFlag, Boolean> flags = options.getFlags();
+		assert flags.size() == 1;
+		
+		// now modify the execution options by removing the flag
+		options.removeFlag(ExecutionFlag.LOG_EXECUTION);
+		assert options.getFlags().isEmpty();
+		
+		// our existing flags shoudl not have been modified
+		assert flags.size() == 1;
 	}
 
 	@Test
 	public void testGetOptions() {
-		//fail("Not yet implemented");
+		assert options.getOptions().isEmpty();
+		options.setOption("myOption", "myOptionValue");
+		Map<String, String> optionsMap = options.getOptions();
+		assertFalse optionsMap.isEmpty();
+		assert optionsMap.size() == 1;
+		assert optionsMap.get("myOption");
 	}
+		
+	@Test(expected=UnsupportedOperationException)
+	public void testGetOptions_unmodifiable() {
+		options.setOption("myOption", "myOptionValue");
+		Map<String, String> optionsMap = options.getOptions();
+		assert optionsMap.size() == 1;
+		
+		// now try to modify the map
+		optionsMap.remove("myOption");
+	}
+
+	/**
+	 * Tests that the Map is immutable once it's returned, i.e. if
+	 * the state of ExecutionOptions is mutated, the external map
+	 * should also not be modified.
+	 */
+	@Test
+	public void testGetOptions_immutable() {
+		options.setOption("myOption", "myOptionValue");
+		Map<String, String> optionsMap = options.getOptions();
+		assert optionsMap.size() == 1;
+		
+		// now modify the execution options by removing the option
+		options.removeOption("myOption");
+		assert options.getOptions().isEmpty();
+		
+		// our existing options map should not have been modified
+		assert optionsMap.size() == 1;
+	}
+
 	
 	@Test
 	public void testCallChaining() {
-		
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, true).
+			setOption("myOption1", "myOptionValue1").
+			setFlag(ExecutionFlag.CONTEXT_MUST_EXIST, false).
+			setOption("myOption2", "myOptionValue2").
+			setFlag(ExecutionFlag.LOG_EXECUTION, false).
+			removeOption("myOption1").
+			removeFlag(ExecutionFlag.CONTEXT_MUST_EXIST).
+			setFlag(ExecutionFlag.CONTEXT_MUST_EXIST, true);
+		assert options.getFlags().size() == 2;
+		assert options.getOptions().size() == 1;
+		assertFalse options.getFlag(ExecutionFlag.LOG_EXECUTION, true);
+		assert options.getFlag(ExecutionFlag.CONTEXT_MUST_EXIST, false);
+		assertFalse options.isOptionSet("myOption1");
+		assert options.getOption("myOption1") == null;
+		assert options.getOption("myOption2") == "myOptionValue2";
 	}
 
 }

@@ -188,21 +188,21 @@ public final class ExecutionOptions {
 	}
 
 	/**
-	 * Returns an unmodifiable map of the flags that have been set on this object.
+	 * Returns an immutable map of the flags that have been set on this object.
 	 * 
 	 * @return the flags that have been set, this map be empty but will never be null
 	 */
 	public Map<ExecutionFlag, Boolean> getFlags() {
-		return Collections.unmodifiableMap(flags);
+		return Collections.unmodifiableMap(new HashMap<ExecutionFlag, Boolean>(flags));
 	}
 
 	/**
-	 * Returns an unmodifiable map of the options that have been set on this object.
+	 * Returns an immutable map of the options that have been set on this object.
 	 * 
 	 * @return the options that have been set, this map be empty but will never be null
 	 */	
 	public Map<String, String> getOptions() {
-		return Collections.unmodifiableMap(options);
+		return Collections.unmodifiableMap(new HashMap<String, String>(options));
 	}
 	
 }

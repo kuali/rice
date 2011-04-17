@@ -15,14 +15,24 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
+import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionParameter;
 import org.kuali.rice.krms.api.repository.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
+import org.kuali.rice.krms.api.repository.TermDefinition;
+import org.kuali.rice.krms.api.repository.TermParameterDefinition;
+import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.expression.BinaryOperatorExpression;
 import org.kuali.rice.krms.framework.engine.expression.BooleanValidatingExpression;
@@ -32,6 +42,7 @@ import org.kuali.rice.krms.framework.engine.expression.Expression;
 import org.kuali.rice.krms.framework.engine.expression.ExpressionBasedProposition;
 import org.kuali.rice.krms.framework.engine.expression.TermExpression;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
+import org.kuali.rice.krms.impl.repository.TermRepositoryService;
 
 /**
  * TODO... 
@@ -42,10 +53,11 @@ import org.kuali.rice.krms.framework.type.PropositionTypeService;
 public class SimplePropositionTypeService implements PropositionTypeService {
 
 	private TermResolutionEngine termResolutionEngine;
+	private TermRepositoryService termRepositoryService;
 	
 	@Override
 	public Proposition loadProposition(PropositionDefinition propositionDefinition) {
-		return new ExpressionBasedProposition(translateToExpression(propositionDefinition, termResolutionEngine));
+		return new ExpressionBasedProposition(translateToExpression(propositionDefinition, termResolutionEngine, termRepositoryService));
 	}
 
 	/**
@@ -56,7 +68,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 	 * @param propositionDefinition
 	 * @return
 	 */
-	private static Expression<Boolean> translateToExpression(PropositionDefinition propositionDefinition, TermResolutionEngine termResolutionEngine) {
+	private static Expression<Boolean> translateToExpression(PropositionDefinition propositionDefinition, TermResolutionEngine termResolutionEngine, TermRepositoryService termRepositoryService) {
 		LinkedList<Expression<? extends Object>> stack = new LinkedList<Expression<? extends Object>>();
 		for (PropositionParameter parameter : propositionDefinition.getParameters()) {
 			PropositionParameterType parameterType = PropositionParameterType.fromCode(parameter.getParameterType());
@@ -80,8 +92,11 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 				stack.addFirst(new BinaryOperatorExpression(operator, lhs, rhs));
 			} else if (parameterType == PropositionParameterType.TERM) {
 				String termId = parameter.getValue();
-				// TODO call Peter's TermService once it's ready to get the term definition for the given term id
-				Term term = null;
+
+				TermDefinition termDefinition = termRepositoryService.getTermById(termId);
+				if (termDefinition == null) { throw new RepositoryDataException("unable to load term with id " + termId);}
+				Term term = translateTermDefinition(termDefinition);
+				
 				new TermExpression(term, termResolutionEngine);
 			}
 		}
@@ -90,9 +105,35 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 		}
 		return new BooleanValidatingExpression(stack.removeFirst());
 	}
+	
+	public static Term translateTermDefinition(TermDefinition termDefinition) {
+		if (termDefinition == null) {
+			throw new RepositoryDataException("Given TermDefinition is null");
+		}
+		TermSpecificationDefinition termSpecificationDefinition = termDefinition.getSpecification();
+		if (termSpecificationDefinition == null) { throw new RepositoryDataException("term with id " + termDefinition.getId() + " has a null specification"); } 
+		
+		Set<TermParameterDefinition> params = termDefinition.getParameters();
+		Map<String,String> paramsMap = new TreeMap<String,String>();
+		if (!CollectionUtils.isEmpty(params)) for (TermParameterDefinition param : params) {
+			if (StringUtils.isBlank(param.getName())) { 
+				throw new RepositoryDataException("TermParameterDefinition.name may not be blank"); 
+			}
+			paramsMap.put(param.getName(), param.getValue());
+		}
+		
+		return new Term(new TermSpecification(termSpecificationDefinition.getName(), termSpecificationDefinition.getType()), paramsMap);
+	}
 
 	public void setTermResolutionEngine(TermResolutionEngine termResolutionEngine) {
 		this.termResolutionEngine = termResolutionEngine;
+	}
+	
+	/**
+	 * @param termRepositoryService the termRepositoryService to set
+	 */
+	public void setTermRepositoryService(TermRepositoryService termRepositoryService) {
+		this.termRepositoryService = termRepositoryService;
 	}
 	
 }

@@ -100,7 +100,7 @@
 						<configuration>
 							<sourceDirectory>${basedir}/target/docbook-filtered</sourceDirectory>
 							<targetDirectory>${project.build.outputDirectory}</targetDirectory>
-							<foCustomization>src/main/stylesheets/fo-stylesheet.xsl</foCustomization>
+							<foCustomization>${basedir}/src/main/stylesheets/fo-stylesheet.xsl</foCustomization>
 							<htmlStylesheet>css/stylesheet.css</htmlStylesheet>
 							<!-- parameter> 
   <name>fop.extensions</name> 

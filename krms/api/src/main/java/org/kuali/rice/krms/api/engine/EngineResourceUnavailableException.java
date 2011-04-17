@@ -28,18 +28,30 @@ public class EngineResourceUnavailableException extends RiceRuntimeException {
 
 	private static final long serialVersionUID = 4936540099245413634L;
 
+	/**
+	 * @see RiceRuntimeException#RiceRuntimeException()
+	 */
 	public EngineResourceUnavailableException() {
 		super();
 	}
 
+	/**
+	 * @see RiceRuntimeException#RiceRuntimeException(String, Throwable)
+	 */
 	public EngineResourceUnavailableException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+	/**
+	 * @see RiceRuntimeException#RiceRuntimeException(String)
+	 */
 	public EngineResourceUnavailableException(String message) {
 		super(message);
 	}
 
+	/**
+	 * @see RiceRuntimeException#RiceRuntimeException(Throwable)
+	 */
 	public EngineResourceUnavailableException(Throwable cause) {
 		super(cause);
 	}

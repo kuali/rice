@@ -59,7 +59,7 @@ class ExecutionOptionsTest {
 		assert options.getOptions().isEmpty();
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testSetFlag_null() {
 		options.setFlag(null, true);
 	}
@@ -79,7 +79,7 @@ class ExecutionOptionsTest {
 		assert options.getOptions().size() == 1;
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testSetOption_null() {
 		options.setOption(null, "myOptionValue");
 	}
@@ -109,7 +109,7 @@ class ExecutionOptionsTest {
 		assert options.getFlags().isEmpty();
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testRemoveFlag_null() {
 		options.removeFlag(null);
 	}
@@ -131,17 +131,17 @@ class ExecutionOptionsTest {
 		assert options.getOptions().isEmpty();
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testRemoveOption_null() {
 		options.removeOption(null);
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testRemoveOption_emptyString() {
 		options.removeOption("");
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testRemoveOption_whitespace() {
 		options.removeOption("  ");
 	}
@@ -158,7 +158,7 @@ class ExecutionOptionsTest {
 		assert options.getFlag(ExecutionFlag.CONTEXT_MUST_EXIST) == ExecutionFlag.CONTEXT_MUST_EXIST.getDefaultValue();
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testGetFlag_null() {
 		options.getFlag(null);
 	}
@@ -174,17 +174,17 @@ class ExecutionOptionsTest {
 		assertNull options.getOption("doesnotexist");
 	}
 
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testGetOption_null() {
 		options.getOption(null);
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testGetOption_emptyString() {
 		options.getOption("");
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testGetOption_whitespace() {
 		options.getOption(" ");
 	}
@@ -200,7 +200,7 @@ class ExecutionOptionsTest {
 		assertFalse options.isFlagSet(ExecutionFlag.CONTEXT_MUST_EXIST);
 	}
 
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testIsFlagSet_null() {
 		options.isFlagSet(null);
 	}
@@ -216,17 +216,17 @@ class ExecutionOptionsTest {
 		assertFalse options.isOptionSet("doesnotexist");
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testIsOptionSet_null() {
 		options.isOptionSet(null);
 	}
 	
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testIsOptionSet_emptyString() {
 		options.isOptionSet("");
 	}
 
-	@Test(expected=IllegalArgumentException)
+	@Test(expected=IllegalArgumentException.class)
 	public void testIsOptionSet_whitespace() {
 		options.isOptionSet(" ");
 	}
@@ -241,7 +241,7 @@ class ExecutionOptionsTest {
 		assert flags.get(ExecutionFlag.LOG_EXECUTION);
 	}
 		
-	@Test(expected=UnsupportedOperationException)
+	@Test(expected=UnsupportedOperationException.class)
 	public void testGetFlags_unmodifiable() {
 		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
 		Map<ExecutionFlag, Boolean> flags = options.getFlags();
@@ -280,7 +280,7 @@ class ExecutionOptionsTest {
 		assert optionsMap.get("myOption");
 	}
 		
-	@Test(expected=UnsupportedOperationException)
+	@Test(expected=UnsupportedOperationException.class)
 	public void testGetOptions_unmodifiable() {
 		options.setOption("myOption", "myOptionValue");
 		Map<String, String> optionsMap = options.getOptions();

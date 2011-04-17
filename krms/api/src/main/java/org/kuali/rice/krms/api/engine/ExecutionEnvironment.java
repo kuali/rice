@@ -2,6 +2,16 @@ package org.kuali.rice.krms.api.engine;
 
 import java.util.Map;
 
+/**
+ * The ExecutionEnvironment manages contextual information which is made available to
+ * different components of the rules engine during execution.  Facts can be retrieved
+ * from and published to the environment.  It also provides a reference to the
+ * {@link EngineResults} or tracking engine activity and returning values back to
+ * the client of the rules engine.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public interface ExecutionEnvironment {
 	
 	/**

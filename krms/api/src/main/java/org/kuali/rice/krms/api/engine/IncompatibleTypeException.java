@@ -31,10 +31,36 @@ public class IncompatibleTypeException extends RiceRuntimeException {
 	private final Object value;
 	private final Class<?>[] validTypes;
 	
+	/**
+	 * Constructs an IncompatibleTypeException with a reference to the object
+	 * being checked and an array of valid Class objects which the type failed
+	 * to match.
+	 * 
+	 * <p>A message describing the nature of the incompatible types will
+	 * automatically be generated and can be retrieved through {@link #getMessage()}
+	 * 
+	 * @param value the object which was being evaluated against a set of valid types
+	 * @param validTypes the valid types against which the value was being evaluated
+	 * but failed to be compatible with
+	 */
 	public IncompatibleTypeException(Object value, Class<?>... validTypes) {
 		this(null, value, validTypes);
 	}
 	
+	/**
+	 * Constructs an IncompatibleTypeException with a message, a reference to the object
+	 * being checked, and an array of valid Class objects which the type failed
+	 * to match.
+	 * 
+	 * <p>The additional message will be prepended to the front of an automatically
+	 * generated message describing the nature of the incompatible types and can be
+	 * retrieved through {@link #getMessage()}.
+	 * 
+	 * @param additionalMessage the additional message to prepend to the generated exception detail message
+	 * @param value the object which was being evaluated against a set of valid types
+	 * @param validTypes the valid types against which the value was being evaluated
+	 * but failed to be compatible with
+	 */
 	public IncompatibleTypeException(String additionalMessage, Object value, Class<?>... validTypes) {
 		super(constructMessage(additionalMessage, value, validTypes));
 		this.value = value;
@@ -63,10 +89,21 @@ public class IncompatibleTypeException extends RiceRuntimeException {
 		return message.toString();
 	}
 	
+	/**
+	 * Returns the object which triggered the incompatible type exception.
+	 * 
+	 * @return the value passed to this exception upon construction
+	 */
 	public Object getValue() {
 		return value;
 	}
 	
+	/**
+	 * Returns the array of Class objects which include the types against
+	 * which the object value was deemed incompatible.
+	 * 
+	 * @return the valid types passed to this exception upon construction
+	 */
 	public Class<?>[] getValidTypes() {
 		return validTypes;
 	}

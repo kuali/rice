@@ -38,6 +38,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>copy-source</id>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -47,6 +48,38 @@
 							<resources>
 								<resource>
 									<directory>src/main/docbook</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-css</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/css</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/css</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-images</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/images</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/images</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
@@ -67,7 +100,8 @@
 						<configuration>
 							<sourceDirectory>${basedir}/target/docbook-filtered</sourceDirectory>
 							<targetDirectory>${project.build.outputDirectory}</targetDirectory>
-							
+							<foCustomization>src/main/stylesheets/fo-stylesheet.xsl</foCustomization>
+							<htmlStylesheet>css/stylesheet.css</htmlStylesheet>
 							<!-- parameter> 
   <name>fop.extensions</name> 
   <value>1</value> 

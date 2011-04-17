@@ -28,14 +28,14 @@ class ExecutionOptionsTest {
 
 	@Test
 	public void testExecutionOptions_copyExecutionOptions() {
-		options.setFlag(ExecutionFlag.LOG_EXECUTION, false);
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
 		options.setOption("myOption1", "myOption1Value");
 		
 		// now copy it
 		ExecutionOptions executionOptions2 = new ExecutionOptions(options);
 		def checkOptions2 = {
 			assert executionOptions2.isFlagSet(ExecutionFlag.LOG_EXECUTION);
-			assertFalse executionOptions2.getFlag(ExecutionFlag.LOG_EXECUTION, true);
+			assert executionOptions2.getFlag(ExecutionFlag.LOG_EXECUTION);
 			assert executionOptions2.isOptionSet("myOption1");
 			assert executionOptions2.getOption("myOption1") == "myOption1Value";
 		}
@@ -44,7 +44,7 @@ class ExecutionOptionsTest {
 		// now try modifying original execution options and ensure it does not side-effect the new options
 		options.setOption("newOption", "newOptionValue");
 		options.setOption("myOption1", "newMyOption1Value");
-		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, false);
 		options.setFlag(ExecutionFlag.CONTEXT_MUST_EXIST, true);
 		
 		// now check new options to make sure they weren't changed
@@ -66,9 +66,9 @@ class ExecutionOptionsTest {
 
 	@Test
 	public void testSetFlag() {
-		options.setFlag(ExecutionFlag.LOG_EXECUTION, false);
+		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
 		assert options.isFlagSet(ExecutionFlag.LOG_EXECUTION);
-		assertFalse options.getFlag(ExecutionFlag.LOG_EXECUTION, true);
+		assert options.getFlag(ExecutionFlag.LOG_EXECUTION);
 	}
 
 	@Test
@@ -149,19 +149,18 @@ class ExecutionOptionsTest {
 	@Test
 	public void testGetFlag() {
 		options.setFlag(ExecutionFlag.LOG_EXECUTION, true);
-		assert options.getFlag(ExecutionFlag.LOG_EXECUTION, false);
-		assert options.getFlag(ExecutionFlag.LOG_EXECUTION, true);
+		assert options.getFlag(ExecutionFlag.LOG_EXECUTION);
 	}
 	
 	@Test
 	public void testGetFlag_defaulted() {
-		assertFalse options.getFlag(ExecutionFlag.LOG_EXECUTION, false);
-		assertTrue options.getFlag(ExecutionFlag.LOG_EXECUTION, true);
+		assert options.getFlag(ExecutionFlag.LOG_EXECUTION) == ExecutionFlag.LOG_EXECUTION.getDefaultValue();
+		assert options.getFlag(ExecutionFlag.CONTEXT_MUST_EXIST) == ExecutionFlag.CONTEXT_MUST_EXIST.getDefaultValue();
 	}
 	
 	@Test(expected=IllegalArgumentException)
 	public void testGetFlag_null() {
-		options.getFlag(null, false);
+		options.getFlag(null);
 	}
 
 	@Test
@@ -323,8 +322,8 @@ class ExecutionOptionsTest {
 			setFlag(ExecutionFlag.CONTEXT_MUST_EXIST, true);
 		assert options.getFlags().size() == 2;
 		assert options.getOptions().size() == 1;
-		assertFalse options.getFlag(ExecutionFlag.LOG_EXECUTION, true);
-		assert options.getFlag(ExecutionFlag.CONTEXT_MUST_EXIST, false);
+		assertFalse options.getFlag(ExecutionFlag.LOG_EXECUTION);
+		assert options.getFlag(ExecutionFlag.CONTEXT_MUST_EXIST);
 		assertFalse options.isOptionSet("myOption1");
 		assert options.getOption("myOption1") == null;
 		assert options.getOption("myOption2") == "myOptionValue2";

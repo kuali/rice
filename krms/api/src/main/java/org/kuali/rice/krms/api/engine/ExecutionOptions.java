@@ -123,22 +123,22 @@ public final class ExecutionOptions {
 	
 	/**
 	 * Returns the value the given flag.  If the specified flag has not been set
-	 * on this object, then the given defaultValue will be returned.
+	 * on this object, then {@link ExecutionFlag#getDefaultValue()} will be returned.
 	 * 
 	 * @param flag the flag to check
-	 * @param defaultValue the value to return if the specified flag is not set
-	 * @return the value of the flag, or the default value if the flag is not currently set on this object
+	 * @return the value of the flag, or the flag's default value if the flag value
+	 * is not currently set on this object
 	 * 
 	 * @throws IllegalArgumentException if the given flag is null
 	 */
-	public boolean getFlag(ExecutionFlag flag, boolean defaultValue) {
+	public boolean getFlag(ExecutionFlag flag) {
 		if (flag == null) {
 			throw new IllegalArgumentException("flag is null");
 		}
 		if (isFlagSet(flag)) {
 			return flags.get(flag).booleanValue();
 		}
-		return defaultValue;
+		return flag.getDefaultValue();
 	}
 	
 	/**

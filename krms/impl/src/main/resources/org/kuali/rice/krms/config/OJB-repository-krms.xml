@@ -107,7 +107,7 @@
 	        indirection-table="KRMS_CMPND_PROP_PROPS_T"
 	        auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
 	        <orderby name="SEQ_NO" sort="ASC" />
-	        <fk-pointing-to-this-class    column="CMPND_PROD_ID" />
+	        <fk-pointing-to-this-class    column="CMPND_PROP_ID" />
 	        <fk-pointing-to-element-class column="PROP_ID" />
 	        <inverse-foreignkey field-ref="propId" />
 	    </collection-descriptor>	    
@@ -179,5 +179,66 @@
          <field-descriptor name="type" column="TYP" jdbc-type="VARCHAR" />
   	</class-descriptor>
 
+    <class-descriptor class="org.kuali.rice.krms.impl.repository.TermParameterBo" table="KRMS_TERM_PARM_T">
+         <field-descriptor name="id" column="TERM_PARM_ID" jdbc-type="VARCHAR" primarykey="true "/>
+         <field-descriptor name="termId" column="TERM_ID" jdbc-type="VARCHAR" />
+         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+         <field-descriptor name="value" column="VAL" jdbc-type="VARCHAR" />
+    </class-descriptor>
+
+    <class-descriptor class="org.kuali.rice.krms.impl.repository.TermBo" table="KRMS_TERM_T">
+         <field-descriptor name="id" column="TERM_ID" jdbc-type="VARCHAR" primarykey="true "/>
+         <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
+         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+         <field-descriptor name="type" column="TYP" jdbc-type="VARCHAR" />
+         <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.TermParameterBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object">
+            <inverse-foreignkey field-ref="termId" />
+         </collection-descriptor>
+    </class-descriptor>
+    
+    <class-descriptor class="org.kuali.rice.krms.impl.repository.TermResolverAttributeBo" table="KRMS_TERM_RSLVR_ATTR_T">
+        <field-descriptor name="id" column="TERM_RSLVR_ATTR_ID" jdbc-type="VARCHAR" primarykey="true" />
+        <field-descriptor name="termResolverId" column="TERM_RSLVR_ID" jdbc-type="VARCHAR" />
+        <field-descriptor name="value" column="ATTR_VAL" jdbc-type="VARCHAR" />
+        <field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+        <reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+            <foreignkey field-ref="id" />
+        </reference-descriptor>
+    </class-descriptor>
+    
+    <class-descriptor class="org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo" table="KRMS_TERM_RSLVR_PARM_SPEC_T">
+         <field-descriptor name="id" column="TERM_RSLVR_PARM_SPEC_ID" jdbc-type="VARCHAR" primarykey="true "/>
+         <field-descriptor name="termResolverId" column="TERM_RSLVR_ID" jdbc-type="VARCHAR" />
+         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+    </class-descriptor>
+    
+    <class-descriptor class="org.kuali.rice.krms.impl.repository.TermResolverBo" table="KRMS_TERM_RSLVR_T">
+        <field-descriptor name="id" column="TERM_RSLVR_ID" jdbc-type="VARCHAR" primarykey="true" />
+        <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+        <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
+        <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+        <reference-descriptor name="output" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="link" auto-delete="none">
+            <foreignkey field-ref="id" />
+        </reference-descriptor>
+        <collection-descriptor name="prerequisites" element-class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" 
+            collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" 
+            indirection-table="KRMS_TERM_RSLVR_INPUT_SPEC_T"
+            auto-retrieve="true" auto-update="link" auto-delete="none">
+            <fk-pointing-to-this-class    column="TERM_RSLVR_ID" />
+            <fk-pointing-to-element-class column="TERM_SPEC_ID" />
+            <inverse-foreignkey field-ref="id" />
+        </collection-descriptor>
+        <collection-descriptor name="parameterNames" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object">
+            <inverse-foreignkey field-ref="termResolverId" />
+        </collection-descriptor>
+        <reference-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+            <foreignkey field-ref="termResolverId" />
+        </reference-descriptor>
+        
+    </class-descriptor>
 
 </descriptor-repository>

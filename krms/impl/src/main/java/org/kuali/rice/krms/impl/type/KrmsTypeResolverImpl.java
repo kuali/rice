@@ -23,9 +23,11 @@ import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionType;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
+import org.kuali.rice.krms.api.repository.TermResolverDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
+import org.kuali.rice.krms.framework.type.TermResolverTypeService;
 
 /**
  * TODO... 
@@ -75,6 +77,14 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 		return (ActionTypeService)service;
 	}
 	
+	@Override
+	public TermResolverTypeService getTermResolverTypeService(
+			TermResolverDefinition termResolverDefintion,
+			KrmsTypeDefinition typeDefinition) {
+		// TODO: !!!
+		throw new UnsupportedOperationException();
+	}
+	
 	public void setDefaultCompoundPropositionTypeService(PropositionTypeService defaultCompoundPropositionTypeService) {
 		this.defaultCompoundPropositionTypeService = defaultCompoundPropositionTypeService;
 	}
@@ -83,6 +93,9 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 		this.defaultSimplePropositionTypeService = defaultSimplePropositionTypeService;
 	}
 	
-	
+	public void setDefaultTermResolverTypeService(TermResolverTypeService termResolverTypeService) {
+		// TODO: !!!
+		throw new UnsupportedOperationException();
+	}
 
 }

@@ -15,9 +15,13 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.engine.TermSpecification;
+import org.kuali.rice.krms.api.repository.TermDefinition;
+import org.kuali.rice.krms.api.repository.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
 
 /**
@@ -59,6 +63,59 @@ public class TermBoServiceImpl implements TermBoService {
 		TermSpecificationBo termSpecBo = TermSpecificationBo.from(termSpec);
 		
 		businessObjectService.save(termSpecBo);
+	}
+	
+	/**
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermDefinition(org.kuali.rice.krms.api.repository.TermDefinition)
+	 */
+	@Override
+	public void createTermDefinition(TermDefinition termDef) {
+		// TODO: !!!
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermResolver(org.kuali.rice.krms.api.repository.TermResolverDefinition)
+	 */
+	@Override
+	public void createTermResolver(TermResolverDefinition termResolver) {
+		// TODO: !!!
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermById(java.lang.String)
+	 */
+	@Override
+	public TermDefinition getTermById(String id) {
+		// TODO: !!!
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermResolverById(java.lang.String)
+	 */
+	@Override
+	public TermResolverDefinition getTermResolverById(String id) {
+		// TODO: !!!
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermResolversByContextId(java.lang.String)
+	 */
+	@Override
+	public List<TermResolverDefinition> getTermResolversByContextId(String id) {
+		// TODO: !!!
+		throw new UnsupportedOperationException();
 	}
 
 }

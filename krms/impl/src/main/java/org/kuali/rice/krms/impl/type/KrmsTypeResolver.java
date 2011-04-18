@@ -17,9 +17,11 @@ package org.kuali.rice.krms.impl.type;
 
 import org.kuali.rice.krms.api.repository.ActionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.TermResolverDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
+import org.kuali.rice.krms.framework.type.TermResolverTypeService;
 
 /**
  * TODO ... 
@@ -29,8 +31,11 @@ import org.kuali.rice.krms.framework.type.PropositionTypeService;
  */
 public interface KrmsTypeResolver {
 
+	// TODO: javadocs
+	
 	PropositionTypeService getPropositionTypeService(PropositionDefinition propositionDefinition, KrmsTypeDefinition typeDefinition);
 	
 	ActionTypeService getActionTypeService(ActionDefinition actionDefinition, KrmsTypeDefinition typeDefinition);
 	
+	TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion, KrmsTypeDefinition typeDefinition);
 }

@@ -13,31 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krms.impl.repository;
+package org.kuali.rice.krms.framework.type;
 
-import java.util.List;
-
-import org.kuali.rice.krms.api.repository.TermDefinition;
+import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.TermResolverDefinition;
-import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
 
 /**
- * BO service for terms and related entities
+ * This is the interface for the type service for {@link TermResolver}s
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermBoService {
+public interface TermResolverTypeService {
+
+	TermResolver<?> loadTermResolver(TermResolverDefinition termResolverDefinition);
 	
-	// TODO: javadocs
-	
-	TermSpecificationDefinition getTermSpecificationById(String id);
-	void createTermSpecification(TermSpecificationDefinition termSpec);
-	
-	TermDefinition getTermById(String id);
-	void createTermDefinition(TermDefinition termDef);
-	
-	TermResolverDefinition getTermResolverById(String id);
-	List<TermResolverDefinition> getTermResolversByContextId(String id);
-	void createTermResolver(TermResolverDefinition termResolver);
 }

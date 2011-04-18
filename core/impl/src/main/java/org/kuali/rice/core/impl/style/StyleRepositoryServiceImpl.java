@@ -92,6 +92,11 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
                 
                 LOG.info("Automatically importing style '" + styleName + "' from '" + location + "' as configured by "+ propertyName);
                 CoreImplServiceLocator.getStyleXmlLoader().loadXml(xml, null);
+                // now that we've "ingested" it, let's try one more time to fetch from the database
+                style = styleDao.getStyle(styleName);
+                if (style == null) {
+                	throw new RiceRuntimeException("Failed to locate auto-imported style after successful import with name: " + styleName);
+                }
             }
         }
         return StyleBo.to(style);

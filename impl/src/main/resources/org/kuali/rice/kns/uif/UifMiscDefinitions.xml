@@ -50,6 +50,20 @@
      <value>/krad/css/kuali-stacked.css</value>
   </util:list>   
   
+  <util:list id="kns-new-css">
+     <value>/krad/css/main/fss-reset.css</value>
+     <value>/krad/css/main/fss-layout.css</value>
+     <value>/krad/css/main/main.css</value>
+     <value>/krad/css/kns-new/buttons.css</value>
+  </util:list>
+  
+  <util:list id="ks-new-css">
+     <value>/krad/css/main/fss-reset.css</value>
+     <value>/krad/css/main/fss-layout.css</value>
+     <value>/krad/css/main/main.css</value>
+     <value>/krad/css/ks-new/buttons.css</value>
+  </util:list> 
+  
   <!-- Widgets -->
   
   <bean id="Tabs" parent="Tabs-parentBean"/>

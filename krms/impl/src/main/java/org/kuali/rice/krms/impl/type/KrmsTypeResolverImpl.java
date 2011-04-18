@@ -78,11 +78,18 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 	}
 	
 	@Override
-	public TermResolverTypeService getTermResolverTypeService(
-			TermResolverDefinition termResolverDefintion,
-			KrmsTypeDefinition typeDefinition) {
-		// TODO: !!!
-		throw new UnsupportedOperationException();
+	public TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion, KrmsTypeDefinition typeDefinition) {
+		QName serviceName = QName.valueOf(typeDefinition.getServiceName());
+		Object service = GlobalResourceLoader.getService(serviceName);
+		if (service == null) {
+			throw new EngineResourceUnavailableException("Failed to locate the " + TermResolverTypeService.class.getSimpleName() + 
+					" with name: " + serviceName);
+		}
+		if (!(service instanceof TermResolverTypeService)) {
+			throw new EngineResourceUnavailableException("The service with name '" + serviceName + "' defined on typeId '" + termResolverDefintion.getTypeId() + 
+					"' was not of type " + TermResolverTypeService.class.getSimpleName() + ": " + service);
+		}
+		return (TermResolverTypeService)service;
 	}
 	
 	public void setDefaultCompoundPropositionTypeService(PropositionTypeService defaultCompoundPropositionTypeService) {
@@ -93,9 +100,4 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 		this.defaultSimplePropositionTypeService = defaultSimplePropositionTypeService;
 	}
 	
-	public void setDefaultTermResolverTypeService(TermResolverTypeService termResolverTypeService) {
-		// TODO: !!!
-		throw new UnsupportedOperationException();
-	}
-
 }

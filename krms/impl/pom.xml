@@ -12,6 +12,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
+
+    <!-- TODO: get rid of this when ModuleConfigurer modularity work is fixed -->  
+    <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>rice-core-impl</artifactId>
+        <version>${project.version}</version>
+    </dependency>  
+
     <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>rice-krms-framework</artifactId>

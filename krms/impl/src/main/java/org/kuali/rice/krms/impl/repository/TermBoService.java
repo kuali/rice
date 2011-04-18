@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.kuali.rice.krms.api.repository.TermDefinition;
+import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
 
 /**
- * service for getting terms from the respository
+ * BO service for terms and related entities
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermRepositoryService {
+public interface TermBoService {
 	
-	TermDefinition getTermById(String id);
-	
+	TermSpecificationDefinition getTermSpecificationById(String id);
+	void createTermSpecification(TermSpecificationDefinition termSpec);
+
 }

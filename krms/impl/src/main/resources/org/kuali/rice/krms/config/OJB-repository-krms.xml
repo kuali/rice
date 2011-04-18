@@ -25,7 +25,7 @@
 		batch-mode="false" useAutoCommit="0" ignoreAutoCommitExceptions="false">
 		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
 		<sequence-manager
-			className="org.kuali.rice.core.ojb.ConfigurableSequenceManager">
+			className="org.kuali.rice.core.framework.persistence.ojb.ConfigurableSequenceManager">
 			<attribute attribute-name="property.prefix"
 				attribute-value="datasource.ojb.sequenceManager" />
 		</sequence-manager>
@@ -44,7 +44,7 @@
 		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"
 			conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="objectId" column="OBJ_ID"jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="componentName" column="CMPNT_NM" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
@@ -107,7 +107,7 @@
 	        indirection-table="KRMS_CMPND_PROP_PROPS_T"
 	        auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
 	        <orderby name="SEQ_NO" sort="ASC" />
-	        <fk-pointing_to-this-class    column="CMPND_PROD_ID" />
+	        <fk-pointing-to-this-class    column="CMPND_PROD_ID" />
 	        <fk-pointing-to-element-class column="PROP_ID" />
 	        <inverse-foreignkey field-ref="propId" />
 	    </collection-descriptor>	    
@@ -170,6 +170,13 @@
     	<reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       		<foreignkey field-ref="id" />
     	</reference-descriptor>
+  	</class-descriptor>
+  	
+  	<class-descriptor class="org.kuali.rice.krms.impl.repository.TermSpecificationBo" table="KRMS_TERM_SPEC_T">
+  	     <field-descriptor name="id" column="TERM_SPEC_ID" jdbc-type="VARCHAR" primarykey="true "/>
+         <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
+         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+         <field-descriptor name="type" column="TYP" jdbc-type="VARCHAR" />
   	</class-descriptor>
 
 

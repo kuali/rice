@@ -38,7 +38,7 @@ import org.kuali.rice.core.xml.XmlException;
  * Exports Style definitions to XML.
  *
  * @see org.kuali.rice.edl.impl.service.StyleService
- * @see org.kuali.rice.kew.xml.StyleXmlParser
+ * @see org.kuali.rice.kew.StyleXmlParserImpl.StyleXmlParser
  * @see EDocLiteStyle
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

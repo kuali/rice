@@ -751,7 +751,7 @@
     	<property name="jcdAlias" value="enWorkflowDataSource" />
     </bean>
     
-    <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParser">
+    <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParserImpl">
     	<property name="styleService" ref="styleService" />
     </bean>
     

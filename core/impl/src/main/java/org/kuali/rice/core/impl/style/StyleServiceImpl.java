@@ -62,6 +62,9 @@ public class StyleServiceImpl implements StyleService {
      */
     @Override
     public Style getStyle(String styleName) {
+    	
+    	// TODO should really be caching here!
+    	
     	return styleRepositoryService.getStyle(styleName);
     }
 

@@ -2,7 +2,7 @@ package org.kuali.rice.core.impl.services;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.core.impl.style.StyleXmlParser;
 
 public class CoreImplServiceLocator {
 
@@ -13,10 +13,10 @@ public class CoreImplServiceLocator {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
-    public static XmlLoader getStyleXmlLoader() {
+    public static StyleXmlParser getStyleXmlLoader() {
         return getService(STYLE_XML_LOADER);
     }
-    
+        
     public static XmlExporter getStyleXmlExporter() {
         return getService(STYLE_XML_EXPORTER);
     }

@@ -107,6 +107,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 			typeResolver.getTermResolverTypeService(termResolverDef, krmsTypeDef);
 		
 		TermResolver<?> termResolver = termResolverTypeService.loadTermResolver(termResolverDef);
+		// TODO: log warning when termResolver comes back null? or throw exception?
 		return termResolver;
 	}
 	

@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kim-api</artifactId>
+            <artifactId>rice-kim-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

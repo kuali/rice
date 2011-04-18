@@ -2,7 +2,7 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<styles xmlns="ns:workflow/Style" xsi:schemaLocation="ns:workflow/Style resource:Style">
 		<style name="widgets">
-			<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:my-class="xalan://org.kuali.rice.edl.framework.util.EDLFunctionstions">
+			<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:my-class="xalan://org.kuali.rice.edl.framework.util.EDLFunctions">
 				<xsl:output method="html" version="4.01" />
 				<xsl:variable name="globalReadOnly" select="/documentContent/documentState/editable != 'true'"/>
 				<!-- determined by an appconstant -->

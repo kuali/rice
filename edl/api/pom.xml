@@ -3,7 +3,7 @@
   <parent>
     <artifactId>rice-edl</artifactId>
     <groupId>org.kuali.rice</groupId>
-    <version>2.0.0-m3</version>
+    <version>2.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>rice-edl-api</artifactId>
   <name>rice-edl-api</name>

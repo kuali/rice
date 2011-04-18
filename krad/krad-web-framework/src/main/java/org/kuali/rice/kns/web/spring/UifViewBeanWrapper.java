@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.spring;
 
+import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +25,7 @@ import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.PropertyValue;
 
 /**
@@ -125,6 +127,34 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
 			editor = getDefaultEditor(clazz);
 		}
 		return editor;
+    }
+    
+    @Override
+    public Class<?> getPropertyType(String propertyName) throws BeansException {
+        try {
+            PropertyDescriptor pd = getPropertyDescriptorInternal(propertyName);
+            if (pd != null) {
+                return pd.getPropertyType();
+            }
+            
+            // Maybe an indexed/mapped property...
+            Object value = super.getPropertyValue(propertyName);
+            if (value != null) {
+                return value.getClass();
+            }
+            
+            // Check to see if there is a custom editor,
+            // which might give an indication on the desired target type.
+            Class<?> editorType = guessPropertyTypeFromEditors(propertyName);
+            if (editorType != null) {
+                return editorType;
+            }
+        }
+        catch (InvalidPropertyException ex) {
+            // Consider as not determinable.
+        }
+
+        return null;
     }
 
     @Override

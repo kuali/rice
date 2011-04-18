@@ -1,3 +1,7 @@
+html {
+	font-family: Helvetica, Arial, sans-serif;
+}	
+
 #viewheader_div .doc_view_header {
 	background: #EBEBEB url(../../images/masthead1.gif);
 	border-bottom: 1px solid #999;
@@ -9,9 +13,12 @@
 	border-bottom: 1px solid #999;
 	min-width:800px;
 	margin-bottom: 15px;
+    font-family: Georgia,"Times New Roman",Times,serif;
+    font-size: 1.8em;
+    letter-spacing: 0.02em;
 }
 #viewheader_div h1 {
-	font-size:1.2em;
+	font-size: .9em;
 	padding-left: 0.6em;
 	font-family: Arimo;
 	font-weight: bold;
@@ -111,6 +118,14 @@ div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 	float: right;
 	font-size: .9em;
 	border-bottom: 1px solid #999;
+}
+
+span.desc {
+	color: #000000;
+    display: block;
+    font-weight: bold;
+    line-height: 1.9em;
+    white-space: nowrap;
 }
 
 .left {

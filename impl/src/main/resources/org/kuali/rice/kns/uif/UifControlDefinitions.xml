@@ -57,6 +57,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>   
   
+  <bean id="CheckboxGroupControl" parent="CheckboxGroupControl-parentBean"/>
+  <bean id="CheckboxGroupControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.CheckboxGroupControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/checkboxGroup.jsp"/>
+      <property name="styleClasses" value="checkbox" />
+      <property name="delimiter">
+        <value><![CDATA[</br>]]></value>
+      </property>
+  </bean>   
+  
   <bean id="FileControl" parent="FileControl-parentBean"/>
   <bean id="FileControl-parentBean" abstract="true" class="org.kuali.rice.kns.uif.control.FileControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/control/file.jsp"/>

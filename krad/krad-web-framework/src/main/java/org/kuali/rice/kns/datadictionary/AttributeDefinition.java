@@ -41,14 +41,16 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.LookupConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.control.Control;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * A single attribute definition in the DataDictionary, which contains
  * information relating to the display, validation, and general maintenance of a
  * specific attribute of an entry.
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
 	private static final long serialVersionUID = -2490613377818442742L;
@@ -75,7 +77,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	protected String formatterClass;
 
 	protected AttributeSecurity attributeSecurity;
-//	protected Constraint constraint;
 	
 	protected Boolean dynamic;
 	
@@ -91,6 +92,8 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	
 	//TODO: This may not be required since we now use ComplexAttributeDefinition
 	protected String childEntryName;
+	
+	private KeyValuesFinder optionsFinder;
 	
 
 	public AttributeDefinition() {
@@ -589,18 +592,35 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		this.constraint = constraint;
 	}
 	
-//	/**
-//	 * @return the constraint
-//	 */
-//	public Constraint getConstraint() {
-//		return this.constraint;
-//	}
-//
-//	/**
-//	 * @param constraint the constraint to set
-//	 */
-//	public void setConstraint(Constraint constraint) {
-//		this.constraint = constraint;
-//	}
+    /**
+     * Instance of <code>KeyValluesFinder</code> that should be invoked to
+     * provide a List of values the field can have. Generally used to provide
+     * the options for a multi-value control or to validate the submitted field
+     * value
+     * 
+     * @return KeyValuesFinder instance
+     */
+    public KeyValuesFinder getOptionsFinder() {
+        return this.optionsFinder;
+    }
+
+    /**
+     * Setter for the field's KeyValuesFinder instance
+     * 
+     * @param optionsFinder
+     */
+    public void setOptionsFinder(KeyValuesFinder optionsFinder) {
+        this.optionsFinder = optionsFinder;
+    }
+    
+    /**
+     * Setter that takes in the class name for the options finder and creates a
+     * new instance to use as the finder for the attribute field
+     * 
+     * @param optionsFinderClass
+     */
+    public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
+        this.optionsFinder = ObjectUtils.newInstance(optionsFinderClass);
+    }
 	
 }

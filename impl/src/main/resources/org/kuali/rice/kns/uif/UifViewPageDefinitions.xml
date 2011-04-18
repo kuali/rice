@@ -100,6 +100,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="title" value="Lookup Criteria"/>
         <property name="fieldBindingObjectPath" value="criteriaFields"/>
         <property name="layoutManager.numberOfColumns" value="2"/>
+        <property name="accordion.render" value="false"/>
         <property name="footer">
           <bean parent="FooterLookup" />
         </property>
@@ -136,6 +137,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="defaultBindingObjectPath" value="document"/>
      <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.DocumentPresentationControllerBase"/>
      <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.DocumentAuthorizerBase"/>
+     <property name="singlePageView" value="true"/>  
      <property name="header">
         <bean parent="HeaderViewDocument"/>
      </property>
@@ -164,7 +166,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="formClass" value="org.kuali.rice.kns.web.spring.form.MaintenanceForm"/>
      <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
      <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
-     <property name="singlePageView" value="true"/>
   </bean>
   
   <!-- Base Pages -->

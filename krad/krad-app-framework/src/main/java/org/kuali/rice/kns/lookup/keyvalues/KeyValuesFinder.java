@@ -21,9 +21,9 @@ import java.util.Map;
 import org.kuali.rice.core.util.KeyValue;
 
 /**
- * This interface defines basic methods value finders.
+ * Defines basic methods value finders.
  *
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KeyValuesFinder {
 

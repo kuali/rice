@@ -63,6 +63,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClasses" value="page_header"/>
   </bean>  
   
+  <bean id="HeaderGroup" parent="HeaderGroup-parentBean"/>
+  <bean id="HeaderGroup-parentBean" abstract="true" parent="HeaderTwo">
+  </bean>  
+  
   <!-- Common Headers --> 
   <bean id="HeaderPage_NoActions" parent="HeaderPage">
     <property name="group">

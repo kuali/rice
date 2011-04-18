@@ -24,10 +24,17 @@
 </c:if>
 
 <krad:span component="${field}">
-   <%-- required message --%>
-   <krad:template component="${field.requiredMessageField}"/>
+   <c:if test="${field.requiredMessagePlacement eq 'LEFT'}">
+     <%-- required message --%>
+     <krad:template component="${field.requiredMessageField}"/>
+   </c:if>
     
    <label id="${field.id}" for="${field.labelForComponentId}">
       ${label}
    </label>
+   
+   <c:if test="${field.requiredMessagePlacement eq 'RIGHT'}">
+     <%-- required message --%>
+     <krad:template component="${field.requiredMessageField}"/>
+   </c:if>
 </krad:span>   

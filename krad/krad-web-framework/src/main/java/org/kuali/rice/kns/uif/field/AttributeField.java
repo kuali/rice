@@ -37,6 +37,7 @@ import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * Field that encapsulates data input/output captured by an attribute within the
@@ -123,14 +124,6 @@ public class AttributeField extends FieldBase implements DataBinding {
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
         }
-
-        // TODO: remove later, this should be done within the service lifecycle
-        if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
-            MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
-            if ((multiValueControl.getOptions() == null) || multiValueControl.getOptions().isEmpty()) {
-                multiValueControl.setOptions(optionsFinder.getKeyValues());
-            }
-        }
     }
 
     /**
@@ -164,6 +157,14 @@ public class AttributeField extends FieldBase implements DataBinding {
         // validation
         if (isReadOnly() || getControl() == null) {
             return;
+        }
+
+        // TODO: remove later, this should be done within the service lifecycle
+        if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
+            MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
+            if ((multiValueControl.getOptions() == null) || multiValueControl.getOptions().isEmpty()) {
+                multiValueControl.setOptions(optionsFinder.getKeyValues());
+            }
         }
 
         ClientValidationUtils.processAndApplyConstraints(this, view);
@@ -278,7 +279,11 @@ public class AttributeField extends FieldBase implements DataBinding {
             setConstraint(attributeDefinition.getConstraint());
             getConstraintMessageField().setMessageText(attributeDefinition.getConstraint());
         }
-
+        
+        // options
+        if (getOptionsFinder() == null) {
+            setOptionsFinder(attributeDefinition.getOptionsFinder());
+        }
     }
 
     /**
@@ -515,6 +520,16 @@ public class AttributeField extends FieldBase implements DataBinding {
      */
     public void setOptionsFinder(KeyValuesFinder optionsFinder) {
         this.optionsFinder = optionsFinder;
+    }
+    
+    /**
+     * Setter that takes in the class name for the options finder and creates a
+     * new instance to use as the finder for the attribute field
+     * 
+     * @param optionsFinderClass
+     */
+    public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
+        this.optionsFinder = ObjectUtils.newInstance(optionsFinderClass);
     }
 
     /**

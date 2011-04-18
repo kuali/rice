@@ -150,14 +150,11 @@ form li div label, form li span label {
 	display:block;
 }
 .desc {
-	font-size:95%;
-	line-height:150%;
-    padding-bottom: 5px;	
-    padding-top: 5px;
-    padding-right: 5px;
-	border:none;
-	text-align: right;
-	vertical-align: top;
+	color: #000000;
+    display: block;
+    font-weight: bold;
+    line-height: 1.9em;
+    white-space: nowrap;
 }
 label.choice {
 	display:block;

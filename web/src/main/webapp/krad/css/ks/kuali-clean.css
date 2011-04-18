@@ -11,6 +11,9 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fiel
 	margin:0;
 	padding:0;
 }
+body {
+    font-size: 85%;	
+}	
 table {
 	border-collapse:collapse;
 	border-spacing:0;
@@ -67,12 +70,14 @@ div.wrap {
 }
 
 div.wrap h2 {
-	color:#900;
-	font-size: 1.2em;
+	color: black;
+	font-size: 1.6em;
 	padding-top: 0px;
-	padding-bottom: 6px;
-	margin-left: 12px;
+	padding-bottom: 0px;
+	margin-left: 0px;
 	margin-bottom: 6px;
+	margin-right: 145px;
+	letter-spacing: 0.05em;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 	border-bottom-color: #999;
@@ -82,7 +87,7 @@ div.wrap h3 {
 	color:#900;
 	font-size: 1em;
 	padding-top: 0px;
-    margin-left: 32px;
+    margin-left: 0px;
     margin-right: 32px;
 	border-bottom-width: 1px;
 	border-bottom-style: dashed;
@@ -159,7 +164,9 @@ a:hover, a:focus{
 }
 
 .view_header h1 {
-	font-size: 1.8em;
+	font-family: Georgia,"Times New Roman",Times,serif;
+    font-size: 1.8em;
+    letter-spacing: 0.02em;
 }	
 
 .page_header h1 {
@@ -202,7 +209,11 @@ a:hover, a:focus{
 }
 
 span.required {
-	color: red;
+    color: #999999;
+    font-size: 0.9em;
+    font-style: italic;
+    font-weight: normal;
+    margin-left: 4px;
 }
 
 div.globalbuttons

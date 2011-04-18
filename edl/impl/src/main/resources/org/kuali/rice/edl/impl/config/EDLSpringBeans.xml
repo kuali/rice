@@ -46,46 +46,63 @@
 	<!-- DAO's are located in EDLOJBSpringBeans.xml and EDLJPASpringBeans.xml -->
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml" />
-
-	<!-- In case stuff needs to be imported from another Spring context <bean 
-		id="mailer" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean"> 
-		<property name="serviceName" value="mailer" /> </bean> -->
-
-	<bean id="enWorkflowDataSource"
-		class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
-		<property name="preferredDataSourceParams">
-			<list>
-				<value>org.kuali.workflow.datasource</value>
-			</list>
-		</property>
-		<property name="preferredDataSourceJndiParams">
-			<list>
-				<value>org.kuali.workflow.datasource.jndi.location</value>
-			</list>
-		</property>
-		<property name="serverDataSource" value="true" />
+	
+	<bean id="kualiModuleService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kualiModuleService" />
+	</bean>
+	
+	<bean id="dataDictionaryService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dataDictionaryService" />
 	</bean>
 
-	<bean id="kewNonTransactionalDataSource"
-		class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean"
+	<bean id="persistenceServiceOjb" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="persistenceServiceOjb" />
+	</bean>
+
+    <bean id="xmlImpexRegistry"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="xmlImpexRegistry" />
+	</bean>
+	
+	<bean id="edlImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
+		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
+		<property name="xmlLoadersToRegister">
+			<list>
+				<ref local="enEDocLiteService" />
+			</list>
+		</property>
+		<property name="xmlExportersToRegister">
+			<list>
+				<ref local="enEDocLiteService" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="edlLookupHelperService" class="org.kuali.rice.edl.impl.lookupable.EDocLiteLookupableHelperServiceImpl" scope="prototype" />
+
+	<bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+		<property name="lookupableHelperService">
+			<ref bean="edlLookupHelperService" />
+		</property>
+	</bean>
+	
+    <bean id="styleService"	class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="styleService" />
+	</bean>
+	
+	<bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl"
 		lazy-init="true">
-		<property name="nullAllowed" value="true" />
-		<property name="nonTransactionalDataSource" value="true" />
-		<property name="preferredDataSourceParams">
-			<list>
-				<value>kew.nonTransactional.datasource</value>
-			</list>
-		</property>
-		<property name="preferredDataSourceJndiParams">
-			<list>
-				<value>kew.nonTransactional.datasource.jndi.location</value>
-			</list>
-		</property>
-		<property name="serverDataSource" value="false" />
+		<property name="EDocLiteDAO" ref="enEDocLiteDAO" />
+		<property name="styleService" ref="styleService" />
 	</bean>
 
-	<bean
-		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+	<bean id="enExtractService" class="org.kuali.rice.edl.impl.extract.ExtractServiceImpl">
+		<property name="extractDAO">
+			<ref bean="enExtractDAO" />
+		</property>
+	</bean>
+
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
 			<list>
 				<idref bean="matchAllTxInterceptor" />
@@ -98,72 +115,25 @@
 			</list>
 		</property>
 	</bean>
-
-	<!-- END PROPAGATION REQUIRED TX DECLARATIONS -->
-
-	<!-- EDL Extract Service -->
-	<bean id="enExtractService" class="org.kuali.rice.edl.impl.extract.ExtractServiceImpl">
-		<property name="extractDAO">
-			<ref bean="enExtractDAO" />
-		</property>
-	</bean>
-
-
-	<bean id="enEDocLiteService"
-		class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl"
-		lazy-init="true">
-		<property name="EDocLiteDAO" ref="enEDocLiteDAO" />
-		<property name="styleService" ref="styleService" />
-	</bean>
-
-	<bean id="matchAllTxCheckedExceptionInterceptor"
-		class="org.kuali.rice.core.framework.persistence.jta.KualiTransactionInterceptor">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributeSource">
-			<ref bean="matchAllWithPropReqCheckedException" />
-		</property>
-	</bean>
-
-
-	<bean id="checkedExceptionAutoProxyCreator"
-		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="interceptorNames">
+	
+	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
+        <property name="preferredDataSourceParams">
 			<list>
-				<idref local="matchAllTxCheckedExceptionInterceptor" />
+				<value>org.kuali.workflow.datasource</value>
 			</list>
 		</property>
-		<property name="beanNames">
+		<property name="preferredDataSourceJndiParams">
 			<list>
-				<idref local="enWorkflowDocumentActionsService" />
+				<value>org.kuali.workflow.datasource.jndi.location</value>
 			</list>
 		</property>
-	</bean>
-
-	<bean id="dataDictionaryService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="dataDictionaryService" />
-	</bean>
-
-	<bean id="persistenceServiceOjb"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="persistenceServiceOjb" />
-	</bean>
-
-	<bean id="kualiModuleService"
-		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="kualiModuleService" />
-	</bean>
-
-	<!-- edlModule? <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService"> 
-		<property name="moduleConfiguration" ref="kewModuleConfiguration"/> <property 
-		name="kualiModuleService" ref="kualiModuleService" /> </bean> -->
-
-	<bean id="kewModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
-		<property name="namespaceCode" value="KR-WKFLW" />
+		<property name="serverDataSource" value="true"/>
+    </bean>
+    
+	<bean id="edlModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+		<property name="namespaceCode" value="KR-EDL" />
 		<property name="dataSourceName" value="enWorkflowDataSource" />
-		<property name="entityManager" ref="kewEntityManager" />
+		<property name="entityManager" ref="edlEntityManager" />
 		<property name="initializeDataDictionary" value="true" />
 		<property name="dataDictionaryService" ref="dataDictionaryService" />
 		<property name="persistenceService" ref="persistenceServiceOjb" />
@@ -174,122 +144,66 @@
 					lookups, inquiry work across modules -->
 				<!-- from EDL -->
 				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteAssociation.xml</value>
-			    <value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteDefinition.xml</value>
-			    
+				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteDefinition.xml
+				</value>
+
 				<!-- from KEW -->
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml
-				</value>
-				<value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml
-				</value>
-				<value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteDefinition.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/Style.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocSearchCriteriaDTO.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml
-				</value>
-				<value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml
-				</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/Style.xml</value>
+				<value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
+				<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocSearchCriteriaDTO.xml</value>
+				<value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
+				<value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
+				<value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>
 
 				<!-- from KIM -->
 
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleMemberImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentCitizenship.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeDataImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml
-				</value>
-				<value>classpath:org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml
-				</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleMemberImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentCitizenship.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeDataImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimAttributeImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
+				<value>classpath:org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml</value>
 				<value>classpath:org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml
 				</value>
 
@@ -360,71 +274,25 @@
 				<value>org.kuali.rice.kew.docsearch</value>
 			</list>
 		</property>
-		<property name="externalizableBusinessObjectImplementations">
-			<map>
-				<entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO"
-					value="org.kuali.rice.kew.doctype.bo.DocumentType" />
-				<entry key="org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO"
-					value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO" />
-			</map>
-		</property>
+<!-- 		<property name="externalizableBusinessObjectImplementations"> -->
+<!-- 			<map> -->
+<!-- 				<entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" -->
+<!-- 					value="org.kuali.rice.kew.doctype.bo.DocumentType" /> -->
+<!-- 				<entry key="org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO" -->
+<!-- 					value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO" /> -->
+<!-- 			</map> -->
+<!-- 		</property> -->
 	</bean>
 
-	<bean id="edlLookupHelperService"
-		class="org.kuali.rice.edl.impl.lookupable.EDocLiteLookupableHelperServiceImpl"
-		scope="prototype" />
-
-	<bean id="edlLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl"
-		scope="prototype">
-		<property name="lookupableHelperService">
-			<ref bean="edlLookupHelperService" />
-		</property>
+	<!-- START JPA CONFIGURATION -->
+	<bean id="edlEntityManagerFactory" class="org.kuali.rice.kns.org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
+		<constructor-arg value="rice.kew" />
+		<constructor-arg ref="enWorkflowDataSource" />
 	</bean>
 
-
-
-	<bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
-		<property name="cache" ref="coreCache" />
-		<property name="styleDao" ref="styleDao" />
+	<bean id="edlEntityManager"	class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+		<property name="entityManagerFactory" ref="edlEntityManagerFactory" />
 	</bean>
-
-	<bean id="styleDao" class="org.kuali.rice.core.impl.style.StyleDaoOjb">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-
-	<bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParser">
-		<property name="styleService" ref="styleService" />
-	</bean>
-
-	<bean id="styleXmlExporter" class="org.kuali.rice.core.impl.style.StyleXmlExporter" />
-
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="interceptorNames">
-			<list>
-				<idref bean="matchAllTxInterceptor" />
-			</list>
-		</property>
-		<property name="beanNames">
-			<list>
-				<idref local="enExtractService" />
-				<idref local="enEDocLiteService" />
-			</list>
-		</property>
-	</bean>
-	
-	    <bean id="edlImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
-		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
-        
-        <property name="xmlLoadersToRegister">
-		   <list>
-             <ref local="enEDocLiteService" />
-		   </list>
-		</property>
-		<property name="xmlExportersToRegister">
-		   <list>
-             <ref local="enEDocLiteService" />
-		   </list>
-		</property>
-	</bean>
+	<!-- END JPA CONFIGURATION -->
 
 </beans>

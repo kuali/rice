@@ -7,7 +7,8 @@
       enEDocLiteService
   </param>
 
-  <param name="edl.config.loc">classpath:META-INFs/EDLConfig.xml</param>
+  <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
   <param name="edl.style.widgets">classpath:org/kuali/rice/edl/impl/default-widgets.xml</param>
+  <param name="edl.mode">LOCAL</param>
     
 </config>

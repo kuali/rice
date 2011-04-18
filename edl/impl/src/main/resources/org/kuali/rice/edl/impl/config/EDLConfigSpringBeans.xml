@@ -69,4 +69,14 @@
 		</property>
 	</bean>
 	
+	<bean id="edlConfigurer" class="org.kuali.rice.edl.impl.config.EDLConfigurer">
+		<property name="moduleName" value="EDL" />
+		<property name="validRunModes">
+			<list>
+				<value>LOCAL</value>
+				<value>EMBEDDED</value>
+			</list>
+		</property>
+	</bean>
+	
 </beans>

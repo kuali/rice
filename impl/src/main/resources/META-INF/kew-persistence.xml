@@ -62,8 +62,6 @@
     <class>org.kuali.rice.kew.engine.node.NodeState</class>
     <class>org.kuali.rice.kew.engine.node.Process</class>
     <class>org.kuali.rice.core.impl.style.StyleBo</class>
-    <class>org.kuali.rice.edl.impl.bo.EDocLiteDefinition</class>
-    <class>org.kuali.rice.edl.impl.bo.EDocLiteAssociation</class>
     <!--<class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>-->
     <!-- 
     <class>org.kuali.rice.kew.role.QualifiedRole</class>

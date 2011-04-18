@@ -16,11 +16,22 @@
 
 package org.kuali.rice.edl.impl.service;
 
+import javax.xml.namespace.QName;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 
 public class EdlServiceLocator {
+	
+	private static final Logger LOG = Logger.getLogger(EdlServiceLocator.class);
 
+	public static final String EDL_RUN_MODE_PROPERTY = "edl.mode";
 	public static final String EDOCLITE_SERVICE = "enEDocLiteService";
+	
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -28,6 +39,15 @@ public class EdlServiceLocator {
 
 	public static EDocLiteService getEDocLiteService() {
 		return getService(EDOCLITE_SERVICE);
+	}
+	
+	public static Object getBean(String serviceName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + serviceName);
+		}
+		return GlobalResourceLoader.getResourceLoader().getService(
+				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(EDL_RUN_MODE_PROPERTY)))) ?
+						new QName(KEWConstants.KEW_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
 
 }

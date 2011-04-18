@@ -65,11 +65,11 @@
 		<property name="metadataLocation" value="classpath:org/kuali/rice/edl/impl/config/OJB-repository-edl.xml" />
 	</bean>
   
-  <bean id="enEDocLiteDAO" class="org.kuali.rice.edl.impl.dao.impl.EDocLiteDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
+  <bean id="enEDocLiteDAO" class="org.kuali.rice.edl.impl.dao.impl.EDocLiteDAOOjbImpl" lazy-init="true" depends-on="edlOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
     
-  <bean id="enExtractDAO" class="org.kuali.rice.edl.impl.extract.dao.impl.ExtractDAOOjbImpl" depends-on="kewOjbConfigurer">
+  <bean id="enExtractDAO" class="org.kuali.rice.edl.impl.extract.dao.impl.ExtractDAOOjbImpl" depends-on="edlOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
   

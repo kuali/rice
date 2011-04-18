@@ -112,6 +112,11 @@
 			<list>
 				<!-- FIXME: RICE MODULARITY  -->
 				<!-- had to combine all the DD files into a single list here to make lookups, inquiry work across modules -->
+				
+				<!-- from EDL -->
+				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteAssociation.xml</value>
+				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteDefinition.xml</value>
+								
 				<!-- from KEW -->
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</value>
@@ -121,8 +126,6 @@
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</value>
-			    <value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteAssociation.xml</value>
-			    <value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteDefinition.xml</value>
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/Style.xml</value>
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>

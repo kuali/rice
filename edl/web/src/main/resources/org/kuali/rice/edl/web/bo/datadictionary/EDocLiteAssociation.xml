@@ -19,7 +19,7 @@
 
   <bean id="EDocLiteAssociation-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="org.kuali.rice.edl.impl.bo.EDocLiteAssociation"/>
-    <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
+    <property name="exporterClass" value="org.kuali.rice.edl.impl.xml.export.EdlDataExporter"/>
     <property name="objectLabel" value="eDoc Lite Association"/>
     <property name="inquiryDefinition">
       <ref bean="EDocLiteAssociation-inquiryDefinition"/>
@@ -134,7 +134,7 @@
   </bean>
 
   <!-- Business Object Lookup Definition -->
-
+  
   <bean id="EDocLiteAssociation-lookupDefinition" parent="EDocLiteAssociation-lookupDefinition-parentBean"/>
 
   <bean id="EDocLiteAssociation-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">

@@ -84,7 +84,7 @@ limitations under the License.
     </property>
     <property name="componentOptions">
         <map>
-            <entry key="animate" value="false"/>
+            <entry key="animate" value="true"/>
             <entry key="slideout" value="true"/>
         </map>
     </property>

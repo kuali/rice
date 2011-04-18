@@ -27,9 +27,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClasses" value="workarea"/>
       <property name="presentationControllerClass" value="org.kuali.rice.kns.uif.authorization.PresentationControllerBase"/>
       <property name="authorizerClass" value="org.kuali.rice.kns.uif.authorization.AuthorizerBase"/>
-	  <property name="errorsField">
-        <bean parent="ErrorsField_View"/>
-      </property>
       <property name="header">
         <bean parent="HeaderView"/>
       </property> 
@@ -171,10 +168,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <!-- Base Pages -->
    
   <bean id="Page" parent="Page-parentBean"/>
-  <bean id="Page-parentBean" abstract="true" parent="Group">
+  <bean id="Page-parentBean" abstract="true" parent="PageGroup">
       <property name="header">
         <bean parent="HeaderPage"/>
       </property>
+      <property name="errorsField">
+        <bean parent="ErrorsField_Page"/>
+      </property> 
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>  

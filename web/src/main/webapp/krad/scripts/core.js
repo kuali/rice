@@ -164,7 +164,7 @@ function submitForm() {
 			var page = jq("#viewpage_div", tempDiv);
 			jq("#viewpage_div").replaceWith(page);
 			jq("#formComplete").html("");
-
+			runHiddenScripts("viewpage_div");
 		}
 	});
 }
@@ -585,38 +585,6 @@ function setupValidator(){
 			jq("#" + id + "_errors_errorMessages").show();
 			var errorList = jq("#" + id + "_errors_errorMessages ul");
 			error.appendTo(errorList);
-		}
-	});
-	jQuery.validator.addMethod("minExclusive", function(value, element, param){
-		if (param.length == 1 || param[1]()) {
-			return this.optional(element) || value > param[0];
-		}
-		else{
-			return true;
-		}
-	});
-	jQuery.validator.addMethod("maxInclusive", function(value, element, param){
-		if (param.length == 1 || param[1]()) {
-			return this.optional(element) || value <= param[0];
-		}
-		else{
-			return true;
-		}
-	});
-	jQuery.validator.addMethod("minLengthConditional", function(value, element, param){
-		if (param.length == 1 || param[1]()) {
-			return this.optional(element) || this.getLength(jq.trim(value), element) >= param[0];
-		}
-		else{
-			return true;
-		}
-	});
-	jQuery.validator.addMethod("maxLengthConditional", function(value, element, param){
-		if (param.length == 1 || param[1]()) {
-			return this.optional(element) || this.getLength(jq.trim(value), element) <= param[0];
-		}
-		else{
-			return true;
 		}
 	});
 	jq.watermark.showAll();

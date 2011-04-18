@@ -22,6 +22,6 @@
     Invokes JS method to implement a script linking the lightbox (fancybox)
  --%>
  
-<script type="text/javascript">
+<krad:script value="
    createLightBox('${componentId}', ${widget.componentOptionsJSString});
-</script>
+"/>

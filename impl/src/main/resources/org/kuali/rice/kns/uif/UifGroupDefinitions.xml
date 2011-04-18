@@ -40,7 +40,28 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
       </property> 
       <property name="conditionalReadOnly" value="#parent.readOnly"/>           
-  </bean> 
+  </bean>
+  
+  <bean id="PageGroup" abstract="true" parent="PageGroup-parentBean"/>
+  <bean id="PageGroup-parentBean" abstract="true" class="org.kuali.rice.kns.uif.container.PageGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
+	  <property name="errorsField">
+        <bean parent="ErrorsField_Page"/>
+      </property>
+      <property name="header">
+        <bean parent="HeaderTwo"/>
+      </property> 
+      <property name="accordion">
+        <bean parent="Accordion"/>
+      </property>       
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property>  
+      <property name="summaryMessageField">
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
+      </property> 
+      <property name="conditionalReadOnly" value="#parent.readOnly"/>           
+  </bean>
   
   <bean id="GroupGridLayout" abstract="true" parent="GroupGridLayout-parentBean"/>
   <bean id="GroupGridLayout-parentBean" abstract="true" parent="Group">

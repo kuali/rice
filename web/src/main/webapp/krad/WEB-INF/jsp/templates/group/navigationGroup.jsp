@@ -32,8 +32,8 @@
   </ul>
 </krad:div>
 
-<script type="text/javascript">
+<krad:script value="
   var options = ${group.componentOptionsJSString};
-  options.currentPage = "${currentPageId}";
-  createNavigation("${group.id}", "${group.navigationType}", options);
-</script>
+  options.currentPage = '${currentPageId}';
+  createNavigation('${group.id}', '${group.navigationType}', options);
+"/>

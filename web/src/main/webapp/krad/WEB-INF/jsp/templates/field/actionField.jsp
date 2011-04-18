@@ -40,15 +40,14 @@
 <!-- This needs to be looked at and removed - moved into DD completely probably and appended by ActionField class-->
 <%-- setup client side call --%>
 <c:if test="${field.clientSideCall}">
-   <script type="text/javascript">
+<krad:script value="
  	 jq(document).ready(function() {
-		 jq("#" + "${field.id}").click(function(e) {
+		 jq('#' + '${field.id}').click(function(e) {
 			 e.preventDefault();
 			 ${field.clientSideEventCode}
 			 return false;
 		 });
- 	 });
-   </script>
+ 	 });"/>
 </c:if>
 
 <c:if test="${(field.lightBoxLookup != null)}">

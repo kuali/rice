@@ -22,6 +22,6 @@
     Invokes JS method to implement a script linking the lightbox (fancybox) for lookups
  --%>
  
-<script type="text/javascript">
+<krad:script value="
    createLightBoxLookup('${componentId}', ${widget.componentOptionsJSString}, ${widget.actionParameterMapString});
-</script>
+"/>

@@ -95,7 +95,7 @@ public class View extends ContainerBase {
     private Map<String, String> expressionVariables;
 
     private boolean singlePageView;
-    private Group page;
+    private PageGroup page;
 
     private List<? extends Group> items;
 
@@ -184,7 +184,7 @@ public class View extends ContainerBase {
             prefixScript = this.getOnDocumentReadyScript();
         }
         this.setOnDocumentReadyScript(prefixScript + "jQuery.extend(jQuery.validator.messages, "
-                + ClientValidationUtils.generateValidatorMessagesOption() + ");" + "\nsetupValidator();");
+                + ClientValidationUtils.generateValidatorMessagesOption() + ");");
     }
 
     /**
@@ -224,11 +224,11 @@ public class View extends ContainerBase {
      * 
      * @return Page instance
      */
-    public Group getCurrentPage() {
+    public PageGroup getCurrentPage() {
         for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext();) {
             Group pageGroup = iterator.next();
             if (pageGroup.getId().equals(getCurrentPageId())) {
-                return pageGroup;
+                return (PageGroup)pageGroup;
             }
         }
 
@@ -753,7 +753,7 @@ public class View extends ContainerBase {
      * 
      * @return Group page group for single page views
      */
-    public Group getPage() {
+    public PageGroup getPage() {
         return this.page;
     }
 
@@ -762,7 +762,7 @@ public class View extends ContainerBase {
      * 
      * @param page
      */
-    public void setPage(Group page) {
+    public void setPage(PageGroup page) {
         this.page = page;
     }
 

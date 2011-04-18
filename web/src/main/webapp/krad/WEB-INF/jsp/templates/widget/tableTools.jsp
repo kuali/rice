@@ -22,6 +22,6 @@
     Invokes JS method to implement a table plug-in
  --%>
  
-<script type="text/javascript">
+<krad:script value="
   createTable('${componentId}', ${widget.componentOptionsJSString});
-</script>
+"/>

@@ -21,7 +21,4 @@
 <%--
     Invokes JS method to implement a script based calendar date picker
  --%>
- 
-<script type="text/javascript">
-   createDatePicker('${componentId}', ${widget.componentOptionsJSString});
-</script>
+<krad:script value="createDatePicker('${componentId}', ${widget.componentOptionsJSString});" />

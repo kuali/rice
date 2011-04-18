@@ -18,23 +18,52 @@
 var $dialog = null;
 var jq = jQuery.noConflict();
 
+//Custom built in validator methods
+jQuery.validator.addMethod("minExclusive", function(value, element, param){
+	if (param.length == 1 || param[1]()) {
+		return this.optional(element) || value > param[0];
+	}
+	else{
+		return true;
+	}
+});
+jQuery.validator.addMethod("maxInclusive", function(value, element, param){
+	if (param.length == 1 || param[1]()) {
+		return this.optional(element) || value <= param[0];
+	}
+	else{
+		return true;
+	}
+});
+jQuery.validator.addMethod("minLengthConditional", function(value, element, param){
+	if (param.length == 1 || param[1]()) {
+		return this.optional(element) || this.getLength(jq.trim(value), element) >= param[0];
+	}
+	else{
+		return true;
+	}
+});
+jQuery.validator.addMethod("maxLengthConditional", function(value, element, param){
+	if (param.length == 1 || param[1]()) {
+		return this.optional(element) || this.getLength(jq.trim(value), element) <= param[0];
+	}
+	else{
+		return true;
+	}
+});
+
 // common event registering done here through JQuery ready event
 jq(document).ready(function() {
 
-// if (!dialogMode) {
-// $.jGrowl("Save Successful", {
-// sticky : true
-// });
-// }
-	
 	// buttons
 	jq( "input:submit" ).button();
 	jq( "input:button" ).button();
-})
+	runHiddenScripts("");
+});
 
 jq(document).unload(function() {
 	
-})
+});
 
 jQuery.fn.dataTableExt.oSort['kuali_date-asc']  = function(a,b) {
 	var ukDatea = a.split('/');
@@ -569,4 +598,18 @@ function createWatermark(id, watermark){
 //Creates tabs for the tabs div id specified, this div is created by tabGroup
 function createTabs(id, options){
 	jq("#" + id + "_tabs").tabs(options);
+}
+
+function runHiddenScripts(id){
+	if(id){
+		jq("#" + id).find("input[name='script']").each(function(){
+			eval(jq(this).val());
+		});
+	}
+	else{
+		jq("input[name='script']").each(function(){
+			eval(jq(this).val());
+		});
+	}
+	
 }

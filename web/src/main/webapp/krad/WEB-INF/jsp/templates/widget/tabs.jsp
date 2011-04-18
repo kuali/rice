@@ -18,6 +18,6 @@
 <tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.Tabs"/>
 <tiles:useAttribute name="parent" classname="org.kuali.rice.kns.uif.container.Group"/>
 
-<script type="text/javascript">
-  createTabs("${parent.id}", ${widget.componentOptionsJSString});
-</script>
+<krad:script value="
+  createTabs('${parent.id}', ${widget.componentOptionsJSString});
+"/>

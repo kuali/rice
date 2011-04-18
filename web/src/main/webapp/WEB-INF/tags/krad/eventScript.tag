@@ -25,7 +25,7 @@ supported and configured on the component --%>
 <krad:buffer>
 <jsp:attribute name="fragment">
   <c:if test="${component.supportsOnLoad && (!empty component.onLoadScript)}">
-    jq("#" + "${component.id}").load(function() {
+    jq('#' + '${component.id}').load(function() {
      ${component.onLoadScript}
     });
   </c:if>
@@ -37,91 +37,91 @@ supported and configured on the component --%>
   </c:if>
 
   <c:if test="${component.supportsOnUnload && (!empty component.onUnloadScript)}">
-    jq("#" + "${component.id}").unload(function() {
+    jq('#' + '${component.id}').unload(function() {
      ${component.onUnloadScript}
     });
   </c:if>
 
   <c:if test="${component.supportsOnBlur && (!empty component.onBlurScript)}">
-    jq("#" + "${component.id}").blur(function() {
+    jq('#' + '${component.id}').blur(function() {
      ${component.onBlurScript}
     });
   </c:if>
 
   <c:if test="${component.supportsOnChange && (!empty component.onChangeScript)}">
-    jq("#" + "${component.id}").change(function() {
+    jq('#' + '${component.id}').change(function() {
      ${component.onChangeScript}
     });
   </c:if>
 
   <c:if test="${component.supportsOnClick && (!empty component.onClickScript)}">
-    jq("#" + "${component.id}").click(function() {
+    jq('#' + '${component.id}').click(function() {
      ${component.onClickScript}
     });
   </c:if>
 
   <c:if test="${component.supportsOnDblClick && (!empty component.onDblClickScript)}">
-    jq("#" + "${component.id}").dblclick(function() {
+    jq('#' + '${component.id}').dblclick(function() {
      ${component.onDblClickScript}
     });
   </c:if>
 
   <c:if test="${component.supportsOnFocus && (!empty component.onFocusScript)}">
-    jq("#" + "${component.id}").focus(function() {
+    jq('#' + '${component.id}').focus(function() {
      ${component.onFocusScript}
     });
   </c:if> 
 
   <c:if test="${component.supportsOnKeyPress && (!empty component.onKeyPressScript)}">
-    jq("#" + "${component.id}").keypress(function() {
+    jq('#' + '${component.id}').keypress(function() {
      ${component.onKeyPressScript}
     });
   </c:if> 
 
   <c:if test="${component.supportsOnKeyUp && (!empty component.onKeyUpScript)}">
-    jq("#" + "${component.id}").keyup(function() {
+    jq('#' + '${component.id}').keyup(function() {
      ${component.onKeyUpScript}
     });
   </c:if> 
 
   <c:if test="${component.supportsOnKeyDown && (!empty component.onKeyDownScript)}">
-    jq("#" + "${component.id}").keydown(function() {
+    jq('#' + '${component.id}').keydown(function() {
      ${component.onKeyDownScript}
     });
   </c:if>    
 
   <c:if test="${component.supportsOnKeyDown && (!empty component.onKeyDownScript)}">
-    jq("#" + "${component.id}").keydown(function() {
+    jq('#' + '${component.id}').keydown(function() {
      ${component.onKeyDownScript}
     });
   </c:if>  
 
   <c:if test="${component.supportsOnMouseOver && (!empty component.onMouseOverScript)}">
-    jq("#" + "${component.id}").mouseover(function() {
+    jq('#' + '${component.id}').mouseover(function() {
      ${component.onMouseOverScript}
     });
   </c:if>  
     
   <c:if test="${component.supportsOnMouseOut && (!empty component.onMouseOutScript)}">
-    jq("#" + "${component.id}").mouseout(function() {
+    jq('#' + '${component.id}').mouseout(function() {
      ${component.onMouseOutScript}
     });
   </c:if>  
  
   <c:if test="${component.supportsOnMouseUp && (!empty component.onMouseUpScript)}">
-    jq("#" + "${component.id}").mouseup(function() {
+    jq('#' + '${component.id}').mouseup(function() {
      ${component.onMouseUpScript}
     });
   </c:if>
 
   <c:if test="${component.supportsOnMouseDown && (!empty component.onMouseDownScript)}">
-    jq("#" + "${component.id}").mousedown(function() {
+    jq('#' + '${component.id}').mousedown(function() {
      ${component.onMouseDownScript}
     });
   </c:if>
 
   <c:if test="${component.supportsOnMouseMove && (!empty component.onMouseMoveScript)}">
-    jq("#" + "${component.id}").mousemove(function() {
+    jq('#' + '${component.id}').mousemove(function() {
      ${component.onMouseMoveScript}
     });
   </c:if>
@@ -129,7 +129,5 @@ supported and configured on the component --%>
 </krad:buffer>
 
 <c:if test="${!empty fn:trim(bufferOut)}">
-  <script type="text/javascript">
-    ${fn:trim(bufferOut)}
-  </script>
+    <krad:script value="${fn:trim(bufferOut)}" />
 </c:if>

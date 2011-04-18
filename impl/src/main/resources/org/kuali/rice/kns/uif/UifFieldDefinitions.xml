@@ -108,6 +108,31 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayCounts" value="true"/>
   </bean>
   
+    <bean id="ErrorsField_Page" abstract="true" parent="ErrorsField">
+      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+	  <property name="additionalKeysToMatch">
+	  	<list>
+	  		<value>GLOBAL_ERRORS</value>
+			<value>GLOBAL_WARNINGS</value>
+			<value>GLOBAL_INFO</value>
+	  	</list>
+	  </property>
+      <property name="displayErrorTitle" value="true"/>
+	  <property name="displayWarningTitle" value="true"/> 
+	  <property name="displayInfoTitle" value="true"/> 
+	  <property name="displayFieldLabelWithMessages" value="true"/>
+	  <property name="displayNestedMessages" value="true"/> 
+	  <property name="highlightOnError" value="false"/>
+	  <property name="combineMessages" value="true"/> 
+	  <property name="allowMessageRepeat" value="true"/>
+	  <property name="displayMessages" value="true"/>
+	  <property name="displayErrorMessages" value="true"/>
+	  <property name="displayWarningMessages" value="true"/>
+	  <property name="displayInfoMessages" value="true"/>
+	  <property name="displayCounts" value="true"/>
+  </bean>
+  
+  <!-- No longer used - views cannot update errors if page retrieval is through ajax -->
   <bean id="ErrorsField_View" abstract="true" parent="ErrorsField">
       <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
 	  <property name="additionalKeysToMatch">

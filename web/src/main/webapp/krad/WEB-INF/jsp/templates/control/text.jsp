@@ -29,9 +29,7 @@
             tabindex="${control.tabIndex}" minLength="${field.minLength}"/>
 
 <c:if test="${(!empty control.watermarkText)}">
-	<script type="text/javascript">
-		createWatermark("${control.id}", "${control.watermarkText}");
-	</script>
+	<krad:script value="createWatermark('${control.id}', '${control.watermarkText}');" />
 </c:if>     
 
 <%-- render date picker widget --%> 

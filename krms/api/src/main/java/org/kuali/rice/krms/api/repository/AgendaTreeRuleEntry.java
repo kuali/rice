@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -138,15 +139,15 @@ public final class AgendaTreeRuleEntry implements AgendaTreeEntryDefinition {
 		}
 		
 		public void setAgendaItemId(String agendaItemId) {
-			if (agendaItemId == null) {
-				throw new IllegalArgumentException("agendaItemId was null");
+			if (StringUtils.isBlank(agendaItemId)) {
+				throw new IllegalArgumentException("agendaItemId was null or blank");
 			}
 			this.agendaItemId = agendaItemId;
 		}
 
 		public void setRuleId(String ruleId) {
-			if (ruleId == null) {
-				throw new IllegalArgumentException("ruleId was null");
+			if (StringUtils.isBlank(ruleId)) {
+				throw new IllegalArgumentException("ruleId was null or blank");
 			}
 			this.ruleId = ruleId;
 		}

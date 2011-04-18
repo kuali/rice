@@ -16,11 +16,23 @@
 package org.kuali.rice.krms.api.repository;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.springframework.util.CollectionUtils;
@@ -31,16 +43,30 @@ import org.springframework.util.CollectionUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-// TODO: Where are the JAXB annotations?
+@XmlRootElement(name = TermDefinition.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = TermDefinition.Constants.TYPE_NAME, propOrder = {
+		TermDefinition.Elements.ID,
+		TermDefinition.Elements.SPECIFICATION,
+		TermDefinition.Elements.PARAMETERS,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public class TermDefinition implements TermDefinitionContract, ModelObjectComplete {
 	
 	// TODO: javadocs here are horribly incomplete
 	
 	private static final long serialVersionUID = 1L;
 	
+	@XmlElement(name = Elements.ID, required=false)
 	private final String id;
+	@XmlElement(name = Elements.SPECIFICATION, required=true)
 	private final TermSpecificationDefinition specification;
+	@XmlElement(name = Elements.PARAMETERS, required=false)
 	private final Set<TermParameterDefinition> parameters;
+	
+	@SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 	
 	/**
 	 * This constructor is for JAXB only.  Do not invoke directly.
@@ -193,6 +219,43 @@ public class TermDefinition implements TermDefinitionContract, ModelObjectComple
 	public Set<TermParameterDefinition> getParameters() {
 		return this.parameters;
 	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		return EqualsBuilder.reflectionEquals(this, obj, Constants.HASH_CODE_EQUALS_EXCLUDE);
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 
+	static class Constants {
+		public static final String ROOT_ELEMENT_NAME = "TermDefinition";
+		public static final String TYPE_NAME = "TermDefinitionType";
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
+	}
+
+	static class Elements {
+		public static final String ID = "id";
+		public static final String SPECIFICATION = "specification";
+		public static final String PARAMETERS = "parameters";
+	}
+	
 	
 }

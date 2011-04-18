@@ -32,6 +32,7 @@ import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
+import org.kuali.rice.krms.api.repository.TermResolverDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.engine.Action;
@@ -47,7 +48,10 @@ import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
+import org.kuali.rice.krms.framework.type.TermResolverTypeService;
+import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
+import org.springframework.util.CollectionUtils;
 
 /**
  * TODO... 
@@ -55,11 +59,12 @@ import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTranslator {
+public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTranslator {
 
 	private RuleRepositoryService ruleRepositoryService;
 	private KrmsTypeRepositoryService typeRepositoryService;
 	private KrmsTypeResolver typeResolver;
+	private TermBoService termBoService;
 	
 	@Override
 	public Context translateContextDefinition(ContextDefinition contextDefinition) {
@@ -72,10 +77,37 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 			agendas.add(agenda);
 		}
 		
-		// TODO hook up the term resolvers
+		List<TermResolverDefinition> termResolverDefs = 
+			termBoService.getTermResolversByContextId(contextDefinition.getContextDefinitionId());
+		
 		List<TermResolver<?>> termResolvers = new ArrayList<TermResolver<?>>();
+
+		if (!CollectionUtils.isEmpty(termResolverDefs)) for (TermResolverDefinition termResolverDef : termResolverDefs) {
+			if (termResolverDef != null) {
+				TermResolver<?> termResolver = translateTermResolver(termResolverDef);
+				if (termResolver != null) termResolvers.add(termResolver);
+			}
+		}
 		
 		return new BasicContext(agendas, termResolvers); 
+	}
+
+	/**
+	 * This method translates a {@link TermResolverDefinition} into a {@link TermResolver}
+	 * 
+	 * @param termResolverDef
+	 * @return
+	 */
+	private TermResolver<?> translateTermResolver(TermResolverDefinition termResolverDef) {
+		if (termResolverDef == null) throw new IllegalArgumentException("termResolverDef must not be null");
+		KrmsTypeDefinition krmsTypeDef = typeRepositoryService.getTypeById(termResolverDef.getTypeId());
+		if (krmsTypeDef == null) throw new IllegalStateException(TermResolverDefinition.class.getSimpleName() + 
+				" has an invalid KRMS type: typeId=" + termResolverDef.getTypeId());
+		TermResolverTypeService termResolverTypeService = 
+			typeResolver.getTermResolverTypeService(termResolverDef, krmsTypeDef);
+		
+		TermResolver<?> termResolver = termResolverTypeService.loadTermResolver(termResolverDef);
+		return termResolver;
 	}
 	
 	@Override
@@ -245,6 +277,36 @@ public class RepostoryToEngineTranslatorImpl implements RepositoryToEngineTransl
 	@Override
 	public SubAgenda translateAgendaTreeDefinitionToSubAgenda(AgendaTreeDefinition subAgendaDefinition) {
 		return new SubAgenda(translateAgendaTreeDefinition(subAgendaDefinition));
+	}
+	
+	/**
+	 * @param ruleRepositoryService the ruleRepositoryService to set
+	 */
+	public void setRuleRepositoryService(
+			RuleRepositoryService ruleRepositoryService) {
+		this.ruleRepositoryService = ruleRepositoryService;
+	}
+	
+	/**
+	 * @param termBoService the termBoService to set
+	 */
+	public void setTermBoService(TermBoService termBoService) {
+		this.termBoService = termBoService;
+	}
+	
+	/**
+	 * @param typeRepositoryService the typeRepositoryService to set
+	 */
+	public void setTypeRepositoryService(
+			KrmsTypeRepositoryService typeRepositoryService) {
+		this.typeRepositoryService = typeRepositoryService;
+	}
+	
+	/**
+	 * @param typeResolver the typeResolver to set
+	 */
+	public void setTypeResolver(KrmsTypeResolver typeResolver) {
+		this.typeResolver = typeResolver;
 	}
 
 }

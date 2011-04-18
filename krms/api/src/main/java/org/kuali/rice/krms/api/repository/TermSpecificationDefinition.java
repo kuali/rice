@@ -251,19 +251,14 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krms.api.repository.TermSpecificationDefinitionContract#getName()
 	 */
 	@Override
 	public String getName() {
-		// TODO gilesp - THIS METHOD NEEDS JAVADOCS
 		return name;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krms.api.repository.TermSpecificationDefinitionContract#getType()
 	 */
 	@Override
@@ -272,29 +267,23 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 	}
 	
 	/**
-	* This overridden method ...
-	* 
 	* @see java.lang.Object#equals(java.lang.Object)
 	*/
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
-		return EqualsBuilder.reflectionEquals(this, obj);
+		return EqualsBuilder.reflectionEquals(this, obj, Constants.HASH_CODE_EQUALS_EXCLUDE);
 	}
 	
 	/**
-	* This overridden method ...
-	* 
 	* @see java.lang.Object#hashCode()
 	*/
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
+		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
 	}
 	
 	/**
-	* This overridden method ...
-	* 
 	* @see java.lang.Object#toString()
 	*/
 	@Override

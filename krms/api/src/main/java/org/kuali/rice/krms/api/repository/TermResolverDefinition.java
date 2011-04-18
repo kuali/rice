@@ -34,6 +34,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.krms.api.repository.TermSpecificationDefinition.Constants;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -373,7 +374,8 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(this, obj);
+		if (obj == null) return false;
+		return EqualsBuilder.reflectionEquals(this, obj, Constants.HASH_CODE_EQUALS_EXCLUDE);
 	}
 	
 	/**
@@ -381,7 +383,7 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	 */
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
+		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
 	}
 	
 	/**

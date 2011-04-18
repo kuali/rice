@@ -203,7 +203,7 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
-		return EqualsBuilder.reflectionEquals(this, obj);
+		return EqualsBuilder.reflectionEquals(this, obj, Constants.HASH_CODE_EQUALS_EXCLUDE);
 	}
 	
 	/**
@@ -211,7 +211,7 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 	 */
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
+		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
 	}
 	
 	/**
@@ -225,6 +225,7 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 	static class Constants {
 		public static final String ROOT_ELEMENT_NAME = "TermParameterDefinition";
 		public static final String TYPE_NAME = "TermParameterDefinitionType";
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	static class Elements {

@@ -49,7 +49,7 @@ div#maincontent h3 {
 
 div.grouping-header-expandable {
 	border-radius: 8px;
-	margin-bottom: 18px;
+	margin-bottom: 0px;
 }
 div.grouping-header-expandable a {
 	color:#000;
@@ -92,7 +92,7 @@ div.grouping-header-expandable h3 img {
 #viewpage_div .grouping-header-expandable h2 {
 	margin-top:10px;
 	margin-left:3px;
-	margin-bottom: 10px;
+	margin-bottom: 4px;
 	vertical-align: middle;
 }
 #viewpage_div .page_header .grouping-header-expandable h3 {
@@ -102,7 +102,7 @@ div.grouping-header-expandable h3 img {
 	background: #666;
 }
 #viewpage_div .page_header {
-	padding-bottom: 60px;
+	padding-bottom: 40px;
 }
 
 #viewpage_div h4 {

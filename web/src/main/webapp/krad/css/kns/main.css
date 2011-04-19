@@ -1,39 +1,35 @@
-html {
-	font-family: Helvetica, Arial, sans-serif;
-}	
-
-#viewheader_div .doc_view_header {
+.doc_view_header {
 	background: #EBEBEB url(../../images/masthead1.gif);
 	border-bottom: 1px solid #999;
 	min-width:800px;
 	margin-bottom: 10px;
 }
-#viewheader_div .view_header {
+.view_header {
 	background: #EBEBEB url(../../images/masthead1.gif);
 	border-bottom: 1px solid #999;
 	min-width:800px;
 	margin-bottom: 15px;
-    font-family: Georgia,"Times New Roman",Times,serif;
-    font-size: 1.8em;
-    letter-spacing: 0.02em;
+	background-color: #EBEBEB;
 }
-#viewheader_div h1 {
-	font-size: .9em;
+h1 {
+	font-size:1.2em;
 	padding-left: 0.6em;
-	font-family: Arimo;
+	font-family: "Arial Narrow";
 	font-weight: bold;
 	padding-top: 0.4em;
 	padding-bottom: 0.4em;
 }
 #viewheader_div a {
-	position: absolute;
-	padding-top:18px;
-	padding-left:6px;
+	
 }
-#viewheader_div div.doc-info {
+#viewheader div.doc-info {
 	float:right;
 }
-#viewheader_div td {
+
+.left { float:left}
+.right { float:right}
+
+td {
 	background-color: #FFFFFF;
 	border-left: 1px solid #999999;
 	border-top: 1px solid #999999;
@@ -96,8 +92,8 @@ div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 	border: 1px solid #999;
-	margin-bottom: 18px;
-	padding: 12px;
+	margin-bottom: 4px;
+	padding: 0px 12px 12px;
 }
 
 .summary {
@@ -117,14 +113,12 @@ div.globalbuttons { text-align:center;	padding-top: 10px; padding-bottom: 10px;}
 .group_docheader {
 	float: right;
 	font-size: .9em;
-	border-bottom: 1px solid #999;
 }
 
 span.desc {
 	color: #000000;
     display: block;
     font-weight: bold;
-    line-height: 1.9em;
     white-space: nowrap;
 }
 
@@ -136,7 +130,7 @@ span.desc {
 
 .group_expandclose #msg_reqind_span {
 	display:block;
-	font-size: 90%;
+	font-size: .8em;
 }
 
 .expand_collapse-buttons {
@@ -279,7 +273,7 @@ li label.error{
 * html .clearfix {height: 1%;}
 
 .boxLayoutHorizontalItem{
-	padding-right: 20px;
+	
 }
 
 .boxLayoutVerticalItem{
@@ -335,3 +329,10 @@ Tab menu
 .ui-datepicker-trigger{ 
 	cursor: pointer;
 }
+
+
+ #viewpage_div 
+ {
+	margin-left:20px;  	
+  	margin-right:20px;
+ }

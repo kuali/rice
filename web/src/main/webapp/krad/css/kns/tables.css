@@ -1,10 +1,10 @@
-#viewpage_div .page_header .grouping-header-expandable .panel-content table {
+.page_header .grouping-header-expandable .panel-content table {
 	border-collapse:collapse;
 	width:100%;
 	border-right: 1px solid #999;
 	border-bottom: 1px solid #999;
 }
-#viewheader_div .view_header .doc-info table {
+.view_header .doc-info table {
 	height:55px;
 	border-left: 1px solid #999;
 }
@@ -42,9 +42,10 @@ table.datatable td {
 }
 
 table.datatable td, th {
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
 	vertical-align: middle;
+	font-size:.8em;
 }
 
 table.datatable th[scope="row"].collection-header {
@@ -57,12 +58,13 @@ table.datatable td.collection-header {
 	text-align: left;
 }	
 
-table.datatable th[scope="col"] { text-align:center
+table.datatable th[scope="col"] { text-align:center;font-size:.8em;
 }
 
 table.datatable th[scope="row"] { 
 	text-align:right;
 	vertical-align: middle;
+	
 }
 
 .collection-header th[scope="row"] { 

@@ -1,40 +1,13 @@
 
-
-@font-face {
-  font-family: 'Arimo';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Arimo'), url('http://themes.googleusercontent.com/font?kit=ZS0wkeOZuckNE3boyLYNt6CWcynf_cDxXwCLxiixG1c') format('woff');
-}
-@font-face {
-  font-family: 'Arimo';
-  font-style: italic;
-  font-weight: normal;
-  src: local('Arimo Italic'), local('Arimo-Italic'), url('http://themes.googleusercontent.com/font?kit=4x7GlnDRx9FKnMrqORHWMQLUuEpTyoUstqEm5AMlJo4') format('woff');
-}
-@font-face {
-  font-family: 'Arimo';
-  font-style: normal;
-  font-weight: bold;
-  src: local('Arimo Bold'), local('Arimo-Bold'), url('http://themes.googleusercontent.com/font?kit=UnXpojilM3XslYxUnWuVe3YhjbSpvc47ee6xR_80Hnw') format('woff');
-}
-@font-face {
-  font-family: 'Arimo';
-  font-style: italic;
-  font-weight: bold;
-  src: local('Arimo Bold Italic'), local('Arimo-BoldItalic'), url('http://themes.googleusercontent.com/font?kit=_K7sg-ijHdmkwPzV9FiqaL3hpw3pgy2gAi-Ip7WPMi0') format('woff');
-}
+body {font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;}
 
 
-
-
-table.datatable td, th {
-	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-	font-size: .8em;
+.group_docheader th,.group_docheader td {
+font-size:.8em;
 }
 
 h2, h3 {
-	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	
 	font-weight: bold;
 }
 

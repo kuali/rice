@@ -24,6 +24,7 @@ import org.kuali.rice.krms.api.repository.AgendaTreeRuleEntry;
 import org.kuali.rice.krms.api.repository.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.ContextDefinition;
 import org.kuali.rice.krms.api.repository.ContextSelectionCriteria;
+import org.kuali.rice.krms.api.repository.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 

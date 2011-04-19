@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +25,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermSpecification;
+import org.kuali.rice.krms.api.repository.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.FunctionRepositoryService;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionParameter;
 import org.kuali.rice.krms.api.repository.PropositionParameterType;
@@ -45,7 +46,10 @@ import org.kuali.rice.krms.framework.type.PropositionTypeService;
 import org.kuali.rice.krms.impl.repository.TermRepositoryService;
 
 /**
- * TODO... 
+ * A default implementation of {@link PropositionTypeService} for propositions
+ * which are composed of terms, operators, and functions.  A simple proposition
+ * is self-contained and has no compound "sub" propositions.  However, it's
+ * behavior is defined by the set of parameters on the {@link PropositionDefinition}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -54,10 +58,11 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 
 	private TermResolutionEngine termResolutionEngine;
 	private TermRepositoryService termRepositoryService;
+	private FunctionRepositoryService functionRepositoryService;
 	
 	@Override
 	public Proposition loadProposition(PropositionDefinition propositionDefinition) {
-		return new ExpressionBasedProposition(translateToExpression(propositionDefinition, termResolutionEngine, termRepositoryService));
+		return new ExpressionBasedProposition(translateToExpression(propositionDefinition));
 	}
 
 	/**
@@ -65,10 +70,12 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 	 * The proposition parameters are defined in a reverse-polish notation so a stack is used for
 	 * evaluation purposes.
 	 * 
-	 * @param propositionDefinition
-	 * @return
+	 * @param propositionDefinition the proposition definition to translate
+	 * 
+	 * @return the translated expression for the given proposition, this
+	 * expression, when evaluated, will return a Boolean.
 	 */
-	private static Expression<Boolean> translateToExpression(PropositionDefinition propositionDefinition, TermResolutionEngine termResolutionEngine, TermRepositoryService termRepositoryService) {
+	protected Expression<Boolean> translateToExpression(PropositionDefinition propositionDefinition) {
 		LinkedList<Expression<? extends Object>> stack = new LinkedList<Expression<? extends Object>>();
 		for (PropositionParameter parameter : propositionDefinition.getParameters()) {
 			PropositionParameterType parameterType = PropositionParameterType.fromCode(parameter.getParameterType());
@@ -77,6 +84,10 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 				stack.addFirst(new ConstantExpression<String>(parameter.getValue()));
 			} else if (parameterType == PropositionParameterType.FUNCTION) {
 				String functionId = parameter.getValue();
+				FunctionDefinition functionDefinition = functionRepositoryService.getFunction(functionId);
+				if (functionDefinition == null) {
+					throw new RepositoryDataException("Unable to locate function with the given id: " + functionId);
+				}
 				
 				// TODO need to go out and look up the function for the "function id" which will be stored in the value
 				// then figure out how many arguments it has, popping off the stack in order to pass them in
@@ -106,7 +117,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 		return new BooleanValidatingExpression(stack.removeFirst());
 	}
 	
-	public static Term translateTermDefinition(TermDefinition termDefinition) {
+	protected Term translateTermDefinition(TermDefinition termDefinition) {
 		if (termDefinition == null) {
 			throw new RepositoryDataException("Given TermDefinition is null");
 		}
@@ -134,6 +145,10 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 	 */
 	public void setTermRepositoryService(TermRepositoryService termRepositoryService) {
 		this.termRepositoryService = termRepositoryService;
+	}
+
+	public void setFunctionRepositoryService(FunctionRepositoryService functionRepositoryService) {
+		this.functionRepositoryService = functionRepositoryService;
 	}
 	
 }

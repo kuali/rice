@@ -693,9 +693,21 @@ InquiryViews can also have custom presentationControllerClass and authorizerClas
 
 h2. Lookup
 
-Inquiry Views display the read only fields for a DataObject.  Certainly, child collections and sub-collections may complicate things but it's all fairly easy.  The Lookup View is a bit more complicated as a View type.  Here we have the classic set of fields and labels which allow the user to search among all the members of a given DataObject; once the search is complete, a CollectionGroup of results are display - assuming the search found some matching records, of course.
+Inquiry Views display the read only fields for a DataObject.  Certainly, child collections and sub-collections may complicate things but it's all fairly easy.  The LookupView is a bit more complicated as a View type.  Here we have the classic set of fields and labels which allow the user to search among all the members of a given DataObject; once the search is complete, a CollectionGroup of results are display - assuming the search found some matching records, of course.
 
-[  HERE JAMES ]
+LookupViews also give us a much better example of why one would create a custom standard View.  LookupView has a property for the dataObjectClassName just as InquiryView does.  But it has four interesting properties defined after that:
+* criteriaGroup - a Group of Fields which form the criteria part of the LookupView (where fields are queried for certain values)
+* resultsGroup - a CollectionGroup which displays the rows for the results
+* resultsActionsField - the Field which contains the actions available on each line of the results
+* resultsReturnField - the Field which contains the action available for returning each line of the results to a previous screen
+
+Why are these four specific properties available?  Because the look of the LookupView is standard and it has two major visual sections: the criteria section and the results section.  Each results row may have actions to handle that row (for instance, if looking up a data object with a related maintenance document, edit and copy links are typically available).  If the results row was looked up in a quick finder, then there needs to be an action to return the value of the current row back to the calling screen.  Because the vast majority of lookups have these standard visual regions, LookupView has properties that correspond.
+
+The standardization goes even beyond that.  In KNS applications, criteria for lookups always have a set look, as do the results.  Instead of defining that look in a Group, one can just enter the fields that are part of the CriteriaGroup into a special property, criteriaFields. Likewise, one can enter the fields to display on each result row in a special list, resultFields.  This makes configuration of LookupView feel a lot more like a KNS LookupDefinition.  The choice is up to the developer - utilize the absolute freedom of Groups or make use of the standard approach which is quicker to configure.
+
+There are two more special properties left on LookupView.  First: defaultSortAttributeNames corresponds to LookupDefinition's defaultSort; if using the standard lookup mechanism, it configures the sort keys for the rows.  Second: sortAscending...which direction should the attributes be sorted in; the default is ascending.
+
+Here's an example of the configuration for a LookupView, taken from the sample app:
 
 {code:xml}
  1. <bean id="FiscalOfficerInfo-LookupView" parent="LookupView">
@@ -717,23 +729,89 @@ Inquiry Views display the read only fields for a DataObject.  Certainly, child c
 17. </bean>
 {code}
 
-Just as the Inquirable in InquiryView is set through the viewHelperServiceClassName, the ViewHelperService for all lookups is the implementation of org.kuali.rice.kns.uif.service.LookupViewHelperService for the lookup.  (LookupViewHelperService is an amalgamation of the KNS LookupableHelperService and Lookupable). [ HERE JAMES ]
+Just as the Inquirable in InquiryView is set through the viewHelperServiceClassName, the ViewHelperService for all lookups is the implementation of org.kuali.rice.kns.uif.service.LookupViewHelperService for the lookup.  (LookupViewHelperService is an amalgamation of the KNS LookupableHelperService and Lookupable).  That is set on line 4.
+
+Note that this configuration decided to make use of the standard criteria and results look and feel attributes: criteriaFields (lines 5-10) and resultFields (lines 11-16) were configured instead of setting criteriaGroup and resultGroup.
 
 [ DOES THIS SUPPORT MULTI-VALUE LOOKUPS?  JUST CURIOUS... ]
 
-h2. MaintenanceDocument
+h2. MaintenanceView
 
-[ HERE JAMES ]
+Compared to LookupView, MaintenanceView, the custom standard View for maintenance documents, is very simple.  It extends a custom standard View called DocumentView, which stores the class of the document and several properties associated with displaying notes (boolean allowsNoteAttachments, boolean allowsNoteFYI, boolean displayTopicFieldInNotes, and Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass).  
+
+MaintenanceView then adds a handful of its own properties.  dataObjectClassName is the name of the class of the data object being maintained by the maintenance document.  If the maintenance document represents an edit or copy of an existing data object, oldObjectBindingPath should be set (KRAD should do this automatically [ JERRY - TRUE THAT? ]) to the path to the existing version of the object to display.
+
+Here's the configuration, again taken from the sample app: the MaintenanceView for the FiscalOfficerInfo data object:
+
+{code:xml}
+ 1. <bean id="FiscalOfficerInfo-MaintenanceView" parent="MaintenanceView">
+ 2.   <property name="title" value="Fiscal Officer Maintenance" />
+ 3.   <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
+ 4.   <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl" />
+ 5.   <property name="items">
+ 6.     <list merge="true">
+ 7.       <bean parent="MaintenanceGroupSectionGridLayout">
+ 8.         <property name="items">
+ 9.           <list>
+10.             <bean parent="AttributeField" p:propertyName="id" />
+11.             <bean parent="AttributeField" p:propertyName="userName" />
+12.           </list>
+13.         </property>
+14.         <property name="title" value="Fiscal Officer Information" />
+15.       </bean>
+16.       <bean parent="MaintenanceCollectionGroupSection">
+17.         <property name="title" value="Fiscal Officer Accounts"/>  
+18.         <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
+19.         <property name="propertyName" value="accounts"/>
+20.         <property name="items">
+21.           <list>
+22.             <bean parent="AttributeField" p:propertyName="number"/>
+23.             <bean parent="AttributeField" p:propertyName="name"/>
+24.           </list>
+25.         </property>   
+26.         <property name="layoutManager.summaryTitle" value="Travel Account"/> 
+27.         <property name="layoutManager.summaryFields">
+28.           <list>
+29.             <value>number</value>
+30.           </list>
+31.         </property>
+32.       </bean>
+33.      </list>
+34.    </property>
+35.  </bean>
+{code}
+
+The MaintenanceView is simple; the configuration is a wee bit complex but easy to follow.
+
+Line 2 contains the title for the View.  Line 3 sets the name of the class of data object that is being maintained.  Once again, the Maintainable implementation is injected into the viewHelperServiceClassName property one line 4.
+
+In items, the sections are set out.  There are two sections.  The first (lines 7-15) allows the editing of the FiscalOfficerInfo's id and userName.  The parent of this Group is MaintenanceGroupSectionGridLayout - the standard look and feel for a Maintenance document's fields.  The second Group (lines 16-31) is a MaintenanceCollectionGroupSection and this Group requires some extra configuration.
+
+For the MaintenanceCollectionGroupSection, the collectionObjectClass is set (line 18) to TravelAccountInfo - the class of the collection being maintained.  Line 19 sets the name of the property on FiscalOfficerInfo where the collection could be found.  Lines 20 through 25 are the items which will be editable on every line of the collection.  On lines 26 through 31, the summaryTitle and summaryFields properties are set.  Every object in a collection on a maintenance document has a header; the header will display with the summaryTitle plus the values of the summaryFields properties.  summaryFields are typically the primary key for the child object.  Given that, a newly added TravelAccountInfo on the document may have a header line which reads "Travel Account 30033" for a TravelAccountInfo with a number of 3033.
+
+This offers an interesting contrast with LookupView.  While LookupView had specific properties at the View level that helped set look and feel, MaintenanceView does not have much at the View level but expects the use of Groups which will display in the standard look and feel.  Either response is appropriate in different contexts.  These kinds of questions must be answered when an application creates its own custom standard View.
 
 h2. {anchor}Custom Views{anchor}
 
 Can applications create their own custom specialized Views?  Certainly - in fact, that's expected.  KFS, for instance, may have an AccountingDocumentView, since a vast number of KFS's transactional documents have a unified look and feel which presents accounting lines.  Indeed, most applications will have a set of documents or pages which share a look and feel, where it would be nice to standardize the configuration of the View.  Given that, the creation of standard specialized Views is not going to be uncommon at all. But what goes in to making a custom View?
 
-Not all that much, really.  Let's take a look at an example.
+Mostly thought.  As we saw above, there are a number of different places where a standard look and feel can be injected.  It's up to the developers of a custom standard View to figure out if the visual elements are standard at the View level or the Group level.
 
-[ JAMES - HERE ]
+Take, for instance, the case of KFS's batch upload pages.  All of these pages look almost precisely alike: a title for the upload (which is taken care of by View title in any case); and then one Group which has controls allowing the upload of the file and a file identifier, plus an add label and an "add" button.  The "add" button is perhaps misleading - there is no collection here; if the file upload was acceptable, the form redisplays itself with all fields cleared.
 
-h2. {anchor}View Helper Services{anchor}
+(There is a variation where two files are uploaded; this would likely be an extension of the BatchUploadView currently being proposed.)
+
+How are batch upload pages configured?  Currently, a Spring bean is passed in which represents an implementation of the org.kuali.kfs.sys.batch.BatchInputFileType interface.  The name of that bean is passed in to the BatchUploadAction via the batchUpload.batchInputFileTypeName property.  From there, BatchUploadAction and the corresponding JSP are able to configure the page.
+
+This brings us to question number one: is this custom standard View or a set of custom standard Groups?  In this case, we have one Group and that's it; and every batch upload file has precisely the same Group.  Because of this, BatchUploadView makes a lot more sense than having several different Views with a single BatchUploadGroup.
+
+(Likewise, KFS's accounting documents will probably be opposite: there will likely be an AccountingLineGroup; if a standard AccountingLineView does exist, it probably won't do very much on its own, much like MaintenanceView.)
+
+Continuing this thought exercise, what properties belong on BatchUploadView?  The first property we need is the name of the BatchInputFileType implementation bean.  The title attribute would probably be removed from that bean and simply set on the View itself.
+
+[ HERE JAMES ]
+
+h1. {anchor}View Helper Services{anchor}
 
 Customization can also be carried out by creating a custom implementation of org.kuali.rice.kns.uif.service.ViewHelperService.  This service is responsible for acting on a View while it goes through its four major stages of rendering:
 
@@ -746,7 +824,7 @@ There should be very few cases where a custom ViewHelperService implementation i
 
 What would a Component do in the override of a View lifecycle method?  Let's take a look at each method and see some customizations.
 
-h3. Component#performInitialization
+h2. Component#performInitialization
 
 Component#performInitiation is easily the most overridden life cycle method.  Each of the standard Views above utilize it, along with ContainerBase and several other children of Component.  What all do these Components do in initialization?
 
@@ -756,18 +834,26 @@ While setting bindings before Apply Model is a big concern in the Initialization
 
 Anything which needs to be completed before Apply Model should happen in performInitialization, as well as anything that does not need the model information to be completed.
 
-h3. Component#performApplyModel
+h2. Component#performApplyModel
 
 In opposition to Component#performInitialization, practically no Components override Component#performApplyModel.  At the time of this writing only three UIF Components in Rice do anything with this method.  ContainerBase overrides it to tell the LayoutManager to perform the Apply Model phase.  CollectionGroup overrides it because, now that it has all of the data in its collection, it can use its set CollectionGroupBuilder to add the addLine to the collection if necessary and then set all of the indexed binding properties.  LookupView overrides performApplyModel to add actions to results lines.
 
 The big theme here is performing any major data changing alterations of the model data held by the Component before performFinalize occurs.  Those cases are rare indeed.
 
-h3. Component#performFinalize
+h2. Component#performFinalize
 
 Component#performFinalize may not be overridden quite as often as performInitialize but it's not too far behind.
 
 A number of Widgets override performFinalize to create sub-fields now that the Widget has the data that it needs to act upon set.  A handful of Fields override performFinalize as well.  ActionField overrides it to set the methodToCall parameter associated with the button.  Since that parameter often is associated with data from parameters, that data must be completely set before performFinalize can occur.  AttributeField overrides performFinalize to set up ids on sub-components - such as the Control, ErrorsField, and LabelField - and associates client side javascript constraints with the AttributeField
 
 The major theme with performFinalize is that all the data must be set before these changes can be made.  During the Apply Model phase, there still a chance that sub-components or other components on the page will change the data associated with the Component.  That's all done when performFinalize occurs and since all the data is stable, performFinalize gives Components a chance to set aspects that needed to know about data.
+
+h1. Using Expressions in Views
+
+h2. Templating
+h2. Conditions, Revisited
+h3. Conditions versus Presentation Controllers and Authorizers
+h2. Special Variables
+h2. Overriding variables via the request
 
 And that concludes this introductory View tutorial.

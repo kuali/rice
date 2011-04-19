@@ -53,7 +53,7 @@ class RuleRepositoryServiceImplTest {
     @Before
     void setupBoServiceMockContext() {
         mock = new MockFor(BusinessObjectService.class)
-		pservice = new PropositionRepositoryServiceImpl()
+		pservice = new RuleRepositoryServiceImpl()
     }
 
 //

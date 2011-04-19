@@ -2,10 +2,7 @@ package org.rice.krms.test;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
 import org.kuali.rice.krms.impl.repository.TermBoService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 public class TermBoServiceTest extends KRMSTestCase {
 	

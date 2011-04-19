@@ -84,23 +84,23 @@ if (SAMPLEAPP) {
 	ant.copy(todir:PROJECT_PATH + '/src/main/java') { 
     	fileset(dir:RICE_DIR + '/sampleapp/src/main/java')
 	}
-	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
+	/*ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
 		fileset(dir:RICE_DIR + '/web/src/test/resources') 
-	}
+	}*/
 	
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
-		fileset(dir:RICE_DIR + '/sampleapp/src/main/resources') 
+		fileset(dir:RICE_DIR + '/sampleapp/src/main/resources', includes:'META-INF/*') 
 	}
 	
 	// copy sample-app-config.xml
-	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
-    	fileset(dir:RICE_DIR + '/web/src/main/resources', includes:'META-INF/*') 
-	}
+	/*ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
+    	fileset(dir:RICE_DIR + '/sampleapp/src/main/resources', includes:'META-INF/*') 
+	}*/
 	
 	// copy other configuration files
-	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
+	/*ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
     	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'configurationServiceData.xml, *Resources.properties, OJB-*.xml')
-    }
+    }*/
 	
 	// copy the Sample Application scripts. Like database create sql
 	ant.copy(todir:PROJECT_PATH + '/scripts') {
@@ -117,24 +117,24 @@ if (SAMPLEAPP) {
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
     	fileset(dir:RICE_DIR + '/web/src/main/resources', includes:'configurationServiceData.xml, META-INF/*') 
 	}
-	ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
+	/*ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
     	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'KR-ApplicationResources.properties')
-    }
+    }*/
     
 	springTemplateFile = new File(RICE_DIR + '/config/templates/createproject.SpringBeans.template.xml')
 }
 
 // copy standard Rice Spring configuration files to project and rename
  
-ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml",
+ant.copy(file:RICE_DIR + "/core/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceJTASpringBeans.xml")
 if (STANDALONE) {
     new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceStandaloneClientSpringBeans.xml.template'))
 	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/web/src/main/resources/org/kuali/rice/config/RiceStandaloneClientSpringBeans.xml.template'))
 } else {
-	ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml",
+	ant.copy(file:RICE_DIR + "/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml")
-	ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
+	ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml")
 }
 
@@ -142,7 +142,7 @@ if (SAMPLEAPP) {
     // [tbradford] TODO: There are some classes in the web portion of rice that
     // need to be copied in addition, as they no longer seem to be bundled in 
     // any of the Maven artifacts.
-	ant.copy(file:RICE_DIR + "/web/src/main/resources/SampleAppModuleBeans.xml",
+	ant.copy(file:RICE_DIR + "/sampleapp/src/main/resources/SampleAppModuleBeans.xml",
 			 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-SampleAppModuleBeans.xml")
 }
 
@@ -196,8 +196,9 @@ pom << pomtext()
 
 // create the Launch script
 
-launch = new File(PROJECT_PATH + '/Launch Web App.launch')
-launch << launchtext()
+// TODO this doesn't seem to exist right now...
+//launch = new File(PROJECT_PATH + '/Launch Web App.launch')
+//launch << launchtext()
 
 // create the configuration file in the user's home directory
 
@@ -205,12 +206,14 @@ config = new File("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_N
 config << userhomeconfigtext()
 
 // execute variable replacement on sample-app-config.xml and rename the file
-config = new File(PROJECT_PATH + '/src/main/resources/META-INF/sample-app-config.xml')
-configtext = ""
-config.eachLine { line -> configtext += line.replace('sample-app', "${PROJECT_NAME}") + "\n" }
-config.delete()
-config = new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml")
-config << configtext
+if (SAMPLEAPP) {
+	config = new File(PROJECT_PATH + '/src/main/resources/META-INF/sample-app-config.xml')
+	configtext = ""
+	config.eachLine { line -> configtext += line.replace('sample-app', "${PROJECT_NAME}") + "\n" }
+	config.delete()
+	config = new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml")
+	config << configtext
+}
 
 // fix the links in index.jsp
 
@@ -343,6 +346,7 @@ def pomtext() {
 }
 
 def launchtext() {
+	// TODO this doesn't seem to exist
 	return templateReplace(new File(RICE_DIR + '/config/templates/createproject.launch.template.xml'))
 }
 

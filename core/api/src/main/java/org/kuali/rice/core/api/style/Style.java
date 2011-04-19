@@ -132,8 +132,8 @@ public final class Style implements StyleContract, ModelObjectComplete {
 	}
 
 	/**
-	 * A builder which can be used to construct Style instances.  Enforces the
-	 * constraints of the {@link StyleContract}.
+	 * A builder which can be used to construct {@link Style} instances.
+	 * Enforces the constraints of the {@link StyleContract}.
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
@@ -155,8 +155,8 @@ public final class Style implements StyleContract, ModelObjectComplete {
         }
         
         /**
-         * Creates a style builder with the given required values.  This class
-         * is the only means by which a {@link Style} object can be created.
+         * Creates a style builder with the given required values.  The builder
+         * is the only means by which a {@link Style} object should be created.
          * 
          * <p>Will default the active flag to true.
          * 

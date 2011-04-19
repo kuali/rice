@@ -74,7 +74,7 @@
   </bean>
   
   <bean id="KimPermissionImpl-name" parent="KimPermissionImpl-name-parentBean"/>
-  <bean id="KimPermissionImpl-name-parentBean" abstract="true" parent="KimTypeImpl-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
+  <bean id="KimPermissionImpl-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>

@@ -16,7 +16,6 @@
 
 package org.kuali.rice.kim.test.service;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -42,7 +41,6 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Ignore
 public class IdentityArchiveServiceTest extends KIMTestCase {
 
 	private IdentityArchiveService identityArchiveService;

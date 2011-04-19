@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.core.api.mo;
 
-import java.util.UUID;
-
 /**
  * This interface can be used to identify a model object which has a globally unique identifier.
  * This globally unique identifier is referred as the "objectId" of the object.  The means by
  * which it is generated or general format of this value is not specified, however it is
  * intended that some sort of GUID algorithm is used to generate this value, such as the one
- * provided by {@link UUID}.
+ * provided by {@link java.util.UUID}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

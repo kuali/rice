@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.jws.WebService;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
@@ -42,6 +34,13 @@ import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
+
+import javax.jws.WebService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is the default implementation for the {@link GroupUpdateService}, where the write methods for KIM groups are located.
@@ -264,9 +263,9 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         }
         SequenceAccessorService sas = getSequenceAccessorService();
         for (GroupAttributeDataImpl groupAttribute : groupAttributes) {
-        	if (groupAttribute.getAttributeDataId() == null) {
-        		groupAttribute.setAttributeDataId(sas.getNextAvailableSequenceNumber(
-        				"KRIM_GRP_ATTR_DATA_ID_S", KimEntityAffiliationImpl.class).toString());
+        	if (groupAttribute.getId() == null) {
+        		groupAttribute.setId(sas.getNextAvailableSequenceNumber(
+                        "KRIM_GRP_ATTR_DATA_ID_S", KimEntityAffiliationImpl.class).toString());
         	}
         }
         getBusinessObjectService().save( groupAttributes );

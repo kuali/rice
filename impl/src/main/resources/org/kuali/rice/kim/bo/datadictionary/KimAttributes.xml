@@ -212,7 +212,9 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
   </bean>      
-  <bean id="KimAttributes-kimTypeId" parent="KimTypeImpl-kimTypeId"/>
+  <bean id="KimAttributes-kimTypeId" parent="KimType-kimTypeId">
+    <property name="name" value="kimTypeId"/>
+  </bean>
 
   <bean id="KimAttributes-qualifierResolverProvidedIdentifier" parent="KimAttributes-qualifierResolverProvidedIdentifier-parentBean"/>
   <bean id="KimAttributes-qualifierResolverProvidedIdentifier-parentBean" parent="AttributeDefinition" abstract="true" p:name="qualifierResolverProvidedIdentifier" p:forceUppercase="false" p:label="Qualifier Resolver Provided Identifier" p:shortLabel="Qual. Res. Prov. Id." p:maxLength="40" p:required="false">

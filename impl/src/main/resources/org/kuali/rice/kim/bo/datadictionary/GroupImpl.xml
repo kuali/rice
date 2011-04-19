@@ -44,7 +44,7 @@
           <property name="objectAttributeName" value="kimTypeInfo"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="kimTypeId" p:targetName="kimTypeId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="kimTypeId" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
@@ -73,13 +73,13 @@
   </bean>
 
   <bean id="GroupImpl-kimTypeName" parent="GroupImpl-kimTypeName-parentBean"/>
-  <bean id="GroupImpl-kimTypeName-parentBean" abstract="true" parent="KimTypeImpl-name">
+  <bean id="GroupImpl-kimTypeName-parentBean" abstract="true" parent="KimType-name">
     <property name="name" value="kimTypeInfo.name"/>
     <property name="label" value="Group Type Name"/>
   </bean>
 
   <bean id="GroupImpl-kimTypeNamespaceCode" parent="GroupImpl-kimTypeNamespaceCode-parentBean"/>
-  <bean id="GroupImpl-kimTypeNamespaceCode-parentBean" abstract="true" parent="KimTypeImpl-namespaceCode">
+  <bean id="GroupImpl-kimTypeNamespaceCode-parentBean" abstract="true" parent="KimType-namespaceCode">
     <property name="name" value="kimTypeInfo.namespaceCode"/>
     <property name="label" value="Group Type Name Space"/>
   </bean>
@@ -100,11 +100,11 @@
   </bean>
 
   <bean id="GroupImpl-namespaceCode" parent="GroupImpl-namespaceCode-parentBean"/>
-  <bean id="GroupImpl-namespaceCode-parentBean" parent="KimTypeImpl-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Group Namespace" p:shortLabel="Group Namespace" p:required="true" p:maxLength="40">
+  <bean id="GroupImpl-namespaceCode-parentBean" parent="KimType-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Group Namespace" p:shortLabel="Group Namespace" p:required="true" p:maxLength="40">
   </bean>
 
   <bean id="GroupImpl-active" parent="GroupImpl-active-parentBean"/>
-  <bean id="GroupImpl-active-parentBean" parent="KimTypeImpl-active" abstract="true" p:label="Active?"/>
+  <bean id="GroupImpl-active-parentBean" parent="KimType-active" abstract="true" p:label="Active?"/>
 
   <bean id="GroupImpl-inquiryDefinition" parent="GroupImpl-inquiryDefinition-parentBean"/>
 

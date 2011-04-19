@@ -15,24 +15,16 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimRoleDao;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
@@ -54,6 +46,15 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -110,7 +111,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     	// prevent derived roles from being selectable (except for identityManagementRoleDocuments)	
     	KualiForm myForm = (KualiForm) GlobalVariables.getUserSession().retrieveObject(getDocFormKey());
     	if (myForm == null || !(myForm instanceof IdentityManagementRoleDocumentForm)){
-    		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+    		if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(KimTypeBo.to(roleImpl.getKimRoleType()))){
     			((AnchorHtmlData)anchorHtmlData).setHref("");
     		}
     	}
@@ -135,12 +136,12 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		List<KeyValue> options = new ArrayList<KeyValue>();
 		options.add(new ConcreteKeyValue("", ""));
 
-		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocatorWeb.getTypeInfoService().getAllTypes();
+		Collection<KimType> kimGroupTypes = KimApiServiceLocator.getKimTypeInfoService().findAllKimTypes();
 		// get the distinct list of type IDs from all roles in the system
-        for (KimTypeInfo kimType : kimGroupTypes) {
+        for (KimType kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasRoleTypeService(kimType)) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
-                options.add(new ConcreteKeyValue(kimType.getKimTypeId(), value));
+                options.add(new ConcreteKeyValue(kimType.getId(), value));
             }
         }
         Collections.sort(options, new Comparator<KeyValue>() {

@@ -15,18 +15,15 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.impl.GenericPermission;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
+
+import java.util.Properties;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

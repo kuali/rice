@@ -18,18 +18,31 @@ package org.kuali.rice.kim.bo.ui;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +73,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 	@Transient
-	protected KimTypeInfo kimRoleType;
+	protected KimTypeBo kimRoleType;
 	@Transient
 	protected List<? extends KimAttributes> attributes;
 	@Transient
@@ -129,16 +142,11 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 		this.attributes = attributes;
 	}
 
-	public KimTypeInfo getKimRoleType() {
+	public KimTypeBo getKimRoleType() {
 		if ( kimRoleType == null ) {
-			kimRoleType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
+			kimRoleType = KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
 		}
 		return kimRoleType;
-	}
-
-	@Deprecated // for testing only
-	public void setKimRoleType(KimTypeInfo kimRoleType) {
-		this.kimRoleType = kimRoleType;
 	}
 
 	public AttributeDefinitionMap getDefinitionsKeyedByAttributeName() {
@@ -154,7 +162,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public AttributeDefinitionMap getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
-	        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(this.getKimRoleType());
+	        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(this.getKimRoleType()));
 	        //it is possible that the the roleTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {

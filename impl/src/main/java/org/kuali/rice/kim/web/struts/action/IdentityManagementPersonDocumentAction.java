@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import java.sql.Timestamp;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -36,7 +26,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -58,6 +47,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDocumentRoleQualifierEvent;
@@ -76,6 +66,15 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -133,7 +132,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
 //			try {
-	        KimTypeService kimTypeService = getKimTypeService(role.getKimRoleType());
+	        KimTypeService kimTypeService = getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
 	        if ( kimTypeService != null ) {
 	        	role.setDefinitions(kimTypeService.getAttributeDefinitions(role.getKimTypeId()));
 	        }
@@ -351,10 +350,9 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        if(!validateRoleAssignment(personDocumentForm.getPersonDocument(), newRole)){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
-	        KimTypeService kimTypeService = getKimTypeService(newRole.getKimRoleType());
+	        KimTypeService kimTypeService = getKimTypeService(KimTypeBo.to(newRole.getKimRoleType()));
 	        //AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions();
 	        // role type populated from form is not a complete record
-	        newRole.getKimRoleType().setKimTypeId(newRole.getKimTypeId());
 	        if ( kimTypeService != null ) {
 	        	newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimTypeId()));
 	        }

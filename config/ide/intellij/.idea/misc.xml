@@ -1,5 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CCaseConfig">
+    <option name="checkoutReserved" value="false" />
+    <option name="markExternalChangeAsUpToDate" value="true" />
+    <option name="checkInUseHijack" value="true" />
+    <option name="useUcmModel" value="true" />
+    <option name="synchOutside" value="false" />
+    <option name="isHistoryResticted" value="true" />
+    <option name="useIdenticalSwitch" value="true" />
+    <option name="synchActivitiesOnRefresh" value="true" />
+    <option name="lastScr" value="" />
+    <option name="scrTextFileName" value="" />
+    <option name="historyRevisionsNumber" value="4" />
+  </component>
+  <component name="CoverageDataManager" choice="3" />
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <breakpoint_any>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <breakpoint_rules />
+    <ui_properties />
+  </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
@@ -8,8 +61,13 @@
   </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
-      <facet-type id="android">
+      <facet-type id="BeanValidation">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -17,8 +75,13 @@
           </module>
         </modules>
       </facet-type>
-      <facet-type id="BeanValidation">
+      <facet-type id="Clojure">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -28,24 +91,11 @@
       </facet-type>
       <facet-type id="ejb">
         <modules>
-          <module name="rice-standalone">
+          <module name="rice-sampleapp">
             <directories>
-              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
             </directories>
           </module>
-        </modules>
-      </facet-type>
-      <facet-type id="google-app-engine">
-        <modules>
-          <module name="rice-standalone">
-            <directories>
-              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
-            </directories>
-          </module>
-        </modules>
-      </facet-type>
-      <facet-type id="gwt">
-        <modules>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -55,6 +105,11 @@
       </facet-type>
       <facet-type id="hibernate">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -64,6 +119,11 @@
       </facet-type>
       <facet-type id="javaeeApplication">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -73,20 +133,38 @@
       </facet-type>
       <facet-type id="jpa">
         <modules>
-          <module name="rice-impl">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/META-INF/kcb-persistence.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/META-INF/ken-persistence.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/META-INF/kew-persistence.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/META-INF/kim-persistence.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/META-INF/kns-persistence.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/META-INF/ksb-persistence.xml" />
-            </files>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
           </module>
-          <module name="rice-kns-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/META-INF/kns-test-persistence.xml" />
-            </files>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="JRailsFacetType">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="JRUBY">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
           </module>
           <module name="rice-standalone">
             <directories>
@@ -97,6 +175,11 @@
       </facet-type>
       <facet-type id="jsf">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -106,6 +189,11 @@
       </facet-type>
       <facet-type id="Osmorc">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -113,8 +201,13 @@
           </module>
         </modules>
       </facet-type>
-      <facet-type id="Seam">
+      <facet-type id="RailsFacetType">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -124,313 +217,25 @@
       </facet-type>
       <facet-type id="Spring">
         <modules>
-          <module name="client-contrib">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../client-contrib/src/main/resources/org/kuali/rice/core/api/parameter/DataDictionaryBaseApcTypes.xml" />
-            </files>
-          </module>
-          <module name="ksb-test-client1">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/test-clients/ksb-test-client1/src/main/resources/org/kuali/rice/test/ksb/testclient1/config/TestClient1SpringBeans.xml" />
-            </files>
-          </module>
-          <module name="ksb-test-client2">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/test-clients/ksb-test-client2/src/main/resources/org/kuali/rice/test/ksb/testclient2/config/TestClient2SpringBeans.xml" />
-            </files>
-          </module>
-          <module name="rice">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../templates/createproject.SpringBeans.template.xml" />
-            </files>
-          </module>
-          <module name="rice-core-web">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/component/Component.xml" />
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/component/ComponentMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/namespace/Namespace.xml" />
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/namespace/NamespaceMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/Parameter.xml" />
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/ParameterMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/ParameterType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/ParameterTypeMaintenanceDocument.xml" />
-            </files>
-          </module>
-          <module name="rice-development-tools">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../development-tools/src/main/resources/PostDataLoadEncryptionSpringBeans.xml" />
-            </files>
-          </module>
-          <module name="rice-impl">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/core/CommonOJBSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/core/CommonSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/core/config/COREConfigSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/core/config/CORESpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kcb/config/KCBSpringBeans-test.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kcb/config/KCBSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ken/config/KENConfigSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ken/config/KENSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/DocSearchCriteriaDTO.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/DocumentType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/EDocLiteAssociation.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/EDocLiteDefinition.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/EDocLiteStyle.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KEWConfigSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KEWJPASpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KEWOJBSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KEWServiceBusSOAPDefaultSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KEWSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/ServerKEWSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/ria/bo/datadictionary/RIADocTypeMap.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/ria/document/datadictionary/RIADocTypeMapMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/ria/document/datadictionary/RIADocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmailType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EntityNameType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EntityType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimAttributeDataImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimAttributeImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDelegationImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimPermissionImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimResponsibilityAttributeDataImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimResponsibilityImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimResponsibilityTemplateImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeInfo.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentCitizenship.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentExternalId.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/ResponsibilityAttributeDataImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/ResponsibilityImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/ReviewResponsibility.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleMemberImpl.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/config/KIMConfigSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/config/KIMImplementationSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/config/KIMInterfaceSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/config/KIMServiceBusSOAPDefaultSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/config/KIMServiceBusSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/config/KIMThinClientSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/config/KIMUserInterfaceSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementReviewResponsibilityMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/AdHocRoutePerson.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/AdHocRouteWorkgroup.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Attachment.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/AttributeReferenceDummy.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/AttributeReferenceElements.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/BusinessObjectAttributeEntry.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Campus.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/CampusType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Country.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/County.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/DocumentHeader.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/Note.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/NoteType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/PostalCode.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/State.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/config/KNSConfigSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/config/KNSServiceBusSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CampusMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CampusTypeMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountryMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ksb/config/KSBJPASpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ksb/config/KSBModuleConfigurationSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ksb/config/KSBSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml" />
-            </files>
-          </module>
-          <module name="rice-impl-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/impl/src/test/resources/org/kuali/rice/core/config/jaxb-test-context.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/impl/src/test/resources/org/kuali/rice/core/database/MultipleDatabaseTransactionTestSpring.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/impl/src/test/resources/org/kuali/rice/core/jta/JtaTestSpring.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/impl/src/test/resources/org/kuali/rice/core/mail/MailerTestSpringBeans.xml" />
-            </files>
-          </module>
-          <module name="rice-internal-test-tools">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../internal-test-tools/src/main/resources/TestHarnessSpringBeans.xml" />
-            </files>
-          </module>
-          <module name="rice-kcb-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kcb/src/test/resources/KCBTestHarnessSpringBeans.xml" />
-            </files>
-          </module>
-          <module name="rice-ken-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/ken/src/test/resources/KENTestHarnessSpringBeans.xml" />
-            </files>
-          </module>
-          <module name="rice-kew-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/core/util/RiceServiceOverrideTestSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/kew/clientapp/ThinClientSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/kew/config/OverrideTestSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/kew/config/TestKEWSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/kew/config/TestSpring.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/kew/docsearch/xml/SearchableAttributeProcessorSpring.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/kew/docsearch/xml/SearchableAttributesSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/resources/org/kuali/rice/kew/rule/TestRouteTemplateSpring.xml" />
-            </files>
-          </module>
-          <module name="rice-kim-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kim/src/test/resources/KIMTestHarnessSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kim/src/test/resources/org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kim/src/test/resources/org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" />
-            </files>
-          </module>
-          <module name="rice-kns-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/KnsTestSpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/Account.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountExtension.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountManager.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountManagerMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountRequestDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountRequestDocument2.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountRequestDocument3.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountType2.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountType2MaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/AccountWithDDAttributesDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/LookupResultsDDBo.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/RiceTestTransactionalDocument2.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/SearchAttributeIndexTestDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/resources/org/kuali/rice/kns/test/document/TravelAccountUseRate.xml" />
-            </files>
-          </module>
-          <module name="rice-ksb-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/ksb/src/test/resources/KSBTestHarnessNoJtaSpring.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/ksb/src/test/resources/KSBTestHarnessSpring.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/ksb/src/test/resources/org/kuali/rice/ksb/testclient1/resources/TestClient1SpringBeans.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/ksb/src/test/resources/org/kuali/rice/ksb/testclient2/resources/TestClient2SpringBeans.xml" />
-            </files>
-          </module>
           <module name="rice-sampleapp">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/FiscalOfficer.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/TravelAccount.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/TravelAccountExtension.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/TravelAccountType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml" />
-              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/TravelRequestDocument.xml" />
-            </files>
-          </module>
-          <module name="rice-shareddata-web">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/Campus.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/CampusMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/CampusType.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/CampusTypeMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/country/Country.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/country/CountryMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/county/County.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/county/CountyMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/postalcode/PostalCode.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/postalcode/PostalCodeMaintenanceDocument.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/state/State.xml" />
-              <file url="file://$PROJECT_DIR$/../../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/state/StateMaintenanceDocument.xml" />
-            </files>
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
           </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
             </directories>
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../standalone/src/main/resources/org/kuali/rice/standalone/config/StandaloneSpringBeans.xml" />
-            </files>
           </module>
         </modules>
       </facet-type>
       <facet-type id="struts">
         <modules>
-          <module name="rice-standalone">
+          <module name="rice-sampleapp">
             <directories>
-              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
             </directories>
           </module>
-          <module name="rice-web">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/WEB-INF/struts-config.xml" />
-              <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/ken/WEB-INF/struts-config.xml" />
-              <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/kew/WEB-INF/struts-config.xml" />
-              <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/kim/WEB-INF/struts-config.xml" />
-              <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/kr/WEB-INF/struts-config.xml" />
-              <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/ksb/WEB-INF/struts-config.xml" />
-            </files>
-          </module>
-        </modules>
-      </facet-type>
-      <facet-type id="Struts2">
-        <modules>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -440,6 +245,11 @@
       </facet-type>
       <facet-type id="tapestry">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -449,41 +259,21 @@
       </facet-type>
       <facet-type id="web">
         <modules>
-          <module name="ksb-test-client1" />
-          <module name="ksb-test-client2" />
-          <module name="rice-ken-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/ken/src/test/webapp/WEB-INF/web.xml" />
-            </files>
-          </module>
-          <module name="rice-kew-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kew/src/test/webapp/WEB-INF/web.xml" />
-            </files>
-          </module>
-          <module name="rice-kim-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kim/src/test/webapp/WEB-INF/web.xml" />
-            </files>
-          </module>
-          <module name="rice-kns-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/kns/src/test/webapp/WEB-INF/web.xml" />
-            </files>
-          </module>
-          <module name="rice-ksb-test">
-            <files>
-              <file url="file://$PROJECT_DIR$/../../../test/ksb/src/test/clients/TestClient1/WEB-INF/web.xml" />
-              <file url="file://$PROJECT_DIR$/../../../test/ksb/src/test/clients/TestClient2/WEB-INF/web.xml" />
-            </files>
-          </module>
           <module name="rice-sampleapp" />
           <module name="rice-standalone" />
           <module name="rice-web" />
+          <module name="rice-web (1)" />
+          <module name="rice-web (2)" />
+          <module name="rice-web (3)" />
         </modules>
       </facet-type>
       <facet-type id="WebBeans">
         <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
@@ -514,9 +304,34 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
+        <option value="$PROJECT_DIR$/../../../kim/impl/pom.xml" />
         <option value="$PROJECT_DIR$/../../../pom.xml" />
+        <option value="$PROJECT_DIR$/../../../sampleapp/target/war/work/org.kuali.rice/rice-web/META-INF/maven/org.kuali.rice/rice-web/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../standalone/target/war/work/org.kuali.rice/rice-web/META-INF/maven/org.kuali.rice/rice-web/pom.xml" />
       </list>
     </option>
+  </component>
+  <component name="ModuleEditorState">
+    <option name="LAST_EDITED_MODULE_NAME" />
+    <option name="LAST_EDITED_TAB_NAME" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state />
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
@@ -524,577 +339,94 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <list size="0" />
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
-        <entry key="$PROJECT_DIR$/../../..">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core/api">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core/impl">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../core/web">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../dist">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../impl">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../krms/framework">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../test">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy" />
-                  <option value="https://test.kuali.org/svn/rice/vc-interface-poc-1-1-groovy-2" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../test/edl">
+        <entry key="$PROJECT_DIR$/../../../kim/kim-impl">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">
@@ -1160,6 +492,56 @@
       </map>
     </option>
     <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+  <component name="SvnConfiguration" maxAnnotateRevisions="500">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <configuration useDefault="true">C:\Documents and Settings\schnee13\Application Data\Subversion</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="VssConfiguration">
+    <option name="CLIENT_PATH" value="" />
+    <option name="SRCSAFEINI_PATH" value="" />
+    <option name="USER_NAME" value="" />
+    <option name="PWD" value="" />
+    <CheckoutOptions>
+      <option name="COMMENT" value="" />
+      <option name="DO_NOT_GET_LATEST_VERSION" value="false" />
+      <option name="REPLACE_WRITABLE" value="false" />
+      <option name="RECURSIVE" value="false" />
+    </CheckoutOptions>
+    <CheckinOptions>
+      <option name="COMMENT" value="" />
+      <option name="KEEP_CHECKED_OUT" value="false" />
+      <option name="RECURSIVE" value="false" />
+    </CheckinOptions>
+    <AddOptions>
+      <option name="STORE_ONLY_LATEST_VERSION" value="false" />
+      <option name="CHECK_OUT_IMMEDIATELY" value="false" />
+    </AddOptions>
+    <UndocheckoutOptions>
+      <option name="MAKE_WRITABLE" value="false" />
+      <option name="REPLACE_LOCAL_COPY" value="2" />
+      <option name="RECURSIVE" value="false" />
+    </UndocheckoutOptions>
+    <GetOptions>
+      <option name="REPLACE_WRITABLE" value="0" />
+      <option name="MAKE_WRITABLE" value="false" />
+      <option name="ANSWER_NEGATIVELY" value="false" />
+      <option name="ANSWER_POSITIVELY" value="false" />
+      <option name="RECURSIVE" value="false" />
+      <option name="VERSION" />
+    </GetOptions>
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>

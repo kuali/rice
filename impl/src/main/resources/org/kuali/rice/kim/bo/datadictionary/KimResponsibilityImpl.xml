@@ -73,7 +73,7 @@
   </bean>
   
   <bean id="KimResponsibilityImpl-name" parent="KimResponsibilityImpl-name-parentBean"/>
-  <bean id="KimResponsibilityImpl-name-parentBean" abstract="true" parent="KimTypeImpl-name" p:name="name" p:label="Responsibility Name" p:shortLabel="Responsibility Name">
+  <bean id="KimResponsibilityImpl-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Responsibility Name" p:shortLabel="Responsibility Name">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>

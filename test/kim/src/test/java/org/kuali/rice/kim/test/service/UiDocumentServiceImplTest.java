@@ -21,11 +21,26 @@ import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.impl.*;
-import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.bo.ui.*;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
+import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
+import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
+import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
+import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
+import org.kuali.rice.kim.bo.ui.PersonDocumentName;
+import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
+import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
+import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -37,6 +52,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,9 +146,9 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	// test principal membership
 	@Test
 	@Ignore
-	public void testSetAttributeEntry() {
+	public void testSetAttributeEntry() throws Exception {
 		PersonDocumentRole personDocRole = initPersonDocRole();
-        KimTypeService kimTypeService = (KimTypeServiceBase) KIMServiceLocatorInternal.getService(personDocRole.getKimRoleType().getKimTypeServiceName());
+        KimTypeService kimTypeService = (KimTypeServiceBase) KIMServiceLocatorInternal.getService(personDocRole.getKimRoleType().getServiceName());
 		personDocRole.setDefinitions(kimTypeService.getAttributeDefinitions(personDocRole.getKimTypeId()));
 
 		personDocRole.setAttributeEntry( uiDocumentService.getAttributeEntries( personDocRole.getDefinitions() ) );
@@ -153,37 +169,39 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		}
 	}
 
-	private PersonDocumentRole initPersonDocRole() {
+	private PersonDocumentRole initPersonDocRole() throws Exception {
 //		Map pkMap = new HashMap();
 //		pkMap.put("roleId", "r1");
 //		PersonDocumentRole docRole = (PersonDocumentRole)uiDocumentService.getBusinessObjectService().findByPrimaryKey(PersonDocumentRole.class, pkMap);
 		PersonDocumentRole docRole = new PersonDocumentRole();
 		docRole.setKimTypeId("roleType1");
 		docRole.setRoleId("r1");
-		KimTypeImpl kimType = new KimTypeImpl();
-		kimType.setKimTypeId("roleType1");
-		kimType.setKimTypeServiceName("kimRoleTypeService");
-		List<KimTypeAttributeImpl> attributeDefinitions = new ArrayList<KimTypeAttributeImpl>();
+		KimTypeBo kimType = new KimTypeBo();
+		kimType.setId("roleType1");
+		kimType.setServiceName("kimRoleTypeService");
+		List<KimTypeAttributeBo> attributeDefinitions = new ArrayList<KimTypeAttributeBo>();
 		Map pkMap = new HashMap();
 		pkMap.put("kimTypeAttributeId", "kimAttr3");
-		KimTypeAttributeImpl attr1 = (KimTypeAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeBo attr1 = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
 
 //		attr1.setKimAttributeId("kimAttrDefn2");
 //		attr1.setSortCode("a");
 //		attr1.setKimTypeAttributeId("kimAttr3");
 
 		attributeDefinitions.add(attr1);
-//		attr1 = new KimTypeAttributeImpl();
+//		attr1 = new KimTypeAttributeBo();
 //		attr1.setKimAttributeId("kimAttrDefn3");
 //		attr1.setSortCode("b");
 //		attr1.setKimTypeAttributeId("kimAttr4");
 
 		pkMap.put("kimTypeAttributeId", "kimAttr4");
-		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeBo attr2 = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
 
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);
-		docRole.setKimRoleType(kimType.toInfo());
+
+        Field fld = PersonDocumentRole.class.getField("kimRoleType");
+        fld.set(docRole, kimType);
 
 		return docRole;
 	}

@@ -15,19 +15,22 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -38,12 +41,17 @@ import org.kuali.rice.kns.web.struts.action.KualiTransactionalDocumentActionBase
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 abstract public class IdentityManagementDocumentActionBase extends KualiTransactionalDocumentActionBase {
+
+    private static final Logger LOG = Logger.getLogger( IdentityManagementDocumentActionBase.class );
 
 	protected static final String CHANGE_MEMBER_TYPE_CODE_METHOD_TO_CALL = "changeMemberTypeCode";
 	protected static final String CHANGE_NAMESPACE_METHOD_TO_CALL = "changeNamespace";
@@ -128,10 +136,6 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         return newDest;
     }
 
-    /**
-     * @see org.kuali.rice.kns.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
-     *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
     public ActionForward switchToPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementDocumentFormBase idmForm = (IdentityManagementDocumentFormBase) form;
         
@@ -152,7 +156,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
     		return false;
     	}
-    	KimTypeInfo typeInfo = KIMServiceLocatorWeb.getTypeInfoService().getKimType(role.getKimTypeId());
+    	KimType typeInfo = KimApiServiceLocator.getKimTypeInfoService().getKimType(role.getKimTypeId());
     	
     	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(typeInfo)){
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, message);
@@ -165,8 +169,8 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         return refresh(mapping, form, request, response);
     }
 
-    protected KimTypeService getKimTypeService( KimTypeInfo typeInfo ) {
-		String serviceName = typeInfo.getKimTypeServiceName();
+    protected KimTypeService getKimTypeService( KimType typeInfo ) {
+		String serviceName = typeInfo.getServiceName();
 		if ( StringUtils.isNotBlank(serviceName) ) {
 			try {
 				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
@@ -176,7 +180,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 					return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 				}
 			} catch ( Exception ex ) {
-//				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
+				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
 				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			}
 		}

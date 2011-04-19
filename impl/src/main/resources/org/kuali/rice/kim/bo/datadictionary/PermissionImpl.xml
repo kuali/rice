@@ -164,7 +164,7 @@
   </bean>
   
   <bean id="PermissionImpl-name" parent="PermissionImpl-name-parentBean"/>
-  <bean id="PermissionImpl-name-parentBean" abstract="true" parent="KimTypeImpl-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
+  <bean id="PermissionImpl-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>

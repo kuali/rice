@@ -15,15 +15,11 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -31,6 +27,10 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -40,13 +40,13 @@ import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition
  */
 public class KimTypeAttributesHelper implements Serializable {
 
-	private KimTypeInfo kimType = new KimTypeInfo();
+	private KimType kimType;
 	private transient KimTypeService kimTypeService;
 	private List<? extends KimAttributes> attributes;
 	private transient AttributeDefinitionMap definitions;
 	private transient Map<String,Object> attributeEntry;
 
-	public KimTypeAttributesHelper(KimTypeInfo kimType){
+	public KimTypeAttributesHelper(KimType kimType){
 		this.kimType = kimType;
 	}
 
@@ -60,11 +60,11 @@ public class KimTypeAttributesHelper implements Serializable {
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeInfo getKimType() {
+	public KimType getKimType() {
 		return this.kimType;
 	}
 
-	public KimTypeService getKimTypeService(KimTypeInfo kimType){
+	public KimTypeService getKimTypeService(KimType kimType){
 		if(this.kimTypeService==null){
 	    	this.kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
 		}
@@ -93,7 +93,7 @@ public class KimTypeAttributesHelper implements Serializable {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = getKimTypeService(getKimType());
 	        if(kimTypeService!=null)
-	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getKimTypeId());
+	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getId());
 		}
 		return this.definitions;
 	}

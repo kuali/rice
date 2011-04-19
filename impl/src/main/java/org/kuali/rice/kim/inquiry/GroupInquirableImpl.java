@@ -18,7 +18,7 @@ package org.kuali.rice.kim.inquiry;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -29,7 +29,11 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -60,9 +64,9 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
 		} else if("kimTypeInfo.name".equals(attributeName)){
-			KimTypeImpl kimType = new KimTypeImpl();
-			kimType.setKimTypeId( ((GroupImpl)businessObject).getKimTypeId() );
-			return getInquiryUrlForPrimaryKeys(KimTypeImpl.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
+			KimTypeBo kimType = new KimTypeBo();
+			kimType.setId( ((GroupImpl)businessObject).getKimTypeId() );
+			return getInquiryUrlForPrimaryKeys(KimTypeBo.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
         }
 		
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);

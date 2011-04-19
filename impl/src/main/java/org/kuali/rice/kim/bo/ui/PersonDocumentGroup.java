@@ -18,10 +18,16 @@ package org.kuali.rice.kim.bo.ui;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -54,7 +60,7 @@ public class PersonDocumentGroup extends KimDocumentBoActivatableToFromEditableB
 	@Column(name="PRNCPL_ID")
 	protected String principalId;
 	@Transient
-	protected transient KimTypeInfo kimGroupType = new KimTypeInfo();
+	protected transient KimTypeBo kimGroupType;
 	@Transient
 	protected String kimTypeId;
 	
@@ -74,10 +80,12 @@ public class PersonDocumentGroup extends KimDocumentBoActivatableToFromEditableB
 		this.groupName = groupName;
 	}
 
-	public KimTypeInfo getKimGroupType() {
-		if ( kimGroupType == null || !StringUtils.equals( kimGroupType.getKimTypeId(), kimTypeId ) ) {
-			kimGroupType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
-		}
+	public KimTypeBo getKimGroupType() {
+        if (StringUtils.isNotBlank(kimTypeId)) {
+            if ( kimGroupType == null || (!StringUtils.equals( kimGroupType.getId(), kimTypeId )) ) {
+			    kimGroupType = KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
+		    }
+        }
 		return kimGroupType;
 	}
 

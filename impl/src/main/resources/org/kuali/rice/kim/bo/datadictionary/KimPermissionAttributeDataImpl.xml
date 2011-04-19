@@ -64,7 +64,7 @@
   </bean>
 
   <bean id="KimPermissionAttributeDataImpl-active" parent="KimPermissionAttributeDataImpl-active-parentBean"/>
-  <bean id="KimPermissionAttributeDataImpl-active-parentBean" parent="KimAttributeImpl-active" abstract="true" p:name="kimAttribute.active"/>
+  <bean id="KimPermissionAttributeDataImpl-active-parentBean" parent="KimAttribute-active" abstract="true" p:name="kimAttribute.active"/>
   
   <bean id="KimPermissionAttributeDataImpl-componentName" parent="KimPermissionAttributeDataImpl-componentName-parentBean"/>
   <bean id="KimPermissionAttributeDataImpl-componentName-parentBean" parent="AttributeDefinition" abstract="true" p:name="kimAttribute.componentName" p:forceUppercase="true" p:label="Component Name" p:shortLabel="Component Name" p:maxLength="40" p:required="false">

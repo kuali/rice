@@ -64,7 +64,7 @@
   </bean>
 
   <bean id="KimResponsibilityAttributeDataImpl-active" parent="KimResponsibilityAttributeDataImpl-active-parentBean"/>
-  <bean id="KimResponsibilityAttributeDataImpl-active-parentBean" parent="KimAttributeImpl-active" abstract="true" p:name="kimAttribute.active"/>
+  <bean id="KimResponsibilityAttributeDataImpl-active-parentBean" parent="KimAttribute-active" abstract="true" p:name="kimAttribute.active"/>
   
   <bean id="KimResponsibilityAttributeDataImpl-componentName" parent="KimResponsibilityAttributeDataImpl-componentName-parentBean"/>
   <bean id="KimResponsibilityAttributeDataImpl-componentName-parentBean" parent="AttributeDefinition" abstract="true" p:name="kimAttribute.componentName" p:forceUppercase="true" p:label="Component Name" p:shortLabel="Component Name" p:maxLength="40" p:required="false">

@@ -16,12 +16,12 @@
 
 package org.kuali.rice.kns.datadictionary;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A single Relationship definition in the DataDictionary, which contains information concerning which primitive attributes of this
@@ -83,7 +83,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 	            throw new AttributeValidationException("cannot get valid class for property '" + objectAttributeName + "' as an attribute of '" + sourceClass + "'");
 	        }
 	        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
-	            throw new AttributeValidationException("property '" + objectAttributeName + "' is not a BusinessObject (" + propertyClass.getName() + ")");
+                throw new AttributeValidationException("property '" + objectAttributeName + "' is not a BusinessObject (" + propertyClass.getName() + ") on sourceClass (" + sourceClass +")");
 	        }
 	
 	

@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
+import org.kuali.rice.kim.impl.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -43,24 +43,24 @@ public class AttributeValidationHelper {
 	private static final Logger LOG = Logger.getLogger(AttributeValidationHelper.class);
 	
 	protected BusinessObjectService businessObjectService;
-    protected Map<String,KimAttributeImpl> attributeDefinitionMap = new HashMap<String,KimAttributeImpl>();
+    protected Map<String,KimAttributeBo> attributeDefinitionMap = new HashMap<String,KimAttributeBo>();
     
-    protected KimAttributeImpl getAttributeDefinition( String id ) {
-    	KimAttributeImpl attributeImpl = attributeDefinitionMap.get( id );
+    protected KimAttributeBo getAttributeDefinition( String id ) {
+    	KimAttributeBo attributeImpl = attributeDefinitionMap.get( id );
     	
     	if ( attributeImpl == null ) {
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put( KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, id );
-			attributeImpl = (KimAttributeImpl)getBusinessObjectService().findByPrimaryKey( KimAttributeImpl.class, criteria );
+			attributeImpl = (KimAttributeBo)getBusinessObjectService().findByPrimaryKey( KimAttributeBo.class, criteria );
 			attributeDefinitionMap.put( id, attributeImpl );
     	}
     	return attributeImpl;
     }
     
-	public AttributeSet convertAttributesToMap(List<? extends KimAttributeDataImpl> attributes) {
+	public AttributeSet convertAttributesToMap(List<? extends KimAttributeDataBo> attributes) {
 		AttributeSet m = new AttributeSet();
-		for(KimAttributeDataImpl data: attributes) {
-			KimAttributeImpl attrib = getAttributeDefinition(data.getKimAttributeId());
+		for(KimAttributeDataBo data: attributes) {
+			KimAttributeBo attrib = getAttributeDefinition(data.getKimAttributeId());
 			if(attrib != null){
 				m.put(attrib.getAttributeName(), data.getAttributeValue());
 			} else {
@@ -73,7 +73,7 @@ public class AttributeValidationHelper {
 	public AttributeSet convertQualifiersToMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		AttributeSet m = new AttributeSet();
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
-			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
+			KimAttributeBo attrib = getAttributeDefinition( data.getKimAttrDefnId() );
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), data.getAttrVal() );
 			} else {
@@ -83,14 +83,14 @@ public class AttributeValidationHelper {
 		return m;
 	}
 
-	public AttributeSet getBlankValueQualifiersMap(List<KimTypeAttributeInfo> attributes) {
+	public AttributeSet getBlankValueQualifiersMap(List<KimTypeAttribute> attributes) {
 		AttributeSet m = new AttributeSet();
-		for(KimTypeAttributeInfo attribute: attributes){
-			KimAttributeImpl attrib = getAttributeDefinition(attribute.getKimAttributeId());
+		for(KimTypeAttribute attribute: attributes){
+			KimAttributeBo attrib = getAttributeDefinition(attribute.getId());
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), "" );
 			} else {
-				LOG.error("Unable to get attribute name for ID:" + attribute.getKimAttributeId());
+				LOG.error("Unable to get attribute name for ID:" + attribute.getId());
 			}
 		}
 		return m;
@@ -100,7 +100,7 @@ public class AttributeValidationHelper {
 		AttributeSet m = new AttributeSet();
 		int i = 0;
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
-			KimAttributeImpl attrib = getAttributeDefinition( data.getKimAttrDefnId() );
+			KimAttributeBo attrib = getAttributeDefinition( data.getKimAttrDefnId() );
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), Integer.toString(i) );
 			} else {
@@ -139,8 +139,8 @@ public class AttributeValidationHelper {
 		for ( String key : localErrors.keySet() ) {
 			Map<String,String> criteria = new HashMap<String,String>();
 			criteria.put(KNSPropertyConstants.ATTRIBUTE_NAME, key);
-			KimAttributeImpl attribute = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-			String attributeDefnId = attribute==null?"":attribute.getKimAttributeId();
+			KimAttributeBo attribute = (KimAttributeBo) getBusinessObjectService().findByPrimaryKey(KimAttributeBo.class, criteria);
+			String attributeDefnId = attribute==null?"":attribute.getId();
 			errors.put(errorPath+"qualifier("+attributeDefnId+").attrVal", localErrors.get(key));
 		}
 		return errors;

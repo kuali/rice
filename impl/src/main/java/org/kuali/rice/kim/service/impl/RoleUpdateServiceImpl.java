@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.jws.WebService;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -42,6 +34,13 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
+
+import javax.jws.WebService;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -374,11 +373,11 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 			RoleMemberAttributeDataImpl origRoleMemberAttribute = 
 	    		(origRoleMemberAttributes!=null && origRoleMemberAttributes.size()>0) ? origRoleMemberAttributes.get(0) : null;
 	    	if(origRoleMemberAttribute!=null){
-	    		a.setAttributeDataId(origRoleMemberAttribute.getAttributeDataId());
+	    		a.setId(origRoleMemberAttribute.getId());
 	    		a.setVersionNumber(origRoleMemberAttribute.getVersionNumber());
 	    	} else{
 				// pull the next sequence number for the data ID
-				a.setAttributeDataId(getNewAttributeDataId());
+				a.setId(getNewAttributeDataId());
 	    	}
 			attributes.add( a );
 		}
@@ -402,11 +401,11 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 			KimDelegationMemberAttributeDataImpl origDelegationMemberAttribute = 
 	    		(origDelegationMemberAttributes!=null && origDelegationMemberAttributes.size()>0) ? origDelegationMemberAttributes.get(0) : null;
 	    	if(origDelegationMemberAttribute!=null){
-	    		a.setAttributeDataId(origDelegationMemberAttribute.getAttributeDataId());
+	    		a.setId(origDelegationMemberAttribute.getId());
 	    		a.setVersionNumber(origDelegationMemberAttribute.getVersionNumber());
 	    	} else{
 				// pull the next sequence number for the data ID
-				a.setAttributeDataId(getNewAttributeDataId());
+				a.setId(getNewAttributeDataId());
 	    	}
 			attributes.add( a );
 		}

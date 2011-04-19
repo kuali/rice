@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
@@ -36,12 +25,13 @@ import org.kuali.rice.core.web.format.CollectionFormatter;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
@@ -70,6 +60,17 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -377,12 +378,12 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 		List<KeyValue> options = new ArrayList<KeyValue>();
 		options.add(new ConcreteKeyValue("", ""));
 
-		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocatorWeb.getTypeInfoService().getAllTypes();
+		Collection<KimType> kimGroupTypes = KimApiServiceLocator.getKimTypeInfoService().findAllKimTypes();
 		// get the distinct list of type IDs from all groups in the system
-        for (KimTypeInfo kimType : kimGroupTypes) {
-            if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
+        for (KimType kimType : kimGroupTypes) {
+            if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getId()) == null) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
-                options.add(new ConcreteKeyValue(kimType.getKimTypeId(), value));
+                options.add(new ConcreteKeyValue(kimType.getId(), value));
             }
         }
         Collections.sort(options, new Comparator<KeyValue>() {
@@ -402,9 +403,9 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 				if (!StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
-					KimTypeInfo kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
+					KimType kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
 					KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
-			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
+			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getId());
 			        setAttrDefinitions(definitions);
 		            for (AttributeDefinition definition  : definitions.values()) {
 				        List<Field> fields = new ArrayList<Field>();

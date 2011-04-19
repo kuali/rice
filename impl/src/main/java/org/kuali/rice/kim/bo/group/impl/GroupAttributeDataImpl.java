@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.group.impl;
 
-import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
+import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,16 +26,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="KRIM_GRP_ATTR_DATA_T")
-public class GroupAttributeDataImpl extends KimAttributeDataImpl {
-	//@Id
-	//@GeneratedValue(generator="KRSB_SVC_DEF_S")
-	//@GenericGenerator(name="KRSB_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-	//		@Parameter(name="sequence_name",value="KRSB_SVC_DEF_S"),
-	//		@Parameter(name="value_column",value="id")
-	//	})
-	//@Column(name="ATTR_DATA_ID")
-	//protected String attributeDataId;
-	
+public class GroupAttributeDataImpl extends KimAttributeDataBo {
+
     @Column(name="GRP_ID")
     protected String groupId;
 

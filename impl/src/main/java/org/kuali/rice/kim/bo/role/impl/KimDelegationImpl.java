@@ -22,11 +22,19 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.KimDelegation;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +73,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	protected List<KimDelegationMemberImpl> members = new AutoPopulatingList(KimDelegationMemberImpl.class);
 
 	@Transient
-	protected KimTypeInfo kimType;
+	protected KimTypeBo kimType;
 
 	public String getRoleId() {
 		return this.roleId;
@@ -91,7 +99,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 		this.kimTypeId = typeId;
 	}
 
-	public KimTypeInfo getKimType() {
+	public KimTypeBo getKimType() {
 		return this.kimType;
 	}
 

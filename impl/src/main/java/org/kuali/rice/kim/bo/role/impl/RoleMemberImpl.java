@@ -15,8 +15,20 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.RoleService;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,21 +40,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.RoleService;
-import org.springframework.util.AutoPopulatingList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -104,15 +103,15 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	public AttributeSet getQualifier() {
 		if ( qualifierAsAttributeSet == null ) {
 			KimRoleInfo role = getRoleService().getRole(roleId);
-			KimTypeInfo kimType = getTypeInfoService().getKimType( role.getKimTypeId() );
+			KimType kimType = getTypeInfoService().getKimType( role.getKimTypeId() );
 			AttributeSet m = new AttributeSet();
 			for ( RoleMemberAttributeDataImpl data : getAttributes() ) {
-				KimTypeAttributeInfo attribute = null;
+				KimTypeAttribute attribute = null;
 				if ( kimType != null ) {
-					attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+					attribute = kimType.getAttributeDefinitionById( data.getKimAttributeId() );
 				}
 				if ( attribute != null ) {
-					m.put( attribute.getAttributeName(), data.getAttributeValue() );
+					m.put( attribute.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 				} else {
 					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 				}
@@ -142,7 +141,7 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	private transient static KimTypeInfoService kimTypeInfoService;
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+			kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

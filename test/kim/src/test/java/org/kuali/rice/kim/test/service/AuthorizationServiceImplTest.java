@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -39,6 +29,13 @@ import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -93,7 +90,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		RoleImpl role1 = new RoleImpl();
 		role1.setRoleId(role1Id);
 		role1.setActive(true);
-		role1.setKimTypeId(getDefaultKimType().getKimTypeId());
+		role1.setKimTypeId(getDefaultKimType().getId());
 		role1.setNamespaceCode(role1NamespaceCode);
 		role1.setRoleDescription(role1Description);
 		role1.setRoleName(role1Name);
@@ -111,7 +108,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		RoleImpl role2 = new RoleImpl();
 		role2.setRoleId(role2Id);
 		role2.setActive(true);
-		role2.setKimTypeId(getDefaultKimType().getKimTypeId());
+		role2.setKimTypeId(getDefaultKimType().getId());
 		role2.setNamespaceCode(role2NamespaceCode);
 		role2.setRoleDescription(role2Description);
 		role2.setRoleName(role2Name);

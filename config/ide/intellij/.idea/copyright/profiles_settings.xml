@@ -1,7 +1,5 @@
 <component name="CopyrightManager">
-  <settings default="The Kuali Foundation">
-    <module2copyright>
-      <element module="All" copyright="The Kuali Foundation" />
-    </module2copyright>
+  <settings default="">
+    <module2copyright />
   </settings>
 </component>

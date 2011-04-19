@@ -15,8 +15,22 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
+import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
+import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -28,23 +42,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
-import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
-import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.springframework.util.AutoPopulatingList;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -117,7 +116,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	}
 
 	/**
-	 * @param members the members to set
+	 * @param member the members to set
 	 */
 	public void addMember(GroupDocumentMember member) {
        	getMembers().add(member);
@@ -126,13 +125,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeInfo getKimType() {
-		return KIMServiceLocatorWeb.getTypeInfoService().getKimType(getGroupTypeId());
+	public KimType getKimType() {
+		return KimApiServiceLocator.getKimTypeInfoService().getKimType(getGroupTypeId());
 	}
 	
-	/**
-	 * @param members the members to set
-	 */
 	public GroupDocumentMember getBlankMember() {
 		return new GroupDocumentMember();
 	}
@@ -183,7 +179,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 				if ( getQualifiers().size() > index ) {
 					GroupDocumentQualifier qualifier = getQualifiers().get(index);
 					qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
-					qualifier.setKimTypId(getKimType().getKimTypeId());
+					qualifier.setKimTypId(getKimType().getId());
 					qualifier.setGroupId(groupId);
 				}
 				index++;
@@ -359,10 +355,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		this.editing = editing;
 	}
 
-	public void setKimType(KimTypeInfo kimType) {
+	public void setKimType(KimType kimType) {
 		super.setKimType(kimType);
 		if (kimType != null){
-			setGroupTypeId(kimType.getKimTypeId());
+			setGroupTypeId(kimType.getId());
 			setGroupTypeName(kimType.getName());
 		}
 	}

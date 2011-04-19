@@ -32,6 +32,16 @@
 		</dependency>
         <dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-kim-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+        <dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-kim-web</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+        <dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-core-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -83,12 +93,7 @@
 			<artifactId>rice-edl-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-        <dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>rice-edl-web</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	
+		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>krad-app-framework</artifactId>

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
+import org.kuali.rice.kim.impl.attribute.KimAttributeDataBo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="KRIM_RSP_ATTR_DATA_T")
-public class ResponsibilityAttributeDataImpl extends KimAttributeDataImpl {
+public class ResponsibilityAttributeDataImpl extends KimAttributeDataBo {
     @Column(name="RSP_ID")
     protected String responsibilityId;
 

@@ -15,32 +15,6 @@
  */
 package org.kuali.rice.kew.xml;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUPS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.KEY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.MEMBERS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.VALUE;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -49,16 +23,25 @@ import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 
 /**
@@ -179,22 +162,22 @@ public class GroupXmlParser {
 
         // Type element and children (namespace and name)
         String typeId = null;
-        List<KimTypeAttributeInfo> kimTypeAttributes = new ArrayList<KimTypeAttributeInfo>();
+        List<KimTypeAttribute> kimTypeAttributes = new ArrayList<KimTypeAttribute>();
         if (element.getChild(TYPE, GROUP_NAMESPACE) != null) {
             Element typeElement = element.getChild(TYPE, GROUP_NAMESPACE);
             String typeNamespace = typeElement.getChildText(NAMESPACE, GROUP_NAMESPACE);
             String typeName = typeElement.getChildText(NAME, GROUP_NAMESPACE);
-            KimTypeInfo kimTypeInfo = KIMServiceLocatorWeb.getTypeInfoService().getKimTypeByName(typeNamespace, typeName);
+            KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(typeNamespace, typeName);
             if (kimTypeInfo != null) {
-            	typeId = kimTypeInfo.getKimTypeId();
+            	typeId = kimTypeInfo.getId();
                 kimTypeAttributes = kimTypeInfo.getAttributeDefinitions();
             } else  {
                 throw new XmlException("Invalid type name and namespace specified.");
             }
         } else { //set to default type
-            KimTypeInfo kimTypeDefault = KIMServiceLocatorWeb.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+            KimType kimTypeDefault = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
             if (kimTypeDefault != null) {
-            	typeId = kimTypeDefault.getKimTypeId();
+            	typeId = kimTypeDefault.getId();
                 kimTypeAttributes = kimTypeDefault.getAttributeDefinitions();
             } else {
             	throw new RuntimeException("Failed to locate the 'Default' group type!  Please ensure that it's in your database.");
@@ -213,8 +196,8 @@ public class GroupXmlParser {
 
         //Get list of attribute keys
         List<String> validAttributeKeys = new ArrayList<String>();
-        for (KimTypeAttributeInfo attribute : kimTypeAttributes) {
-            validAttributeKeys.add(attribute.getAttributeName());
+        for (KimTypeAttribute attribute : kimTypeAttributes) {
+            validAttributeKeys.add(attribute.getKimAttribute().getAttributeName());
         }
         //Group attributes
         if (element.getChild(ATTRIBUTES, GROUP_NAMESPACE) != null) {

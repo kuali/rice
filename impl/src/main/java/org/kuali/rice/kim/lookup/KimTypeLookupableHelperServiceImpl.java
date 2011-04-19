@@ -15,17 +15,12 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.KimType;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
@@ -39,6 +34,11 @@ import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.springframework.remoting.RemoteAccessException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -50,21 +50,21 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
-		List<KimTypeImpl> searchResults = (List<KimTypeImpl>)super.getSearchResultsHelper(fieldValues, unbounded);
-		List<KimTypeImpl> filteredSearchResults = new ArrayList<KimTypeImpl>();
+		List<KimTypeBo> searchResults = (List<KimTypeBo>)super.getSearchResultsHelper(fieldValues, unbounded);
+		List<KimTypeBo> filteredSearchResults = new ArrayList<KimTypeBo>();
 		if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY))) {
-			for(KimTypeImpl kimTypeImpl: searchResults){
-				if(hasRoleTypeService(kimTypeImpl.toInfo())) {
-					filteredSearchResults.add(kimTypeImpl);
+			for(KimTypeBo kimTypeBo: searchResults){
+				if(hasRoleTypeService(KimTypeBo.to(kimTypeBo))) {
+					filteredSearchResults.add(kimTypeBo);
 				}
 			}
 			return filteredSearchResults;
 		}
 		
 		if(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY.equals(fieldValues.get(KNSConstants.DOC_FORM_KEY))) {
-			for(KimTypeImpl kimTypeImpl: searchResults){
-				if(hasGroupTypeService(kimTypeImpl.toInfo())) {
-					filteredSearchResults.add(kimTypeImpl);
+			for(KimTypeBo kimTypeBo: searchResults){
+				if(hasGroupTypeService(KimTypeBo.to(kimTypeBo))) {
+					filteredSearchResults.add(kimTypeBo);
 				}
 			}
 			return filteredSearchResults;
@@ -79,7 +79,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     @SuppressWarnings("unchecked")
 	@Override
     protected String getReturnHref(Properties parameters, LookupForm lookupForm, List returnKeys) {
-    	KimTypeInfo kimType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
+    	KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
     	String href = "";
     	//TODO: clean this up.
     	boolean showReturnHref = true;
@@ -93,7 +93,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     		//    it has no service (default assignable role)
     		// OR it is not an application role
     		showReturnHref = kimType!=null && 
-    			( StringUtils.isBlank( kimType.getKimTypeServiceName() )
+    			( StringUtils.isBlank( kimType.getServiceName() )
     					|| (KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimRoleTypeService
     						&&!((KimRoleTypeService) KIMServiceLocatorWeb.getKimTypeService(kimType)).isApplicationRoleType() )
     					);
@@ -118,17 +118,17 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     }
 
 	static boolean hasRoleTypeService(KimType kimType){
-		return (kimType!=null && kimType.getKimTypeServiceName()==null) || 
+		return (kimType!=null && kimType.getServiceName()==null) ||
 					(KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimRoleTypeService);
 	}
 
 	static boolean hasRoleTypeService(KimType kimType, KimTypeService kimTypeService){
-		return (kimType!=null && kimType.getKimTypeServiceName()==null) || 
+		return (kimType!=null && kimType.getServiceName()==null) ||
 					(kimTypeService instanceof KimRoleTypeService);
 	}
 	
     static boolean hasGroupTypeService(KimType kimType){
-		return (kimType!=null && kimType.getKimTypeServiceName()==null) || 
+		return (kimType!=null && kimType.getServiceName()==null) ||
 					(KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimGroupTypeService);
     }
 
@@ -139,7 +139,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 		try {
 		    if(hasRoleTypeService(kimType, kimTypeService))
-		        hasDerivedRoleTypeService = (kimType.getKimTypeServiceName()!=null && ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
+		        hasDerivedRoleTypeService = (kimType.getServiceName()!=null && ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
 		    return hasDerivedRoleTypeService;

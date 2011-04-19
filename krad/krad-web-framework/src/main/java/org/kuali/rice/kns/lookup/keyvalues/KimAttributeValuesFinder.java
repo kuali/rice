@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kns.lookup.keyvalues;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.service.support.KimTypeService;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.support.KimTypeService;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,13 +41,13 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
 	 */
 	@Override
 	public List<KeyValue> getKeyValues() {
-        KimTypeInfo kimType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
+        KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
         if ( kimType != null ) {
 	        KimTypeService service = KIMServiceLocatorWeb.getKimTypeService(kimType);
 	        if ( service != null ) {
 				return new ArrayList<KeyValue>(service.getAttributeValidValues(kimTypeId,kimAttributeName));
 	        } 
-	        LOG.error( "Unable to get type service " + kimType.getKimTypeServiceName() );
+	        LOG.error( "Unable to get type service " + kimType.getServiceName() );
         } else {
         	LOG.error( "Unable to obtain KIM type for kimTypeId=" + kimTypeId );
         }

@@ -15,25 +15,12 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jws.WebParam;
-import javax.jws.WebService;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
@@ -48,7 +35,7 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;
@@ -59,6 +46,20 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -549,7 +550,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             	String prevServiceName = null;
             	boolean multipleServices = false;
         		for ( String roleId : matchingRoleIds ) {
-        			String serviceName = getRoleImpl( roleId ).getKimRoleType().getKimTypeServiceName();
+        			String serviceName = getRoleImpl( roleId ).getKimRoleType().getServiceName();
         			if ( prevServiceName != null && !StringUtils.equals( prevServiceName, serviceName ) ) {
         				multipleServices = true;
         				break;
@@ -599,7 +600,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         KimRoleTypeService service = getRoleTypeServiceCache().get( roleId );
     	if ( service == null && !getRoleTypeServiceCache().containsKey( roleId ) ) {
     		RoleImpl role = getRoleImpl( roleId );
-    		KimTypeInfo roleType = role.getKimRoleType();
+    		KimType roleType = KimTypeBo.to(role.getKimRoleType());
     		if ( roleType != null ) {
         		service = getRoleTypeService(roleType);
     		}
@@ -608,8 +609,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	return service;
     }
     
-    protected KimRoleTypeService getRoleTypeService( KimTypeInfo typeInfo ) {
-		String serviceName = typeInfo.getKimTypeServiceName();
+    protected KimRoleTypeService getRoleTypeService( KimType typeInfo ) {
+		String serviceName = typeInfo.getServiceName();
 		if ( serviceName != null ) {
 			try {
 				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
@@ -618,8 +619,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 				} 
 				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			} catch ( Exception ex ) {
-				LOG.error( "Unable to find role type service with name: " + serviceName );
-				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
+				LOG.error( "Unable to find role type service with name: " + serviceName, ex);
 				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			}
 		}
@@ -630,13 +630,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	KimDelegationTypeService service = getDelegationTypeServiceCache().get( delegationId );
     	if ( service == null && !getDelegationTypeServiceCache().containsKey( delegationId ) ) {
     		KimDelegationImpl delegation = getKimDelegationImpl(delegationId);
-    		KimTypeInfo delegationType = delegation.getKimType();
+    		KimType delegationType = KimTypeBo.to(delegation.getKimType());
     		if ( delegationType != null ) {
     			KimTypeService tempService = KIMServiceLocatorWeb.getKimTypeService(delegationType);
     			if ( tempService != null && tempService instanceof KimDelegationTypeService ) {
     				service = (KimDelegationTypeService)tempService;
     			} else {
-    				LOG.error( "Service returned for type " + delegationType + "("+delegationType.getKimTypeServiceName()+") was not a KimDelegationTypeService.  Was a " + tempService.getClass() );
+    				LOG.error( "Service returned for type " + delegationType + "("+delegationType.getName()+") was not a KimDelegationTypeService.  Was a " + tempService.getClass() );
     			}
     		} else { // delegation has no type - default to role type if possible
     			KimRoleTypeService roleTypeService = getRoleTypeService( delegation.getRoleId() );
@@ -1175,13 +1175,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @SuppressWarnings("unchecked")
 	protected void inactivateApplicationRoleMemberships( String principalId, Timestamp yesterday){
     	// get all role type services
-    	Collection<KimTypeInfo> types = KIMServiceLocatorWeb.getTypeInfoService().getAllTypes();
+    	Collection<KimType> types = KimApiServiceLocator.getKimTypeInfoService().findAllKimTypes();
     	// create sub list of only application role types
-    	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
-    	for ( KimTypeInfo typeInfo : types ) {
+    	ArrayList<KimType> applicationRoleTypes = new ArrayList<KimType>( types.size() );
+    	for ( KimType typeInfo : types ) {
     		KimRoleTypeService service = getRoleTypeService(typeInfo);
         	try {//log service unavailable as WARN error
-	    		if ( isApplicationRoleType(typeInfo.getKimTypeId(), service)) {
+	    		if ( isApplicationRoleType(typeInfo.getId(), service)) {
 	    				applicationRoleTypes.add(typeInfo);
 	    			}
         	}catch(Exception e) {
@@ -1192,10 +1192,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	Map<String,Object> roleLookupMap = new HashMap<String, Object>(2);
     	roleLookupMap.put( KIMPropertyConstants.Role.ACTIVE, "Y");
     	// loop over application types
-    	for ( KimTypeInfo typeInfo : applicationRoleTypes ) {
+    	for ( KimType typeInfo : applicationRoleTypes ) {
     		KimRoleTypeService service = getRoleTypeService(typeInfo);
     		// get all roles for that type
-        	roleLookupMap.put( KIMPropertyConstants.Role.KIM_TYPE_ID, typeInfo.getKimTypeId());
+        	roleLookupMap.put( KIMPropertyConstants.Role.KIM_TYPE_ID, typeInfo.getId());
     		Collection<RoleImpl> roles = getBusinessObjectService().findMatching( RoleImpl.class, roleLookupMap);
         	// loop over all roles in those types
     		for ( RoleImpl role : roles ) {
@@ -1223,7 +1223,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	    			roleTypeService.principalInactivated( principalId, role.getNamespaceCode(), role.getRoleName() );
 	    		}
     		} catch ( Exception ex ) {
-    			LOG.error( "Problem notifying role type service of principal inactivation: " + role.getKimRoleType().getKimTypeServiceName(), ex );
+    			LOG.error( "Problem notifying role type service of principal inactivation: " + role.getKimRoleType().getServiceName(), ex );
     		}
     	}
     	getIdentityManagementNotificationService().roleUpdated();

@@ -36,7 +36,7 @@ import java.util.Collection;
 
 /**
  * An immutable representation of a {@link ParameterContract}.
- *
+ * <p/>
  * <p>To construct an instance of a Parameter, use the {@link Parameter.Builder} class.
  *
  * @see ParameterContract
@@ -88,8 +88,8 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
     private final Long versionNumber;
 
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
-	private final String objectId;
-    
+    private final String objectId;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -167,16 +167,16 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
     public Long getVersionNumber() {
         return versionNumber;
     }
-    
+
     @Override
-	public String getObjectId() {
-		return objectId;
-	}
+    public String getObjectId() {
+        return objectId;
+    }
 
     /**
      * This builder constructs an Parameter enforcing the constraints of the {@link ParameterContract}.
      */
-    public static class Builder implements ParameterContract, ModelBuilder, Serializable {
+    public static final class Builder implements ParameterContract, ModelBuilder, Serializable {
 
         private static final long serialVersionUID = 7077484401017765844L;
 
@@ -269,9 +269,9 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         public void setVersionNumber(Long versionNumber) {
             this.versionNumber = versionNumber;
         }
-        
+
         public void setObjectId(String objectId) {
-        	this.objectId = objectId;
+            this.objectId = objectId;
         }
 
         @Override
@@ -323,12 +323,12 @@ public final class Parameter implements ParameterContract, ModelObjectComplete {
         public Long getVersionNumber() {
             return versionNumber;
         }
-        
+
         @Override
-    	public String getObjectId() {
-    		return objectId;
-    	}
-        
+        public String getObjectId() {
+            return objectId;
+        }
+
     }
 
     @Override

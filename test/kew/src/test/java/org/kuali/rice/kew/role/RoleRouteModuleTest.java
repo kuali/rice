@@ -38,9 +38,9 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.impl.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.transaction.TransactionStatus;
@@ -88,51 +88,51 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         // create "chart" KimAttribute
         Long chartAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
-        KimAttributeImpl chartAttribute = new KimAttributeImpl();
-        chartAttribute.setKimAttributeId("" + chartAttributeId);
+        KimAttributeBo chartAttribute = new KimAttributeBo();
+        chartAttribute.setId("" + chartAttributeId);
         chartAttribute.setAttributeName("chart");
         chartAttribute.setNamespaceCode(NAMESPACE);
         chartAttribute.setAttributeLabel("chart");
         chartAttribute.setActive(true);
-        chartAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(chartAttribute);
-        
+        chartAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(chartAttribute);
+
         // create "org" KimAttribute
         Long orgAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
-        KimAttributeImpl orgAttribute = new KimAttributeImpl();
-        orgAttribute.setKimAttributeId("" + orgAttributeId);
+        KimAttributeBo orgAttribute = new KimAttributeBo();
+        orgAttribute.setId("" + orgAttributeId);
         orgAttribute.setAttributeName("org");
         orgAttribute.setNamespaceCode(NAMESPACE);
         orgAttribute.setAttributeLabel("org");
         orgAttribute.setActive(true);
-        orgAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(orgAttribute);
+        orgAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(orgAttribute);
 
         // create KimType
         Long kimTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
-        KimTypeImpl kimType = new KimTypeImpl();
-        kimType.setKimTypeId("" + kimTypeId);
+        KimTypeBo kimType = new KimTypeBo();
+        kimType.setId("" + kimTypeId);
         kimType.setName("ChartOrg");
         kimType.setNamespaceCode(NAMESPACE);
-        kimType.setKimTypeServiceName("testBaseRoleTypeService"); // do we need to set the kim type service yet? we shall see...
+        kimType.setServiceName("testBaseRoleTypeService"); // do we need to set the kim type service yet? we shall see...
         kimType.setActive(true);
-        kimType = (KimTypeImpl) KNSServiceLocator.getBusinessObjectService().save(kimType);
+        kimType = (KimTypeBo) KNSServiceLocator.getBusinessObjectService().save(kimType);
 
         // create chart KimTypeAttribute
         Long chartTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
-        KimTypeAttributeImpl chartTypeAttribute = new KimTypeAttributeImpl();
-        chartTypeAttribute.setKimTypeAttributeId("" + chartTypeAttributeId);
+        KimTypeAttributeBo chartTypeAttribute = new KimTypeAttributeBo();
+        chartTypeAttribute.setId("" + chartTypeAttributeId);
         chartTypeAttribute.setActive(true);
-        chartTypeAttribute.setKimAttributeId(chartAttribute.getKimAttributeId());
-        chartTypeAttribute.setKimTypeId(kimType.getKimTypeId());
-        chartTypeAttribute = (KimTypeAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(chartTypeAttribute);
+        chartTypeAttribute.setKimAttributeId(chartAttribute.getId());
+        chartTypeAttribute.setKimTypeId(kimType.getId());
+        chartTypeAttribute = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().save(chartTypeAttribute);
 
         // create org KimTypeAttribute
         Long orgTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
-        KimTypeAttributeImpl orgTypeAttribute = new KimTypeAttributeImpl();
-        orgTypeAttribute.setKimTypeAttributeId("" + orgTypeAttributeId);
+        KimTypeAttributeBo orgTypeAttribute = new KimTypeAttributeBo();
+        orgTypeAttribute.setId("" + orgTypeAttributeId);
         orgTypeAttribute.setActive(true);
-        orgTypeAttribute.setKimAttributeId(orgAttribute.getKimAttributeId());
-        orgTypeAttribute.setKimTypeId(kimType.getKimTypeId());
-        orgTypeAttribute = (KimTypeAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(orgTypeAttribute);
+        orgTypeAttribute.setKimAttributeId(orgAttribute.getId());
+        orgTypeAttribute.setKimTypeId(kimType.getId());
+        orgTypeAttribute = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().save(orgTypeAttribute);
 
         /**
          * New let's create the Role
@@ -145,7 +145,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         role.setRoleDescription("");
         role.setRoleName(ROLE_NAME);
         role.setActive(true);
-        role.setKimTypeId(kimType.getKimTypeId());
+        role.setKimTypeId(kimType.getId());
 
         String roleMemberId1 = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberImpl adminRolePrincipal = new RoleMemberImpl();
@@ -187,57 +187,57 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         String dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataImpl chartDataBL = new RoleMemberAttributeDataImpl();
-        chartDataBL.setAttributeDataId(dataId);
+        chartDataBL.setId(dataId);
         chartDataBL.setAttributeValue("BL");
         chartDataBL.setKimAttribute(chartAttribute);
-        chartDataBL.setKimAttributeId(chartAttribute.getKimAttributeId());
-        chartDataBL.setKimTypeId(kimType.getKimTypeId());
+        chartDataBL.setKimAttributeId(chartAttribute.getId());
+        chartDataBL.setKimTypeId(kimType.getId());
         chartDataBL.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataImpl chartDataBL2 = new RoleMemberAttributeDataImpl();
-        chartDataBL2.setAttributeDataId(dataId);
+        chartDataBL2.setId(dataId);
         chartDataBL2.setAttributeValue("BL");
         chartDataBL2.setKimAttribute(chartAttribute);
-        chartDataBL2.setKimAttributeId(chartAttribute.getKimAttributeId());
-        chartDataBL2.setKimTypeId(kimType.getKimTypeId());
+        chartDataBL2.setKimAttributeId(chartAttribute.getId());
+        chartDataBL2.setKimTypeId(kimType.getId());
         chartDataBL2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataImpl orgDataBUS = new RoleMemberAttributeDataImpl();
-        orgDataBUS.setAttributeDataId(dataId);
+        orgDataBUS.setId(dataId);
         orgDataBUS.setAttributeValue("BUS");
         orgDataBUS.setKimAttribute(orgAttribute);
-        orgDataBUS.setKimAttributeId(orgAttribute.getKimAttributeId());
-        orgDataBUS.setKimTypeId(kimType.getKimTypeId());
+        orgDataBUS.setKimAttributeId(orgAttribute.getId());
+        orgDataBUS.setKimTypeId(kimType.getId());
         orgDataBUS.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataImpl orgDataBUS2 = new RoleMemberAttributeDataImpl();
-        orgDataBUS2.setAttributeDataId(dataId);
+        orgDataBUS2.setId(dataId);
         orgDataBUS2.setAttributeValue("BUS");
         orgDataBUS2.setKimAttribute(orgAttribute);
-        orgDataBUS2.setKimAttributeId(orgAttribute.getKimAttributeId());
-        orgDataBUS2.setKimTypeId(kimType.getKimTypeId());
+        orgDataBUS2.setKimAttributeId(orgAttribute.getId());
+        orgDataBUS2.setKimTypeId(kimType.getId());
         orgDataBUS2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
 
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataImpl chartDataIN = new RoleMemberAttributeDataImpl();
-        chartDataIN.setAttributeDataId(dataId);
+        chartDataIN.setId(dataId);
         chartDataIN.setAttributeValue("IN");
         chartDataIN.setKimAttribute(chartAttribute);
-        chartDataIN.setKimAttributeId(chartAttribute.getKimAttributeId());
-        chartDataIN.setKimTypeId(kimType.getKimTypeId());
+        chartDataIN.setKimAttributeId(chartAttribute.getId());
+        chartDataIN.setKimTypeId(kimType.getId());
         chartDataIN.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataImpl orgDataMED = new RoleMemberAttributeDataImpl();
-        orgDataMED.setAttributeDataId(dataId);
+        orgDataMED.setId(dataId);
         orgDataMED.setAttributeValue("MED");
         orgDataMED.setKimAttribute(orgAttribute);
-        orgDataMED.setKimAttributeId(orgAttribute.getKimAttributeId());
-        orgDataMED.setKimTypeId(kimType.getKimTypeId());
+        orgDataMED.setKimAttributeId(orgAttribute.getId());
+        orgDataMED.setKimTypeId(kimType.getId());
         orgDataMED.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
 
         List<RoleMemberAttributeDataImpl> user1Attributes = new ArrayList<RoleMemberAttributeDataImpl>();
@@ -269,59 +269,59 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         // create "documentType" KimAttribute
         Long documentTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
-        KimAttributeImpl documentTypeAttribute = new KimAttributeImpl();
-        documentTypeAttribute.setKimAttributeId("" + documentTypeAttributeId);
+        KimAttributeBo documentTypeAttribute = new KimAttributeBo();
+        documentTypeAttribute.setId("" + documentTypeAttributeId);
         documentTypeAttribute.setAttributeName(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
         documentTypeAttribute.setNamespaceCode(NAMESPACE);
         documentTypeAttribute.setAttributeLabel("documentType");
         documentTypeAttribute.setActive(true);
-        documentTypeAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(documentTypeAttribute);
+        documentTypeAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(documentTypeAttribute);
 
         // create "node name" KimAttribute
         Long nodeNameAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
-        KimAttributeImpl nodeNameAttribute = new KimAttributeImpl();
-        nodeNameAttribute.setKimAttributeId("" + nodeNameAttributeId);
+        KimAttributeBo nodeNameAttribute = new KimAttributeBo();
+        nodeNameAttribute.setId("" + nodeNameAttributeId);
         nodeNameAttribute.setAttributeName(KEWConstants.ROUTE_NODE_NAME_DETAIL);
         nodeNameAttribute.setNamespaceCode(NAMESPACE);
         nodeNameAttribute.setAttributeLabel("nodeName");
         nodeNameAttribute.setActive(true);
-        nodeNameAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(nodeNameAttribute);
+        nodeNameAttribute = (KimAttributeBo) KNSServiceLocator.getBusinessObjectService().save(nodeNameAttribute);
 
         // create KimType for responsibility details
         Long kimRespTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
-        KimTypeImpl kimRespType = new KimTypeImpl();
-        kimRespType.setKimTypeId("" + kimRespTypeId);
+        KimTypeBo kimRespType = new KimTypeBo();
+        kimRespType.setId("" + kimRespTypeId);
         kimRespType.setName("RespDetails");
         kimRespType.setNamespaceCode(NAMESPACE);
-        kimRespType.setKimTypeServiceName("testBaseResponsibilityTypeService");
+        kimRespType.setServiceName("testBaseResponsibilityTypeService");
         kimRespType.setActive(true);
-        kimRespType = (KimTypeImpl) KNSServiceLocator.getBusinessObjectService().save(kimRespType);
+        kimRespType = (KimTypeBo) KNSServiceLocator.getBusinessObjectService().save(kimRespType);
 
         // create document type KimTypeAttribute
         Long documentTypeTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
-        KimTypeAttributeImpl documentTypeTypeAttribute = new KimTypeAttributeImpl();
-        documentTypeTypeAttribute.setKimTypeAttributeId("" + documentTypeTypeAttributeId);
+        KimTypeAttributeBo documentTypeTypeAttribute = new KimTypeAttributeBo();
+        documentTypeTypeAttribute.setId("" + documentTypeTypeAttributeId);
         documentTypeTypeAttribute.setActive(true);
-        documentTypeTypeAttribute.setKimAttributeId(chartAttribute.getKimAttributeId());
-        documentTypeTypeAttribute.setKimTypeId(kimType.getKimTypeId());
-        documentTypeTypeAttribute = (KimTypeAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(documentTypeTypeAttribute);
+        documentTypeTypeAttribute.setKimAttributeId(chartAttribute.getId());
+        documentTypeTypeAttribute.setKimTypeId(kimType.getId());
+        documentTypeTypeAttribute = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().save(documentTypeTypeAttribute);
 
         // create nodeNameType KimTypeAttribute
         Long nodeNameTypeAttributeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ATTR_ID_S");
-        KimTypeAttributeImpl nodeNameTypeAttribute = new KimTypeAttributeImpl();
-        nodeNameTypeAttribute.setKimTypeAttributeId("" + nodeNameTypeAttributeId);
+        KimTypeAttributeBo nodeNameTypeAttribute = new KimTypeAttributeBo();
+        nodeNameTypeAttribute.setId("" + nodeNameTypeAttributeId);
         nodeNameTypeAttribute.setActive(true);
-        nodeNameTypeAttribute.setKimAttributeId(orgAttribute.getKimAttributeId());
-        nodeNameTypeAttribute.setKimTypeId(kimType.getKimTypeId());
-        nodeNameTypeAttribute = (KimTypeAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(nodeNameTypeAttribute);
+        nodeNameTypeAttribute.setKimAttributeId(orgAttribute.getId());
+        nodeNameTypeAttribute.setKimTypeId(kimType.getId());
+        nodeNameTypeAttribute = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().save(nodeNameTypeAttribute);
 
         createResponsibilityForRoleRouteModuleTest1(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal);
         createResponsibilityForRoleRouteModuleTest2(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal);
-                
+
         suiteDataInitialized = true;
     }
 
-	private void createResponsibilityForRoleRouteModuleTest1(RoleImpl role, KimAttributeImpl documentTypeAttribute, KimAttributeImpl nodeNameAttribute, KimTypeImpl kimRespType, RoleMemberImpl user1RolePrincipal, RoleMemberImpl user2RolePrincipal, RoleMemberImpl adminRolePrincipal) {
+	private void createResponsibilityForRoleRouteModuleTest1(RoleImpl role, KimAttributeBo documentTypeAttribute, KimAttributeBo nodeNameAttribute, KimTypeBo kimRespType, RoleMemberImpl user1RolePrincipal, RoleMemberImpl user2RolePrincipal, RoleMemberImpl adminRolePrincipal) {
 
 		/**
          * Create the responsibility template
@@ -332,7 +332,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         template.setResponsibilityTemplateId(templateId);
         template.setNamespaceCode(NAMESPACE);
         template.setName("Review");
-        template.setKimTypeId(kimRespType.getKimTypeId());
+        template.setKimTypeId(kimRespType.getId());
         template.setActive(true);
         template.setDescription("description");
 
@@ -347,20 +347,20 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         String dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         ResponsibilityAttributeDataImpl documentTypeDetail = new ResponsibilityAttributeDataImpl();
-        documentTypeDetail.setAttributeDataId(dataId);
+        documentTypeDetail.setId(dataId);
         documentTypeDetail.setAttributeValue("RoleRouteModuleTest1");
         documentTypeDetail.setKimAttribute(documentTypeAttribute);
-        documentTypeDetail.setKimAttributeId(documentTypeAttribute.getKimAttributeId());
-        documentTypeDetail.setKimTypeId(kimRespType.getKimTypeId());
+        documentTypeDetail.setKimAttributeId(documentTypeAttribute.getId());
+        documentTypeDetail.setKimTypeId(kimRespType.getId());
         documentTypeDetail.setResponsibilityId(responsibilityId);
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         ResponsibilityAttributeDataImpl nodeNameDetail = new ResponsibilityAttributeDataImpl();
-        nodeNameDetail.setAttributeDataId(dataId);
+        nodeNameDetail.setId(dataId);
         nodeNameDetail.setAttributeValue("Role1");
         nodeNameDetail.setKimAttribute(nodeNameAttribute);
-        nodeNameDetail.setKimAttributeId(nodeNameAttribute.getKimAttributeId());
-        nodeNameDetail.setKimTypeId(kimRespType.getKimTypeId());
+        nodeNameDetail.setKimAttributeId(nodeNameAttribute.getId());
+        nodeNameDetail.setKimTypeId(kimRespType.getId());
         nodeNameDetail.setResponsibilityId(responsibilityId);
 
 
@@ -433,7 +433,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
 	}
 
-	private void createResponsibilityForRoleRouteModuleTest2(RoleImpl role, KimAttributeImpl documentTypeAttribute, KimAttributeImpl nodeNameAttribute, KimTypeImpl kimRespType, RoleMemberImpl user1RolePrincipal, RoleMemberImpl user2RolePrincipal, RoleMemberImpl adminRolePrincipal) {
+	private void createResponsibilityForRoleRouteModuleTest2(RoleImpl role, KimAttributeBo documentTypeAttribute, KimAttributeBo nodeNameAttribute, KimTypeBo kimRespType, RoleMemberImpl user1RolePrincipal, RoleMemberImpl user2RolePrincipal, RoleMemberImpl adminRolePrincipal) {
 
 		/**
          * Create the responsibility template
@@ -444,7 +444,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         template.setResponsibilityTemplateId(templateId);
         template.setNamespaceCode(NAMESPACE);
         template.setName("AllApproveReview");
-        template.setKimTypeId(kimRespType.getKimTypeId());
+        template.setKimTypeId(kimRespType.getId());
         template.setActive(true);
         template.setDescription("description");
 
@@ -458,20 +458,20 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         String dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         ResponsibilityAttributeDataImpl documentTypeDetail = new ResponsibilityAttributeDataImpl();
-        documentTypeDetail.setAttributeDataId(dataId);
+        documentTypeDetail.setId(dataId);
         documentTypeDetail.setAttributeValue("RoleRouteModuleTest2");
         documentTypeDetail.setKimAttribute(documentTypeAttribute);
-        documentTypeDetail.setKimAttributeId(documentTypeAttribute.getKimAttributeId());
-        documentTypeDetail.setKimTypeId(kimRespType.getKimTypeId());
+        documentTypeDetail.setKimAttributeId(documentTypeAttribute.getId());
+        documentTypeDetail.setKimTypeId(kimRespType.getId());
         documentTypeDetail.setResponsibilityId(responsibilityId);
 
         dataId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         ResponsibilityAttributeDataImpl nodeNameDetail = new ResponsibilityAttributeDataImpl();
-        nodeNameDetail.setAttributeDataId(dataId);
+        nodeNameDetail.setId(dataId);
         nodeNameDetail.setAttributeValue("Role1");
         nodeNameDetail.setKimAttribute(nodeNameAttribute);
-        nodeNameDetail.setKimAttributeId(nodeNameAttribute.getKimAttributeId());
-        nodeNameDetail.setKimTypeId(kimRespType.getKimTypeId());
+        nodeNameDetail.setKimAttributeId(nodeNameAttribute.getId());
+        nodeNameDetail.setKimTypeId(kimRespType.getId());
         nodeNameDetail.setResponsibilityId(responsibilityId);
 
 
@@ -542,22 +542,22 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = (RoleResponsibilityActionImpl) KNSServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 	}
-	
+
 	private void createDelegate(){
-		
+
 		if (suiteCreateDelegateInitialized) {
 			return;
 		}
 
 		// create delegation KimType
         Long kimDlgnTypeId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
-        KimTypeImpl kimDlgnType = new KimTypeImpl();
-        kimDlgnType.setKimTypeId("" + kimDlgnTypeId);
+        KimTypeBo kimDlgnType = new KimTypeBo();
+        kimDlgnType.setId("" + kimDlgnTypeId);
         kimDlgnType.setName("TestBaseDelegationType");
         kimDlgnType.setNamespaceCode(NAMESPACE);
-        kimDlgnType.setKimTypeServiceName("testBaseDelegationTypeService");
+        kimDlgnType.setServiceName("testBaseDelegationTypeService");
         kimDlgnType.setActive(true);
-        kimDlgnType = (KimTypeImpl) KNSServiceLocator.getBusinessObjectService().save(kimDlgnType);
+        kimDlgnType = (KimTypeBo) KNSServiceLocator.getBusinessObjectService().save(kimDlgnType);
 
 		/*
 		 * Manually create a delegate

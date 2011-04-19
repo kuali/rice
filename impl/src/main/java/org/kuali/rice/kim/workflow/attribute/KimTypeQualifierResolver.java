@@ -15,30 +15,35 @@
  */
 package org.kuali.rice.kim.workflow.attribute;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.workflow.attribute.QualifierResolverBase;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -85,7 +90,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	protected KimTypeService getTypeService( String typeId ) {
     	KimTypeService typeService = typeServices.get(typeId);
     	if ( typeService == null ) {       		
-        	KimTypeInfo typeInfo = getKimTypeInfoService().getKimType(typeId);
+        	KimType typeInfo = getKimTypeInfoService().getKimType(typeId);
         	if ( typeInfo != null ) {
         		typeService = KIMServiceLocatorWeb.getKimTypeService(typeInfo);
         		typeServices.put(typeId, typeService);
@@ -187,13 +192,13 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         					if ( !rm.isActive() ) { // don't need to check the role member information 
 								// - only active members are returned
         						// inactivated member, add a qualifier
-								qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+								qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
 							}
 							break;
             			}
             		}
         			if ( !foundMember ) {
-        				qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getKimTypeId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+        				qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
         			}
         		}
         	}
@@ -241,7 +246,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+			kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

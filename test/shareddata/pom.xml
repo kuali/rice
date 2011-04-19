@@ -6,7 +6,7 @@
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>shareddata-test</artifactId>
+    <artifactId>rice-test-shareddata</artifactId>
     <name>shareddata-test</name>
 
     <dependencies>

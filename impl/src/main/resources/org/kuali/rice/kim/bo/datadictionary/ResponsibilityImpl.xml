@@ -168,7 +168,7 @@
   </bean>
   
   <bean id="ResponsibilityImpl-name" parent="ResponsibilityImpl-name-parentBean"/>
-  <bean id="ResponsibilityImpl-name-parentBean" abstract="true" parent="KimTypeImpl-name">
+  <bean id="ResponsibilityImpl-name-parentBean" abstract="true" parent="KimType-name">
     <property name="name" value="name"/>
     <property name="label" value="Responsibility Name"/>
     <property name="shortLabel" value="Responsibility Name"/>

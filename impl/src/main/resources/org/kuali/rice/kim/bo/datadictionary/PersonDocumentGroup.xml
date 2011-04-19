@@ -37,13 +37,13 @@
           <property name="objectAttributeName" value="kimGroupType"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="kimTypeId" p:targetName="kimTypeId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="kimTypeId" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
             <list>
               <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimGroupType.name" p:targetName="name"/>
-              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimGroupType.kimTypeServiceName" p:targetName="kimTypeServiceName"/>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimGroupType.serviceName" p:targetName="serviceName"/>
             </list>
           </property>
         </bean>
@@ -115,7 +115,7 @@
 
     <bean id="DocGroup-kimGroupType.name" parent="DocGroup-kimGroupType.name-parentBean"/>
 
-  <bean id="DocGroup-kimGroupType.name-parentBean" abstract="true" parent="KimTypeImpl-name">
+  <bean id="DocGroup-kimGroupType.name-parentBean" abstract="true" parent="KimType-name">
     <property name="name" value="kimGroupType.name"/>
     <property name="label" value="Type"/>
     <property name="shortLabel" value="Type"/>
@@ -123,8 +123,8 @@
    
  <bean id="DocGroup-kimGroupType.kimTypeServiceName" parent="DocGroup-kimGroupType.kimTypeServiceName-parentBean"/>
 
-  <bean id="DocGroup-kimGroupType.kimTypeServiceName-parentBean" abstract="true" parent="KimTypeImpl-kimTypeServiceName">
-    <property name="name" value="kimGroupType.kimTypeServiceName"/>
+  <bean id="DocGroup-kimGroupType.kimTypeServiceName-parentBean" abstract="true" parent="KimType-kimTypeServiceName">
+    <property name="name" value="kimGroupType.serviceName"/>
     <property name="label" value="Service Name"/>
     <property name="shortLabel" value="Service Name"/>
   </bean>

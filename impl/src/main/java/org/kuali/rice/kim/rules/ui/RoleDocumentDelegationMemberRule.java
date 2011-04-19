@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -30,6 +27,9 @@ import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -69,7 +69,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 	    int i = 0;
 	    for (RoleDocumentDelegationMember member: document.getDelegationMembers()){
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
-					document.getKimType().getKimTypeId(), 
+					document.getKimType().getId(),
 					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
 					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));
 	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
@@ -82,7 +82,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 	    }
         
         if ( kimTypeService != null && !newMember.isRole()) {
-    		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+    		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
     	if (!validationErrors.isEmpty()) {

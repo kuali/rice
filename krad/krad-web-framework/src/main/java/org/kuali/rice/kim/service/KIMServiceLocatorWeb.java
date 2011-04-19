@@ -20,8 +20,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.bo.KimType;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -32,7 +31,6 @@ public class KIMServiceLocatorWeb {
     private static final Logger LOG = Logger.getLogger(KIMServiceLocatorWeb.class);
 
     public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
-    public static final String KIM_TYPE_INFO_SERVICE = "kimTypeInfoService";
 
     public static Object getService(String serviceName) {
         return getBean(serviceName);
@@ -57,7 +55,7 @@ public class KIMServiceLocatorWeb {
 			LOG.warn( "null KimType passed into getKimTypeService" );
 			return null;
 		}
-		return getKimTypeService(KimCommonUtils.resolveKimTypeServiceName(kimType.getKimTypeServiceName()));
+		return getKimTypeService(KimCommonUtils.resolveKimTypeServiceName(kimType.getServiceName()));
 	}
 
 	/**
@@ -81,8 +79,4 @@ public class KIMServiceLocatorWeb {
 			return null;
 		}
 	}
-
-    public static KimTypeInfoService getTypeInfoService() {
-        return (KimTypeInfoService) getService(KIM_TYPE_INFO_SERVICE);
-    }
 }

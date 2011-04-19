@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
@@ -47,6 +40,13 @@ import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -299,7 +299,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     protected Map<String,KimResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<KimResponsibilityImpl> responsibilities) {
     	Map<String,KimResponsibilityTypeService> responsibilityTypeServices = new HashMap<String, KimResponsibilityTypeService>(responsibilities.size());
     	for ( KimResponsibilityImpl responsibility : responsibilities ) {
-    		String serviceName = responsibility.getTemplate().getKimType().getKimTypeServiceName();
+    		String serviceName = responsibility.getTemplate().getKimType().getServiceName();
     		if ( serviceName != null ) {
     			KimResponsibilityTypeService responsibiltyTypeService = (KimResponsibilityTypeService) KIMServiceLocatorInternal.getService(serviceName);
     			if ( responsibiltyTypeService != null ) {

@@ -15,32 +15,25 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
-import java.sql.Timestamp;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -48,6 +41,11 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * This is a description of the KimGroupDaoOjb class.
@@ -84,7 +82,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
                     boolean valuesCriterionAdded = false;
                     if (values.length > 0) {
                         if (definitions == null) {
-                            KimTypeInfo kimTypeInfo = getKimTypeInfoService().getKimType(kimTypeId);
+                            KimType kimTypeInfo = getKimTypeInfoService().getKimType(kimTypeId);
                             KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimTypeInfo);
                             definitions = kimTypeService.getAttributeDefinitions(kimTypeId);
                         }
@@ -212,7 +210,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
 
     protected KimTypeInfoService getKimTypeInfoService() {
     	if (kimTypeInfoService == null) {
-    		kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+    		kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
     	}
     	return kimTypeInfoService;
     }

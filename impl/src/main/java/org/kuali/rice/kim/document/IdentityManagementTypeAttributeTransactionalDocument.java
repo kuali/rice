@@ -15,20 +15,19 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+
+import javax.persistence.Transient;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -43,7 +42,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	@Transient
 	protected transient KimTypeService kimTypeService;
 	@Transient
-	protected KimTypeInfo kimType;
+	protected KimType kimType;
 	@Transient
 	protected List<? extends KimAttributes> attributes;
 	@Transient
@@ -66,13 +65,13 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeInfo getKimType() {
+	public KimType getKimType() {
 		return this.kimType;
 	}
 	/**
 	 * @param kimType the kimType to set
 	 */
-	public void setKimType(KimTypeInfo kimType) {
+	public void setKimType(KimType kimType) {
 		this.kimType = kimType;
 	}
 
@@ -102,7 +101,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = getKimTypeService(getKimType());
 	        if(kimTypeService!=null)
-	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getKimTypeId());
+	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getId());
 		}
 		return this.definitions;
 	}
@@ -122,7 +121,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		this.definitions = definitions;
 	}
 
-	protected KimTypeService getKimTypeService(KimTypeInfo kimType){
+	protected KimTypeService getKimTypeService(KimType kimType){
 		if( kimTypeService==null){
 	    	kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
 		}

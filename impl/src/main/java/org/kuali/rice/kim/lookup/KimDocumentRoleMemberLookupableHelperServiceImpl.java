@@ -15,18 +15,19 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -34,6 +35,10 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -84,7 +89,7 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
 		if(roleMember!=null && StringUtils.isNotEmpty(roleMember.getRoleId()) && 
 				roleMember.getQualifiers()!=null && !roleMember.getQualifiers().isEmpty()){
 			KimRoleInfo roleInfo = getRoleService().getRole(roleMember.getRoleId());
-			KimTypeInfo kimType = null;
+			KimType kimType = null;
 			if(roleInfo!=null)
 				kimType = getKimTypeInfoService().getKimType(roleInfo.getKimTypeId());
 			if(kimType!=null){
@@ -115,7 +120,7 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
 
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+			kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

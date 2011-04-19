@@ -21,6 +21,7 @@
 package org.kuali.rice.core.api.parameter;
 
 
+import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 
@@ -133,8 +134,11 @@ public class ParameterTest {
     }
 
     @Test
-    void test_create_only_required() {
-        Parameter.Builder.create(Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE))).build();
+    void test_copy() {
+        def o1 = Parameter.Builder.create(APPLICATION_CODE, NAMESPACE_CODE, COMPONENT_CODE, NAME, ParameterType.Builder.create(PARAMETER_TYPE_CODE)).build();
+        def o2 = Parameter.Builder.create(o1).build();
+
+        Assert.assertEquals(o1, o2);
     }
 
     @Test

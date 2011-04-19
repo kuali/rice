@@ -35,13 +35,13 @@
           <property name="objectAttributeName" value="kimRoleType"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="kimTypeId" p:targetName="kimTypeId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="kimTypeId" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
             <list>
               <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimRoleType.name" p:targetName="name"/>
-              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimRoleType.kimTypeServiceName" p:targetName="kimTypeServiceName"/>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimRoleType.serviceName" p:targetName="serviceName"/>
             </list>
           </property>
         </bean>
@@ -74,7 +74,7 @@
   
     <bean id="DocRole-kimRoleType.name" parent="DocRole-kimRoleType.name-parentBean"/>
 
-  <bean id="DocRole-kimRoleType.name-parentBean" abstract="true" parent="KimTypeImpl-name">
+  <bean id="DocRole-kimRoleType.name-parentBean" abstract="true" parent="KimType-name">
     <property name="name" value="kimRoleType.name"/>
     <property name="label" value="Type"/>
     <property name="shortLabel" value="Type"/>
@@ -92,8 +92,8 @@
    
 <bean id="DocRole-kimRoleType.kimTypeServiceName" parent="DocRole-kimRoleType.kimTypeServiceName-parentBean"/>
 
-  <bean id="DocRole-kimRoleType.kimTypeServiceName-parentBean" abstract="true" parent="KimTypeImpl-kimTypeServiceName">
-    <property name="name" value="kimRoleType.kimTypeServiceName"/>
+  <bean id="DocRole-kimRoleType.kimTypeServiceName-parentBean" abstract="true" parent="KimType-kimTypeServiceName">
+    <property name="name" value="kimRoleType.serviceName"/>
     <property name="label" value="Service Name"/>
     <property name="shortLabel" value="Service Name"/>
   </bean>

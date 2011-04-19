@@ -15,8 +15,11 @@
  */
 package edu.sampleu.travel.bo;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.kuali.rice.core.framework.persistence.jpa.annotations.Sequence;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,12 +28,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.rice.core.framework.persistence.jpa.annotations.Sequence;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FiscalOfficer
@@ -52,7 +51,7 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
 	private String firstName;
 
 	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER, mappedBy="fiscalOfficer")
-	private List<TravelAccount> accounts;
+	private List<TravelAccount> accounts = new ArrayList<TravelAccount>();
 	
 	public FiscalOfficer() {
 		accounts = new ArrayList<TravelAccount>();

@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.kim.web.struts.form;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -44,7 +44,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	
 	protected boolean canAssignGroup = true;
 	
-	protected KimTypeInfo kimType;
+	protected KimType kimType;
 	protected GroupDocumentMember member = new GroupDocumentMember();
 	protected String groupId;
     
@@ -100,14 +100,14 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	/**
 	 * @return the kimType
 	 */
-	public KimTypeInfo getKimType() {
+	public KimType getKimType() {
 		if(StringUtils.isNotBlank(getGroupDocument().getGroupTypeId()))
-			return KIMServiceLocatorWeb.getTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
+			return KimApiServiceLocator.getKimTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
 		else return kimType;
 	}
 
 	public String getKimTypeClass(){
-		return KimTypeImpl.class.getName();
+		return KimTypeBo.class.getName();
 	}
 	/**
 	 * @return the canAssignGroup
@@ -165,7 +165,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	/**
 	 * @param kimType the kimType to set
 	 */
-	public void setKimType(KimTypeInfo kimType) {
+	public void setKimType(KimType kimType) {
 		this.kimType = kimType;
 	}
 

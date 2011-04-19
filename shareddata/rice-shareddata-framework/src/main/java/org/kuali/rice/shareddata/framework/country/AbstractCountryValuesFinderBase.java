@@ -44,7 +44,7 @@ public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
 
     @Override
     public List<KeyValue> getKeyValues() {
-        List<Country> boList = retrieveCountriesForValuesFinder();
+        List<Country> boList = new ArrayList<Country>(retrieveCountriesForValuesFinder());
         List<KeyValue> labels = new ArrayList<KeyValue>(boList.size() + 1);
 
         labels.add(new ConcreteKeyValue("", ""));

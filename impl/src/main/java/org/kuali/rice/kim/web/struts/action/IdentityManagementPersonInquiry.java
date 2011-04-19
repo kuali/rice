@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -37,6 +36,8 @@ import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -80,7 +81,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
 
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
-	        KimTypeService kimTypeService = (KimTypeService) KIMServiceLocatorInternal.getService(getKimTypeServiceName(role.getKimRoleType()));
+	        KimTypeService kimTypeService = (KimTypeService) KIMServiceLocatorInternal.getService(getKimTypeServiceName(KimTypeBo.to(role.getKimRoleType())));
 	        //it is possible that the the kimTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {
@@ -110,8 +111,8 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
 
     	}
     }
-	private String getKimTypeServiceName (KimTypeInfo kimType) {
-    	String serviceName = kimType.getKimTypeServiceName();
+	private String getKimTypeServiceName (KimType kimType) {
+    	String serviceName = kimType.getName();
     	if (StringUtils.isBlank(serviceName)) {
     		serviceName = "kimTypeService";
     	}

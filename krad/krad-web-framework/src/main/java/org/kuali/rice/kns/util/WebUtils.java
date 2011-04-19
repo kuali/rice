@@ -15,30 +15,6 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -77,6 +53,29 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * General helper methods for handling requests.
@@ -561,6 +560,32 @@ public class WebUtils {
 			indexOfCoordinateExtension = parameter.lastIndexOf(WebUtils.IMAGE_COORDINATE_CLICKED_Y_EXTENSION);
 		return indexOfCoordinateExtension;
 	}
+
+    public static boolean isInquiryHiddenField(String className, String fieldName, Object formObject, String propertyName) {
+    	boolean isHidden = false;
+    	String hiddenInquiryFields = getKualiConfigurationService().getPropertyString(className+".hidden");
+    	if (StringUtils.isEmpty(hiddenInquiryFields)) {
+    		return isHidden;
+    	}
+    	List hiddenFields = Arrays.asList(hiddenInquiryFields.replaceAll(" ", "").split(","));
+    	if (hiddenFields.contains(fieldName.trim())) {
+    		isHidden = true;
+    	}
+    	return isHidden;
+    }
+
+    public static boolean isHiddenKimObjectType(String type, String configParameter) {
+    	boolean hideType = false;
+    	String hiddenTypes = getKualiConfigurationService().getPropertyString(configParameter);
+    	if (StringUtils.isEmpty(hiddenTypes)) {
+    		return hideType;
+    	}
+    	List hiddenTypeValues = Arrays.asList(hiddenTypes.replaceAll(" ", "").split(","));
+    	if (hiddenTypeValues.contains(type.trim())) {
+    		hideType = true;
+    	}
+    	return hideType;
+    }
 
 	public static String getFullyMaskedValue(String className, String fieldName, Object formObject, String propertyName) {
 		String displayMaskValue = null;

@@ -20,16 +20,24 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -253,13 +261,13 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 		return new HashCodeBuilder( -460627871, 746615189 ).append( this.roleId ).toHashCode();
 	}
 
-	public KimTypeInfo getKimRoleType() {
-		return getTypeInfoService().getKimType(kimTypeId);
+	public KimTypeBo getKimRoleType() {
+		return KimTypeBo.from(getTypeInfoService().getKimType(kimTypeId));
 	}
 	private transient static KimTypeInfoService kimTypeInfoService;
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+			kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

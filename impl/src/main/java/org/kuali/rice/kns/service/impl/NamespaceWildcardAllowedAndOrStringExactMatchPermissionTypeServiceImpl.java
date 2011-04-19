@@ -19,8 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	 * Overrides the superclass's version of this method in order to account for "namespaceCode" permission detail values containing wildcards.
 	 */
 	@Override
-	protected Map<String, List<String>> validateReferencesExistAndActive(KimTypeInfo kimType, AttributeSet attributes, Map<String, String> previousValidationErrors) {
+	protected Map<String, List<String>> validateReferencesExistAndActive(KimType kimType, AttributeSet attributes, Map<String, String> previousValidationErrors) {
 		Map<String,List<String>> errors = new HashMap<String,List<String>>();
 		AttributeSet nonNamespaceCodeAttributes = new AttributeSet(attributes);
 		// Check if "namespaceCode" is one of the permission detail values.

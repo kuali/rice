@@ -17,7 +17,7 @@ package org.kuali.rice.kim.inquiry;
 
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -59,9 +59,9 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 			parameterNamespace.setCode((String)ObjectUtils.getPropertyValue(businessObject, attributeName));
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
 		} else if("kimRoleType.name".equals(attributeName)){
-			KimTypeImpl kimType = new KimTypeImpl();
-			kimType.setKimTypeId( ((RoleImpl)businessObject).getKimTypeId() );
-			return getInquiryUrlForPrimaryKeys(KimTypeImpl.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
+			KimTypeBo kimType = new KimTypeBo();
+			kimType.setId( ((RoleImpl)businessObject).getKimTypeId() );
+			return getInquiryUrlForPrimaryKeys(KimTypeBo.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
         }
 		
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);

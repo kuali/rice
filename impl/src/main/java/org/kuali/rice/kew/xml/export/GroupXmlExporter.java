@@ -15,36 +15,19 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUPS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_SCHEMA_LOCATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.KEY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.MEMBERS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.VALUE;
-
-import java.util.Iterator;
-
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.util.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+
+import java.util.Iterator;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -106,7 +89,7 @@ public class GroupXmlExporter implements XmlExporter {
 
         if (group.getKimTypeId() != null) {
             Element typeElement = renderer.renderElement(groupElement, TYPE);
-            KimTypeInfo kimType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(group.getKimTypeId());
+            KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(group.getKimTypeId());
             renderer.renderTextElement(typeElement, NAMESPACE, kimType.getNamespaceCode());
             renderer.renderTextElement(typeElement, NAME, kimType.getName());
         }

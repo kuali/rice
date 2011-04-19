@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityUpdateService;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -73,11 +73,11 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 	    		attributesToAdd.remove(attrName);
 	    	}
 	    	for ( Entry<String,String> attrEntry : attributesToAdd.entrySet() ) {
-	    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrEntry.getKey());
+	    		KimTypeAttribute attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrEntry.getKey());
 	    		if (attr != null && StringUtils.isNotBlank(attrEntry.getValue()) ) {
 	    			ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
-	    			newDetail.setAttributeDataId(getNewAttributeDataId());
-	    			newDetail.setKimAttributeId(attr.getKimAttributeId());
+	    			newDetail.setId(getNewAttributeDataId());
+	    			newDetail.setKimAttributeId(attr.getKimAttribute().getId());
 	    			newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
 	    			newDetail.setResponsibilityId(responsibilityId);
 	    			newDetail.setAttributeValue(attrEntry.getValue());

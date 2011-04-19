@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -29,7 +30,12 @@ import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.ui.*;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
+import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
@@ -37,7 +43,6 @@ import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.document.Document;
@@ -53,7 +58,12 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -173,7 +183,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     		roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
     		roleDocumentForm.getRoleDocument().initializeDocumentForNewRole();
     		roleDocumentForm.setRoleId( roleDocumentForm.getRoleDocument().getRoleId() );
-            roleDocumentForm.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
+            roleDocumentForm.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
     	} else {
     		loadRoleIntoDocument( roleDocumentForm.getRoleId(), roleDocumentForm );
     	}
@@ -189,12 +199,12 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     protected void setKimType(String kimTypeId, IdentityManagementRoleDocumentForm roleDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
-            roleDocumentForm.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId));
+            roleDocumentForm.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
             if (roleDocumentForm.getRoleDocument() != null) {
             	roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
             }
 		} else if ( roleDocumentForm.getRoleDocument() != null && StringUtils.isNotBlank( roleDocumentForm.getRoleDocument().getRoleTypeId() ) ) {
-            roleDocumentForm.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(
+            roleDocumentForm.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(
             		roleDocumentForm.getRoleDocument().getRoleTypeId()));
         	roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
 		}

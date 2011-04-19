@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <name>kim</name>
     <parent>
         <artifactId>rice</artifactId>
         <groupId>org.kuali.rice</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
-    <name>kim</name>
+    <groupId>org.kuali.rice</groupId>
     <artifactId>kim</artifactId>
 
     <packaging>pom</packaging>
     <modules>
-        <module>api</module>
-        <module>impl</module>
+        <module>kim-api</module>
+        <module>kim-impl</module>
+        <module>kim-framework</module>
+        <module>kim-web</module>
     </modules>
 </project>

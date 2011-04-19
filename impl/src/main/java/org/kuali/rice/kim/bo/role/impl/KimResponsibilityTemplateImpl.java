@@ -16,10 +16,10 @@
 package org.kuali.rice.kim.bo.role.impl;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -69,8 +69,8 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 		this.active = active;
 	}
 
-	public KimTypeInfo getKimType() {
-		return KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
+	public KimType getKimType() {
+		return KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
 	}
 
 	/**

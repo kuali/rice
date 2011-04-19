@@ -17,13 +17,12 @@
 package org.kuali.rice.kim.test;
 
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -113,8 +112,8 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		return KIM_MODULE_NAME;
 	}
 	
-	protected KimTypeInfo getDefaultKimType() {
-		KimTypeInfo type = KIMServiceLocatorWeb.getTypeInfoService().getKimType("1");
+	protected KimType getDefaultKimType() {
+		KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType("1");
 		if (type == null) {
 			fail("Failed to locate the default Kim Type.");
 		}
@@ -125,7 +124,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		Map<String, Object> fieldValues = new HashMap<String, Object>();
 		fieldValues.put("namespaceCode", "KUALI");
 		fieldValues.put("name", "Default");
-		KimPermissionTemplateImpl template = (KimPermissionTemplateImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
+		KimPermissionTemplateImpl template = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
 		if (template == null) {
 			fail("Failed to locate the default Permission Template.");
 		}

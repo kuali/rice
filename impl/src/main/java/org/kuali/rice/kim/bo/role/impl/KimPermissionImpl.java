@@ -20,19 +20,27 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.Iterator;
 import java.util.List;
 
@@ -162,17 +170,17 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	public AttributeSet getDetails() {
 		if ( detailsAsAttributeSet == null ) {
-			KimTypeInfo kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
+			KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 			AttributeSet m = new AttributeSet();
 			for ( PermissionAttributeDataImpl data : getDetailObjects() ) {
-				KimTypeAttributeInfo attribute = null;
+				KimTypeAttribute attribute = null;
 				if ( kimType != null ) {
-					attribute = kimType.getAttributeDefinition( data.getKimAttributeId() );
+					attribute = kimType.getAttributeDefinitionById( data.getKimAttributeId() );
 				} else {
 					LOG.warn( "Unable to get KimTypeInfo for permission: " + this + "\nKim Type ID: " + getTemplate().kimTypeId );
 				}
 				if ( attribute != null ) {
-					m.put( attribute.getAttributeName(), data.getAttributeValue() );
+					m.put( attribute.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 				} else {
 					LOG.warn( "Unable to get attribute for ID: " + data.getKimAttributeId() + " from KimTypeInfo: " + kimType );
 					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
@@ -231,12 +239,12 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	}
 
 	public String getDetailObjectsToDisplay() {
-		KimTypeInfo kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
+		KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
 		StringBuffer detailObjectsToDisplay = new StringBuffer();
 		Iterator<PermissionAttributeDataImpl> permIter = getDetailObjects().iterator();
 		while ( permIter.hasNext() ) {
 			PermissionAttributeDataImpl permissionAttributeData = permIter.next();
-			detailObjectsToDisplay.append( getKimAttributeLabelFromDD(kimType.getAttributeDefinition(permissionAttributeData.getKimAttributeId())));
+			detailObjectsToDisplay.append( getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(permissionAttributeData.getKimAttributeId())));
 			detailObjectsToDisplay.append( KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR );
 			detailObjectsToDisplay.append( permissionAttributeData.getAttributeValue() );
 			if ( permIter.hasNext() ) {
@@ -246,8 +254,8 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		return detailObjectsToDisplay.toString();
 	}
 	
-	protected String getKimAttributeLabelFromDD( KimTypeAttributeInfo attribute ){
-    	return getDataDictionaryService().getAttributeLabel(attribute.getComponentName(), attribute.getAttributeName() );
+	protected String getKimAttributeLabelFromDD( KimTypeAttribute attribute ){
+    	return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName() );
     }
 
 	private transient static DataDictionaryService dataDictionaryService;
@@ -262,7 +270,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	private transient static KimTypeInfoService kimTypeInfoService;
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+			kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

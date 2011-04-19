@@ -15,6 +15,33 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.core.util.MaxSizeMap;
+import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.RoleUpdateService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
+import org.kuali.rice.kim.service.support.KimTypeService;
+import org.springframework.beans.factory.InitializingBean;
+
+import javax.jws.WebParam;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,28 +52,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.jws.WebParam;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.core.util.MaxSizeMap;
-import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
-import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.*;
-import org.kuali.rice.kim.service.support.KimRoleTypeService;
-import org.kuali.rice.kim.service.support.KimTypeService;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -458,7 +463,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     		
     	final KimRoleInfo roleInfo = getRoleService().getRole(roleId);
     	if (roleInfo != null) {
-	    	final KimTypeInfo roleType = getTypeInfoService().getKimType(roleInfo.getKimTypeId());
+	    	final KimType roleType = getTypeInfoService().getKimType(roleInfo.getKimTypeId());
 	    	if ( roleType != null ) {
 	        	service = getRoleTypeService(roleType);
 	    	}
@@ -472,8 +477,8 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	 * @param typeInfo
 	 * @return
 	 */
-	protected KimRoleTypeService getRoleTypeService( KimTypeInfo typeInfo ) {
-		String serviceName = typeInfo.getKimTypeServiceName();
+	protected KimRoleTypeService getRoleTypeService( KimType typeInfo ) {
+		String serviceName = typeInfo.getServiceName();
 		if ( serviceName != null ) {
 			try {
 				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
@@ -483,8 +488,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 					return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 				}
 			} catch ( Exception ex ) {
-				LOG.error( "Unable to find role type service with name: " + serviceName );
-				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
+				LOG.error( "Unable to find role type service with name: " + serviceName, ex);
 				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			}
 		}
@@ -782,7 +786,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	public KimTypeInfoService getTypeInfoService() {
 		if (typeInfoService == null) {
-			typeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+			typeInfoService = KimApiServiceLocator.getKimTypeInfoService();
 		}
 		return typeInfoService;
 	}

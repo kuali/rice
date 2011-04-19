@@ -73,12 +73,12 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers());
 	    	oldMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(member.getQualifiers());
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
-	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
+	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
 			validationErrors.putAll( 
 					attributeValidationHelper.convertErrorsForMappedFields(ERROR_PATH, errorsAttributesAgainstExisting));
 
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
-	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
+	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
 	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))
 	    			&& ((newMemberFromTime >= memberFromTime && newMemberFromTime < memberToTime) 
@@ -92,7 +92,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    }
 	    
         if ( kimTypeService != null && !newMember.isRole()) {
-    		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+    		AttributeSet localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
 	        validationErrors.putAll( attributeValidationHelper.convertErrors("member" ,attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()),localErrors) );
         }
     	if (!validationErrors.isEmpty()) {

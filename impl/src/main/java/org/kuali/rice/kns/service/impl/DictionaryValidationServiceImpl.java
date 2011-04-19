@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -80,6 +65,21 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and validating
@@ -1181,26 +1181,27 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     	//FIXME: I think we may want to use a new CollectionConstrainable interface instead to obtain from 
     	//DictionaryObjectAttributeValueReader
     	DataObjectEntry entry = (DataObjectEntry)attributeValueReader.getEntry();
-    	List<CollectionDefinition> collectionDefinitions = entry.getCollections();
-    	for (CollectionDefinition collectionDefinition:collectionDefinitions){
-    		//TODO: Do we need to be able to handle simple collections (ie. String, etc)
-    		
-    		String childEntryName = collectionDefinition.getDataObjectClass();
-    		String attributeName = collectionDefinition.getName();
-    		attributeValueReader.setAttributeName(attributeName);
-			Collection<?> collectionObject = attributeValueReader.getValue();
-			DataDictionaryEntry childEntry = childEntryName != null ? getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
-			if (collectionObject != null){
-				for (Object value:collectionObject){
-					//FIXME: It's inefficient to be creating new attribute reader for each item in collection
-					AttributeValueReader nestedAttributeValueReader = 
-		    			new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry, attributeValueReader.getPath());
-		    		validateObject(result, nestedAttributeValueReader, doOptionalProcessing);    						
-				}
-			}
+    	if (entry != null) {
+            for (CollectionDefinition collectionDefinition : entry.getCollections()){
+                //TODO: Do we need to be able to handle simple collections (ie. String, etc)
 
-			processCollectionConstraints(result, collectionObject, collectionDefinition, attributeValueReader, doOptionalProcessing);
-    	}
+                String childEntryName = collectionDefinition.getDataObjectClass();
+                String attributeName = collectionDefinition.getName();
+                attributeValueReader.setAttributeName(attributeName);
+                Collection<?> collectionObject = attributeValueReader.getValue();
+                DataDictionaryEntry childEntry = childEntryName != null ? getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
+                if (collectionObject != null){
+                    for (Object value:collectionObject){
+                        //FIXME: It's inefficient to be creating new attribute reader for each item in collection
+                        AttributeValueReader nestedAttributeValueReader =
+                            new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry, attributeValueReader.getPath());
+                        validateObject(result, nestedAttributeValueReader, doOptionalProcessing);
+                    }
+                }
+
+                processCollectionConstraints(result, collectionObject, collectionDefinition, attributeValueReader, doOptionalProcessing);
+            }
+        }
     }
 
     /**

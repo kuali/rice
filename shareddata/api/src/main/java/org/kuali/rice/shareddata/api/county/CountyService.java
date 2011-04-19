@@ -34,44 +34,44 @@ public interface CountyService {
 
     /**
      * Gets a {@link County} from a postal country code and postal code value.
-     *
+     * <p/>
      * <p>
-     *   This method will return null if the state does not exist.
+     * This method will return null if the state does not exist.
      * </p>
-     *
+     * <p/>
      * <p>
-     *     This method will return active or inactive counties.
+     * This method will return active or inactive counties.
      * </p>
      *
      * @param countryCode country code. cannot be blank.
-     * @param stateCode postal state code. cannot be blank.
-     * @param code county code. cannot be blank
+     * @param stateCode   postal state code. cannot be blank.
+     * @param code        county code. cannot be blank
      * @return a {@link County} or null
      * @throws IllegalArgumentException country code, postal state code, or county code is blank
      */
-    @WebMethod(operationName="getCounty")
+    @WebMethod(operationName = "getCounty")
     @WebResult(name = "county")
     County getCounty(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode, @WebParam(name = "code") String code)
             throws RiceIllegalArgumentException;
 
     /**
      * Gets all the {@link County County} for postal country code & postal state code.
-     *
+     * <p/>
      * <p>
-     *   This method will always return an <b>immutable</b> Collection
-     *   even when no values exist.
+     * This method will always return an <b>immutable</b> Collection
+     * even when no values exist.
      * </p>
-     *
+     * <p/>
      * <p>
-     *     This method will only return active counties.
+     * This method will only return active counties.
      * </p>
      *
      * @param countryCode state code. cannot be blank.
-     * @param stateCode postal state code. cannot be blank.
-     * @return an immutable collection of states
+     * @param stateCode   postal state code. cannot be blank.
+     * @return an immutable collection of counties
      * @throws IllegalArgumentException country code, postal state code is blank
      */
-    @WebMethod(operationName="findAllCountiesInCountryAndState")
+    @WebMethod(operationName = "findAllCountiesInCountryAndState")
     @WebResult(name = "counties")
     @XmlJavaTypeAdapter(value = ImmutableListAdapter.class)
     List<County> findAllCountiesInCountryAndState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode)

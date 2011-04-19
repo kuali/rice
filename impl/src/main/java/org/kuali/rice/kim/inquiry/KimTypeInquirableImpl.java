@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kim.inquiry;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -39,7 +39,7 @@ public class KimTypeInquirableImpl extends KualiInquirableImpl {
 		if(KIM_TYPE_NAME.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
-			return getInquiryUrlForPrimaryKeys(KimTypeImpl.class, businessObject, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(KimTypeBo.class, businessObject, primaryKeys, null);
 		}
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
     }

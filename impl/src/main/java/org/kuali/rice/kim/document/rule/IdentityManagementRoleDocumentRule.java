@@ -15,22 +15,15 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -55,7 +48,11 @@ import org.kuali.rice.kim.rules.ui.KimDocumentPermissionRule;
 import org.kuali.rice.kim.rules.ui.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.impl.RoleServiceBase;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -67,6 +64,13 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
+
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -284,7 +288,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return rulePassed;
     }
 
-    protected boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimTypeInfo kimType){
+    protected boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimType kimType){
 		AttributeSet validationErrors = new AttributeSet();
 
 		int memberCounter = 0;
@@ -293,14 +297,14 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
-        final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
+        final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getId());
         final Set<String> uniqueAttributeNames = figureOutUniqueQualificationSet(roleMembers, attributeDefinitions);
         
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			errorsTemp = new AttributeSet();
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
 			if(!roleMember.isRole()){
-				errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
+				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
 				validationErrors.putAll( 
 						attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
 		        memberCounter++;
@@ -430,7 +434,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     protected boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers, 
-    		List<RoleDocumentDelegationMember> delegationMembers, KimTypeInfo kimType){
+    		List<RoleDocumentDelegationMember> delegationMembers, KimType kimType){
 		AttributeSet validationErrors = new AttributeSet();
 		boolean valid;
 		int memberCounter = 0;
@@ -440,7 +444,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         KimDocumentRoleMember roleMember;
         String errorPath;
-        final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
+        final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getId());
         final Set<String> uniqueQualifierAttributes = figureOutUniqueQualificationSetForDelegation(delegationMembers, attributeDefinitions);
         
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
@@ -448,7 +452,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			errorsTemp = new AttributeSet();
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
 			if(!delegationMember.isRole()){
-				errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
+				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
 				validationErrors.putAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
 			}
@@ -458,7 +462,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 				GlobalVariables.getMessageMap().putError("document.delegationMembers["+memberCounter+"]", RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
 				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
-								kimType.getKimTypeId(), 
+								kimType.getId(),
 								attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers()), 
 								attributeSetToValidate);
 				validationErrors.putAll(

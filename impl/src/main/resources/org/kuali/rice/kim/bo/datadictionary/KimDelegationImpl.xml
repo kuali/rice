@@ -58,7 +58,7 @@
   </bean>
   
   <bean id="KimDelegationImpl-active" parent="KimDelegationImpl-active-parentBean"/>
-  <bean id="KimDelegationImpl-active-parentBean" parent="KimTypeImpl-active" abstract="true"/>
+  <bean id="KimDelegationImpl-active-parentBean" parent="KimType-active" abstract="true"/>
   
   <bean id="KimDelegationImpl-inquiryDefinition" parent="KimDelegationImpl-inquiryDefinition-parentBean"/>
 

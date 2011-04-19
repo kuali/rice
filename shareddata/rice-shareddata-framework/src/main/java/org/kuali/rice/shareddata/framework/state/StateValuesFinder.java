@@ -29,7 +29,7 @@ import java.util.List;
 
 public class StateValuesFinder extends KeyValuesBase {
 
-    private String countryCode;
+    private String countryCode = "US";
 
     @Override
 	public List<KeyValue> getKeyValues() {

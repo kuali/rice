@@ -15,25 +15,25 @@
  */
 package org.kuali.rice.kim.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -229,15 +229,15 @@ public final class KimCommonUtilsInternal {
 
     public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String, String> infoMap, String groupId, String kimTypeId) {
         List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-        List<KimTypeAttributeInfo> attributeInfoList = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
+        List<KimTypeAttribute> attributeInfoList = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
 
         for (String key : infoMap.keySet()) {
-            KimTypeAttributeInfo typeAttributeInfo = getAttributeInfo(attributeInfoList, key);
+            KimTypeAttribute typeAttributeInfo = getAttributeInfo(attributeInfoList, key);
 
             if (typeAttributeInfo != null) {
                 GroupAttributeDataImpl groupAttribute = new GroupAttributeDataImpl();
-                groupAttribute.setKimAttributeId(typeAttributeInfo.getKimAttributeId());
-                groupAttribute.setAttributeValue(infoMap.get(typeAttributeInfo.getAttributeName()));
+                groupAttribute.setKimAttributeId(typeAttributeInfo.getKimAttribute().getId());
+                groupAttribute.setAttributeValue(infoMap.get(typeAttributeInfo.getKimAttribute().getAttributeName()));
                 groupAttribute.setGroupId(groupId);
                 groupAttribute.setKimTypeId(kimTypeId);
                 attrList.add(groupAttribute);
@@ -248,10 +248,10 @@ public final class KimCommonUtilsInternal {
         return attrList;
     }
 
-    private static KimTypeAttributeInfo getAttributeInfo(List<KimTypeAttributeInfo> attributeInfoList, String attributeName) {
-        KimTypeAttributeInfo kRet = null;
-        for (KimTypeAttributeInfo attributeInfo : attributeInfoList) {
-            if (attributeInfo.getAttributeName().equals(attributeName)) {
+    private static KimTypeAttribute getAttributeInfo(List<KimTypeAttribute> attributeInfoList, String attributeName) {
+        KimTypeAttribute kRet = null;
+        for (KimTypeAttribute attributeInfo : attributeInfoList) {
+            if (attributeInfo.getKimAttribute().getAttributeName().equals(attributeName)) {
                 kRet = attributeInfo;
                 break;
             }

@@ -16,7 +16,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
@@ -104,6 +105,10 @@
         <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
         <oscache.version>2.4.1</oscache.version>
         <persistence.version>1.0.0.Final</persistence.version>
+        <!--
+            http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
+            <quartz.version>2.0.1</quartz.version>
+        -->
         <quartz.version>1.8.4</quartz.version>
         <reflections.version>0.9.5-RC2</reflections.version>
         <serializer.version>2.7.1</serializer.version>
@@ -839,7 +844,6 @@
         <!-- <module>ksb</module> -->
         <!-- <module>kcb</module> -->
         <!-- <module>kns</module> -->
-        <!--<module>kim</module>-->
         <!-- <module>kew</module> -->
         <!-- <module>ken</module> -->
         <module>core</module>

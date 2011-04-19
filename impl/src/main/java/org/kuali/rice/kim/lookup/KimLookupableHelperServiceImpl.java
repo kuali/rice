@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kim.lookup;
 
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -58,7 +58,7 @@ public class KimLookupableHelperServiceImpl extends KualiLookupableHelperService
 
 	protected KimTypeInfoService getTypeInfoService() {
 	    if ( typeInfoService == null ) {
-	    	typeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
+	    	typeInfoService = KimApiServiceLocator.getKimTypeInfoService();
 		}
 	    return typeInfoService;
 	}

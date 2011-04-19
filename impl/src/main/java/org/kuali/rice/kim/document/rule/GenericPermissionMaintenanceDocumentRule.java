@@ -15,22 +15,22 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -61,7 +61,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 				GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 				rulesPassed = false;
 			} else {
-				KimTypeInfo kimType = KIMServiceLocatorWeb.getTypeInfoService().getKimType( template.getKimTypeId() );
+				KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(template.getKimTypeId());
 				AttributeSet details = perm.getDetails();
 				// check that add passed attributes are defined
 				for ( String attributeName : details.keySet() ) {
@@ -74,9 +74,9 @@ public class GenericPermissionMaintenanceDocumentRule extends
 				}
 				// if all attributes are known, pass to the service for validation
 				if ( !GlobalVariables.getMessageMap().hasErrors() ) {
-					KimPermissionTypeService service = getPermissionTypeService( kimType.getKimTypeServiceName() );
+					KimPermissionTypeService service = getPermissionTypeService( kimType.getServiceName() );
 					if ( service != null ) {
-						AttributeSet validationErrors = service.validateAttributes( kimType.getKimTypeId(), details);
+						AttributeSet validationErrors = service.validateAttributes( kimType.getId(), details);
 						if ( validationErrors != null && !validationErrors.isEmpty() ) {
 							for ( String attributeName : validationErrors.keySet() ) {
 								GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );

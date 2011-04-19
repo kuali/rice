@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import javax.persistence.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kim.impl.attribute.KimAttributeBo;
+
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,10 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 
 /**
  * This class is the base class for KIM documents sub-business objects that store attribute/qualifier data
@@ -53,9 +52,9 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoAct
 	private String kimAttrDefnId;
 	@Column(name = "ATTR_VAL")
 	private String attrVal = "";
-	@OneToOne(targetEntity=KimAttributeImpl.class, fetch=FetchType.EAGER, cascade={})
+	@OneToOne(targetEntity=KimAttributeBo.class, fetch=FetchType.EAGER, cascade={})
     @JoinColumn(name="KIM_ATTR_DEFN_ID",insertable=false,updatable=false)
-	private KimAttributeImpl kimAttribute;
+	private KimAttributeBo kimAttribute;
 	@Transient
 	private String qualifierKey;
 	@Transient
@@ -112,14 +111,14 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoAct
 	/**
 	 * @return the kimAttribute
 	 */
-	public KimAttributeImpl getKimAttribute() {
+	public KimAttributeBo getKimAttribute() {
 		return this.kimAttribute;
 	}
 
 	/**
 	 * @param kimAttribute the kimAttribute to set
 	 */
-	public void setKimAttribute(KimAttributeImpl kimAttribute) {
+	public void setKimAttribute(KimAttributeBo kimAttribute) {
 		this.kimAttribute = kimAttribute;
 	}
 

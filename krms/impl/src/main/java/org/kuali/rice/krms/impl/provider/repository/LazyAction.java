@@ -31,7 +31,6 @@ import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 final class LazyAction implements Action {
 
 	private final ActionDefinition actionDefinition;
-	private final KrmsTypeDefinition typeDefinition;
 	private final KrmsTypeResolver typeResolver;
 	
 	private final Object mutex = new Object();
@@ -39,9 +38,8 @@ final class LazyAction implements Action {
 	// volatile for double-checked locking idiom
 	private volatile Action action;
 	
-	LazyAction(ActionDefinition actionDefinition, KrmsTypeDefinition typeDefinition, KrmsTypeResolver typeResolver) {
+	LazyAction(ActionDefinition actionDefinition, KrmsTypeResolver typeResolver) {
 		this.actionDefinition = actionDefinition;
-		this.typeDefinition = typeDefinition;
 		this.typeResolver = typeResolver;
 		this.action = null;
 	}
@@ -73,7 +71,7 @@ final class LazyAction implements Action {
 	}
 	
 	private Action constructAction() {
-		ActionTypeService actionTypeService = typeResolver.getActionTypeService(actionDefinition, typeDefinition);
+		ActionTypeService actionTypeService = typeResolver.getActionTypeService(actionDefinition);
 		Action action = actionTypeService.loadAction(actionDefinition);
 		if (action == null) {
 			action = new Action() {

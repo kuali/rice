@@ -16,26 +16,29 @@
 package org.kuali.rice.krms.impl.type;
 
 import org.kuali.rice.krms.api.repository.ActionDefinition;
+import org.kuali.rice.krms.api.repository.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.TermResolverDefinition;
-import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
+import org.kuali.rice.krms.framework.type.FunctionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
 
 /**
- * TODO ... 
+ * The KrmsTypeResolver knows how to resolve the "type services" for the various
+ * components of KRMS.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface KrmsTypeResolver {
 
-	// TODO: javadocs
+	PropositionTypeService getPropositionTypeService(PropositionDefinition propositionDefinition);
 	
-	PropositionTypeService getPropositionTypeService(PropositionDefinition propositionDefinition, KrmsTypeDefinition typeDefinition);
+	ActionTypeService getActionTypeService(ActionDefinition actionDefinition);
 	
-	ActionTypeService getActionTypeService(ActionDefinition actionDefinition, KrmsTypeDefinition typeDefinition);
+	TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion);
 	
-	TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion, KrmsTypeDefinition typeDefinition);
+	FunctionTypeService getFunctionTypeService(FunctionDefinition functionDefinition);
+	
 }

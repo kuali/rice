@@ -17,34 +17,41 @@ package org.kuali.rice.krms.impl.type;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krms.api.engine.EngineResourceUnavailableException;
 import org.kuali.rice.krms.api.repository.ActionDefinition;
+import org.kuali.rice.krms.api.repository.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionType;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.TermResolverDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
+import org.kuali.rice.krms.framework.type.FunctionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
 
 /**
- * TODO... 
+ * An implementation of {@link KrmsTypeResolver} which knows how to load the
+ * various type services in KRMS.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 
+	private KrmsTypeRepositoryService typeRepositoryService;
 	private PropositionTypeService defaultCompoundPropositionTypeService;
 	private PropositionTypeService defaultSimplePropositionTypeService;
 	
 	@Override
-	public PropositionTypeService getPropositionTypeService(
-			PropositionDefinition propositionDefinition,
-			KrmsTypeDefinition typeDefinition) {
-		if (typeDefinition == null) {
+	public PropositionTypeService getPropositionTypeService(PropositionDefinition propositionDefinition) {
+		if (propositionDefinition == null) {
+			throw new IllegalArgumentException("propositionDefinition was null");
+		}
+		if (propositionDefinition.getTypeId() == null) {
 			PropositionType propositionType = PropositionType.fromCode(propositionDefinition.getPropositionTypeCode());
 			if (PropositionType.COMPOUND == propositionType) {
 				return defaultCompoundPropositionTypeService;
@@ -53,45 +60,66 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 			}
 			throw new RepositoryDataException("Proposition does not have a typeId defined and does not define a valid proposition type code.  Proposition id is: " + propositionDefinition.getPropId());
 		}
-		QName serviceName = QName.valueOf(typeDefinition.getServiceName());
-		Object service = GlobalResourceLoader.getService(serviceName);
-		if (service == null) {
-			throw new EngineResourceUnavailableException("Failed to locate the PropositionTypeService with name: " + serviceName);
-		}
-		if (!(service instanceof PropositionTypeService)) {
-			throw new EngineResourceUnavailableException("The service with name '" + serviceName + "' defined on typeId '" + propositionDefinition.getTypeId() + "' was not of type PropositionTypeService: " + service);
-		}
-		return (PropositionTypeService)service;
+		KrmsTypeDefinition typeDefinition = getTypeDefinition(propositionDefinition.getTypeId());
+		return resolveTypeService(typeDefinition, PropositionTypeService.class);
 	}
 
 	@Override
-	public ActionTypeService getActionTypeService(ActionDefinition actionDefinition, KrmsTypeDefinition typeDefinition) {
-		QName serviceName = QName.valueOf(typeDefinition.getServiceName());
-		Object service = GlobalResourceLoader.getService(serviceName);
-		if (service == null) {
-			throw new EngineResourceUnavailableException("Failed to locate the ActionTypeService with name: " + serviceName);
+	public ActionTypeService getActionTypeService(ActionDefinition actionDefinition) {
+		if (actionDefinition == null) {
+			throw new IllegalArgumentException("actionDefinition was null");
 		}
-		if (!(service instanceof ActionTypeService)) {
-			throw new EngineResourceUnavailableException("The service with name '" + serviceName + "' defined on typeId '" + actionDefinition.getTypeId() + "' was not of type ActionTypeService: " + service);
-		}
-		return (ActionTypeService)service;
+		KrmsTypeDefinition typeDefinition = getTypeDefinition(actionDefinition.getTypeId());
+		return resolveTypeService(typeDefinition, ActionTypeService.class);
 	}
 	
 	@Override
-	public TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion, KrmsTypeDefinition typeDefinition) {
+	public TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion) {
+		if (termResolverDefintion == null) {
+			throw new IllegalArgumentException("termResolverDefintion was null");
+		}
+		KrmsTypeDefinition typeDefinition = getTypeDefinition(termResolverDefintion.getTypeId());
+		return resolveTypeService(typeDefinition, TermResolverTypeService.class);
+	}
+	
+	@Override
+	public FunctionTypeService getFunctionTypeService(FunctionDefinition functionDefinition) {
+		if (functionDefinition == null) {
+			throw new IllegalArgumentException("functionDefinition was null");
+		}
+		KrmsTypeDefinition typeDefinition = getTypeDefinition(functionDefinition.getTypeId());
+		return resolveTypeService(typeDefinition, FunctionTypeService.class);
+	}
+	
+	protected KrmsTypeDefinition getTypeDefinition(String typeId) {
+		if (StringUtils.isBlank(typeId)) {
+			throw new IllegalArgumentException("The given typeId was null.");
+		}
+		KrmsTypeDefinition typeDefinition = typeRepositoryService.getTypeById(typeId);
+		if (typeDefinition == null) {
+			throw new RepositoryDataException("Failed to locate a type definition for typeId: " + typeId);
+		}
+		return typeDefinition;
+	}
+	
+	protected <T> T resolveTypeService(KrmsTypeDefinition typeDefinition, Class<T> typeServiceClass) {
 		QName serviceName = QName.valueOf(typeDefinition.getServiceName());
 		Object service = GlobalResourceLoader.getService(serviceName);
 		if (service == null) {
-			throw new EngineResourceUnavailableException("Failed to locate the " + TermResolverTypeService.class.getSimpleName() + 
+			throw new EngineResourceUnavailableException("Failed to locate the " + typeServiceClass.getSimpleName() + 
 					" with name: " + serviceName);
 		}
-		if (!(service instanceof TermResolverTypeService)) {
-			throw new EngineResourceUnavailableException("The service with name '" + serviceName + "' defined on typeId '" + termResolverDefintion.getTypeId() + 
-					"' was not of type " + TermResolverTypeService.class.getSimpleName() + ": " + service);
+		if (!typeServiceClass.isAssignableFrom(service.getClass())) {
+			throw new EngineResourceUnavailableException("The service with name '" + serviceName + "' defined on typeId '" + typeDefinition.getId() + 
+					"' was not of type " + typeServiceClass.getSimpleName() + ": " + service);
 		}
-		return (TermResolverTypeService)service;
+		return typeServiceClass.cast(service);
 	}
 	
+	public void setTypeRepositoryService(KrmsTypeRepositoryService typeRepositoryService) {
+		this.typeRepositoryService = typeRepositoryService;
+	}
+
 	public void setDefaultCompoundPropositionTypeService(PropositionTypeService defaultCompoundPropositionTypeService) {
 		this.defaultCompoundPropositionTypeService = defaultCompoundPropositionTypeService;
 	}

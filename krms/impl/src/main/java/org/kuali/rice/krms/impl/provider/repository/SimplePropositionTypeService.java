@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -26,6 +28,7 @@ import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.api.repository.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.FunctionParameterDefinition;
 import org.kuali.rice.krms.api.repository.FunctionRepositoryService;
 import org.kuali.rice.krms.api.repository.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.PropositionParameter;
@@ -34,6 +37,7 @@ import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.TermDefinition;
 import org.kuali.rice.krms.api.repository.TermParameterDefinition;
 import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
+import org.kuali.rice.krms.framework.engine.Function;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.expression.BinaryOperatorExpression;
 import org.kuali.rice.krms.framework.engine.expression.BooleanValidatingExpression;
@@ -41,9 +45,12 @@ import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.expression.ConstantExpression;
 import org.kuali.rice.krms.framework.engine.expression.Expression;
 import org.kuali.rice.krms.framework.engine.expression.ExpressionBasedProposition;
+import org.kuali.rice.krms.framework.engine.expression.FunctionExpression;
 import org.kuali.rice.krms.framework.engine.expression.TermExpression;
+import org.kuali.rice.krms.framework.type.FunctionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 import org.kuali.rice.krms.impl.repository.TermRepositoryService;
+import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
  * A default implementation of {@link PropositionTypeService} for propositions
@@ -59,6 +66,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 	private TermResolutionEngine termResolutionEngine;
 	private TermRepositoryService termRepositoryService;
 	private FunctionRepositoryService functionRepositoryService;
+	private KrmsTypeResolver typeResolver;
 	
 	@Override
 	public Proposition loadProposition(PropositionDefinition propositionDefinition) {
@@ -88,11 +96,23 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 				if (functionDefinition == null) {
 					throw new RepositoryDataException("Unable to locate function with the given id: " + functionId);
 				}
-				
-				// TODO need to go out and look up the function for the "function id" which will be stored in the value
-				// then figure out how many arguments it has, popping off the stack in order to pass them in
-				
-				throw new UnsupportedOperationException("TODO - Implement Me!!!");
+				FunctionTypeService functionTypeService = typeResolver.getFunctionTypeService(functionDefinition);
+				Function function = functionTypeService.loadFunction(functionDefinition);
+				// TODO throw an exception if function is null?
+				List<FunctionParameterDefinition> parameters = functionDefinition.getParameters();
+				if (stack.size() < parameters.size()) {
+					throw new RepositoryDataException("Failed to initialize custom function '" + functionDefinition.getNamespaceCode() + " " + functionDefinition.getName() +
+							"'.  There were only " + stack.size() + " values on the stack but function requires at least " + parameters.size());
+				}
+				List<Expression<? extends Object>> arguments = new ArrayList<Expression<? extends Object>>();
+				// work backward through the list to match params to the stack
+				for (int index = parameters.size() - 1; index >= 0; index--) {
+					FunctionParameterDefinition parameterDefinition = parameters.get(index);
+					// TODO need to check types here? expression object probably needs a getType on it so that we can confirm that the types will be compatible?
+					Expression<? extends Object> argument = stack.removeFirst();
+					arguments.add(argument);
+				}
+				stack.addFirst(new FunctionExpression(function, arguments));
 			} else if (parameterType == PropositionParameterType.OPERATOR) {
 				ComparisonOperator operator = ComparisonOperator.fromCode(parameter.getValue());
 				if (stack.size() < 2) {
@@ -149,6 +169,10 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 
 	public void setFunctionRepositoryService(FunctionRepositoryService functionRepositoryService) {
 		this.functionRepositoryService = functionRepositoryService;
+	}
+	
+	public void setTypeResolver(KrmsTypeResolver typeResolver) {
+		this.typeResolver = typeResolver;
 	}
 	
 }

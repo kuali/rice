@@ -31,7 +31,6 @@ import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 final class LazyProposition implements Proposition {
 
 	private final PropositionDefinition propositionDefinition;
-	private final KrmsTypeDefinition typeDefinition;
 	private final KrmsTypeResolver resolver;
 	
 	private final Object mutex = new Object();
@@ -39,9 +38,8 @@ final class LazyProposition implements Proposition {
 	// volatile for double-checked locking idiom
 	private volatile Proposition proposition;
 	
-	LazyProposition(PropositionDefinition propositionDefinition, KrmsTypeDefinition typeDefinition, KrmsTypeResolver resolver) {
+	LazyProposition(PropositionDefinition propositionDefinition, KrmsTypeResolver resolver) {
 		this.propositionDefinition = propositionDefinition;
-		this.typeDefinition = typeDefinition;
 		this.resolver = resolver;
 		this.proposition = null;
 	}
@@ -68,7 +66,7 @@ final class LazyProposition implements Proposition {
 	}
 	
 	private Proposition constructProposition() {
-		PropositionTypeService propositionTypeService = resolver.getPropositionTypeService(propositionDefinition, typeDefinition);
+		PropositionTypeService propositionTypeService = resolver.getPropositionTypeService(propositionDefinition);
 		Proposition proposition = propositionTypeService.loadProposition(propositionDefinition);
 		if (proposition == null) {
 			proposition = new Proposition() {

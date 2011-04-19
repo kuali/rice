@@ -33,7 +33,6 @@ import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleDefinition;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.api.repository.TermResolverDefinition;
-import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
@@ -99,12 +98,11 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	 * @return
 	 */
 	private TermResolver<?> translateTermResolver(TermResolverDefinition termResolverDef) {
-		if (termResolverDef == null) throw new IllegalArgumentException("termResolverDef must not be null");
-		KrmsTypeDefinition krmsTypeDef = typeRepositoryService.getTypeById(termResolverDef.getTypeId());
-		if (krmsTypeDef == null) throw new IllegalStateException(TermResolverDefinition.class.getSimpleName() + 
-				" has an invalid KRMS type: typeId=" + termResolverDef.getTypeId());
+		if (termResolverDef == null) {
+			throw new IllegalArgumentException("termResolverDef must not be null");
+		}
 		TermResolverTypeService termResolverTypeService = 
-			typeResolver.getTermResolverTypeService(termResolverDef, krmsTypeDef);
+			typeResolver.getTermResolverTypeService(termResolverDef);
 		
 		TermResolver<?> termResolver = termResolverTypeService.loadTermResolver(termResolverDef);
 		// TODO: log warning when termResolver comes back null? or throw exception?
@@ -253,14 +251,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	
 	@Override
 	public Proposition translatePropositionDefinition(PropositionDefinition propositionDefinition) {
-		KrmsTypeDefinition typeDefinition = null;
-		if (propositionDefinition.getTypeId() != null) {
-			typeDefinition = typeRepositoryService.getTypeById(propositionDefinition.getTypeId());
-			if (typeDefinition == null) {
-				throw new RepositoryDataException("Failed to locate a type definition for proposition typeId: " + propositionDefinition.getTypeId());
-			}
-		}
-		return new LazyProposition(propositionDefinition, typeDefinition, typeResolver);
+		return new LazyProposition(propositionDefinition, typeResolver);
 	}
 	
 	@Override
@@ -268,11 +259,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		if (actionDefinition.getTypeId() == null) {
 			throw new RepositoryDataException("Given ActionDefinition does not have a typeId, actionId was: " + actionDefinition.getActionId());
 		}
-		KrmsTypeDefinition typeDefinition = typeRepositoryService.getTypeById(actionDefinition.getTypeId());
-		if (typeDefinition == null) {
-			throw new RepositoryDataException("Failed to locate a type definition for agenda typeId: " + actionDefinition.getTypeId());
-		}
-		return new LazyAction(actionDefinition, typeDefinition, typeResolver);
+		return new LazyAction(actionDefinition, typeResolver);
 	}
 	
 	@Override

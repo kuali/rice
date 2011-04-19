@@ -178,6 +178,7 @@ function validateAndSubmit(){
 	}
 	else{
 		jq.watermark.showAll();
+		alert("The form contains errors.  Please correct these errors and try again.");
 	}
 }
 

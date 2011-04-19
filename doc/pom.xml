@@ -102,10 +102,8 @@
 							<targetDirectory>${project.build.outputDirectory}</targetDirectory>
 							<foCustomization>${basedir}/src/main/stylesheets/fo-stylesheet.xsl</foCustomization>
 							<htmlStylesheet>css/stylesheet.css</htmlStylesheet>
-							<!-- parameter> 
-  <name>fop.extensions</name> 
-  <value>1</value> 
-</parameter--> 
+							<xincludeSupported>true</xincludeSupported>
+							<useExtensions>1</useExtensions> 
 						</configuration>
 					</execution>
 				</executions>

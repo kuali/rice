@@ -348,11 +348,11 @@ class AgendaTreeRuleEntryTest {
 	public void testXmlUnmarshal_true_and_false_AgendaRuleEntry() {
 	  JAXBContext jc = JAXBContext.newInstance(AgendaTreeRuleEntry.class, AgendaTreeDefinition.class)
 	  Unmarshaller unmarshaller = jc.createUnmarshaller()
-	  AgendaTreeRuleEntry myTiny = (AgendaTreeRuleEntry) unmarshaller.unmarshal(new StringReader(IFTRUE_AND_IFFALSE_AGENDA_RULE_ENTRY))
-	  Assert.assertEquals(AGENDA_ITEM_ID_1, myTiny.agendaItemId)
-	  Assert.assertEquals(RULE_ID_1, myTiny.ruleId)
-	  Assert.assertEquals(RULE_ID_2, myTiny.ifTrue.entries[0].ruleId)
-	  Assert.assertEquals(RULE_ID_3, myTiny.ifFalse.entries[0].ruleId)
+	  AgendaTreeRuleEntry myTree = (AgendaTreeRuleEntry) unmarshaller.unmarshal(new StringReader(IFTRUE_AND_IFFALSE_AGENDA_RULE_ENTRY))
+	  Assert.assertEquals(AGENDA_ITEM_ID_1, myTree.agendaItemId)
+	  Assert.assertEquals(RULE_ID_1, myTree.ruleId)
+	  Assert.assertEquals(RULE_ID_2, myTree.ifTrue.entries[0].ruleId)
+	  Assert.assertEquals(RULE_ID_3, myTree.ifFalse.entries[0].ruleId)
 	}
 
 }

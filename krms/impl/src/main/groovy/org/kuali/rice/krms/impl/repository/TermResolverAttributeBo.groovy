@@ -2,9 +2,9 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.TermResolverAttribute
-import org.kuali.rice.krms.api.repository.TermResolverAttributeContract
 import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition
+import org.kuali.rice.krms.api.repository.term.TermResolverAttribute;
+import org.kuali.rice.krms.api.repository.term.TermResolverAttributeContract;
 
 public class TermResolverAttributeBo extends PersistableBusinessObjectBase implements TermResolverAttributeContract{
 
@@ -23,7 +23,7 @@ public class TermResolverAttributeBo extends PersistableBusinessObjectBase imple
 	*/
    static TermResolverAttribute to(TermResolverAttributeBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.TermResolverAttribute.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.term.TermResolverAttribute.Builder.create(bo).build()
    }
 
    /**

@@ -20,6 +20,7 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Test
 import org.junit.Assert
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 
 
 /**

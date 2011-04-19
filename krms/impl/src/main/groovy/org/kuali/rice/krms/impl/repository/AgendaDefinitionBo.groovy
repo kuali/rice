@@ -3,8 +3,8 @@ package org.kuali.rice.krms.impl.repository
 import java.util.Set;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.AgendaDefinitionContract
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
 
 public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract{
@@ -34,7 +34,7 @@ public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements
 	 */
 	static AgendaDefinition to(AgendaDefinitionBo bo) {
 		if (bo == null) { return null }
-		return org.kuali.rice.krms.api.repository.AgendaDefinition.Builder.create(bo).build()
+		return org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Builder.create(bo).build()
 	}
 
 

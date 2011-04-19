@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.framework.type;
 
-import org.kuali.rice.krms.api.repository.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.framework.engine.Proposition;
 
 /**

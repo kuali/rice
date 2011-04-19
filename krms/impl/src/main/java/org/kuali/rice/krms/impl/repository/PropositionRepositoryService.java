@@ -19,8 +19,8 @@ package org.kuali.rice.krms.impl.repository;
 import java.util.List;
 
 
-import org.kuali.rice.krms.api.repository.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 
 public interface PropositionRepositoryService {
 

@@ -30,10 +30,10 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject
 import org.kuali.rice.kns.service.BusinessObjectService
 import org.kuali.rice.kns.util.KNSPropertyConstants
 import org.kuali.rice.krms.api.repository.LogicalOperator;
-import org.kuali.rice.krms.api.repository.PropositionDefinition
-import org.kuali.rice.krms.api.repository.PropositionDefinitionContract
-import org.kuali.rice.krms.api.repository.PropositionParameter
-import org.kuali.rice.krms.api.repository.PropositionParameterContract
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
 import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 
 class PropositionServiceImplTest {

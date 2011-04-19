@@ -8,6 +8,11 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+
 /**
  * The rule repository contains all of the information about context definitions,
  * agendas, and business rules.

@@ -23,6 +23,9 @@ import javax.xml.bind.Unmarshaller
 
 import org.junit.Assert
 import org.junit.Test
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeRuleEntry;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeSubAgendaEntry;
 
 
 /**

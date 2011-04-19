@@ -16,7 +16,7 @@
 
 package org.kuali.rice.krms.impl.repository;
 
-import org.kuali.rice.krms.api.repository.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
 
 public interface AgendaRepositoryService {

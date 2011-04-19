@@ -17,9 +17,9 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.TermDefinition;
-import org.kuali.rice.krms.api.repository.TermResolverDefinition;
-import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 
 /**
  * BO service for terms and related entities

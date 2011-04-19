@@ -1,9 +1,9 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.AgendaAttribute
-import org.kuali.rice.krms.api.repository.AgendaAttributeContract
 import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition
+import org.kuali.rice.krms.api.repository.agenda.AgendaAttribute;
+import org.kuali.rice.krms.api.repository.agenda.AgendaAttributeContract;
 
 public class AgendaAttributeBo extends PersistableBusinessObjectBase implements AgendaAttributeContract{
 
@@ -22,7 +22,7 @@ public class AgendaAttributeBo extends PersistableBusinessObjectBase implements 
 	*/
    static AgendaAttribute to(AgendaAttributeBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.AgendaAttribute.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.agenda.AgendaAttribute.Builder.create(bo).build()
    }
 
    /**

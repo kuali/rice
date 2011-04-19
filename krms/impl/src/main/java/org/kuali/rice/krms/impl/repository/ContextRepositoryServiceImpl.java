@@ -19,7 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 
 import java.util.*;
 
@@ -30,7 +30,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#createContext(org.kuali.rice.krms.api.repository.ContextDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
 	@Override
 	public void createContext(ContextDefinition context) {
@@ -48,7 +48,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#updateContext(org.kuali.rice.krms.api.repository.ContextDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#updateContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
 	@Override
 	public void updateContext(ContextDefinition context) {

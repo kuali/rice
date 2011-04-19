@@ -2,10 +2,10 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.ActionDefinition
-import org.kuali.rice.krms.api.repository.RuleDefinition
-import org.kuali.rice.krms.api.repository.RuleDefinitionContract
-import org.kuali.rice.krms.api.repository.RuleAttribute
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleAttribute;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract;
 
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
@@ -27,7 +27,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	*/
    static RuleDefinition to(RuleBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.RuleDefinition.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.rule.RuleDefinition.Builder.create(bo).build()
    }
 
    /**

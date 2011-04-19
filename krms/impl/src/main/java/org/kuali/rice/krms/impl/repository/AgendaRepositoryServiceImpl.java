@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
 public final class AgendaRepositoryServiceImpl implements AgendaRepositoryService {
 

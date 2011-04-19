@@ -18,10 +18,10 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.ActionDefinition;
-import org.kuali.rice.krms.api.repository.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.RuleDefinition;
-import org.kuali.rice.krms.api.repository.RuleAttribute;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleAttribute;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRule(org.kuali.rice.krms.api.repository.RuleDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRule(org.kuali.rice.krms.api.repository.rule.RuleDefinition)
 	 */
 	@Override
 	public void createRule(RuleDefinition rule) {
@@ -50,7 +50,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRule(org.kuali.rice.krms.api.repository.RuleDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRule(org.kuali.rice.krms.api.repository.rule.RuleDefinition)
 	 */
 	@Override
 	public void updateRule(RuleDefinition rule) {
@@ -92,7 +92,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRuleAttribute(org.kuali.rice.krms.api.repository.RuleAttribute)
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#createRuleAttribute(org.kuali.rice.krms.api.repository.rule.RuleAttribute)
 	 */
 	@Override
 	public void createRuleAttribute(RuleAttribute attribute) {
@@ -111,7 +111,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRuleAttribute(org.kuali.rice.krms.api.repository.RuleAttribute)
+	 * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRuleAttribute(org.kuali.rice.krms.api.repository.rule.RuleAttribute)
 	 */
 	@Override
 	public void updateRuleAttribute(RuleAttribute attribute) {

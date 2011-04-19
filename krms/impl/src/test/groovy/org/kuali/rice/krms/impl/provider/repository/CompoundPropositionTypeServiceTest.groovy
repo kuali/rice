@@ -21,11 +21,11 @@ import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment
 import org.kuali.rice.krms.api.repository.LogicalOperator
-import org.kuali.rice.krms.api.repository.PropositionDefinition
-import org.kuali.rice.krms.api.repository.PropositionDefinitionContract
-import org.kuali.rice.krms.api.repository.PropositionParameter
-import org.kuali.rice.krms.api.repository.PropositionParameterType
-import org.kuali.rice.krms.api.repository.PropositionType
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
+import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.framework.engine.Proposition
 
 import groovy.mock.interceptor.MockFor

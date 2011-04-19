@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.framework.type;
 
 import org.kuali.rice.krms.api.engine.TermResolver;
-import org.kuali.rice.krms.api.repository.TermResolverDefinition;
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 
 /**
  * This is the interface for the type service for {@link TermResolver}s

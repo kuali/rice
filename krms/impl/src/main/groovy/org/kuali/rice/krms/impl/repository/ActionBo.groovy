@@ -2,8 +2,8 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.ActionDefinition
-import org.kuali.rice.krms.api.repository.ActionDefinitionContract
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 
 public class ActionBo extends PersistableBusinessObjectBase implements ActionDefinitionContract {
 
@@ -24,7 +24,7 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	*/
    static ActionDefinition to(ActionBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.ActionDefinition.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.action.ActionDefinition.Builder.create(bo).build()
    }
 
    /**

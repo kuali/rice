@@ -6,9 +6,9 @@ import java.util.Map;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
-import org.kuali.rice.krms.api.repository.ContextDefinition;
-import org.kuali.rice.krms.api.repository.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
 import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.ContextProvider;
 

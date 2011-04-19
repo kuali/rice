@@ -16,13 +16,13 @@
 package org.kuali.rice.krms.impl.provider.repository;
 
 import org.kuali.rice.krms.api.engine.Term;
-import org.kuali.rice.krms.api.repository.ActionDefinition;
-import org.kuali.rice.krms.api.repository.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.AgendaTreeDefinition;
-import org.kuali.rice.krms.api.repository.ContextDefinition;
-import org.kuali.rice.krms.api.repository.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.RuleDefinition;
-import org.kuali.rice.krms.api.repository.TermDefinition;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;

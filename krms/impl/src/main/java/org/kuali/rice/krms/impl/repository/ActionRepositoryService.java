@@ -17,8 +17,8 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.ActionDefinition;
-import org.kuali.rice.krms.api.repository.ActionAttribute;
+import org.kuali.rice.krms.api.repository.action.ActionAttribute;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 
 /**
  * This is the interface for accessing KRMS repositiory Action related bos 

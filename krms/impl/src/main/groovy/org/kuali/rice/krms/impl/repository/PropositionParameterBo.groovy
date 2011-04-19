@@ -17,8 +17,8 @@ import org.kuali.rice.kns.bo.ExternalizableBusinessObject
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.PropositionParameterContract
-import org.kuali.rice.krms.api.repository.PropositionParameter
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
 
 @Entity
 @Table(name="KRMS_PROP_PARM_T")
@@ -53,7 +53,7 @@ public class PropositionParameterBo extends PersistableBusinessObjectBase implem
 	*/
    static PropositionParameter to(PropositionParameterBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.PropositionParameter.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.proposition.PropositionParameter.Builder.create(bo).build()
    }
 
 	/**

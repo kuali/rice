@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 
 public final class PropositionRepositoryServiceImpl implements PropositionRepositoryService {
 
@@ -34,7 +34,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	 * This overridden method creates a Proposition if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#createProposition(org.kuali.rice.krms.api.repository.PropositionDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#createProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
 	 */
 	@Override
 	public void createProposition(PropositionDefinition prop) {
@@ -53,7 +53,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method updates an existing proposition
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#updateProposition(org.kuali.rice.krms.api.repository.PropositionDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#updateProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
 	 */
 	@Override
 	public void updateProposition(PropositionDefinition prop) {
@@ -95,7 +95,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	 * This overridden method creates a PropositionParameter if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#createParameter(org.kuali.rice.krms.api.repository.PropositionParameter)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#createParameter(org.kuali.rice.krms.api.repository.proposition.PropositionParameter)
 	 */
 	@Override
 	public void createParameter(PropositionParameter parameter) {
@@ -115,7 +115,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method updates an existing proposition parameter
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#updateParameter(org.kuali.rice.krms.api.repository.PropositionParameter)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#updateParameter(org.kuali.rice.krms.api.repository.proposition.PropositionParameter)
 	 */
 	@Override
 	public void updateParameter(PropositionParameter parameter) {

@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.impl.provider.repository;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
-import org.kuali.rice.krms.api.repository.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 
 /**

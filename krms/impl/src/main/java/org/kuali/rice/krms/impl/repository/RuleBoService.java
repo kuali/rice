@@ -19,8 +19,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.repository.RuleDefinition;
-import org.kuali.rice.krms.api.repository.RuleAttribute;
+import org.kuali.rice.krms.api.repository.rule.RuleAttribute;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 /**
  * This is the interface for accessing KRMS repository Rule related bos 

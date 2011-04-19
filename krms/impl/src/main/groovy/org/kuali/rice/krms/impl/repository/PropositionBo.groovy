@@ -3,8 +3,8 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.PropositionDefinition
-import org.kuali.rice.krms.api.repository.PropositionDefinitionContract
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 
 
 public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
@@ -27,7 +27,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	*/
    static PropositionDefinition to(PropositionBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.PropositionDefinition.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.proposition.PropositionDefinition.Builder.create(bo).build()
    }
 
    /**

@@ -23,6 +23,10 @@ import javax.xml.bind.Unmarshaller
 
 import org.junit.Assert
 import org.junit.Test
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
 
 
 /**

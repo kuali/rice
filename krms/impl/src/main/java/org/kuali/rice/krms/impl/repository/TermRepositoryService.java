@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.kuali.rice.krms.api.repository.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
 
 /**
  * service for getting terms from the respository

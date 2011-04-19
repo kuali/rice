@@ -2,9 +2,9 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.ActionAttribute
-import org.kuali.rice.krms.api.repository.ActionAttributeContract
 import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition
+import org.kuali.rice.krms.api.repository.action.ActionAttribute;
+import org.kuali.rice.krms.api.repository.action.ActionAttributeContract;
 
 public class ActionAttributeBo extends PersistableBusinessObjectBase implements ActionAttributeContract{
 
@@ -22,7 +22,7 @@ public class ActionAttributeBo extends PersistableBusinessObjectBase implements 
 	*/
    static ActionAttribute to(ActionAttributeBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.ActionAttribute.Builder.create(bo).build();
+	   return org.kuali.rice.krms.api.repository.action.ActionAttribute.Builder.create(bo).build();
    }
 
    /**

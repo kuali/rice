@@ -23,7 +23,10 @@ import javax.xml.bind.Unmarshaller
 import org.junit.Test
 import org.junit.Assert
 import org.kuali.rice.krms.api.engine.TermSpecification;
-import org.kuali.rice.krms.api.repository.TermResolverDefinition.Builder;
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition.Builder;
+import org.kuali.rice.krms.api.repository.term.TermResolverAttribute
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition
 
 
 /**

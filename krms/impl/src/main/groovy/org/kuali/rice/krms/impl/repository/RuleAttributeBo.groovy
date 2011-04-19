@@ -2,9 +2,9 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 
-import org.kuali.rice.krms.api.repository.RuleAttribute
-import org.kuali.rice.krms.api.repository.RuleAttributeContract
 import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition
+import org.kuali.rice.krms.api.repository.rule.RuleAttribute;
+import org.kuali.rice.krms.api.repository.rule.RuleAttributeContract;
 
 public class RuleAttributeBo extends PersistableBusinessObjectBase implements RuleAttributeContract{
 
@@ -23,7 +23,7 @@ public class RuleAttributeBo extends PersistableBusinessObjectBase implements Ru
 	*/
    static RuleAttribute to(RuleAttributeBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.RuleAttribute.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.rule.RuleAttribute.Builder.create(bo).build()
    }
 
    /**

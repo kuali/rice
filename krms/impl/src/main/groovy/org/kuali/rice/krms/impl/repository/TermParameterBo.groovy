@@ -2,8 +2,8 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.TermParameterDefinition
-import org.kuali.rice.krms.api.repository.TermParameterDefinitionContract
+import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
+import org.kuali.rice.krms.api.repository.term.TermParameterDefinitionContract;
 
 public class TermParameterBo extends PersistableBusinessObjectBase implements TermParameterDefinitionContract{
 
@@ -18,7 +18,7 @@ public class TermParameterBo extends PersistableBusinessObjectBase implements Te
 	*/
    static TermParameterDefinition to(TermParameterBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.TermParameterDefinition.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.term.TermParameterDefinition.Builder.create(bo).build()
    }
 
    /**

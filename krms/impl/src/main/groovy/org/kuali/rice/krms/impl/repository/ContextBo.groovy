@@ -1,8 +1,8 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.ContextDefinition
-import org.kuali.rice.krms.api.repository.ContextDefinitionContract
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
 
 
 public class ContextBo extends PersistableBusinessObjectBase implements ContextDefinitionContract {
@@ -27,7 +27,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	*/
    static ContextDefinition to(ContextBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.ContextDefinition.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.context.ContextDefinition.Builder.create(bo).build()
    }
 
    /**

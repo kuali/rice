@@ -20,9 +20,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.engine.TermSpecification;
-import org.kuali.rice.krms.api.repository.TermDefinition;
-import org.kuali.rice.krms.api.repository.TermResolverDefinition;
-import org.kuali.rice.krms.api.repository.TermSpecificationDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 
 /**
  * Implementation of {@link TermBoService}
@@ -52,7 +52,7 @@ public class TermBoServiceImpl implements TermBoService {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermSpecification(org.kuali.rice.krms.api.repository.TermSpecificationDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermSpecification(org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition)
 	 */
 	@Override
 	public void createTermSpecification(TermSpecificationDefinition termSpec) {
@@ -66,7 +66,7 @@ public class TermBoServiceImpl implements TermBoService {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermDefinition(org.kuali.rice.krms.api.repository.TermDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermDefinition(org.kuali.rice.krms.api.repository.term.TermDefinition)
 	 */
 	@Override
 	public void createTermDefinition(TermDefinition termDef) {
@@ -77,7 +77,7 @@ public class TermBoServiceImpl implements TermBoService {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermResolver(org.kuali.rice.krms.api.repository.TermResolverDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermResolver(org.kuali.rice.krms.api.repository.term.TermResolverDefinition)
 	 */
 	@Override
 	public void createTermResolver(TermResolverDefinition termResolver) {

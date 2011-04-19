@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.impl.repository;
 
 
-import org.kuali.rice.krms.api.repository.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 
 /**
  * This is the interface for accessing KRMS repository Context related bos 

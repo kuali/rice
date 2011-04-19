@@ -162,10 +162,10 @@ public abstract class BaseAttribute implements BaseAttributeContract, ModelObjec
 	 * A protected class which exposes constants which define the XML element names to use
 	 * when this object is marshalled to XML.
 	 */
-	protected static class Elements {
-		final static String ID = "id";
-		final static String ATTR_DEFN_ID = "attributeDefinitionId";
-		final static String VALUE = "value";
-		final static String ATTR_DEFN = "attributeDefinition";
+	public static class Elements {
+		public final static String ID = "id";
+		public final static String ATTR_DEFN_ID = "attributeDefinitionId";
+		public final static String VALUE = "value";
+		public final static String ATTR_DEFN = "attributeDefinition";
 	}
 }

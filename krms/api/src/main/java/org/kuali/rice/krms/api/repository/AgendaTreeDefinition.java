@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -71,6 +72,9 @@ public final class AgendaTreeDefinition implements ModelObjectComplete {
     }
     
 	public List<AgendaTreeEntryDefinition> getEntries() {
+		if (entries == null){
+			return Collections.emptyList();
+		}
 		return Collections.unmodifiableList(entries);
 	}
 
@@ -93,6 +97,9 @@ public final class AgendaTreeDefinition implements ModelObjectComplete {
         }
         
         public void setAgendaId(String agendaId) {
+			if (StringUtils.isBlank(agendaId)) {
+				throw new IllegalArgumentException("agendaItemId was null or blank");
+			}
         	this.agendaId = agendaId;
         }
         

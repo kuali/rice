@@ -34,15 +34,42 @@ import org.junit.Test
 class AgendaTreeTest {
 	
 	private static final String AGENDA_ID = "500Agenda"
-	
+	private static final String AGENDA_ITEM_ID_1 = "AgendaItem1"
+	private static final String RULE_ID_1 = "Rule1"
+	private static final String AGENDA_ITEM_ID_2 = "AgendaItem2"
+	private static final String RULE_ID_2 = "Rule2"
+	private static final String AGENDA_ITEM_ID_3 = "AgendaItem3"
+	private static final String SUB_AGENDA_1= "SubAgenda1"
+
 	private static final String TINY_AGENDA_TREE = """
 		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
 			<agendaId>500Agenda</agendaId>
 		</agendaTreeDefinition>		"""
 
-		private static final String SMALL_RULE_AGENDA_TREE = """
+		private static final String SINGLE_RULE_AGENDA_TREE = """
 		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
 			<agendaId>500Agenda</agendaId>
+			<rule>
+				<agendaItemId>AgendaItem1</agendaItemId>
+				<ruleId>Rule1</ruleId>
+			</rule>
+		</agendaTreeDefinition>		"""
+
+		private static final String SINGLE_NODE_MULTIPLE_RULE_AGENDA_TREE = """
+		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
+			<agendaId>500Agenda</agendaId>
+			<rule>
+				<agendaItemId>AgendaItem1</agendaItemId>
+				<ruleId>Rule1</ruleId>
+			</rule>
+			<rule>
+				<agendaItemId>AgendaItem2</agendaItemId>
+				<ruleId>Rule2</ruleId>
+			</rule>
+			<subAgenda>
+				<agendaItemId>AgendaItem3</agendaItemId>
+				<subAgendaId>SubAgenda1</subAgendaId>
+			</subAgenda>
 		</agendaTreeDefinition>		"""
 
 	@Test
@@ -110,6 +137,75 @@ class AgendaTreeTest {
 	  AgendaTreeDefinition myTiny = (AgendaTreeDefinition) unmarshaller.unmarshal(new StringReader(TINY_AGENDA_TREE))
 	  Assert.assertEquals(AGENDA_ID, myTiny.agendaId)
 	  Assert.assertTrue(myTiny.entries.size() == 0)
+	}
+
+	@Test
+	void test_AgendaTreeDefinition_Builder_create_and_build_single_rule_success() {
+		AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create()
+		AgendaTreeRuleEntry ruleEntry = AgendaTreeRuleEntry.Builder.create(AGENDA_ITEM_ID_1, RULE_ID_1).build()
+		myBuilder.setAgendaId AGENDA_ID
+		myBuilder.addRuleEntry(ruleEntry)
+		myBuilder.build()
+	}
+
+	@Test
+	public void testXmlMarshaling_single_rule_AgendaTreeDefinition() {
+		AgendaTreeDefinition.Builder myBuilder  = AgendaTreeDefinition.Builder.create()
+		AgendaTreeRuleEntry ruleEntry = AgendaTreeRuleEntry.Builder.create(AGENDA_ITEM_ID_1, RULE_ID_1).build()
+		myBuilder.setAgendaId AGENDA_ID
+		myBuilder.addRuleEntry(ruleEntry)
+		AgendaTreeDefinition myTiny = myBuilder.build()
+		JAXBContext jc = JAXBContext.newInstance(AgendaTreeRuleEntry.class, AgendaTreeDefinition.class, AgendaTreeSubAgendaEntry.class)
+		Marshaller marshaller = jc.createMarshaller()
+		StringWriter sw = new StringWriter()
+		marshaller.marshal(myTiny, sw)
+		String xml = sw.toString()
+  
+		Unmarshaller unmarshaller = jc.createUnmarshaller();
+		Object actual = unmarshaller.unmarshal(new StringReader(xml))
+		Object expected = unmarshaller.unmarshal(new StringReader(SINGLE_RULE_AGENDA_TREE))
+		Assert.assertEquals(expected, actual)
+	}
+
+	@Test
+	public void testXmlUnmarshal_single_rule_AgendaTreeDefinition() {
+	  JAXBContext jc = JAXBContext.newInstance(AgendaTreeRuleEntry.class, AgendaTreeDefinition.class, AgendaTreeSubAgendaEntry.class)
+	  Unmarshaller unmarshaller = jc.createUnmarshaller()
+	  AgendaTreeDefinition myTiny = (AgendaTreeDefinition) unmarshaller.unmarshal(new StringReader(SINGLE_RULE_AGENDA_TREE))
+	  Assert.assertEquals(AGENDA_ID, myTiny.agendaId)
+	  Assert.assertTrue(myTiny.entries.size() == 1)
+	}
+
+	@Test
+	public void testXmlMarshaling_single_node_multiple_rule_AgendaTreeDefinition() {
+		AgendaTreeDefinition.Builder myBuilder  = AgendaTreeDefinition.Builder.create()
+		AgendaTreeRuleEntry ruleEntry = AgendaTreeRuleEntry.Builder.create(AGENDA_ITEM_ID_1, RULE_ID_1).build()
+		myBuilder.setAgendaId AGENDA_ID
+		myBuilder.addRuleEntry(ruleEntry)
+		ruleEntry = AgendaTreeRuleEntry.Builder.create(AGENDA_ITEM_ID_2, RULE_ID_2).build()
+		myBuilder.addRuleEntry(ruleEntry)
+		AgendaTreeSubAgendaEntry subEntry = AgendaTreeSubAgendaEntry.Builder.create(AGENDA_ITEM_ID_3, SUB_AGENDA_1).build()
+		myBuilder.addSubAgendaEntry(subEntry)
+		AgendaTreeDefinition myTiny = myBuilder.build()
+		JAXBContext jc = JAXBContext.newInstance(AgendaTreeRuleEntry.class, AgendaTreeDefinition.class, AgendaTreeSubAgendaEntry.class)
+		Marshaller marshaller = jc.createMarshaller()
+		StringWriter sw = new StringWriter()
+		marshaller.marshal(myTiny, sw)
+		String xml = sw.toString()
+  
+		Unmarshaller unmarshaller = jc.createUnmarshaller();
+		Object actual = unmarshaller.unmarshal(new StringReader(xml))
+		Object expected = unmarshaller.unmarshal(new StringReader(SINGLE_NODE_MULTIPLE_RULE_AGENDA_TREE))
+		Assert.assertEquals(expected, actual)
+	}
+
+	@Test
+	public void testXmlUnmarshal_single_node_multiple_rule_AgendaTreeDefinition() {
+	  JAXBContext jc = JAXBContext.newInstance(AgendaTreeRuleEntry.class, AgendaTreeDefinition.class, AgendaTreeSubAgendaEntry.class)
+	  Unmarshaller unmarshaller = jc.createUnmarshaller()
+	  AgendaTreeDefinition myTiny = (AgendaTreeDefinition) unmarshaller.unmarshal(new StringReader(SINGLE_NODE_MULTIPLE_RULE_AGENDA_TREE))
+	  Assert.assertEquals(AGENDA_ID, myTiny.agendaId)
+	  Assert.assertTrue(myTiny.entries.size() == 3)
 	}
 
 

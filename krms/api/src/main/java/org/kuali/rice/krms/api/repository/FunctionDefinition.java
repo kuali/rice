@@ -58,6 +58,7 @@ import org.w3c.dom.Element;
 		FunctionDefinition.Elements.TYPE_ID,
 		FunctionDefinition.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        FunctionDefinition.Elements.PARAMETERS,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class FunctionDefinition implements FunctionDefinitionContract, ModelObjectComplete {
@@ -193,7 +194,7 @@ public class FunctionDefinition implements FunctionDefinitionContract, ModelObje
     	private List<FunctionParameterDefinition.Builder> parameters;
     	
         private Builder(String namespaceCode, String name, String returnType, String typeId) {
-        	setNamespaceCode(name);
+        	setNamespaceCode(namespaceCode);
         	setName(name);
         	setReturnType(returnType);
         	setTypeId(typeId);

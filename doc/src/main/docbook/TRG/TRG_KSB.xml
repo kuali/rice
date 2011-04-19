@@ -1,4 +1,5 @@
-<chapter xml:id="TRG_KSB">
+<?xml version='1.0' encoding='UTF-8'?> 
+<chapter xml:id="TRG_KSB" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KSB</title>
     <sect1>
         <title>KSB Configuration Guide</title>

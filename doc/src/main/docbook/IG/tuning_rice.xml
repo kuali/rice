@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Tuning Kuali Rice 1.0.3</title>
+    <sect1>
+        <title>JVM Tuning</title>
+    </sect1>
+</chapter>
+

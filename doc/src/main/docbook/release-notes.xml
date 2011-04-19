@@ -26,24 +26,24 @@
                 <simpara>Numerous bug fixes</simpara>
             </listitem>
         </itemizedlist>
-        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <ulink url="http://kuali.org/rice/download"/>.</para>
+        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
         <para>There are three differient distributions of Rice available: source, binary and server.
             Please read the Installation Guide for more details on each of these
             distributions.</para>
-        <para>Documentation for this release can be found at at <ulink url="http://kuali.org/rice/docs/${pom.version}">http://kuali.org/rice/docs/${pom.version}</ulink>.</para>
+        <para>Documentation for this release can be found at at <link xlink:href="http://kuali.org/rice/docs/${pom.version}">http://kuali.org/rice/docs/${pom.version}</link>.</para>
         </sect1>
         <sect1 xml:id="bug-fix" xreflabel="Bug Fix">
             <title>Bug Fix</title>            
-                <para><ulink url="https://jira.kuali.org/browse/KULRICE-3831">KULRICE-3831</ulink>: person inquiry displays too much information</para>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-3831">KULRICE-3831</link>: person inquiry displays too much information</para>
          </sect1>
         <sect1 xml:id="improvement" xreflabel="Improvement">
             <title>Improvement</title>        
-            <para><ulink url="https://jira.kuali.org/browse/KULRICE-4558">
-                    KULRICE-4558</ulink>: Group document: add text indicating a namespace must be chosen before group members can be added</para>
+            <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4558">
+                    KULRICE-4558</link>: Group document: add text indicating a namespace must be chosen before group members can be added</para>
         </sect1>
         <sect1 xml:id="task" xreflabel="Task">
             <title>Task</title>
-                <para><ulink url="https://jira.kuali.org/browse/KULRICE-4601">KULRICE-4601</ulink>: Query to KREW_RIA_DOCTYPE_MAP_T happening
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4601">KULRICE-4601</link>: Query to KREW_RIA_DOCTYPE_MAP_T happening
                     for each search result row</para>
         </sect1>
 </article>

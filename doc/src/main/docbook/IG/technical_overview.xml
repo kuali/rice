@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Technical Overview</title>
+    <sect1>
+        <title>Architectural Diagram</title>
+        <para>This is a high-level picture of what an Enterprise Deployment of Rice might look like.
+            This diagram includes representations of various client applications interacting with
+            the Rice standalone server:<inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="images/architecture.png"/>
+                </imageobject>
+            </inlinemediaobject></para> 
+    </sect1>
+    <sect1>
+        <title>Modules</title> 
+    </sect1>
+    <sect1>
+        <title>Module Architecture</title> 
+        <sect2>
+            <title>KSB (Kuali Service Bus)</title>
+        </sect2>
+        <sect2>
+            <title>KEW (Kuali Enterprise Workflow)</title>
+        </sect2>
+        <sect2>
+            <title>KEN (Kuali Enterprise Notification)</title>
+        </sect2>
+        <sect2>
+            <title>KIM (Kuali Identity Management)</title>
+        </sect2>
+        <sect2>
+            <title>KNS (Kuali Nervous System)</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Physical Architecture Overview</title> 
+        <sect2>
+            <title>Production Platform</title>
+        </sect2>
+        <sect2>
+            <title>Development Platform</title>
+        </sect2>
+    </sect1>
+</chapter>

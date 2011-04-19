@@ -1,9 +1,5 @@
-<?xml version='1.0'?>
-<!DOCTYPE book [
-<!ENTITY IG SYSTEM "IG/IG.xml">
-<!ENTITY IG_appendix SYSTEM "IG/IG_appendix.xml">
-<!ENTITY rice_glossary SYSTEM "common/glossary.xml">
-]>
+<?xml version='1.0' encoding='UTF-8'?> 
+
 <book xmlns="http://docbook.org/ns/docbook" version="5.0">
     <info>
         <title>Kuali Rice ${pom.version} Installation Guide </title>
@@ -11,11 +7,21 @@
             <orgname>Kuali Rice</orgname>
             <email>rice.collab@kuali.org</email>
         </author>
-        
     </info>
 
-    &IG;
-    &IG_appendix;
-
-    &rice_glossary;
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/intro.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/software_architecture.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/technical_overview.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/installation_steps.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/keystore.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/tuning_rice.xml" />
+    
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/appendix_dbms.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/appendix_server_configs.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/appendix_source_build.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/appendix_load_balanced.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="IG/appendix_multiple_instances.xml" />
+      
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="common/glossary.xml" />
+    
 </book>

@@ -1,4 +1,5 @@
-<glossary>
+<?xml version='1.0' encoding='UTF-8'?> 
+<glossary xml:id="glossary" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>Glossary</title>
     <glossdiv><title>A</title>
         <glossentry id="glossary.action.list"><glossterm>Action List</glossterm>
@@ -205,7 +206,7 @@
         </glossentry> 
         <glossentry id="glossary.cas"><glossterm>CAS - Central Authentication Service</glossterm>
             <glossdef>
-                <para><ulink url="http://www.jasig.org/cas"/> - An open source authentication framework.  Kuali Rice provides support for integrating with CAS as an authentication provider (among other authentication solutions) and also provides an implementation of a CAS server that integrates with Kuali Identity Management.</para>
+                <para><link xlink:href="http://www.jasig.org/cas"/> - An open source authentication framework.  Kuali Rice provides support for integrating with CAS as an authentication provider (among other authentication solutions) and also provides an implementation of a CAS server that integrates with Kuali Identity Management.</para>
             </glossdef>
         </glossentry> 
         <glossentry id="glossary.client"><glossterm>Client</glossterm>
@@ -1104,7 +1105,7 @@
         </glossentry> 
         <glossentry id="glossary.spring"><glossterm>Spring</glossterm>
             <glossdef>
-                <para>The <ulink url="http://www.springsource.org/">Spring Framework</ulink> is an open source application framework for the Java platform.</para>
+                <para>The <link xlink:href="http://www.springsource.org/">Spring Framework</link> is an open source application framework for the Java platform.</para>
             </glossdef>
         </glossentry> 
         <glossentry id="glossary.state"><glossterm>State</glossterm>

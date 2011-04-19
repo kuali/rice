@@ -1,61 +1,5 @@
-<chapter>
-    <title>What is Kuali Rice?</title>
-    <sect1>
-        <title>Overview and Benefits of Kuali Rice</title> 
-    </sect1>
-    <sect1>
-        <title>Licensing</title> 
-    </sect1>
-</chapter>
-<chapter>
-    <title>Software Architecture</title>
-    <sect1>
-        <title>Kuali Rice Implementations</title> 
-    </sect1>
-    <sect1>
-        <title>Software Distributions</title> 
-    </sect1>
-    <sect1>
-        <title>Obtaining Distributions and Source Code</title> 
-    </sect1>
-</chapter>
-<chapter>
-    <title>Technical Overview</title>
-    <sect1>
-        <title>Architectural Diagram</title> 
-    </sect1>
-    <sect1>
-        <title>Modules</title> 
-    </sect1>
-    <sect1>
-        <title>Module Architecture</title> 
-        <sect2>
-            <title>KSB (Kuali Service Bus)</title>
-        </sect2>
-        <sect2>
-            <title>KEW (Kuali Enterprise Workflow)</title>
-        </sect2>
-        <sect2>
-            <title>KEN (Kuali Enterprise Notification)</title>
-        </sect2>
-        <sect2>
-            <title>KIM (Kuali Identity Management)</title>
-        </sect2>
-        <sect2>
-            <title>KNS (Kuali Nervous System)</title>
-        </sect2>
-    </sect1>
-    <sect1>
-        <title>Physical Architecture Overview</title> 
-        <sect2>
-            <title>Production Platform</title>
-        </sect2>
-        <sect2>
-            <title>Development Platform</title>
-        </sect2>
-    </sect1>
-</chapter>
-<chapter>
+<?xml version='1.0' encoding='UTF-8'?> 
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>Installation Steps</title>
     <sect1>
         <title>Minimum System Requirements and Recommendations</title>
@@ -127,13 +71,5 @@
         </sect2>
     </sect1>
 </chapter>
-<chapter>
-    <title>Generating the Keystore</title>
-</chapter>
-<chapter>
-    <title>Tuning Kuali Rice 1.0.3</title>
-    <sect1>
-        <title>JVM Tuning</title>
-    </sect1>
-</chapter>
+
 

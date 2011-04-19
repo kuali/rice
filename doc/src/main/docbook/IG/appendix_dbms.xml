@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<appendix xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Installing the Database Management Systems</title>
+    <sect1>
+        <title>MySQL Database Preparation</title>
+    </sect1>
+    <sect1>
+        <title>Oracle Database Preparation</title>
+    </sect1>
+</appendix>

@@ -1,4 +1,5 @@
-<chapter xml:id="UG_KEW">
+<?xml version='1.0' encoding='UTF-8'?> 
+<chapter xml:id="UG_KEW" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEW</title>
     <sect1>
         <title>Introductory Topics</title>

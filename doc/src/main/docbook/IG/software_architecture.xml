@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<chapter xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Software Architecture</title>
+    <sect1>
+        <title>Kuali Rice Implementations</title> 
+    </sect1>
+    <sect1>
+        <title>Software Distributions</title> 
+    </sect1>
+    <sect1>
+        <title>Obtaining Distributions and Source Code</title> 
+    </sect1>
+</chapter>
+

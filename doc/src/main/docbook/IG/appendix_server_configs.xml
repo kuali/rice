@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<appendix xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Example Server Configurations</title>
+    <sect1>
+        <title>Single Server Configuration</title>
+    </sect1>
+    <sect1>
+        <title>Multi Server Configuration</title>
+    </sect1>
+</appendix>

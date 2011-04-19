@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<appendix xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Building Rice from Source</title>
+    <sect1>
+        <title>Installing Java</title>
+    </sect1>
+    <sect1>
+        <title>Install Software Tools</title>
+    </sect1>
+    <sect1>
+        <title>Source Code Retrieval From Subversion</title>
+    </sect1>
+    <sect1>
+        <title>Database location setup</title>
+    </sect1>
+    <sect1>
+        <title>Compiling the Source Code</title>
+    </sect1>
+</appendix>
+
+

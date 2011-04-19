@@ -1,13 +1,4 @@
-<?xml version='1.0'?>
-<!DOCTYPE book [
-<!ENTITY TRG_Global SYSTEM "TRG/TRG_Global.xml">
-<!ENTITY TRG_KEN SYSTEM "TRG/TRG_KEN.xml">
-<!ENTITY TRG_KEW SYSTEM "TRG/TRG_KEW.xml">
-<!ENTITY TRG_KIM SYSTEM "TRG/TRG_KIM.xml">
-<!ENTITY TRG_KNS SYSTEM "TRG/TRG_KNS.xml">
-<!ENTITY TRG_KSB SYSTEM "TRG/TRG_KSB.xml">
-<!ENTITY rice_glossary SYSTEM "common/glossary.xml">
-]>
+<?xml version='1.0' encoding='UTF-8'?> 
 <book xmlns="http://docbook.org/ns/docbook" version="5.0">
     <info>
         <title>Kuali Rice ${pom.version} Technical Reference Guide</title>
@@ -17,12 +8,14 @@
         </author>
         
     </info>
+    
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TRG/TRG_Global.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TRG/TRG_KEN.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TRG/TRG_KEW.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TRG/TRG_KIM.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TRG/TRG_KNS.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TRG/TRG_KSB.xml" />
+    
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="common/glossary.xml" />
 
-    &TRG_Global;
-    &TRG_KEN;
-    &TRG_KEW;
-    &TRG_KIM;
-    &TRG_KNS;
-    &TRG_KSB;
-    &rice_glossary;
 </book>

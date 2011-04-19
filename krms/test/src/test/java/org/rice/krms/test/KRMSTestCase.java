@@ -16,32 +16,19 @@
 
 package org.rice.krms.test;
 
-import static junit.framework.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
-import org.kuali.rice.test.SQLDataLoader;
-import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This is test base that should be used for all KIM unit tests. All non-web unit tests for KIM should extend this base
- * class.
+ * This is test base that should be used for all KRMS integration tests.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

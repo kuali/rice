@@ -150,11 +150,14 @@ form li div label, form li span label {
 	display:block;
 }
 .desc {
-	color: #000000;
-    display: block;
-    font-weight: bold;
-    line-height: 1.9em;
-    white-space: nowrap;
+	font-size:95%;
+	line-height:150%;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
+	border:none;
+	text-align: right;
+	vertical-align: top;
 }
 label.choice {
 	display:block;
@@ -1038,7 +1041,7 @@ span.warning, div.warning, td.warning{
 	background-color: #F4E271;
 }
 
-label.clientError, label.serverError{
+label.clientError, a.clientError, label.serverError{
 	color: #DF0000 !important;
 }
 

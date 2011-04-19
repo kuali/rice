@@ -259,7 +259,7 @@ span.warning, div.warning, td.warning{
 	background-color: #F4E271;
 }
 
-label.clientError, label.serverError{
+label.clientError, a.clientError, label.serverError{
 	color: #DF0000 !important;
 }
 

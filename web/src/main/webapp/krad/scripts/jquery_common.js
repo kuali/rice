@@ -544,7 +544,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 					var error_li = div.parent().find(".errorMessages").find("li");
 					var moreErrors = false;
 					error_li.each(function(){
-						if(jq(this).is(":visible")){
+						if(jq(this).css("display") != "none"){
 							moreErrors = true;
 						}
 					});
@@ -558,6 +558,40 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 					highlightLine.removeClass("clientError");
 					label.removeClass("clientError");
 				}
+			}
+		}
+	}
+	
+	//highlight tab that contains errors - no setting to turn this off because it is necessary
+	var tabDiv = div.closest(".ui-tabs-panel");
+	if(tabDiv){
+		var tabId = tabDiv.attr("id");
+		var tabAnchor = jq("a[href='#" + tabId + "']");
+		var errorIcon = jq("#" + tabId + "_errorIcon");
+		if(tabAnchor){
+			
+			var hasErrors = false;
+			if(errorNum){
+				hasErrors = true;
+			}
+			else{
+				var error_li = tabDiv.find(".errorMessages").find("li");
+				error_li.each(function(){
+					if(jq(this).css("display") != "none"){
+						hasErrors = true;
+					}
+				});
+			}
+
+			if(hasErrors){
+				tabAnchor.addClass("clientError");
+				if(errorIcon.length == 0){
+					tabAnchor.append("<img id='"+ tabId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+				}
+			}
+			else if(!hasErrors){
+				tabAnchor.removeClass("clientError");
+				errorIcon.remove();
 			}
 		}
 	}

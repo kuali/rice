@@ -53,10 +53,12 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
 	public UifServletRequestDataBinder(Object target) {
         super(target);
+        setBindingErrorProcessor(new UifBindingErrorProcessor());
     }
 	
 	public UifServletRequestDataBinder(Object target, String name) {
         super(target, name);
+        setBindingErrorProcessor(new UifBindingErrorProcessor());
     }
 	
     /**

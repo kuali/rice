@@ -1,5 +1,21 @@
 (function($) {
-		
+	$.fn.selectMenuItem = function(options){
+		return this.each(function(){
+			options = options || {};
+			//default setting
+			options = $.extend({
+				selectPage: ""
+			}, options);
+			
+			if(options.selectPage){
+				var current = $(this).find("a[name='" + options.selectPage + "']");
+				if(current){
+					current.addClass("current");
+				}
+			}
+		});
+	}
+	
 	$.fn.navMenu = function(options){
 		return this.each(function(){
 			options = options || {};

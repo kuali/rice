@@ -1,5 +1,21 @@
 (function($) {
-		
+	$.fn.selectTab = function(options){
+		return this.each(function(){
+			options = options || {};
+			//default setting
+			options = $.extend({
+				selectPage: ""
+			}, options);
+			
+			if(options.selectPage){
+				var currentTab = $(this).find("a[name='" + options.selectPage + "']");
+				if(currentTab){
+					currentTab.parent().addClass("ui-state-active");
+				}
+			}
+		});
+	}
+	
 	$.fn.tabMenu = function(options){
 		return this.each(function(){
 			options = options || {};
@@ -16,7 +32,7 @@
 			
 			//Styling
 			$(this).parent().addClass("ui-tabs tab-navigation-block");
-			$(this).addClass("ui-helper-reset ui-helper-clearfix");
+			$(this).addClass("ui-helper-reset ui-helper-clearfix tabMenu");
 			$(list_elements).addClass("ui-state-default ui-corner-top");
 			if(options.currentPage){
 				var currentTab = $(this).find("a[name='" + options.currentPage + "']");

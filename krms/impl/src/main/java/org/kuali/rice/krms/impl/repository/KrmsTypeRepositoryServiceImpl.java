@@ -19,9 +19,9 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.type.KrmsTypeAttribute;
-import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.type.KrmsTypeRepositoryService;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 
 import java.util.*;
 
@@ -33,7 +33,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	 * This overridden method creates a KrmsType if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.api.type.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.type.KrmsTypeDefinition)
+	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
 	 */
 	@Override
 	public void createKrmsType(KrmsTypeDefinition krmsType) {
@@ -53,7 +53,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	/**
 	 * This overridden method updates an existing KrmsType
 	 * 
-	 * @see org.kuali.rice.krms.api.type.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.type.KrmsTypeDefinition)
+	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
 	 */
 	@Override
 	public void updateKrmsType(KrmsTypeDefinition krmsType) {
@@ -157,7 +157,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.api.type.KrmsTypeRepositoryService#createKrmsTypeAttribute(org.kuali.rice.krms.api.type.KrmsTypeAttribute)
+	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#createKrmsTypeAttribute(org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute)
 	 */
 	@Override
 	public void createKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {
@@ -168,7 +168,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.api.type.KrmsTypeRepositoryService#updateKrmsTypeAttribute(org.kuali.rice.krms.api.type.KrmsTypeAttribute)
+	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#updateKrmsTypeAttribute(org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute)
 	 */
 	@Override
 	public void updateKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {

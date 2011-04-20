@@ -2,8 +2,8 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.FunctionDefinition;
-import org.kuali.rice.krms.api.repository.FunctionRepositoryService;
+import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService;
 
 /**
  * TODO...

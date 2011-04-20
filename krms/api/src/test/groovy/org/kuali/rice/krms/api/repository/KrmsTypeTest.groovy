@@ -22,9 +22,9 @@ import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
 import org.junit.Test
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.krms.api.type.KrmsTypeAttribute;
-import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.type.KrmsTypeDefinitionContract;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinitionContract;
 
 /**
  * Exercises the immutable Country class, including XML (un)marshalling

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krms.api.repository;
+package org.kuali.rice.krms.api.repository.function;
 
 import java.util.List;
 
 import org.kuali.rice.core.api.mo.Versioned;
-import org.kuali.rice.krms.api.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
 /**
  * Defines the contract for a function definition.  A function definition can be

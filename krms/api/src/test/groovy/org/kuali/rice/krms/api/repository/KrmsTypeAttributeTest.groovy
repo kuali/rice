@@ -20,7 +20,8 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Test
 import org.junit.Assert
-import org.kuali.rice.krms.api.type.KrmsTypeAttribute;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 
 
 /**

@@ -52,7 +52,7 @@
 						<id>functionRepositoryService-wsdl</id>
 						<phase>process-classes</phase>
 						<configuration>
-							<className>org.kuali.rice.krms.api.repository.FunctionRepositoryService</className>
+							<className>org.kuali.rice.krms.api.repository.function.FunctionRepositoryService</className>
 							<outputFile>${project.build.directory}/generated-sources/wsdl/FunctionRepositoryService.wsdl</outputFile>
 							<serviceName>FunctionRepositoryService</serviceName>
 						</configuration>

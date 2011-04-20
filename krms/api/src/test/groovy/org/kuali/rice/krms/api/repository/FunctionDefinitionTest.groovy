@@ -19,6 +19,10 @@ package org.kuali.rice.krms.api.repository;
 import static org.junit.Assert.*
 
 import org.junit.Test
+import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionDefinitionContract;
+import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinitionContract;
 import org.kuali.rice.krms.api.test.JAXBAssert
 
 class FunctionDefinitionTest {

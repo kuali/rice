@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.api.repository;
+package org.kuali.rice.krms.api.repository.type;
 
 import java.io.Serializable;
 import java.util.Collection;

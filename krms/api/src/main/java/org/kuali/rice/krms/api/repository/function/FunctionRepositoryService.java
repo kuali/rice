@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.api.repository;
+package org.kuali.rice.krms.api.repository.function;
 
 import java.util.List;
 
@@ -7,6 +7,9 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.krms.api.repository.RepositoryConstants;
+import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
 
 /**
  * The function repository contains information about custom functions which

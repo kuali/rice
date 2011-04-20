@@ -2,7 +2,7 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.type.KrmsTypeDefinitionContract;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinitionContract;
 
 public class KrmsTypeBo extends PersistableBusinessObjectBase implements Inactivateable, KrmsTypeDefinitionContract {
 
@@ -17,9 +17,9 @@ public class KrmsTypeBo extends PersistableBusinessObjectBase implements Inactiv
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-	static org.kuali.rice.krms.api.type.KrmsTypeDefinition to(KrmsTypeBo bo) {
+	static org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition to(KrmsTypeBo bo) {
 		if (bo == null) { return null }
-		return org.kuali.rice.krms.api.type.KrmsTypeDefinition.Builder.create(bo).build();
+		return org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition.Builder.create(bo).build();
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class KrmsTypeBo extends PersistableBusinessObjectBase implements Inactiv
 	 * @param im immutable object
 	 * @return the mutable bo
 	 */
-	static KrmsTypeBo from(org.kuali.rice.krms.api.type.KrmsTypeDefinition im) {
+	static KrmsTypeBo from(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition im) {
 		if (im == null) { return null }
 
 		KrmsTypeBo bo = new KrmsTypeBo()

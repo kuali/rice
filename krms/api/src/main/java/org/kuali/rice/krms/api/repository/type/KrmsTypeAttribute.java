@@ -1,4 +1,4 @@
-package org.kuali.rice.krms.api.type;
+package org.kuali.rice.krms.api.repository.type;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,8 +17,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition;
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition.Builder;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition.Builder;
 
 /**
  * Concrete model object implementation of KRMS KrmsTypeAttribute. 

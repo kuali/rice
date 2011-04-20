@@ -18,7 +18,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 
 public interface KrmsAttributeDefinitionService {

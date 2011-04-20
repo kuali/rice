@@ -1,8 +1,7 @@
-package org.kuali.rice.krms.api.type;
+package org.kuali.rice.krms.api.repository.type;
 
 import java.util.List;
 
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinitionContract;
 
 public interface KrmsTypeAttributeContract {
 	/**

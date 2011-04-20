@@ -17,10 +17,10 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BaseAttribute;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.BaseAttribute.Builder;
 import org.kuali.rice.krms.api.repository.BaseAttribute.Elements;
 import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 /**
  * Concrete model object implementation of {@link TermResolverAttribute}. 

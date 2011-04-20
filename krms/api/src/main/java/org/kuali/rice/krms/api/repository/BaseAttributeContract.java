@@ -1,5 +1,7 @@
 package org.kuali.rice.krms.api.repository;
 
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
+
 /**
  * Base interface intended for extension by other AttributeContract interfaces 
  * 

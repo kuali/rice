@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.framework.type;
 
-import org.kuali.rice.krms.api.repository.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
 import org.kuali.rice.krms.framework.engine.Function;
 
 /**

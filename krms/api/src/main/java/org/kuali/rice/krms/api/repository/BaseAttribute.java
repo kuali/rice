@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 /**
  * abstract base model object for KRMS Attribute immutables. 

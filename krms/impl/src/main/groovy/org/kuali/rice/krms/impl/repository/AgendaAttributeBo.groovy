@@ -1,9 +1,9 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition
 import org.kuali.rice.krms.api.repository.agenda.AgendaAttribute;
 import org.kuali.rice.krms.api.repository.agenda.AgendaAttributeContract;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 public class AgendaAttributeBo extends PersistableBusinessObjectBase implements AgendaAttributeContract{
 

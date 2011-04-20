@@ -2,8 +2,8 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.kns.bo.Inactivateable
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinition
-import org.kuali.rice.krms.api.repository.KrmsAttributeDefinitionContract
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
 
 public class KrmsAttributeDefinitionBo extends PersistableBusinessObjectBase implements KrmsAttributeDefinitionContract, Inactivateable{
 
@@ -21,7 +21,7 @@ public class KrmsAttributeDefinitionBo extends PersistableBusinessObjectBase imp
 	*/
    static KrmsAttributeDefinition to(KrmsAttributeDefinitionBo bo) {
 	   if (bo == null) { return null }
-	   return org.kuali.rice.krms.api.repository.KrmsAttributeDefinition.Builder.create(bo).build()
+	   return org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition.Builder.create(bo).build()
    }
 
    /**

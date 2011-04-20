@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krms.api.type;
+package org.kuali.rice.krms.api.repository.type;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

@@ -864,6 +864,12 @@
         <option value="$PROJECT_DIR$/../../../standalone/target/war/work/org.kuali.rice/rice-web/META-INF/maven/org.kuali.rice/rice-web/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../../../sampleapp/target/war/work/org.kuali.rice/rice-web/META-INF/maven/org.kuali.rice/rice-web/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../standalone/target/war/work/org.kuali.rice/rice-web/META-INF/maven/org.kuali.rice/rice-web/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ModuleEditorState">
     <option name="LAST_EDITED_MODULE_NAME" />

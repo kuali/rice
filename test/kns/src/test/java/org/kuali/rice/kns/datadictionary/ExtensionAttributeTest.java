@@ -52,7 +52,14 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		super.setUp();
 
 		dd = new DataDictionary();
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/uif/UifControlDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/uif/UifFieldDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/uif/UifGroupDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/uif/UifHeaderFooterDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/uif/UifLayoutManagerDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/uif/UifMiscDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/uif/UifViewPageDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
@@ -60,7 +67,7 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../kim/kim-web/src/main/resources/org/kuali/rice/kim/web/type/KimType.xml");
 		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/Campus.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/CampusType.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/country/Country.xml");

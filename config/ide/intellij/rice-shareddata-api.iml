@@ -5,14 +5,18 @@
     <output-test url="file://$MODULE_DIR$/../../../shareddata/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../shareddata/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/wsdl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/surefire-reports" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -39,7 +43,7 @@
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />

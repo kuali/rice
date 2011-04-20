@@ -4,12 +4,15 @@
     <output url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../krad/krad-web-framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -38,7 +41,7 @@
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
@@ -51,7 +54,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.9" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />

@@ -62,7 +62,7 @@
         <antlr.version>2.7.7</antlr.version>
         <aopalliance.version>1.0</aopalliance.version>
         <asm.version>3.2</asm.version>
-        <bcprov.version>1.45</bcprov.version>
+        <bcprov.version>1.46</bcprov.version>
 
         <!-- the 3.x codebase is completely different - switching will require rewriting much code -->
         <bsf.version>2.4.0</bsf.version>
@@ -70,14 +70,14 @@
         <cas-client-core.version>3.2.0</cas-client-core.version>
         <cglib.version>2.2</cglib.version>
         <commons-beanutils.version>1.8.3</commons-beanutils.version>
-        <commons-codec.version>1.4</commons-codec.version>
+        <commons-codec.version>1.5</commons-codec.version>
         <commons-collections.version>3.2.1</commons-collections.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <commons-httpclient.version>3.1</commons-httpclient.version>
         <commons-io.version>2.0.1</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
-        <commons-pool.version>1.5.5</commons-pool.version>
+        <commons-pool.version>1.5.6</commons-pool.version>
         <commons-validator.version>1.3.1</commons-validator.version>
         <connector-api.version>1.5</connector-api.version>
         <!--
@@ -122,13 +122,13 @@
         <spring.version>3.0.5.RELEASE</spring.version>
         <struts.version>1.3.10</struts.version>
         <tiles.version>2.2.2</tiles.version>
-        <subethasmtp.version>3.1.4</subethasmtp.version>
+        <subethasmtp.version>3.1.5</subethasmtp.version>
         <xapool.version>1.5.0-patch3</xapool.version>
         <!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->
         <xercesImpl.version>2.9.1</xercesImpl.version>
         <xmlunit.version>1.3</xmlunit.version>
         <xstream.version>1.3.1</xstream.version>
-        <wss4j.version>1.5.10</wss4j.version>
+        <wss4j.version>1.6.0</wss4j.version>
 
         <!-- database drivers location -->
         <jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
@@ -137,12 +137,12 @@
         </mysql-connector-java.jar.location>
         <ojdbc14.jar.location>${jdbc.drivers.location}/ojdbc14-${ojdbc14.version}.jar</ojdbc14.jar.location>
 
-        <cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
+        <cobertura.maven.plugin.version>2.5</cobertura.maven.plugin.version>
         <javadoc.plugin.version>2.7</javadoc.plugin.version>
         <project.info.reports.plugin.version>2.3.1</project.info.reports.plugin.version>
         <site.plugin.version>3.0-beta-3</site.plugin.version>
-        <surefire.plugin.version>2.8</surefire.plugin.version>
-        <failsafe.plugin.version>2.8</failsafe.plugin.version>
+        <surefire.plugin.version>2.8.1</surefire.plugin.version>
+        <failsafe.plugin.version>2.8.1</failsafe.plugin.version>
         <source.plugin.version>2.1.2</source.plugin.version>
         <assembly.plugin.version>2.2.1</assembly.plugin.version>
         <web.launch.context.path>/kr-dev</web.launch.context.path>
@@ -426,7 +426,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
-                    <version>1.0-beta-4</version>
+                    <version>1.0</version>
                     <executions>
                         <execution>
                             <phase>validate</phase>
@@ -610,6 +610,11 @@
                 <plugin>
                     <groupId>com.agilejava.docbkx</groupId>
                     <artifactId>docbkx-maven-plugin</artifactId>
+                    <!--
+                    http://code.google.com/p/docbkx-tools/issues/detail?id=72#c1
+                    build fails w/ newer plugin version
+                    <version>2.0.12</version>
+                    -->
                     <version>2.0.11</version>
                 </plugin>
                 <plugin>

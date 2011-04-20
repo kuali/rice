@@ -32,6 +32,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Constants;
 
@@ -50,7 +51,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Constants;
 		TermParameterDefinition.Elements.VALUE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class TermParameterDefinition implements TermParameterDefinitionContract, ModelObjectComplete {
+public final class TermParameterDefinition implements TermParameterDefinitionContract, ModelObjectComplete {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -91,6 +92,13 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 		private static final String NON_NULL_NON_EMPTY_ERROR =  
 			" must be non-null and must contain non-whitespace chars";
 		
+		public static final Transformer<TermParameterDefinitionContract, TermParameterDefinition.Builder> toBuilder = 
+			new Transformer<TermParameterDefinitionContract, TermParameterDefinition.Builder>() {
+			public Builder transform(TermParameterDefinitionContract input) {
+				return Builder.create(input);
+			};
+		};
+		
 		private Builder(String id, String name, String value) {
 			setId(id);
 			setName(name);
@@ -101,6 +109,13 @@ public class TermParameterDefinition implements TermParameterDefinitionContract,
 			return new Builder(id, name, value);
 		}
 		
+		/**
+		 * 
+		 * This method ...
+		 * 
+		 * @param termParameterDefinition
+		 * @return
+		 */
 		public static Builder create(TermParameterDefinitionContract termParameterDefinition) {
 			return new Builder(termParameterDefinition.getId(), 
 					termParameterDefinition.getName(), 

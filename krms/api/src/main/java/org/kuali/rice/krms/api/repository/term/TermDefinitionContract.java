@@ -18,15 +18,26 @@ package org.kuali.rice.krms.api.repository.term;
 import java.util.Set;
 
 /**
- * This is a description of what this class does - gilesp don't forget to fill this in. 
+ * Contract for {@link TermDefinition} and related objects.  
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface TermDefinitionContract {
 	
+	/**
+	 * @return the id value.  May be null if the object hasn't been persisted yet.
+	 */
 	String getId();
+	
+	/**
+	 * @return the associated {@link TermSpecificationDefinitionContract}
+	 */
 	TermSpecificationDefinitionContract getSpecification();
+	
+	/**
+	 * @return any 
+	 */
 	Set<? extends TermParameterDefinitionContract> getParameters();
 	
 }

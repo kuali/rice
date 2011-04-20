@@ -55,32 +55,39 @@ class TermResolverTest {
 	private static final String PARAM_NAME="paramName"
 	
 	private static final String EXPECTED_XML = """
-	<TermResolverDefintion xmlns="http://rice.kuali.org/krms">
-	    <id>123TERMRESOLVER</id>
-	    <namespaceCode>foo-namespace</namespaceCode>
-	    <name>termResolver-name</name>
-	    <typeId>1234TYPE</typeId>
-	    <output>
-	        <id>123TERMRESOLVER</id>
-	        <contextId>1234CONTEXT</contextId>
-	        <name>termSpec-name</name>
-	        <type>term.spec.Type</type>
-	    </output>
-	    <prerequisites>
-	        <id>PREREQ123TERMRESOLVER</id>
-	        <contextId>1234CONTEXT</contextId>
-	        <name>PREREQtermSpec-name</name>
-	        <type>PREREQterm.spec.Type</type>
-	    </prerequisites>
-	    <attributes>
-	        <id>123ATTR</id>
-	        <termResolverId>123TERMRESOLVER</termResolverId>
-	        <attributeDefinitionId>123ATTR_DEF</attributeDefinitionId>
-	        <value>attrValue</value>
-	    </attributes>
-	    <parameterNames>paramName</parameterNames>
-	</TermResolverDefintion>
-	"""
+	<termResolverDefinition xmlns="http://rice.kuali.org/krms">
+    <id>123TERMRESOLVER</id>
+    <namespaceCode>foo-namespace</namespaceCode>
+    <name>termResolver-name</name>
+    <typeId>1234TYPE</typeId>
+    <output>
+        <id>123TERMRESOLVER</id>
+        <contextId>1234CONTEXT</contextId>
+        <name>termSpec-name</name>
+        <type>term.spec.Type</type>
+    </output>
+    <prerequisites>
+        <termSpecificationDefinition>
+            <id>PREREQ123TERMRESOLVER</id>
+            <contextId>1234CONTEXT</contextId>
+            <name>PREREQtermSpec-name</name>
+            <type>PREREQterm.spec.Type</type>
+        </termSpecificationDefinition>
+    </prerequisites>
+    <attributes>
+        <attribute>
+            <id>123ATTR</id>
+            <termResolverId>123TERMRESOLVER</termResolverId>
+            <attributeDefinitionId>123ATTR_DEF</attributeDefinitionId>
+            <value>attrValue</value>
+        </attribute>
+    </attributes>
+    <parameterNames>
+        <parameterName>paramName1</parameterName>
+        <parameterName>paramName2</parameterName>
+    </parameterNames>
+</termResolverDefinition>
+"""
 	
 	@Test
 	public void testXmlMarshaling() {
@@ -104,7 +111,7 @@ class TermResolverTest {
 */
 		java.util.Set<TermSpecificationDefinition.Builder> prereqs = [prereq];
 		java.util.Set<TermResolverAttribute.Builder> attributes = [attribute];
-		java.util.Set<String> params = [PARAM_NAME];
+		java.util.Set<String> params = [PARAM_NAME+"1",PARAM_NAME+2];
 		
 		//create(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.krms.api.repository.TermSpecificationDefinition$Builder, java.util.List, java.util.List, java.util.List)
 		TermResolverDefinition termResolver = TermResolverDefinition.Builder.create(ID, NAMESPACE_CODE, NAME, TYPE_ID, output, prereqs, attributes, params).build()

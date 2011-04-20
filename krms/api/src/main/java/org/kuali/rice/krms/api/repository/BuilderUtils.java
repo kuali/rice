@@ -28,7 +28,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 /**
- * This is a description of what this class does - gilesp don't forget to fill this in. 
+ * Utilities for implementing {@link ModelBuilder}s more easily.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -85,6 +85,7 @@ public class BuilderUtils {
 			return results;
 		}
 	}
+	
 	public static <A,B> Set<B> transform(Set<? extends A> toConvert, Transformer<A,B> xform) {
 		if (CollectionUtils.isEmpty(toConvert)) {
 			return new HashSet<B>();

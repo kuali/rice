@@ -50,7 +50,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 		TermSpecificationDefinition.Elements.TYPE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class TermSpecificationDefinition implements TermSpecificationDefinitionContract, ModelObjectComplete {
+public final class TermSpecificationDefinition implements TermSpecificationDefinitionContract, ModelObjectComplete {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -124,20 +124,27 @@ public class TermSpecificationDefinition implements TermSpecificationDefinitionC
 		}
 		
 		/**
-		 * This method constructs a {@link Builder} from a complete set of field values for this object.
+		 * static factory for a {@link Builder} from a complete set of field values for this object.
 		 * 
 		 * @param termSpecificationId the primary key field.  Must be null for service methods that 
 		 * create {@link TermSpecificationDefinitionContract}s, and must be non-null & contain non-whitespace 
 		 * chars otherwise.
 		 * @param contextId key relates the {@link TermSpecificationDefinition} to a context.
-		 * @param name the name for the {@link TermSpecificationDefinition}
+		 * @param name the name for the {@link TermSpecificationDefinition}.  Must be non-null;.
 		 * @param type the type for the {@link TermSpecificationDefinition}
 		 * @return a {@link Builder} object
+		 * @throws IllegalArgumentException if invalid parameters are supplied.
 		 */
 		public static Builder create(String termSpecificationId, String contextId, String name, String type) {
 			return new Builder(termSpecificationId, contextId, name, type);
 		}
 		
+		/**
+		 * static factory for a {@link Builder} from a {@link TermSpecificationDefinitionContract}.
+		 * 
+		 * @param termSpecification may not be null;
+		 * @throws IllegalArgumentException if termSpecification is null, or violates the field invariants of the {@link Builder}.
+		 */
 		public static Builder create(TermSpecificationDefinitionContract termSpecification) {
 			if (termSpecification == null) throw new IllegalArgumentException("termSpecification must be non-null");
 			return new Builder(termSpecification.getId(), 

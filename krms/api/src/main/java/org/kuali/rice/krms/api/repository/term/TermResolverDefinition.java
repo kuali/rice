@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -35,7 +36,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition.Constants;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 
@@ -56,7 +56,7 @@ import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition.Const
 		TermResolverDefinition.Elements.PARAMETER_NAMES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class TermResolverDefinition implements TermResolverDefinitionContract, ModelObjectComplete {
+public final class TermResolverDefinition implements TermResolverDefinitionContract, ModelObjectComplete {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -68,13 +68,16 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	private final String name;
 	@XmlElement(name = Elements.TYPE_ID, required=true)
 	private final String typeId;
-	@XmlElement(name = Elements.OUTPUT, required=true)
+	@XmlElement(name = Elements.OUTPUT, required=false)
 	private final TermSpecificationDefinition output;
-	@XmlElement(name = Elements.PREREQUISITES, required=false)
+	@XmlElement(name = "termSpecificationDefinition", required=false)
+	@XmlElementWrapper(name = Elements.PREREQUISITES, required=false)
 	private final Set<TermSpecificationDefinition> prerequisites;
-	@XmlElement(name = Elements.ATTRIBUTES, required=false)
+	@XmlElement(name = "attribute", required=false)
+	@XmlElementWrapper(name = Elements.ATTRIBUTES, required=false)
 	private final Set<TermResolverAttribute> attributes;
-	@XmlElement(name = Elements.PARAMETER_NAMES, required=false)
+	@XmlElementWrapper(name = Elements.PARAMETER_NAMES, required=false)
+	@XmlElement(name = "parameterName")
 	private final Set<String> parameterNames;
 	
 	
@@ -399,8 +402,8 @@ public class TermResolverDefinition implements TermResolverDefinitionContract, M
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "TermResolverDefintion";
-		final static String TYPE_NAME = "TermResolverType";
+		final static String ROOT_ELEMENT_NAME = "termResolverDefinition";
+		final static String TYPE_NAME = "termResolverDefinitionType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	

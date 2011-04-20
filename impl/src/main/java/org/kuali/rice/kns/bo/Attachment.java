@@ -15,22 +15,13 @@
  */
 package org.kuali.rice.kns.bo;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Version;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
+import javax.persistence.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -105,6 +96,15 @@ public class Attachment extends PersistableBusinessObjectBase {
 		this.attachmentMimeTypeCode = attachmentMimeTypeCode;
 	}
 
+    /*
+    * This method determines the Image Icon to display based on the mime type associated with the given class.
+    * This method pulls from the service layer when called.
+    *
+    * @return Returns the Icon based on the Mime Type
+    */
+    public String getAttachmentIconPathByMimeType() {
+        return KNSServiceLocator.getAttachmentService().convertMimeTypeToIconPath(getAttachmentMimeTypeCode());
+    }
 
 	/**
 	 * Gets the attachmentFileName attribute.
@@ -214,7 +214,7 @@ public class Attachment extends PersistableBusinessObjectBase {
     /**
      * (non-Javadoc)
      *
-     * @see org.kuali.rice.kns.service.DocumentAttachmentService#retrieveAttachmentContents(org.kuali.rice.kns.document.DocumentAttachment)
+     * @see org.kuali.rice.kns.service.AttachmentService#retrieveAttachmentContents(org.kuali.rice.kns.bo.Attachment)
      */
     public InputStream getAttachmentContents() throws IOException {
         return KNSServiceLocator.getAttachmentService().retrieveAttachmentContents(this);

@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kns.service;
 
+import org.kuali.rice.kns.bo.Attachment;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
-import org.kuali.rice.kns.bo.Attachment;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
 /**
  * Defines the methods common to all AttachmentService implementations
@@ -74,4 +74,12 @@ public interface AttachmentService {
     public void deletePendingAttachmentsModifiedBefore(long modificationTime);
     
     public Attachment getAttachmentByNoteId(Long noteId);
+
+    /*
+    * Converts a mime type entry into an image icon path.
+    *
+    * @param attachmentMimeTypeCode the mime type code
+    * @return path for the icon
+    * */
+    public String convertMimeTypeToIconPath(String attachmentMimeTypeCode);
 }

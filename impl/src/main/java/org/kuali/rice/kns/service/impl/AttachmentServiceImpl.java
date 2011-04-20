@@ -15,27 +15,21 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.AttachmentDao;
-import org.kuali.rice.kns.dao.NoteDao;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Attachment service implementation
@@ -47,6 +41,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     private KualiConfigurationService kualiConfigurationService;
     private AttachmentDao attachmentDao;
+    private Map<String, String> mimeTypeMapping;
     /**
      * Retrieves an Attachment by note identifier.
      * 
@@ -55,6 +50,20 @@ public class AttachmentServiceImpl implements AttachmentService {
     public Attachment getAttachmentByNoteId(Long noteId) {
 		return attachmentDao.getAttachmentByNoteId(noteId);
 	}
+
+    public String convertMimeTypeToIconPath(String attachmentMimeTypeCode) {
+        try {
+            if (getMimeTypeMapping().containsKey(attachmentMimeTypeCode))
+                return getMimeTypeMapping().get(attachmentMimeTypeCode);
+
+
+        } catch (Exception ignored)
+        {
+          LOG.debug("Mime Type not found, could not convert to correct Icon Path, check spring configuration");
+        }
+        // if the spring bean mapping is corrupted return the default clip image
+        return "static/images/clip.gif";
+    }
 
     /**
      * @see org.kuali.rice.kns.service.DocumentAttachmentService#createAttachment(java.lang.String, java.lang.String, int,
@@ -279,5 +288,21 @@ public class AttachmentServiceImpl implements AttachmentService {
      */
     public void setKualiConfigurationService(KualiConfigurationService configService) {
         this.kualiConfigurationService = configService;
+    }
+
+    /*
+    * Accesses the map for obtaining the image icon paths
+    * @return map of mime type to image icon paths
+    */
+    public Map<String, String> getMimeTypeMapping() {
+        return mimeTypeMapping;
+    }
+
+    /*
+    * Sets the mime type map configured inside of Spring
+    * @param mimeTypeMapping to determine image icon paths
+    */
+    public void setMimeTypeMapping(Map<String, String> mimeTypeMapping) {
+        this.mimeTypeMapping = mimeTypeMapping;
     }
 }

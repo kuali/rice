@@ -390,9 +390,23 @@
 		<property name="attachmentDao">
 			<ref bean="attachmentDao" />
 		</property>
-	</bean>
+        <!-- This is configurable so long as you have additional gif files and know the mime type you wish to map them to -->
+        <property name="mimeTypeMapping">
+            <map>
+                <entry key="application/octet-stream" value="static/images/clip.gif"/>
+                <entry key="application/directory" value="static/images/clip.gif"/>
+                <entry key="application/msword" value="static/images/word.gif"/>
+                <entry key="application/pdf" value="static/images/pdf.gif"/>
+                <entry key="application/xml" value="static/images/xml.gif"/>
+                <entry key="application/vnd.openxmlformats-officedocument.wordprocessingml.document" value="static/images/word.gif"/>
+                <entry key="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="static/images/xls.gif"/>
+                <entry key="text/xml" value="static/images/xml.gif"/>
+                <entry key="text/plain" value="static/images/clip.gif"/>
+            </map>
+        </property>
+    </bean>
 
-	<bean id="persistenceStructureServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceJpaImpl" />
+    <bean id="persistenceStructureServiceJpa" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceJpaImpl" />
 
   	<bean id="persistenceStructureServiceOjb" class="org.kuali.rice.kns.service.impl.PersistenceStructureServiceOjbImpl" />
 

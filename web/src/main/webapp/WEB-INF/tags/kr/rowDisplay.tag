@@ -697,6 +697,7 @@
                                         </c:when>
                                         <c:otherwise>
                                         <div id="replaceDiv" style="display:block;">
+                                            <%-- TODO: Replace clip with call to getAttachmentIconPathByMimeType? --%>
                                             <html:image property="methodToCall.downloadAttachment" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                             <c:out value="${fieldValue}"/>
                                             &nbsp;&nbsp;

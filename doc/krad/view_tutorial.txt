@@ -353,6 +353,19 @@ ConferenceSignupView-PartyMembersGroup also defines a title and then defines sev
 
 ConferenceSignupView-InterestsGroup and ConferenceSignupView-AcademicInstitution are very simple Groups - Group configuration is actually pretty easy.  ConferenceSignupView-AddressField-Group uses GroupGridLayout; this is two columns, but again, GridLayout defaults to that, so in this case, best practice will be followed and no numberOfColumns will be set.  ConferenceSignupView-Footer has one interesting property: it sets the styleClass to wrap on line 72, so that the rendered HTML will wrap the buttons around if they do not fit within their div.  Also, since the Footer's parent is Group, a layout manager needs to be set.  On lines 73-75, a HORIZONTAL BoxLayoutManager, setting each button side by side, is injected into the Group.
 
+There is one extra point of configuration for ConferenceSignupView-AcademicInstitution worth mentioning: we only want it to appear when the academicInstitution property of ConferenceSignupForm is true.  That is easily accomplished by setting the "conditionalRender" property of the Group:
+
+{code:xml}
+ 1. <bean id="ConferenceSignupView-AcademicInstitution" parent="GroupSection">
+ 2.  <property name="conditionalRender" value="@{academicInstitution}"/>
+ 3.  ...
+ 4. </bean>
+{code}
+
+Line 2 sets the conditionalRender property; if the value for that property turns out to be false, then the Group will not be rendered at all. The value for this property probably looks a bit odd.  The \@\{...\} syntax tells KRAD to make use of Spring Expressions for this value. Basically, \@\{academicInstitution\} will return the value of ConferenceSignupForm.isAcademicInstitution() after all the data has been populated and the ConferenceSignupView-AcademicInstitution will be rendered based on that.  It's pretty slick and covered in much fuller detail in [expressions|#expressions].
+
+[ JERRY - I DON'T SEE "setConditionalRender" ONLY "setConditionalReadOnly" - AM I MISSING SOMETHING? ]
+
 Groups are easy to set up but there's still a fair amount of missing configuration: all of the fields.
 
 h1. Fields
@@ -497,6 +510,8 @@ Jumping ahead, the Footer needs some interesting configuration since it doesn't 
 
 The only difference between the fields in this Group and the AttributeField_Forms of other Groups is that these fields are extensions of the ActionField bean (lines 8-10).  Two properties need to be set.  The methodToCall, of course, makes sure that the button adds a "methodToCall" parameter with the request, which the controller we defined above then leverages to figure out which controller method to call.  Buttons have been defined here for each of the three controller methods: submit, save, and cancel.  Also, an actionLabel property needs to be defined; that label is the text which is rendered on the button itself.
 
+[ JERRY - HOW TO GET ACADEMICINSTITUTION CHECKBOX TO REFRESH FORM ONCE IT IS CLICKED OR UNCLICKED ]
+
 Here's the full configuration once the fields are added:
 
 {code:xml,title=Complete ConferenceSignupView.xml}
@@ -594,6 +609,7 @@ Here's the full configuration once the fields are added:
 </bean>
 
 <bean id="ConferenceSignupView-AcademicInstitution" parent="GroupSection">
+ <property name="conditionalRender" value="\@\{academicInstitution\}"/>
  <property name="header.headerText" value="Academic Institution" />
  <property name="items">
    <list>
@@ -620,7 +636,7 @@ Here's the full configuration once the fields are added:
 </beans>
 {code}
 
-And with that, a new KRAD View has been created!  [ JERRY - TRUE THAT? HOW CAN WE MAKE THE ACADEMIC INTERESTS GROUP CONDITIONAL? ]
+And with that, a new KRAD View has been created!  [ JERRY - TRUE THAT? ]
 
 h1. Common Cases
 
@@ -807,9 +823,51 @@ This brings us to question number one: is this custom standard View or a set of 
 
 (Likewise, KFS's accounting documents will probably be opposite: there will likely be an AccountingLineGroup; if a standard AccountingLineView does exist, it probably won't do very much on its own, much like MaintenanceView.)
 
-Continuing this thought exercise, what properties belong on BatchUploadView?  The first property we need is the name of the BatchInputFileType implementation bean.  The title attribute would probably be removed from that bean and simply set on the View itself.
+Continuing this thought exercise, what properties belong on BatchUploadView?  The first property we need is the name of the BatchInputFileType implementation bean.  The title attribute would probably be removed from that bean and simply set on the View itself.  In terms of visual components on each View, really, there's just the BatchUploadGroup.  The BatchUploadGroup could be built from the information held on the BatchInputFileType bean, and the View would likely add it to the top of the items list automatically in BatchUploadView#performInitialization (reference LookupView#performInitialization for a similar use case).
+
+BatchUploadView is a very simple View, and yet it's going to make it much easier for developers to maintain a consistent look and feel across the application for the same functionality.  This is the big win for custom standard Views - making it easy to configure a standard look and feel and not having to reinvent the wheel for each similar page.
+
+h1. {anchor:expressions}Using Expressions in Views{anchor}
+
+As seen in our example above, using expressions within the View leads to some powerful new configuration possibilities.  Above, of course, we simply turned on or off rendering of the "Academic Institution" Group based on whether the "Academic Institution" checkbox was checked.  There are many other uses for expressions as well.
+
+All of the expressions in KRAD are uses of the [Spring Expression Language|http://static.springsource.org/spring/docs/3.0.5.RELEASE/reference/expressions.html].  Spring's documentation does an excellent job of presenting how to use the expression language.  However, there are some elements of its use in KRAD which are very unique.  Let's cover those.
+
+h2. Contexts
+
+First things first.  Uses of Spring Expression Language typically have a context from which properties are evaluated.  When defining a View or Group in KRAD, that implicit context is the form associated with the View.  This means that expressions will not be evaluated until the form is populated with data.  From the example above, when we set the property conditionalRender to \@\{acadmicInstituion\} in ConferenceSignupView-AcademicInstitution Group, that was actually going to call ConferenceSignupForm.isAcademicInstitution().  Properties are nestable; for example, we could have checked \@\{\} for some reason (it's not a boolean, so it would have made conditionalRender blow up).  And again, the \@\{...\} syntax is KRAD's way of knowing that a value for a property is actually an expression which needs to be evaluated after the model has been applied.  [ JERRY - WHICH LIFECYCLE DO EXPRESSIONS GET EVALUATED IN?  FINALIZATION OR APPLY MODEL? ]
+
+The most basic use of expressions is to template into String properties.  For instance, let's say a view had the following configuration:
+
+{code:xml}
+ 1. <bean id="ExpressionView" parent="View">
+ 2.   <property name="title" value="Hello @{contact.firstName}"/>
+ 3. </bean>
+{code}
+
+In this case, getContact().getFirstName() would be called against the form and the value returned would be templated into the title.  Let's say, getContact().getFirstName() returned "Jerry"; in that case, the title of the View would be "Hello Jerry".  Of course, maybe the user hasn't entered getContact().getFirstName() into the form yet.  The expression can be updated to be a bit more neutral if getContact().getFirstName() returns null or an empty String:
+
+{code:xml}
+ 1. <bean id="ExpressionView" parent="View">
+ 2.   <property name="title" value="@{contact.firstName == null or contact.firstName == '' ? 'Welcome' : 'Hello '+contact.firstName}"/>
+ 3. </bean>
+{code}
+
+Here, the built in ternary operator is used to return "Welcome" if there is no first name, or "Hello, \@\{contact.firstName\}" if the firstName is populated. The expression language can be pretty powerful.
+
+h2. Conditions, Revisited
+
+At the time of this writing, there are two conditions which can be specified for any Component: conditionalReadOnly and conditionalRender.
 
 [ HERE JAMES ]
+
+h3. Conditions versus Presentation Controllers and Authorizers
+h2. Special Variables
+h2. Overriding variables via the request
+
+[ HERE JAMES ]
+
+The addition of the Spring expression language into KRAD leads to some powerful configuration techniques.  It's well worth looking into these features as well as reading [Spring's Own Documentation|http://static.springsource.org/spring/docs/3.0.5.RELEASE/reference/expressions.html] on the subject.
 
 h1. {anchor}View Helper Services{anchor}
 
@@ -847,13 +905,5 @@ Component#performFinalize may not be overridden quite as often as performInitial
 A number of Widgets override performFinalize to create sub-fields now that the Widget has the data that it needs to act upon set.  A handful of Fields override performFinalize as well.  ActionField overrides it to set the methodToCall parameter associated with the button.  Since that parameter often is associated with data from parameters, that data must be completely set before performFinalize can occur.  AttributeField overrides performFinalize to set up ids on sub-components - such as the Control, ErrorsField, and LabelField - and associates client side javascript constraints with the AttributeField
 
 The major theme with performFinalize is that all the data must be set before these changes can be made.  During the Apply Model phase, there still a chance that sub-components or other components on the page will change the data associated with the Component.  That's all done when performFinalize occurs and since all the data is stable, performFinalize gives Components a chance to set aspects that needed to know about data.
-
-h1. Using Expressions in Views
-
-h2. Templating
-h2. Conditions, Revisited
-h3. Conditions versus Presentation Controllers and Authorizers
-h2. Special Variables
-h2. Overriding variables via the request
 
 And that concludes this introductory View tutorial.

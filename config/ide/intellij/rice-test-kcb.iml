@@ -15,6 +15,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/kcb/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/kcb/target/test-classes" />
@@ -179,6 +180,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jsp-api-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: ant:ant:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
+    <orderEntry type="module" module-name="rice-edl-web" scope="TEST" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.0.5.RELEASE" level="project" />

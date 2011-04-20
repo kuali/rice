@@ -235,10 +235,9 @@
         <collection-descriptor name="parameterNames" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object">
             <inverse-foreignkey field-ref="termResolverId" />
         </collection-descriptor>
-        <reference-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
-            <foreignkey field-ref="termResolverId" />
-        </reference-descriptor>
-        
+        <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+            <inverse-foreignkey field-ref="termResolverId" />
+        </collection-descriptor>
     </class-descriptor>
 
 </descriptor-repository>

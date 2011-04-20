@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />

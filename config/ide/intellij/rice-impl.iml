@@ -22,6 +22,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../impl/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../impl/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../impl/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />

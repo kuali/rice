@@ -190,7 +190,6 @@
           </element>
         </element>
       </element>
-      <element id="artifact" artifact-name="rice-web:war exploded" />
     </root>
   </artifact>
 </component>

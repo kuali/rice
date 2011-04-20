@@ -5,6 +5,7 @@
       <configuration>
         <webroots>
           <root url="file://$MODULE_DIR$/../../../standalone/src/main/webapp" relative="/" />
+          <root url="file://$MODULE_DIR$/../../../standalone/overlays/org.kuali.rice.rice-web-2.0.0-SNAPSHOT" relative="/" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/../../../standalone/src/main/java" />
@@ -29,7 +30,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-web" />
+    <orderEntry type="library" name="Maven: org.kuali.rice:rice-web:war:2.0.0-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />

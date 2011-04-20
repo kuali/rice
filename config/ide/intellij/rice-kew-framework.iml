@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/framework/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/framework/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kew/framework/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />

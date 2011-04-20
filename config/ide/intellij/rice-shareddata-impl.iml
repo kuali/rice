@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/impl/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../shareddata/impl/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />

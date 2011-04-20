@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.kuali.rice:rice-web:war:2.0.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-web/2.0.0-SNAPSHOT/rice-web-2.0.0-SNAPSHOT.war!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-web/2.0.0-SNAPSHOT/rice-web-2.0.0-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-web/2.0.0-SNAPSHOT/rice-web-2.0.0-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

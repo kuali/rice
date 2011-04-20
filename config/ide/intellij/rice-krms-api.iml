@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/api/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/api/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/api/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />

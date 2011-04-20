@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../test/core/src/test/groovy" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../../test/core/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -269,9 +269,11 @@ class PropositionTest {
 		JAXBContext jc = JAXBContext.newInstance(PropositionDefinition.class, PropositionParameter.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
 		marshaller.marshal(myProp, sw)
 		String xml = sw.toString()
-  
+		print xml
+		
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		Object actual = unmarshaller.unmarshal(new StringReader(xml))
 		Object expected = unmarshaller.unmarshal(new StringReader(COMPOUND_PROP_XML))

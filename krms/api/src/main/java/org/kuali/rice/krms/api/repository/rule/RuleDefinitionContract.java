@@ -15,7 +15,7 @@ public interface RuleDefinitionContract {
 	 * </p>
 	 * @return ID for Rule
 	 */
-	public String getRuleId();
+	public String getId();
 
 	/**
 	 * This is the name of the Rule 

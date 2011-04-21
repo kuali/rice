@@ -199,10 +199,12 @@ class KrmsTypeAttributeTest {
 				.build()
 		JAXBContext jc = JAXBContext.newInstance(KrmsTypeAttribute.class, KrmsAttributeDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
 		StringWriter sw = new StringWriter()
 		marshaller.marshal(myAttr, sw)
 		String xml = sw.toString()
-
+		print xml
+		
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		Object actual = unmarshaller.unmarshal(new StringReader(xml))
 		Object expected = unmarshaller.unmarshal(new StringReader(EXPECTED_XML_2))

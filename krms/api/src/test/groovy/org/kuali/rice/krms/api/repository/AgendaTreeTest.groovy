@@ -334,9 +334,11 @@ class AgendaTreeTest {
 		JAXBContext jc = JAXBContext.newInstance(AgendaTreeRuleEntry.class, AgendaTreeDefinition.class, AgendaTreeSubAgendaEntry.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
 		marshaller.marshal(myTree, sw)
 		String xml = sw.toString()
-  
+		print xml
+		
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		Object actual = unmarshaller.unmarshal(new StringReader(xml))
 		Object expected = unmarshaller.unmarshal(new StringReader(THREE_NODE_TRUE_FALSE_AGENDA_TREE))

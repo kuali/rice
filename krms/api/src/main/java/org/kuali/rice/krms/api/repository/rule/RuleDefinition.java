@@ -51,7 +51,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
-	private String ruleId;
+	private String id;
 	@XmlElement(name = Elements.NAME, required=true)
 	private String name;
 	@XmlElement(name = Elements.NAMESPACE, required=true)
@@ -81,7 +81,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
      * It is only present for use during JAXB unmarshalling. 
      */
     private RuleDefinition() {
-    	this.ruleId = null;
+    	this.id = null;
     	this.name = null;
     	this.namespace = null;
     	this.typeId = null;
@@ -98,27 +98,31 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	 * @param builder the Builder from which to construct the Rule
 	 */
     private RuleDefinition(Builder builder) {
-        this.ruleId = builder.getRuleId();
+        this.id = builder.getId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
         this.typeId = builder.getTypeId();
         this.propId = builder.getPropId();
         this.proposition = builder.getProposition().build();
         List<ActionDefinition> actionList = new ArrayList<ActionDefinition> ();
-        for (ActionDefinition.Builder b : builder.actions){
-        	actionList.add(b.build());
+        if (builder.getActions() != null){
+        	for (ActionDefinition.Builder b : builder.actions){
+        		actionList.add(b.build());
+        	}
+            this.actions = Collections.unmodifiableList(actionList);
         }
-        this.actions = Collections.unmodifiableList(actionList);
         Set<RuleAttribute> attributes = new HashSet<RuleAttribute>();
-        for (RuleAttribute.Builder b : builder.attributes){
-        	attributes.add(b.build());
+        if (builder.getAttributes() != null){
+        	for (RuleAttribute.Builder b : builder.attributes){
+        		attributes.add(b.build());
+        	}
+            this.attributes = Collections.unmodifiableSet(attributes);
         }
-        this.attributes = Collections.unmodifiableSet(attributes);
     }
     
 	@Override
-	public String getRuleId() {
-		return this.ruleId;
+	public String getId() {
+		return this.id;
 	}
 
 	@Override
@@ -162,7 +166,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
     public static class Builder implements RuleDefinitionContract, ModelBuilder, Serializable {		
         private static final long serialVersionUID = -7850514191699945347L;
         
-		private String ruleId;
+		private String id;
         private String name;
         private String namespace;
         private String typeId;
@@ -175,7 +179,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
         private Builder(String ruleId, String name, String namespace, String typeId, String propId) {
-            setRuleId(ruleId);
+            setId(ruleId);
             setName(name);
             setNamespace(namespace);
             setTypeId(typeId);
@@ -202,7 +206,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
         			attrBuilderList.add(myBuilder);
         		}
         	}
-            Builder builder =  new Builder(contract.getRuleId(), contract.getName(),
+            Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespace(), contract.getTypeId(), contract.getPropId());
             builder.setProposition(PropositionDefinition.Builder.create(contract.getProposition()));
             builder.setAttributes(attrBuilderList);
@@ -216,11 +220,11 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		 * @throws IllegalArgumentException if the id is null or blank
 		 */
 
-        public void setRuleId(String ruleId) {
+        public void setId(String ruleId) {
             if (StringUtils.isBlank(ruleId)) {
-                throw new IllegalArgumentException("ruleId is blank");
+                throw new IllegalArgumentException("rule ID is blank");
             }
-			this.ruleId = ruleId;
+			this.id = ruleId;
 		}
      
         public void setName(String name) {
@@ -245,6 +249,9 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		}
 		
 		public void setPropId(String propId) {
+			if (StringUtils.isBlank(propId)) {
+                throw new IllegalArgumentException("proposition id is blank");
+			}
 			this.propId = propId;
 		}
 		
@@ -270,8 +277,8 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 		}
 		
 		@Override
-		public String getRuleId() {
-			return ruleId;
+		public String getId() {
+			return id;
 		}
 
 		@Override
@@ -338,7 +345,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	 * Defines some internal constants used on this class.
 	 */
 	public static class Constants {
-		final static String ROOT_ELEMENT_NAME = "Rule";
+		final static String ROOT_ELEMENT_NAME = "rule";
 		final static String TYPE_NAME = "RuleType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
@@ -348,7 +355,7 @@ public final class RuleDefinition implements RuleDefinitionContract, ModelObject
 	 * when this object is marshalled to XML.
 	 */
 	public static class Elements {
-		final static String ID = "ruleId";
+		final static String ID = "id";
 		final static String NAME = "name";
 		final static String NAMESPACE = "namespace";
 		final static String TYPE_ID = "typeId";

@@ -178,7 +178,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		validateRuleDefinitions(ruleIds, ruleDefinitions);
 		Map<String, Rule> rules = new HashMap<String, Rule>();
 		for (RuleDefinition ruleDefinition : ruleDefinitions) {
-			rules.put(ruleDefinition.getRuleId(), translateRuleDefinition(ruleDefinition));
+			rules.put(ruleDefinition.getId(), translateRuleDefinition(ruleDefinition));
 		}
 		return rules;
 	}
@@ -200,7 +200,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	private Map<String, RuleDefinition> indexRuleDefinitions(List<RuleDefinition> ruleDefinitions) {
 		Map<String, RuleDefinition> ruleDefinitionMap = new HashMap<String, RuleDefinition>();
 		for (RuleDefinition ruleDefinition : ruleDefinitions) {
-			ruleDefinitionMap.put(ruleDefinition.getRuleId(), ruleDefinition);
+			ruleDefinitionMap.put(ruleDefinition.getId(), ruleDefinition);
 		}
 		return ruleDefinitionMap;
 	}

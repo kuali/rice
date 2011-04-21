@@ -39,7 +39,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		if (rule == null){
 			throw new IllegalArgumentException("rule is null");
 		}
-		final String ruleIdKey = rule.getRuleId();
+		final String ruleIdKey = rule.getId();
 		final RuleDefinition existing = getRuleByRuleId(ruleIdKey);
 		if (existing != null){
 			throw new IllegalStateException("the rule to create already exists: " + rule);			
@@ -57,15 +57,15 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		if (rule == null){
 			throw new IllegalArgumentException("rule is null");
 		}
-		final String ruleIdKey = rule.getRuleId();
+		final String ruleIdKey = rule.getId();
 		final RuleDefinition existing = getRuleByRuleId(ruleIdKey);
 		if (existing == null) {
 			throw new IllegalStateException("the rule does not exist: " + rule);
 		}
 		final RuleDefinition toUpdate;
-		if (!existing.getRuleId().equals(rule.getRuleId())){
+		if (!existing.getId().equals(rule.getId())){
 			final RuleDefinition.Builder builder = RuleDefinition.Builder.create(rule);
-			builder.setRuleId(existing.getRuleId());
+			builder.setId(existing.getId());
 			toUpdate = builder.build();
 		} else {
 			toUpdate = rule;
@@ -156,7 +156,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	public RuleDefinition to(RuleBo bo) {
 		if (bo == null) { return null; }
 		RuleDefinition.Builder builder = RuleDefinition.Builder.create(
-				bo.getRuleId(), bo.getName(), bo.getNamespace(),
+				bo.getId(), bo.getName(), bo.getNamespace(),
 				bo.getTypeId(), bo.getPropId());
 		if (bo.getProposition() != null){
 			PropositionDefinition.Builder propBuilder = PropositionDefinition.Builder.create(bo.getProposition());
@@ -192,7 +192,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 		if (im == null) { return null; }
 
 		RuleBo bo = new RuleBo();
-		bo.setRuleId( im.getRuleId() );
+		bo.setId( im.getId() );
 		bo.setNamespace( im.getNamespace() );
 		bo.setName( im.getName() );
 		bo.setTypeId( im.getTypeId() );

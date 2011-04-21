@@ -10,7 +10,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract;
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
 
-	def String ruleId
+	def String id
 	def String namespace
 	def String name
 	def String typeId
@@ -39,7 +39,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 	   if (im == null) { return null }
 
 	   RuleBo bo = new RuleBo()
-	   bo.ruleId = im.ruleId
+	   bo.id = im.id
 	   bo.namespace = im.namespace
 	   bo.name = im.name
 	   bo.typeId = im.typeId

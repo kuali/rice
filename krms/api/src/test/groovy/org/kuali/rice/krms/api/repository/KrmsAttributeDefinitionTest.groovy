@@ -165,16 +165,18 @@ class KrmsAttributeDefinitionTest {
 
 	@Test
 	public void testXmlMarshaling() {
-		KrmsAttributeDefinition myParameter = KrmsAttributeDefinition.Builder.create(ID_1, ORG_NAME, NAMESPACE)
+		KrmsAttributeDefinition myAttr = KrmsAttributeDefinition.Builder.create(ID_1, ORG_NAME, NAMESPACE)
 				.label(ORG_LABEL)
 				.componentName(COMPONENT)
 				.build()
 		JAXBContext jc = JAXBContext.newInstance(KrmsAttributeDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
-		marshaller.marshal(myParameter, sw)
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
+		marshaller.marshal(myAttr, sw)
 		String xml = sw.toString()
-
+		print xml
+		
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		Object actual = unmarshaller.unmarshal(new StringReader(xml))
 		Object expected = unmarshaller.unmarshal(new StringReader(EXPECTED_XML))
@@ -185,11 +187,11 @@ class KrmsAttributeDefinitionTest {
 	public void testXmlUnmarshal() {
 		JAXBContext jc = JAXBContext.newInstance(KrmsAttributeDefinition.class)
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
-		KrmsAttributeDefinition myParameter = (KrmsAttributeDefinition) unmarshaller.unmarshal(new StringReader(EXPECTED_XML))
-		Assert.assertEquals(ID_1, myParameter.id)
-		Assert.assertEquals(ORG_NAME, myParameter.name)
-		Assert.assertEquals(NAMESPACE, myParameter.namespace)
-		Assert.assertEquals(ORG_LABEL, myParameter.label)
-		Assert.assertEquals(COMPONENT, myParameter.componentName)
+		KrmsAttributeDefinition myAttr = (KrmsAttributeDefinition) unmarshaller.unmarshal(new StringReader(EXPECTED_XML))
+		Assert.assertEquals(ID_1, myAttr.id)
+		Assert.assertEquals(ORG_NAME, myAttr.name)
+		Assert.assertEquals(NAMESPACE, myAttr.namespace)
+		Assert.assertEquals(ORG_LABEL, myAttr.label)
+		Assert.assertEquals(COMPONENT, myAttr.componentName)
 	}
 }

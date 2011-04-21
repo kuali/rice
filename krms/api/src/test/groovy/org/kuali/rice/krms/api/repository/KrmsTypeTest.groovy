@@ -193,9 +193,11 @@ class KrmsTypeTest {
 			.serviceName(SERVICE_NAME)
 			.attributes(attrs)
 			.build()
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
 		marshaller.marshal(myType, sw)
 		String xml = sw.toString()
-
+		print xml
+		
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		Object actual = unmarshaller.unmarshal(new StringReader(xml))
 		Object expected = unmarshaller.unmarshal(new StringReader(CHART_ORG_TYPE_XML))

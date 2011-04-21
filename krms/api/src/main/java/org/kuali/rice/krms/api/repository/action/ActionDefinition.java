@@ -3,6 +3,7 @@ package org.kuali.rice.krms.api.repository.action;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -45,7 +46,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
-	private String actionId;
+	private String id;
 	@XmlElement(name = Elements.NAME, required=true)
 	private String name;
 	@XmlElement(name = Elements.NAMESPACE, required=true)
@@ -73,7 +74,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
      * It is only present for use during JAXB unmarshalling. 
      */
     private ActionDefinition() {
-    	this.actionId = null;
+    	this.id = null;
     	this.name = null;
     	this.namespace = null;
     	this.description = null;
@@ -88,25 +89,26 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	 * This constructor is private and should only ever be invoked from the builder.
 	 * 
 	 * @param builder the Builder from which to construct the Action
-	 */
-    private ActionDefinition(Builder builder) {
-        this.actionId = builder.getActionId();
+	 */    private ActionDefinition(Builder builder) {
+        this.id = builder.getId();
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
         this.description = builder.getDescription();
         this.typeId = builder.getTypeId();
         this.ruleId = builder.getRuleId();
         this.sequenceNumber = builder.getSequenceNumber();
-        Set<ActionAttribute> attrSet = Collections.emptySet();
-        for (ActionAttribute.Builder b : builder.attributes){
-        	attrSet.add(b.build());
+        if (builder.attributes != null){
+        	Set<ActionAttribute> attrSet = new HashSet<ActionAttribute>();
+        	for (ActionAttribute.Builder b : builder.attributes){
+        		attrSet.add(b.build());
+        	}
+        	this.attributes = Collections.unmodifiableSet(attrSet);
         }
-        this.attributes = Collections.unmodifiableSet(attrSet);
     }
     
 	@Override
-	public String getActionId() {
-		return this.actionId;
+	public String getId() {
+		return this.id;
 	}
 
 	@Override
@@ -150,7 +152,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
     public static class Builder implements ActionDefinitionContract, ModelBuilder, Serializable {
         private static final long serialVersionUID = -6773634512570180267L;
 
-        private String actionId;
+        private String id;
         private String name;
         private String namespace;
         private String description;
@@ -163,7 +165,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
         private Builder(String actionId, String name, String namespace, String typeId, String ruleId, Integer sequenceNumber) {
-            setActionId(actionId);
+            setId(actionId);
             setName(name);
             setNamespace(namespace);
             setTypeId(typeId);
@@ -200,7 +202,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         			attrBuilderList.add(myBuilder);
         		}
         	}
-            Builder builder =  new Builder(contract.getActionId(), contract.getName(),
+            Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespace(), contract.getTypeId(), contract.getRuleId(),
             		contract.getSequenceNumber())
             			.description(contract.getDescription())
@@ -215,11 +217,11 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		 * @throws IllegalArgumentException if the id is null or blank
 		 */
 
-        public void setActionId(String actionId) {
+        public void setId(String actionId) {
             if (StringUtils.isBlank(actionId)) {
-                throw new IllegalArgumentException("actionId is blank");
+                throw new IllegalArgumentException("action ID is blank");
             }
-			this.actionId = actionId;
+			this.id = actionId;
 		}
 
      
@@ -272,8 +274,8 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 		}
 		
 		@Override
-		public String getActionId() {
-			return actionId;
+		public String getId() {
+			return id;
 		}
 
 		@Override
@@ -341,7 +343,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "Action";
+		final static String ROOT_ELEMENT_NAME = "action";
 		final static String TYPE_NAME = "ActionType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
@@ -351,7 +353,7 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	 * when this object is marshalled to XML.
 	 */
 	public static class Elements {
-		final static String ID = "actionId";
+		final static String ID = "id";
 		final static String NAME = "name";
 		final static String NAMESPACE = "namespace";
 		final static String DESC = "description";

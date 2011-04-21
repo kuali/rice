@@ -49,6 +49,7 @@ class ActionAttributeTest {
         <actionId>1234ABCD</actionId>
         <attributeDefinitionId>1001</attributeDefinitionId>
         <value>value</value>
+		<actionTypeId>actionTypeId</actionTypeId>
     </ActionAttribute>
 	"""
 	

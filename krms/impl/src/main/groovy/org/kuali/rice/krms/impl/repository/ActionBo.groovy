@@ -7,7 +7,7 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 
 public class ActionBo extends PersistableBusinessObjectBase implements ActionDefinitionContract {
 
-	def String actionId
+	def String id
 	def String namespace
 	def String name
 	def String description
@@ -36,7 +36,7 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	   if (im == null) { return null }
 
 	   ActionBo bo = new ActionBo()
-	   bo.actionId = im.actionId
+	   bo.id = im.id
 	   bo.namespace = im.namespace
 	   bo.name = im.name
 	   bo.typeId = im.typeId

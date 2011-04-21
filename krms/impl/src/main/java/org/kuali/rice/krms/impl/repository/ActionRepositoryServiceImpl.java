@@ -45,7 +45,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 		if (action == null){
 	        throw new IllegalArgumentException("action is null");
 		}
-		final String actionIdKey = action.getActionId();
+		final String actionIdKey = action.getId();
 		final ActionDefinition existing = getActionByActionId(actionIdKey);
 		if (existing != null){
             throw new IllegalStateException("the action to create already exists: " + action);			
@@ -63,15 +63,15 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 		if (action == null){
 	        throw new IllegalArgumentException("action is null");
 		}
-		final String actionIdKey = action.getActionId();
+		final String actionIdKey = action.getId();
 		final ActionDefinition existing = getActionByActionId(actionIdKey);
         if (existing == null) {
             throw new IllegalStateException("the action does not exist: " + action);
         }
         final ActionDefinition toUpdate;
-        if (!existing.getActionId().equals(action.getActionId())){
+        if (!existing.getId().equals(action.getId())){
         	final ActionDefinition.Builder builder = ActionDefinition.Builder.create(action);
-        	builder.setActionId(existing.getActionId());
+        	builder.setId(existing.getId());
         	toUpdate = builder.build();
         } else {
         	toUpdate = action;
@@ -197,7 +197,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	 */
 	public ActionDefinition to(ActionBo bo) {
 		if (bo == null) { return null; }
-		ActionDefinition.Builder builder = ActionDefinition.Builder.create( bo.getActionId(), bo.getName(), bo.getNamespace(),
+		ActionDefinition.Builder builder = ActionDefinition.Builder.create( bo.getId(), bo.getName(), bo.getNamespace(),
 				bo.getTypeId(), bo.getRuleId(), bo.getSequenceNumber());
 		builder.setDescription(bo.getDescription());
 		
@@ -222,7 +222,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	   if (im == null) { return null; }
 
 	   ActionBo bo = new ActionBo();
-	   bo.setActionId( im.getActionId() );
+	   bo.setId( im.getId() );
 	   bo.setNamespace( im.getNamespace() );
 	   bo.setName( im.getName() );
 	   bo.setTypeId( im.getTypeId() );

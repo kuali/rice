@@ -11,7 +11,7 @@ public interface ActionDefinitionContract {
 	 * </p>
 	 * @return ID for Action
 	 */
-	public String getActionId();
+	public String getId();
 
 	/**
 	 * This is the name of the Action 

@@ -257,7 +257,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	@Override
 	public Action translateActionDefinition(ActionDefinition actionDefinition) {
 		if (actionDefinition.getTypeId() == null) {
-			throw new RepositoryDataException("Given ActionDefinition does not have a typeId, actionId was: " + actionDefinition.getActionId());
+			throw new RepositoryDataException("Given ActionDefinition does not have a typeId, actionId was: " + actionDefinition.getId());
 		}
 		return new LazyAction(actionDefinition, typeResolver);
 	}

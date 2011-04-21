@@ -42,7 +42,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 public final class ActionAttribute extends BaseAttribute implements ActionAttributeContract, ModelObjectComplete {	
 	private static final long serialVersionUID = -6126133049308968098L;
 	
-	@XmlElement(name = Elements.ACTION_ID, required=true)
+	@XmlElement(name = 	ActionAttribute.Elements.ACTION_ID, required=true)
 	private final String actionId;
 	@XmlElement(name = Elements.ACTION_TYPE_ID, required=true)
 	private final String actionTypeId;
@@ -93,6 +93,7 @@ public final class ActionAttribute extends BaseAttribute implements ActionAttrib
         private Builder(String id, String actionId, String attributeDefinitionId, String actionTypeId, String value) {
         	super(id, attributeDefinitionId, value);
             setActionId(actionId);
+            setActionTypeId(actionTypeId);
             setValue(value);
         }
 

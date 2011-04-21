@@ -15,13 +15,17 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.Collection;
 
 /**
  * An immutable expression which represents an "is not null" statement which is
@@ -38,13 +42,20 @@ import org.apache.commons.lang.StringUtils;
  */
 @XmlRootElement(name = NotNullExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = NotNullExpression.Constants.TYPE_NAME)
+@XmlType(name = NotNullExpression.Constants.TYPE_NAME, propOrder = {
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public final class NotNullExpression extends AbstractExpression implements PropertyPathExpression {
 	
 	private static final long serialVersionUID = 6723462533500402423L;
+
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
-	
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
 	/**
      * Should only be invoked by JAXB.
      */

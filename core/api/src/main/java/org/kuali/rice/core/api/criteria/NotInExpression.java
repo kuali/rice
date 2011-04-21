@@ -15,18 +15,22 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An immutable expression which represents a "not in" statement which is
@@ -42,13 +46,17 @@ import org.apache.commons.lang.StringUtils;
  */
 @XmlRootElement(name = NotInExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = NotInExpression.Constants.TYPE_NAME)
+@XmlType(name = NotInExpression.Constants.TYPE_NAME, propOrder = {
+    CriteriaSupportUtils.PropertyConstants.VALUES,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public final class NotInExpression extends AbstractExpression implements MultiValuedExpression {
 
 	private static final long serialVersionUID = -7676442296587603655L;
 	
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
+
 	@XmlElements(value = {
             @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
             @XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
@@ -56,7 +64,11 @@ public final class NotInExpression extends AbstractExpression implements MultiVa
             @XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true)
 	})
 	private final List<? extends CriteriaValue<?>> values;
-	
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
 	/**
      * Should only be invoked by JAXB.
      */
@@ -82,7 +94,12 @@ public final class NotInExpression extends AbstractExpression implements MultiVa
 		}
     	CriteriaSupportUtils.validateValuesForMultiValuedExpression(values);
 		this.propertyPath = propertyPath;
-		this.values = values;
+
+        if (values == null) {
+            this.values = new ArrayList<CriteriaValue<?>>();
+        } else {
+            this.values = new ArrayList<CriteriaValue<?>>(values);
+        }
     }
 
     @Override
@@ -92,7 +109,7 @@ public final class NotInExpression extends AbstractExpression implements MultiVa
     
     @Override
     public List<CriteriaValue<?>> getValues() {
-    	return new ArrayList<CriteriaValue<?>>(values);
+    	return Collections.unmodifiableList(values);
     }
         
 	/**

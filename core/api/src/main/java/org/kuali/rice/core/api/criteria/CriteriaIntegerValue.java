@@ -15,20 +15,16 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.math.BigInteger;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.mutable.MutableLong;
+import java.math.BigInteger;
 
 /**
  * A CriteriaValue which stores date and time information in the form of a
@@ -51,35 +47,10 @@ public final class CriteriaIntegerValue implements CriteriaValue<BigInteger> {
     
     CriteriaIntegerValue(BigInteger value) {
     	validateValue(value);
-        this.value = value;
+        this.value = safeInstance(value);
     }
     
-    CriteriaIntegerValue(Short value) {
-    	validateValue(value);
-    	this.value = BigInteger.valueOf(value.longValue());
-    }
-        
-    CriteriaIntegerValue(Integer value) {
-    	validateValue(value);
-    	this.value = BigInteger.valueOf(value.longValue());
-    }
-    
-    CriteriaIntegerValue(AtomicInteger value) {
-    	validateValue(value);
-    	this.value = BigInteger.valueOf(value.longValue());
-    }
-    
-    CriteriaIntegerValue(Long value) {
-    	validateValue(value);
-    	this.value = BigInteger.valueOf(value.longValue());
-    }
-    
-    CriteriaIntegerValue(AtomicLong value) {
-    	validateValue(value);
-    	this.value = BigInteger.valueOf(value.longValue());
-    }
-    
-    CriteriaIntegerValue(MutableLong value) {
+    CriteriaIntegerValue(Number value) {
     	validateValue(value);
     	this.value = BigInteger.valueOf(value.longValue());
     }
@@ -88,6 +59,21 @@ public final class CriteriaIntegerValue implements CriteriaValue<BigInteger> {
     	if (value == null) {
     		throw new IllegalArgumentException("Value cannot be null.");
     	}
+    }
+
+    /**
+     * Since BigInteger is not technically immutable we defensively copy when needed.
+     *
+     * see Effective Java 2nd ed. page 79 for details.
+     *
+     * @param val the big integer to check
+     * @return the safe BigInteger
+     */
+    private static BigInteger safeInstance(BigInteger val) {
+        if (val.getClass() != BigInteger.class) {
+            return new BigInteger(val.toByteArray());
+        }
+        return val;
     }
     
     @Override

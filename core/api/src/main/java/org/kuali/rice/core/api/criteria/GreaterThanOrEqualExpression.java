@@ -15,13 +15,18 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
 
 /**
  * An immutable expression which represents a "greater than or equal to" statement which is
@@ -38,19 +43,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = GreaterThanOrEqualExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = GreaterThanOrEqualExpression.Constants.TYPE_NAME)
+@XmlType(name = GreaterThanOrEqualExpression.Constants.TYPE_NAME, propOrder = {
+    CriteriaSupportUtils.PropertyConstants.VALUE,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public final class GreaterThanOrEqualExpression extends AbstractExpression implements ValuedExpression {
 	    
 	private static final long serialVersionUID = 2576163857285296720L;
 	
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
+
 	@XmlElements(value = {
 			@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
             @XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true),
             @XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true)
     })
 	private final CriteriaValue<?> value;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 	
 	/**
      * Should only be invoked by JAXB.

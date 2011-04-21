@@ -17,23 +17,20 @@ public enum CountFlag {
 	/**
 	 * Indicates that no row count should be returned with the query results.
 	 */
-	@XmlEnumValue(value="NONE") NONE("NONE"),
+	@XmlEnumValue(value="NONE") NONE,
 	
 	/**
 	 * Indicates that the row count of the query should be returned with the query results.
 	 */
-	@XmlEnumValue(value="INCLUDE") INCLUDE("INCLUDE"),
+	@XmlEnumValue(value="INCLUDE") INCLUDE,
 	
 	/**
 	 * Indicates that *only* the row count should be returned with the query results.  The
 	 * result should not include the actual rows returned from the query.
 	 */
-	@XmlEnumValue(value="ONLY") ONLY("ONLY");
+	@XmlEnumValue(value="ONLY") ONLY;
 	
-	private final String flag;
-	
-	private CountFlag(final String flag) {
-		this.flag = flag;
+	private CountFlag() {
 	}
 	
 	/**
@@ -42,7 +39,7 @@ public enum CountFlag {
 	 * @return the flag
 	 */
 	public String getFlag() {
-		return flag;
+		return toString();
 	}
 	
 }

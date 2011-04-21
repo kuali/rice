@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.math.BigDecimal;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import java.math.BigDecimal;
 
 /**
  * A CriteriaValue which stores date and time information in the form of a
@@ -48,15 +47,10 @@ public final class CriteriaDecimalValue implements CriteriaValue<BigDecimal> {
     
     CriteriaDecimalValue(BigDecimal value) {
     	validateValue(value);
-        this.value = value;
+        this.value = safeInstance(value);
     }
     
-    CriteriaDecimalValue(Float value) {
-    	validateValue(value);
-    	this.value = BigDecimal.valueOf(value.doubleValue());
-    }
-        
-    CriteriaDecimalValue(Double value) {
+    CriteriaDecimalValue(Number value) {
     	validateValue(value);
     	this.value = BigDecimal.valueOf(value.doubleValue());
     }
@@ -65,6 +59,21 @@ public final class CriteriaDecimalValue implements CriteriaValue<BigDecimal> {
     	if (value == null) {
     		throw new IllegalArgumentException("Value cannot be null.");
     	}
+    }
+
+    /**
+     * Since BigDecimal is not technically immutable we defensively copy when needed.
+     *
+     * see Effective Java 2nd ed. page 79 for details.
+     *
+     * @param val the big decimal to check
+     * @return the safe BigDecimal
+     */
+    private static BigDecimal safeInstance(BigDecimal val) {
+        if (val.getClass() != BigDecimal.class) {
+            return new BigDecimal(val.toPlainString());
+        }
+        return val;
     }
     
     @Override

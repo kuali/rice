@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.List;
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Defines a criteria statement which will form part of a query.  The Criteria
@@ -44,10 +48,16 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = Criteria.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Criteria.Constants.TYPE_NAME)
+@XmlType(name = Criteria.Constants.TYPE_NAME, propOrder = {
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public final class Criteria extends AbstractCompositeExpression {
 		
 	private static final long serialVersionUID = -8662772314094715831L;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 
 	/**
 	 * Used only by JAXB.
@@ -65,7 +75,8 @@ public final class Criteria extends AbstractCompositeExpression {
 	 * @see AbstractCompositeExpression#AbstractCompositeExpression(List)
 	 */
 	Criteria(List<Expression> expressions) {
-	    super(expressions);
+	    //don't worry about defensive copy of list here - super class takes care of it.
+        super(expressions);
 	}
 		
 	/**

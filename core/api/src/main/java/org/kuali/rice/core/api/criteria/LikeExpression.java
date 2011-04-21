@@ -15,13 +15,18 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
 
 /**
  * An immutable expression which represents a "like" statement which is
@@ -39,18 +44,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = LikeExpression.Constants.TYPE_NAME)
+@XmlType(name = LikeExpression.Constants.TYPE_NAME, propOrder = {
+    CriteriaSupportUtils.PropertyConstants.VALUE,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public final class LikeExpression extends AbstractExpression implements ValuedExpression {
 
 	private static final long serialVersionUID = 6406122080039813800L;
 	
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
+
 	@XmlElements(value = {
     		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true)
     })
 	private final CriteriaValue<?> value;
-	
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
     /**
      * Should only be invoked by JAXB.
      */

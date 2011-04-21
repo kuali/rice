@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
-
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A CriteriaValue which stores date and time information in the form of a
@@ -48,7 +47,8 @@ public final class CriteriaDateTimeValue implements CriteriaValue<Calendar> {
     
     CriteriaDateTimeValue(Calendar value) {
     	validateValue(value);
-        this.value = value;
+        //defensive copy incoming calendar - keeps things immutable
+        this.value = (Calendar) value.clone();
     }
     
     CriteriaDateTimeValue(Date value) {
@@ -66,7 +66,8 @@ public final class CriteriaDateTimeValue implements CriteriaValue<Calendar> {
     
     @Override
     public Calendar getValue() {
-        return value;
+        //defensive copy outgoing value - keeps things immutable
+        return (Calendar) value.clone();
     }
     
     @Override

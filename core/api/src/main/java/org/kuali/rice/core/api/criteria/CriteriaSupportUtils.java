@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.apache.commons.lang.StringUtils;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -26,11 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * A class which includes various utilities and constants for use within the criteria API.
@@ -61,6 +60,16 @@ final class CriteriaSupportUtils {
          * A constant representing the method name for {@link ValuedExpression#getValue()}
          */
         final static String GET_VALUE_METHOD_NAME = "getValue";
+
+        /**
+    	 * A constant representing the property name for {@link MultiValuedExpression#getValues()}
+    	 */
+        final static String VALUES = "values";
+
+        /**
+         * A constant representing the method name for {@link MultiValuedExpression#getValues()}
+         */
+        final static String GET_VALUES_METHOD_NAME = "getValues";
     }
 
     /**

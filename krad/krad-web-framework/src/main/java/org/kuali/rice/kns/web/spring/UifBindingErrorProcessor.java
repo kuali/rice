@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.web.spring;
 
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.springframework.beans.PropertyAccessException;
 import org.springframework.validation.BindingResult;
@@ -34,8 +35,13 @@ public class UifBindingErrorProcessor extends DefaultBindingErrorProcessor {
 		super.processPropertyAccessException(ex, bindingResult);
 		Object rejectedValue = ex.getValue();
 		if (!(rejectedValue == null || rejectedValue.equals(""))) {
-			GlobalVariables.getMessageMap().putError(ex.getPropertyName(), RiceKeyConstants.ERROR_CUSTOM,
-                new String[] {"Invalid format"});
+			if (ex.getCause() instanceof FormatException) {
+				GlobalVariables.getMessageMap().putError(ex.getPropertyName(), ((FormatException)ex.getCause()).getErrorKey(),
+						new String[] {rejectedValue.toString()});
+			}else{
+				GlobalVariables.getMessageMap().putError(ex.getPropertyName(), RiceKeyConstants.ERROR_CUSTOM,
+						new String[] {"Invalid format"});
+			}			
 		}
 	}
 

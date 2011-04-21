@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.proxy;
+package org.kuali.rice.core.api.reflect;
 
 import java.lang.reflect.InvocationHandler;
 
@@ -28,6 +28,8 @@ public interface TargetedInvocationHandler extends InvocationHandler {
 
 	/**
 	 * Returns the target object wrapped by this InvocationHandler.
+	 * 
+	 * @return the target object
 	 */
 	public Object getTarget();
 	

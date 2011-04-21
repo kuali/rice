@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.serviceproxies;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.proxy.TargetedInvocationHandler;
+import org.kuali.rice.core.api.reflect.TargetedInvocationHandler;
 import org.kuali.rice.core.impl.proxy.BaseInvocationHandler;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;

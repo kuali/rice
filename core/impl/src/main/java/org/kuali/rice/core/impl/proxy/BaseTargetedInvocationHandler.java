@@ -17,7 +17,7 @@
 package org.kuali.rice.core.impl.proxy;
 
 
-import org.kuali.rice.core.api.proxy.TargetedInvocationHandler;
+import org.kuali.rice.core.api.reflect.TargetedInvocationHandler;
 
 /**
  * A simple TargetedInvocationHandler which extends the BaseInvocationHandler.  Provides

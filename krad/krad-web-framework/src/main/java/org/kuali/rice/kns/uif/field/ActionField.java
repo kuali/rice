@@ -246,9 +246,13 @@ public class ActionField extends FieldBase {
 	public String getClientSideEventCode() {
 		String eventCode = "";
 
-		// TODO: need client side method parameters once el support is in
 		if (clientSideCall) {
-			eventCode = methodToCall + "();";
+			if(!methodToCall.contains("(")){
+				eventCode = methodToCall + "();";
+			}
+			else{
+				eventCode = methodToCall;
+			}
 		}
 
 		return eventCode;

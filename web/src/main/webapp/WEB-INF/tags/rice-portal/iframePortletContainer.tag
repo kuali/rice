@@ -23,7 +23,7 @@
   <c:set var="frameHeight" value="500"/>
 </c:if>
 
-<iframe src="${channelUrl}" onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" style="height: ${frameHeight}px; width: 100%" title="E-Doc" frameborder="0" height="${frameHeight}px" scrolling="auto" width="100%"></iframe>                   
+<iframe src="${channelUrl}" onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" style="height: ${frameHeight}px; width: 100%; overflow-x: hidden;" title="E-Doc" frameborder="0" height="${frameHeight}px" scrolling="auto" width="100%" ></iframe>                   
 
 <%-- 
   May want to move this to a script a js file at some point.
@@ -56,7 +56,7 @@
     /** gets the current height of the passed in frame in numeric form (ex: 500). Could generate a permission exception.  */
     function getFrameHeight(frame) {
       if (frame.contentWindow){
-        return frame.contentWindow.document.body.scrollHeight;
+        return frame.contentWindow.document.body.offsetHeight;
       } else {
         //using the offsetHeight to set the correct height for IE
         return frame.contentDocument.body.offsetHeight;
@@ -83,8 +83,8 @@
       } catch ( ex ) {
           // do nothing, we can't get to the container
       }
-      getPortlet().style.height = (parseFloat(height) + getHorScrollBarHeight()) + 'px';
-      getPortlet().height = (parseFloat(height) + getHorScrollBarHeight()) + 'px';
+      getPortlet().style.height = (parseFloat(height) + getHorScrollBarHeight() + 50) + 'px';
+      getPortlet().height = (parseFloat(height) + getHorScrollBarHeight() + 50) + 'px';
     }
     
     /** 

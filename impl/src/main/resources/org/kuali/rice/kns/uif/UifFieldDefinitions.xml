@@ -248,6 +248,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="MessageField_RequiredIndicator" parent="MessageField" p:messageText="* indicates required field" 
         p:messageType="REQUIRED" p:id="msg_reqind"/>
+        
+  <bean id="ActionLinkField_JumpToTop" parent="ActionLinkField" p:methodToCall="jumpToTop" 
+        p:clientSideCall="true" p:actionLabel="Top" p:id="top_action" p:scriptFormSubmit="false"/>
+  
+  <bean id="ActionLinkField_JumpToBottom" parent="ActionLinkField" p:methodToCall="jumpToBottom" 
+        p:clientSideCall="true" p:actionLabel="Bottom" p:id="bottom_action" p:scriptFormSubmit="false"/>
   
   <bean id="ActionField_ExpandAccordions" parent="ActionField_SmallSecondary" p:methodToCall="expandAccordions" 
         p:clientSideCall="true" p:actionLabel="expand all" p:id="actn_expn"/>

@@ -37,7 +37,6 @@
   </c:otherwise>
 </c:choose>       
        
-<!-- This needs to be looked at and removed - moved into DD completely probably and appended by ActionField class-->
 <%-- setup client side call --%>
 <c:if test="${field.clientSideCall}">
 <krad:script value="

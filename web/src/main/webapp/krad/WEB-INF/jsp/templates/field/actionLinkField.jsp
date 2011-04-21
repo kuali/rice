@@ -33,4 +33,14 @@
       <krad:template component="${field.actionImageField}"/>
    </c:if>
    ${field.actionLabel}
- </a>   
+ </a>
+ <c:if test="${field.clientSideCall}">
+<krad:script value="
+ 	 jq(document).ready(function() {
+		 jq('#' + '${field.id}').click(function(e) {
+			 e.preventDefault();
+			 ${field.clientSideEventCode}
+			 return false;
+		 });
+ 	 });"/>
+</c:if>

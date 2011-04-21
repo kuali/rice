@@ -55,7 +55,7 @@ supported and configured on the component --%>
   </c:if>
 
   <c:if test="${component.supportsOnClick && (!empty component.onClickScript)}">
-    jq('#' + '${component.id}').click(function() {
+    jq('#' + '${component.id}').click(function(e) {
      ${component.onClickScript}
     });
   </c:if>

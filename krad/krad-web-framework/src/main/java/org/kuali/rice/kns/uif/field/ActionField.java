@@ -120,6 +120,7 @@ public class ActionField extends FieldBase {
 			}
 
 			String writeParamsScript = "";
+			boolean includeDirtyCheckScript = false;
 			for (String key : actionParameters.keySet()) {
 				String parameterPath = key;
 				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
@@ -128,6 +129,18 @@ public class ActionField extends FieldBase {
 
 				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
 						+ actionParameters.get(key) + "'); ";
+				
+				/**
+				 * Include dirtycheck js function call if the method to call is refresh, navigate or close
+				 */
+				if (!includeDirtyCheckScript && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)){
+					String keyValue = (String)actionParameters.get(key);
+					if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || 
+						StringUtils.equals(keyValue, UifConstants.MethodToCallNames.NAVIGATE) || 
+						StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CLOSE)){
+						includeDirtyCheckScript = true;
+					}
+				}
 			}
 			
 			if(StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)){
@@ -149,7 +162,12 @@ public class ActionField extends FieldBase {
 				postScript = "submitForm();";
 			}
 
-			this.setOnClickScript(prefixScript + writeParamsScript + postScript);
+			if (includeDirtyCheckScript){
+				this.setOnClickScript(" if (checkDirty(e) == false) { " + prefixScript + writeParamsScript + postScript + " ; } ");
+			}else{
+				this.setOnClickScript(prefixScript + writeParamsScript + postScript);	
+			}
+			
 			}else{
 				// When there is a light box - don't add the on click script as it will be prevented from executing
 				// Create a script map object which will be used to build the on click script

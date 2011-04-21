@@ -618,9 +618,51 @@ function getAttributeId(elementId, elementType){
 	return id;
 }
 
+function checkDirty(event){
+	var dirty = jq(".dirty");
+	if (dirty.length > 0)
+	{
+		var answer = confirm ("Form has unsaved data. Do you want to leave anyway?")
+		if (answer == false){
+			event.preventDefault();
+			event.stopImmediatePropagation();
+			
+			//Change the current nav button class to 'current' if user doesn't wants to leave the page
+			var ul = jq("#" + event.target.id).closest("ul");
+			if (ul.length > 0)
+			{
+				var pageId = jq("[name='pageId']").val();
+				if(ul.hasClass("tabMenu")){
+					jq("#" + ul.attr("id")).selectTab({selectPage : pageId});
+				}
+				else{
+					jq("#" + ul.attr("id")).selectMenuItem({selectPage : pageId});
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 //sets up the validator with the necessary default settings and methods
 //note the use of onClick and onFocusout for on the fly validation client side
 function setupValidator(){
+	
+	jq('#kualiForm').dirty_form({changedClass: 'dirty'});
+	
+	//Make sure form doesn't have any unsaved data if user clicks on any other portal links, closes browser or presses fwd/back browser button
+	jq(window).bind('beforeunload', function(evt){
+		var dirty = jq(".dirty");
+		//methodToCall check is needed to skip from normal way of unloading (cancel,save,close) 
+		var methodToCall = jq("[name='methodToCall']").val();
+		if (dirty.length > 0 && methodToCall == null)
+		{
+			return "Form has unsaved data. Do you want to leave anyway?";
+		}
+	});
+	
+	
 	jq('#kualiForm').validate(
 	{ 
 		onsubmit: false,

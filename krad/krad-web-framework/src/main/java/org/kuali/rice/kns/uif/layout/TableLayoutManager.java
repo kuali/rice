@@ -16,11 +16,8 @@
 package org.kuali.rice.kns.uif.layout;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
@@ -32,10 +29,7 @@ import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.field.LabelField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
-import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.widget.TableTools;
-import org.kuali.rice.kns.web.spring.form.InquiryForm;
-import org.kuali.rice.kns.web.spring.form.LookupForm;
 
 /**
  * Layout manager that works with <code>CollectionGroup</code> components and
@@ -146,29 +140,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		setNumberOfColumns(totalColumns);
 
-		if (tableTools != null) {
-			
-			/**
-			 * If subcollection exists, dont allow the table sortable
-			 */
-			if (!collectionGroup.getSubCollections().isEmpty()){
-				tableTools.setDisableTableSort(true);
-			}
-
-			if (!tableTools.isDisableTableSort()){
-				/**
-				 * If rendering add line, skip that row from col sorting
-				 */
-				if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
-					tableTools.getComponentOptions().put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS, "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
-				}
-				
-				if (!collectionGroup.isReadOnly()) {
-					buildTableToolsColumnOptions(collectionGroup);
-				}
-			}
-			
-		}
 	}
 
 	/**
@@ -367,63 +338,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
 		return rowCount;
-	}
-
-	protected void buildTableToolsColumnOptions(CollectionGroup collectionGroup) {
-
-		StringBuffer tableToolsColumnOptions = new StringBuffer("[");
-
-		if (isRenderSequenceField()) {
-			tableToolsColumnOptions.append(" null ,");
-		}
-
-		for (Component component : collectionGroup.getItems()) {
-			/**
-			 * For GroupField, get the first field from that group
-			 */
-			if (component instanceof GroupField){
-				component = ((GroupField)component).getItems().get(0);
-			}
-			Class dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(), ((AttributeField)component).getPropertyName());
-			String colOptions = constructTableColumnOptions(true, dataTypeClass);
-			tableToolsColumnOptions.append(colOptions + " , ");
-			
-		}
-
-		if (collectionGroup.isRenderLineActions()) {
-			String colOptions = constructTableColumnOptions(false, null);
-			tableToolsColumnOptions.append(colOptions);
-		}else{
-			tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
-		}
-
-		tableToolsColumnOptions.append("]");
-
-		tableTools.getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
-	}
-
-	/**
-	 * 
-	 * This method constructs the sort data type for each datatable columns. 
-	 * 
-	 */
-	public String constructTableColumnOptions(boolean isSortable, Class dataTypeClass){
-		
-		String colOptions = "null";
-		
-		if (!isSortable || dataTypeClass == null){
-			colOptions = "{ \"" + UifConstants.TableToolsKeys.SORTABLE + "\" : false } ";
-		}else{
-			if (ClassUtils.isAssignable(dataTypeClass, String.class)){
-				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" } ";
-			}else if (ClassUtils.isAssignable(dataTypeClass, Date.class)){
-				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.DATE + "\" } ";				
-			}else if (ClassUtils.isAssignable(dataTypeClass, Number.class)){
-				colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.NUMERIC + "\" } ";
-			}
-		}
-		
-		return colOptions;
 	}
 
 	/**

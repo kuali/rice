@@ -40,6 +40,9 @@ public class ActionField extends FieldBase {
 
 	private boolean clientSideCall;
 	private boolean scriptFormSubmit;
+	
+	private String jumpToIdAfterSubmit;
+	private String jumpToNameAfterSubmit;
 
 	private String actionLabel;
 	private ImageField actionImageField;
@@ -91,6 +94,8 @@ public class ActionField extends FieldBase {
 	@Override
 	public void performFinalize(View view, Object model, Component parent) {
 		super.performFinalize(view, model, parent);
+		
+
 
 		if (StringUtils.isNotBlank(navigateToPageId)) {
 			actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
@@ -123,6 +128,20 @@ public class ActionField extends FieldBase {
 
 				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
 						+ actionParameters.get(key) + "'); ";
+			}
+			
+			if(StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)){
+				jumpToIdAfterSubmit = this.getId();
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '"
+					+ this.getId() + "'); ";
+			}
+			else if(StringUtils.isNotBlank(jumpToIdAfterSubmit)){
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '"
+					+ jumpToIdAfterSubmit + "'); ";
+			}
+			else{
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToName' , '"
+					+ jumpToNameAfterSubmit + "'); ";
 			}
 
 			String postScript = "";
@@ -382,4 +401,40 @@ public class ActionField extends FieldBase {
 		return lightBoxLookup;
 	}
 
+	/**
+	 * @return the jumpToIdAfterSubmit
+	 */
+	public String getJumpToIdAfterSubmit() {
+		return this.jumpToIdAfterSubmit;
+	}
+
+	/**
+	 * The id to jump to in the next page, the element with this id will be jumped to automatically
+	 * when the new page is retrieved after a submit.
+	 * WARNING: jumpToIdAfterSubmit always takes precedence over jumpToNameAfterSubmit, if set.
+	 * @param jumpToIdAfterSubmit the jumpToIdAfterSubmit to set
+	 */
+	public void setJumpToIdAfterSubmit(String jumpToIdAfterSubmit) {
+		this.jumpToIdAfterSubmit = jumpToIdAfterSubmit;
+	}
+
+	/**
+	 * The name to jump to in the next page, the element with this name will be jumped to automatically
+	 * when the new page is retrieved after a submit.
+	 * WARNING: jumpToIdAfterSubmit always takes precedence over jumpToNameAfterSubmit, if set.
+	 * @return the jumpToNameAfterSubmit
+	 */
+	public String getJumpToNameAfterSubmit() {
+		return this.jumpToNameAfterSubmit;
+	}
+
+	/**
+	 * @param jumpToNameAfterSubmit the jumpToNameAfterSubmit to set
+	 */
+	public void setJumpToNameAfterSubmit(String jumpToNameAfterSubmit) {
+		this.jumpToNameAfterSubmit = jumpToNameAfterSubmit;
+	}
+
+	
+	
 }

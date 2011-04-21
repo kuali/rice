@@ -48,7 +48,10 @@
         
         <c:if test="${view.renderForm}">
           <form:hidden path="pageId"/>
+          <form:hidden path="jumpToId"/>
+          <form:hidden path="jumpToName"/>
         </c:if>
+        <krad:script value="performJumpTo();"/>
      </div>
    </div>  
     

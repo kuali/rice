@@ -93,11 +93,11 @@ function setIframeAnchor(iframeName) {
   }  
 }
 
-function jumpToAnchorName(anchor){
+/*function jumpToAnchorName(anchor){
 	var anchors = document.getElementsByName(anchor);
 	if (anchors != null)
 		location.href = '#'+anchors[0].name;
-}
+}*/
 
 var formHasAlreadyBeenSubmitted = false;
 var excludeSubmitRestriction = false;
@@ -156,6 +156,9 @@ function setFieldToFocusAndSubmit(triggerElement) {
     document.forms[0].submit();
 }
 
+//Submits the form through an ajax submit, the response is the new page html
+//runs all hidden scripts passed back (this is to get around a bug with pre mature
+//script evaluation)
 function submitForm() {
 	jq("#kualiForm").ajaxSubmit({
 		success: function(response){
@@ -172,19 +175,90 @@ function submitForm() {
 //Called when a form is being persisted to assure all validation passes
 function validateAndSubmit(){
 	jq.watermark.hideAll();
+	
 	if(jq("#kualiForm").valid()){
 		jq.watermark.showAll();
 		submitForm();
 	}
 	else{
 		jq.watermark.showAll();
+		jumpToTop();
 		alert("The form contains errors.  Please correct these errors and try again.");
+		
 	}
 }
 
+//saves the current form by first validating client side and then attempting an ajax submit
 function saveForm(){
 	writeHiddenToForm("methodToCall", "save");
 	validateAndSubmit();
+}
+
+//performs a 'jump' - a scroll to the necessary html element
+//The element that is used is based on the hidden value of jumpToId or jumpToName on the form
+//if these hidden attributes do not contain a value it jumps to the top of the page by default
+function performJumpTo(){
+	var jumpToId = jq("[name='jumpToId']").val();
+	var jumpToName = jq("[name='jumpToName']").val();
+	if(jumpToId){
+		if(jumpToId.toUpperCase() === "TOP"){
+			jumpToTop();
+		}
+		else if(jumpToId.toUpperCase() === "BOTTOM"){
+			jumpToBottom();
+		}
+		else{
+			jumpToElementById(jumpToId);
+		}
+	}
+	else if(jumpToName){
+		jumpToElementByName(jumpToName);
+	}
+	else{
+		jumpToTop();
+	}
+}
+
+//Jump(scroll) to an element by name
+function jumpToElementByName(name){
+	if(top == self){
+		jq.scrollTo(jq("[name='" + name + "']"), 0);
+	}
+	else{
+		var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
+		top.$.scrollTo(jq("[name='" + name + "']"), 0, {offset: {top:headerOffset}});
+	}
+}
+
+//Jump(scroll) to an element by Id
+function jumpToElementById(id){
+	if(top == self){
+		jq.scrollTo(jq("#" + id), 0);
+	}
+	else{
+		var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
+		top.$.scrollTo(jq("#" + id), 0, {offset: {top:headerOffset}});
+	}
+}
+
+//Jump(scroll) to the top of the current screen
+function jumpToTop(){
+	if(top == self){
+		jq.scrollTo(jq("html"), 0);
+	}
+	else{
+		top.$.scrollTo(top.$("html"), 0);
+	}
+}
+
+//Jump(scroll) to the bottom of the current screen
+function jumpToBottom(){
+	if(top == self){
+		jq.scrollTo("max", 0);
+	}
+	else{
+		top.$.scrollTo("max", 0);
+	}
 }
 
 function saveScrollPosition() {

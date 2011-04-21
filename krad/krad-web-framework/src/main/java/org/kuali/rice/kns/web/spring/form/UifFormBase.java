@@ -46,6 +46,8 @@ public class UifFormBase implements Serializable {
     protected String pageId;
     protected String methodToCall;
     protected String formKey;
+    protected String jumpToId;
+    protected String jumpToName;
 
     protected String formPostUrl;
 
@@ -430,5 +432,41 @@ public class UifFormBase implements Serializable {
     protected ViewService getViewService() {
         return KNSServiceLocatorWeb.getViewService();
     }
+
+	/**
+	 * The jumpToId for this form, the element with this id will be jumped to automatically
+	 * when the form is loaded in the view.
+	 * jumpToId always takes precedence over jumpToName, if set.
+	 * @return the jumpToId
+	 */
+	public String getJumpToId() {
+		return this.jumpToId;
+	}
+
+	/**
+	 * @param jumpToId the jumpToId to set
+	 */
+	public void setJumpToId(String jumpToId) {
+		this.jumpToId = jumpToId;
+	}
+
+	/**
+	 * The jumpToName for this form, the element with this name will be jumped to automatically
+	 * when the form is loaded in the view.
+	 * WARNING: jumpToId always takes precedence over jumpToName, if set.
+	 * @return the jumpToName
+	 */
+	public String getJumpToName() {
+		return this.jumpToName;
+	}
+
+	/**
+	 * @param jumpToName the jumpToName to set
+	 */
+	public void setJumpToName(String jumpToName) {
+		this.jumpToName = jumpToName;
+	}
+    
+    
 
 }

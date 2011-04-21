@@ -76,10 +76,10 @@ limitations under the License.
     <property name="items">
         <list>
             <bean parent="HeaderTwo" p:headerText="Navigation"/>
-            <bean parent="ActionLinkField" p:navigateToPageId="page1" p:actionLabel="Page 1"/>
-            <bean parent="ActionLinkField" p:navigateToPageId="page2" p:actionLabel="Page 2"/>
-            <bean parent="ActionLinkField" p:navigateToPageId="page3" p:actionLabel="Page 3"/>
-            <bean parent="ActionLinkField" p:navigateToPageId="page4" p:actionLabel="Page 4"/>
+            <bean parent="NavigationActionLinkField" p:navigateToPageId="page1" p:actionLabel="Page 1"/>
+            <bean parent="NavigationActionLinkField" p:navigateToPageId="page2" p:actionLabel="Page 2"/>
+            <bean parent="NavigationActionLinkField" p:navigateToPageId="page3" p:actionLabel="Page 3"/>
+            <bean parent="NavigationActionLinkField" p:navigateToPageId="page4" p:actionLabel="Page 4"/>
         </list>
     </property>
     <property name="componentOptions">

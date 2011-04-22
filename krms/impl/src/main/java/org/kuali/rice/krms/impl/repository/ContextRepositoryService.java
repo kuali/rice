@@ -25,7 +25,7 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition;
  *
  */
 public interface ContextRepositoryService {
-	public void createContext(ContextDefinition context);
+	public ContextDefinition createContext(ContextDefinition context);
 	public void updateContext(ContextDefinition context);
 	
 //	public void createContextAttribute(ContextAttribute contextAttribute);

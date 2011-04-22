@@ -15,14 +15,19 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Implementation of {@link TermBoService}
@@ -55,7 +60,7 @@ public class TermBoServiceImpl implements TermBoService {
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermSpecification(org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition)
 	 */
 	@Override
-	public void createTermSpecification(TermSpecificationDefinition termSpec) {
+	public TermSpecificationDefinition createTermSpecification(TermSpecificationDefinition termSpec) {
 		if (!StringUtils.isBlank(termSpec.getId())) {
 			throw new IllegalArgumentException("for creation, TermSpecification.id must be null");
 		}
@@ -63,59 +68,108 @@ public class TermBoServiceImpl implements TermBoService {
 		TermSpecificationBo termSpecBo = TermSpecificationBo.from(termSpec);
 		
 		businessObjectService.save(termSpecBo);
+		
+		return TermSpecificationBo.to(termSpecBo);
 	}
 	
 	/**
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermDefinition(org.kuali.rice.krms.api.repository.term.TermDefinition)
 	 */
 	@Override
-	public void createTermDefinition(TermDefinition termDef) {
-		// TODO: !!!
-		throw new UnsupportedOperationException();
+	public TermDefinition createTermDefinition(TermDefinition termDef) {
+		if (!StringUtils.isBlank(termDef.getId())) {
+			throw new IllegalArgumentException("for creation, TermDefinition.id must be null");
+		}
+		
+		TermBo termBo = TermBo.from(termDef);
+		
+		businessObjectService.save(termBo);
+		
+		return TermBo.to(termBo);
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermResolver(org.kuali.rice.krms.api.repository.term.TermResolverDefinition)
 	 */
 	@Override
-	public void createTermResolver(TermResolverDefinition termResolver) {
-		// TODO: !!!
-		throw new UnsupportedOperationException();
+	public TermResolverDefinition createTermResolver(TermResolverDefinition termResolver) {
+		if (!StringUtils.isBlank(termResolver.getId())) {
+			throw new IllegalArgumentException("for creation, TermResolverDefinition.id must be null");
+		}
+		
+		TermResolverBo termResolverBo = TermResolverBo.from(termResolver);
+		
+		businessObjectService.save(termResolverBo);
+		
+		return TermResolverBo.to(termResolverBo);
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermById(java.lang.String)
 	 */
 	@Override
 	public TermDefinition getTermById(String id) {
-		// TODO: !!!
-		throw new UnsupportedOperationException();
+		TermDefinition result = null;
+		
+		if (StringUtils.isBlank(id)) {
+			throw new IllegalArgumentException("id must not be blank or null");
+		}
+		TermBo termBo = businessObjectService.findBySinglePrimaryKey(TermBo.class, id);
+		
+		if (termBo != null) {
+			result= TermBo.to(termBo);
+		}
+		
+		return result;
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermResolverById(java.lang.String)
 	 */
 	@Override
 	public TermResolverDefinition getTermResolverById(String id) {
-		// TODO: !!!
-		throw new UnsupportedOperationException();
+		TermResolverDefinition result = null;
+		
+		if (StringUtils.isBlank(id)) {
+			throw new IllegalArgumentException("id must not be blank or null");
+		}
+		TermResolverBo termResolverBo = businessObjectService.findBySinglePrimaryKey(TermResolverBo.class, id);
+		
+		if (termResolverBo != null) {
+			result = TermResolverBo.to(termResolverBo);
+		}
+		
+		return result;
 	}
 	
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermResolversByContextId(java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<TermResolverDefinition> getTermResolversByContextId(String id) {
-		// TODO: !!!
-		throw new UnsupportedOperationException();
+		List<TermResolverDefinition> results = null;
+		
+		if (StringUtils.isBlank(id)) {
+			throw new IllegalArgumentException("id must not be blank or null");
+		}
+		
+		Map fieldValues = new HashMap();
+		fieldValues.put("contextId", id);
+		
+		Collection<TermResolverBo> termResolverBos = businessObjectService.findMatching(TermResolverBo.class, fieldValues);
+		
+		if (!CollectionUtils.isEmpty(termResolverBos)) {
+			results = new ArrayList<TermResolverDefinition>(termResolverBos.size());
+			
+			for (TermResolverBo termResolverBo : termResolverBos) if (termResolverBo != null) {
+				results.add(TermResolverBo.to(termResolverBo));
+			}
+		} else {
+			results = Collections.emptyList();
+		}
+		
+		return results;
 	}
 
 }

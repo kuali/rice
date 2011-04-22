@@ -49,7 +49,7 @@
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.KrmsTypeBo" table="KRMS_TYP_T">
-		<field-descriptor name="id" column="TYP_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="id" column="TYP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TYP_S"/>
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="serviceName" column="SRVC_NM" jdbc-type="VARCHAR" />
@@ -73,7 +73,29 @@
       		<foreignkey field-ref="id" />
     	</reference-descriptor>
   	</class-descriptor>
+  	
+  	<!-- ContextBo fields:
+  	 def String contextId
+    def String name
+    def String namespace
+    def String typeId
 
+    def Set<AgendaDefinitionBo> agendas
+        
+    def Set<ContextAttributeBo> attributes
+    def Set<ContextValidEventBo> validEvents
+    def Set<ContextValidActionBo> validActions
+  	 -->
+  	 
+  	<class-descriptor class="org.kuali.rice.krms.impl.repository.ContextBo" table="KRMS_CNTXT_T">
+        <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" primarykey="true" 
+            autoincrement="true" sequence-name="KRMS_CNTXT_S"/>
+        <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+        <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
+        <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
+        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    </class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionParameterBo" table="KRMS_PROP_PARM_T">
 		<field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" />
@@ -173,7 +195,7 @@
   	</class-descriptor>
   	
   	<class-descriptor class="org.kuali.rice.krms.impl.repository.TermSpecificationBo" table="KRMS_TERM_SPEC_T">
-  	     <field-descriptor name="id" column="TERM_SPEC_ID" jdbc-type="VARCHAR" primarykey="true "/>
+  	     <field-descriptor name="id" column="TERM_SPEC_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TERM_SPEC_S"/>
          <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
          <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
          <field-descriptor name="type" column="TYP" jdbc-type="VARCHAR" />
@@ -215,7 +237,7 @@
     </class-descriptor>
     
     <class-descriptor class="org.kuali.rice.krms.impl.repository.TermResolverBo" table="KRMS_TERM_RSLVR_T">
-        <field-descriptor name="id" column="TERM_RSLVR_ID" jdbc-type="VARCHAR" primarykey="true" />
+        <field-descriptor name="id" column="TERM_RSLVR_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TERM_RSLVR_S"/>
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
         <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />

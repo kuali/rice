@@ -32,12 +32,12 @@ public interface TermBoService {
 	// TODO: javadocs
 	
 	TermSpecificationDefinition getTermSpecificationById(String id);
-	void createTermSpecification(TermSpecificationDefinition termSpec);
+	TermSpecificationDefinition createTermSpecification(TermSpecificationDefinition termSpec);
 	
 	TermDefinition getTermById(String id);
-	void createTermDefinition(TermDefinition termDef);
+	TermDefinition createTermDefinition(TermDefinition termDef);
 	
 	TermResolverDefinition getTermResolverById(String id);
 	List<TermResolverDefinition> getTermResolversByContextId(String id);
-	void createTermResolver(TermResolverDefinition termResolver);
+	TermResolverDefinition createTermResolver(TermResolverDefinition termResolver);
 }

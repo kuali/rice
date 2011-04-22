@@ -40,7 +40,7 @@ public interface KrmsTypeRepositoryService {
      * @throws IllegalStateException if the KrmsType already exists in the system
      */
     @WebMethod(operationName="createKrmsType")
-    void createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType);
+    KrmsTypeDefinition createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType);
 
     /**
      * This will update an existing {@link KrmsTypeDefinition}

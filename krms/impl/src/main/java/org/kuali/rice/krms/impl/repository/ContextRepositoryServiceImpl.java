@@ -33,7 +33,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
 	@Override
-	public void createContext(ContextDefinition context) {
+	public ContextDefinition createContext(ContextDefinition context) {
 		if (context == null){
 	        throw new IllegalArgumentException("context is null");
 		}
@@ -42,7 +42,8 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 		if (existing != null){
             throw new IllegalStateException("the context to create already exists: " + context);			
 		}	
-		businessObjectService.save(ContextBo.from(context));
+		ContextBo bo = (ContextBo)businessObjectService.save(ContextBo.from(context));
+		return ContextBo.to(bo);
 	}
 
 	/**

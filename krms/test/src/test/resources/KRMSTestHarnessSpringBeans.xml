@@ -94,6 +94,8 @@
 		<property name="password" value="${datasource.password}" />
 	</bean>
 
+    <alias alias="krmsDataSource"  name="riceDataSource"/>
+
     <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
         <property name="url" value="${datasource.url}"/>
@@ -105,12 +107,28 @@
         <property name="password" value="${datasource.password}" />
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
+    
+    <bean id="ojbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.JtaOjbConfigurer">
+        <property name="transactionManager" ref="jtaTransactionManager" />
+    </bean>
+    
+    <bean id="krmsOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
+        <property name="jcdAliases">
+            <list>
+                <value>krmsDataSource</value>
+            </list>
+        </property>
+        <property name="metadataLocation" value="classpath:org/kuali/rice/krms/config/OJB-repository-krms.xml" />
+    </bean>
+    
 
     <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+<!-- 
     <import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
     <import resource="classpath:org/kuali/rice/kns/config/KNSConfigSpringBeans.xml"/>
     <import resource="classpath:org/kuali/rice/kim/config/KIMConfigSpringBeans.xml"/>
     <import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
     <import resource="classpath:org/kuali/rice/krms/config/KRMSConfigSpringBeans.xml"/>
+-->
 
 </beans>

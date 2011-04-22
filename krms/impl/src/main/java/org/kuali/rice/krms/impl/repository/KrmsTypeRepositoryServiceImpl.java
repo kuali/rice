@@ -36,7 +36,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
 	 */
 	@Override
-	public void createKrmsType(KrmsTypeDefinition krmsType) {
+	public KrmsTypeDefinition createKrmsType(KrmsTypeDefinition krmsType) {
 		if (krmsType == null){
 	        throw new IllegalArgumentException("krmsType is null");
 		}
@@ -47,7 +47,9 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
             throw new IllegalStateException("the KRMS Type to create already exists: " + krmsType);			
 		}
 		
-		businessObjectService.save(KrmsTypeBo.from(krmsType));
+		KrmsTypeBo bo = (KrmsTypeBo)businessObjectService.save(KrmsTypeBo.from(krmsType));
+		
+		return KrmsTypeBo.to(bo);
 	}
 
 	/**

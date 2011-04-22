@@ -6,6 +6,8 @@ import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract;
 
 public class TermSpecificationBo extends PersistableBusinessObjectBase implements TermSpecificationDefinitionContract{
+	
+	private static final long serialVersionUID = 1L;
 
 	def String id
 	def String contextId

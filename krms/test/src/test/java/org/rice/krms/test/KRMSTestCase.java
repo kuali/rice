@@ -88,6 +88,8 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 		List<String> tablesNotToClear = new ArrayList<String>();
 		tablesNotToClear.add("KRIM_.*");
 		tablesNotToClear.add("KRNS_.*");
+		tablesNotToClear.add("KREW_.*");
+		tablesNotToClear.add("KREN_.*");
 		return tablesNotToClear;
 	}
 

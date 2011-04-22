@@ -195,11 +195,11 @@ public final class KrmsTypeDefinition implements KrmsTypeDefinitionContract, Mod
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be null or blank
-		 * @throws IllegalArgumentException if the id is null or blank
+		 * @param id the id value to set, must not be blank
+		 * @throws IllegalArgumentException if the id is blank
 		 */
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
+            if (id != null && StringUtils.isBlank(id)) {
                 throw new IllegalArgumentException("id is blank");
             }
             this.id = id;

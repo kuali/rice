@@ -44,6 +44,7 @@ public class ActionField extends FieldBase {
 	
 	private String jumpToIdAfterSubmit;
 	private String jumpToNameAfterSubmit;
+	private String focusOnAfterSubmit;
 
 	private String actionLabel;
 	private ImageField actionImageField;
@@ -465,6 +466,21 @@ public class ActionField extends FieldBase {
 	 */
 	public void setJumpToNameAfterSubmit(String jumpToNameAfterSubmit) {
 		this.jumpToNameAfterSubmit = jumpToNameAfterSubmit;
+	}
+
+	/**
+	 * The id of the field to place focus in the new page after the new page is retrieved.
+	 * @return the focusOnAfterSubmit
+	 */
+	public String getFocusOnAfterSubmit() {
+		return this.focusOnAfterSubmit;
+	}
+
+	/**
+	 * @param focusOnAfterSubmit the focusOnAfterSubmit to set
+	 */
+	public void setFocusOnAfterSubmit(String focusOnAfterSubmit) {
+		this.focusOnAfterSubmit = focusOnAfterSubmit;
 	}
 
 	

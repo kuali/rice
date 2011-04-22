@@ -47,11 +47,15 @@
         <krad:template component="${view.currentPage}"/>
         
         <c:if test="${view.renderForm}">
-          <form:hidden path="pageId"/>
-          <form:hidden path="jumpToId"/>
-          <form:hidden path="jumpToName"/>
-        </c:if>
-        <krad:script value="performJumpTo();"/>
+          <<form:hidden path="pageId"/>
+              <form:hidden path="jumpToId"/>
+          	  <form:hidden path="jumpToName"/>
+          	  <form:hidden path="focusId"/>
+            </c:if>
+            <krad:script value="performJumpTo();"/>
+            <c:if test="${view.currentPage.autoFocus}">
+            	<krad:script value="performFocus();"/>
+            </c:if>
      </div>
    </div>  
     

@@ -48,6 +48,7 @@ public class UifFormBase implements Serializable {
     protected String formKey;
     protected String jumpToId;
     protected String jumpToName;
+    protected String focusId;
 
     protected String formPostUrl;
 
@@ -465,6 +466,21 @@ public class UifFormBase implements Serializable {
 	 */
 	public void setJumpToName(String jumpToName) {
 		this.jumpToName = jumpToName;
+	}
+
+	/**
+	 * Field to place focus on when the page loads
+	 * @return the focusId
+	 */
+	public String getFocusId() {
+		return this.focusId;
+	}
+
+	/**
+	 * @param focusId the focusId to set
+	 */
+	public void setFocusId(String focusId) {
+		this.focusId = focusId;
 	}
     
     

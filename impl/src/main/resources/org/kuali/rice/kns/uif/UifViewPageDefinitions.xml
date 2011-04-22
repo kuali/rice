@@ -177,7 +177,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
-      </property>  
+      </property>
+      <property name="autoFocus" value="true"/>
       <property name="accordion.render" value="false"/>   
   </bean>   
    

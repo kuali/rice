@@ -38,8 +38,12 @@
               <form:hidden path="pageId"/>
               <form:hidden path="jumpToId"/>
           	  <form:hidden path="jumpToName"/>
+          	  <form:hidden path="focusId"/>
             </c:if>
             <krad:script value="performJumpTo();"/>
+            <c:if test="${KualiForm.view.currentPage.autoFocus}">
+            	<krad:script value="performFocus();"/>
+            </c:if>
          </div>
        </s:nestedPath>
      </html>

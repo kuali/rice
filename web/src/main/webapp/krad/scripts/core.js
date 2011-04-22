@@ -219,6 +219,17 @@ function performJumpTo(){
 	}
 }
 
+//performs a focus on an the element with the id specified
+function performFocus(){
+	var focusId = jq("[name='focusId']").val();
+	if(focusId){
+		jq("#" + focusId).focus();
+	}
+	else{
+		jq("input:first", "#kualiForm").focus();
+	}
+}
+
 //Jump(scroll) to an element by name
 function jumpToElementByName(name){
 	if(top == self){

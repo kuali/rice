@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
+import org.kuali.rice.kns.uif.container.FormView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.widget.LightBoxLookup;
@@ -120,7 +121,14 @@ public class ActionField extends FieldBase {
 			}
 
 			String writeParamsScript = "";
+			
+			boolean validateFormDirty = false;
+			if (view instanceof FormView){
+				validateFormDirty = ((FormView)view).isValidateDirty();
+			}
+			
 			boolean includeDirtyCheckScript = false;
+			
 			for (String key : actionParameters.keySet()) {
 				String parameterPath = key;
 				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
@@ -131,15 +139,16 @@ public class ActionField extends FieldBase {
 						+ actionParameters.get(key) + "'); ";
 				
 				/**
-				 * Include dirtycheck js function call if the method to call is refresh, navigate or close
+				 * Include dirtycheck js function call if the method to call is refresh, navigate, cancel or close
 				 */
-				if (!includeDirtyCheckScript && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)){
-					String keyValue = (String)actionParameters.get(key);
-					if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || 
-						StringUtils.equals(keyValue, UifConstants.MethodToCallNames.NAVIGATE) || 
-						StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CLOSE)){
-						includeDirtyCheckScript = true;
-					}
+				if (validateFormDirty && !includeDirtyCheckScript && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)){
+						String keyValue = (String)actionParameters.get(key);
+						if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || 
+							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.NAVIGATE) ||
+							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CANCEL) || 
+							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CLOSE)){
+							includeDirtyCheckScript = true;
+						}
 				}
 			}
 			
@@ -162,6 +171,7 @@ public class ActionField extends FieldBase {
 				postScript = "submitForm();";
 			}
 
+			
 			if (includeDirtyCheckScript){
 				this.setOnClickScript(" if (checkDirty(e) == false) { " + prefixScript + writeParamsScript + postScript + " ; } ");
 			}else{

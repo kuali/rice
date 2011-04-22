@@ -52,6 +52,7 @@ public class LookupView extends FormView {
 	public LookupView() {
 		super();
 		setViewTypeName(ViewType.LOOKUP);
+		setValidateDirty(false);
 	}
 
 	/**

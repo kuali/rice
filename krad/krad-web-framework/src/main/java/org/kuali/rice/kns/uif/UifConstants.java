@@ -77,6 +77,7 @@ public class UifConstants {
 		public static final String ADD_LINE = "addLine";
 		public static final String DELETE_LINE = "deleteLine";
 		public static final String REFRESH = "refresh";
+		public static final String CANCEL = "cancel";
 	}
 
 	public static class LayoutComponentOptions {

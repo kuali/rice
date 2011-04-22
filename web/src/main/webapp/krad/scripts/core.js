@@ -619,7 +619,7 @@ function getAttributeId(elementId, elementType){
 }
 
 function checkDirty(event){
-	var dirty = jq(".dirty");
+	var dirty = jq(".field_attribute").find("input.dirty")
 	if (dirty.length > 0)
 	{
 		var answer = confirm ("Form has unsaved data. Do you want to leave anyway?")

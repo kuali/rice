@@ -46,6 +46,7 @@ public class InquiryView extends FormView {
         super();
 
         setViewTypeName(ViewType.INQUIRY);
+        setValidateDirty(false);
     }
 
     /**

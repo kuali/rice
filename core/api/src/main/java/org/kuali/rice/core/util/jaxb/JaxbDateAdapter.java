@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 The Kuali Foundation
+ * Copyright 2007-2009 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jaxb;
+package org.kuali.rice.core.util.jaxb;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * Marshall/unmarshall java.util.Date
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class SqlDateAdapter extends XmlAdapter<String, Date> {
+public class JaxbDateAdapter extends XmlAdapter<String, Date> {
 
 	/**
 	 * This overridden method ...
@@ -46,4 +46,5 @@ public class SqlDateAdapter extends XmlAdapter<String, Date> {
 	public Date unmarshal(String dateStr) throws Exception {
 		return (null != dateStr ? new Date(Long.parseLong(dateStr)) : null);
 	}
+
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jaxb;
+package org.kuali.rice.core.util.jaxb;
 
 import java.util.Map;
 
@@ -30,7 +30,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 public class AttributeSetAdapter extends XmlAdapter<StringMapEntry[], AttributeSet> {
 
 	/**
-	 * @see org.kuali.rice.core.jaxb.MapStringStringAdapter#marshal(java.lang.Object)
+	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#marshal(java.lang.Object)
 	 */
 	@Override
 	public StringMapEntry[] marshal(AttributeSet attributeSet) throws Exception {
@@ -45,7 +45,7 @@ public class AttributeSetAdapter extends XmlAdapter<StringMapEntry[], AttributeS
 	}
 
 	/**
-	 * @see org.kuali.rice.core.jaxb.MapStringStringAdapter#unmarshal(java.util.ArrayList)
+	 * @see org.kuali.rice.core.util.jaxb.MapStringStringAdapter#unmarshal(java.util.ArrayList)
 	 */
 	@Override
 	public AttributeSet unmarshal(StringMapEntry[] entryArray) throws Exception {

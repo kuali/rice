@@ -19,7 +19,7 @@ import java.sql.Date;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.kuali.rice.core.jaxb.SqlDateAdapter;
+import org.kuali.rice.core.util.jaxb.SqlDateAdapter;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

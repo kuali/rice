@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jaxb;
+package org.kuali.rice.core.util.jaxb;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * Marshall/unmarshall java.util.Date
+ * Do jax-ws mapping of Map<String, String> for KIM service method parameters, etc.
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-public class JaxbDateAdapter extends XmlAdapter<String, Date> {
+public class JaxbStringMapAdapter extends XmlAdapter<StringMapEntryList, Map<String, String>> {
 
 	/**
 	 * This overridden method ...
@@ -33,8 +34,14 @@ public class JaxbDateAdapter extends XmlAdapter<String, Date> {
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
 	 */
 	@Override
-	public String marshal(Date date) throws Exception {
-		return (null != date ? Long.toString(date.getTime()) : null);
+	public StringMapEntryList marshal(Map<String, String> map) throws Exception {
+		if(null == map) return null;
+		StringMapEntryList entryList = new StringMapEntryList();
+		for (Map.Entry<String, String> e : map.entrySet()) {
+			entryList.getEntries().add(
+					new StringMapEntry(e.getKey(), e.getValue()));
+		}
+		return entryList;
 	}
 
 	/**
@@ -43,8 +50,12 @@ public class JaxbDateAdapter extends XmlAdapter<String, Date> {
 	 * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
 	 */
 	@Override
-	public Date unmarshal(String dateStr) throws Exception {
-		return (null != dateStr ? new Date(Long.parseLong(dateStr)) : null);
+	public Map<String, String> unmarshal(StringMapEntryList entryList) throws Exception {
+		if (null == entryList) return null;
+		Map<String, String> resultMap = new HashMap<String, String>();
+		for (StringMapEntry entry : entryList.getEntries()) {
+			resultMap.put(entry.getKey(), entry.getValue());
+		}
+		return resultMap;
 	}
-
 }

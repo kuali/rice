@@ -19,7 +19,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.kuali.rice.core.jaxb.SqlDateAdapter;
+import org.kuali.rice.core.util.jaxb.SqlDateAdapter;
 
 public class InactiveableInfo {
 	private static final long serialVersionUID = 1L;

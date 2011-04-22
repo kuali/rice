@@ -1,4 +1,4 @@
-package org.kuali.rice.core.jaxb;
+package org.kuali.rice.core.util.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Arrays;

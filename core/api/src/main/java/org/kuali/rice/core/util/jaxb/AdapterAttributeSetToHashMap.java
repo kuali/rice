@@ -26,7 +26,7 @@
  * own identifying information: Portions Copyright [yyyy]
  * [name of copyright owner]
  */
-package org.kuali.rice.core.jaxb;
+package org.kuali.rice.core.util.jaxb;
 
 import java.util.TreeMap;
 import java.util.Iterator;

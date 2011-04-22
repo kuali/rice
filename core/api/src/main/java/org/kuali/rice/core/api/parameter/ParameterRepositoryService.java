@@ -29,7 +29,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.jaxb.ImmutableCollectionAdapter;
+import org.kuali.rice.core.util.jaxb.ImmutableCollectionAdapter;
 
 /**
  * Service for interacting with {@link Parameter Parameters}.

@@ -21,7 +21,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 
 /**
  * Concrete model object implementation of KRMS Repository Agenda 

@@ -25,8 +25,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.kuali.rice.core.jaxb.AttributeSetAdapter;
-import org.kuali.rice.core.jaxb.SqlTimestampAdapter;
+import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
+import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;

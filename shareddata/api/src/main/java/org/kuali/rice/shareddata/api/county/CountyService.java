@@ -17,7 +17,7 @@
 package org.kuali.rice.shareddata.api.county;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.jaxb.ImmutableListAdapter;
+import org.kuali.rice.core.util.jaxb.ImmutableListAdapter;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 
 import javax.jws.WebMethod;

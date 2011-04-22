@@ -58,6 +58,8 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 	@XmlElement(name = Elements.ID, required=true)
 	private final String id;
 	
+	private final String termId;
+
 	@XmlElement(name = Elements.NAME, required=true)
 	private final String name;
 	
@@ -71,12 +73,14 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 	// For JAXB use only, shouldn't be invoked directly
 	private TermParameterDefinition() {
 		id = null;
+		termId = null;
 		name = null;
 		value = null;
 	}
 	
 	private TermParameterDefinition(Builder builder) {
 		id = builder.getId(); 
+		termId = builder.getTermId();
 		name = builder.getName();
 		value = builder.getValue();
 	}
@@ -86,6 +90,7 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		private static final long serialVersionUID = 1L;
 		
 		private String id;
+		private String termId;
 		private String name;
 		private String value;
 		
@@ -99,25 +104,33 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 			};
 		};
 		
-		private Builder(String id, String name, String value) {
+		private Builder(String id, String termId, String name, String value) {
 			setId(id);
+			setTermId(termId);
 			setName(name);
 			setValue(value);
 		}
 		
-		public static Builder create(String id, String name, String value) {
-			return new Builder(id, name, value);
+		/**
+		 * static factory to create a {@link Builder} from fields
+		 * 
+		 * @param id must be null, or contain non-whitespace
+		 * @param termId must be null, or contain non-whitespace
+		 * @param name must be non-null
+		 * @param value
+		 */
+		public static Builder create(String id, String termId, String name, String value) {
+			return new Builder(id, termId, name, value);
 		}
 		
 		/**
-		 * 
-		 * This method ...
+		 * static factory to create a {@link Builder} from a {@link TermParameterDefinitionContract} 
 		 * 
 		 * @param termParameterDefinition
-		 * @return
 		 */
 		public static Builder create(TermParameterDefinitionContract termParameterDefinition) {
 			return new Builder(termParameterDefinition.getId(), 
+					termParameterDefinition.getTermId(),
 					termParameterDefinition.getName(), 
 					termParameterDefinition.getValue());
 		}
@@ -131,9 +144,19 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		 */
 		public void setId(String id) {
 			if (id != null && StringUtils.isBlank(id)) {
-				throw new IllegalArgumentException("id" + NON_NULL_NON_EMPTY_ERROR);
+				throw new IllegalArgumentException("id must contain non-whitespace chars");
 			}
 			this.id = id;
+		}
+		
+		/**
+		 * @param termId the termId to set
+		 */
+		public void setTermId(String termId) {
+			if (termId != null && StringUtils.isBlank(termId)) {
+				throw new IllegalArgumentException("termId must contain non-whitespace chars");
+			}
+			this.termId = termId;
 		}
 		
 		/**
@@ -162,6 +185,14 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 		@Override
 		public String getId() {
 			return this.id;
+		}
+		
+		/**
+		 * @return the termId
+		 */
+		@Override
+		public String getTermId() {
+			return this.termId;
 		}
 		
 		/**
@@ -198,6 +229,13 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 	@Override
 	public String getId() {
 		return this.id;
+	}
+	/**
+	 * @return the termId
+	 */
+	@Override
+	public String getTermId() {
+		return termId;
 	}
 	/**
 	 * @return the name
@@ -247,6 +285,7 @@ public final class TermParameterDefinition implements TermParameterDefinitionCon
 	
 	public static class Elements {
 		public static final String ID = "id";
+		public static final String TERM_ID = "termId";
 		public static final String NAME = "name";
 		public static final String VALUE = "value";
 	}

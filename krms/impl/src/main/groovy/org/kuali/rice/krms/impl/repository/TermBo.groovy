@@ -35,7 +35,7 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	   TermBo bo = new TermBo()
 	   bo.id = im.id
 	   bo.specificationId = im.specification.id
-	   bo.specification = TermSpecificationBo.from(im.specification.id)
+	   bo.specification = TermSpecificationBo.from(im.specification)
 	   bo.parameters = new ArrayList<TermParameterBo>()
 	   for (parm in im.parameters){
 		   bo.parameters.add ( TermParameterBo.from(parm) )

@@ -99,7 +99,7 @@ public class TermBoServiceImpl implements TermBoService {
 		
 		TermResolverBo termResolverBo = TermResolverBo.from(termResolver);
 		
-		businessObjectService.save(termResolverBo);
+		termResolverBo = (TermResolverBo)businessObjectService.save(termResolverBo);
 		
 		return TermResolverBo.to(termResolverBo);
 	}

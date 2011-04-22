@@ -8,6 +8,7 @@ import org.kuali.rice.krms.api.repository.term.TermParameterDefinitionContract;
 public class TermParameterBo extends PersistableBusinessObjectBase implements TermParameterDefinitionContract{
 
 	def String id
+	def String termId
 	def String name
 	def String value
 		
@@ -31,6 +32,7 @@ public class TermParameterBo extends PersistableBusinessObjectBase implements Te
 
 	   TermParameterBo bo = new TermParameterBo()
 	   bo.id = im.id
+	   bo.termId = im.termId
 	   bo.name = im.name
 	   bo.value = im.value
 

@@ -43,7 +43,11 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
 	   bo.name = im.name
 	   bo.typeId = im.typeId
 	   bo.output = TermSpecificationBo.from(im.output)
-	   bo.parameterNames in im.parameterNames
+	   bo.outputId = im.output.id
+	   bo.parameterNames = new HashSet<TermResolverParameterSpecificationBo>()
+	   for (paramName in im.parameterNames) {
+		   bo.parameterNames.add(TermResolverParameterSpecificationBo.from(im, paramName))
+	   }
 	   bo.prerequisites = new HashSet<TermSpecificationBo>()
 	   for (prereq in im.prerequisites){
 		   bo.prerequisites.add (TermSpecificationBo.from(prereq))

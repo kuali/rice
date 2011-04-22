@@ -111,12 +111,12 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 		 * static factory for creating a {@link Builder}.
 		 * 
 		 * @param id may be null.
-		 * @param termSpecificationDefinition must not be null.
+		 * @param termSpecification must not be null.
 		 * @param termParameters may be null.
 		 */
-		public static Builder create(String id, TermSpecificationDefinition.Builder termSpecificationDefinition, 
+		public static Builder create(String id, TermSpecificationDefinition.Builder termSpecification, 
 				Set<TermParameterDefinition.Builder> termParameters) {
-			return new Builder(id, termSpecificationDefinition, termParameters);
+			return new Builder(id, termSpecification, termParameters);
 		}
 		
 		/**

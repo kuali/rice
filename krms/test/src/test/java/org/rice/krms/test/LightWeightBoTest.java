@@ -2,6 +2,7 @@ package org.rice.krms.test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,13 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
@@ -29,6 +31,7 @@ import org.kuali.rice.krms.impl.repository.KrmsTypeBo;
 import org.kuali.rice.krms.impl.repository.KrmsTypeRepositoryServiceImpl;
 import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
+import org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo;
 import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -87,23 +90,49 @@ public class LightWeightBoTest extends KRMSTestCase {
 	@Test
 	public void creationTest() {
 
-		
-		KrmsTypeDefinition krmsTypeDefinition = KrmsTypeDefinition.Builder.create(null, "KrmsTestType", "KRMS").build();
-		krmsTypeDefinition = krmsTypeRepository.createKrmsType(krmsTypeDefinition);
+		// KrmsType for context
+		KrmsTypeDefinition krmsContextTypeDefinition = KrmsTypeDefinition.Builder.create(null, "KrmsTestContextType", "KRMS").build();
+		krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
 
+		// Context
 		ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create("KRMS", "testContext");
-		contextBuilder.setTypeId(krmsTypeDefinition.getId());
+		contextBuilder.setTypeId(krmsContextTypeDefinition.getId());
 		ContextDefinition contextDefinition = contextBuilder.build();
 		contextDefinition = contextRepository.createContext(contextDefinition);
 		
-		TermSpecificationDefinition termSpec = 
+		// output TermSpec
+		TermSpecificationDefinition outputTermSpec = 
 			TermSpecificationDefinition.Builder.create(null, contextDefinition.getContextDefinitionId(), 
-					"testTermSpec", "java.lang.String").build();
+					"outputTermSpec", "java.lang.String").build();
+		outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
+
+		// prereq TermSpec
+		TermSpecificationDefinition prereqTermSpec = 
+			TermSpecificationDefinition.Builder.create(null, contextDefinition.getContextDefinitionId(), 
+					"prereqTermSpec", "java.lang.String").build();
+		prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
+
+		// KrmsType for TermResolver
+		KrmsTypeDefinition krmsTermResolverTypeDefinition = KrmsTypeDefinition.Builder.create(null, "KrmsTestResolverType", "KRMS").build();
+		krmsTermResolverTypeDefinition = krmsTypeRepository.createKrmsType(krmsTermResolverTypeDefinition);
+
+		// TermResolver
+		TermResolverDefinition termResolverDef = 
+			TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", krmsTermResolverTypeDefinition.getId(), 
+					TermSpecificationDefinition.Builder.create(outputTermSpec), 
+					Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)), 
+					null, 
+					Collections.singleton("testParamName")).build();
+		termResolverDef = termBoService.createTermResolver(termResolverDef);
+
+		// Term Param
+		TermParameterDefinition.Builder termParamBuilder = 
+			TermParameterDefinition.Builder.create(null, null, "testParamName", "testParamValue");
 		
-		termSpec = termBoService.createTermSpecification(termSpec);
-		
-//		TermDefinition termDefinition = 
-//			TermDefinition.Builder.create(null, termSpec, termParameters)
+		// Term
+		TermDefinition termDefinition = 
+			TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singleton(termParamBuilder)).build();
+		termBoService.createTermDefinition(termDefinition);
 	}
 
 	public static class Dao<T> extends PersistenceBrokerDaoSupport {

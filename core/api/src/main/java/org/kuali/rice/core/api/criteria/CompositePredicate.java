@@ -18,19 +18,19 @@ package org.kuali.rice.core.api.criteria;
 import java.util.List;
 
 /**
- * An expression that contains other expressions.
+ * An predicate that contains other predicates.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface CompositeExpression extends Expression {
+public interface CompositePredicate extends Predicate {
 
 	/**
-	 * Returns an unmodifiable list of expressions contained within
-	 * this composite expression.  This list could be empty but should
+	 * Returns an unmodifiable list of predicates contained within
+	 * this composite predicate.  This list could be empty but should
 	 * never be null.
 	 * 
-	 * @return the list of expressions contained within this composite
+	 * @return the list of predicates contained within this composite
 	 */
-	List<Expression> getExpressions();
+	List<Predicate> getPredicates();
 	
 }

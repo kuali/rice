@@ -94,10 +94,17 @@ public final class InPredicate extends AbstractPredicate implements MultiValuedP
 		}
     	CriteriaSupportUtils.validateValuesForMultiValuedPredicate(values);
 		this.propertyPath = propertyPath;
-		if (values == null) {
-            this.values = new ArrayList<CriteriaValue<?>>();
+
+        if (values == null) {
+            this.values = Collections.emptyList();
         } else {
-            this.values = new ArrayList<CriteriaValue<?>>(values);
+            final List<CriteriaValue<?>> temp = new ArrayList<CriteriaValue<?>>();
+            for (CriteriaValue<?> value: values) {
+                if (value != null) {
+                    temp.add(value);
+                }
+            }
+            this.values = Collections.unmodifiableList(temp);
         }
     }
     

@@ -2,6 +2,43 @@ package org.kuali.rice.core.api.criteria;
 
 import java.util.Arrays;
 
+/**
+ * This is a factory class to construct {@link Predicate Predicates}.
+ *
+ * <p>
+ *    For more readable predicate construction it is recommended that this class
+ *    is statically imported.
+ * <code>
+ *    import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+ * </code>
+ * </p>
+ *
+ * to create a simple predicate where the property
+ * foo.bar equals "baz" do the following:
+ * <code>
+ *     Predicate simple = equals("foo.bar", "baz");
+ * </code>
+ *
+ * to create a compound predicate where the property
+ * foo.bar equals "baz" and foo.id equals 1 do the following:
+ * <code>
+ *     Predicate coumpound = and(equals("foo.bar", "baz"), equals("foo.id", 1))
+ * </code>
+ *
+ * to create a deeply nested predicate where lots of
+ * properties are evaluated do the following:
+ *
+ * Predicate deep =
+ *  and(
+ *      like("display", "*Eric*"),
+ *		greaterThan("birthDate", gtBirthDate),
+ * 		lessThan("birthDate", ltBirthDate),
+ *      or(
+ *         equal("name.first", "Eric"),
+ *         equal("name.last", "Westfall")))
+ *
+ * @see QueryByCriteria
+ */
 public final class PredicateFactory {
     private PredicateFactory() {
         throw new IllegalArgumentException("do not call");

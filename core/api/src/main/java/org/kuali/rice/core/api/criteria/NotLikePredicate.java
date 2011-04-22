@@ -30,14 +30,11 @@ import java.util.Collection;
 
 /**
  * An immutable predicate which represents a "not like" statement which is
- * evaluated the {@link org.kuali.rice.core.api.criteria.CriteriaValue} of this predicate.  The criteria
- * value for a like predicate should support wildcards using "*" for multiple values and "?" for a single value.
+ * evaluated the {@link CriteriaValue} of this predicate.  The criteria
+ * value for a like predicate should support wildcards using "*" for multiple
+ * values and "?" for a single value.
  *
- * <p>Constructed as part of a {@link org.kuali.rice.core.api.criteria.Criteria} when built using a
- * {@link org.kuali.rice.core.api.criteria.CriteriaBuilder}.
- *
- * @see org.kuali.rice.core.api.criteria.Criteria
- * @see org.kuali.rice.core.api.criteria.CriteriaBuilder
+ * @see PredicateFactory for a convenient way to construct this class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

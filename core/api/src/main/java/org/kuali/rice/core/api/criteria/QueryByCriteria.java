@@ -128,9 +128,9 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	}
 
 	/**
-	 * Returns the {@link Criteria} which will be used to execute the query.
+	 * Returns the {@link Predicate} which will be used to execute the query.
 	 * 
-	 * @return the criteria defined on the query, should never be null
+	 * @return can be null if no predicate was specified
 	 */
 	public Predicate getPredicate() {
 		return this.predicate;
@@ -155,7 +155,8 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	/**
 	 * Returns the maximum number of results that this query is requesting
 	 * to receive.  If null, then the query should return all rows, or as
-	 * many as it can.
+	 * many as it can.  If the number request is larger than the number of
+     * results then all results are returned.
 	 * 
 	 * @return the maximum number of results to return from the query
 	 */
@@ -239,7 +240,11 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		}
 
 		public void setCountFlag(CountFlag countFlag) {
-			this.countFlag = countFlag;
+			if (countFlag == null) {
+                throw new IllegalArgumentException("countFlag was null");
+            }
+
+            this.countFlag = countFlag;
 		}
 
 		public Predicate[] getPredicates() {
@@ -251,13 +256,15 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
             return Arrays.copyOf(predicates, predicates.length);
 		}
 
+        /**
+         * Sets the predicats. If multiple predicates are specified then they are wrapped
+         * in an "and" predicate. If a null predicate is specified then there will be no
+         * constrainsts on the query.
+         * @param predicates the predicates to set.
+         */
         public void setPredicates(Predicate... predicates) {
-            if (predicates == null) {
-
-            }
-
             //defensive copies on array
-            this.predicates = Arrays.copyOf(predicates, predicates.length);
+            this.predicates = predicates != null ? Arrays.copyOf(predicates, predicates.length) : null;
 		}
 	}
 

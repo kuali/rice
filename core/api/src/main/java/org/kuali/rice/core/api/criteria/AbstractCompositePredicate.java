@@ -72,9 +72,15 @@ abstract class AbstractCompositePredicate extends AbstractPredicate implements C
      */
     AbstractCompositePredicate(final List<Predicate> predicates) {
         if (predicates == null) {
-            this.predicates = new ArrayList<Predicate>();
+            this.predicates = Collections.emptyList();
         } else {
-            this.predicates = new ArrayList<Predicate>(predicates);
+            final List<Predicate> temp = new ArrayList<Predicate>();
+            for (Predicate predicate: predicates) {
+                if (predicate != null) {
+                    temp.add(predicate);
+                }
+            }
+            this.predicates = Collections.unmodifiableList(temp);
         }
     }
 

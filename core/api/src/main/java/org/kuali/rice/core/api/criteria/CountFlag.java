@@ -29,10 +29,7 @@ public enum CountFlag {
 	 * result should not include the actual rows returned from the query.
 	 */
 	@XmlEnumValue(value="ONLY") ONLY;
-	
-	private CountFlag() {
-	}
-	
+
 	/**
 	 * Returns the value of the count flag.
 	 * 

@@ -26,7 +26,7 @@ import java.util.List;
 public interface MultiValuedPredicate extends PropertyPathPredicate {
 	
 	/**
-	 * Gets the list of criteria values for this predicate.  All values should
+	 * Gets an immutable list of criteria values for this predicate.  All values should
 	 * be of the same parameterized CriteriaValue type.  The returned list can
 	 * be empty but should never be null.
 	 * 

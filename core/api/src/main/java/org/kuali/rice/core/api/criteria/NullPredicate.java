@@ -31,11 +31,7 @@ import java.util.Collection;
  * An immutable predicate which represents an "is null" statement which is
  * evaluated the property defined by the property path on this predicate.
  * 
- * <p>Constructed as part of a {@link Criteria} when built using a
- * {@link CriteriaBuilder}.
- * 
- * @see Criteria
- * @see CriteriaBuilder
+ * @see PredicateFactory for a convenient way to construct this class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

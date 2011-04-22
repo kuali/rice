@@ -31,7 +31,8 @@ import java.util.Collection;
 /**
  * An immutable predicate which represents a "like" statement which is
  * evaluated the {@link CriteriaValue} of this predicate.  The criteria
- * value for a like predicate should support wildcards using "*".
+ * value for a like predicate should support wildcards using "*" for multiple
+ * values and "?" for a single value.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.

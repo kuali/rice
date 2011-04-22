@@ -37,8 +37,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.xml;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;

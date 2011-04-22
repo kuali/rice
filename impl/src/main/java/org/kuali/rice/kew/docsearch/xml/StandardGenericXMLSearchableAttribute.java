@@ -36,7 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;

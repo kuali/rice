@@ -37,7 +37,7 @@ import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;

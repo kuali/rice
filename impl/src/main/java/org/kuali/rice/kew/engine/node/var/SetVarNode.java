@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.engine.node.var;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.BranchState;

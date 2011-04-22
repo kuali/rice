@@ -17,7 +17,7 @@ package org.kuali.rice.edl.impl.components;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;

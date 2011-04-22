@@ -1,4 +1,4 @@
-package org.kuali.rice.core.xml;
+package org.kuali.rice.core.util.xml;
 
 public class XmlException extends RuntimeException {
     public XmlException(String message) {

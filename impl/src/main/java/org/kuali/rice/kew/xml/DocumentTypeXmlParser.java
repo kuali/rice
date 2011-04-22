@@ -76,9 +76,9 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
-import org.kuali.rice.core.util.XmlHelper;
-import org.kuali.rice.core.util.XmlJotter;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlHelper;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;

@@ -18,7 +18,7 @@ package org.kuali.rice.kew.engine;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;

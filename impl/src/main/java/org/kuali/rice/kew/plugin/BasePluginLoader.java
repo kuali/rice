@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.ContextClassLoaderBinder;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
 
 import javax.xml.namespace.QName;
 import java.io.File;

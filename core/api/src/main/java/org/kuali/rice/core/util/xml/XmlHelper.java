@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.util;
+package org.kuali.rice.core.util.xml;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -25,7 +25,6 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.DOMBuilder;
 import org.jdom.input.SAXBuilder;
-import org.kuali.rice.core.xml.XmlException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;

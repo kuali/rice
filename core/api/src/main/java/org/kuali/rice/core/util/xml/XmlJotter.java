@@ -1,8 +1,7 @@
-package org.kuali.rice.core.util;
+package org.kuali.rice.core.util.xml;
 
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.kuali.rice.core.xml.XmlException;
 
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;

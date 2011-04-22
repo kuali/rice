@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.exception;
 
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
 
 /**
  * This error is thrown whenever a child document type is trying to be processed before its 

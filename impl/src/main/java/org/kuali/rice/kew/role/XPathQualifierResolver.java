@@ -18,7 +18,7 @@ package org.kuali.rice.kew.role;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;

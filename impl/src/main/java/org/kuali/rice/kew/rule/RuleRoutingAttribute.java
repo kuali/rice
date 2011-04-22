@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;

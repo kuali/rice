@@ -19,7 +19,7 @@ package org.kuali.rice.kew.server;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DTOConverter;

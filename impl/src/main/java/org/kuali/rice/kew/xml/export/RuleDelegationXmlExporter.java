@@ -36,7 +36,7 @@ import org.jdom.Element;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.XmlRenderer;
+import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;

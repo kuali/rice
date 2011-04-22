@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;

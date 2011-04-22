@@ -30,9 +30,9 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.XmlHelper;
-import org.kuali.rice.core.util.XmlRenderer;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlHelper;
+import org.kuali.rice.core.util.xml.XmlRenderer;
 
 /**
  * Exports Style definitions to XML.

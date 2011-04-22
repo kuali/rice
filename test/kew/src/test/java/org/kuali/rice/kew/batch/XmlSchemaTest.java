@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.batch;
 
 import org.junit.Test;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
 import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.test.RiceTestCase;

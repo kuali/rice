@@ -16,7 +16,7 @@
 package org.kuali.rice.ken.service.ws.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.service.NotificationService;

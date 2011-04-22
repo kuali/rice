@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule.xmlrouting;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;

@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;

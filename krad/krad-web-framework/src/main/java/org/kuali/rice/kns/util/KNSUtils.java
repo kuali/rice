@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;

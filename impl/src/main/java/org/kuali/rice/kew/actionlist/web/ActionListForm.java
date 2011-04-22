@@ -18,7 +18,7 @@ package org.kuali.rice.kew.actionlist.web;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;

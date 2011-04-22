@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -36,7 +36,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl#performResponsibilityMatches(org.kuali.rice.core.xml.dto.AttributeSet, java.util.List)
+	 * @see org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl#performResponsibilityMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
 	protected List<KimResponsibilityInfo> performResponsibilityMatches(

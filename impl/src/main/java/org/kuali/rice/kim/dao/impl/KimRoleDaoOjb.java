@@ -28,7 +28,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -80,7 +80,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	
 	/**
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
-	 *      java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 *      java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId, AttributeSet qualification) {
@@ -163,7 +163,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
 	/**
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection,
-	 *      java.util.Collection, org.kuali.rice.core.xml.dto.AttributeSet)
+	 *      java.util.Collection, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds, AttributeSet qualification ) {
@@ -272,7 +272,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds, String memberTypeCode, AttributeSet qualification ) {
@@ -297,7 +297,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers( Collection<String> roleIds, AttributeSet qualification) {
@@ -320,7 +320,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<RoleMemberImpl> getRoleMembershipsForMemberId(String memberType, String memberId, AttributeSet qualification) {

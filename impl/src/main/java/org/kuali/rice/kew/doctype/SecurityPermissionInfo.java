@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 
 
 /**

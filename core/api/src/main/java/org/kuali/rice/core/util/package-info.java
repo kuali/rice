@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2008 The Kuali Foundation
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.role;
 
-import java.util.List;
+@javax.xml.bind.annotation.XmlSchema(namespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
+package org.kuali.rice.core.util;
+import org.kuali.rice.core.api.CoreConstants;
 
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kew.engine.RouteContext;
+import javax.xml.bind.annotation.XmlNsForm;
 
-/**
- * A QualifierResolver is responsible for resolving qualifiers that might be used
- * to identify a Qualified Role from a Document.  Information about the Document
- * can be obtained from the RouteContext.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
-public interface QualifierResolver {
-
-	public List<AttributeSet> resolve(RouteContext context);
-	
-}

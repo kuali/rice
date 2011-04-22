@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;

@@ -17,8 +17,8 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 
 /**

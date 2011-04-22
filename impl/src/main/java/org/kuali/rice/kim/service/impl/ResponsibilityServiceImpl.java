@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -183,7 +183,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibilityByTemplateName(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet, org.kuali.rice.core.xml.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibilityByTemplateName(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet, org.kuali.rice.core.util.AttributeSet)
      */
     public boolean hasResponsibilityByTemplateName(String principalId,
     		String namespaceCode, String responsibilityTemplateName,

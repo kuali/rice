@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

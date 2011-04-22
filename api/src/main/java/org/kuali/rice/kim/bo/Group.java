@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 
 /**

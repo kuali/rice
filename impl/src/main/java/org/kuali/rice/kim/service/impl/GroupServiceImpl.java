@@ -27,7 +27,7 @@ import java.util.Set;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

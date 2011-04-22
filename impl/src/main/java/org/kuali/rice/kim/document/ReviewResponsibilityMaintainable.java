@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;

@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.MaintenanceDocument;

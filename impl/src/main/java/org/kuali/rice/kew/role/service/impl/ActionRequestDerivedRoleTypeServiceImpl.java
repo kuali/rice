@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -50,7 +50,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
@@ -67,7 +67,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@Override
 	public boolean hasApplicationRole(String principalId,

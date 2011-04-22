@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.actionrequest.service;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;

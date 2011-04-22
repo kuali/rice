@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -44,7 +44,7 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
      *  consider the document type hierarchy - check for a permission that just specifies the document type first at each level 
      *  - then if you don't find that, check for the doc type and the node, then the doc type and the state. 
      * 
-	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.xml.dto.AttributeSet, java.util.List)
+	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
     @Override
     protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,

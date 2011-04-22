@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;

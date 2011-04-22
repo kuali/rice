@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.KimDelegationMember;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;

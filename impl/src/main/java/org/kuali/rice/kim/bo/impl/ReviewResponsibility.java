@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.bo.impl;
 
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.util.KimConstants;

@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;

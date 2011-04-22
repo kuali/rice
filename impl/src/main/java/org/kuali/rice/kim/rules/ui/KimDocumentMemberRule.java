@@ -16,8 +16,8 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;

@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;

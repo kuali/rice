@@ -29,7 +29,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -774,7 +774,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
     }
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds(
 			Collection<String> roleIds, Collection<String> groupIds,
@@ -798,7 +798,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public List<RoleMemberImpl> getRoleMembersForRoleIds(
 			Collection<String> roleIds, String memberTypeCode,
@@ -823,7 +823,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIdsWithFilters(java.util.Collection, java.lang.String, java.util.List, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIdsWithFilters(java.util.Collection, java.lang.String, java.util.List, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters(
 			Collection<String> roleIds, String principalId,
@@ -859,7 +859,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 
 	/**
 
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembershipsForRoleIdsAsMembers(java.util.Collection, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembershipsForRoleIdsAsMembers(java.util.Collection, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers(
 			Collection<String> roleIds, AttributeSet qualification) {
@@ -881,7 +881,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds(
 			Collection<String> roleIds, String principalId,
@@ -930,7 +930,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 
 	/**
 	 * 
-	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembershipsForMemberId(java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembershipsForMemberId(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public List<RoleMemberImpl> getRoleMembershipsForMemberId(
 			String memberType, String memberId, AttributeSet qualification) {

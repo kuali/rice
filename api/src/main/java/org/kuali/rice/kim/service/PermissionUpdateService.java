@@ -20,8 +20,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 

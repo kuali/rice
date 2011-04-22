@@ -24,7 +24,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;

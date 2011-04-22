@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -49,7 +49,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	 * That is, if a permission exists for the document type, then the permission for any 
 	 * parent document will not be considered/returned.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.core.xml.dto.AttributeSet, java.util.List)
+	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
 	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,

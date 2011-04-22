@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.role;
 
 import org.junit.Test;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;

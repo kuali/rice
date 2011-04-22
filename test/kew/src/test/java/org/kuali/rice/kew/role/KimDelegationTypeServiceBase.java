@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.role;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 

@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.role.service.impl;
 
 import org.junit.Test;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;

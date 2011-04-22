@@ -16,8 +16,8 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;

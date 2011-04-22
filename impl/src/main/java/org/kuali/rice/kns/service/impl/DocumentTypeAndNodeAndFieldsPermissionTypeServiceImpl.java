@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -45,7 +45,7 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 	 *	permision detail sourceAccountingLines will match passed in value of sourceAccountingLines.amount and sourceAccountingLines 
 	 *	permission detail sourceAccountingLines.objectCode will match sourceAccountingLines.objectCode but not sourceAccountingLines
 	 *
-	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.xml.dto.AttributeSet, java.util.List)
+	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
 	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,

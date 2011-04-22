@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
@@ -82,7 +82,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * This simple initial implementation just calls  
 	 * {@link #getRoleMembersFromApplicationRole(String, String, AttributeSet)} and checks the results.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
 		if ( !isApplicationRoleType() ) {
@@ -154,7 +154,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * Performs a simple check that the qualifier on the delegation matches the qualification.
 	 * Extra qualification attributes are ignored.
 	 * 
-	 * @see org.kuali.rice.kim.service.support.KimDelegationTypeService#doesDelegationQualifierMatchQualification(org.kuali.rice.core.xml.dto.AttributeSet, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.KimDelegationTypeService#doesDelegationQualifierMatchQualification(org.kuali.rice.core.util.AttributeSet, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public boolean doesDelegationQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
 		AttributeSet translatedQualification = translateInputAttributeSet(qualification);

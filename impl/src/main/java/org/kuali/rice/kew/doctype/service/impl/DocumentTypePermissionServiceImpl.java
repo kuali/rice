@@ -17,7 +17,7 @@ package org.kuali.rice.kew.doctype.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -40,7 +40,7 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 	 * names on the stored permissions.  Only match entries with blank property names if
 	 * no entries match on the exact property name. 
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.core.xml.dto.AttributeSet, java.util.List)
+	 * @see org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase#performPermissionMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
 	 */
 	@Override
 	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails,

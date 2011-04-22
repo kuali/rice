@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.ResponsibilityAction;
 

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
@@ -42,7 +42,7 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.service.PermissionUpdateService#savePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.PermissionUpdateService#savePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, org.kuali.rice.core.util.AttributeSet)
 	 */
 	public void savePermission(String permissionId, String permissionTemplateId,
 			String namespaceCode, String name, String description, boolean active,

@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.role;
 
 import org.junit.Test;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;

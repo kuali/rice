@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;

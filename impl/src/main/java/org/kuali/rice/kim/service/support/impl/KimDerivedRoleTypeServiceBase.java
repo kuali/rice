@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 
 /**
@@ -30,7 +30,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 public class KimDerivedRoleTypeServiceBase extends KimRoleTypeServiceBase {
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@Override
 	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {

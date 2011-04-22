@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.test.util;
 
 
 import org.junit.Test;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;

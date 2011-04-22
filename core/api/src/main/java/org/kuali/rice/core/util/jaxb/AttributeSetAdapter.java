@@ -19,10 +19,10 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 
 /**
- * This class allows for a {@link org.kuali.rice.core.xml.dto.AttributeSet} instance to be passed across the wire by jaxws enabled services
+ * This class allows for a {@link org.kuali.rice.core.util.AttributeSet} instance to be passed across the wire by jaxws enabled services
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

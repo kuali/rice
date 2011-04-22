@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 

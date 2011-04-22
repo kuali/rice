@@ -25,9 +25,9 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;

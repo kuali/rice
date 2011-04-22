@@ -17,12 +17,12 @@ package org.kuali.rice.kim.service.support.impl;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;

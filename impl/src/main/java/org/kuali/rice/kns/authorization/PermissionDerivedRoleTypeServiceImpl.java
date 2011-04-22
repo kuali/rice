@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -70,7 +70,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#getPrincipalIdsFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
 	 */
 	@Override
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
@@ -87,7 +87,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	}
 	
     /***
-     * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.support.impl.RoleTypeServiceBase#hasApplicationRole(java.lang.String, java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.util.AttributeSet)
      */
     @Override
     public boolean hasApplicationRole(

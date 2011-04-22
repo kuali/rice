@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.group.dto;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.Group;
 
 import javax.xml.bind.annotation.*;

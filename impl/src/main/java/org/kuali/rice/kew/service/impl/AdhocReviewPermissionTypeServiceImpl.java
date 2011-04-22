@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -39,7 +39,7 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.xml.dto.AttributeSet,
+	 * @see org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl#performPermissionMatches(org.kuali.rice.core.util.AttributeSet,
 	 *      java.util.List)
 	 */
 	@Override

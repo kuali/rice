@@ -18,7 +18,7 @@ package org.kuali.rice.kns.workflow.attribute;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.role.QualifierResolver;

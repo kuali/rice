@@ -18,7 +18,7 @@ package org.kuali.rice.kew.role;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 
 /**

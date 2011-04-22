@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;

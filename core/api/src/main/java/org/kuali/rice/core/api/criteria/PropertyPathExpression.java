@@ -26,6 +26,12 @@ package org.kuali.rice.core.api.criteria;
  */
 public interface PropertyPathExpression extends Expression {
 	
+	/**
+	 * Returns the property path for this expression which represents the
+	 * portion of the object model to which the expression applies.
+	 * 
+	 * @return the property path
+	 */
 	String getPropertyPath();
 		    
 }

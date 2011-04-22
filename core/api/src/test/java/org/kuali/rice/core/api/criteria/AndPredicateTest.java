@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AndExpressionTest {
+public class AndPredicateTest {
 
 	private static final String XML = "<and xmlns=\"http://rice.kuali.org/core/v2_0\"><equal propertyPath=\"property.path\"><stringValue>abcdefg</stringValue></equal><greaterThan propertyPath=\"property.path2\"><decimalValue>100</decimalValue></greaterThan><or><greaterThan propertyPath=\"property.path3\"><integerValue>10000</integerValue></greaterThan><like propertyPath=\"property.path4\"><stringValue>wildcard*</stringValue></like></or></and>"; 
 		

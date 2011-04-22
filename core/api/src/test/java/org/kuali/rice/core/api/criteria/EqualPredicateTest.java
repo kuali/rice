@@ -31,7 +31,7 @@ import static org.junit.Assert.fail;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EqualExpressionTest {
+public class EqualPredicateTest {
 
 	private static final String STRING_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>value</stringValue></equal>";
 	private static final String DECIMAL_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>0</decimalValue></equal>";

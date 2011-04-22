@@ -30,7 +30,7 @@ import static org.junit.Assert.fail;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LikeExpressionTest {
+public class LikePredicateTest {
 
 	private static final String STRING_XML = "<like propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>value*</stringValue></like>";	
 	

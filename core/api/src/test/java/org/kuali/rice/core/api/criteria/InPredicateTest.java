@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class InExpressionTest {
+public class InPredicateTest {
 
 	private static final String STRING_XML = "<in propertyPath=\"stringValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>abcdefg</stringValue><stringValue>gfedcabc</stringValue><stringValue>should have failed by now!</stringValue></in>";
 	private static final String DECIMAL_XML = "<in propertyPath=\"decimalValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>1.0</decimalValue><decimalValue>1.1</decimalValue><decimalValue>2.5</decimalValue></in>";

@@ -31,7 +31,7 @@ import static org.junit.Assert.fail;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GreaterThanExpressionTest {
+public class GreaterThanPredicateTest {
 
 	private static final String DECIMAL_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>0</decimalValue></greaterThan>";
 	private static final String INTEGER_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>0</integerValue></greaterThan>";

@@ -23,7 +23,9 @@ import org.kuali.rice.core.util.type.KualiInteger;
 
 public class KualiIntegerCurrencyFormatter extends CurrencyFormatter {
 
-    protected Object convertToObject(String target) {
+    private static final long serialVersionUID = 1022217841658237940L;
+
+	protected Object convertToObject(String target) {
         KualiDecimal value = (KualiDecimal) (super.convertToObject(target));
         return new KualiInteger(value.longValue());
     }

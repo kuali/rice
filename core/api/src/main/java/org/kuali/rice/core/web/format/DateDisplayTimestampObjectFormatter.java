@@ -24,6 +24,8 @@ import java.sql.Timestamp;
  */
 public class DateDisplayTimestampObjectFormatter extends DateFormatter {
 	
+	private static final long serialVersionUID = 5213490843335374209L;
+
 	protected Object convertToObject(String target) {
 		return new Timestamp(((Date) super.convertToObject(target)).getTime());
 	}

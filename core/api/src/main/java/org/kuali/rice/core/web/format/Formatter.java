@@ -304,7 +304,7 @@ public class Formatter implements Serializable {
 
         // Collections and arrays have already been handled at this point, so
         // if value is an array, assume it's a wrapper for a primitive type.
-        Class type = value.getClass();
+        Class<?> type = value.getClass();
         if (type.isArray())
         	// begin Kuali Foundation modification
             return ArrayUtils.toString(value, type.getComponentType());

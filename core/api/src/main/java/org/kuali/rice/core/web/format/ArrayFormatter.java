@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.core.web.format;
 
-import java.util.Collection;
-
-import org.kuali.rice.core.web.format.Formatter;
 
 /**
  * Currently, in the {@link Formatter Formatter} class, array are formatted

@@ -22,7 +22,10 @@ import java.util.Collection;
  * This class is used to prevent reformatting of String values.
  */
 public class NoOpStringFormatter extends Formatter {
-    /**
+	
+    private static final long serialVersionUID = 7724214487192363066L;
+
+	/**
      * Does absolutely nothing to the given String. Yes, this is actually a valuable way to prevent the POJO stuff from converting a
      * simple String into a 1-element String array.
      */

@@ -25,8 +25,10 @@ import org.kuali.rice.core.util.RiceKeyConstants;
  */
 public class LittleBooleanFormatter extends Formatter {
 
-    static final List TRUE_VALUES = Arrays.asList(new String[] { "yes", "y", "true", "t", "on", "1", "enabled" });
-    static final List FALSE_VALUES = Arrays.asList(new String[] { "no", "n", "false", "f", "off", "0", "disabled" });
+    private static final long serialVersionUID = -1800859871401901842L;
+    
+	static final List<String> TRUE_VALUES = Arrays.asList(new String[] { "yes", "y", "true", "t", "on", "1", "enabled" });
+    static final List<String> FALSE_VALUES = Arrays.asList(new String[] { "no", "n", "false", "f", "off", "0", "disabled" });
 
     protected Object convertToObject(String target) {
         if (Formatter.isEmptyValue(target))

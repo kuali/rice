@@ -34,7 +34,10 @@ import org.kuali.rice.core.util.type.KualiInteger;
  * end Kuali Foundation modification
  */
 public class CurrencyFormatter extends Formatter {
-    // begin Kuali Foundation modification
+	
+    private static final long serialVersionUID = -7986953503122821012L;
+    
+	// begin Kuali Foundation modification
     // original code
     /*
     /** The default scale for currency values * /

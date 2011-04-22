@@ -19,6 +19,9 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class DateViewTimestampObjectFormatter extends DateFormatter {
+	
+	private static final long serialVersionUID = 2069562793196038664L;
+
 	@Override
 	protected Object convertToObject(String target) {
 		return new Timestamp(((Date) super.convertToObject(target)).getTime());

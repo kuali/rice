@@ -21,7 +21,10 @@ package org.kuali.rice.core.web.format;
  * conditionals.
  */
 public class SimpleBooleanFormatter extends Formatter {
-    /**
+	
+    private static final long serialVersionUID = 1733029018087594949L;
+
+	/**
      * Converts the given true/false String into a Boolean.
      */
     protected Object convertToObject(String target) {

@@ -39,8 +39,8 @@ public class BooleanFormatter extends Formatter {
 
 	// begin Kuali Foundation modification
 	// "y" and "t" added to TRUE_VALUES, "n" and "f" added to FALSE_VALUES
-    static final List TRUE_VALUES = Arrays.asList(new String[] { "yes", "y", "true", "t", "on", "1", "enabled" });
-    static final List FALSE_VALUES = Arrays.asList(new String[] { "no", "n", "false", "f", "off", "0", "disabled" });
+    static final List<String> TRUE_VALUES = Arrays.asList(new String[] { "yes", "y", "true", "t", "on", "1", "enabled" });
+    static final List<String> FALSE_VALUES = Arrays.asList(new String[] { "no", "n", "false", "f", "off", "0", "disabled" });
 	// end Kuali Foundation modification
 
 	/* begin Kuali Foundation modification

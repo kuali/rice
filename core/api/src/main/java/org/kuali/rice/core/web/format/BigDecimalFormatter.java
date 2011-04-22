@@ -27,7 +27,10 @@ import org.kuali.rice.core.util.RiceKeyConstants;
  * This class is used to format BigDecimal objects.
  */
 public class BigDecimalFormatter extends Formatter {
-    private static Logger LOG = Logger.getLogger(BigDecimalFormatter.class);
+	
+    private static final long serialVersionUID = 4628393689860734306L;
+    
+	private static Logger LOG = Logger.getLogger(BigDecimalFormatter.class);
     private static final Pattern DECIMAL_PATTERN = Pattern.compile("\\-?[0-9,]*\\.?[0-9]*");
 
     /**

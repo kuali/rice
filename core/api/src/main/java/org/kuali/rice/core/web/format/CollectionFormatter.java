@@ -27,7 +27,9 @@ import java.util.Iterator;
  */
 public class CollectionFormatter extends Formatter {
 
-    /**
+    private static final long serialVersionUID = 1074862354812893254L;
+
+	/**
      * Formats a collection into a string that looks like an array.
      * 
      * @see org.kuali.rice.core.web.format.Formatter#format(java.lang.Object)
@@ -37,8 +39,13 @@ public class CollectionFormatter extends Formatter {
 	StringBuilder buf = new StringBuilder();
 	buf.append("[");
 	
-	Collection collection = (Collection) value;
-	Iterator i = collection.iterator();
+	if (!(value instanceof Collection)) {
+		throw new IllegalArgumentException("value was not an instance of Collection, instead was: " + (value == null ? null : value.getClass()));
+	}
+	
+	@SuppressWarnings("unchecked")
+	Collection<Object> collection = (Collection<Object>)value;
+	Iterator<Object> i = collection.iterator();
 	boolean hasNext = i.hasNext();
 	while (hasNext) {
 	    Object elem = i.next();

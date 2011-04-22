@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
- * An immutable expression which represents a "less than" statement which is
- * evaluated the {@link CriteriaValue} of this expression.
+ * An immutable predicate which represents an "equal" statement which is
+ * evaluated the {@link CriteriaValue} of this predicate.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
@@ -41,61 +41,63 @@ import java.util.Collection;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-@XmlRootElement(name = LessThanExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = EqualPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = LessThanExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = EqualPredicate.Constants.TYPE_NAME, propOrder = {
     CriteriaSupportUtils.PropertyConstants.VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class LessThanExpression extends AbstractExpression implements ValuedExpression {
-	    
-	private static final long serialVersionUID = 2576163857285296720L;
+public final class EqualPredicate extends AbstractPredicate implements SingleValuedPredicate {
+	
+	private static final long serialVersionUID = 7159459561133496549L;
 	
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 
-	@XmlElements(value = {
-			@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
-            @XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true),
-            @XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true)
+    @XmlElements(value = {
+    		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
+    		@XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
+    		@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
+    		@XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true)
     })
 	private final CriteriaValue<?> value;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
-
-	/**
+	
+    /**
      * Should only be invoked by JAXB.
      */
     @SuppressWarnings("unused")
-    private LessThanExpression() {
+    private EqualPredicate() {
         this.propertyPath = null;
         this.value = null;
     }
     
     /**
-	 * Constructs a LessThanExpression for the given path and value.  LessThanExpression supports the following {@link CriteriaValue}:
+	 * Constructs an EqualPredicate for the given path and value.  EqualPredicate supports the following {@link CriteriaValue}:
 	 * 
 	 * <ul>
+	 *   <li>{@link CriteriaStringValue}</li>
 	 *   <li>{@link CriteriaDateTimeValue}</li>
 	 *   <li>{@link CriteriaDecimalValue}</li>
 	 *   <li>{@link CriteriaIntegerValue}</li>
 	 * </ul>
 	 * 
-	 * @param propertyPath the property path for the expression, must not be null or blank
+	 * @param propertyPath the property path for the predicate, must not be null or blank
 	 * @param value the value to evaluation the path against, must not be null.
 	 * 
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 * @throws IllegalArgumentException if the value is null
-	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
+	 * @throws IllegalArgumentException if this predicate does not support the given type of {@link CriteriaValue}
 	 */
-    LessThanExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
+    EqualPredicate(String propertyPath, CriteriaValue<?> value) {
+    	CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }
-    
+        
     @Override
     public String getPropertyPath() {
     	return propertyPath;
@@ -110,8 +112,8 @@ public final class LessThanExpression extends AbstractExpression implements Valu
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "lessThan";
-        final static String TYPE_NAME = "LessThanType";
+        final static String ROOT_ELEMENT_NAME = "equal";
+        final static String TYPE_NAME = "EqualType";
     }
     
 }

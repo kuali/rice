@@ -15,19 +15,17 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 /**
- * Represents an expression which contains some {@link CriteriaValue}.
+ * An predicate represents some portion of a criteria statement.  The exact
+ * nature of an predicate and what it logically represents is defined
+ * by the classes which implement the Predicate interface.
+ * 
+ * @see Criteria 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ValuedExpression extends PropertyPathExpression {
-	
-	/**
-	 * Gets the criteria value for this expression.
-	 * 
-	 * @return the criteria value for this expression
-	 */
-	CriteriaValue<?> getValue();
-    
+public interface Predicate extends ModelObjectComplete {
+
 }

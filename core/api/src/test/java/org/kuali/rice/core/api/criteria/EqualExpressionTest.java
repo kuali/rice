@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.core.test.JAXBAssert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import org.junit.Test;
-import org.kuali.rice.core.test.JAXBAssert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
- * A test for the {@link EqualExpression} class. 
+ * A test for the {@link EqualPredicate} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,7 +40,7 @@ public class EqualExpressionTest {
 	
 	
 	/**
-	 * Test method for {@link org.kuali.rice.core.api.criteria.EqualExpression#EqualExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+	 * Test method for {@link EqualPredicate#EqualPredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
 	 * 
 	 * <p>EqualExpression should support all four of the different CriteriaValues
 	 */
@@ -48,29 +48,29 @@ public class EqualExpressionTest {
 	public void testEqualExpression() {
 		
 		// Test that it can take a CriteriaStringValue
-		EqualExpression equalExpression = new EqualExpression("property.path", new CriteriaStringValue("value"));
+		EqualPredicate equalExpression = new EqualPredicate("property.path", new CriteriaStringValue("value"));
 		assertEquals("property.path", equalExpression.getPropertyPath());
 		assertEquals("value", equalExpression.getValue().getValue());
 		
 		// Test that it can take a CriteriaDecimalValue
-		equalExpression = new EqualExpression("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
+		equalExpression = new EqualPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		assertEquals("property.path", equalExpression.getPropertyPath());
 		assertEquals(BigDecimal.ZERO, equalExpression.getValue().getValue());
 		
 		// Test that it can take a CriteriaIntegerValue
-		equalExpression = new EqualExpression("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
+		equalExpression = new EqualPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		assertEquals("property.path", equalExpression.getPropertyPath());
 		assertEquals(BigInteger.ZERO, equalExpression.getValue().getValue());
 		
 		// Test that it can take a CriteriaDateTimeValue
 		Calendar dateTime = Calendar.getInstance();
-		equalExpression = new EqualExpression("property.path", new CriteriaDateTimeValue(dateTime));
+		equalExpression = new EqualPredicate("property.path", new CriteriaDateTimeValue(dateTime));
 		assertEquals("property.path", equalExpression.getPropertyPath());
 		assertEquals(dateTime, equalExpression.getValue().getValue());
 		
 		// test failure cases, should throw IllegalArgumentException when null is passed
 		try {
-			new EqualExpression(null, null);
+			new EqualPredicate(null, null);
 			fail("Should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -82,14 +82,14 @@ public class EqualExpressionTest {
 	 */
 	@Test
 	public void testJAXB() {
-		EqualExpression equalExpression = new EqualExpression("property.path", new CriteriaStringValue("value"));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, STRING_XML, EqualExpression.class);
+		EqualPredicate equalExpression = new EqualPredicate("property.path", new CriteriaStringValue("value"));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, STRING_XML, EqualPredicate.class);
 		
-		equalExpression = new EqualExpression("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, DECIMAL_XML, EqualExpression.class);
+		equalExpression = new EqualPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, DECIMAL_XML, EqualPredicate.class);
 		
-		equalExpression = new EqualExpression("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, INTEGER_XML, EqualExpression.class);
+		equalExpression = new EqualPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, INTEGER_XML, EqualPredicate.class);
 		
 		// set the date and time to January 15, 2100 at 5:30:15.500 am in the GMT timezone
 		Calendar dateTime = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -101,8 +101,8 @@ public class EqualExpressionTest {
 		dateTime.set(Calendar.DATE, 15);
 		dateTime.set(Calendar.YEAR, 2011);
 		
-		equalExpression = new EqualExpression("property.path", new CriteriaDateTimeValue(dateTime));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, DATE_TIME_XML, EqualExpression.class);
+		equalExpression = new EqualPredicate("property.path", new CriteriaDateTimeValue(dateTime));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, DATE_TIME_XML, EqualPredicate.class);
 	}
 
 }

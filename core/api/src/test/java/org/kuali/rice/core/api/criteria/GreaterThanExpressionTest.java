@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.core.test.JAXBAssert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import org.junit.Test;
-import org.kuali.rice.core.test.JAXBAssert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
- * A test for the {@link GreaterThanExpression} class. 
+ * A test for the {@link GreaterThanPredicate} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -38,7 +38,7 @@ public class GreaterThanExpressionTest {
 	private static final String DATE_TIME_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></greaterThan>";
 	
 	/**
-	 * Test method for {@link org.kuali.rice.core.api.criteria.GreaterThanExpression#GreaterThanExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+	 * Test method for {@link GreaterThanPredicate#GreaterThanPredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
 	 * 
 	 * <p>GreaterThanExpression should support all of the different CriteriaValues except for {@link CriteriaStringValue}
 	 */
@@ -46,24 +46,24 @@ public class GreaterThanExpressionTest {
 	public void testGreaterThanExpression() {
 				
 		// Test that it can take a CriteriaDecimalValue
-		GreaterThanExpression greaterThanExpression = new GreaterThanExpression("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
+		GreaterThanPredicate greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		assertEquals("property.path", greaterThanExpression.getPropertyPath());
 		assertEquals(BigDecimal.ZERO, greaterThanExpression.getValue().getValue());
 		
 		// Test that it can take a CriteriaIntegerValue
-		greaterThanExpression = new GreaterThanExpression("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
+		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		assertEquals("property.path", greaterThanExpression.getPropertyPath());
 		assertEquals(BigInteger.ZERO, greaterThanExpression.getValue().getValue());
 		
 		// Test that it can take a CriteriaDateTimeValue
 		Calendar dateTime = Calendar.getInstance();
-		greaterThanExpression = new GreaterThanExpression("property.path", new CriteriaDateTimeValue(dateTime));
+		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaDateTimeValue(dateTime));
 		assertEquals("property.path", greaterThanExpression.getPropertyPath());
 		assertEquals(dateTime, greaterThanExpression.getValue().getValue());
 		
 		// Doesn't support string criteria values
 		try {
-			new GreaterThanExpression("property.path", new CriteriaStringValue("some string value"));
+			new GreaterThanPredicate("property.path", new CriteriaStringValue("some string value"));
 			fail("Should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -71,7 +71,7 @@ public class GreaterThanExpressionTest {
 		
 		// test failure cases, should throw IllegalArgumentException when null is passed
 		try {
-			new GreaterThanExpression(null, null);
+			new GreaterThanPredicate(null, null);
 			fail("Should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -84,11 +84,11 @@ public class GreaterThanExpressionTest {
 	@Test
 	public void testJAXB() {
 		
-		GreaterThanExpression greaterThanExpression = new GreaterThanExpression("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, DECIMAL_XML, GreaterThanExpression.class);
+		GreaterThanPredicate greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, DECIMAL_XML, GreaterThanPredicate.class);
 		
-		greaterThanExpression = new GreaterThanExpression("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, INTEGER_XML, GreaterThanExpression.class);
+		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, INTEGER_XML, GreaterThanPredicate.class);
 		
 		// set the date and time to January 15, 2100 at 5:30:15.500 am in the GMT timezone
 		Calendar dateTime = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -100,8 +100,8 @@ public class GreaterThanExpressionTest {
 		dateTime.set(Calendar.DATE, 15);
 		dateTime.set(Calendar.YEAR, 2011);
 		
-		greaterThanExpression = new GreaterThanExpression("property.path", new CriteriaDateTimeValue(dateTime));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, DATE_TIME_XML, GreaterThanExpression.class);
+		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaDateTimeValue(dateTime));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, DATE_TIME_XML, GreaterThanPredicate.class);
 	}
 
 }

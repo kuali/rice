@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
- * An immutable expression which represents an "equal" statement which is
- * evaluated the {@link CriteriaValue} of this expression.
+ * An immutable predicate which represents a "not equal" statement which is
+ * evaluated the {@link CriteriaValue} of this predicate.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
@@ -39,22 +39,22 @@ import java.util.Collection;
  * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
-@XmlRootElement(name = EqualExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = NotEqualPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = EqualExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = NotEqualPredicate.Constants.TYPE_NAME, propOrder = {
     CriteriaSupportUtils.PropertyConstants.VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EqualExpression extends AbstractExpression implements ValuedExpression {
+public final class NotEqualPredicate extends AbstractPredicate implements SingleValuedPredicate {
 	
 	private static final long serialVersionUID = 7159459561133496549L;
 	
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 
-    @XmlElements(value = {
+	@XmlElements(value = {
     		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
     		@XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
     		@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
@@ -65,18 +65,18 @@ public final class EqualExpression extends AbstractExpression implements ValuedE
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
-	
+
     /**
      * Should only be invoked by JAXB.
      */
     @SuppressWarnings("unused")
-    private EqualExpression() {
+    private NotEqualPredicate() {
         this.propertyPath = null;
         this.value = null;
     }
     
     /**
-	 * Constructs an EqualExpression for the given path and value.  EqualExpression supports the following {@link CriteriaValue}:
+	 * Constructs a NotEqualPredicate for the given path and value.  NotEqualPredicate supports the following {@link CriteriaValue}:
 	 * 
 	 * <ul>
 	 *   <li>{@link CriteriaStringValue}</li>
@@ -85,15 +85,15 @@ public final class EqualExpression extends AbstractExpression implements ValuedE
 	 *   <li>{@link CriteriaIntegerValue}</li>
 	 * </ul>
 	 * 
-	 * @param propertyPath the property path for the expression, must not be null or blank
+	 * @param propertyPath the property path for the predicate, must not be null or blank
 	 * @param value the value to evaluation the path against, must not be null.
 	 * 
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 * @throws IllegalArgumentException if the value is null
-	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
+	 * @throws IllegalArgumentException if this predicate does not support the given type of {@link CriteriaValue}
 	 */
-    EqualExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
+    NotEqualPredicate(String propertyPath, CriteriaValue<?> value) {
+    	CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }
@@ -112,8 +112,8 @@ public final class EqualExpression extends AbstractExpression implements ValuedE
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "equal";
-        final static String TYPE_NAME = "EqualType";
+        final static String ROOT_ELEMENT_NAME = "notEqual";
+        final static String TYPE_NAME = "NotEqualType";
     }
     
 }

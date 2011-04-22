@@ -29,9 +29,8 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
- * An immutable expression which represents a "like" statement which is
- * evaluated the {@link CriteriaValue} of this expression.  The criteria
- * value for a like expression should support wildcards using "*".
+ * An immutable predicate which represents a "greater than" statement which is
+ * evaluated the {@link CriteriaValue} of this predicate.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
@@ -40,23 +39,25 @@ import java.util.Collection;
  * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * 
  */
-@XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = GreaterThanPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = LikeExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = GreaterThanPredicate.Constants.TYPE_NAME, propOrder = {
     CriteriaSupportUtils.PropertyConstants.VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class LikeExpression extends AbstractExpression implements ValuedExpression {
-
-	private static final long serialVersionUID = 6406122080039813800L;
+public final class GreaterThanPredicate extends AbstractPredicate implements SingleValuedPredicate {
+	    
+	private static final long serialVersionUID = 2576163857285296720L;
 	
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 
 	@XmlElements(value = {
-    		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true)
+			@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
+            @XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true),
+            @XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true)
     })
 	private final CriteriaValue<?> value;
 
@@ -64,28 +65,33 @@ public final class LikeExpression extends AbstractExpression implements ValuedEx
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
-    /**
+	/**
      * Should only be invoked by JAXB.
      */
     @SuppressWarnings("unused")
-    private LikeExpression() {
+    private GreaterThanPredicate() {
         this.propertyPath = null;
         this.value = null;
     }
     
     /**
-	 * Constructs a LikeExpression for the given path and value.  LikeExpression supports only the
-	 * {@link CriteriaStringValue}.
+	 * Constructs a GreaterThanPredicate for the given path and value.  GreaterThanPredicate supports the following {@link CriteriaValue}:
 	 * 
-	 * @param propertyPath the property path for the expression, must not be null or blank
+	 * <ul>
+	 *   <li>{@link CriteriaDateTimeValue}</li>
+	 *   <li>{@link CriteriaDecimalValue}</li>
+	 *   <li>{@link CriteriaIntegerValue}</li>
+	 * </ul>
+	 * 
+	 * @param propertyPath the property path for the predicate, must not be null or blank
 	 * @param value the value to evaluation the path against, must not be null.
 	 * 
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 * @throws IllegalArgumentException if the value is null
-	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
+	 * @throws IllegalArgumentException if this predicate does not support the given type of {@link CriteriaValue}
 	 */
-    LikeExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
+    GreaterThanPredicate(String propertyPath, CriteriaValue<?> value) {
+    	CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }
@@ -99,13 +105,13 @@ public final class LikeExpression extends AbstractExpression implements ValuedEx
 	public CriteriaValue<?> getValue() {
 		return value;
 	}
-
+    
 	/**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "like";
-        final static String TYPE_NAME = "LikeType";
+        final static String ROOT_ELEMENT_NAME = "greaterThan";
+        final static String TYPE_NAME = "GreaterThanType";
     }
     
 }

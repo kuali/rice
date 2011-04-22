@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.core.test.JAXBAssert;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,8 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.junit.Test;
-import org.kuali.rice.core.test.JAXBAssert;
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -43,7 +40,7 @@ public class NotInExpressionTest {
 	private static final String DATE_TIME_XML = "<notIn propertyPath=\"dateTimeValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></notIn>";
 	
 	/**
-	 * Test method for {@link org.kuali.rice.core.api.criteria.NotInExpression#NotInExpression(java.lang.String, java.util.List)}.
+	 * Test method for {@link NotInPredicate#NotInPredicate(java.lang.String, java.util.List)}.
 	 */
 	@Test
 	public void testInExpression() {
@@ -51,7 +48,7 @@ public class NotInExpressionTest {
 		// test failure case, null propertyPath, but a valid list
 		try {
 			CriteriaStringValue value = new CriteriaStringValue("value1");
-			new NotInExpression(null, Collections.singletonList(value));
+			new NotInPredicate(null, Collections.singletonList(value));
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -59,7 +56,7 @@ public class NotInExpressionTest {
 		
 		// test a null list
 		try {
-			new NotInExpression("property.path", null);
+			new NotInPredicate("property.path", null);
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -67,7 +64,7 @@ public class NotInExpressionTest {
 		
 		// test an empty list
 		try {
-			new NotInExpression("property.path", new ArrayList<CriteriaValue<?>>());
+			new NotInPredicate("property.path", new ArrayList<CriteriaValue<?>>());
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -80,14 +77,14 @@ public class NotInExpressionTest {
 			valueList.add(new CriteriaStringValue("gfedcabc"));
 			valueList.add(new CriteriaIntegerValue(100));
 			valueList.add(new CriteriaStringValue("should have failed by now!"));
-			new NotInExpression("property.path", valueList);
+			new NotInPredicate("property.path", valueList);
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
 		}
 		
 		// now create a valid NotInExpression
-		NotInExpression expression = createWithStringCriteria();
+		NotInPredicate expression = createWithStringCriteria();
 		assertNotNull(expression);
 		expression = createWithDecimalCriteria();
 		assertNotNull(expression);
@@ -99,11 +96,11 @@ public class NotInExpressionTest {
 	}
 
 	/**
-	 * Test method for {@link org.kuali.rice.core.api.criteria.NotInExpression#getPropertyPath()}.
+	 * Test method for {@link NotInPredicate#getPropertyPath()}.
 	 */
 	@Test
 	public void testGetPropertyPath() {
-		NotInExpression expression = createWithStringCriteria();
+		NotInPredicate expression = createWithStringCriteria();
 		assertEquals("stringValues.path", expression.getPropertyPath());
 		expression = createWithDecimalCriteria();
 		assertEquals("decimalValues.path", expression.getPropertyPath());
@@ -114,11 +111,11 @@ public class NotInExpressionTest {
 	}
 
 	/**
-	 * Test method for {@link org.kuali.rice.core.api.criteria.NotInExpression#getValues()}.
+	 * Test method for {@link NotInPredicate#getValues()}.
 	 */
 	@Test
 	public void testGetValues() {
-		NotInExpression expression = createWithStringCriteria();
+		NotInPredicate expression = createWithStringCriteria();
 		assertEquals(3, expression.getValues().size());
 		for (CriteriaValue<?> value : expression.getValues()) {
 			assertTrue("Expression should be CriteriaStringValue", value instanceof CriteriaStringValue);
@@ -149,46 +146,46 @@ public class NotInExpressionTest {
 	@Test
 	public void testJAXB() {
 		
-		NotInExpression expression = createWithStringCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, STRING_XML, NotInExpression.class);
+		NotInPredicate expression = createWithStringCriteria();
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, STRING_XML, NotInPredicate.class);
 		
 		expression = createWithDecimalCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DECIMAL_XML, NotInExpression.class);
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DECIMAL_XML, NotInPredicate.class);
 		
 		expression = createWithIntegerCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, INTEGER_XML, NotInExpression.class);
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, INTEGER_XML, NotInPredicate.class);
 		
 		expression = createWithDateTimeCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DATE_TIME_XML, NotInExpression.class);
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DATE_TIME_XML, NotInPredicate.class);
 	}
 	
-	private static NotInExpression createWithStringCriteria() {
+	private static NotInPredicate createWithStringCriteria() {
 		List<CriteriaStringValue> valueList = new ArrayList<CriteriaStringValue>(); 
 		valueList.add(new CriteriaStringValue("abcdefg"));
 		valueList.add(new CriteriaStringValue("gfedcabc"));
 		valueList.add(new CriteriaStringValue("should have failed by now!"));
-		return new NotInExpression("stringValues.path", valueList);
+		return new NotInPredicate("stringValues.path", valueList);
 	}
 	
-	private static NotInExpression createWithDecimalCriteria() {
+	private static NotInPredicate createWithDecimalCriteria() {
 		List<CriteriaDecimalValue> valueList = new ArrayList<CriteriaDecimalValue>(); 
 		valueList.add(new CriteriaDecimalValue(1.0));
 		valueList.add(new CriteriaDecimalValue(1.1));
 		valueList.add(new CriteriaDecimalValue(2.5));
-		return new NotInExpression("decimalValues.path", valueList);
+		return new NotInPredicate("decimalValues.path", valueList);
 	}
 	
-	private static NotInExpression createWithIntegerCriteria() {
+	private static NotInPredicate createWithIntegerCriteria() {
 		List<CriteriaIntegerValue> valueList = new ArrayList<CriteriaIntegerValue>(); 
 		valueList.add(new CriteriaIntegerValue(1));
 		valueList.add(new CriteriaIntegerValue(2));
 		valueList.add(new CriteriaIntegerValue(3));
 		valueList.add(new CriteriaIntegerValue(10));
 		valueList.add(new CriteriaIntegerValue(4));
-		return new NotInExpression("integerValues.path", valueList);
+		return new NotInPredicate("integerValues.path", valueList);
 	}
 	
-	private static NotInExpression createWithDateTimeCriteria() {
+	private static NotInPredicate createWithDateTimeCriteria() {
 		// set the date and time to January 15, 2100 at 5:30:15.500 am in the GMT timezone
 		Calendar dateTime = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		dateTime.set(Calendar.HOUR_OF_DAY, 5);
@@ -200,7 +197,7 @@ public class NotInExpressionTest {
 		dateTime.set(Calendar.YEAR, 2011);
 		List<CriteriaDateTimeValue> valueList = new ArrayList<CriteriaDateTimeValue>(); 
 		valueList.add(new CriteriaDateTimeValue(dateTime));
-		return new NotInExpression("dateTimeValues.path", valueList);
+		return new NotInPredicate("dateTimeValues.path", valueList);
 	}
 
 }

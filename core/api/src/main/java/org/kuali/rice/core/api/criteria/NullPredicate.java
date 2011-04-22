@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
- * An immutable expression which represents an "is null" statement which is
- * evaluated the property defined by the property path on this expression.
+ * An immutable predicate which represents an "is null" statement which is
+ * evaluated the property defined by the property path on this predicate.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
@@ -40,12 +40,12 @@ import java.util.Collection;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@XmlRootElement(name = NullExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = NullPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = NullExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = NullPredicate.Constants.TYPE_NAME, propOrder = {
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class NullExpression extends AbstractExpression implements PropertyPathExpression {
+public final class NullPredicate extends AbstractPredicate implements PropertyPathPredicate {
 	
 	private static final long serialVersionUID = 2397296074921454859L;
 	
@@ -60,18 +60,18 @@ public final class NullExpression extends AbstractExpression implements Property
      * Should only be invoked by JAXB.
      */
     @SuppressWarnings("unused")
-    private NullExpression() {
+    private NullPredicate() {
         this.propertyPath = null;
     }
     
     /**
-	 * Constructs a NullExpression for the given propertyPath.
+	 * Constructs a NullPredicate for the given propertyPath.
 	 * 
-	 * @param propertyPath the property path for the expression, must not be null or blank
+	 * @param propertyPath the property path for the predicate, must not be null or blank
 	 * 
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 */
-    NullExpression(String propertyPath) {
+    NullPredicate(String propertyPath) {
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}

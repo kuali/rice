@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
- * An immutable expression which represents a "greater than or equal to" statement which is
- * evaluated the {@link CriteriaValue} of this expression.
+ * An immutable predicate which represents a "less than or equal to" statement which is
+ * evaluated the {@link CriteriaValue} of this predicate.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
@@ -41,13 +41,13 @@ import java.util.Collection;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-@XmlRootElement(name = GreaterThanOrEqualExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = LessThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = GreaterThanOrEqualExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = LessThanOrEqualPredicate.Constants.TYPE_NAME, propOrder = {
     CriteriaSupportUtils.PropertyConstants.VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class GreaterThanOrEqualExpression extends AbstractExpression implements ValuedExpression {
+public final class LessThanOrEqualPredicate extends AbstractPredicate implements SingleValuedPredicate {
 	    
 	private static final long serialVersionUID = 2576163857285296720L;
 	
@@ -64,18 +64,18 @@ public final class GreaterThanOrEqualExpression extends AbstractExpression imple
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
-	
+
 	/**
      * Should only be invoked by JAXB.
      */
     @SuppressWarnings("unused")
-    private GreaterThanOrEqualExpression() {
+    private LessThanOrEqualPredicate() {
         this.propertyPath = null;
         this.value = null;
     }
     
     /**
-	 * Constructs a GreaterThanOrEqualExpression for the given path and value.  GreaterThanOrEqualExpression supports the following {@link CriteriaValue}:
+	 * Constructs a LessThanOrEqualPredicate for the given path and value.  LessThanOrEqualPredicate supports the following {@link CriteriaValue}:
 	 * 
 	 * <ul>
 	 *   <li>{@link CriteriaDateTimeValue}</li>
@@ -83,15 +83,15 @@ public final class GreaterThanOrEqualExpression extends AbstractExpression imple
 	 *   <li>{@link CriteriaIntegerValue}</li>
 	 * </ul>
 	 * 
-	 * @param propertyPath the property path for the expression, must not be null or blank
+	 * @param propertyPath the property path for the predicate, must not be null or blank
 	 * @param value the value to evaluation the path against, must not be null.
 	 * 
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 * @throws IllegalArgumentException if the value is null
-	 * @throws IllegalArgumentException if this expression does not support the given type of {@link CriteriaValue}
+	 * @throws IllegalArgumentException if this predicate does not support the given type of {@link CriteriaValue}
 	 */
-    GreaterThanOrEqualExpression(String propertyPath, CriteriaValue<?> value) {
-    	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
+    LessThanOrEqualPredicate(String propertyPath, CriteriaValue<?> value) {
+    	CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
 		this.value = value;
     }
@@ -110,8 +110,8 @@ public final class GreaterThanOrEqualExpression extends AbstractExpression imple
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "greaterThanOrEqual";
-        final static String TYPE_NAME = "GreaterThanOrEqualType";
+        final static String ROOT_ELEMENT_NAME = "lessThanOrEqual";
+        final static String TYPE_NAME = "LessThanOrEqualType";
     }
     
 }

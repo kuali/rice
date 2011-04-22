@@ -47,62 +47,62 @@ final class CriteriaSupportUtils {
     static class PropertyConstants {
     	
     	/**
-    	 * A constant representing the property name for {@link PropertyPathExpression#getPropertyPath()}
+    	 * A constant representing the property name for {@link PropertyPathPredicate#getPropertyPath()}
     	 */
         final static String PROPERTY_PATH = "propertyPath";
         
     	/**
-    	 * A constant representing the property name for {@link ValuedExpression#getValue()}
+    	 * A constant representing the property name for {@link SingleValuedPredicate#getValue()}
     	 */
         final static String VALUE = "value";
         
         /**
-         * A constant representing the method name for {@link ValuedExpression#getValue()}
+         * A constant representing the method name for {@link SingleValuedPredicate#getValue()}
          */
         final static String GET_VALUE_METHOD_NAME = "getValue";
 
         /**
-    	 * A constant representing the property name for {@link MultiValuedExpression#getValues()}
+    	 * A constant representing the property name for {@link MultiValuedPredicate#getValues()}
     	 */
         final static String VALUES = "values";
 
         /**
-         * A constant representing the method name for {@link MultiValuedExpression#getValues()}
+         * A constant representing the method name for {@link MultiValuedPredicate#getValues()}
          */
         final static String GET_VALUES_METHOD_NAME = "getValues";
     }
 
     /**
-     * Validates the various properties of a {@link ValuedExpression}. 
+     * Validates the various properties of a {@link SingleValuedPredicate}.
      * 
-     * @param valuedExpressionClass the type of the expression
-     * @param propertyPath the propertyPath which is being configured on the expression
-     * @param value the value which is being configured on the expression
+     * @param valuedPredicateClass the type of the predicate
+     * @param propertyPath the propertyPath which is being configured on the predicate
+     * @param value the value which is being configured on the predicate
      * 
      * @throws IllegalArgumentException if the propertPath is null or blank
      * @throws IllegalArgumentException if the value is null
-     * @throws IllegalArgumentException if the given {@link ValuedExpression} class does not support the {@link CriteriaValue}
+     * @throws IllegalArgumentException if the given {@link SingleValuedPredicate} class does not support the {@link CriteriaValue}
      */
-    static void validateValuedExpressionConstruction(Class<? extends ValuedExpression> valuedExpressionClass, String propertyPath, CriteriaValue<?> value) {
+    static void validateValuedConstruction(Class<? extends SingleValuedPredicate> valuedPredicateClass, String propertyPath, CriteriaValue<?> value) {
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
 		if (value == null) {
 		    throw new IllegalArgumentException("CriteriaValue cannot be null.");
 		}
-		if (!CriteriaSupportUtils.supportsCriteriaValue(valuedExpressionClass, value)) {
-		    throw new IllegalArgumentException(valuedExpressionClass.getSimpleName() + " does not support the given CriteriaValue");
+		if (!CriteriaSupportUtils.supportsCriteriaValue(valuedPredicateClass, value)) {
+		    throw new IllegalArgumentException(valuedPredicateClass.getSimpleName() + " does not support the given CriteriaValue");
 		}
     }
 
-	static boolean supportsCriteriaValue(Class<? extends ValuedExpression> simpleExpressionClass, CriteriaValue<?> value) {
-	    if (simpleExpressionClass == null) {
-	        throw new IllegalArgumentException("simpleExpressionClass was null");
+	static boolean supportsCriteriaValue(Class<? extends SingleValuedPredicate> simplePredicateClass, CriteriaValue<?> value) {
+	    if (simplePredicateClass == null) {
+	        throw new IllegalArgumentException("simplePredicateClass was null");
 	    }
 	    if (value == null) {
 	        throw new IllegalArgumentException("valueClass was null");
 	    }
-	    XmlElements elementsAnnotation = CriteriaSupportUtils.findXmlElementsAnnotation(simpleExpressionClass);
+	    XmlElements elementsAnnotation = CriteriaSupportUtils.findXmlElementsAnnotation(simplePredicateClass);
 	    if (elementsAnnotation != null) {
 	        XmlElement[] elements = elementsAnnotation.value();
 	        for (XmlElement element : elements) {
@@ -114,10 +114,10 @@ final class CriteriaSupportUtils {
 	    return false;
 	}
 	
-	private static XmlElements findXmlElementsAnnotation(Class<?> simpleExpressionClass) {
-		if (simpleExpressionClass != null) {
+	private static XmlElements findXmlElementsAnnotation(Class<?> simplePredicateClass) {
+		if (simplePredicateClass != null) {
 			try{
-				Field valueField = simpleExpressionClass.getDeclaredField(PropertyConstants.VALUE);
+				Field valueField = simplePredicateClass.getDeclaredField(PropertyConstants.VALUE);
 				XmlElements elementsAnnotation = valueField.getAnnotation(XmlElements.class);
 				if (elementsAnnotation != null) {
 					return elementsAnnotation;
@@ -126,14 +126,14 @@ final class CriteriaSupportUtils {
 				// ignore, try the method
 			}
 			try {
-				Method valueMethod = simpleExpressionClass.getDeclaredMethod(PropertyConstants.GET_VALUE_METHOD_NAME, (Class<?>[])null);
+				Method valueMethod = simplePredicateClass.getDeclaredMethod(PropertyConstants.GET_VALUE_METHOD_NAME, (Class<?>[])null);
 				XmlElements elementsAnnotation = valueMethod.getAnnotation(XmlElements.class);
 				if (elementsAnnotation == null) {
-					return CriteriaSupportUtils.findXmlElementsAnnotation(simpleExpressionClass.getSuperclass());
+					return CriteriaSupportUtils.findXmlElementsAnnotation(simplePredicateClass.getSuperclass());
 				}
 				return elementsAnnotation;
 			} catch (NoSuchMethodException e) {
-				return CriteriaSupportUtils.findXmlElementsAnnotation(simpleExpressionClass.getSuperclass());
+				return CriteriaSupportUtils.findXmlElementsAnnotation(simplePredicateClass.getSuperclass());
 			}
 		}
 		return null;
@@ -170,10 +170,10 @@ final class CriteriaSupportUtils {
 		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
 	}
 	
-	static List<CriteriaValue<?>> determineCriteriaValueList(List<? extends Object> values) {
+	static List<CriteriaValue<?>> determineCriteriaValueList(Object[] values) {
 		if (values == null) {
 			return null;
-		} else if (values.isEmpty()) {
+		} else if (values.length == 0) {
 			return Collections.emptyList();
 		}
 		List<CriteriaValue<?>> criteriaValues = new ArrayList<CriteriaValue<?>>();
@@ -185,7 +185,7 @@ final class CriteriaSupportUtils {
 	
 	/**
      * Validates the incoming list of CriteriaValue to ensure they are valid for a
-     * {@link MultiValuedExpression}.  To be valid, the following must be true:
+     * {@link MultiValuedPredicate}.  To be valid, the following must be true:
      * 
      * <ol>
      *   <li>The list of values must not be null.</li>
@@ -193,7 +193,7 @@ final class CriteriaSupportUtils {
      *   <li>The list of values must all be of the same parameterized {@link CriteriaValue} type.</li>
      * </ol>
      */
-    static void validateValuesForMultiValuedExpression(List<? extends CriteriaValue<?>> values) {
+    static void validateValuesForMultiValuedPredicate(List<? extends CriteriaValue<?>> values) {
     	if (values == null) {
     		throw new IllegalArgumentException("Criteria values cannot be null.");
     	} else if (values.isEmpty()) {

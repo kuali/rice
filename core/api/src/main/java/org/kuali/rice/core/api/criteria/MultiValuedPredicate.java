@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import java.util.List;
+
 
 /**
- * An expression which contains a property path.  The property path is used
- * to identify what portion of an object model that the expression applies
- * to in the case of a {@link Criteria} construct.
+ * Represents an predicate which contains multiple {@link CriteriaValue}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public interface PropertyPathExpression extends Expression {
+public interface MultiValuedPredicate extends PropertyPathPredicate {
 	
 	/**
-	 * Returns the property path for this expression which represents the
-	 * portion of the object model to which the expression applies.
+	 * Gets the list of criteria values for this predicate.  All values should
+	 * be of the same parameterized CriteriaValue type.  The returned list can
+	 * be empty but should never be null.
 	 * 
-	 * @return the property path
+	 * @return the list of criteria values for this predicate
 	 */
-	String getPropertyPath();
-		    
+	List<CriteriaValue<?>> getValues();
+    
 }

@@ -15,15 +15,7 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Calendar;
+import org.junit.Test;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -32,11 +24,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
- * A test for the {@link ValuedExpression} abstract base class. 
+ * A test for the {@link SingleValuedPredicate} abstract base class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -44,7 +39,7 @@ import org.junit.Test;
 public class SimpleExpressionTest {
     
     /**
-     * Test method for {@link org.kuali.rice.core.api.criteria.ValuedExpression#SimpleExpression()}.
+     * Test method for {@link SingleValuedPredicate#SimpleExpression()}.
      * 
      * This empty constructor should only be invoked by JAXB.  We will invoke to ensure that it doesn't raise an exception.
      */
@@ -58,7 +53,7 @@ public class SimpleExpressionTest {
     }
 
     /**
-     * Test method for {@link org.kuali.rice.core.api.criteria.ValuedExpression#SimpleExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+     * Test method for {@link SingleValuedPredicate#SimpleExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
      */
     @Test
     public void testSimpleExpressionStringCriteriaValueOfObject() {
@@ -108,7 +103,7 @@ public class SimpleExpressionTest {
     }
 
     /**
-     * Test method for {@link org.kuali.rice.core.api.criteria.ValuedExpression#supportsCriteriaValue(java.lang.Class, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+     * Test method for {@link SingleValuedPredicate#supportsCriteriaValue(java.lang.Class, org.kuali.rice.core.api.criteria.CriteriaValue)}.
      */
     @Test
     public void testSupportsCriteriaValue() {
@@ -130,7 +125,7 @@ public class SimpleExpressionTest {
         }
         
         try {
-        	CriteriaSupportUtils.supportsCriteriaValue(ValuedExpression.class, null);
+        	CriteriaSupportUtils.supportsCriteriaValue(SingleValuedPredicate.class, null);
             fail("IllegalArgumentException should have been thrown.");
         } catch (IllegalArgumentException e) {
             // expected exception
@@ -153,10 +148,10 @@ public class SimpleExpressionTest {
      * 
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    @XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
+    @XmlRootElement(name = LikePredicate.Constants.ROOT_ELEMENT_NAME)
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "AllExpressionType")
-    private static final class AllExpression extends AbstractExpression implements ValuedExpression {
+    private static final class AllExpression extends AbstractPredicate implements SingleValuedPredicate {
 
     	private static final long serialVersionUID = -5606375770690671272L;
     	
@@ -176,7 +171,7 @@ public class SimpleExpressionTest {
         }
         
         public AllExpression(String propertyPath, CriteriaValue<?> value) {
-        	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
+        	CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
     		this.propertyPath = propertyPath;
     		this.value = value;
         }
@@ -198,10 +193,10 @@ public class SimpleExpressionTest {
      * 
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    @XmlRootElement(name = LikeExpression.Constants.ROOT_ELEMENT_NAME)
+    @XmlRootElement(name = LikePredicate.Constants.ROOT_ELEMENT_NAME)
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "StringOnlyExpressionType")
-    private static final class StringOnlyExpression extends AbstractExpression implements ValuedExpression {
+    private static final class StringOnlyExpression extends AbstractPredicate implements SingleValuedPredicate {
 
     	private static final long serialVersionUID = 5874946840884110187L;
     	
@@ -218,7 +213,7 @@ public class SimpleExpressionTest {
         }
         
         public StringOnlyExpression(String propertyPath, CriteriaValue<?> value) {
-        	CriteriaSupportUtils.validateValuedExpressionConstruction(getClass(), propertyPath, value);
+        	CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
     		this.propertyPath = propertyPath;
     		this.value = value;
         }

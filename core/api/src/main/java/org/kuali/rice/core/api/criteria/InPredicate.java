@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An immutable expression which represents a "not in" statement which is
+ * An immutable predicate which represents an "in" statement which is
  * evaluated against a list of values.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
@@ -44,16 +44,16 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = NotInExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = InPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = NotInExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = InPredicate.Constants.TYPE_NAME, propOrder = {
     CriteriaSupportUtils.PropertyConstants.VALUES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class NotInExpression extends AbstractExpression implements MultiValuedExpression {
-
-	private static final long serialVersionUID = -7676442296587603655L;
+public final class InPredicate extends AbstractPredicate implements MultiValuedPredicate {
 	
+	private static final long serialVersionUID = -1888858317314153374L;
+
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 
@@ -73,35 +73,34 @@ public final class NotInExpression extends AbstractExpression implements MultiVa
      * Should only be invoked by JAXB.
      */
     @SuppressWarnings("unused")
-    private NotInExpression() {
+    private InPredicate() {
         this.propertyPath = null;
         this.values = null;
     }
     
     /**
-	 * Constructs a NotInExpression for the given propertyPath and list of criteria values.
+	 * Constructs an InPredicate for the given propertyPath and list of criteria values.
 	 * 
-	 * @param propertyPath the property path for the expression, must not be null or blank
-	 * @param values the list of criteria values to use for this expression, must be non-null,
+	 * @param propertyPath the property path for the predicate, must not be null or blank
+	 * @param values the list of criteria values to use for this predicate, must be non-null,
 	 * non-empty, and all CriteriaValues contained within must be of the same type.
 	 * 
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 * @throws IllegalArgumentException if the list of values is null, empty, or contains {@link CriteriaValue} of different types
 	 */
-    NotInExpression(String propertyPath, List<? extends CriteriaValue<?>> values) {
+    InPredicate(String propertyPath, List<? extends CriteriaValue<?>> values) {
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
-    	CriteriaSupportUtils.validateValuesForMultiValuedExpression(values);
+    	CriteriaSupportUtils.validateValuesForMultiValuedPredicate(values);
 		this.propertyPath = propertyPath;
-
-        if (values == null) {
+		if (values == null) {
             this.values = new ArrayList<CriteriaValue<?>>();
         } else {
             this.values = new ArrayList<CriteriaValue<?>>(values);
         }
     }
-
+    
     @Override
     public String getPropertyPath() {
     	return propertyPath;
@@ -116,8 +115,8 @@ public final class NotInExpression extends AbstractExpression implements MultiVa
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "notIn";
-        final static String TYPE_NAME = "NotInType";
+        final static String ROOT_ELEMENT_NAME = "in";
+        final static String TYPE_NAME = "InType";
     }
     
 }

@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.core.test.JAXBAssert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
 
-import org.junit.Test;
-import org.kuali.rice.core.test.JAXBAssert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
- * A test for the {@link LikeExpression} class. 
+ * A test for the {@link LikePredicate} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -35,7 +35,7 @@ public class LikeExpressionTest {
 	private static final String STRING_XML = "<like propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>value*</stringValue></like>";	
 	
 	/**
-	 * Test method for {@link org.kuali.rice.core.api.criteria.LikeExpression#LikeExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+	 * Test method for {@link LikePredicate#LikePredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
 	 * 
 	 * <p>LikeExpression only supports CriteriaStringValue
 	 */
@@ -43,25 +43,25 @@ public class LikeExpressionTest {
 	public void testLikeExpression() {
 		
 		// Test that it can take a CriteriaStringValue
-		LikeExpression likeExpression = new LikeExpression("property.path", new CriteriaStringValue("value*"));
+		LikePredicate likeExpression = new LikePredicate("property.path", new CriteriaStringValue("value*"));
 		assertEquals("property.path", likeExpression.getPropertyPath());
 		assertEquals("value*", likeExpression.getValue().getValue());
 		
 		// Doesn't support decimal, integer, or dateTime criteria values
 		try {
-			new LikeExpression("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
+			new LikePredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 			fail("Should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected exception
 		}
 		try {
-			new LikeExpression("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
+			new LikePredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 			fail("Should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected exception
 		}
 		try {
-			new LikeExpression("property.path", new CriteriaDateTimeValue(Calendar.getInstance()));
+			new LikePredicate("property.path", new CriteriaDateTimeValue(Calendar.getInstance()));
 			fail("Should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -69,7 +69,7 @@ public class LikeExpressionTest {
 		
 		// test failure cases, should throw IllegalArgumentException when null is passed
 		try {
-			new LikeExpression(null, null);
+			new LikePredicate(null, null);
 			fail("Should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -82,8 +82,8 @@ public class LikeExpressionTest {
 	 */
 	@Test
 	public void testJAXB() {
-		LikeExpression likeExpression = new LikeExpression("property.path", new CriteriaStringValue("value*"));
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(likeExpression, STRING_XML, LikeExpression.class);		
+		LikePredicate likeExpression = new LikePredicate("property.path", new CriteriaStringValue("value*"));
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(likeExpression, STRING_XML, LikePredicate.class);
 	}
 
 }

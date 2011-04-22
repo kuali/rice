@@ -20,13 +20,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * An abstract class from which all {@link Expression} instances should extend.
+ * An abstract class from which all {@link Predicate} instances should extend.
  * This class merely defines standard implementations for hashCode, equals,
  * and toString.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract class AbstractExpression implements Expression {
+abstract class AbstractPredicate implements Predicate {
 
 	private static final long serialVersionUID = 7035792141358213138L;
 

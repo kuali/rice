@@ -15,20 +15,21 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
-import java.util.List;
 
 /**
- * An immutable composite expression which implements "or-ing" of multiple
- * expressions together. 
+ * An immutable predicate which represents an "is not null" statement which is
+ * evaluated the property defined by the property path on this predicate.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
@@ -37,46 +38,57 @@ import java.util.List;
  * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
  */
-@XmlRootElement(name = OrExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = NotNullPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = OrExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = NotNullPredicate.Constants.TYPE_NAME, propOrder = {
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class OrExpression extends AbstractCompositeExpression {
+public final class NotNullPredicate extends AbstractPredicate implements PropertyPathPredicate {
 	
-	private static final long serialVersionUID = -6575256900578172242L;
+	private static final long serialVersionUID = 6723462533500402423L;
+
+	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
+	private final String propertyPath;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
 	/**
-	 * Used only by JAXB for construction.
-	 */
-	@SuppressWarnings("unused")
-	private OrExpression() {
-		super();
-	}
-	
-	/**
-	 * Construct an "Or" expression from the given list of expressions.  The given list
-	 * of expressions can be null or empty.  If the list is null then it will be
-	 * translated internally to an empty list.
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
+    private NotNullPredicate() {
+        this.propertyPath = null;
+    }
+    
+    /**
+	 * Constructs a NotNullPredicate for the given propertyPath.
 	 * 
-	 * @param expressions the List of expressions to set on the And expression
+	 * @param propertyPath the property path for the predicate, must not be null or blank
+	 * 
+	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 */
-	OrExpression(List<Expression> expressions) {
-	    //don't worry about defensive copy of list here - super class takes care of it.
-        super(expressions);
-	}
-	
+    NotNullPredicate(String propertyPath) {
+    	if (StringUtils.isBlank(propertyPath)) {
+			throw new IllegalArgumentException("Property path cannot be null or blank.");
+		}
+		this.propertyPath = propertyPath;
+    }
+
+    @Override
+    public String getPropertyPath() {
+    	return propertyPath;
+    }
+        
 	/**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "or";
-        final static String TYPE_NAME = "OrType";
+        final static String ROOT_ELEMENT_NAME = "notNull";
+        final static String TYPE_NAME = "NotNullType";
     }
-
+    
 }

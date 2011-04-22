@@ -27,20 +27,20 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * An immutable composite expression which implements "and-ing" of multiple
- * expressions together. 
+ * An immutable composite predicate which implements "and-ing" of multiple
+ * predicates together.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = AndExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = AndPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = AndExpression.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = AndPredicate.Constants.TYPE_NAME, propOrder = {
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AndExpression extends AbstractCompositeExpression {
+public final class AndPredicate extends AbstractCompositePredicate {
 	
 	private static final long serialVersionUID = -6575256900578172242L;
 
@@ -52,20 +52,20 @@ public final class AndExpression extends AbstractCompositeExpression {
 	 * Used only by JAXB for construction.
 	 */
 	@SuppressWarnings("unused")
-	private AndExpression() {
+	private AndPredicate() {
 		super();
 	}
 	
 	/**
-	 * Construct an "And" expression from the given list of expressions.  The given list
-	 * of expressions can be null or empty.  If the list is null then it will be
+	 * Construct an "And" predicate from the given list of predicates.  The given list
+	 * of predicates can be null or empty.  If the list is null then it will be
 	 * translated internally to an empty list.
 	 * 
-	 * @param expressions the List of expressions to set on the And expression
+	 * @param predicates the List of predicates to set on the And predicate
 	 */
-	AndExpression(List<Expression> expressions) {
+	AndPredicate(List<Predicate> predicates) {
         //don't worry about defensive copy of list here - super class takes care of it.
-	    super(expressions);
+	    super(predicates);
 	}
 	
 	/**

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.w3c.dom.Element;
 
@@ -27,14 +26,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
- * An immutable expression which represents an "in" statement which is
- * evaluated against a list of values.
+ * An immutable predicate which represents a "less than" statement which is
+ * evaluated the {@link CriteriaValue} of this predicate.
  * 
  * <p>Constructed as part of a {@link Criteria} when built using a
  * {@link CriteriaBuilder}.
@@ -43,27 +39,27 @@ import java.util.List;
  * @see CriteriaBuilder
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
  */
-@XmlRootElement(name = InExpression.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = LessThanPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = InExpression.Constants.TYPE_NAME, propOrder = {
-    CriteriaSupportUtils.PropertyConstants.VALUES,
+@XmlType(name = LessThanPredicate.Constants.TYPE_NAME, propOrder = {
+    CriteriaSupportUtils.PropertyConstants.VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class InExpression extends AbstractExpression implements MultiValuedExpression {
+public final class LessThanPredicate extends AbstractPredicate implements SingleValuedPredicate {
+	    
+	private static final long serialVersionUID = 2576163857285296720L;
 	
-	private static final long serialVersionUID = -1888858317314153374L;
-
 	@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
 	private final String propertyPath;
 
 	@XmlElements(value = {
-            @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
-            @XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
+			@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
             @XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true),
-            @XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true)
-	})
-	private final List<? extends CriteriaValue<?>> values;
+            @XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true)
+    })
+	private final CriteriaValue<?> value;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -73,32 +69,31 @@ public final class InExpression extends AbstractExpression implements MultiValue
      * Should only be invoked by JAXB.
      */
     @SuppressWarnings("unused")
-    private InExpression() {
+    private LessThanPredicate() {
         this.propertyPath = null;
-        this.values = null;
+        this.value = null;
     }
     
     /**
-	 * Constructs an InExpression for the given propertyPath and list of criteria values.
+	 * Constructs a LessThanPredicate for the given path and value.  LessThanPredicate supports the following {@link CriteriaValue}:
 	 * 
-	 * @param propertyPath the property path for the expression, must not be null or blank
-	 * @param values the list of criteria values to use for this expression, must be non-null,
-	 * non-empty, and all CriteriaValues contained within must be of the same type.
+	 * <ul>
+	 *   <li>{@link CriteriaDateTimeValue}</li>
+	 *   <li>{@link CriteriaDecimalValue}</li>
+	 *   <li>{@link CriteriaIntegerValue}</li>
+	 * </ul>
+	 * 
+	 * @param propertyPath the property path for the predicate, must not be null or blank
+	 * @param value the value to evaluation the path against, must not be null.
 	 * 
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
-	 * @throws IllegalArgumentException if the list of values is null, empty, or contains {@link CriteriaValue} of different types
+	 * @throws IllegalArgumentException if the value is null
+	 * @throws IllegalArgumentException if this predicate does not support the given type of {@link CriteriaValue}
 	 */
-    InExpression(String propertyPath, List<? extends CriteriaValue<?>> values) {
-    	if (StringUtils.isBlank(propertyPath)) {
-			throw new IllegalArgumentException("Property path cannot be null or blank.");
-		}
-    	CriteriaSupportUtils.validateValuesForMultiValuedExpression(values);
+    LessThanPredicate(String propertyPath, CriteriaValue<?> value) {
+    	CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
 		this.propertyPath = propertyPath;
-		if (values == null) {
-            this.values = new ArrayList<CriteriaValue<?>>();
-        } else {
-            this.values = new ArrayList<CriteriaValue<?>>(values);
-        }
+		this.value = value;
     }
     
     @Override
@@ -106,17 +101,17 @@ public final class InExpression extends AbstractExpression implements MultiValue
     	return propertyPath;
     }
     
-    @Override
-    public List<CriteriaValue<?>> getValues() {
-    	return Collections.unmodifiableList(values);
-    }
-        
+	@Override
+	public CriteriaValue<?> getValue() {
+		return value;
+	}
+    
 	/**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "in";
-        final static String TYPE_NAME = "InType";
+        final static String ROOT_ELEMENT_NAME = "lessThan";
+        final static String TYPE_NAME = "LessThanType";
     }
     
 }

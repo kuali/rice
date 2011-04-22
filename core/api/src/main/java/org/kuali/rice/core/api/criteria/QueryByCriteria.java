@@ -15,21 +15,22 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.Collection;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Defines a criteria-based query.  Consists of a {@link Criteria} definition
@@ -59,7 +60,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = QueryByCriteria.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = QueryByCriteria.Constants.TYPE_NAME, propOrder = {
-		QueryByCriteria.Elements.CRITERIA,
+		QueryByCriteria.Elements.PREDICATE,
 		QueryByCriteria.Elements.START_AT_INDEX,
 		QueryByCriteria.Elements.MAX_RESULTS,
 		QueryByCriteria.Elements.COUNT_FLAG,
@@ -68,8 +69,23 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 
 	private static final long serialVersionUID = 2210627777648920180L;
 
-	@XmlElement(name = Elements.CRITERIA, required = true)
-	private final Criteria criteria;
+    @XmlElements(value = {
+        @XmlElement(name = AndPredicate.Constants.ROOT_ELEMENT_NAME, type = AndPredicate.class, required = true),
+        @XmlElement(name = EqualPredicate.Constants.ROOT_ELEMENT_NAME, type = EqualPredicate.class, required = true),
+        @XmlElement(name = GreaterThanPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanPredicate.class, required = true),
+        @XmlElement(name = GreaterThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanOrEqualPredicate.class, required = true),
+        @XmlElement(name = InPredicate.Constants.ROOT_ELEMENT_NAME, type = InPredicate.class, required = true),
+        @XmlElement(name = LessThanPredicate.Constants.ROOT_ELEMENT_NAME, type = LessThanPredicate.class, required = true),
+        @XmlElement(name = LessThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = LessThanOrEqualPredicate.class, required = true),
+        @XmlElement(name = LikePredicate.Constants.ROOT_ELEMENT_NAME, type = LikePredicate.class, required = true),
+        @XmlElement(name = NotEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = NotEqualPredicate.class, required = true),
+        @XmlElement(name = NotInPredicate.Constants.ROOT_ELEMENT_NAME, type = NotInPredicate.class, required = true),
+        @XmlElement(name = NotLikePredicate.Constants.ROOT_ELEMENT_NAME, type = NotLikePredicate.class, required = true),
+        @XmlElement(name = NotNullPredicate.Constants.ROOT_ELEMENT_NAME, type = NotNullPredicate.class, required = true),
+        @XmlElement(name = NullPredicate.Constants.ROOT_ELEMENT_NAME, type = NullPredicate.class, required = true),
+        @XmlElement(name = OrPredicate.Constants.ROOT_ELEMENT_NAME, type = OrPredicate.class, required = true)
+    })
+	private final Predicate predicate;
 	
 	@XmlElement(name = Elements.START_AT_INDEX, required = false)
 	private final Integer startAtIndex;
@@ -80,22 +96,35 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	@XmlElement(name = Elements.COUNT_FLAG, required = true)
 	private final CountFlag countFlag;
 
+    private final String queryClass;
+
 	@SuppressWarnings("unused")
 	@XmlAnyElement
 	private final Collection<Element> _futureElements = null;
 
 	private QueryByCriteria() {
-		this.criteria = null;
+		this.predicate = null;
 		this.startAtIndex = null;
 		this.maxResults = null;
 		this.countFlag = null;
+        this.queryClass = null;
 	}
 
 	private QueryByCriteria(Builder<T> builder) {
-		this.criteria = builder.getCriteriaBuilder().build();
+		final Predicate[] preds = builder.predicates;
+        if (preds != null && preds.length > 1) {
+            //implicit "and"
+            this.predicate = PredicateFactory.and(builder.predicates);
+        } else if (preds != null && preds.length == 1) {
+            this.predicate = builder.predicates[0];
+        } else {
+            this.predicate = null;
+        }
+
 		this.startAtIndex = builder.getStartAtIndex();
 		this.maxResults = builder.getMaxResults();
 		this.countFlag = builder.getCountFlag();
+        this.queryClass = builder.getQueryClass().getName();
 	}
 
 	/**
@@ -103,8 +132,8 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	 * 
 	 * @return the criteria defined on the query, should never be null
 	 */
-	public Criteria getCriteria() {
-		return this.criteria;
+	public Predicate getPredicate() {
+		return this.predicate;
 	}
 
 	/**
@@ -166,23 +195,27 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 
 	public static final class Builder<T> {
 
-		private final CriteriaBuilder<T> criteriaBuilder;
+		private Predicate[] predicates;
 		private Integer startAtIndex;
 		private Integer maxResults;
-		private boolean includeCount;
 		private CountFlag countFlag;
+        private final Class<T> queryClass;
 
 		private Builder(Class<T> queryClass) {
-			this.criteriaBuilder = CriteriaBuilder.newCriteriaBuilder(queryClass);
 			this.countFlag = CountFlag.NONE;
+            this.queryClass = queryClass;
 		}
 
 		public static <T> Builder<T> create(Class<T> queryClass) {
-			return new Builder<T>(queryClass);
+			if (queryClass == null) {
+                throw new IllegalArgumentException("the queryClass is null");
+            }
+
+            return new Builder<T>(queryClass);
 		}
 
-		public QueryByCriteria<T> build() {
-			return new QueryByCriteria<T>(this);
+        public Class<T> getQueryClass() {
+			return this.queryClass;
 		}
 
 		public Integer getStartAtIndex() {
@@ -190,7 +223,7 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		}
 
 		public void setStartAtIndex(Integer startAtIndex) {
-			this.startAtIndex = startAtIndex;
+                this.startAtIndex = startAtIndex;
 		}
 
 		public Integer getMaxResults() {
@@ -201,14 +234,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 			this.maxResults = maxResults;
 		}
 
-		public boolean isIncludeCount() {
-			return this.includeCount;
-		}
-
-		public void setIncludeCount(boolean includeCount) {
-			this.includeCount = includeCount;
-		}
-
 		public CountFlag getCountFlag() {
 			return this.countFlag;
 		}
@@ -217,10 +242,23 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 			this.countFlag = countFlag;
 		}
 
-		public CriteriaBuilder<T> getCriteriaBuilder() {
-			return this.criteriaBuilder;
+		public Predicate[] getPredicates() {
+			if (this.predicates == null) {
+                return null;
+            }
+
+			//defensive copies on array
+            return Arrays.copyOf(predicates, predicates.length);
 		}
 
+        public void setPredicates(Predicate... predicates) {
+            if (predicates == null) {
+
+            }
+
+            //defensive copies on array
+            this.predicates = Arrays.copyOf(predicates, predicates.length);
+		}
 	}
 
 	/**
@@ -237,10 +275,11 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	 * names to use when this object is marshaled to XML.
 	 */
 	static class Elements {
-		final static String CRITERIA = "criteria";
+		final static String PREDICATE = "predicate";
 		final static String START_AT_INDEX = "startAtIndex";
 		final static String MAX_RESULTS = "maxResults";
 		final static String COUNT_FLAG = "countFlag";
+        final static String QUERY_CLASS = "queryClass";
 	}
 
 }

@@ -58,8 +58,10 @@
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
-
-	<bean id="dateTimeService" class="org.kuali.rice.core.impl.datetime.DateTimeServiceImpl"/>
+	
+	<bean id="dateTimeService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dateTimeService" />
+    </bean>
 	
 	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">

@@ -82,6 +82,8 @@
 	<bean id="mailer" class="org.kuali.rice.core.mail.Mailer">
 	   <property name="mailSender" ref="mailSender" />
 	</bean>
+	
+	<bean id="dateTimeService" class="org.kuali.rice.core.impl.datetime.DateTimeServiceImpl"/>
 
 	<bean id="xmlImpexRegistry" class="org.kuali.rice.core.impl.impex.xml.XmlImpexRegistryImpl" />
 

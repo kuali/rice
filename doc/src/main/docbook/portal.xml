@@ -15,10 +15,10 @@
     <sect1>
         <title>Release Documentation</title>
         <itemizedlist>
-            <listitem>Release Notes (<link xlink:href="release-notes.xhtml">HTML</link> / <link xlink:href="release-notes.pdf">PDF</link> )</listitem>
-            <listitem>Installation Guide (<link xlink:href="IG.xhtml">HTML</link> / <link xlink:href="IG.pdf">PDF</link> )</listitem>
-            <listitem>User Guide (<link xlink:href="UG.xhtml">HTML</link> / <link xlink:href="UG.pdf">PDF</link> )</listitem>
-            <listitem>Technical Guide (<link xlink:href="TRG.xhtml">HTML</link> / <link xlink:href="TRG.pdf">PDF</link> )</listitem>
+            <listitem>Release Notes (<link xlink:href="release-notes.html">single-page HTML</link> / <link xlink:href="../pdf/release-notes.pdf">PDF</link> )</listitem>
+            <listitem>Installation Guide (<link xlink:href="IG.html">single-page HTML</link> / <link xlink:href="../html-multi/IG.html">multi-page HTML</link> /<link xlink:href="../pdf/IG.pdf">PDF</link> )</listitem>
+            <listitem>User Guide (<link xlink:href="UG.html">single-page HTML</link> / <link xlink:href="../pdf/UG.pdf">PDF</link> )</listitem>
+            <listitem>Technical Guide (<link xlink:href="TRG.html">single-page HTML</link> / <link xlink:href="../pdf/TRG.pdf">PDF</link> )</listitem>
             <listitem><link xlink:href="http://kuali.org/rice/documentation/1.0.3/db_docs/schema.html">Database Documentation</link></listitem>
             <listitem>
                 <itemizedlist>
@@ -32,7 +32,7 @@
                     <listitem>RiceKRSB_QRTZ (<link xlink:href=".png">png*</link> / <link xlink:href=".png">pdf</link>)</listitem>
                 </itemizedlist>
             </listitem>
-            <listitem><link xlink:href="licensing.xhtml">Licensing and Acknowledgments</link></listitem>
+            <listitem><link xlink:href="licensing.html">Licensing and Acknowledgments</link></listitem>
             <listitem><link xlink:href="http://kuali.org/rice/docs/${pom.version}/site/apidocs">Javadocs</link></listitem>
         </itemizedlist> 
         <para>*It is suggested to view the diagrams as .PDFs in Internet Explorer, as the size of the diagrams might result in illegible viewing of the PNGs in IE.</para>                    

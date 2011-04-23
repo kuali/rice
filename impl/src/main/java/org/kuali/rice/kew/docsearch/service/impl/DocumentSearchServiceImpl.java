@@ -25,6 +25,7 @@ import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
@@ -847,7 +848,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		if(sqlBuilder == null){
 			sqlBuilder = new SqlBuilder();
 			sqlBuilder.setDbPlatform((DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM));
-			sqlBuilder.setDateTimeService(KNSServiceLocator.getDateTimeService());
+			sqlBuilder.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
 		}
 		return this.sqlBuilder;
 	}

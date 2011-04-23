@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.NoOpStringFormatter;
@@ -301,7 +302,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         
         String createDateStr = null;
         if(workflowDocument != null && workflowDocument.getCreateDate() != null) {
-            createDateStr = KNSServiceLocator.getDateTimeService().toString(workflowDocument.getCreateDate(), "hh:mm a MM/dd/yyyy");
+            createDateStr = CoreApiServiceLocator.getDateTimeService().toString(workflowDocument.getCreateDate(), "hh:mm a MM/dd/yyyy");
         }
         
         HeaderField docCreateDate = new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.createDate", createDateStr);

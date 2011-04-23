@@ -1,6 +1,7 @@
 package org.kuali.rice.core.api.services;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
 import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
@@ -38,4 +39,8 @@ public class CoreApiServiceLocator {
     public static StyleService getStyleService() {
     	return getService(STYLE_SERVICE);
     }
+
+	public static DateTimeService getDateTimeService() {
+	    return getService(CoreConstants.Services.DATETIME_SERVICE);
+	}
 }

@@ -16,10 +16,10 @@
 package org.kuali.rice.kns.web.spring.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -133,7 +133,7 @@ public class DocumentFormBase extends UifFormBase {
 	public String getDocumentCreateDate() {
 		String createDateStr = "";
 		if (getWorkflowDocument() != null && getWorkflowDocument().getCreateDate() != null) {
-			createDateStr = KNSServiceLocator.getDateTimeService().toString(getWorkflowDocument().getCreateDate(),
+			createDateStr = CoreApiServiceLocator.getDateTimeService().toString(getWorkflowDocument().getCreateDate(),
 					"hh:mm a MM/dd/yyyy");
 		}
 

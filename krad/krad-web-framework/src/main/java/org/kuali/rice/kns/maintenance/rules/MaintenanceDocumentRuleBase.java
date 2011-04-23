@@ -1535,7 +1535,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     public DateTimeService getDateTimeService() {
-        return KNSServiceLocator.getDateTimeService();
+        return CoreApiServiceLocator.getDateTimeService();
     }
 
     /**

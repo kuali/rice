@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.DateFormatter;
@@ -53,7 +54,6 @@ import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -579,8 +579,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		java.sql.Timestamp lVal = null;
     		java.sql.Timestamp uVal = null;
     		try{
-    			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
-    			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(1));
+    			lVal = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(0));
+    			uVal = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(1));
     		}catch(Exception ex){
     			// this shouldn't happen because the tests passed above.
     			String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(objectClassName, attributeName);

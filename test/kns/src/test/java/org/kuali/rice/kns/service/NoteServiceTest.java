@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.util.NoteType;
 import org.kuali.test.KNSTestCase;
@@ -38,7 +39,7 @@ public class NoteServiceTest extends KNSTestCase {
     @Test public void testNoteSave_LargePersonId() throws Exception {
         Note note = new Note();
         note.setAuthorUniversalIdentifier("superLongNameUsersFromWorkflow");
-        note.setNotePostedTimestamp(KNSServiceLocator.getDateTimeService().getCurrentTimestamp());
+        note.setNotePostedTimestamp(CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp());
         note.setNoteText("i like notes");
         note.setRemoteObjectIdentifier("1209348109834u");
         note.setNoteTypeCode(NoteType.BUSINESS_OBJECT.getCode());

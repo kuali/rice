@@ -16,11 +16,11 @@
 package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -148,7 +148,7 @@ public final class Utilities {
 
     public static boolean checkDateRanges(String fromDate, String toDate) {
         try {
-            Date parsedDate = KNSServiceLocator.getDateTimeService().convertToDate(fromDate.trim());
+            Date parsedDate = CoreApiServiceLocator.getDateTimeService().convertToDate(fromDate.trim());
             Calendar fromCalendar = Calendar.getInstance();
             fromCalendar.setLenient(false);
             fromCalendar.setTime(parsedDate);
@@ -156,7 +156,7 @@ public final class Utilities {
             fromCalendar.set(Calendar.MINUTE, 0);
             fromCalendar.set(Calendar.SECOND, 0);
             fromCalendar.set(Calendar.MILLISECOND, 0);
-            parsedDate = KNSServiceLocator.getDateTimeService().convertToDate(toDate.trim());
+            parsedDate = CoreApiServiceLocator.getDateTimeService().convertToDate(toDate.trim());
             Calendar toCalendar = Calendar.getInstance();
             toCalendar.setLenient(false);
             toCalendar.setTime(parsedDate);

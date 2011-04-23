@@ -17,10 +17,10 @@ package org.kuali.rice.kns.document.authorization;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -84,7 +84,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
         this.documentNumber = documentNumber;
         this.ownedByPrincipalIdentifier = user.getPrincipalId();
         this.lockDescriptor = lockDescriptor;  
-        this.generatedTimestamp = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
+        this.generatedTimestamp = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
     }
     
     public boolean isOwnedByUser(Person user) {

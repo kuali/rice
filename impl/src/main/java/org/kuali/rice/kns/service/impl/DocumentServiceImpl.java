@@ -19,6 +19,7 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
@@ -896,7 +897,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     private synchronized DateTimeService getDateTimeService() {
         if (this.dateTimeService == null) {
-            this.dateTimeService = KNSServiceLocator.getDateTimeService();
+            this.dateTimeService = CoreApiServiceLocator.getDateTimeService();
         }
         return this.dateTimeService;
     }

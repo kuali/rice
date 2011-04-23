@@ -21,6 +21,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
@@ -38,7 +39,6 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -158,7 +158,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         						memberSubCrit.addLike(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
 
                    	        	// KULRICE-4232: Only return groups that the principal is an active member of.
-                   	        	Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
+                   	        	Timestamp now = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
                    	        	Criteria afterActiveFromSubCrit = new Criteria();
                    	        	afterActiveFromSubCrit.addLessOrEqualThan(KIMPropertyConstants.GroupMember.ACTIVE_FROM_DATE, now);
                     	        Criteria nullActiveFromSubCrit = new Criteria();

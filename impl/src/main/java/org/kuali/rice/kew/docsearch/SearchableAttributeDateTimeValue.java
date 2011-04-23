@@ -19,13 +19,13 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -103,7 +103,7 @@ public class SearchableAttributeDateTimeValue implements SearchableAttributeValu
         } else {
             Timestamp t;
             try {
-            	t = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(value);
+            	t = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(value);
             } catch (ParseException e) {
             	t = null;
             }

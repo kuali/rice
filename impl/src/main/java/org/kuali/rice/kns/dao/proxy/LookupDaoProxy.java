@@ -18,6 +18,7 @@ package org.kuali.rice.kns.dao.proxy;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.dao.LookupDao;
@@ -72,7 +73,7 @@ public class LookupDaoProxy implements LookupDao {
                 		if (entityManager != null) {
                 			classSpecificLookupDaoJpa.setEntityManager(entityManager);
                 			classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-                        	classSpecificLookupDaoJpa.setDateTimeService(KNSServiceLocator.getDateTimeService());
+                        	classSpecificLookupDaoJpa.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
                 			lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
                 			return classSpecificLookupDaoJpa;
                 		} else {
@@ -82,7 +83,7 @@ public class LookupDaoProxy implements LookupDao {
 						LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
                         classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
                         classSpecificLookupDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-                        classSpecificLookupDaoOjb.setDateTimeService(KNSServiceLocator.getDateTimeService());
+                        classSpecificLookupDaoOjb.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
                         classSpecificLookupDaoOjb.setBusinessObjectDictionaryService(KNSServiceLocatorWeb.getBusinessObjectDictionaryService());
                         lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
                         return classSpecificLookupDaoOjb;

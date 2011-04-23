@@ -16,8 +16,6 @@
 
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
@@ -52,10 +50,6 @@ public class KNSServiceLocator {
 
     public static PersistenceStructureService getPersistenceStructureService() {
         return getService(PERSISTENCE_STRUCTURE_SERVICE);
-    }
-
-    public static DateTimeService getDateTimeService() {
-        return getService(CoreConstants.Services.DATETIME_SERVICE);
     }
 
     public static NoteService getNoteService() {

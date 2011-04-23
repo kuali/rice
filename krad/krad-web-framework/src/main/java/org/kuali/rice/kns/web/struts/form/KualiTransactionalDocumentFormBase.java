@@ -22,10 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -94,7 +94,7 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
             return "";
         }
         // new for thread safety
-        return KNSServiceLocator.getDateTimeService().toString(reversalDate, "MMM d, yyyy");
+        return CoreApiServiceLocator.getDateTimeService().toString(reversalDate, "MMM d, yyyy");
     }
 
     /**

@@ -16,9 +16,9 @@
 package org.kuali.rice.kns.datadictionary.validation.processor;
 
 import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
@@ -62,7 +62,7 @@ public abstract class MandatoryElementConstraintProcessor<C extends Constraint> 
 	 */
 	public DateTimeService getDateTimeService() {
 		if (dateTimeService == null)
-			dateTimeService = KNSServiceLocator.getDateTimeService();
+			dateTimeService = CoreApiServiceLocator.getDateTimeService();
 		
 		return this.dateTimeService;
 	}

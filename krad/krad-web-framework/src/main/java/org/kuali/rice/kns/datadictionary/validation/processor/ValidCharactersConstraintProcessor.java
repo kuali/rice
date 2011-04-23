@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.logic.LogicalOperator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
@@ -34,7 +35,6 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersCo
 import org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -235,8 +235,8 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 		java.sql.Timestamp lVal = null;
 		java.sql.Timestamp uVal = null;
 		try {
-			lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(firstDateTime);
-			uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(secondDateTime);
+			lVal = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(firstDateTime);
+			uVal = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(secondDateTime);
 		} catch (Exception ex){
 			// this shouldn't happen because the tests passed above.
 			String errorMessageKey = KNSServiceLocatorWeb.getDataDictionaryService().getAttributeValidatingErrorMessageKey(entryName, attributeName);

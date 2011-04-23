@@ -18,9 +18,9 @@ package org.kuali.rice.kns.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 import javax.persistence.*;
@@ -88,7 +88,7 @@ public class Note extends PersistableBusinessObjectBase {
      * Sets the {@link #setNotePostedTimestamp(Timestamp)} to the current time.
      */
     public void setNotePostedTimestampToCurrent() {
-    	final Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
+    	final Timestamp now = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
     	this.setNotePostedTimestamp(now);
     }
 

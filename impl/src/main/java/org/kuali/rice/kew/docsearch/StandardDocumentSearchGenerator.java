@@ -25,6 +25,7 @@ import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
@@ -45,7 +46,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
@@ -261,7 +261,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     private static String cleanUpperBound(String stringDate){
         try{
-            java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
+            java.sql.Timestamp dt = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
             SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
             if("00:00:00".equals(sdfTime.format(dt))){
@@ -344,8 +344,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             java.sql.Timestamp lVal = null;
             java.sql.Timestamp uVal = null;
             try{
-                lVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(lowerBound.getValue());
-                uVal = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(upperBound.getValue());
+                lVal = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(lowerBound.getValue());
+                uVal = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(upperBound.getValue());
             }catch(Exception ex){
                 LOG.error("validateBounds() " + errorMsg);
                 throw new RuntimeException(errorMsg, ex);
@@ -1761,13 +1761,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     	if(fromDate != null && !"".equals(fromDate)) {
     		try {   			
-    			KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);
+    			CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);
     		} catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
     	}
     	
         if(toDate != null && !"".equals(toDate)){
             try{
-                java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);
+                java.sql.Timestamp dt = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);
                 SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
                 if("00:00:00".equals(sdfTime.format(dt))){
@@ -1862,7 +1862,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if(sqlBuilder == null){
             sqlBuilder = new SqlBuilder();
             sqlBuilder.setDbPlatform(getDbPlatform());
-            sqlBuilder.setDateTimeService(KNSServiceLocator.getDateTimeService());
+            sqlBuilder.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
         }
         return this.sqlBuilder;
     }

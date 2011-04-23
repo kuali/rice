@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
+import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.LookupResults;
 import org.kuali.rice.kns.bo.MultipleValueLookupMetadata;
@@ -31,7 +32,6 @@ import org.kuali.rice.kns.bo.SelectedObjectIds;
 import org.kuali.rice.kns.dao.PersistedLookupMetadataDao;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.ResultRow;
@@ -48,7 +48,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
     public void persistResultsTable(String lookupResultsSequenceNumber, List<ResultRow> resultTable, String personId) throws Exception {
         String resultTableString = new String(Base64.encodeBase64(ObjectUtils.toByteArray(resultTable)));
         
-        Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
+        Timestamp now = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
         
         LookupResults lookupResults = retrieveLookupResults(lookupResultsSequenceNumber);
         if (lookupResults == null) {
@@ -74,7 +74,7 @@ public class LookupResultsServiceImpl implements LookupResultsService {
         selectedObjectIdsBO.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
         selectedObjectIdsBO.setLookupPersonId(personId);
         selectedObjectIdsBO.setSelectedObjectIds(LookupUtils.convertSetOfObjectIdsToString(selectedObjectIds));
-        selectedObjectIdsBO.setLookupDate(KNSServiceLocator.getDateTimeService().getCurrentTimestamp());
+        selectedObjectIdsBO.setLookupDate(CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp());
         businessObjectService.save(selectedObjectIdsBO);
     }
 

@@ -45,7 +45,7 @@ class ActionDefinitionTest {
 	private static final Integer SEQUENCE_1 = new Integer(1)
 
 	private static final String ACTION_1 = """
-<action xmlns="http://rice.kuali.org/krms">
+<action xmlns="http://rice.kuali.org/krms/repository/v2_0">
     <id>ACTIONID01</id>
     <name>Say Hello</name>
     <namespace>KRMS_TEST</namespace>

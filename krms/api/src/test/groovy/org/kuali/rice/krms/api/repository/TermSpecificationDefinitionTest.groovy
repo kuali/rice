@@ -39,7 +39,7 @@ class TermSpecificationDefinitionTest {
 
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
-		<TermSpecification xmlns="http://rice.kuali.org/krms">
+		<TermSpecification xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<id>1001</id>
 			<contextId>1001</contextId>
 			<name>total</name>

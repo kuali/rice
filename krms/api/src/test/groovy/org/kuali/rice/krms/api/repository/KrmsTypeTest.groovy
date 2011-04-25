@@ -47,7 +47,7 @@ class KrmsTypeTest {
 	private static final Integer SEQUENCE_NUMBER_2 = new Integer(2)
 	
 	String CHART_ORG_TYPE_XML = """
-			<KRMSType xmlns="http://rice.kuali.org/krms">
+			<KRMSType xmlns="http://rice.kuali.org/krms/repository/v2_0">
 				<id>1234ABCD</id>
 				<name>Chart_Org</name>
 				<namespace>KRMS_TEST</namespace>
@@ -71,7 +71,7 @@ class KrmsTypeTest {
 	"""
 	
 	String PLAIN_TYPE_XML = """
-	<KRMSType xmlns="http://rice.kuali.org/krms">
+	<KRMSType xmlns="http://rice.kuali.org/krms/repository/v2_0">
 	  <id>1234ABCD</id>
 	  <name>Chart_Org</name>
 	  <namespace>KRMS_TEST</namespace>
@@ -137,9 +137,9 @@ class KrmsTypeTest {
 	}
 
 	@Test
-	public void testTypeBuilderNullTypeId() {
+	public void testTypeBuilderWhitespaceTypeId() {
 		shouldFail(IllegalArgumentException.class) {
-			KrmsTypeDefinition.Builder.create(null, NAME, NAMESPACE)
+			KrmsTypeDefinition.Builder.create("  ", NAME, NAMESPACE)
 		}
 	}
 

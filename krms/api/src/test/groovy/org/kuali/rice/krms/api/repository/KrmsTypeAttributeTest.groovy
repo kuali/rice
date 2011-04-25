@@ -45,7 +45,7 @@ class KrmsTypeAttributeTest {
 	private static final String COMPONENT = "someOrgComponent"
 	
 	private static final String EXPECTED_XML = """
-		<KrmsTypeAttribute xmlns="http://rice.kuali.org/krms">
+		<KrmsTypeAttribute xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<id>ORG_ATTR_1</id>
 			<typeId>1234ABCD</typeId>
 			<attributeDefinitionId>1001</attributeDefinitionId>
@@ -55,7 +55,7 @@ class KrmsTypeAttributeTest {
 	"""
 
 	private static final String EXPECTED_XML_2 = """
-		<KrmsTypeAttribute xmlns="http://rice.kuali.org/krms">
+		<KrmsTypeAttribute xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<id>ORG_ATTR_1</id>
 			<typeId>1234ABCD</typeId>
 			<attributeDefinitionId>1001</attributeDefinitionId>

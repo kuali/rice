@@ -1,11 +1,9 @@
 package org.kuali.rice.krms.api.repository.action;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -18,8 +16,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BaseAttribute;
-import org.kuali.rice.krms.api.repository.BaseAttribute.Builder;
-import org.kuali.rice.krms.api.repository.BaseAttribute.Elements;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 /**

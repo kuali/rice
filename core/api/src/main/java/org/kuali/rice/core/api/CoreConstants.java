@@ -34,20 +34,24 @@ public final class CoreConstants {
     	}
 	}
     
-    public static final class Namespaces {
-    	public static final String ROOT_NAMESPACE_PREFIX = "http://rice.kuali.org";
-    	public static final String CORE_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/core";
-
+    public static final class Versions {
+    	    	
     	/**
     	 * Name for major version 2.0 of Kuali Rice which should be used in XML namespaces for data elements compatible with Kuali Rice 2.0.x.
     	 * This constant value should never be changed!  If it is changed then it will break compatibility with legacy clients.
     	 */
     	public static final String VERSION_2_0 = "v2_0";
+    	
+    }
+    
+    public static final class Namespaces {
+    	public static final String ROOT_NAMESPACE_PREFIX = "http://rice.kuali.org";
+    	public static final String CORE_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/core";
 
     	/**
     	 * Namespace for the core module which is compatible with Kuali Rice 2.0.x.
     	 */
-    	public static final String CORE_NAMESPACE_2_0 = CORE_NAMESPACE_PREFIX + "/" + VERSION_2_0;
+    	public static final String CORE_NAMESPACE_2_0 = CORE_NAMESPACE_PREFIX + "/" + Versions.VERSION_2_0;
 
         private Namespaces() {
 		    throw new UnsupportedOperationException("do not call");

@@ -44,7 +44,7 @@ class ActionAttributeTest {
 	private static final String COMPONENT = "someOrgComponent"
 	
 	private static final String EXPECTED_XML = """
-    <ActionAttribute xmlns="http://rice.kuali.org/krms">
+    <ActionAttribute xmlns="http://rice.kuali.org/krms/repository/v2_0">
         <id>ORG_ATTR_1</id>
         <actionId>1234ABCD</actionId>
         <attributeDefinitionId>1001</attributeDefinitionId>

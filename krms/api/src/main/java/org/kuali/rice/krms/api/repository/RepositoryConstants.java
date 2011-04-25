@@ -17,9 +17,15 @@
 package org.kuali.rice.krms.api.repository;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.krms.api.KrmsConstants;
 
 public final class RepositoryConstants {
 	public final static class Namespaces {
-        public static final String KRMS_NAMESPACE = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/krms";
+		
+        /**
+    	 * Namespace for the krms module which is compatible with Kuali Rice 2.0.x.
+    	 */
+    	public static final String REPOSITORY_NAMESPACE_2_0 = KrmsConstants.Namespaces.KRMS_NAMESPACE_PREFIX + "/repository/" + CoreConstants.Versions.VERSION_2_0;
+    	
     }
 }

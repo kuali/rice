@@ -40,7 +40,7 @@ class KrmsAttributeDefinitionTest {
 	
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
-		<KrmsAttributeDefinition xmlns="http://rice.kuali.org/krms">
+		<KrmsAttributeDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<id>1001</id>
 			<name>ORG</name>
 			<namespace>KRMS_UNIT_TEST</namespace>

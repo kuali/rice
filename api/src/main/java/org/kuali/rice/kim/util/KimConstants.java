@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kim.util;
 
-import org.kuali.rice.core.api.CoreConstants;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.kuali.rice.core.api.CoreConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -337,6 +337,6 @@ public final class KimConstants {
     public final static class Namespaces {
         public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/kim";
 
-        public static final String KIM_NAMESPACE_2_0 = KIM_NAMESPACE_PREFIX + "/" + CoreConstants.Namespaces.VERSION_2_0;
+        public static final String KIM_NAMESPACE_2_0 = KIM_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
     }
 }

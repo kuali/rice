@@ -20,7 +20,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "ruleRepositoryService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)
+@WebService(name = "ruleRepositoryService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleRepositoryService {
 

@@ -28,7 +28,7 @@ import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
 import java.util.List;
 
 
-@WebService(name = "KRMSTypeService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)
+@WebService(name = "KRMSTypeService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KrmsTypeRepositoryService {
 

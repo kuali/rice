@@ -44,14 +44,14 @@ class AgendaTreeRuleEntryTest {
 	private static final String RULE_ID_3 = "Rule3"
 
 	private static final String TINY_AGENDA_RULE_ENTRY = """
-		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms">
+		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaItemId>AgendaItem1</agendaItemId>
 			<ruleId>Rule1</ruleId>
 		</agendaTreeRuleEntry>
 		"""
 
 	private static final String SMALL_IFTRUE_AGENDA_RULE_ENTRY = """
-		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms">
+		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaItemId>AgendaItem1</agendaItemId>
 			<ruleId>Rule1</ruleId>
 			<ifTrue>
@@ -64,7 +64,7 @@ class AgendaTreeRuleEntryTest {
 		</agendaTreeRuleEntry>	"""
 	
 	private static final String SMALL_IFFALSE_AGENDA_RULE_ENTRY = """
-		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms">
+		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaItemId>AgendaItem1</agendaItemId>
 			<ruleId>Rule1</ruleId>
 			<ifFalse>
@@ -77,7 +77,7 @@ class AgendaTreeRuleEntryTest {
 		</agendaTreeRuleEntry>	"""
 	
 	private static final String IFTRUE_AND_IFFALSE_AGENDA_RULE_ENTRY = """
-		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms">
+		<agendaTreeRuleEntry xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaItemId>AgendaItem1</agendaItemId>
 			<ruleId>Rule1</ruleId>
 			<ifTrue>

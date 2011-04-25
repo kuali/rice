@@ -53,7 +53,7 @@ class RuleDefinitionTest {
 	private static final String SUB_AGENDA_1= "SubAgenda1"
 
 	private static final String SMALL_RULE = """
-		<rule xmlns="http://rice.kuali.org/krms">
+		<rule xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<id>RULEID001</id>
 			<name>Rule1</name>
 			<namespace>KRMS_TEST</namespace>
@@ -88,7 +88,7 @@ class RuleDefinitionTest {
 		</rule>	"""
 
 	private static final String FULL_RULE = """
-		<rule xmlns="http://rice.kuali.org/krms">
+		<rule xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<id>RULEID001</id>
 			<name>Rule1</name>
 			<namespace>KRMS_TEST</namespace>

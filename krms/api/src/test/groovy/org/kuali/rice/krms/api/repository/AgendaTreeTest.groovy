@@ -54,12 +54,12 @@ class AgendaTreeTest {
 	private static final String SUB_AGENDA_1= "SubAgenda1"
 
 	private static final String TINY_AGENDA_TREE = """
-		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
+		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaId>500Agenda</agendaId>
 		</agendaTreeDefinition>		"""
 
 	private static final String SINGLE_RULE_AGENDA_TREE = """
-		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
+		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaId>500Agenda</agendaId>
 			<rule>
 				<agendaItemId>AgendaItem1</agendaItemId>
@@ -68,7 +68,7 @@ class AgendaTreeTest {
 		</agendaTreeDefinition>		"""
 
 	private static final String SINGLE_NODE_MULTIPLE_RULE_AGENDA_TREE = """
-		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
+		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaId>500Agenda</agendaId>
 			<rule>
 				<agendaItemId>AgendaItem1</agendaItemId>
@@ -91,7 +91,7 @@ class AgendaTreeTest {
 	 * 		evaluate Rule 3
 	 */
 	private static final String THREE_NODE_TRUE_FALSE_AGENDA_TREE = """
-		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
+		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaId>500Agenda</agendaId>
 			<rule>
 				<agendaItemId>AgendaItem1</agendaItemId>
@@ -126,7 +126,7 @@ class AgendaTreeTest {
 	 *
 	 */
 	private static final String THE_BIG_TREE = """
-		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms">
+		<agendaTreeDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<agendaId>500Agenda</agendaId>
 			<rule>
 				<agendaItemId>AgendaItem1</agendaItemId>

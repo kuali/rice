@@ -9,7 +9,6 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import org.kuali.rice.krms.api.repository.RepositoryConstants;
-import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
 
 /**
  * The function repository contains information about custom functions which
@@ -18,7 +17,7 @@ import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "functionRepositoryService", targetNamespace = RepositoryConstants.Namespaces.KRMS_NAMESPACE)
+@WebService(name = "functionRepositoryService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface FunctionRepositoryService {
 	

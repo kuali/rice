@@ -364,7 +364,7 @@ There is one extra point of configuration for ConferenceSignupView-AcademicInsti
 
 Line 2 sets the conditionalRender property; if the value for that property turns out to be false, then the Group will not be rendered at all. The value for this property probably looks a bit odd.  The \@\{...\} syntax tells KRAD to make use of Spring Expressions for this value. Basically, \@\{academicInstitution\} will return the value of ConferenceSignupForm.isAcademicInstitution() after all the data has been populated and the ConferenceSignupView-AcademicInstitution will be rendered based on that.  It's pretty slick and covered in much fuller detail in [expressions|#expressions].
 
-[ JERRY - I DON'T SEE "setConditionalRender" ONLY "setConditionalReadOnly" - AM I MISSING SOMETHING? ]
+[ JERRY - "setConditionalReadOnly" ONLY ON BASE CLASS NOT ON INTERFACE? ]
 
 Groups are easy to set up but there's still a fair amount of missing configuration: all of the fields.
 
@@ -857,13 +857,62 @@ Here, the built in ternary operator is used to return "Welcome" if there is no f
 
 h2. Conditions, Revisited
 
-At the time of this writing, there are two conditions which can be specified for any Component: conditionalReadOnly and conditionalRender.
+At the time of this writing, there are five conditions which can be specified for any Component: conditionalReadOnly, conditionalRender, conditionalRequired, conditionalColSpan, and conditionalRowSpan. conditionalRender was used in the example above to figure out if the "Academic Interests" Group should be rendered.  Now, let's take a closer look at how these work.
 
-[ HERE JAMES ]
+The org.kuali.rice.kns.uif.core.ComponentBase class has getter/setter properties for each of the conditions above: setConditionalReadOnly and getConditionalReadOnly, for instance.  The setter methods take in Strings, and in fact, they particularly react to the String "true". [ JERRY - TRUE THAT?  COULD NOT FIND CALLING CODE ]  If the String is "true", then the given condition will become active.  For instance, if getConditionalReadOnly returns a "true", then that Component will become read only; if the String is anything else, the Component will be editable.
+
+These conditions react to String because that's what the Spring EL ultimately returns to outside callers.  However, that's just fine, because the Spring EL will coerce any boolean variables to their String counterparts: "true" or "false".  For instance, let's say that the value of method getValue() on a given form is the integer 5.  In that case, the Spring EL \@\{value == 5\} would evaluate to the boolean *true* which Spring would coerce to the String "true".  In short, as long as the EL returns a boolean, KRAD will take care of making sure the condition is activated when the boolean is *true*.
+
+Each of the conditions are pretty self-explanatory.  As stated, conditionalReadOnly will make sure that the given Component is read only.  If the Component is a Container like a Group, then all children Fields on the Group would become read only.  If the Component is only a Field, then the Field itself would become read only.
+
+If conditionalRender is false, then the Component will not be rendered at all, as we used above.
+
+conditionalRequired is typically used with AttributeFields; the expression will decide if the Field should be required or not.
+
+conditionalRowSpan and conditionalColSpan help GridLayoutManager decide if the row span and col span on a Container should be taken into account or not.  This is useful for filling in space in a grid loyout if certain other pieces of the grid have conditional rendering.
 
 h3. Conditions versus Presentation Controllers and Authorizers
+
+A fair share of developers note the ability to use expression conditions in KRAD and jump right in.  However, two pieces of KNS functionality have continued into KRAD: presentation controllers and authorizers, and both of those pieces of functionality can help determine if components are editable or even renderable.  Presentation controllers have proven to be excellent ways to hold complex logic based on document state and of course authorizers do a great job of integrating with KIM to determine if fields are read only and renderable.  Given that, when should conditions be used and when should presentation controllers and authorizers be used?
+
+This is a question without a simple answer - both Spring expressions and presentation controllers plus authorizers have their use cases.  Presentation controllers and authorizers are very good at holding complex logic about read only and rendering decisions.  Their interfaces are standardized and they are injected via the data dictionary, making it easy for developers to track down that logic.
+
+Spring expressions, however, avoid the perhaps needless complexity of creating a new class and can even make certain decisions more readable.  For those reasons, expressions are certain the go-to method when read only or rendering conditions are either very simple or dynamic (being based on other properties of the View) and are fairly unchanging.
+
+Thankfully, this isn't an either/or question.  Both Spring expressions and presentation controllers plus authorizers can be used simultaneously.  A developer can set a condtionalRender expression on a Group and have an edit mode checked by a presentation controller that determines if the Group will be rendered.  If either of these values returns "true" then the Group will be rendered [ JERRY - TRUE THAT, RIGHT? ]  Of course, using both simultaneously may make finding the responsible logic for hiding a Component more complex.  Certainly, though, experimentation and the needs of applications will almost surely lead to a set of best practices over time.
+
 h2. Special Variables
+
+In KNS JSP's, there were a number of variables which were always available: for instance, \$\{Constants\} which typically is configured to hold the main constants class for the application.  KRAD expressions have some special variables as well which make writing expressions all the more easy.  All of these variables are listed in org.kuali.rice.kns.uif.UifConstants.ContextVariableNames, and as we'll see, when used in a KRAD expression, they are prefixed with the special # symbol.  Let's take a look at each.
+
+#ConfigProperties holds a Map of the same properties which can be accessed through KualiConfigurationService#getPropertyString.  For instance, one may write code like this:
+
+{code:xml}
+1. <bean id="ApplicationUrl-Label" parent="LabelField">
+2.   <property name="labelText" value="@{#ConfigProperties['application.url']}"
+3. </bean>
+{code}
+
+Wonderful: a LabelField has just been created which contains the url for the application.  While this particular example may not be the most practical, having access to all of the configuration properties certainly has its uses.  Message properties should also be accessible from #ConfigProperties.
+
+#Constants is much like its KNS cousin \$\{Constants\} - it holds the main constants class for the application.
+
+There are also a number of contextual special variables.  For instance, #component refers to the current Component, so that information about the Component itself can be accessed via KRAD expressions.  #view refers to the View that the current Component exists in.  #parent is a way to access the Component which contains the current Component.  Finally, #manager refers to the layout manager which is responsible for placing the current Component.
+
+Finally, there are a handful of special variables which refer only to Components within collections.  #index contains the index of the item in a Collection the current Component is rendering a part of.  #line refers the full line Group the the item of the collection lives in.  Finally, #isAddLine tells whether the current line a Component is being rendered in is an add Line or not. [ JERRY - TRUE ALL THIS? ]
+
+A special variable refers to a bean itself; that bean's methods can be called via the Spring expression language just like any other bean.  For instance, if #component referred to a Group, then the following is a legal expression:
+
+{code}
+@{#component.items[0].id}
+{code}
+
+That would return the id of the first Field in the Group's list.  Again, this leads to some powerful possibilities, though it also means that finding routine information - such as the ids of Components - is a breeze.
+
+More special variables are being planned for the future: #userOptions, for instance.  There will also be a way for applications to expose their own special variables to the KRAD expression context.
+
 h2. Overriding variables via the request
+
 
 [ HERE JAMES ]
 

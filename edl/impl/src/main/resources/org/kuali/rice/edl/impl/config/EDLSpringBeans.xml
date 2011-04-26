@@ -90,8 +90,7 @@
 		<property name="serviceName" value="styleService" />
 	</bean>
 	
-	<bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl"
-		lazy-init="true">
+	<bean id="enEDocLiteService" class="org.kuali.rice.edl.impl.service.impl.EDocLiteServiceImpl">
 		<property name="EDocLiteDAO" ref="enEDocLiteDAO" />
 		<property name="styleService" ref="styleService" />
 	</bean>
@@ -143,8 +142,8 @@
 				<!-- had to combine all the DD files into a single list here to make 
 					lookups, inquiry work across modules -->
 				<!-- from EDL -->
-				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteAssociation.xml</value>
-				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteDefinition.xml
+				<value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml</value>
+				<value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteDefinition.xml
 				</value>
 
 				<!-- from KEW -->

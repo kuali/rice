@@ -11,10 +11,7 @@
   <version>2.0.0-SNAPSHOT</version>
   <name>rice-edl</name>
   <modules>
-  	<module>api</module>
   	<module>framework</module>
-  	<module>remote</module>
   	<module>impl</module>
-  	<module>web</module>
   </modules>
 </project>

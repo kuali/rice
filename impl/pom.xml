@@ -93,7 +93,7 @@
 			<artifactId>rice-edl-framework</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>krad-app-framework</artifactId>

@@ -116,8 +116,8 @@
 				<!-- had to combine all the DD files into a single list here to make lookups, inquiry work across modules -->
 				
 				<!-- from EDL -->
-				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteAssociation.xml</value>
-				<value>classpath:org/kuali/rice/edl/web/bo/datadictionary/EDocLiteDefinition.xml</value>
+				<value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml</value>
+				<value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteDefinition.xml</value>
 								
 				<!-- from KEW -->
 			    <value>classpath:org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</value>

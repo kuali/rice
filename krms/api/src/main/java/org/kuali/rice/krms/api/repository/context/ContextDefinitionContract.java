@@ -35,16 +35,16 @@ public interface ContextDefinitionContract extends Versioned {
 	 * 
 	 * @return the id of the context definition
 	 */
-	String getContextDefinitionId();
+	String getId();
 	
 	/**
-	 * Returns the namespace code of the context definition.  The combination of
-	 * namespaceCode and name represent a unique business key for the context
-	 * definition.  The namespace code should never be null or blank.
+	 * Returns the namespace of the context definition.  The combination of
+	 * namespace and name represent a unique business key for the context
+	 * definition.  The namespace should never be null or blank.
 	 * 
-	 * @return the namespace code of the context definition, should never be null or blank
+	 * @return the namespace of the context definition, should never be null or blank
 	 */
-	String getNamespaceCode();
+	String getNamespace();
 	
 	/**
 	 * Returns the name of the context definition.  The combination of name and namespaceCode

@@ -7,7 +7,7 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
 
 public class ContextBo extends PersistableBusinessObjectBase implements ContextDefinitionContract {
 
-	def String contextId
+	def String id
 	def String name
 	def String namespace
 	def String typeId
@@ -39,8 +39,8 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	   if (im == null) { return null }
 
 	   ContextBo bo = new ContextBo()
-	   bo.contextId = im.contextDefinitionId
-	   bo.namespace = im.namespaceCode
+	   bo.id = im.id
+	   bo.namespace = im.namespace
 	   bo.name = im.name
 	   bo.typeId = im.typeId
 	   bo.agendas = new HashSet<AgendaDefinitionBo>()
@@ -52,14 +52,6 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	   return bo
    }
  
-   @Override
-   public String getContextDefinitionId(){
-	   return contextId
-   }
-   @Override
-   public String getNamespaceCode(){
-	   return namespace
-   }
    
    @Override
    public Set<AgendaDefinitionBo> getAgendas(){

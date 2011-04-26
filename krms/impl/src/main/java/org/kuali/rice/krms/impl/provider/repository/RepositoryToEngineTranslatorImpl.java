@@ -77,7 +77,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		}
 		
 		List<TermResolverDefinition> termResolverDefs = 
-			termBoService.getTermResolversByContextId(contextDefinition.getContextDefinitionId());
+			termBoService.getTermResolversByContextId(contextDefinition.getId());
 		
 		List<TermResolver<?>> termResolvers = new ArrayList<TermResolver<?>>();
 
@@ -117,7 +117,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		
 	@Override
 	public AgendaTree translateAgendaDefinitionToAgendaTree(AgendaDefinition agendaDefinition) {
-		AgendaTreeDefinition agendaTreeDefinition = ruleRepositoryService.getAgendaTree(agendaDefinition.getAgendaId());
+		AgendaTreeDefinition agendaTreeDefinition = ruleRepositoryService.getAgendaTree(agendaDefinition.getId());
 		return translateAgendaTreeDefinition(agendaTreeDefinition);
 	}
 	

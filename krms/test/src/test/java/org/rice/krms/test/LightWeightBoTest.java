@@ -102,13 +102,13 @@ public class LightWeightBoTest extends KRMSTestCase {
 		
 		// output TermSpec
 		TermSpecificationDefinition outputTermSpec = 
-			TermSpecificationDefinition.Builder.create(null, contextDefinition.getContextDefinitionId(), 
+			TermSpecificationDefinition.Builder.create(null, contextDefinition.getId(), 
 					"outputTermSpec", "java.lang.String").build();
 		outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
 
 		// prereq TermSpec
 		TermSpecificationDefinition prereqTermSpec = 
-			TermSpecificationDefinition.Builder.create(null, contextDefinition.getContextDefinitionId(), 
+			TermSpecificationDefinition.Builder.create(null, contextDefinition.getId(), 
 					"prereqTermSpec", "java.lang.String").build();
 		prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
 

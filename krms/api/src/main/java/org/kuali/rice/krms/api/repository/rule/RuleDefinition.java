@@ -26,7 +26,6 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition.Builder;
 
 /**
  * Concrete model object implementation of KRMS Repository Rule 

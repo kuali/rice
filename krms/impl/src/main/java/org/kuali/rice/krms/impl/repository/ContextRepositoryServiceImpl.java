@@ -37,7 +37,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 		if (context == null){
 	        throw new IllegalArgumentException("context is null");
 		}
-		final String contextIdKey = context.getContextDefinitionId();
+		final String contextIdKey = context.getId();
 		final ContextDefinition existing = getContextByContextId(contextIdKey);
 		if (existing != null){
             throw new IllegalStateException("the context to create already exists: " + context);			
@@ -56,15 +56,15 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 		if (context == null){
 	        throw new IllegalArgumentException("context is null");
 		}
-		final String contextIdKey = context.getContextDefinitionId();
+		final String contextIdKey = context.getId();
 		final ContextDefinition existing = getContextByContextId(contextIdKey);
         if (existing == null) {
             throw new IllegalStateException("the context does not exist: " + context);
         }
         final ContextDefinition toUpdate;
-        if (!existing.getContextDefinitionId().equals(context.getContextDefinitionId())){
+        if (!existing.getId().equals(context.getId())){
         	final ContextDefinition.Builder builder = ContextDefinition.Builder.create(context);
-        	builder.setContextDefinitionId(existing.getContextDefinitionId());
+        	builder.setId(existing.getId());
         	toUpdate = builder.build();
         } else {
         	toUpdate = context;

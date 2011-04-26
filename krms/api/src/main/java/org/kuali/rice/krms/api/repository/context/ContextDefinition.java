@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
-import org.w3c.dom.Element;
 
 /**
  * An immutable representation of a context definition.  A context definition
@@ -40,8 +39,8 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = ContextDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ContextDefinition.Constants.TYPE_NAME, propOrder = {
-		ContextDefinition.Elements.CONTEXT_DEFINITION_ID,
-		ContextDefinition.Elements.NAMESPACE_CODE,
+		ContextDefinition.Elements.ID,
+		ContextDefinition.Elements.NAMESPACE,
 		ContextDefinition.Elements.NAME,
 		ContextDefinition.Elements.TYPE_ID,
 		ContextDefinition.Elements.AGENDAS,
@@ -52,19 +51,20 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 	
 	private static final long serialVersionUID = -6639428234851623868L;
 
-	@XmlElement(name = Elements.CONTEXT_DEFINITION_ID, required = false)
-	private final String contextDefinitionId;
+	@XmlElement(name = Elements.ID, required = false)
+	private final String id;
 	
 	@XmlElement(name = Elements.NAME, required = true)
     private final String name;
 	
-	@XmlElement(name = Elements.NAMESPACE_CODE, required = true)
-    private final String namespaceCode;
+	@XmlElement(name = Elements.NAMESPACE, required = true)
+    private final String namespace;
 	
 	@XmlElement(name = Elements.TYPE_ID, required = false)
     private final String typeId;
 	
-	@XmlElementWrapper(name = Elements.AGENDAS, required = false)
+	@XmlElementWrapper(name = Elements.AGENDAS)
+	@XmlElement(name = Elements.AGENDA, required = false)
 	private final Set<AgendaDefinition> agendas;
 	    
 	@XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -72,24 +72,24 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 	
     @SuppressWarnings("unused")
     @XmlAnyElement
-    private final Collection<Element> _futureElements = null;
+    private final Collection<org.w3c.dom.Element> _futureElements = null;
 
     /**
      * Used only by JAXB.
      */
     private ContextDefinition() {
-    	this.contextDefinitionId = null;
+    	this.id = null;
     	this.name = null;
-    	this.namespaceCode = null;
+    	this.namespace = null;
     	this.typeId = null;
     	this.agendas = null;
     	this.versionNumber = null;
     }
     
     private ContextDefinition(Builder builder) {
-    	this.contextDefinitionId = builder.getContextDefinitionId();
+    	this.id = builder.getId();
     	this.name = builder.getName();
-    	this.namespaceCode = builder.getNamespaceCode();
+    	this.namespace = builder.getNamespace();
     	this.typeId = builder.getTypeId();
     	this.agendas = constructAgendas(builder.getAgendas());
     	this.versionNumber = builder.getVersionNumber();
@@ -106,13 +106,13 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
     }
     
     @Override
-	public String getContextDefinitionId() {
-		return contextDefinitionId;
+	public String getId() {
+		return id;
 	}
 
 	@Override
-	public String getNamespaceCode() {
-		return namespaceCode;
+	public String getNamespace() {
+		return namespace;
 	}
 
 	@Override
@@ -147,15 +147,15 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
     	
     	private static final long serialVersionUID = -219369603932108436L;
     	
-		private String contextDefinitionId;
-		private String namespaceCode;
+		private String id;
+		private String namespace;
         private String name;
         private String typeId;
         private Set<AgendaDefinition.Builder> agendas;
         private Long versionNumber;
         
-        private Builder(String namespaceCode, String name) {
-        	setNamespaceCode(namespaceCode);
+        private Builder(String namespace, String name) {
+        	setNamespace(namespace);
         	setName(name);
         	setAgendas(new HashSet<AgendaDefinition.Builder>());
         }
@@ -163,16 +163,16 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
         /**
          * Creates a context definition builder with the given required values
          * 
-         * @param namespaceCode the namespace code of the context definition to create, must not be null or blank
+         * @param namespace the namespace code of the context definition to create, must not be null or blank
          * @param name the name of the context definition to create, must not be null or blank
          * 
          * @return a builder with the required values already initialized
          * 
-         * @throws IllegalArgumentException if the given namespaceCode is null or blank
+         * @throws IllegalArgumentException if the given namespace is null or blank
          * @throws IllegalArgumentException if the given name is null or blank
          */
-        public static Builder create(String namespaceCode, String name) {
-        	return new Builder(namespaceCode, name);
+        public static Builder create(String namespace, String name) {
+        	return new Builder(namespace, name);
         }
         
         /**
@@ -190,8 +190,8 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
         	if (contract == null) {
         		throw new IllegalArgumentException("contract was null");
         	}
-        	Builder builder = create(contract.getNamespaceCode(), contract.getName());
-        	builder.setContextDefinitionId(contract.getContextDefinitionId());
+        	Builder builder = create(contract.getNamespace(), contract.getName());
+        	builder.setId(contract.getId());
         	builder.setTypeId(contract.getTypeId());
         	builder.setVersionNumber(contract.getVersionNumber());
         	builder.setAgendas(contract.getAgendas());
@@ -209,13 +209,13 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 		}
 
 		@Override
-		public String getContextDefinitionId() {
-			return this.contextDefinitionId;
+		public String getId() {
+			return this.id;
 		}
 
 		@Override
-		public String getNamespaceCode() {
-			return this.namespaceCode;
+		public String getNamespace() {
+			return this.namespace;
 		}
 
 		@Override
@@ -234,28 +234,33 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 		}
 
 		/**
-         * Sets the contextDefinitionId for the context definition that will be created by this builder.
+         * Sets the id for the context definition that will be created by this builder.
          * 
-         * @param contextDefinitionId the contextDefinitionId to set
+         * @param id the id to set
          */
-		public void setContextDefinitionId(String contextDefinitionId) {
-			this.contextDefinitionId = contextDefinitionId;
+		public void setId(String id) {
+			if (id != null){
+				if (StringUtils.isBlank(id)){
+					throw new IllegalArgumentException("context id is blank");					
+				}
+			}
+			this.id = id;
 		}
 
 		/**
 		 * Sets the namespace code for the context definition that will be created
 		 * by this builder.  The namespace code must not be blank or null.
 		 * 
-		 * @param namespaceCode the namespaceCode to set on this builder, must not be
+		 * @param namespace the namespace to set on this builder, must not be
 		 * null or blank
 		 * 
 		 * @throws IllegalArgumentException if the given namespace code is null or blank
 		 */
-		public void setNamespaceCode(String namespaceCode) {
-			if (StringUtils.isBlank(namespaceCode)) {
-				throw new IllegalArgumentException("namespaceCode is blank");
+		public void setNamespace(String namespace) {
+			if (StringUtils.isBlank(namespace)) {
+				throw new IllegalArgumentException("namespace is blank");
 			}
-			this.namespaceCode = namespaceCode;
+			this.namespace = namespace;
 		}
 
 		/**
@@ -280,6 +285,11 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
          * @param typeId the typeId to set
          */
 		public void setTypeId(String typeId) {
+			if (typeId != null){
+				if (StringUtils.isBlank(typeId)){
+					throw new IllegalArgumentException("type id is blank");					
+				}
+			}
 			this.typeId = typeId;
 		}
 		
@@ -324,8 +334,8 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 	/**
      * Defines some internal constants used on this class.
      */
-    static class Constants {
-        final static String ROOT_ELEMENT_NAME = "contextDefinition";
+    public static class Constants {
+        final static String ROOT_ELEMENT_NAME = "context";
         final static String TYPE_NAME = "ContextDefinitionType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
@@ -334,11 +344,12 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
      * A private class which exposes constants which define the XML element names to use
      * when this object is marshalled to XML.
      */
-    static class Elements {
-        final static String CONTEXT_DEFINITION_ID = "contextDefinitionId";
-        final static String NAMESPACE_CODE = "namespaceCode";
+    public static class Elements {
+        final static String ID = "id";
+        final static String NAMESPACE = "namespace";
         final static String NAME = "name";
         final static String TYPE_ID = "typeId";
+        final static String AGENDA = "agenda";
         final static String AGENDAS = "agendas";
     }
 		

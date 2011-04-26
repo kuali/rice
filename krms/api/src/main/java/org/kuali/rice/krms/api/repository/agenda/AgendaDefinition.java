@@ -46,7 +46,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.AGENDA_ID, required = false)
-	private final String agendaId;
+	private final String id;
 	
 	@XmlElement(name = Elements.NAME, required = true)
 	private final String name;
@@ -76,7 +76,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
      * It is only present for use during JAXB unmarshalling. 
      */
     private AgendaDefinition() {
-    	this.agendaId = null;
+    	this.id = null;
     	this.name = null;
     	this.namespaceCode = null;
     	this.typeId = null;
@@ -92,7 +92,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	 * @param builder the Builder from which to construct the Agenda
 	 */
     private AgendaDefinition(Builder builder) {
-        this.agendaId = builder.getAgendaId();
+        this.id = builder.getId();
         this.name = builder.getName();
         this.namespaceCode = builder.getNamespaceCode();
         this.typeId = builder.getTypeId();
@@ -102,8 +102,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
     }
     
 	@Override
-	public String getAgendaId() {
-		return this.agendaId;
+	public String getId() {
+		return this.id;
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		
         private static final long serialVersionUID = -8862851720709537839L;
         
-		private String agendaId;
+		private String id;
         private String name;
         private String namespaceCode;
         private String typeId;
@@ -154,7 +154,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String name, String namespaceCode, String typeId, String contextId, String eventName) {
+        private Builder(String id, String name, String namespaceCode, String typeId, String contextId) {
+        	setId(id);
             setName(name);
             setNamespaceCode(namespaceCode);
             setTypeId(typeId);
@@ -162,8 +163,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
             setAttributes(new HashMap<String, String>());
         }
         
-        public static Builder create(String name, String namespaceCode, String typeId, String contextId, String eventName){
-        	return new Builder(name, namespaceCode, typeId, contextId, eventName);
+        public static Builder create(String id, String name, String namespaceCode, String typeId, String contextId){
+        	return new Builder(id, name, namespaceCode, typeId, contextId);
         }
         /**
          * Creates a builder by populating it with data from the given {@link AgendaDefinitionContract}.
@@ -175,7 +176,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getAgendaId(), contract.getName(),
+            Builder builder =  new Builder(contract.getId(), contract.getName(),
             		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
             builder.setFirstItemId( contract.getFirstItemId() );
             builder.setAttributes(new HashMap<String, String>(contract.getAttributes()));
@@ -189,11 +190,11 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		 * @throws IllegalArgumentException if the id is null or blank
 		 */
 
-        public void setAgendaId(String agendaId) {
+        public void setId(String agendaId) {
             if (StringUtils.isBlank(agendaId)) {
-                throw new IllegalArgumentException("agendaId is blank");
+                throw new IllegalArgumentException("agenda ID is blank");
             }
-			this.agendaId = agendaId;
+			this.id = agendaId;
 		}
      
         public void setName(String name) {
@@ -234,8 +235,8 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 		}
 		
 		@Override
-		public String getAgendaId() {
-			return agendaId;
+		public String getId() {
+			return id;
 		}
 
 		@Override
@@ -298,7 +299,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "Agenda";
+		final static String ROOT_ELEMENT_NAME = "agenda";
 		final static String TYPE_NAME = "AgendaType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_furutreElements" };
 	}
@@ -308,7 +309,7 @@ public final class AgendaDefinition implements AgendaDefinitionContract, ModelOb
 	 * when this object is marshalled to XML.
 	 */
 	public static class Elements {
-		final static String AGENDA_ID = "agendaId";
+		final static String AGENDA_ID = "id";
 		final static String NAME = "name";
 		final static String NAMESPACE_CODE = "namespaceCode";
 		final static String TYPE_ID = "typeId";

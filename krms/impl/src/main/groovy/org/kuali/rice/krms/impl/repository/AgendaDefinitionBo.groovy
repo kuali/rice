@@ -9,7 +9,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
 public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract{
 
-	def String agendaId
+	def String id
 	def String namespace
 	def String name
 	def String typeId
@@ -48,7 +48,7 @@ public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements
 	   if (im == null) { return null }
 
 	   AgendaDefinitionBo bo = new AgendaDefinitionBo()
-	   bo.setAgendaId( im.getAgendaId() )
+	   bo.setId( im.getId() )
 	   bo.setNamespace( im.getNamespaceCode() )
 	   bo.setName( im.getName() )
 	   bo.setTypeId( im.getTypeId() )

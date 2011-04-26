@@ -11,7 +11,7 @@ public interface AgendaDefinitionContract {
 	 * </p>
 	 * @return ID for Agenda
 	 */
-	public String getAgendaId();
+	public String getId();
 
 	/**
 	 * This is the name of the Agenda 

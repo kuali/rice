@@ -49,14 +49,13 @@ class TermDefinitionTest {
 	</TermDefinition>
 	"""
 	
-	@Ignore
 	@Test
 	public void testXmlMarshaling() {
 		// create(String termSpecificationId, String contextId, String name, String type)
 		TermSpecificationDefinition.Builder spec = TermSpecificationDefinition.Builder.create(ID+"SPEC", TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE);
 		
 		// create(String id, String name, String value) {
-		TermParameterDefinition.Builder param = TermParameterDefinition.Builder.create(ID+"PARAM", PARAM_NAME, PARAM_VALUE);
+		TermParameterDefinition.Builder param = TermParameterDefinition.Builder.create(ID+"PARAM", ID+"SPEC", PARAM_NAME, PARAM_VALUE);
 		
 		// create(String id, TermSpecificationDefinition termSpecificationDefinition, 
 		//		Set<TermParameterDefinition> termParameters) {

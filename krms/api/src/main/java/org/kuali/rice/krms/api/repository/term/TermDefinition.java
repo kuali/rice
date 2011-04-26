@@ -258,8 +258,8 @@ public final class TermDefinition implements TermDefinitionContract, ModelObject
 	}
 
 	static class Constants {
-		public static final String ROOT_ELEMENT_NAME = "TermDefinition";
-		public static final String TYPE_NAME = "TermDefinitionType";
+		public static final String ROOT_ELEMENT_NAME = "termDefinition";
+		public static final String TYPE_NAME = "termDefinitionType";
 		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 

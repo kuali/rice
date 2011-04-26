@@ -31,7 +31,7 @@ class TermDefinitionTest {
 	private static final String PARAM_VALUE="paramValue"
 	
 	private static final String EXPECTED_XML = """
-	<TermDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
+	<termDefinition xmlns="http://rice.kuali.org/krms/repository/v2_0">
 	    <id>123DEF</id>
 	    <specification>
 	        <id>123SPEC</id>
@@ -46,7 +46,7 @@ class TermDefinitionTest {
 	            <value>paramValue</value>
 	        </parameter>
 	    </parameters>
-	</TermDefinition>
+	</termDefinition>
 	"""
 	
 	@Test

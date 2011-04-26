@@ -16,14 +16,18 @@
 package org.kuali.rice.test.launch;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.Servlet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class JettyLauncher {
@@ -39,7 +43,7 @@ public class JettyLauncher {
 
 	private int port;
 	private String contextName;	
-	private String relativeWebappRoot;
+	private List<String> relativeWebappRoots = new ArrayList<String>();
 	private Class<? extends Servlet> servletClass;
 	private Server server;
 	private ServletContextHandler context;
@@ -70,10 +74,14 @@ public class JettyLauncher {
         this(port, contextName, null, servletClass);
     }   
 
-    public JettyLauncher(int port, String contextName, String relativeWebappRoot, Class<? extends Servlet> servletClass) {
+    public JettyLauncher(int port, String contextName, String relativeWebappRoots, Class<? extends Servlet> servletClass) {
         this.port = port;
         this.contextName = contextName;
-        this.relativeWebappRoot = relativeWebappRoot;
+        StringTokenizer tokenizer = new StringTokenizer(relativeWebappRoots, ",");
+        while (tokenizer.hasMoreTokens()) {
+            String relativeWebappRoot = tokenizer.nextToken();
+            this.relativeWebappRoots.add(relativeWebappRoot);
+        }
         this.servletClass = servletClass;
     }   
 
@@ -120,10 +128,17 @@ public class JettyLauncher {
 		if (useWebAppContext()) {
 			File tmpDir = new File(System.getProperty("basedir") + "/target/jetty-tmp");
 			tmpDir.mkdirs();
-			if (LOG.isInfoEnabled()) {
-				LOG.info("WebAppRoot = " + System.getProperty("basedir") + getRelativeWebappRoot());
+			WebAppContext webAppContext = new WebAppContext();
+			webAppContext.setContextPath(getContextName());
+			String[] fullRelativeWebappRoots = new String[this.relativeWebappRoots.size()];
+			for (int i = 0; i < this.relativeWebappRoots.size(); i++) {
+				String fullRelativeWebappRoot = this.relativeWebappRoots.get(i);
+				fullRelativeWebappRoots[i] = System.getProperty("basedir") + fullRelativeWebappRoot;
+				if (LOG.isInfoEnabled()) {
+					LOG.info("WebAppRoot = " + fullRelativeWebappRoots[i]);
+				}
 			}
-			WebAppContext webAppContext = new WebAppContext(System.getProperty("basedir") + getRelativeWebappRoot(), getContextName());
+			webAppContext.setBaseResource(new ResourceCollection(fullRelativeWebappRoots));
 			webAppContext.setTempDirectory(tmpDir);
 			webAppContext.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
 			context = webAppContext;
@@ -144,24 +159,13 @@ public class JettyLauncher {
 	}
 	
 	private boolean useWebAppContext() {
-		return StringUtils.isNotBlank(this.relativeWebappRoot);
+		return CollectionUtils.isNotEmpty(this.relativeWebappRoots);
 	}
 
 	protected boolean contextStartupFailed() throws Exception {
         return !context.isAvailable();
 	}
 	
-	public String getRelativeWebappRoot() {
-		if (relativeWebappRoot == null) {
-			return "/sampleapp/web-root";
-		}
-		return relativeWebappRoot;
-	}
-
-	public void setRelativeWebappRoot(String relativeWebappRoot) {
-		this.relativeWebappRoot = relativeWebappRoot;
-	}
-
 	public String getContextName() {
 		if (contextName == null) {
 			return "/SampleRiceClient";
@@ -193,7 +197,7 @@ public class JettyLauncher {
 	public String toString() {
 	    return new ToStringBuilder(this).append("port", port)
 	                                    .append("contextName", contextName)
-	                                    .append("relativeWebappRoot", relativeWebappRoot)
+	                                    .append("relativeWebappRoots", relativeWebappRoots)
                                         .append("servletClass", servletClass)
 	                                    .toString();
 	}

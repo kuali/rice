@@ -18,7 +18,6 @@
 <c:if test="${ConfigProperties.portal.show.sample.app eq 'true'}">
   <td class="content" valign="top">
       <mainChannel:sampleTravelApplication />
-      <mainChannel:kradTestLinks />
   </td>
 </c:if>
 <td class="content" valign="top">

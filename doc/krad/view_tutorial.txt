@@ -871,6 +871,25 @@ conditionalRequired is typically used with AttributeFields; the expression will 
 
 conditionalRowSpan and conditionalColSpan help GridLayoutManager decide if the row span and col span on a Container should be taken into account or not.  This is useful for filling in space in a grid loyout if certain other pieces of the grid have conditional rendering.
 
+h3. Property Replacers
+
+In addition to the conditions above, there is a very special type of condition which every Component supports: PropertyReplacers.  PropertyReplacers once again use a KRAD expression to determine if a condition is true or not.  If it is, then a sub-property of the Component is replaced with something else.  Here's a very simple example from Travel-testView1.xml in the sample application:
+
+{code:xml}
+ 1. <bean id="testGroup2" parent="GroupGridLayout" p:layoutManager.style="width: 50%">
+ 2.   ...
+ 3.   <property name="propertyReplacers">
+ 4.     <list>
+ 5.       <bean parent="PropertyReplacer" p:propertyName="title"
+ 6.             p:condition="@{#view.id eq 'Travel-testView1'}" p:replacement="Subs Test Group"/>
+ 7.     </list>
+ 8.   </property>
+ 9.   ...
+10. </bean>
+{code}
+
+Lines 5-6 define a PropertyReplacer to live within testGroup2's list of PropertyReplacers (every Component supports multiple PropertyReplacers in a list).  It has a parent bean of "PropertyReplacer" which was much to be expected.  The "propertyName" property refers to the property of the Component which will be replaced - in this case, the title of the Group.  The "condition" property has the KRAD expression to test.  If it is true, then the Group's title will be replaced by the String "Subs Test Group".  The "replacement" property takes any object; it could, for instance, replace the headerField with several AttributeFields.  This is a very powerful and flexible construction.  [ JERRY - real world use cases? ]
+
 h3. Conditions versus Presentation Controllers and Authorizers
 
 A fair share of developers note the ability to use expression conditions in KRAD and jump right in.  However, two pieces of KNS functionality have continued into KRAD: presentation controllers and authorizers, and both of those pieces of functionality can help determine if components are editable or even renderable.  Presentation controllers have proven to be excellent ways to hold complex logic based on document state and of course authorizers do a great job of integrating with KIM to determine if fields are read only and renderable.  Given that, when should conditions be used and when should presentation controllers and authorizers be used?
@@ -879,7 +898,17 @@ This is a question without a simple answer - both Spring expressions and present
 
 Spring expressions, however, avoid the perhaps needless complexity of creating a new class and can even make certain decisions more readable.  For those reasons, expressions are certain the go-to method when read only or rendering conditions are either very simple or dynamic (being based on other properties of the View) and are fairly unchanging.
 
-Thankfully, this isn't an either/or question.  Both Spring expressions and presentation controllers plus authorizers can be used simultaneously.  A developer can set a condtionalRender expression on a Group and have an edit mode checked by a presentation controller that determines if the Group will be rendered.  If either of these values returns "true" then the Group will be rendered [ JERRY - TRUE THAT, RIGHT? ]  Of course, using both simultaneously may make finding the responsible logic for hiding a Component more complex.  Certainly, though, experimentation and the needs of applications will almost surely lead to a set of best practices over time.
+Thankfully, this isn't an either/or question.  Both Spring expressions and presentation controllers plus authorizers can be used simultaneously.  A developer can set a condtionalRender expression on a Group and have an edit mode checked by a presentation controller that determines if the Group will be rendered.  If either of these values returns "true" then the Group will be rendered [ JERRY - TRUE THAT, RIGHT? ]  Using both simultaneously, though, may make finding the responsible logic for hiding a Component more complex.
+
+One can also have all the logic in the presentation controller and authorizer but invoke it from a KRAD expression (indeed, this pattern will likely be fairly common).  Actions and edit modes are exported to the form (currently as a Set, but there have been attempts to make this syntax cleaner).  Therefore, to only render a group if a given edit mode (for example, "specialEntry") is present, one would merely code up a configuration like the following:
+
+{code:xml}
+ 1. <bean id="EditModeGroup" parent="Group" p:conditionalRender="@{editModes.contains('specialEntry')}">
+ 2.   ...
+ 3. </bean>
+{code}
+
+Over time, experimentation and the needs of applications will almost surely lead to a set of best practices.
 
 h2. Special Variables
 
@@ -913,8 +942,13 @@ More special variables are being planned for the future: #userOptions, for insta
 
 h2. Overriding variables via the request
 
+A final tip: many variables used in KRAD expressions come from the form; this means that one can override values very easily, simply by passing in the property via the url String.  For instance, let's say that in our Conference Signup example, we wanted a special page where the ConferenceSignupView-AcademicInstitution Group was always visible.  In that case, simply make:
 
-[ HERE JAMES ]
+{code}
+&academicInstitution=true
+{code}
+
+a part of the url which points to this page, and since the ConferenceSignupView-AcademicInstitution uses conditionalRender to determine if the Group should render, ConferenceSignupView-AcademicInstitution will be forced to render.
 
 The addition of the Spring expression language into KRAD leads to some powerful configuration techniques.  It's well worth looking into these features as well as reading [Spring's Own Documentation|http://static.springsource.org/spring/docs/3.0.5.RELEASE/reference/expressions.html] on the subject.
 

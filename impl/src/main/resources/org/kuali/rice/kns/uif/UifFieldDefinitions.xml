@@ -34,6 +34,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
+      <property name="alternateDisplayAttributeBindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
+      <property name="additionalDisplayAttributeBindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
       <property name="fieldLookup">
         <bean parent="QuickFinder"/>
       </property> 
@@ -52,6 +58,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField_Form" abstract="true" parent="AttributeField_Form-parentBean"/>
   <bean id="AttributeField_Form-parentBean" abstract="true" parent="AttributeField">
       <property name="bindingInfo.bindToForm" value="true"/>
+      <property name="alternateDisplayAttributeBindingInfo.bindToForm" value="true"/>
+      <property name="additionalDisplayAttributeBindingInfo.bindToForm" value="true"/>
   </bean>    
   
   <bean id="LookupCriteriaAttributeField" abstract="true" parent="LookupCriteriaAttributeField-parentBean"/>
@@ -61,6 +69,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="constraintMessageField.render" value="false"/>
 -->
       <property name="bindingInfo.bindToMap" value="true"/>
+      <property name="alternateDisplayAttributeBindingInfo.bindToMap" value="true"/>
+      <property name="additionalDisplayAttributeBindingInfo.bindToMap" value="true"/>
   </bean>
   
   <bean id="LabelField" abstract="true" parent="LabelField-parentBean"/>

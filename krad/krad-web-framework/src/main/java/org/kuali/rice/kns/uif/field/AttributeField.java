@@ -97,6 +97,12 @@ public class AttributeField extends FieldBase implements DataBinding {
     private MessageField summaryMessageField;
     private MessageField constraintMessageField;
 
+    protected String alternateDisplayAttributeName;
+    protected String additionalDisplayAttributeName;
+    
+    private BindingInfo alternateDisplayAttributeBindingInfo;
+	private BindingInfo additionalDisplayAttributeBindingInfo;
+	
     // widgets
     private Inquiry fieldInquiry;
     private QuickFinder fieldLookup;
@@ -123,6 +129,14 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
+        }
+        
+        if (alternateDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
+        	alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());        	
+        }
+        
+        if (additionalDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAdditionalDisplayAttributeName())){
+        	additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());        	
         }
     }
 
@@ -284,6 +298,27 @@ public class AttributeField extends FieldBase implements DataBinding {
         if (getOptionsFinder() == null) {
             setOptionsFinder(attributeDefinition.getOptionsFinder());
         }
+        
+        //alternate property name and binding object
+        if (getAlternateDisplayAttributeName() == null && StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())){
+        	setAlternateDisplayAttributeName(attributeDefinition.getAlternateDisplayAttributeName());
+        	
+        	if (attributeDefinition.getAlternateDisplayAttributeBindingInfo() != null &&
+        	    attributeDefinition.getAlternateDisplayAttributeBindingInfo().getBindingObjectPath() != null){
+            	setAlternateDisplayAttributeBindingInfo(attributeDefinition.getAlternateDisplayAttributeBindingInfo());
+            }
+        }
+        
+        //additional property display name and binding object
+        if (getAdditionalDisplayAttributeName() == null && StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())){
+        	setAdditionalDisplayAttributeName(attributeDefinition.getAdditionalDisplayAttributeName());
+        	
+        	if (attributeDefinition.getAdditionalDisplayAttributeBindingInfo() != null &&
+        		attributeDefinition.getAdditionalDisplayAttributeBindingInfo().getBindingObjectPath() != null){
+        		setAdditionalDisplayAttributeBindingInfo(attributeDefinition.getAdditionalDisplayAttributeBindingInfo());
+        	}
+        }
+        
     }
 
     /**
@@ -884,4 +919,80 @@ public class AttributeField extends FieldBase implements DataBinding {
         simpleConstraint.setInclusiveMax(inclusiveMax);
     }
 
+    /**
+     * Additional display attribute name, which will be displayed next to the actual field value 
+     * when the field is readonly with hypen inbetween like PropertyValue - AdditionalPropertyValue 
+     * 
+     * @param additionalDisplayAttributeName
+     */
+	public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {
+		this.additionalDisplayAttributeName = additionalDisplayAttributeName;
+	}
+	
+	/**
+	 * Returns the additional display attribute name to be displayed when the field is readonly
+	 * 
+	 * @return additionalDisplayAttributeName Additional Display Attribute Name
+	 */
+	public String getAdditionalDisplayAttributeName() {
+		return this.additionalDisplayAttributeName;
+	}
+
+	/**
+     * Additional display attribute's binding info. Based on the object path, the additional display
+     * attribute's value will be used to display it when the field is readonly  
+     * 
+     * @param additionalDisplayAttributeBindingInfo
+     */
+	public void setAdditionalDisplayAttributeBindingInfo(BindingInfo additionalDisplayAttributeBindingInfo) {
+		this.additionalDisplayAttributeBindingInfo = additionalDisplayAttributeBindingInfo;
+	}
+	
+	/**
+	 * 
+	 * This method returns the additional display attribute's binding info object
+	 * 
+	 * @return additionalDisplayAttributeBindingInfo
+	 */
+	public BindingInfo getAdditionalDisplayAttributeBindingInfo() {
+		return this.additionalDisplayAttributeBindingInfo;
+	}
+	
+	/**
+	 * Sets the alternate display attribute name to be displayed when the field is readonly.
+	 * This properties value will be displayed instead of actual fields value when the field is readonly. 
+	 * 
+	 * @param alternateDisplayAttributeName
+	 */
+	public void setAlternateDisplayAttributeName(String alternateDisplayAttributeName) {
+		this.alternateDisplayAttributeName = alternateDisplayAttributeName;
+	}
+	
+	/**
+	 * Returns the alternate display attribute name to be displayed when the field is readonly.
+	 * 
+	 * @return alternateDisplayAttributeName
+	 */
+	public String getAlternateDisplayAttributeName() {
+		return this.alternateDisplayAttributeName;
+	}
+
+	/**
+	 * Sets the binding info for the alternate display attribute name. If it's set, it's object path
+	 * will be used to determine the alternate display attributes value.
+	 * 
+	 * @param alternateDisplayAttributeBindingInfo
+	 */
+	public void setAlternateDisplayAttributeBindingInfo(BindingInfo alternateDisplayAttributeBindingInfo) {
+		this.alternateDisplayAttributeBindingInfo = alternateDisplayAttributeBindingInfo;
+	}
+	
+	/**
+	 * Returns the binding info object of the alternate display attribute 
+	 * 
+	 * @return
+	 */
+	public BindingInfo getAlternateDisplayAttributeBindingInfo() {
+		return this.alternateDisplayAttributeBindingInfo;
+	}
 }

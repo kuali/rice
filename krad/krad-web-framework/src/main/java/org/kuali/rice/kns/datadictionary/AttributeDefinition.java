@@ -43,6 +43,7 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConst
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.control.Control;
+import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -94,6 +95,12 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	protected String childEntryName;
 	
 	private KeyValuesFinder optionsFinder;
+
+	protected String alternateDisplayAttributeName;
+    protected String additionalDisplayAttributeName;
+    
+    private BindingInfo alternateDisplayAttributeBindingInfo;
+	private BindingInfo additionalDisplayAttributeBindingInfo;
 	
 
 	public AttributeDefinition() {
@@ -623,4 +630,35 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.optionsFinder = ObjectUtils.newInstance(optionsFinderClass);
     }
 	
+	public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {
+		this.additionalDisplayAttributeName = additionalDisplayAttributeName;
+	}
+	
+	public String getAdditionalDisplayAttributeName() {
+		return this.additionalDisplayAttributeName;
+	}
+
+	public void setAdditionalDisplayAttributeBindingInfo(BindingInfo additionalDisplayAttributeBindingInfo) {
+		this.additionalDisplayAttributeBindingInfo = additionalDisplayAttributeBindingInfo;
+	}
+	
+	public BindingInfo getAdditionalDisplayAttributeBindingInfo() {
+		return this.additionalDisplayAttributeBindingInfo;
+	}
+	
+	public void setAlternateDisplayAttributeName(String alternateDisplayAttributeName) {
+		this.alternateDisplayAttributeName = alternateDisplayAttributeName;
+	}
+	
+	public String getAlternateDisplayAttributeName() {
+		return this.alternateDisplayAttributeName;
+	}
+
+	public void setAlternateDisplayAttributeBindingInfo(BindingInfo alternateDisplayAttributeBindingInfo) {
+		this.alternateDisplayAttributeBindingInfo = alternateDisplayAttributeBindingInfo;
+	}
+	
+	public BindingInfo getAlternateDisplayAttributeBindingInfo() {
+		return this.alternateDisplayAttributeBindingInfo;
+	}
 }

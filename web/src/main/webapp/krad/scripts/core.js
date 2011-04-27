@@ -226,7 +226,7 @@ function performFocus(){
 		jq("#" + focusId).focus();
 	}
 	else{
-		jq("input:first", "#kualiForm").focus();
+		jq("input:visible:first", "#kualiForm").focus();
 	}
 }
 

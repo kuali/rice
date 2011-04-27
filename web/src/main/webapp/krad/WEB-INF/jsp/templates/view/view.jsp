@@ -15,54 +15,56 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="view" classname="org.kuali.rice.kns.uif.container.View"/>
+<tiles:useAttribute name="view"
+	classname="org.kuali.rice.kns.uif.container.View" />
 
 <!-- begin of view render -->
 <krad:html view="${view}">
-   
-   <!----------------------------------- #VIEW HEADER --------------------------------------->   
-   <div id="viewheader_div">
-      <krad:template component="${view.header}"/>
-   </div>
-   
-   <!--Changing any ids here will break navigation slide out functionality -->
-   <div id="viewlayout_div">
-     <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
-     <div id="viewnavigation_div">
-        <krad:template component="${view.navigation}" currentPageId="${view.currentPageId}"/>
-     </div>
-   
-     <krad:template component="${view.errorsField}"/>
-     
-     <%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>
-     <c:if test="${view.renderForm}">
-        <form:hidden path="viewId"/>
-        
-        <%-- all forms will be stored in session, this is the conversation key --%>
-        <form:hidden path="formKey"/>
-     </c:if>
-   
-     <!----------------------------------- #VIEW PAGE --------------------------------------->  
-     <div id="viewpage_div">
-        <krad:template component="${view.currentPage}"/>
-        
-        <c:if test="${view.renderForm}">
-          <<form:hidden path="pageId"/>
-              <form:hidden path="jumpToId"/>
-          	  <form:hidden path="jumpToName"/>
-          	  <form:hidden path="focusId"/>
-            </c:if>
-            <krad:script value="performJumpTo();"/>
-            <c:if test="${view.currentPage.autoFocus}">
-            	<krad:script value="performFocus();"/>
-            </c:if>
-     </div>
-   </div>  
-    
-   <!----------------------------------- #VIEW FOOTER --------------------------------------->
-   <div id="viewfooter_div">
-      <krad:template component="${view.footer}"/>
-   </div>
-        
+
+<!----------------------------------- #VIEW HEADER --------------------------------------->
+<div id="viewheader_div">
+	<krad:template component="${view.header}" />
+</div>
+
+<!--Changing any ids here will break navigation slide out functionality -->
+<div id="viewlayout_div">
+	<!----------------------------------- #VIEW NAVIGATION --------------------------------------->
+	<div id="viewnavigation_div">
+		<krad:template component="${view.navigation}"
+			currentPageId="${view.currentPageId}" />
+	</div>
+
+	<krad:template component="${view.errorsField}" />
+
+	<%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>
+	<c:if test="${view.renderForm}">
+		<form:hidden path="viewId" />
+
+		<%-- all forms will be stored in session, this is the conversation key --%>
+		<form:hidden path="formKey" />
+	</c:if>
+
+	<!----------------------------------- #VIEW PAGE --------------------------------------->
+	<div id="viewpage_div">
+		<krad:template component="${view.currentPage}" />
+
+		<c:if test="${view.renderForm}">
+			<form:hidden path="pageId" />
+			<form:hidden path="jumpToId" />
+			<form:hidden path="jumpToName" />
+			<form:hidden path="focusId" />
+		</c:if>
+		<krad:script value="performJumpTo();" />
+		<c:if test="${view.currentPage.autoFocus}">
+			<krad:script value="performFocus();" />
+		</c:if>
+	</div>
+</div>
+
+<!----------------------------------- #VIEW FOOTER --------------------------------------->
+<div id="viewfooter_div">
+	<krad:template component="${view.footer}" />
+</div>
+
 </krad:html>
 <!-- end of view render -->

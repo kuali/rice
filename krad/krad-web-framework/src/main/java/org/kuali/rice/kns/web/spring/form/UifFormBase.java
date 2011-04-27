@@ -24,6 +24,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 
@@ -437,6 +438,7 @@ public class UifFormBase implements Serializable {
 	/**
 	 * The jumpToId for this form, the element with this id will be jumped to automatically
 	 * when the form is loaded in the view.
+	 * Using "TOP" or "BOTTOM" will jump to the top or the bottom of the resulting page.
 	 * jumpToId always takes precedence over jumpToName, if set.
 	 * @return the jumpToId
 	 */
@@ -470,6 +472,7 @@ public class UifFormBase implements Serializable {
 
 	/**
 	 * Field to place focus on when the page loads
+	 * An empty focusId will result in focusing on the first visible input element by default.
 	 * @return the focusId
 	 */
 	public String getFocusId() {

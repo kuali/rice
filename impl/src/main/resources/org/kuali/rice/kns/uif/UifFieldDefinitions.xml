@@ -200,11 +200,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="NavigationActionLinkField" abstract="true" parent="NavigationActionLinkField-parentBean"/>
   <bean id="NavigationActionLinkField-parentBean" abstract="true" parent="ActionLinkField" scope="prototype">
       <property name="jumpToIdAfterSubmit" value="TOP" />
+      <property name="focusOnAfterSubmit" value="FIRST" />
   </bean>
   
   <bean id="NavigationActionField" abstract="true" parent="NavigationActionField-parentBean"/>
   <bean id="NavigationActionField-parentBean" abstract="true" parent="ActionField" scope="prototype">
       <property name="jumpToIdAfterSubmit" value="TOP" />
+      <property name="focusOnAfterSubmit" value="FIRST" />
   </bean>
   
   <bean id="LinkField" abstract="true" parent="LinkField-parentBean"/>

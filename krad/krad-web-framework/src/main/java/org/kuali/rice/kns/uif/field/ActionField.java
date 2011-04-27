@@ -153,19 +153,35 @@ public class ActionField extends FieldBase {
 				}
 			}
 			
-			if(StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)){
-				jumpToIdAfterSubmit = this.getId();
-				writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '"
+			if(StringUtils.isBlank(focusOnAfterSubmit)){
+			    //if this is blank focus this actionField by default
+			    focusOnAfterSubmit = this.getId();
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '"
 					+ this.getId() + "'); ";
 			}
-			else if(StringUtils.isNotBlank(jumpToIdAfterSubmit)){
-				writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '"
-					+ jumpToIdAfterSubmit + "'); ";
+			else if(!focusOnAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST)){
+			    //Use the id passed in
+				writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '"
+					+ focusOnAfterSubmit + "'); ";
 			}
 			else{
-				writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToName' , '"
-					+ jumpToNameAfterSubmit + "'); ";
-			}
+			    //First input will be focused, must be first field set to empty string
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , ''); ";
+            }
+			
+			if(StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)){
+                jumpToIdAfterSubmit = this.getId();
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '"
+                    + this.getId() + "'); ";
+            }
+            else if(StringUtils.isNotBlank(jumpToIdAfterSubmit)){
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '"
+                    + jumpToIdAfterSubmit + "'); ";
+            }
+            else{
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToName' , '"
+                    + jumpToNameAfterSubmit + "'); ";
+            }
 
 			String postScript = "";
 			if (scriptFormSubmit) {
@@ -444,6 +460,9 @@ public class ActionField extends FieldBase {
 	/**
 	 * The id to jump to in the next page, the element with this id will be jumped to automatically
 	 * when the new page is retrieved after a submit.
+	 * Using "TOP" or "BOTTOM" will jump to the top or the bottom of the resulting page.
+	 * Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit will result in this
+	 * ActionField being jumped to by default if it is present on the new page.
 	 * WARNING: jumpToIdAfterSubmit always takes precedence over jumpToNameAfterSubmit, if set.
 	 * @param jumpToIdAfterSubmit the jumpToIdAfterSubmit to set
 	 */
@@ -454,6 +473,8 @@ public class ActionField extends FieldBase {
 	/**
 	 * The name to jump to in the next page, the element with this name will be jumped to automatically
 	 * when the new page is retrieved after a submit.
+	 * Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit will result in this
+     * ActionField being jumped to by default if it is present on the new page.
 	 * WARNING: jumpToIdAfterSubmit always takes precedence over jumpToNameAfterSubmit, if set.
 	 * @return the jumpToNameAfterSubmit
 	 */
@@ -469,7 +490,11 @@ public class ActionField extends FieldBase {
 	}
 
 	/**
-	 * The id of the field to place focus in the new page after the new page is retrieved.
+	 * The id of the field to place focus on in the new page after the new page is retrieved.
+	 * Passing in "FIRST" will focus on the first visible input element on the form.
+	 * Passing in "THIS" will result in this ActionField being focused, if present in the resulting
+	 * page.
+	 * Passing in the empty string will result in this ActionField being focused.
 	 * @return the focusOnAfterSubmit
 	 */
 	public String getFocusOnAfterSubmit() {

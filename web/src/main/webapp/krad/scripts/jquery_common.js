@@ -58,6 +58,14 @@ jq(document).ready(function() {
 	// buttons
 	jq( "input:submit" ).button();
 	jq( "input:button" ).button();
+	jq.ajaxSetup({
+		  beforeSend: function() {
+		     createLoading(true);
+		  },
+		  complete: function(){
+			 createLoading(false);
+		  }
+	});
 	runHiddenScripts("");
 });
 

@@ -36,6 +36,10 @@ public class UifConstants {
 		public static final String RIGHT = "RIGHT";
 		public static final String TOP = "TOP";
 	}
+	
+	public static class Order {
+	    public static final String FIRST = "FIRST";
+	}
 
 	public static class NavigationType {
 		public static final String VERTICAL_MENU = "VERTICAL_MENU";

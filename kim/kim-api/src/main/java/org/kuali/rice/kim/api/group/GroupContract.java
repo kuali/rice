@@ -87,7 +87,7 @@ public interface GroupContract extends Versioned, GloballyUnique, Inactivatable 
      *
      * @return members
      */
-    List<? extends GroupMemberContract> getMembers();
+    //List<? extends GroupMemberContract> getMembers();
 
     /*List<? extends PersonContract> getPersonMembers();
 

@@ -18,7 +18,6 @@ package org.kuali.rice.kim.web.struts.form;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -28,6 +27,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TableRenderUtil;
 
@@ -186,7 +186,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
 			return RoleImpl.class.getName();
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
-			return GroupImpl.class.getName();
+			return GroupBo.class.getName();
 		return "";
 	}
 

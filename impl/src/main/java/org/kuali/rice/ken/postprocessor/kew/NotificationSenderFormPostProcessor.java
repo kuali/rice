@@ -103,12 +103,13 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
 		    ".  We are now calling the NotificationService.sendNotification() service.");
 	    
 	    // obtain a workflow user object first
-	    NetworkIdDTO proxyUser = new NetworkIdDTO(Util.getNotificationSystemUser());
+	    //NetworkIdDTO proxyUser = new NetworkIdDTO(Util.getNotificationSystemUser());
+        String proxyUserId = Util.getNotificationSystemUser();
 	        
 	    // now construct the workflow document, which will interact with workflow
 	    NotificationWorkflowDocument document;
 	    try {	
-		document = new NotificationWorkflowDocument(proxyUser, arg0.getRouteHeaderId());
+		document = new NotificationWorkflowDocument(proxyUserId, arg0.getRouteHeaderId());
 		
 		LOG.debug("XML:" + document.getApplicationContent());
 		

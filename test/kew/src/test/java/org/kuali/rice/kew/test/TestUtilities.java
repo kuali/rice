@@ -23,16 +23,15 @@ import org.junit.Assert;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
@@ -225,7 +224,7 @@ public final class TestUtilities {
 				foundRequest = true;
 				break;
 			} else if (actionRequest.isGroupRequest() && 
-			        KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getGroupId())) {
+			        KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getId())) {
 				foundRequest = true;
 				break;
 			}

@@ -19,8 +19,8 @@ package org.kuali.rice.kew.test.web;
 
 import javax.servlet.ServletContext;
 
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.mock.web.MockHttpServletRequest;

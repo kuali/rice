@@ -23,7 +23,7 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 import java.util.List;
@@ -99,8 +99,8 @@ public class AdHocAction extends ActionTakenEvent {
     			}
     		} else if (recipient instanceof KimGroupRecipient) {
     			Group group = ((KimGroupRecipient)recipient).getGroup();
-    			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getGroupId(), getRouteHeader().getDocumentType(), actionRequested)) {
-    				return "The group '" + group.getGroupName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
+    			if (!KEWServiceLocator.getDocumentTypePermissionService().canGroupReceiveAdHocRequest("" + group.getId(), getRouteHeader().getDocumentType(), actionRequested)) {
+    				return "The group '" + group.getName() + "' does not have permission to recieve ad hoc requests on DocumentType '" + getRouteHeader().getDocumentType().getName() + "'";
     			}
     		} else {
     			return "Invalid Recipient type encountered: " + recipient.getClass();

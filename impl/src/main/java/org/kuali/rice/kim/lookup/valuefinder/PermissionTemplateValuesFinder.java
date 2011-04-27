@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
 /**

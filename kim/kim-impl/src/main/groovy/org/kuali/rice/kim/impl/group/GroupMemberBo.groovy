@@ -18,14 +18,17 @@ package org.kuali.rice.kim.impl.group
 
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
 import javax.persistence.Table
+import javax.persistence.Id
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
-import org.kuali.rice.kim.api.group.GroupMember
 import org.kuali.rice.kim.api.group.GroupMemberContract
 import org.kuali.rice.kim.impl.membership.AbstractMember
+import org.kuali.rice.kim.api.group.GroupMember
+import javax.persistence.GeneratedValue
+import org.kuali.rice.kim.api.services.KIMServiceLocator
+import org.kuali.rice.kim.util.KimConstants
+
 
 @Entity
 @Table(name="KRIM_GRP_MBR_T")
@@ -79,5 +82,22 @@ public class GroupMemberBo extends AbstractMember implements GroupMemberContract
 
         return bo
     }
+
+   /* @Override
+    boolean isActive(){
+        boolean tempIsActive = super.isActive()
+        if (tempIsActive) {
+            //check to see if underlying member is active
+            if (typeCode.equals(KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+                return KIMServiceLocator.getIdentityManagementService().getGroup(memberId).isActive()
+            } else if (typeCode.equals(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+                return KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).isActive()
+            } else {
+                return tempIsActive
+            }
+
+        }
+    }*/
+
 
 }

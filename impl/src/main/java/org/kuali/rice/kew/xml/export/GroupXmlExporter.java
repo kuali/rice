@@ -20,10 +20,11 @@ import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kim.api.group.GroupAttribute;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 
 import java.util.Iterator;
 
@@ -74,15 +75,15 @@ public class GroupXmlExporter implements XmlExporter {
      */
     private void exportGroup(Element parent, Group group) {
         Element groupElement = renderer.renderElement(parent, GROUP);
-        if (group.getGroupName() != null) {
-            renderer.renderTextElement(groupElement, NAME, group.getGroupName());
+        if (group.getName() != null) {
+            renderer.renderTextElement(groupElement, NAME, group.getName());
         }
         if (group.getNamespaceCode() != null) {
             renderer.renderTextElement(groupElement, NAMESPACE, group.getNamespaceCode());
         }
 
-        if (group.getGroupDescription() != null && !group.getGroupDescription().trim().equals("")) {
-            renderer.renderTextElement(groupElement, DESCRIPTION, group.getGroupDescription());
+        if (group.getDescription() != null && !group.getDescription().trim().equals("")) {
+            renderer.renderTextElement(groupElement, DESCRIPTION, group.getDescription());
         }
 
         renderer.renderTextElement(groupElement, ACTIVE, new Boolean(group.isActive()).toString());
@@ -96,23 +97,29 @@ public class GroupXmlExporter implements XmlExporter {
 
         if (group.getAttributes().size() > 0) {
             Element attributesElement = renderer.renderElement(groupElement, ATTRIBUTES);
-            for (String key : group.getAttributes().keySet()) {
+            //todo : is the new code correct?
+            /*for (String key : group.getAttributes().keySet()) {
                 Element attributeElement = renderer.renderElement(attributesElement, ATTRIBUTE);
                 attributeElement.setAttribute(KEY, key);
                 attributeElement.setAttribute(VALUE, group.getAttributes().get(key));
+            }*/
+            for (GroupAttribute attr : group.getAttributes()) {
+                Element attributeElement = renderer.renderElement(attributesElement, ATTRIBUTE);
+                attributeElement.setAttribute(KEY, attr.getKimAttribute().getAttributeName());
+                attributeElement.setAttribute(VALUE, attr.getAttributeValue());
             }
         }
 
-        java.util.List<String> memberGroupIds = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(group.getGroupId());
+        java.util.List<String> memberGroupIds = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(group.getId());
 
-        java.util.List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getGroupId());
+        java.util.List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getId());
 
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
             for (String memberGroupId : memberGroupIds) {
                 Group memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
                 Element groupNameElement = renderer.renderElement(membersElement, GROUP_NAME);
-                renderer.renderTextElement(groupNameElement, NAME, memberGroup.getGroupName());
+                renderer.renderTextElement(groupNameElement, NAME, memberGroup.getName());
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());
             }
             for (String memberPrincipalId : memberPrincipalIds) {

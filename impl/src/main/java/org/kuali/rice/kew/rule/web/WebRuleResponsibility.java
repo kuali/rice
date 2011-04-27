@@ -29,9 +29,9 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 import java.lang.reflect.InvocationHandler;
@@ -126,8 +126,8 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
 				Group group = KIMServiceLocator.getIdentityManagementService().
 	                  getGroup(getRuleResponsibilityName());
-				setReviewer(group.getGroupName());
-				setReviewerId(group.getGroupId());
+				setReviewer(group.getName());
+				setReviewerId(group.getId());
 			} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
 				setRoleReviewer(getRuleResponsibilityName());
 				setReviewer(getResolvedRoleName());
@@ -180,7 +180,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
 		//Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
 		if (workgroup != null) {
-			setReviewer(workgroup.getGroupName());
+			setReviewer(workgroup.getName());
 		} else {
 			setReviewer("");
 		}
@@ -320,7 +320,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				if (workgroup == null) {
 					invalidWorkgroup = true;
 				} else {
-					setRuleResponsibilityName(workgroup.getGroupId());
+					setRuleResponsibilityName(workgroup.getId());
 				}
 			} else {
 				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.workgroup.invalid"));

@@ -53,8 +53,8 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -300,7 +300,7 @@ public class RouteNode implements Serializable {
     	Group exceptionGroup = getExceptionWorkgroup();
         if (exceptionWorkgroupName == null || exceptionWorkgroupName.equals("")) {
             if (exceptionGroup != null) {
-                return exceptionGroup.getGroupName();
+                return exceptionGroup.getName();
             }
         }
         return exceptionWorkgroupName;

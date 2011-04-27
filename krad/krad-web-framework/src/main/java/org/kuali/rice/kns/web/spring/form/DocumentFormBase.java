@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.spring.form;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;

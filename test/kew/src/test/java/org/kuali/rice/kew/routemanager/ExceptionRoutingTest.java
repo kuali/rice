@@ -28,8 +28,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase;
 
@@ -79,7 +79,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
             assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
-            assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", group.getGroupName());
+            assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", group.getName());
             assertNotNull("annotation cannot be null", actionRequest.getAnnotation());
             assertFalse("annotation cannot be empty", "".equals(actionRequest.getAnnotation()));
         }
@@ -177,7 +177,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
                 //assertEquals("Node instance id should be id of routeNode1", routeNode1.getRouteNodeInstanceId(), actionRequest.getNodeInstanceId());
                 // routeMethod name should be null as well
                 assertNull("Exception request routeMethodName wrong", actionRequest.getRouteMethodName());
-                assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", group.getGroupName());
+                assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", group.getName());
                 hasCompleteRequest = true;
             }
         }

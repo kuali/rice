@@ -62,11 +62,11 @@
     </property>
     <property name="relationships">
       <list>
-        <bean parent="RelationshipDefinition">
+        <!--<bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="kimGroupImpl"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="groupReviewerName" p:targetName="groupName"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="groupReviewerName" p:targetName="name"/>
             </list>
           </property>
           <property name="supportAttributes">
@@ -74,7 +74,7 @@
               <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="groupReviewerNamespace" p:targetName="namespaceCode"/>
             </list>
           </property>
-        </bean>
+        </bean>-->
       
 		<bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="previousVersion"/>

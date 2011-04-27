@@ -202,7 +202,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	
     	DocumentType documentType1 = KEWServiceLocator.getDocumentTypeService().findByName("ReportingWorkgroupName1");
     	assertNotNull("Should have a reporting workgroup.", documentType1.getReportingWorkgroup());
-    	assertEquals("Should be WorkflowAdmin reporting workgroup", "WorkflowAdmin", documentType1.getReportingWorkgroup().getGroupName());
+    	assertEquals("Should be WorkflowAdmin reporting workgroup", "WorkflowAdmin", documentType1.getReportingWorkgroup().getName());
     		
     	DocumentType documentType2 = KEWServiceLocator.getDocumentTypeService().findByName("ReportingWorkgroupName2");
     	assertNull("Should not have a reporting workgroup.", documentType2.getReportingWorkgroup());
@@ -310,9 +310,9 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         testDoc("RoutePathAdjustment1", null);
         DocumentType docType1 = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
         assertNotNull("Document type should exist", docType1);
-        assertEquals("The blanket approve workgroup name is incorrect", "TestWorkgroup", docType1.getBlanketApproveWorkgroup().getGroupName());
+        assertEquals("The blanket approve workgroup name is incorrect", "TestWorkgroup", docType1.getBlanketApproveWorkgroup().getName());
         assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType1.getBlanketApproveWorkgroup().getNamespaceCode());
-        assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType1.getSuperUserWorkgroup().getGroupName());
+        assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType1.getSuperUserWorkgroup().getName());
         assertEquals("The super user workgroup namespace is incorrect", "KR-WKFLW", docType1.getSuperUserWorkgroup().getNamespaceCode());
         List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType1, true);
         assertEquals("Incorrect document route node count", 1, routeNodes.size());
@@ -321,9 +321,9 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         testDoc("RoutePathAdjustment2", null);
         DocumentType docType2 = KEWServiceLocator.getDocumentTypeService().findByName(docTypeName);
         assertNotNull("Document type should exist", docType1);
-        assertEquals("The blanket approve workgroup name is incorrect", "WorkflowAdmin", docType2.getBlanketApproveWorkgroup().getGroupName());
+        assertEquals("The blanket approve workgroup name is incorrect", "WorkflowAdmin", docType2.getBlanketApproveWorkgroup().getName());
         assertEquals("The blanket approve workgroup namespace is incorrect", "KR-WKFLW", docType2.getBlanketApproveWorkgroup().getNamespaceCode());
-        assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType2.getSuperUserWorkgroup().getGroupName());
+        assertEquals("The super user workgroup name is incorrect", "TestWorkgroup", docType2.getSuperUserWorkgroup().getName());
         assertEquals("The super user workgroup namespace is incorrect", "KR-WKFLW", docType2.getSuperUserWorkgroup().getNamespaceCode());
         routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType2, true);
         assertEquals("Incorrect document route node count", 2, routeNodes.size());

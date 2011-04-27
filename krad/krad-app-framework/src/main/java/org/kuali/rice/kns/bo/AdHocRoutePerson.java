@@ -20,6 +20,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
 /**
@@ -50,7 +51,7 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
     @Override
     public String getName() {
         if ( person == null || person.getPrincipalName() == null || !person.getPrincipalName().equalsIgnoreCase( getId() ) ) {
-            person = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName( getId() );
+            person = KIMServiceLocator.getPersonService().getPersonByPrincipalName( getId() );
         }
         if ( person == null ) {
             return "";

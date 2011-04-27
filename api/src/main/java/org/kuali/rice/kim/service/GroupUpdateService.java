@@ -36,7 +36,7 @@ public interface GroupUpdateService {
 	/**
 	 * Creates a new group using the given GroupInfo.
 	 */
-	GroupInfo createGroup(@WebParam(name="groupInfo") GroupInfo groupInfo) throws UnsupportedOperationException;
+	GroupInfo createGroup(@WebParam(name="group") GroupInfo groupInfo) throws UnsupportedOperationException;
 
 	/**
 	 * Updates the group with the given groupId using the supplied GroupInfo.

@@ -27,13 +27,13 @@ import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.dao.KimGroupDao;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.impl.group.GroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -86,14 +86,14 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     private static String KIM_TYPE_ID_PROPERTY_NAME = "kimTypeId";
 	private List<Row> grpRows = new ArrayList<Row>();
 	private List<Row> attrRows = new ArrayList<Row>();
-	private KimGroupDao groupDao;
+	private GroupDao groupDao;
 	private String typeId = "";
 	private AttributeDefinitionMap attrDefinitions;
 	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
 
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
-    	GroupImpl groupImpl = (GroupImpl) bo;
+    	GroupBo groupImpl = (GroupBo) bo;
         List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
         if(allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME)){
         	anchorHtmlDataList.add(getEditGroupUrl(groupImpl));	
@@ -101,14 +101,14 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     	return anchorHtmlDataList;
     }
     
-    protected HtmlData getEditGroupUrl(GroupImpl groupImpl) {
+    protected HtmlData getEditGroupUrl(GroupBo groupBo) {
     	String href = "";
 
         Properties parameters = new Properties();
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
         parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
         parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
-        parameters.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupImpl.getGroupId());
+        parameters.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupBo.getId());
         if (StringUtils.isNotBlank(getReturnLocation())) {
         	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
 		}
@@ -124,19 +124,20 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
      * 
      * @param  fieldValues  names and values returned by the Group Lookup screen
      * @return  groupImplList  a list of GroupImpl objects
-     * @see  KimCommonUtilsInternal#copyInfoToGroup(GroupInfo, GroupImpl)
      */
     @Override
-    public List<GroupImpl> getSearchResults(java.util.Map<String,String> fieldValues)  {
+    public List<GroupBo> getSearchResults(java.util.Map<String,String> fieldValues)  {
     	List<? extends Group> groupInfoObjs = KIMServiceLocator.getGroupService().lookupGroups(fieldValues);
-    	List<GroupImpl> groupImplList = new ArrayList<GroupImpl>();
-    	for(Group g : groupInfoObjs){    		
-    		GroupImpl impl = new GroupImpl();
+    	List<GroupBo> groupBoList = new ArrayList<GroupBo>();
+
+    	for(Group g : groupInfoObjs){
+            groupBoList.add(GroupBo.from(g));
+    		/*GroupImpl impl = new GroupImpl();
     		impl = KimCommonUtilsInternal.copyInfoToGroup(g, impl);
     		impl.setGroupAttributes(KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(g.getAttributes(), g.getGroupId(), g.getKimTypeId()));
-    		groupImplList.add(impl);    		
+    		groupImplList.add(impl);*/
     	}
-    	return groupImplList;
+    	return groupBoList;
     }
 
     @Override
@@ -288,7 +289,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                 Object prop = null;
                 if (col.getPropertyName().matches("\\w+\\.\\d+$")) {
                     String id = col.getPropertyName().substring(col.getPropertyName().lastIndexOf('.') + 1); //.split("\\d+$"))[1];
-                    prop = ((GroupImpl)element).getGroupAttributeValueById(id);
+                    prop = ((GroupBo)element).getGroupAttributeValueById(id);
                 }
                 if (prop == null) {
                     prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
@@ -496,11 +497,11 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 		this.grpRows = grpRows;
 	}
 
-	public KimGroupDao getGroupDao() {
+	public GroupDao getGroupDao() {
 		return this.groupDao;
 	}
 
-	public void setGroupDao(KimGroupDao groupDao) {
+	public void setGroupDao(GroupDao groupDao) {
 		this.groupDao = groupDao;
 	}
 

@@ -230,7 +230,8 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	LOG.debug("remoteUser: " + request.getRemoteUser());
 
 	// obtain a workflow user object first
-	WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
+	//WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
+    String initiatorId = request.getRemoteUser();
 
 	// now construct the workflow document, which will interact with workflow
 	NotificationWorkflowDocument document;
@@ -238,7 +239,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         String view;
 	try {
 	    document = new NotificationWorkflowDocument(
-		    initiator,
+		    initiatorId,
 		    NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
 
 	    //parse out the application content into a Notification BO
@@ -276,7 +277,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             document.setTitle(notification.getTitle());
 
 	    document.routeDocument("This message was submitted via the event notification message submission form by user "
-			    + initiator.getWorkflowId());
+			    + initiatorId);
 
 	    view = "SendEventNotificationMessage";
 	    
@@ -533,7 +534,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    				NotificationRecipient recipient = new NotificationRecipient();
 	    				recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 	    				recipient.setRecipientId(
-	    						getIdentityManagementService().getGroupByName(workgroupNamespaceCodes[i], workgroupRecipients[i]).getGroupId());
+	    						getIdentityManagementService().getGroupByName(workgroupNamespaceCodes[i], workgroupRecipients[i]).getId());
 	    				notification.addRecipient(recipient);
 	    			}
 	    		}

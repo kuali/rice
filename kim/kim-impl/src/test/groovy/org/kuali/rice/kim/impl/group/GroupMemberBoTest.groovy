@@ -30,7 +30,7 @@ import org.kuali.rice.kim.api.group.GroupMember
 class GroupMemberBoTest {
   @Test
   public void testNotEqualsWithGroupMember() {
-    GroupMember immutable = GroupMember.Builder.create("ID", "groupId", "memberId", "type").build()
+    GroupMember immutable = GroupMember.Builder.create("groupId", "memberId", "type").build()
     GroupMemberBo bo = GroupMemberBo.from(immutable )
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryFactory;
+import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.bo.LookupResults;
 import org.kuali.rice.kns.bo.SelectedObjectIds;
 import org.kuali.rice.kns.dao.PersistedLookupMetadataDao;

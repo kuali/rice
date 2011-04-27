@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
@@ -47,7 +46,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.IdentityManagementService;
+//import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -96,20 +95,20 @@ public class WorkflowDocument implements java.io.Serializable {
     /**
      * @deprecated Use the constructor which takes a principal ID instead.
      */
-    public WorkflowDocument(UserIdDTO userId, String documentType) throws WorkflowException {
+    /*public WorkflowDocument(UserIdDTO userId, String documentType) throws WorkflowException {
     	String principalId = convertUserIdToPrincipalId(userId);
     	init(principalId, documentType, null);
-    }
+    }*/
 
     /**
      * @deprecated Use the constructor which takes a principal ID instead.
      */
-    public WorkflowDocument(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
+   /* public WorkflowDocument(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
     	String principalId = convertUserIdToPrincipalId(userId);
     	init(principalId, null, routeHeaderId);
-    }
+    }*/
 
-    private String convertUserIdToPrincipalId(UserIdDTO userId) {
+   /* private String convertUserIdToPrincipalId(UserIdDTO userId) {
 
         if (userId == null) {
             return null;
@@ -130,7 +129,7 @@ public class WorkflowDocument implements java.io.Serializable {
             return person.getPrincipalId();
         }
         throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
-    }
+    }*/
 
     /**
      * Constructs a WorkflowDocument representing a new document in the workflow system.

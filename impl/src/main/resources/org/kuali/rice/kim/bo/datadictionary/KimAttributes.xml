@@ -104,7 +104,7 @@
   <bean id="KimAttributes-namespaceCode" parent="Namespace-code" p:name="namespaceCode"/>
   <bean id="KimAttributes-componentName" parent="Component-code" p:name="componentName"/>
   <bean id="KimAttributes-roleName" parent="RoleImpl-roleName"/>
-  <bean id="KimAttributes-groupName" parent="GroupImpl-groupName"/>
+  <bean id="KimAttributes-groupName" parent="Group-name" p:name="groupName" />
   <bean id="KimAttributes-documentNumber" parent="DocumentHeader-documentNumber"/>
   <bean id="KimAttributes-parameterName" parent="Parameter-name"  p:name="parameterName"/>
 

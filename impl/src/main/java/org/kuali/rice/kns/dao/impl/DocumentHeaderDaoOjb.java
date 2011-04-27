@@ -17,6 +17,7 @@ package org.kuali.rice.kns.dao.impl;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryFactory;
+import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.dao.DocumentHeaderDao;
 import org.kuali.rice.kns.util.KNSPropertyConstants;

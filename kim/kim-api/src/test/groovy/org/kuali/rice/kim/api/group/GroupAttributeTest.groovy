@@ -24,13 +24,7 @@ import org.junit.Test
 import org.kuali.rice.kim.api.attribute.KimAttribute
 import org.kuali.rice.kim.api.type.KimType
 
-/**
- * Created by IntelliJ IDEA.
- * User: jjhanso
- * Date: 4/7/11
- * Time: 9:59 AM
- * To change this template use File | Settings | File Templates.
- */
+
 class GroupAttributeTest {
     private static final String ID = "1"
     private static final String GROUP_ID = "50"

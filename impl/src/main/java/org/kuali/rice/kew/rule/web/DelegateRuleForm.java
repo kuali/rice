@@ -26,9 +26,9 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
@@ -154,7 +154,7 @@ public class DelegateRuleForm extends KualiForm {
 				} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
 					Group group = KIMServiceLocator.getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName());
 					if (group != null) {
-					    reviewers.add(group.getNamespaceCode() + " " + group.getGroupName());
+					    reviewers.add(group.getNamespaceCode() + " " + group.getName());
 					}
 					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID_LABEL);
 				} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(responsibility.getRuleResponsibilityType())) {

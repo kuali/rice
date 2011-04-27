@@ -29,6 +29,12 @@ import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.bo.Person
+import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes
+import org.kuali.rice.kim.api.services.KIMServiceLocator
+import javax.persistence.Transient
+import org.kuali.rice.kim.impl.type.KimTypeBo
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
 
 @Entity
 @Table(name="KRIM_GRP_T")
@@ -63,6 +69,12 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
 	@Fetch(value = FetchMode.SELECT)
 	List<GroupAttributeBo> attributes
 
+    @Transient
+    List<Person> memberPersons
+
+    @Transient
+    List<GroupBo> memberGroups
+
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
@@ -93,10 +105,11 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         bo.description = im.description
         bo.active = im.active
         bo.kimTypeId = im.kimTypeId
-        bo.members = new ArrayList<GroupMemberBo>()
+        //todo: how do we handle Group Members if Group doesn't have data?
+        /*bo.members = new ArrayList<GroupMemberBo>()
         for (member in im.members) {
             bo.members.add (GroupMemberBo.from(member))
-        }
+        }*/
 
         bo.attributes = new ArrayList<GroupAttributeBo>()
         for (attr in im.attributes) {
@@ -108,4 +121,64 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         return bo
     }
 
+    //helper function to get Attribute Value with specific id
+    public String getGroupAttributeValueById(String attributeId) {
+	    for (GroupAttributeBo gad : getAttributes()) {
+	        if (gad.getAttributeId().equals(attributeId.trim())) {
+	            return gad.getValue();
+	        }
+	    }
+	    return null;
+	}
+
+    private void spitMembersToTypes() {
+        memberPersons = new ArrayList<Person>()
+        memberGroups = new ArrayList<Group>()
+        if (getMembers() != null) {
+            for ( GroupMemberBo groupMember : getMembers() ) {
+                if (groupMember.isActive()) {
+                    if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )) {
+                        Person tempPerson =  KIMServiceLocator.getPersonService().getPerson(groupMember.getMemberId())
+                        if (tempPerson != null && tempPerson.isActive()) {
+                            memberPersons.add(tempPerson)
+                        }
+                    } else if (groupMember.getTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE ) ) {
+                        Group tempGroup =  KIMServiceLocator.getGroupService().getGroup(groupMember.getMemberId())
+                        if (tempGroup != null && tempGroup.isActive()) {
+                            memberGroups.add(tempGroup)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public List<Person> getMemberPersons() {
+        if (this.memberPersons == null) {
+            spitMembersToTypes()
+        }
+        return this.memberPersons
+    }
+
+    public List<String> getMemberPrincipalIds() {
+        if (this.memberPersons == null) {
+            spitMembersToTypes()
+        }
+        List<String> principalIds = new ArrayList<String>()
+        for (Person person : this.memberPersons) {
+            principalIds.add(person.getPrincipalId())
+        }
+        return principalIds
+    }
+
+    public List<Group> getMemberGroups() {
+        if (this.memberGroups == null) {
+            spitMembersToTypes()
+        }
+        return this.memberGroups
+    }
+
+    public KimTypeBo getKimTypeInfo() {
+        return KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(this.kimTypeId))
+    }
 }

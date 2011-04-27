@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service;
 
 import java.util.List;
 
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 
 /**
@@ -35,6 +36,14 @@ public interface GroupInternalService {
 	 * @param group
 	 */
     public GroupImpl saveWorkgroup(GroupImpl group);
+
+    /**
+	 * Save the GroupImpl, being careful to reset the action document
+	 * assignments based on any membership changes.
+	 *
+	 * @param group
+	 */
+    public Group saveWorkgroup(Group group);
 	
     /**
      * Updates KEW for workgroup members according to membership differences between the

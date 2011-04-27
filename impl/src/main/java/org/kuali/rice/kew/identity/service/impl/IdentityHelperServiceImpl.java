@@ -29,10 +29,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  *
@@ -64,7 +64,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		if (group == null) {
 			throw new RiceRuntimeException("Given namespace of '" + namespace + "' and name of '" + groupName + "' was invalid.  Failed to lookup a corresponding group ID.");
 		}
-		return group.getGroupId();
+		return group.getId();
 	}
 
 

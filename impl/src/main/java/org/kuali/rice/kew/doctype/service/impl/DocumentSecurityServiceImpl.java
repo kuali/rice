@@ -39,9 +39,9 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 
 
@@ -139,7 +139,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
     List<Group> securityWorkgroups = security.getWorkgroups();
     if (securityWorkgroups != null) {
       for (Group securityWorkgroup : securityWorkgroups) {
-        if (isWorkgroupAuthenticated(securityWorkgroup.getNamespaceCode(), securityWorkgroup.getGroupName(), session)) {
+        if (isWorkgroupAuthenticated(securityWorkgroup.getNamespaceCode(), securityWorkgroup.getName(), session)) {
         	return true;
         }
       }
@@ -207,7 +207,7 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 
 	private boolean isMemberOfGroupWithName(String namespace, String groupName, String principalId) {
 		for (Group group : KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principalId)) {
-			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getGroupName())) {
+			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getName())) {
 				return true;
 			}
 		}

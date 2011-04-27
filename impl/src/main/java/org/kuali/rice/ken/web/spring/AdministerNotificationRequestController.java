@@ -37,8 +37,8 @@ import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ValidationUtils;
@@ -163,7 +163,8 @@ public class AdministerNotificationRequestController extends MultiActionControll
      */
     public ModelAndView view(HttpServletRequest request, HttpServletResponse response, AdministerNotificationRequestCommand command) {
         // obtain a workflow user object first
-        WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
+        //WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
+        String initiatorId = request.getRemoteUser();
 
         // now construct the workflow document, which will interact with workflow
         if (command.getDocId() == null) {
@@ -182,7 +183,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
         // set into model whether we are dealing with a pop up or an inline window
         model.put(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW, standaloneWindow);
         try {
-            document = new NotificationWorkflowDocument(initiator, new Long(command.getDocId()));
+            document = new NotificationWorkflowDocument(initiatorId, new Long(command.getDocId()));
 
             Notification notification = retrieveNotificationForWorkflowDocument(document);
 
@@ -225,7 +226,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
                     }
                     // if the current user is a reviewer, then disapprove as that user
                     if (user != null) {
-                        new WorkflowDocument(new NetworkIdDTO(user), new Long(command.getDocId())).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
+                        new WorkflowDocument(user, new Long(command.getDocId())).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
                         disapproved = true;
                     }
                 }
@@ -310,11 +311,12 @@ public class AdministerNotificationRequestController extends MultiActionControll
         }
 
         // obtain a workflow user object first
-        WorkflowIdDTO user = new WorkflowIdDTO(request.getRemoteUser());
+        //WorkflowIdDTO user = new WorkflowIdDTO(request.getRemoteUser());
+        String userId = request.getRemoteUser();
 
         try {
             // now construct the workflow document, which will interact with workflow
-            NotificationWorkflowDocument document = new NotificationWorkflowDocument(user, command.getDocId());
+            NotificationWorkflowDocument document = new NotificationWorkflowDocument(userId, command.getDocId());
 
             Notification notification = retrieveNotificationForWorkflowDocument(document);
 
@@ -322,11 +324,11 @@ public class AdministerNotificationRequestController extends MultiActionControll
             Person initiator = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
             String notificationBlurb =  notification.getContentType().getName() + " notification submitted by " + initiator.getName() + " for channel " + notification.getChannel().getName();
             if ("disapprove".equals(action)) {
-                document.disapprove("User " + user.getWorkflowId() + " disapproving " + notificationBlurb);
+                document.disapprove("User " + userId + " disapproving " + notificationBlurb);
             } else if ("approve".equals(action)) {
-                document.approve("User " + user.getWorkflowId() + " approving " + notificationBlurb);
+                document.approve("User " + userId + " approving " + notificationBlurb);
             } else if ("acknowledge".equals(action)) {
-                document.acknowledge("User " + user.getWorkflowId() + " acknowledging " + notificationBlurb);
+                document.acknowledge("User " + userId + " acknowledging " + notificationBlurb);
             }
         } catch (Exception e) {
             LOG.error("Exception occurred taking action on notification request", e);

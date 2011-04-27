@@ -24,13 +24,11 @@ import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
@@ -217,6 +215,6 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	}
 
 	protected String getGroupIdForName(String namespace, String groupName) {
-		return KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getGroupId();
+		return KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getId();
 	}
 }

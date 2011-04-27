@@ -17,7 +17,7 @@ package org.kuali.rice.kim.inquiry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -29,11 +29,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -53,7 +49,7 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 		if(GROUP_NAME.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(GROUP_ID);
-		    String href = (getInquiryUrlForPrimaryKeys(GroupImpl.class, businessObject, primaryKeys, null)).getHref();
+		    String href = (getInquiryUrlForPrimaryKeys(GroupBo.class, businessObject, primaryKeys, null)).getHref();
 		    AnchorHtmlData htmlData = new AnchorHtmlData();
 		    htmlData.setHref(getCustomGroupInquiryHref(href));
 			return htmlData;
@@ -65,7 +61,7 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
 		} else if("kimTypeInfo.name".equals(attributeName)){
 			KimTypeBo kimType = new KimTypeBo();
-			kimType.setId( ((GroupImpl)businessObject).getKimTypeId() );
+			kimType.setId( ((GroupBo)businessObject).getKimTypeId() );
 			return getInquiryUrlForPrimaryKeys(KimTypeBo.class, kimType, Collections.singletonList( KimConstants.PrimaryKeyConstants.KIM_TYPE_ID ), null);
         }
 		
@@ -97,7 +93,6 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
 	    BusinessObject bo = super.getBusinessObject(fieldValues);
-	    ((GroupImpl)bo).setMemberPersonsAndGroups();
 	    return bo;
 	}
 

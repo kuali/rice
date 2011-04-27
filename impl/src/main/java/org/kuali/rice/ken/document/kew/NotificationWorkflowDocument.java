@@ -35,19 +35,43 @@ public class NotificationWorkflowDocument extends WorkflowDocument {
      * @param user
      * @throws WorkflowException
      */
+    /*@Deprecated
     public NotificationWorkflowDocument(UserIdDTO user) throws WorkflowException {
     	super(user, NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE);
+    }*/
+
+    /**
+     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
+     * for the given user.
+     * @param principalId
+     * @throws WorkflowException
+     */
+    public NotificationWorkflowDocument(String principalId) throws WorkflowException {
+    	super(principalId, NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE);
     }
 
     /**
-     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW 
+     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
      * for the given user and document type name.
      * @param user
      * @param documentTypeName
      * @throws WorkflowException
      */
+    /*@Deprecated
     public NotificationWorkflowDocument(UserIdDTO user, String documentTypeName) throws WorkflowException {
     	super(user, documentTypeName);
+    }*/
+
+    /**
+     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
+     * for the given user and document type name.
+     * @param principalId
+     * @param documentTypeName
+     * @throws WorkflowException
+     */
+
+    public NotificationWorkflowDocument(String principalId, String documentTypeName) throws WorkflowException {
+    	super(principalId, documentTypeName);
     }
     
     /**
@@ -57,7 +81,19 @@ public class NotificationWorkflowDocument extends WorkflowDocument {
      * @param documentId
      * @throws WorkflowException
      */
+    /*@Deprecated
     public NotificationWorkflowDocument(UserIdDTO user, Long documentId) throws WorkflowException {
     	super(user, documentId);
+    }*/
+
+    /**
+     * Constructs a NotificationWorkflowDocument instance - this one is used to get a handle on a workflow
+     * document that was already created in the system.
+     * @param princpipalId
+     * @param documentId
+     * @throws WorkflowException
+     */
+    public NotificationWorkflowDocument(String princpipalId, Long documentId) throws WorkflowException {
+    	super(princpipalId, documentId);
     }
 }

@@ -45,11 +45,11 @@
   </bean>
 
   <bean id="IdentityManagementGroupDocument-groupNamespace" parent="IdentityManagementGroupDocument-groupNamespace-parentBean"/>
-  <bean id="IdentityManagementGroupDocument-groupNamespace-parentBean" parent="GroupImpl-namespaceCode" abstract="true" p:name="groupNamespace" p:required="true">
+  <bean id="IdentityManagementGroupDocument-groupNamespace-parentBean" parent="Group-namespaceCode" abstract="true" p:name="groupNamespace" p:required="true">
   </bean>
 
   <bean id="IdentityManagementGroupDocument-groupName" parent="IdentityManagementGroupDocument-groupName-parentBean"/>
-  <bean id="IdentityManagementGroupDocument-groupName-parentBean" parent="GroupImpl-groupName" abstract="true" p:name="groupName" p:required="true">
+  <bean id="IdentityManagementGroupDocument-groupName-parentBean" parent="Group-name" abstract="true" p:name="groupName" p:required="true">
   </bean>
 
   <bean id="IdentityManagementGroupDocument-active" parent="IdentityManagementGroupDocument-active-parentBean"/>

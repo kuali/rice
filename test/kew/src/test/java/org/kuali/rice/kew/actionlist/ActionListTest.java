@@ -30,9 +30,9 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.transaction.TransactionStatus;
@@ -205,7 +205,7 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
     	actionItem = actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-    	assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
+    	assertEquals("Should be to a workgroup.", NonSIT.getId(), actionItem.getGroupId());
     	// check that user1 acknowledge shows up when filtering
     	ActionListFilter ackFilter = new ActionListFilter();
     	ackFilter.setActionRequestCd(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
@@ -216,7 +216,7 @@ public class ActionListTest extends KEWTestCase {
     	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
-        List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId());
+        List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getId());
         for (String memberPrincipalId : memberPrincipalIds)
         {
             //will want to convert to Kim Principal
@@ -224,7 +224,7 @@ public class ActionListTest extends KEWTestCase {
             assertEquals("Workgroup Member " + memberPrincipalId + " should have 1 action item.", 1, actionItems.size());
             actionItem = (ActionItem) actionItems.iterator().next();
             assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-            assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
+            assertEquals("Should be to a workgroup.", NonSIT.getId(), actionItem.getGroupId());
         }
 
         document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");

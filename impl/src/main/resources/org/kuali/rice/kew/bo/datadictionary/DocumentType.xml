@@ -352,7 +352,7 @@
 
   <bean id="DocumentType-blanketApproveWorkgroup.groupName" parent="DocumentType-blanketApproveWorkgroup.groupName-parentBean" />
 
-  <bean id="DocumentType-blanketApproveWorkgroup.groupName-parentBean" abstract="true" parent="GroupImpl-groupName">
+  <bean id="DocumentType-blanketApproveWorkgroup.groupName-parentBean" abstract="true" parent="Group-name">
     <property name="name" value="blanketApproveWorkgroup.groupName" />
     <property name="label" value="Blanket Approve Group Name" />
     <property name="shortLabel" value="BA Group Name" />
@@ -374,7 +374,7 @@
 
   <bean id="DocumentType-reportingWorkgroup.groupName" parent="DocumentType-reportingWorkgroup.groupName-parentBean" />
 
-  <bean id="DocumentType-reportingWorkgroup.groupName-parentBean" abstract="true" parent="GroupImpl-groupName">
+  <bean id="DocumentType-reportingWorkgroup.groupName-parentBean" abstract="true" parent="Group-name">
     <property name="name" value="reportingWorkgroup.groupName" />
     <property name="label" value="Reporting Group Name" />
     <property name="shortLabel" value="Report Group Name" />

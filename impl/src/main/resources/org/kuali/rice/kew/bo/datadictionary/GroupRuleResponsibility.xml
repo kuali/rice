@@ -29,19 +29,19 @@
       </list>
     </property>
 
-    <property name="relationships">
+    <!--<property name="relationships">
       <list>
 		<bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="kimGroupImpl"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="name" p:targetName="groupName"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="name" p:targetName="name"/>
               <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="namespaceCode"/>
             </list>
           </property>
         </bean>
       </list>
-    </property>
+    </property>-->
   </bean>
 
   <bean id="GroupRuleResponsibility-namespaceCode" parent="GroupRuleResponsibility-namespaceCode-parentBean"/>

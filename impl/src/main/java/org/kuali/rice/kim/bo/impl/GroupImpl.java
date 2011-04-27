@@ -21,6 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -28,7 +29,6 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
@@ -279,8 +279,8 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
                     personMembers.add( KIMServiceLocator.getPersonService().getPerson(groupMemberImpl.getMemberId()) );
                 } else if (groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )
                         && groupMemberImpl.isActive() ) {
-                    groupMembers.add( 
-                    		KIMServiceLocator.getIdentityManagementService().getGroup(groupMemberImpl.getMemberId()) );
+                    //groupMembers.add(
+                   // 		KIMServiceLocator.getIdentityManagementService().getGroup(groupMemberImpl.getMemberId()) );
                 }
             }
         }

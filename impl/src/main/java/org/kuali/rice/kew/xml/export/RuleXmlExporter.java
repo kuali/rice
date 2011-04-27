@@ -74,7 +74,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Exports rules to XML.
@@ -203,7 +203,7 @@ public class RuleXmlExporter implements XmlExporter {
 				    renderer.renderTextElement(respElement, PRINCIPAL_NAME, ruleResponsibility.getPrincipal().getPrincipalName());
 				} else if (ruleResponsibility.isUsingGroup()) {
 					Group group = ruleResponsibility.getGroup();
-				    Element groupElement = renderer.renderTextElement(respElement, GROUP_NAME, group.getGroupName());
+				    Element groupElement = renderer.renderTextElement(respElement, GROUP_NAME, group.getName());
 				    groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());
 				} else if (ruleResponsibility.isUsingRole()) {
 				    renderer.renderTextElement(respElement, ROLE, ruleResponsibility.getRuleResponsibilityName());
@@ -247,7 +247,7 @@ public class RuleXmlExporter implements XmlExporter {
         } else if (ruleResponsibility.isUsingGroup()) {
         	Group group = ruleResponsibility.getGroup();
         	Element groupElement = renderer.renderElement(parentResponsibilityElement, GROUP_NAME);
-        	groupElement.setText(group.getGroupName());
+        	groupElement.setText(group.getName());
         	groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());
         } else if (ruleResponsibility.isUsingRole()) {
         	renderer.renderTextElement(parentResponsibilityElement, ROLE, ruleResponsibility.getRuleResponsibilityName());

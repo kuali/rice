@@ -52,7 +52,7 @@ import java.util.Collection;
 })
 public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
 
-    @XmlElement(name = Elements.ID, required = true)
+    @XmlElement(name = Elements.ID, required = false)
     private final String id;
 
     @XmlElement(name = Elements.GROUP_ID, required = true)
@@ -115,8 +115,7 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         private Long versionNumber;
         private String objectId;
 
-        private Builder(String id, String groupId, String memberId, String typeCode) {
-            setId(id);
+        private Builder(String groupId, String memberId, String typeCode) {
             setGroupId(groupId);
             setMemberId(memberId);
             setTypeCode(typeCode);
@@ -125,15 +124,16 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         /**
          * creates a Parameter with the required fields.
          */
-        public static Builder create(String id, String groupId, String memberId, String typeCode) {
-            return new Builder(id, groupId, memberId, typeCode);
+        public static Builder create(String groupId, String memberId, String typeCode) {
+            return new Builder(groupId, memberId, typeCode);
         }
 
         /**
-         * creates a Parameter from an existing {@link org.kuali.rice.core.api.parameter.ParameterContract}.
+         * creates a GroupMember from an existing {@link org.kuali.rice.kim.api.group.GroupMemberContract}.
          */
         public static Builder create(GroupMemberContract contract) {
-            Builder builder = new Builder(contract.getId(), contract.getGroupId(), contract.getMemberId(), contract.getTypeCode());
+            Builder builder = new Builder(contract.getGroupId(), contract.getMemberId(), contract.getTypeCode());
+            builder.setId(contract.getId());
             builder.setActiveFromDate(contract.getActiveFromDate());
             builder.setActiveToDate(contract.getActiveToDate());
             builder.setVersionNumber(contract.getVersionNumber());
@@ -147,7 +147,7 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         public void setId(final String id) {
-            if (StringUtils.isEmpty(id)) {
+            if (StringUtils.isWhitespace(id)) {
                 throw new IllegalArgumentException("id is blank");
             }
             this.id = id;
@@ -159,8 +159,8 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         public void setGroupId(final String groupId) {
-            if (StringUtils.isEmpty(id)) {
-                throw new IllegalArgumentException("groupId is blank");
+            if (StringUtils.isEmpty(groupId)) {
+                throw new IllegalArgumentException("groupId is empty");
             }
             this.groupId = groupId;
         }
@@ -171,8 +171,8 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         public void setMemberId(final String memberId) {
-            if (StringUtils.isEmpty(id)) {
-                throw new IllegalArgumentException("memberId is blank");
+            if (StringUtils.isEmpty(memberId)) {
+                throw new IllegalArgumentException("memberId is empty");
             }
             this.memberId = memberId;
         }
@@ -183,8 +183,8 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         public void setTypeCode(final String typeCode) {
-            if (StringUtils.isEmpty(id)) {
-                throw new IllegalArgumentException("typeCode is blank");
+            if (StringUtils.isEmpty(typeCode)) {
+                throw new IllegalArgumentException("typeCode is empty");
             }
             this.typeCode = typeCode;
         }
@@ -226,6 +226,23 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         @Override
+        public boolean isActive() {
+            long asOfDate = System.currentTimeMillis();
+
+		    return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
+        }
+
+        @Override
+        public boolean isActive(Timestamp activeAsOf) {
+            long asOfDate = System.currentTimeMillis();
+            if (activeAsOf != null) {
+                asOfDate = activeAsOf.getTime();
+            }
+
+            return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
+        }
+
+        @Override
         public GroupMember build() {
             return new GroupMember(this);
         }
@@ -261,6 +278,23 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
 
     public String getObjectId() {
         return objectId;
+    }
+
+    @Override
+    public boolean isActive() {
+        long asOfDate = System.currentTimeMillis();
+
+		return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
+    }
+
+    @Override
+    public boolean isActive(Timestamp activeAsOf) {
+        long asOfDate = System.currentTimeMillis();
+		if (activeAsOf != null) {
+			asOfDate = activeAsOf.getTime();
+		}
+
+		return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) && (activeToDate == null || asOfDate < activeToDate.getTime());
     }
 
     @Override

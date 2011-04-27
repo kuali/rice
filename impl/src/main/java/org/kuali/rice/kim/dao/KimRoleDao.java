@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -43,7 +44,7 @@ public interface KimRoleDao {
 	 */
 	List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId, AttributeSet qualification );
 	
-	List<GroupMembershipInfo> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId );
+	List<GroupMember> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId );
 	
 	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds, AttributeSet qualification );
 	
@@ -67,7 +68,7 @@ public interface KimRoleDao {
 	
     List<RoleImpl> getRoles(Map<String,String> fieldValues);
 
-	List<GroupMembershipInfo> getGroupMembers(Collection<String> groupIds);
+	List<GroupMember> getGroupMembers(Collection<String> groupIds);
 	
 	List<RoleMembershipInfo> getRoleMembers(Map<String,String> fieldValues);
 

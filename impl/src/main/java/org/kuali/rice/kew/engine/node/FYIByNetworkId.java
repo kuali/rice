@@ -28,7 +28,7 @@ import org.kuali.rice.kew.rule.NetworkIdRoleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Collection;

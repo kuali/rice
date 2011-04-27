@@ -31,9 +31,9 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -123,7 +123,7 @@ public class ActionTakenValue implements Serializable {
         if (recipient instanceof KimPrincipalRecipient) {
             setDelegatorPrincipalId(((KimPrincipalRecipient)recipient).getPrincipalId());
         } else if (recipient instanceof KimGroupRecipient) {
-            setDelegatorGroupId(((KimGroupRecipient)recipient).getGroup().getGroupId());
+            setDelegatorGroupId(((KimGroupRecipient)recipient).getGroup().getId());
         } else {
             setDelegatorPrincipalId(null);
             setDelegatorGroupId(null);
@@ -142,7 +142,7 @@ public class ActionTakenValue implements Serializable {
         	// TODO this stinks to have to have a dependency on UserSession here
         	return KEWServiceLocator.getIdentityHelperService().getPerson(this.getDelegatorPrincipalId()).getName();
         } else {
-            return getDelegatorGroup().getGroupName();
+            return getDelegatorGroup().getName();
       }
     }
     

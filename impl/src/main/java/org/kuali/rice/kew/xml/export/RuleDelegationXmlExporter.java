@@ -42,7 +42,7 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 /**
  * Exports rules to XML.
@@ -94,7 +94,7 @@ public class RuleDelegationXmlExporter implements XmlExporter {
         } else if (ruleResponsibility.isUsingGroup()) {
         	Group group = ruleResponsibility.getGroup();
         	Element groupElement = renderer.renderElement(parentResponsibilityElement, GROUP_NAME);
-        	groupElement.setText(group.getGroupName());
+        	groupElement.setText(group.getName());
         	groupElement.setAttribute(NAMESPACE, group.getNamespaceCode());
         } else if (ruleResponsibility.isUsingRole()) {
         	renderer.renderTextElement(parentResponsibilityElement, ROLE, ruleResponsibility.getRuleResponsibilityName());

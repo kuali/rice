@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 

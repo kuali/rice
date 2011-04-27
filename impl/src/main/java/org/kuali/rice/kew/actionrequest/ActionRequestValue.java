@@ -37,10 +37,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -237,7 +237,7 @@ public class ActionRequestValue implements Serializable {
     	if (isUserRequest()) {
     	    return getPerson().getName();
     	} else if (isGroupRequest()) {
-    		return getGroup().getGroupName();
+    		return getGroup().getName();
     	} else if (isRoleRequest()) {
     		return getRoleName();
     	}
@@ -542,7 +542,7 @@ public class ActionRequestValue implements Serializable {
 			if (group == null){
 				LOG.error("Was unable to retrieve workgroup " + getGroupId());
 			}
-    		isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId());
+    		isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getId());
     	}
 
 
@@ -566,7 +566,7 @@ public class ActionRequestValue implements Serializable {
     		if (recipient instanceof KimPrincipalRecipient) {
     			isRecipientInGraph = getPrincipalId().equals(((KimPrincipalRecipient) recipient).getPrincipalId());
     		} else if (recipient instanceof KimGroupRecipient){
-    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipalId(), ((KimGroupRecipient)recipient).getGroup().getGroupId());
+    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipalId(), ((KimGroupRecipient)recipient).getGroup().getId());
     		}
 
     	} else if (isGroupRequest()) {
@@ -576,9 +576,9 @@ public class ActionRequestValue implements Serializable {
 			}
     		if (recipient instanceof KimPrincipalRecipient) {
     			KimPrincipalRecipient principalRecipient = (KimPrincipalRecipient)recipient;
-    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalRecipient.getPrincipalId(), group.getGroupId());
+    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalRecipient.getPrincipalId(), group.getId());
     		} else if (recipient instanceof KimGroupRecipient) {
-    			isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(group.getGroupId());
+    			isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getId().equals(group.getId());
     		}
     	}
 
@@ -925,7 +925,7 @@ public class ActionRequestValue implements Serializable {
 	}
 
     public String getGroupName() {
-        return KIMServiceLocator.getIdentityManagementService().getGroup(this.groupId).getGroupName();
+        return KIMServiceLocator.getIdentityManagementService().getGroup(this.groupId).getName();
     }
 
 	/**

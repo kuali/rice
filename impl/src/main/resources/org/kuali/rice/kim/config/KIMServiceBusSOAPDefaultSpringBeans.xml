@@ -262,7 +262,7 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityManagementService"
         p:localServiceName="kimIdentityManagementServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.IdentityManagementService" />
+        p:serviceInterface="org.kuali.rice.kim.api.services.IdentityManagementService" />
     </property>
     <property name="exportIf" value="kimIdentityManagementServiceSOAP.expose"/>
   </bean>

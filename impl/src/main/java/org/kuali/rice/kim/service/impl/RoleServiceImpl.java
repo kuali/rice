@@ -15,15 +15,30 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
-import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
@@ -1230,11 +1245,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     protected void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday){
-        List<GroupMembershipInfo> groupMemberInfos = getRoleDao().getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
-        List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
-        for ( GroupMembershipInfo rm : groupMemberInfos ) {
-            rm.setActiveToDate( new Date(yesterday.getTime()) );
-            groupMembers.add(toGroupMemberImpl(rm));
+        List<GroupMember> groupMemberInfos = getRoleDao().getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
+        List<GroupMemberBo> groupMembers = new ArrayList<GroupMemberBo>(groupMemberInfos.size());
+        for ( GroupMember rm : groupMemberInfos ) {
+            GroupMember.Builder builder = GroupMember.Builder.create(rm);
+            builder.setActiveToDate(yesterday);
+            groupMembers.add(GroupMemberBo.from(builder.build()));
         }
         
     	getBusinessObjectService().save(groupMembers);
@@ -1274,11 +1290,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     protected void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday){
-        List<GroupMembershipInfo> groupMemberInfos = getRoleDao().getGroupMembers(groupIds);
-        List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
-        for ( GroupMembershipInfo rm : groupMemberInfos ) {
-            rm.setActiveToDate( new Date(yesterday.getTime()) );
-            groupMembers.add(toGroupMemberImpl(rm));
+        List<GroupMember> groupMemberInfos = getRoleDao().getGroupMembers(groupIds);
+        List<GroupMemberBo> groupMembers = new ArrayList<GroupMemberBo>(groupMemberInfos.size());
+        for ( GroupMember rm : groupMemberInfos ) {
+
+            GroupMember.Builder builder = GroupMember.Builder.create(rm);
+            builder.setActiveToDate(yesterday);
+            groupMembers.add(GroupMemberBo.from(builder.build()));
         }
     	getBusinessObjectService().save(groupMembers);
     }
@@ -1292,7 +1310,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	getIdentityManagementNotificationService().roleUpdated();
     }
     
-    protected GroupMemberImpl toGroupMemberImpl(GroupMembershipInfo kimGroupMember) {
+    /*protected GroupMemberImpl toGroupMemberImpl(GroupMembershipInfo kimGroupMember) {
         GroupMemberImpl groupMemberImpl = null;
 
         if (kimGroupMember != null) {
@@ -1311,7 +1329,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         return groupMemberImpl;
-    }
+    }*/
 
     public List<RoleMembershipInfo> findRoleMembers(Map<String,String> fieldValues){
     	return getRoleDao().getRoleMembers(fieldValues);

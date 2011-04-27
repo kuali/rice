@@ -21,8 +21,8 @@ import org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 import static org.junit.Assert.*;
@@ -43,7 +43,7 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
     public void testGetGroupMembersValid()
     {
         Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(TestConstants.VALID_KIM_GROUP_NAME_1));
-        assertTrue(nrski.getGroupMembers(group.getGroupId()).length == TestConstants.KIM_GROUP_1_MEMBERS);
+        assertTrue(nrski.getGroupMembers(group.getId()).length == TestConstants.KIM_GROUP_1_MEMBERS);
     }
 
     /**
@@ -64,7 +64,7 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
     public final void testIsGroupRecipientValid()
     {
         Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(TestConstants.VALID_KIM_GROUP_NAME_1));
-        assertTrue(nrski.isGroupRecipientValid(group.getGroupId()));
+        assertTrue(nrski.isGroupRecipientValid(group.getId()));
     }
 
     /**
@@ -77,7 +77,7 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
         assertFalse( nrski.isRecipientValid( "BoogalooShrimp44", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE));
 
         Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(TestConstants.VALID_KIM_GROUP_NAME_1));
-        assertTrue( nrski.isRecipientValid( group.getGroupId(), KimGroupMemberTypes.GROUP_MEMBER_TYPE));
+        assertTrue( nrski.isRecipientValid( group.getId(), KimGroupMemberTypes.GROUP_MEMBER_TYPE));
         assertFalse( nrski.isRecipientValid( "FooSchnickens99", KimGroupMemberTypes.GROUP_MEMBER_TYPE));
     }
 

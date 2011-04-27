@@ -32,7 +32,7 @@ import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.webservice.DocumentResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 
 import javax.xml.namespace.QName;
 import java.util.Iterator;
@@ -270,7 +270,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         boolean foundRequest = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-            if ( (actionRequest.isGroupRequest()) && (StringUtils.equals(group.getGroupId(),actionRequest.getGroupId())) ) {
+            if ( (actionRequest.isGroupRequest()) && (StringUtils.equals(group.getId(),actionRequest.getGroupId())) ) {
                 return true;
             }
         }

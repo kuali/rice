@@ -24,19 +24,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.kim.api.person.Person;
+import org.kuali.rice.core.util.AttributeSet;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @XmlRootElement(name = Group.Constants.ROOT_ELEMENT_NAME)
@@ -47,7 +47,6 @@ import java.util.List;
         Group.Elements.NAME,
         Group.Elements.DESCRIPTION,
         Group.Elements.KIM_TYPE_ID,
-        Group.Elements.MEMBERS,
         Group.Elements.ATTRIBUTES,
         Group.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -55,7 +54,7 @@ import java.util.List;
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Group implements GroupContract, ModelObjectComplete {
-    @XmlElement(name = Elements.ID, required = true)
+    @XmlElement(name = Elements.ID, required = false)
     private final String id;
 
     @XmlElement(name = Elements.NAMESPACE_CODE, required = true)
@@ -70,10 +69,8 @@ public final class Group implements GroupContract, ModelObjectComplete {
     @XmlElement(name = Elements.KIM_TYPE_ID, required = true)
     private final String kimTypeId;
 
-    @XmlElement(name = Elements.MEMBERS, required = false)
-    private final List<GroupMember> members;
-
-    @XmlElement(name = Elements.ATTRIBUTES, required = false)
+    @XmlElementWrapper(name = Elements.ATTRIBUTES, required = false)
+    @XmlElement(name = Elements.ATTRIBUTE, required = false)
     private final List<GroupAttribute> attributes;
 
     @XmlElement(name = Elements.ACTIVE, required = false)
@@ -95,7 +92,6 @@ public final class Group implements GroupContract, ModelObjectComplete {
         this.name = null;
         this.description = null;
         this.kimTypeId = null;
-        this.members = null;
         this.attributes = null;
         this.versionNumber = null;
         this.objectId = null;
@@ -108,12 +104,6 @@ public final class Group implements GroupContract, ModelObjectComplete {
         name = builder.getName();
         description = builder.getDescription();
         kimTypeId = builder.getKimTypeId();
-        members = new ArrayList<GroupMember>();
-        if (!CollectionUtils.isEmpty(builder.getMembers())) {
-            for (GroupMember.Builder member : builder.getMembers()) {
-                members.add(member.build());
-            }
-        }
         attributes = new ArrayList<GroupAttribute>();
         if (!CollectionUtils.isEmpty(builder.getAttributes())) {
             for (GroupAttribute.Builder attribute : builder.getAttributes()) {
@@ -135,44 +125,38 @@ public final class Group implements GroupContract, ModelObjectComplete {
         private String name;
         private String description;
         private String kimTypeId;
-        private List<GroupMember.Builder> members;
         private List<GroupAttribute.Builder> attributes;
         private boolean active;
         private Long versionNumber;
         private String objectId;
 
-        private Builder(String id, String namespaceCode, String name, String kimTypeId) {
-            setId(id);
+        private Builder(String namespaceCode, String name, String kimTypeId) {
             setNamespaceCode(namespaceCode);
             setName(name);
             setKimTypeId(kimTypeId);
         }
 
         /**
-         * creates a Parameter with the required fields.
+         * creates a Group with the required fields.
          */
-        public static Builder create(String id, String namespaceCode, String name, String kimTypeId) {
-            return new Builder(id, namespaceCode, name, kimTypeId);
+        public static Builder create(String namespaceCode, String name, String kimTypeId) {
+            return new Builder(namespaceCode, name, kimTypeId);
         }
 
         /**
-         * creates a Parameter from an existing {@link org.kuali.rice.core.api.parameter.ParameterContract}.
+         * creates a Group from an existing {@link org.kuali.rice.kim.api.group.GroupContract}.
          */
         public static Builder create(GroupContract contract) {
-            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getKimTypeId());
+            Builder builder = new Builder(contract.getNamespaceCode(), contract.getName(), contract.getKimTypeId());
+            builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
 
-            List<GroupMember.Builder> groupMemberBuilders = new ArrayList<GroupMember.Builder>();
-            for (GroupMemberContract memberContract : contract.getMembers()) {
-                GroupMember.Builder memberBuilder = GroupMember.Builder.create(memberContract);
-                groupMemberBuilders.add(memberBuilder);
-            }
-            builder.setMembers(groupMemberBuilders);
-
             List<GroupAttribute.Builder> groupAttributeBuilders = new ArrayList<GroupAttribute.Builder>();
-            for (GroupAttributeContract attributeContract : contract.getAttributes()) {
-                GroupAttribute.Builder attributeBuilder = GroupAttribute.Builder.create(attributeContract);
-                groupAttributeBuilders.add(attributeBuilder);
+            if (!CollectionUtils.isEmpty(contract.getAttributes())) {
+                for (GroupAttributeContract attributeContract : contract.getAttributes()) {
+                    GroupAttribute.Builder attributeBuilder = GroupAttribute.Builder.create(attributeContract);
+                    groupAttributeBuilders.add(attributeBuilder);
+                }
             }
             builder.setAttributes(groupAttributeBuilders);
 
@@ -188,7 +172,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
         }
 
         public void setId(String id) {
-            if (StringUtils.isEmpty(id)) {
+            if (StringUtils.isWhitespace(id)) {
                 throw new IllegalArgumentException("id is blank");
             }
             this.id = id;
@@ -201,7 +185,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
 
         public void setNamespaceCode(String namespaceCode) {
             if (StringUtils.isEmpty(namespaceCode)) {
-                throw new IllegalArgumentException("namespaceCode is blank");
+                throw new IllegalArgumentException("namespaceCode is empty");
             }
             this.namespaceCode = namespaceCode;
         }
@@ -213,7 +197,7 @@ public final class Group implements GroupContract, ModelObjectComplete {
 
         public void setName(String name) {
             if (StringUtils.isEmpty(name)) {
-                throw new IllegalArgumentException("name is blank");
+                throw new IllegalArgumentException("name is empty");
             }
             this.name = name;
         }
@@ -234,28 +218,9 @@ public final class Group implements GroupContract, ModelObjectComplete {
 
         public void setKimTypeId(String kimTypeId) {
             if (StringUtils.isEmpty(kimTypeId)) {
-                throw new IllegalArgumentException("kimTypeId is blank");
+                throw new IllegalArgumentException("kimTypeId is empty");
             }
             this.kimTypeId = kimTypeId;
-        }
-
-        @Override
-        public List<GroupMember.Builder> getMembers() {
-            return members;
-        }
-
-        public void setMembers(List<GroupMember.Builder> members) {
-            this.members = members;
-        }
-
-        //@Override
-        public List<Person> getPersonMembers() {
-            return null;
-        }
-
-        //@Override
-        public List<Group> getGroupMembers() {
-            return null;
         }
 
         @Override
@@ -341,37 +306,21 @@ public final class Group implements GroupContract, ModelObjectComplete {
     }
 
     @Override
-    public List<GroupMember> getMembers() {
-        return Collections.unmodifiableList(members);
-    }
-
-    //@Override
-    public List<Person> getPersonMembers() {
-        List<Person> personMembers = new ArrayList();
-        for (GroupMember member : members) {
-            //todo if member is person
-            /*if (true) {
-                personMembers.add(Service.toPerson(member));
-            }*/
-        }
-        return Collections.unmodifiableList(personMembers);
-    }
-
-    //@Override
-    public List<Group> getGroupMembers() {
-        List groupMembers = new ArrayList();
-        for (GroupMember member : members) {
-            //todo if member is group
-            /*if (true) {
-                groupMembers.add(member);
-            }*/
-        }
-        return Collections.unmodifiableList(groupMembers);
-    }
-
-    @Override
     public List<GroupAttribute> getAttributes() {
         return attributes;
+    }
+
+    public AttributeSet getAttributeSet() {
+        AttributeSet attributeSet = new AttributeSet( this.attributes.size() );
+        for ( GroupAttribute attr : attributes ) {
+        	if ( attr.getKimAttribute() != null ) {
+        		attributeSet.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
+        	} else {
+        		attributeSet.put("Unknown Attribute ID: " + attr.getKimAttribute().getId(), attr.getAttributeValue());
+        	}
+        }
+
+        return attributeSet;
     }
 
     @Override
@@ -409,7 +358,9 @@ public final class Group implements GroupContract, ModelObjectComplete {
         final static String DESCRIPTION = "description";
         final static String KIM_TYPE_ID = "kimTypeId";
         final static String ATTRIBUTES = "attributes";
+        final static String ATTRIBUTE = "attribute";
         final static String MEMBERS = "members";
+        final static String MEMBER = "member";
         final static String ACTIVE = "active";
     }
 }

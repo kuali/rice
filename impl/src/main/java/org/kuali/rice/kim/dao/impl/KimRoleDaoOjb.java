@@ -29,10 +29,11 @@ import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -43,10 +44,9 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
+import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -110,9 +110,9 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
 	 *      java.lang.String)
 	 */
-	public List<GroupMembershipInfo> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId) {
+	public List<GroupMember> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId) {
 	    List<String> groupIdValues = new ArrayList<String>();
-	    List<GroupMembershipInfo> groupPrincipals = new ArrayList<GroupMembershipInfo>();
+	    List<GroupMember> groupPrincipals = new ArrayList<GroupMember>();
 	    if (groupIds != null
 	            && principalId == null) {
 	        groupIdValues = new ArrayList<String>(groupIds);
@@ -121,10 +121,10 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	    }
 	    if (groupIdValues != null
 	            && groupIdValues.size() > 0) {
-    	    Collection<GroupMembershipInfo> groupMembershipInfos = KIMServiceLocator.getGroupService().getGroupMembers(groupIdValues);
-            for (GroupMembershipInfo groupMembershipInfo : groupMembershipInfos) {
+    	    Collection<GroupMember> groupMembershipInfos = KIMServiceLocator.getGroupService().getMembers(groupIdValues);
+            for (GroupMember groupMembershipInfo : groupMembershipInfos) {
                 if (principalId != null) {
-                    if (StringUtils.equals(groupMembershipInfo.getMemberTypeCode(), Role.PRINCIPAL_MEMBER_TYPE)
+                    if (StringUtils.equals(groupMembershipInfo.getTypeCode(), Role.PRINCIPAL_MEMBER_TYPE)
                             && StringUtils.equals(principalId, groupMembershipInfo.getMemberId())
                             && groupMembershipInfo.isActive()) {
                         groupPrincipals.add(groupMembershipInfo);
@@ -141,21 +141,25 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection,
 	 *      java.lang.String)
 	 */
-	public List<GroupMembershipInfo> getGroupMembers(Collection<String> groupIds) {
+	public List<GroupMember> getGroupMembers(Collection<String> groupIds) {
 	    List<String> groupIdValues = new ArrayList<String>();
-	    List<GroupMembershipInfo> groupMembers = new ArrayList<GroupMembershipInfo>();
+	    List<GroupMember> groupMembers = new ArrayList<GroupMember>();
 	    if (groupIds != null) {
 	        groupIdValues = new ArrayList<String>(groupIds);
 
 	        if (groupIdValues != null
 	                && groupIdValues.size() > 0) {
-	            Collection<GroupMembershipInfo> groupMembershipInfos = KIMServiceLocator.getGroupService().getGroupMembers(groupIdValues);
-	            if (groupMembershipInfos != null) {
-	                groupMembers = new ArrayList<GroupMembershipInfo>(groupMembershipInfos);
+                Collection<GroupMember> groupMembershipInfos = KIMServiceLocator.getGroupService().getMembers(groupIdValues);
+	            //Collection<GroupMember> groupMembershipInfos = KIMServiceLocator.getGroupService().g.getGroupMembers(groupIdValues);
+
+                if (!CollectionUtils.isEmpty(groupMembershipInfos)) {
+                    for (GroupMember groupMembershipInfo : groupMembershipInfos) {
+                        if (StringUtils.equals(groupMembershipInfo.getTypeCode(), Role.GROUP_MEMBER_TYPE)
+                                && groupMembershipInfo.isActive()) {
+                            groupMembers.add(groupMembershipInfo);
+                        }
+                    }
 	            }
-	            //for (GroupMembershipInfo groupMembershipInfo : groupMembershipInfos) {
-	            //    groupPrincipals.add(groupMembershipInfo);
-	            //}
 	        }
 	    }
 	    return groupMembers;

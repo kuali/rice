@@ -24,9 +24,6 @@ import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.reflect.DataDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.PropertyDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
@@ -67,10 +64,10 @@ import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -463,7 +460,7 @@ public class DTOConverter {
         }     
         Group blanketGroup = docType.getBlanketApproveWorkgroup();
         if (blanketGroup != null) {
-            docTypeVO.setBlanketApproveGroupId(blanketGroup.getGroupId());
+            docTypeVO.setBlanketApproveGroupId(blanketGroup.getId());
         }
         docTypeVO.setBlanketApprovePolicy(docType.getBlanketApprovePolicy());
         docTypeVO.setRoutePath(convertRoutePath(docType));
@@ -1183,7 +1180,7 @@ public class DTOConverter {
         if (ruleResponsibility.getPrincipal() != null) {
         	ruleResponsibilityVO.setPrincipalId(ruleResponsibility.getPrincipal().getPrincipalId());
         } else if (ruleResponsibility.getGroup() != null) {
-        	ruleResponsibilityVO.setGroupId(ruleResponsibility.getGroup().getGroupId());
+        	ruleResponsibilityVO.setGroupId(ruleResponsibility.getGroup().getId());
         } else if (ruleResponsibility.getRole() != null) {
         	ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         }

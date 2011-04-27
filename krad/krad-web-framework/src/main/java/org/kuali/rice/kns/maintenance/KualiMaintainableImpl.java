@@ -35,6 +35,7 @@ import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.FormatException;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -1962,7 +1963,7 @@ public class KualiMaintainableImpl extends ViewHelperServiceImpl implements Main
 
 	protected org.kuali.rice.kim.service.PersonService getPersonService() {
 		if (personService == null) {
-			personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
+			personService = KIMServiceLocator.getPersonService();
 		}
 		return personService;
 	}

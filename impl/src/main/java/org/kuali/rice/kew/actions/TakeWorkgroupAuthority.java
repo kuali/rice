@@ -28,8 +28,8 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -92,7 +92,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
         List<ActionRequestValue> workgroupRequests = new ArrayList<ActionRequestValue>();
         for (ActionRequestValue actionRequest : documentRequests)
         {
-            if (actionRequest.isGroupRequest() && actionRequest.getGroup().getGroupId().equals(groupId))
+            if (actionRequest.isGroupRequest() && actionRequest.getGroup().getId().equals(groupId))
             {
                 workgroupRequests.add(actionRequest);
             }

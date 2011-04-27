@@ -39,7 +39,7 @@ import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.test.BaselineTestCase;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
@@ -111,7 +111,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
             assertNull(b);
         } else {
             assertNotNull(b);
-            assertEquals(a.getGroupId(), b.getGroupId());
+            assertEquals(a.getId(), b.getId());
         }
         
     }

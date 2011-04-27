@@ -21,11 +21,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.group.GroupAttribute;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
@@ -53,10 +57,7 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
-import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -92,12 +93,13 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.impl.group.GroupAttributeBo;
+import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.ResponsibilityService;
@@ -223,7 +225,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				kimEntity.setPrivacyPreferences(origEntity.getPrivacyPreferences());
 			}
 		}
-		List <GroupMemberImpl>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
+		List <GroupMemberBo>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
 		List <RoleMemberImpl>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
 		List <KimDelegationImpl> personDelegations = populateDelegations(identityManagementPersonDocument);
 		List <PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
@@ -505,9 +507,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         List <PersonDocumentGroup> docGroups = new ArrayList <PersonDocumentGroup>();
         if(ObjectUtils.isNotNull(groups)){
             List<String> directMemberPrincipalIds;
-            Collection<GroupMembershipInfo> groupMemberships;
+            Collection<GroupMember> groupMemberships;
             for (Group group: groups) {
-                directMemberPrincipalIds = getGroupService().getDirectMemberPrincipalIds(group.getGroupId());
+                directMemberPrincipalIds = getGroupService().getDirectMemberPrincipalIds(group.getId());
                 if(ObjectUtils.isNotNull(directMemberPrincipalIds)){
                     directMemberPrincipalIds = new ArrayList<String>(new HashSet<String>(directMemberPrincipalIds));
                     for (String memberId: directMemberPrincipalIds) {
@@ -515,19 +517,19 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                         // can't cast group to 'GroupImpl' because list is GroupInfo type
                         if (StringUtils.equals(memberId, identityManagementPersonDocument.getPrincipalId())) {
                             List<String> groupIds = new ArrayList<String>();
-                            groupIds.add(group.getGroupId());
-                            groupMemberships = getGroupService().getGroupMembers(groupIds);
+                            groupIds.add(group.getId());
+                            groupMemberships = getGroupService().getMembers(groupIds);
                             if(ObjectUtils.isNotNull(groupMemberships)){
-                                for (GroupMembershipInfo groupMember: groupMemberships) {
+                                for (GroupMember groupMember: groupMemberships) {
                                     if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
-                                        StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+                                        StringUtils.equals(groupMember.getTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
                                         // create one PersonDocumentGroup per GroupMembershipInfo **
                                         PersonDocumentGroup docGroup = new PersonDocumentGroup();
-                                        docGroup.setGroupId(group.getGroupId());
-                                        docGroup.setGroupName(group.getGroupName());
+                                        docGroup.setGroupId(group.getId());
+                                        docGroup.setGroupName(group.getName());
                                         docGroup.setNamespaceCode(group.getNamespaceCode());
                                         docGroup.setPrincipalId(memberId);
-                                        docGroup.setGroupMemberId(groupMember.getGroupMemberId());
+                                        docGroup.setGroupMemberId(groupMember.getMemberId());
                                         if (groupMember.getActiveFromDate() != null) {
                                         	docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
                                         }
@@ -1239,12 +1241,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 
-    protected List <GroupMemberImpl> populateGroupMembers(IdentityManagementPersonDocument identityManagementPersonDocument) {
-		List <GroupMemberImpl>  groupPrincipals = new ArrayList<GroupMemberImpl>();
+    protected List <GroupMemberBo> populateGroupMembers(IdentityManagementPersonDocument identityManagementPersonDocument) {
+		List <GroupMemberBo>  groupPrincipals = new ArrayList<GroupMemberBo>();
 //		List<? extends Group> origGroups = getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getGroups())){
 			for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
-				GroupMemberImpl groupPrincipalImpl = new GroupMemberImpl();
+				GroupMember.Builder groupPrincipalImpl = GroupMember.Builder.create(null);
 				groupPrincipalImpl.setGroupId(group.getGroupId());
 				if (group.getActiveFromDate() != null) {
 					groupPrincipalImpl.setActiveFromDate(new java.sql.Timestamp(group.getActiveFromDate().getTime()));
@@ -1252,22 +1254,25 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if (group.getActiveToDate() != null) {
 					groupPrincipalImpl.setActiveToDate(new java.sql.Timestamp(group.getActiveToDate().getTime()));
 				}
-				groupPrincipalImpl.setGroupMemberId(group.getGroupMemberId());
+				groupPrincipalImpl.setId(group.getGroupMemberId());
 				groupPrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-				groupPrincipalImpl.setMemberTypeCode(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+				groupPrincipalImpl.setTypeCode(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 				// get the ORM-layer optimisic locking value
 				// TODO: this should be replaced with the retrieval and storage of that value
 				// in the document tables and not re-retrieved here
-				Collection<GroupMembershipInfo> currGroupMembers = getGroupService().getGroupMembersOfGroup(group.getGroupId());
+				Collection<GroupMember> currGroupMembers = getGroupService().getMembers(Collections.singletonList(group.getGroupId()));
 				if(ObjectUtils.isNotNull(currGroupMembers)){
-					for (GroupMembershipInfo origGroupMember: currGroupMembers) {
-						if(origGroupMember.getGroupMemberId()!=null && StringUtils.equals(origGroupMember.getGroupMemberId(), group.getGroupMemberId())){
-							groupPrincipalImpl.setVersionNumber(origGroupMember.getVersionNumber());
-						}
+					for (GroupMember origGroupMember: currGroupMembers) {
+                        if (origGroupMember.isActive()
+                            && origGroupMember.getTypeCode().equals(KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+                            if(origGroupMember.getId()!=null && StringUtils.equals(origGroupMember.getId(), group.getGroupMemberId())){
+                                groupPrincipalImpl.setVersionNumber(origGroupMember.getVersionNumber());
+                            }
+                        }
 					}
 				}
 
-				groupPrincipals.add(groupPrincipalImpl);
+				groupPrincipals.add(GroupMemberBo.from(groupPrincipalImpl.build()));
 
 			}
 		}
@@ -1693,8 +1698,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = GroupImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
-        	GroupInfo groupInfo = null;
-	 	 	groupInfo = getGroupService().getGroupInfo(memberId);
+        	Group groupInfo = null;
+	 	 	groupInfo = getGroupService().getGroup(memberId);
 	 	 	if (groupInfo != null) {
 	 	 		
 	 	 	}
@@ -1739,10 +1744,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         		memberFullName = psn.getFirstName() + " " + psn.getLastName();
         	}        	        	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	GroupInfo groupInfo = null;
-        	groupInfo = getIdentityManagementService().getGroup(memberId);
-        	if (groupInfo != null) {
-        		memberFullName = groupInfo.getGroupName();
+        	Group group = null;
+        	group = getIdentityManagementService().getGroup(memberId);
+        	if (group != null) {
+        		memberFullName = group.getName();
         	}
         	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
@@ -1759,7 +1764,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberNamespaceCode = "";
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	GroupInfo groupInfo = getIdentityManagementService().getGroup(memberId);
+        	Group groupInfo = getIdentityManagementService().getGroup(memberId);
         	if (groupInfo!= null) {
         		roleMemberNamespaceCode = groupInfo.getNamespaceCode();
         	}
@@ -1779,9 +1784,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             if(principal!=null)
             	memberId = principal.getPrincipalId();
        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	GroupInfo groupInfo = getIdentityManagementService().getGroupByName(memberNamespaceCode, memberName);
+        	Group groupInfo = getIdentityManagementService().getGroupByName(memberNamespaceCode, memberName);
         	if(groupInfo!=null)
-            memberId = groupInfo.getGroupId();
+            memberId = groupInfo.getId();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	memberId = getRoleManagementService().getRoleIdByName(memberNamespaceCode, memberName);
         }
@@ -2462,22 +2467,28 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	/* Group document methods */
-	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, GroupInfo groupInfo){
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupInfo.getGroupId());
-		GroupImpl kimGroupImpl = (GroupImpl)
-			getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
-		identityManagementGroupDocument.setGroupId(kimGroupImpl.getGroupId());
-		identityManagementGroupDocument.setKimType(KimTypeBo.to(kimGroupImpl.getKimTypeInfo()));
-		identityManagementGroupDocument.setGroupTypeName(kimGroupImpl.getKimTypeInfo().getName());
-		identityManagementGroupDocument.setGroupTypeId(kimGroupImpl.getKimTypeInfo().getId());
-		identityManagementGroupDocument.setGroupName(kimGroupImpl.getGroupName());
-		identityManagementGroupDocument.setGroupDescription(kimGroupImpl.getGroupDescription());
-		identityManagementGroupDocument.setActive(kimGroupImpl.isActive());
-		identityManagementGroupDocument.setGroupNamespace(kimGroupImpl.getNamespaceCode());
-		identityManagementGroupDocument.setMembers(loadGroupMembers(identityManagementGroupDocument, kimGroupImpl.getMembers()));
-		identityManagementGroupDocument.setQualifiers(loadGroupQualifiers(identityManagementGroupDocument, kimGroupImpl.getGroupAttributes()));
-		identityManagementGroupDocument.setKimType(KimTypeBo.to(kimGroupImpl.getKimTypeInfo()));
+	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, Group groupInfo){
+		//Map<String, String> criteria = new HashMap<String, String>();
+		//criteria.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupInfo.getId());
+		//GroupImpl kimGroupImpl = (GroupImpl)
+		//	getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
+
+		identityManagementGroupDocument.setGroupId(groupInfo.getId());
+        KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(groupInfo.getKimTypeId());
+		identityManagementGroupDocument.setKimType(kimType);
+		identityManagementGroupDocument.setGroupTypeName(kimType.getName());
+		identityManagementGroupDocument.setGroupTypeId(kimType.getId());
+		identityManagementGroupDocument.setGroupName(groupInfo.getName());
+		identityManagementGroupDocument.setGroupDescription(groupInfo.getDescription());
+		identityManagementGroupDocument.setActive(groupInfo.isActive());
+		identityManagementGroupDocument.setGroupNamespace(groupInfo.getNamespaceCode());
+
+        List<GroupMember> members = new ArrayList(KIMServiceLocator.getGroupService().getMembersOfGroup(groupInfo.getId()));
+        identityManagementGroupDocument.setMembers(loadGroupMembers(identityManagementGroupDocument, members));
+
+
+
+        identityManagementGroupDocument.setQualifiers(loadGroupQualifiers(identityManagementGroupDocument, groupInfo.getAttributes()));
 		identityManagementGroupDocument.setEditing(true);
 	}
 
@@ -2493,22 +2504,22 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected GroupMemberNameComparator groupMemberNameComparator = new GroupMemberNameComparator();
 
 	protected List<GroupDocumentMember> loadGroupMembers(
-			IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMemberImpl> members){
+			IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMember> members){
 		List<GroupDocumentMember> pndMembers = new ArrayList<GroupDocumentMember>();
 		GroupDocumentMember pndMember = new GroupDocumentMember();
 		if(ObjectUtils.isNotNull(members)){
-			for(GroupMemberImpl member: members){
+			for(GroupMember member: members){
 				pndMember = new GroupDocumentMember();
 				pndMember.setActiveFromDate(member.getActiveFromDate());
 				pndMember.setActiveToDate(member.getActiveToDate());
 				//pndMember.setActive(member.isActive());
 				if(pndMember.isActive()){
-					pndMember.setGroupMemberId(member.getGroupMemberId());
+					pndMember.setGroupMemberId(member.getMemberId());
 					pndMember.setGroupId(member.getGroupId());
 					pndMember.setMemberId(member.getMemberId());
-					pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
-					pndMember.setMemberFullName(getMemberFullName(member.getMemberTypeCode(), member.getMemberId()));
-					pndMember.setMemberTypeCode(member.getMemberTypeCode());
+					pndMember.setMemberName(getMemberName(member.getTypeCode(), member.getMemberId()));
+					pndMember.setMemberFullName(getMemberFullName(member.getTypeCode(), member.getMemberId()));
+					pndMember.setMemberTypeCode(member.getTypeCode());
 					pndMember.setEdit(true);
 					pndMembers.add(pndMember);
 				}
@@ -2519,25 +2530,26 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<GroupDocumentQualifier> loadGroupQualifiers(IdentityManagementGroupDocument IdentityManagementGroupDocument,
-			List<GroupAttributeDataImpl> attributeDataList){
+			List<GroupAttribute> attributeDataList){
 		List<GroupDocumentQualifier> pndGroupQualifiers = new ArrayList<GroupDocumentQualifier>();
 		GroupDocumentQualifier pndGroupQualifier = new GroupDocumentQualifier();
 		AttributeDefinitionMap origAttributes = IdentityManagementGroupDocument.getDefinitions();
 		boolean attributePresent = false;
 		String origAttributeId;
 		if(origAttributes!=null){
+
 			for(String key: origAttributes.keySet()) {
 				origAttributeId = IdentityManagementGroupDocument.getKimAttributeDefnId(origAttributes.get(key));
 				if(CollectionUtils.isNotEmpty(attributeDataList)){
-					for(GroupAttributeDataImpl groupQualifier: attributeDataList){
+					for(GroupAttribute groupQualifier: attributeDataList){
 						if(origAttributeId!=null && ObjectUtils.isNotNull(groupQualifier.getKimAttribute()) &&
 								StringUtils.equals(origAttributeId, groupQualifier.getKimAttribute().getId())){
 							pndGroupQualifier = new GroupDocumentQualifier();
 							KimCommonUtilsInternal.copyProperties(pndGroupQualifier, groupQualifier);
 							pndGroupQualifier.setAttrDataId(groupQualifier.getId());
 							pndGroupQualifier.setAttrVal(groupQualifier.getAttributeValue());
-							pndGroupQualifier.setKimAttrDefnId(groupQualifier.getKimAttributeId());
-							pndGroupQualifier.setKimTypId(groupQualifier.getKimTypeId());
+							pndGroupQualifier.setKimAttrDefnId(groupQualifier.getKimAttribute().getId());
+							pndGroupQualifier.setKimTypId(groupQualifier.getKimType().getId());
 							pndGroupQualifier.setGroupId(groupQualifier.getGroupId());
 							pndGroupQualifiers.add(pndGroupQualifier);
 							attributePresent = true;
@@ -2560,24 +2572,24 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 */
 	@SuppressWarnings("unchecked")
 	public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument) {
-		GroupImpl kimGroup = new GroupImpl();
+		GroupBo kimGroup = new GroupBo();
 		Map<String, String> criteria = new HashMap<String, String>();
 		String groupId = identityManagementGroupDocument.getGroupId();
 		//criteria.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupId);
-		GroupImpl origGroup = (GroupImpl)getBusinessObjectService().findBySinglePrimaryKey(GroupImpl.class, groupId);
-		List<GroupMemberImpl> origGroupMembers = new ArrayList<GroupMemberImpl>();
+		GroupBo origGroup = (GroupBo)getBusinessObjectService().findBySinglePrimaryKey(GroupBo.class, groupId);
+		List<GroupMemberBo> origGroupMembers = new ArrayList<GroupMemberBo>();
 		if (ObjectUtils.isNull(origGroup)) {
-			origGroup = new GroupImpl();
+			origGroup = new GroupBo();
 			kimGroup.setActive(true);
 		} else {
 			kimGroup.setVersionNumber(origGroup.getVersionNumber());
 			//TODO: when a group is inactivated, inactivate the memberships of principals in that group
 			//and the memberships of that group in roles
 			kimGroup.setActive(identityManagementGroupDocument.isActive());
-			origGroupMembers = (List<GroupMemberImpl>)getBusinessObjectService().findMatching(GroupMemberImpl.class, criteria);
+			origGroupMembers = (List<GroupMemberBo>)getBusinessObjectService().findMatching(GroupMemberBo.class, criteria);
 		}
 
-		kimGroup.setGroupId(identityManagementGroupDocument.getGroupId());
+		kimGroup.setId(identityManagementGroupDocument.getGroupId());
 		KimType kimType = getKimTypeInfoService().getKimType(identityManagementGroupDocument.getGroupTypeId());
 		if( kimType == null ) {
 			throw new RuntimeException("Kim type not found for:"+identityManagementGroupDocument.getGroupTypeId());
@@ -2585,28 +2597,28 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		kimGroup.setKimTypeId(kimType.getId());
 		kimGroup.setNamespaceCode(identityManagementGroupDocument.getGroupNamespace());
-		kimGroup.setGroupName(identityManagementGroupDocument.getGroupName());
-		kimGroup.setGroupDescription(identityManagementGroupDocument.getGroupDescription());
-		kimGroup.setGroupAttributes(getGroupAttributeData(identityManagementGroupDocument, origGroup.getGroupAttributes()));
+		kimGroup.setName(identityManagementGroupDocument.getGroupName());
+		kimGroup.setDescription(identityManagementGroupDocument.getGroupDescription());
+		kimGroup.setAttributes(getGroupAttributeData(identityManagementGroupDocument, origGroup.getAttributes()));
 
 		List<String> oldIds = null;
 		List<String> newIds = null;
 		//List<PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
-		oldIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the actionList update
+		oldIds = getGroupService().getMemberPrincipalIds(kimGroup.getId()); // for the actionList update
 
 
-		List<GroupMemberImpl> newGroupMembersList = getGroupMembers(identityManagementGroupDocument, origGroupMembers);
+		List<GroupMemberBo> newGroupMembersList = getGroupMembers(identityManagementGroupDocument, origGroupMembers);
 		kimGroup.setMembers(newGroupMembersList);  // add the new, complete list to the group
 
 		//bos.add(kimGroup);
 
-		kimGroup = (GroupImpl)getBusinessObjectService().save(kimGroup);
+		kimGroup = (GroupBo)getBusinessObjectService().save(kimGroup);
 
 		newIds = kimGroup.getMemberPrincipalIds();
 		//newIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the action list update
 
 		// Do an async update of the action list for the updated groups
-		KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(kimGroup.getGroupId(), oldIds, newIds);
+		KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(kimGroup.getId(), oldIds, newIds);
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
         service.groupUpdated();
 		if(!kimGroup.isActive()){
@@ -2623,31 +2635,31 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	* @return a List of GroupInfo records
 	*/
 	protected List<? extends Group> getGroupsByIds(List<String> groupIds) {
-		List<GroupInfo> groups = new ArrayList<GroupInfo>();
-		Map<String, GroupInfo> groupInfoMap = getGroupService().getGroupInfos(groupIds);
+		List<Group> groups = new ArrayList<Group>();
+		Map<String, Group> groupInfoMap = getGroupService().getGroups(groupIds);
 		for (String groupId : groupInfoMap.keySet()) {
 			groups.add(groupInfoMap.get(groupId));
 		}
 		return groups;
 	}
 
-	protected List<GroupMemberImpl> getGroupMembers(IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMemberImpl> origGroupMembers){
-		List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>();
-		GroupMemberImpl newGroupMember;
+	protected List<GroupMemberBo> getGroupMembers(IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMemberBo> origGroupMembers){
+		List<GroupMemberBo> groupMembers = new ArrayList<GroupMemberBo>();
+		GroupMemberBo newGroupMember;
 		if(CollectionUtils.isNotEmpty(identityManagementGroupDocument.getMembers())){
 			for(GroupDocumentMember documentGroupMember: identityManagementGroupDocument.getMembers()){
-				newGroupMember = new GroupMemberImpl();
+				newGroupMember = new GroupMemberBo();
 				KimCommonUtilsInternal.copyProperties(newGroupMember, documentGroupMember);
 				newGroupMember.setGroupId(identityManagementGroupDocument.getGroupId());
 				if(ObjectUtils.isNotNull(origGroupMembers)){
-					for(GroupMemberImpl origGroupMemberImpl: origGroupMembers){
+					for(GroupMemberBo origGroupMemberImpl: origGroupMembers){
 						if(StringUtils.equals(origGroupMemberImpl.getGroupId(), newGroupMember.getGroupId()) &&
 								StringUtils.equals(origGroupMemberImpl.getMemberId(), newGroupMember.getMemberId()) &&
 								!origGroupMemberImpl.isActive()){
 							//TODO: verify if you want to add  && newGroupMember.isActive() condition to if...
-							newGroupMember.setGroupMemberId(origGroupMemberImpl.getGroupMemberId());
+							newGroupMember.setMemberId(origGroupMemberImpl.getMemberId());
 						}
-						if(origGroupMemberImpl.getGroupMemberId()!=null && StringUtils.equals(origGroupMemberImpl.getGroupMemberId(), newGroupMember.getGroupMemberId())){
+						if(origGroupMemberImpl.getMemberId()!=null && StringUtils.equals(origGroupMemberImpl.getMemberId(), newGroupMember.getMemberId())){
 							newGroupMember.setVersionNumber(origGroupMemberImpl.getVersionNumber());
 						}
 					}
@@ -2658,21 +2670,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return groupMembers;
 	}
 
-	protected List<GroupAttributeDataImpl> getGroupAttributeData(IdentityManagementGroupDocument identityManagementGroupDocument,
-			List<GroupAttributeDataImpl> origAttributes){
-		List<GroupAttributeDataImpl> groupAttributeDataList = new ArrayList<GroupAttributeDataImpl>();
-		GroupAttributeDataImpl newGroupAttributeData;
+	protected List<GroupAttributeBo> getGroupAttributeData(IdentityManagementGroupDocument identityManagementGroupDocument,
+			List<GroupAttributeBo> origAttributes){
+		List<GroupAttributeBo> groupAttributeDataList = new ArrayList<GroupAttributeBo>();
+		GroupAttributeBo newGroupAttributeData;
 		if(CollectionUtils.isNotEmpty(identityManagementGroupDocument.getQualifiers())){
 			for(GroupDocumentQualifier groupQualifier: identityManagementGroupDocument.getQualifiers()){
 				if(StringUtils.isNotBlank(groupQualifier.getAttrVal())){
-					newGroupAttributeData = new GroupAttributeDataImpl();
+					newGroupAttributeData = new GroupAttributeBo();
 					newGroupAttributeData.setId(groupQualifier.getAttrDataId());
 					newGroupAttributeData.setAttributeValue(groupQualifier.getAttrVal());
 					newGroupAttributeData.setGroupId(groupQualifier.getGroupId());
 					newGroupAttributeData.setKimTypeId(groupQualifier.getKimTypId());
 					newGroupAttributeData.setKimAttributeId(groupQualifier.getKimAttrDefnId());
 					if(ObjectUtils.isNotNull(origAttributes)){
-						for(GroupAttributeDataImpl origAttribute: origAttributes){
+						for(GroupAttributeBo origAttribute: origAttributes){
 							if(StringUtils.equals(origAttribute.getKimAttributeId(), newGroupAttributeData.getKimAttributeId()) &&
 									StringUtils.equals(newGroupAttributeData.getGroupId(), origAttribute.getGroupId())){
 							    newGroupAttributeData.setId(origAttribute.getId());
@@ -2713,12 +2725,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
     		}    		
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	GroupInfo group = null;
-        	group = getGroupService().getGroupInfo(memberId);
+        	Group group = null;
+        	group = getGroupService().getGroup(memberId);
         	if (group != null) {
         		documentRoleMember.setMemberNamespaceCode(group.getNamespaceCode());
-        		documentRoleMember.setMemberId(group.getGroupId());
-        		documentRoleMember.setMemberName(group.getGroupName());
+        		documentRoleMember.setMemberId(group.getId());
+        		documentRoleMember.setMemberName(group.getName());
         		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);	
         	}
         	

@@ -30,8 +30,8 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Row;
@@ -162,6 +162,6 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
     private void assertGroupIsCorrect(String propertyName, String expectedName, String expectedNamespace, Group groupToTest) throws Exception {
     	assertNotNull(propertyName + " should not be null", groupToTest);
     	assertEquals(propertyName + " has wrong namespace code", expectedNamespace, groupToTest.getNamespaceCode());
-    	assertEquals(propertyName + " has wrong group name", expectedName, groupToTest.getGroupName());
+    	assertEquals(propertyName + " has wrong group name", expectedName, groupToTest.getName());
     }
 }

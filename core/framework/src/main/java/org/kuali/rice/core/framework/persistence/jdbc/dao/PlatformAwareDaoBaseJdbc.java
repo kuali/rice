@@ -13,12 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.dao;
+package org.kuali.rice.core.framework.persistence.jdbc.dao;
 
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.core.framework.persistence.dao.PlatformAwareDao;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public interface PlatformAwareDao {
-    public void setDbPlatform(DatabasePlatform dbPlatform);
+public abstract class PlatformAwareDaoBaseJdbc extends SimpleJdbcDaoSupport implements PlatformAwareDao {
+    private DatabasePlatform dbPlatform;
+    
+    public DatabasePlatform getDbPlatform(){
+        return dbPlatform;
+    }
+    
+    public void setDbPlatform(DatabasePlatform dbPlatform) {
+        this.dbPlatform = dbPlatform;
+    }
 
-    public DatabasePlatform getDbPlatform();
 }

@@ -95,12 +95,12 @@
           <property name="objectAttributeName" value="assignedToGroup"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="assignedToGroup.groupId" p:targetName="groupId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="assignedToGroup.id" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
             <list>
-              <bean parent="SupportAttributeDefinition" p:sourceName="assignedToGroup.groupName" p:targetName="groupName"/>
+              <bean parent="SupportAttributeDefinition" p:sourceName="assignedToGroup.name" p:targetName="name"/>
             </list>
           </property>
 		</bean>
@@ -134,7 +134,7 @@
   </bean>
 
   <bean id="PermissionImpl-groupId" parent="PermissionImpl-groupId-parentBean"/>
-  <bean id="PermissionImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.groupId" p:label="Group Identifier" p:shortLabel="Group Identifier" p:maxLength="40" p:required="false">
+  <bean id="PermissionImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.id" p:label="Group Identifier" p:shortLabel="Group Identifier" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
@@ -208,7 +208,7 @@
   </bean>
 
   <bean id="PermissionImpl-assignedToGroupNameForLookup" parent="PermissionImpl-assignedToGroupNameForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToGroupNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.groupName" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="40" p:required="false">
+  <bean id="PermissionImpl-assignedToGroupNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.name" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
@@ -337,13 +337,13 @@
           <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleName" p:forceLookup="true"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalName" p:forceLookup="true"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToGroupNamespaceForLookup"/>
-          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.groupName" p:forceLookup="true"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.name" p:forceLookup="true"/>
           <bean parent="FieldDefinition" p:attributeName="attributeValue"/>
           <bean parent="FieldDefinition" p:attributeName="detailCriteria"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToRole.roleId"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId"/>
           <bean parent="FieldDefinition" p:attributeName="template.permissionTemplateId"/>
-          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.groupId"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.id"/>
           <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
       </list>
     </property>

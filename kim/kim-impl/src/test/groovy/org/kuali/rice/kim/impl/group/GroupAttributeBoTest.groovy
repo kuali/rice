@@ -24,7 +24,7 @@ import org.kuali.rice.kim.api.type.KimType
 class GroupAttributeBoTest {
     @Test
   public void testNotEqualsWithGroup() {
-    GroupAttribute immutable = GroupAttribute.Builder.create("ID", KimType.Builder.create()).build()
+    GroupAttribute immutable = GroupAttribute.Builder.create(KimType.Builder.create()).build()
     GroupAttributeBo bo = GroupAttributeBo.from(immutable )
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

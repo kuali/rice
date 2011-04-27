@@ -17,9 +17,9 @@ package org.kuali.rice.kew.workgroup;
 
 import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.BaselineTestCase;
 
@@ -51,11 +51,11 @@ public class GroupXmlImportTest extends KEWTestCase {
         Group group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
 
         assertNotNull(group);
-        List<String> members = identityManagementService.getGroupMemberPrincipalIds(group.getGroupId());
-        List<String> groups = identityManagementService.getMemberGroupIds(group.getGroupId());
-        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getGroupId()));
-        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getGroupId()));
-        assertTrue(identityManagementService.isMemberOfGroup("2015", group.getGroupId()));
-        assertTrue(KIMServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getGroupId(), group.getGroupId()));
+        List<String> members = identityManagementService.getGroupMemberPrincipalIds(group.getId());
+        List<String> groups = identityManagementService.getMemberGroupIds(group.getId());
+        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getId()));
+        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getId()));
+        assertTrue(identityManagementService.isMemberOfGroup("2015", group.getId()));
+        assertTrue(KIMServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getId(), group.getId()));
     }
 }

@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
@@ -47,15 +47,15 @@ public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquir
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
         String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
         
-        GroupInfo group = null;
+        Group group = null;
         if (StringUtils.isNotEmpty(groupId)) {
-        	group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+        	group = KIMServiceLocator.getGroupService().getGroup(groupId);
         } else {
         	String namespaceCode = request.getParameter(KimConstants.UniqueKeyConstants.NAMESPACE_CODE);
         	String groupName = request.getParameter(KimConstants.UniqueKeyConstants.GROUP_NAME);
         	
         	if (!StringUtils.isBlank(namespaceCode) && !StringUtils.isBlank(groupName)) {
-        		group = KIMServiceLocator.getGroupService().getGroupInfoByName(namespaceCode, groupName);
+        		group = KIMServiceLocator.getGroupService().getGroupByName(namespaceCode, groupName);
             }
         }
         if (group != null) {

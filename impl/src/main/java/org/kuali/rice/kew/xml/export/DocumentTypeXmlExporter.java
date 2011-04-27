@@ -90,7 +90,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 
 /**
  * Exports {@link DocumentType}s to XML.
@@ -142,12 +142,12 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         renderer.renderTextElement(docTypeElement, POST_PROCESSOR_NAME, documentType.getPostProcessorName());
         Group superUserWorkgroup = documentType.getSuperUserWorkgroupNoInheritence();
         if (superUserWorkgroup != null) {
-        	Element superUserGroupElement = renderer.renderTextElement(docTypeElement, SUPER_USER_GROUP_NAME, superUserWorkgroup.getGroupName().trim());
+        	Element superUserGroupElement = renderer.renderTextElement(docTypeElement, SUPER_USER_GROUP_NAME, superUserWorkgroup.getName().trim());
         	superUserGroupElement.setAttribute(NAMESPACE, superUserWorkgroup.getNamespaceCode().trim());
         }
         Group blanketWorkgroup = documentType.getBlanketApproveWorkgroup();
         if (blanketWorkgroup != null){
-        	Element blanketGroupElement = renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_GROUP_NAME, blanketWorkgroup.getGroupName().trim());
+        	Element blanketGroupElement = renderer.renderTextElement(docTypeElement, BLANKET_APPROVE_GROUP_NAME, blanketWorkgroup.getName().trim());
         	blanketGroupElement.setAttribute(NAMESPACE, blanketWorkgroup.getNamespaceCode().trim());
         }
         if (documentType.getBlanketApprovePolicy() != null){
@@ -155,13 +155,13 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         }
         Group reportingWorkgroup = documentType.getReportingWorkgroup();
         if (reportingWorkgroup != null) {
-        	Element reportingGroupElement = renderer.renderTextElement(docTypeElement, REPORTING_GROUP_NAME, reportingWorkgroup.getGroupName().trim());
+        	Element reportingGroupElement = renderer.renderTextElement(docTypeElement, REPORTING_GROUP_NAME, reportingWorkgroup.getName().trim());
         	reportingGroupElement.setAttribute(NAMESPACE, reportingWorkgroup.getNamespaceCode().trim());
         }
         if (!flattenedNodes.isEmpty() && hasDefaultExceptionWorkgroup) {
         	Group exceptionWorkgroup = ((RouteNode)flattenedNodes.get(0)).getExceptionWorkgroup();
         	if (exceptionWorkgroup != null) {
-        		Element exceptionGroupElement = renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_GROUP_NAME, exceptionWorkgroup.getGroupName().trim());
+        		Element exceptionGroupElement = renderer.renderTextElement(docTypeElement, DEFAULT_EXCEPTION_GROUP_NAME, exceptionWorkgroup.getName().trim());
         		exceptionGroupElement.setAttribute(NAMESPACE, exceptionWorkgroup.getNamespaceCode().trim());
         	}
         }

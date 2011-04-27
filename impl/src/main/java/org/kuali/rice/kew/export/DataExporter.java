@@ -28,8 +28,6 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -77,9 +75,9 @@ public class DataExporter implements Exporter {
 				dataSet.getRules().add((RuleBaseValues)dataObject);
 			} else if (dataObjectClass.equals(RuleDelegation.class)) {
 				dataSet.getRuleDelegations().add((RuleDelegation)dataObject);
-			} else if (dataObjectClass.equals(GroupImpl.class)) {
+			} /*else if (dataObjectClass.equals(GroupImpl.class)) {
 				dataSet.getGroups().add((GroupImpl)dataObject);
-			}    
+			} */
 		}
 
 		ExportDataSet exportDataSet = new ExportDataSet();

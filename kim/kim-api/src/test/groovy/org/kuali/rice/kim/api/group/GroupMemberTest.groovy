@@ -76,6 +76,8 @@ class GroupMemberTest {
             Timestamp getActiveToDate() {GroupMemberTest.ACTIVE_TO}
             Long getVersionNumber() { GroupMemberTest.VER_NBR }
             String getObjectId() { GroupMemberTest.OBJ_ID }
+            boolean isActive() { this.isActive() }
+            boolean isActive(Timestamp t) { this.isActive(t) }
 		}).build()
 
         return groupMember
@@ -83,7 +85,7 @@ class GroupMemberTest {
 
     @Test
 	public void testXmlUnmarshal() {
-        JAXBContext jc = JAXBContext.newInstance(Group.class)
+        JAXBContext jc = JAXBContext.newInstance(GroupMember.class)
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         GroupMember groupMember = (GroupMember) unmarshaller.unmarshal(new StringReader(XML))
 

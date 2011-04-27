@@ -17,8 +17,9 @@ package org.kuali.rice.kim.document.rule;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
@@ -26,7 +27,6 @@ import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.rules.ui.GroupDocumentMemberRule;
 import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -102,13 +102,10 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 
     @SuppressWarnings("unchecked")
 	protected boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
-    	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put("groupName", groupDoc.getGroupName());
-    	criteria.put("namespaceCode", groupDoc.getGroupNamespace());
-    	List<GroupImpl> groupImpls = (List<GroupImpl>)getBusinessObjectService().findMatching(GroupImpl.class, criteria);
-    	boolean rulePassed = true;
-    	if(groupImpls!=null && groupImpls.size()>0){
-    		if(groupImpls.size()==1 && groupImpls.get(0).getGroupId().equals(groupDoc.getGroupId()))
+        Group group = KIMServiceLocator.getGroupService().getGroupByName(groupDoc.getGroupNamespace(), groupDoc.getGroupName());
+        boolean rulePassed = true;
+    	if(group!=null){
+    		if(group.getId().equals(groupDoc.getGroupId()))
     			rulePassed = true;
     		else{
 	    		GlobalVariables.getMessageMap().putError("document.groupName", 

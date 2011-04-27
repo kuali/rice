@@ -52,7 +52,7 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
 	// rkirkend     ->     2002
 	// bmcgough     ->     2004
 	
-	WorkflowDocument document = new WorkflowDocument(new EmplIdDTO("2001"), "UniversityIdRoleAttributeTest");
+	WorkflowDocument document = new WorkflowDocument("2001", "UniversityIdRoleAttributeTest");
 	
 	WorkflowAttributeDefinitionDTO universityIdDef1 = new WorkflowAttributeDefinitionDTO("UniversityIdRoleAttribute");
 	PropertyDefinitionDTO universityIdProp1 = new PropertyDefinitionDTO(UNIVERSITY_ID_PROP, "2002");
@@ -69,19 +69,19 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
 	
 	// load the document as rkirkend
 	
-	document = new WorkflowDocument(new EmplIdDTO("2002"), document.getRouteHeaderId());
+	document = new WorkflowDocument("2002", document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	
 	// load the document as bmcgough
-	document = new WorkflowDocument(new EmplIdDTO("2004"), document.getRouteHeaderId());
+	document = new WorkflowDocument("2004", document.getRouteHeaderId());
 	assertTrue("bmcgough should have an approve request.", document.isApprovalRequested());
 	
 	// submit an approve as bmcgough
 	document.approve("i approve");
 	
 	// reload as rkirkend, verify still enroute
-	document = new WorkflowDocument(new EmplIdDTO("2002"), document.getRouteHeaderId());
+	document = new WorkflowDocument("2002", document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	document.approve("i also approve");
@@ -107,7 +107,7 @@ public class UniversityIdRoleAttributeTest extends KEWTestCase {
 	
 	// load the document as rkirkend
 	
-	document = new WorkflowDocument(new EmplIdDTO("2002"), document.getRouteHeaderId());
+	document = new WorkflowDocument("2002", document.getRouteHeaderId());
 	assertTrue("Document should be ENROUTE", document.stateIsEnroute());
 	assertTrue("rkirkend should have an approve request.", document.isApprovalRequested());
 	

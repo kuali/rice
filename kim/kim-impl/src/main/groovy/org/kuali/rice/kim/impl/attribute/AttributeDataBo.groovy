@@ -25,7 +25,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 public abstract class AttributeData extends PersistableBusinessObjectBase implements KimAttributeDataContract {
     @Id
 	@Column(name="ATTR_DATA_ID")
-	String Id
+	String id
 
 	@Column(name="KIM_TYP_ID")
 	String kimTypeId

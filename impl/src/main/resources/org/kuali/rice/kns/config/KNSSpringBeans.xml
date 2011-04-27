@@ -287,7 +287,7 @@
         </property>
 	</bean>
 
-	<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
+	<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="knsApplicationDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />
 	</bean>
@@ -539,7 +539,7 @@
     	<property name="persistenceDaoOjb" ref="persistenceDaoOjb" />
 	</bean>
 
-    <bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.kns.dao.jdbc.PlatformAwareDaoBaseJdbc">
+    <bean id="platformAwareDaoJdbc" abstract="true" class="org.kuali.rice.core.framework.persistence.jdbc.dao.PlatformAwareDaoBaseJdbc">
         <property name="dataSource" ref="knsApplicationDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>

@@ -19,10 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
@@ -30,8 +31,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -166,8 +166,8 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         		// if they are being added to the group, add a qualifier set
         		if ( group.isActive() && !currentGroups.contains( group.getGroupId() ) ) {
             		// pull the group to get its attributes for adding to the qualifier 
-            		GroupInfo kimGroup = getGroupService().getGroupInfo(group.getGroupId());
-        			qualifiers.add( getGroupQualifier( group.getGroupId(), kimGroup.getKimTypeId(), kimGroup.getAttributes(), routeLevel ) );
+            		Group kimGroup = getGroupService().getGroup(group.getGroupId());
+        			qualifiers.add( getGroupQualifier( group.getGroupId(), kimGroup.getKimTypeId(), kimGroup.getAttributeSet(), routeLevel ) );
         		}
         	}
         	// detect removed groups
@@ -175,8 +175,8 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         	for ( String groupId : currentGroups ) {
         		for ( PersonDocumentGroup group : groups ) {
         			if ( !group.isActive() ) {
-                		GroupInfo kimGroup = getGroupService().getGroupInfo(groupId);
-            			qualifiers.add( getGroupQualifier( groupId, kimGroup.getKimTypeId(), kimGroup.getAttributes(), routeLevel ) );
+                		Group kimGroup = getGroupService().getGroup(groupId);
+            			qualifiers.add( getGroupQualifier( groupId, kimGroup.getKimTypeId(), kimGroup.getAttributeSet(), routeLevel ) );
         			}
         		}
         	}

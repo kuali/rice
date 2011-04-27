@@ -217,8 +217,8 @@ public final class KimConstants {
 		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String ROLE_ID = "roleId";
-		public static final String GROUP_ID = "groupId";
-		public static final String KIM_TYPE_ID = "kimTypeId";
+		public static final String GROUP_ID = "id";
+		public static final String KIM_TYPE_ID = "id";
 		public static final String RESPONSIBILITY_ID = "responsibilityId";
 		public static final String PERMISSION_ID = "permissionId";
 		public static final String DELEGATION_ID = "delegationId";
@@ -241,7 +241,7 @@ public final class KimConstants {
 	public final static class UniqueKeyConstants {
 		public static final String NAMESPACE_CODE = "namespaceCode";
 		public static final String PRINCIPAL_NAME = "principalName";
-		public static final String GROUP_NAME = "groupName";
+		public static final String GROUP_NAME = "name";
 		public static final String ROLE_NAME = "roleName";
 		public static final String PERMISSION_NAME = "name";
 		public static final String RESPONSIBILITY_NAME = "name";

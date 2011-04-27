@@ -36,16 +36,15 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -205,13 +204,13 @@ public class ActionRequestFactory {
         if(recipient instanceof KimPrincipalRecipient)
         {
             String principalId = ((KimPrincipalRecipient) recipient).getPrincipalId();
-            String groupId = group.getGroupId();
+            String groupId = group.getId();
             isMember = getIdentityManagementService().isMemberOfGroup(principalId, groupId);
         }
         else if (recipient instanceof KimGroupRecipient)
         {
-            String kimRecipientId = ((KimGroupRecipient) recipient).getGroup().getGroupId();
-            isMember = getIdentityManagementService().isGroupMemberOfGroup(kimRecipientId, group.getGroupId() );
+            String kimRecipientId = ((KimGroupRecipient) recipient).getGroup().getId();
+            isMember = getIdentityManagementService().isGroupMemberOfGroup(kimRecipientId, group.getId() );
         }
         return isMember;
     }
@@ -255,7 +254,7 @@ public class ActionRequestFactory {
     	}  else if (recipient instanceof KimGroupRecipient) {
     		KimGroupRecipient kimGroupRecipient = (KimGroupRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
-    		actionRequest.setGroupId(kimGroupRecipient.getGroup().getGroupId());
+    		actionRequest.setGroupId(kimGroupRecipient.getGroup().getId());
     	} else if (recipient instanceof RoleRecipient){
     		RoleRecipient role = (RoleRecipient)recipient;
     		actionRequest.setRecipientTypeCd(KEWConstants.ACTION_REQUEST_ROLE_RECIPIENT_CD);
@@ -465,9 +464,9 @@ public class ActionRequestFactory {
     		}
     	} else if (isGroup) {
     		annotation.append( "group " );
-    		GroupInfo group = getIdentityManagementService().getGroup( delegate.getMemberId() );
+    		Group group = getIdentityManagementService().getGroup( delegate.getMemberId() );
     		if ( group != null ) {
-    			annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getGroupName() );
+    			annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getName() );
     		} else {
     			annotation.append( delegate.getMemberId() );
     		}

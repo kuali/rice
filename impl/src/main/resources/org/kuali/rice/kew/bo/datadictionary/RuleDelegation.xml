@@ -98,11 +98,11 @@
             </list>
           </property>
         </bean>
-        <bean parent="RelationshipDefinition">
+        <!--<bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="delegationRuleBaseValues.kimGroupImpl"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="delegationRuleBaseValues.groupReviewerName" p:targetName="groupName"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="delegationRuleBaseValues.groupReviewerName" p:targetName="name"/>
             </list>
           </property>
           <property name="supportAttributes">
@@ -110,7 +110,7 @@
               <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="delegationRuleBaseValues.groupReviewerNamespace" p:targetName="namespaceCode"/>
             </list>
           </property>
-        </bean>
+        </bean>-->
         <bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="delegationRuleBaseValues.personImpl"/>
           <property name="primitiveAttributes">

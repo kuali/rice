@@ -44,7 +44,7 @@ class KimTypeTest {
 
     @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_ver_num_null() {
-        KimType.Builder.create().setVersionNumber(null);
+        KimType.Builder.create().setVersionNumber(-1);
     }
 
     @Test(expected = IllegalArgumentException.class)

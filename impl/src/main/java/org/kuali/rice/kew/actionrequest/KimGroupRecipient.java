@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 
 /**
  * Represents an ActionRequest recipient who is a Group
@@ -44,7 +44,7 @@ public class KimGroupRecipient implements Recipient {
 	}
 
 	public String getGroupId() {
-		return getGroup().getGroupId();
+		return getGroup().getId();
 	}
 
 

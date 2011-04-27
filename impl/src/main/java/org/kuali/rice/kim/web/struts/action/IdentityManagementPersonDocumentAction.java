@@ -23,9 +23,10 @@ import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -53,7 +54,6 @@ import org.kuali.rice.kim.rule.event.ui.AddPersonDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDocumentRoleQualifierEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -305,20 +305,20 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         if (newGroup.getGroupName() == null 
         		&& newGroup.getNamespaceCode() == null 
         		&& newGroup.getGroupId() != null) {
-        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroup(newGroup.getGroupId());
-        	newGroup.setGroupName(tempGroup.getGroupName());
+        	Group tempGroup = KIMServiceLocator.getIdentityManagementService().getGroup(newGroup.getGroupId());
+        	newGroup.setGroupName(tempGroup.getName());
 	        newGroup.setNamespaceCode(tempGroup.getNamespaceCode());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         } else if (newGroup.getGroupName() != null 
         		&& newGroup.getNamespaceCode() != null 
         		&& newGroup.getGroupId() == null) {
-        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
-        	newGroup.setGroupId(tempGroup.getGroupId());
+        	Group tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
+        	newGroup.setGroupId(tempGroup.getId());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         }
         if (getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
-	        GroupInfo group = getIdentityManagementService().getGroup(newGroup.getGroupId());
-	        newGroup.setGroupName(group.getGroupName());
+	        Group group = getIdentityManagementService().getGroup(newGroup.getGroupId());
+	        newGroup.setGroupName(group.getName());
 	        newGroup.setNamespaceCode(group.getNamespaceCode());
 	        newGroup.setKimTypeId(group.getKimTypeId());
         	personDocumentForm.getPersonDocument().getGroups().add(newGroup);

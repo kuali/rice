@@ -18,6 +18,7 @@ package org.kuali.rice.kns.dao.impl;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
+import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.dao.AttachmentDao;
 

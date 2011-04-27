@@ -99,7 +99,7 @@
 		<property name="serviceName" value="dbPlatform" />
 	</bean>
 
-    <bean id="kimPlatformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
+    <bean id="kimPlatformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
         <property name="jcdAlias" value="kimDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
@@ -107,7 +107,7 @@
 
 
     <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="kimPlatformAwareDao" />
-	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="kimPlatformAwareDao" />
+	<bean id="kimGroupDao" class="org.kuali.rice.kim.impl.group.GroupDaoOjb" parent="kimPlatformAwareDao" />
 	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
 	<bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="kimPlatformAwareDao"/>
 <!-- 
@@ -166,8 +166,8 @@
   <!--
         Group Services
   -->
-  <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"
-          p:kimGroupDao-ref="kimGroupDao"/>
+  <bean id="kimGroupService" class="org.kuali.rice.kim.impl.group.GroupServiceImpl"
+          p:groupDao-ref="kimGroupDao" p:businessObjectService-ref="businessObjectService" />
   <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"/>
 
   <!--

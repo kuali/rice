@@ -39,9 +39,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleDelegationXmlExporter;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -135,7 +135,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
             if (group == null) {
                 throw new IllegalArgumentException("Group does not exist in for given group id: " + groupId);
             } else  {
-                workgroupIds.add(group.getGroupId());
+                workgroupIds.add(group.getId());
             }
         }
 

@@ -104,9 +104,9 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.MaintenanceUtils;
@@ -1250,7 +1250,7 @@ public class DocumentTypeXmlParser {
         }
         if (org.apache.commons.lang.StringUtils.isEmpty(exceptionWorkgroupName)) {
             if (routeNode.getDocumentType().getDefaultExceptionWorkgroup() != null) {
-                exceptionWorkgroupName = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getGroupName();
+                exceptionWorkgroupName = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getName();
                 exceptionWorkgroupNamespace = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getNamespaceCode();
             }
         }
@@ -1261,8 +1261,8 @@ public class DocumentTypeXmlParser {
             }
         }
         if (exceptionWorkgroup != null) {
-            routeNode.setExceptionWorkgroupName(exceptionWorkgroup.getGroupName());
-            routeNode.setExceptionWorkgroupId(exceptionWorkgroup.getGroupId());
+            routeNode.setExceptionWorkgroupName(exceptionWorkgroup.getName());
+            routeNode.setExceptionWorkgroupId(exceptionWorkgroup.getId());
         }
 
         if (((Boolean) getXPath().evaluate("./mandatoryRoute", node, XPathConstants.BOOLEAN)).booleanValue()) {

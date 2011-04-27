@@ -424,7 +424,7 @@ public class RuleServiceTest extends KEWTestCase {
     	// Verify that when searching for rules with the same doc types but with a group responsibility specified, the responsibility-less rules are not retrieved.
     	for (int i = 0; i < expectedRuleNames.length; i++) {
     		ruleList = KEWServiceLocator.getRuleService().search(expectedRuleDocTypes[i], NULL_ID, null, null,
-    				KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", groupResponsibilities[i]).getGroupId(), null, null, null, null, "");
+    				KEWServiceLocator.getIdentityHelperService().getGroupByName("KR-WKFLW", groupResponsibilities[i]).getId(), null, null, null, null, "");
     		assertNotNull("The returned rule list should not be null for doc type '" + expectedRuleDocTypes[i] + "'", ruleList);
     		assertFalse("The returned rule list should not be empty for doc type '" + expectedRuleDocTypes[i] + "'", ruleList.isEmpty());
     		for (Iterator<?> ruleIter = ruleList.iterator(); ruleIter.hasNext();) {

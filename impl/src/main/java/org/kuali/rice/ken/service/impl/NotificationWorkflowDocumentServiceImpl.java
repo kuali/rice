@@ -27,7 +27,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 
 
 /**
@@ -56,10 +56,10 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
     public Long createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId,
 	    String recipientUserId, String annotation) throws WorkflowException {
 	// obtain a workflow user object first
-	WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
+	//WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
 
 	// now construct the workflow document, which will interact with workflow
-	NotificationWorkflowDocument document = new NotificationWorkflowDocument(initiator);
+	NotificationWorkflowDocument document = new NotificationWorkflowDocument(initiatorUserId);
 
 	// this is our loose foreign key to our message delivery record in notification
 	document.getRouteHeader().setAppDocId(messageDelivery.getId().toString());
@@ -107,11 +107,12 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
      */
     public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, Long workflowDocumentId) throws WorkflowException {
 	// construct the workflow id value object
-	WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
+	//WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
+
 
 	// now return the actual document instance
 	// this handles going out and getting the workflow document
-	return new NotificationWorkflowDocument(initiator, workflowDocumentId);
+	return new NotificationWorkflowDocument(initiatorUserId, workflowDocumentId);
     }
 
     /**

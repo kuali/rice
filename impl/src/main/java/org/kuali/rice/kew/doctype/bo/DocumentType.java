@@ -25,8 +25,6 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
@@ -57,9 +55,9 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -955,7 +953,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     public void setSuperUserWorkgroupNoInheritence(Group suWorkgroup) {
         this.workgroupId = null;
         if (ObjectUtils.isNotNull(suWorkgroup)) {
-            this.workgroupId = suWorkgroup.getGroupId();
+            this.workgroupId = suWorkgroup.getId();
         }
     }
 
@@ -974,13 +972,16 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public Group getBlanketApproveWorkgroup() {
+        if (StringUtils.isBlank(blanketApproveWorkgroupId)) {
+            return null;
+        }
         return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
     }
 
     public void setBlanketApproveWorkgroup(Group blanketApproveWorkgroup) {
         this.blanketApproveWorkgroupId = null;
         if (ObjectUtils.isNotNull(blanketApproveWorkgroup)) {
-            this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getGroupId();
+            this.blanketApproveWorkgroupId = blanketApproveWorkgroup.getId();
         }
     }
 
@@ -1050,7 +1051,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     public void setReportingWorkgroup(Group reportingWorkgroup) {
         this.reportingWorkgroupId = null;
         if (ObjectUtils.isNotNull(reportingWorkgroup)) {
-            this.reportingWorkgroupId = reportingWorkgroup.getGroupId();
+            this.reportingWorkgroupId = reportingWorkgroup.getId();
         }
     }
 
@@ -1432,7 +1433,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         if (workgroup == null) {
             return false;
         }
-        return getIdentityManagementService().isMemberOfGroup(principalId, workgroup.getGroupId());
+        return getIdentityManagementService().isMemberOfGroup(principalId, workgroup.getId());
     }
 
     public boolean hasPreviousVersion() {

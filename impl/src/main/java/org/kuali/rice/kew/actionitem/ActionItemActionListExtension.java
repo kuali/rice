@@ -16,18 +16,18 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
 import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  * Alternate model object for action list fetches that do not automatically use
@@ -81,7 +81,7 @@ public class ActionItemActionListExtension extends ActionItem {
         if (getDelegatorGroupId() != null) {
         	delegatorGroup = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId());
         	if (delegatorGroup !=null)
-        		delegatorName = delegatorGroup.getGroupName();
+        		delegatorName = delegatorGroup.getName();
         }
         if (KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
         	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getRouteHeaderId()));

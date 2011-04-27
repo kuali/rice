@@ -1,7 +1,13 @@
-package org.kuali.rice.kim.service;
+package org.kuali.rice.kim.api.services;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.RoleService;
 
 import javax.xml.namespace.QName;
 
@@ -35,8 +41,8 @@ public class KIMServiceLocator {
         return (RoleService) GlobalResourceLoader.getService(new QName(KIM_ROLE_SERVICE));
     }
     
-    public static GroupService getGroupService() {
-    	return (GroupService) GlobalResourceLoader.getService(new QName(KIM_GROUP_SERVICE));
+    public static org.kuali.rice.kim.api.group.GroupService getGroupService() {
+    	return (org.kuali.rice.kim.api.group.GroupService) GlobalResourceLoader.getService(new QName(KIM_GROUP_SERVICE));
     }
     
     public static IdentityService getIdentityService() {

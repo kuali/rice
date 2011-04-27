@@ -78,8 +78,8 @@ public final class KIMPropertyConstants {
 	}
 	
 	public static final class Group {
-	    public static final String GROUP_ID = "groupId";
-        public static final String GROUP_NAME = "groupName";
+	    public static final String GROUP_ID = "id";
+        public static final String GROUP_NAME = "name";
         
 		private Group() {
 			throw new UnsupportedOperationException("do not call");
@@ -106,8 +106,8 @@ public final class KIMPropertyConstants {
 	}
 
 	public static final class KimMember {
-		public static final String MEMBER_ID = "memberId";
-		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
+		public static final String MEMBER_ID = "id";
+		public static final String MEMBER_TYPE_CODE = "typeCode";
 		public static final String ACTIVE_FROM_DATE = "activeFromDate";
 		public static final String ACTIVE_TO_DATE = "activeToDate";
 		
@@ -119,8 +119,8 @@ public final class KIMPropertyConstants {
 	public static final class RoleMember {
 		public static final String ROLE_MEMBER_ID = "roleMemberId";
 		public static final String ROLE_ID = Role.ROLE_ID;
-		public static final String MEMBER_ID = KimMember.MEMBER_ID;
-		public static final String MEMBER_TYPE_CODE = KimMember.MEMBER_TYPE_CODE;
+		public static final String MEMBER_ID = "memberId";
+		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
 		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
 		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
 		
@@ -130,9 +130,9 @@ public final class KIMPropertyConstants {
 	}
 
 	public static final class GroupMember {
-		public static final String GROUP_MEMBER_ID = "groupMemberId";
-		public static final String GROUP_ID = Group.GROUP_ID;
-		public static final String MEMBER_ID = KimMember.MEMBER_ID;
+		public static final String GROUP_MEMBER_ID = "id";
+		public static final String GROUP_ID = "groupId";
+		public static final String MEMBER_ID = "memberId";
 		public static final String MEMBER_TYPE_CODE = KimMember.MEMBER_TYPE_CODE;
 		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
 		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
@@ -145,8 +145,8 @@ public final class KIMPropertyConstants {
 	public static final class DelegationMember {
 		public static final String DELEGATION_MEMBER_ID = "delegationMemberId";
 		public static final String DELEGATION_ID = Delegation.DELEGATION_ID;
-		public static final String MEMBER_ID = KimMember.MEMBER_ID;
-		public static final String MEMBER_TYPE_CODE = KimMember.MEMBER_TYPE_CODE;
+		public static final String MEMBER_ID = "memberId";
+		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
 		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
 		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
 		

@@ -22,9 +22,9 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 import static org.junit.Assert.*;
@@ -136,7 +136,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String workgroupName = "Test_Security_Group";
         Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, workgroupName);
         assertNotNull("Workgroup '" + workgroupName + "' should be valid", group);
-        for (String workgroupUserId : KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getGroupId())) {
+        for (String workgroupUserId : KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getId())) {
             Person workgroupUser = KIMServiceLocator.getPersonService().getPerson(workgroupUserId);
             criteria = new DocSearchCriteriaDTO();
             criteria.setRouteHeaderId(document.getRouteHeaderId().toString());

@@ -77,10 +77,10 @@ import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -731,12 +731,12 @@ public class RuleServiceImpl implements RuleService {
 
         WorkflowDocument workflowDocument = null;
         if (routeHeaderId != null) {
-            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(principal.getPrincipalId()), routeHeaderId);
+            workflowDocument = new WorkflowDocument(principal.getPrincipalId(), routeHeaderId);
         } else {
             List rules = new ArrayList();
             rules.add(delegateRule);
             rules.add(parentRule);
-            workflowDocument = new WorkflowDocument(new WorkflowIdDTO(principal.getPrincipalId()), getRuleDocmentTypeName(rules));
+            workflowDocument = new WorkflowDocument(principal.getPrincipalId(), getRuleDocmentTypeName(rules));
         }
         workflowDocument.setTitle(generateTitle(parentRule, delegateRule));
         delegateRule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
@@ -955,7 +955,7 @@ public class RuleServiceImpl implements RuleService {
         	if (group == null) {
         		throw new IllegalArgumentException("Group does not exist in for given group id: " + groupId);
         	} else  {
-        		workgroupIds.add(group.getGroupId());
+        		workgroupIds.add(group.getId());
         	}
         }
 

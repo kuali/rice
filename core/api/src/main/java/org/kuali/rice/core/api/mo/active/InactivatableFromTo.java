@@ -19,7 +19,7 @@ package org.kuali.rice.core.api.mo.active;
 import java.sql.Timestamp;
 
 
-public interface InactivatableFromTo {
+public interface InactivatableFromTo extends Inactivatable {
 	/**
 	 * Gets the date for which the record become active
 	 *
@@ -33,4 +33,9 @@ public interface InactivatableFromTo {
 	 * @return Timestamp of active to date
 	 */
 	public Timestamp getActiveToDate();
+
+    /**
+     *  Returns if the record is active for a given Time.
+     */
+    public boolean isActive(Timestamp activeAsOfDate);
 }

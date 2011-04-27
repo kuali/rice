@@ -16,20 +16,26 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.GroupInternalService;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -57,6 +63,23 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         group = (GroupImpl)getBusinessObjectService().save( group );
         List<String> newIds = ims.getMemberPrincipalIds(group.getGroupId());
         updateForWorkgroupChange(group.getGroupId(), oldIds, newIds);
+        return group;
+    }
+
+    public Group saveWorkgroup(Group group) {
+    	GroupService ims = getGroupService();
+    	List<String> oldIds = ims.getMemberPrincipalIds(group.getId());
+        GroupBo groupBo = GroupBo.from(group);
+        //add members
+        Collection<GroupMember> members = KIMServiceLocator.getGroupService().getMembersOfGroup(group.getId());
+        if (!CollectionUtils.isEmpty(members)) {
+            for (GroupMember member : members) {
+                groupBo.getMembers().add(GroupMemberBo.from(member));
+            }
+        }
+        getBusinessObjectService().save(groupBo);
+        List<String> newIds = ims.getMemberPrincipalIds(group.getId());
+        updateForWorkgroupChange(group.getId(), oldIds, newIds);
         return group;
     }
 

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service;
 
 import org.junit.Test;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.service.support.KimTypeService;

@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kim.api.group;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -49,7 +50,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class GroupAttribute implements GroupAttributeContract, ModelObjectComplete {
-    @XmlElement(name = Elements.ID, required = true)
+    @XmlElement(name = Elements.ID, required = false)
     private final String id;
 
     @XmlElement(name = Elements.GROUP_ID, required = false)
@@ -154,25 +155,25 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
         private Long versionNumber;
         private String objectId;
 
-        private Builder(String id, KimType.Builder kimType) {
-            setId(id);
+        private Builder(KimType.Builder kimType) {
             setKimType(kimType);
         }
 
         /**
          * creates a Parameter with the required fields.
          */
-        public static Builder create(String id, KimType.Builder kimType) {
-            return new Builder(id, kimType);
+        public static Builder create(KimType.Builder kimType) {
+            return new Builder(kimType);
         }
 
         /**
          * creates a Parameter from an existing {@link org.kuali.rice.core.api.parameter.ParameterContract}.
          */
         public static Builder create(GroupAttributeContract contract) {
-            Builder builder = new Builder(contract.getId(), KimType.Builder.create(contract.getKimType()));
+            Builder builder = new Builder(KimType.Builder.create(contract.getKimType()));
             builder.setGroupId(contract.getGroupId());
 
+            builder.setId(contract.getId());
             if (contract.getKimAttribute() != null) {
                 builder.setKimAttribute(KimAttribute.Builder.create(contract.getKimAttribute()));
             }
@@ -188,6 +189,9 @@ public class GroupAttribute implements GroupAttributeContract, ModelObjectComple
         }
 
         public void setId(final String id) {
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalArgumentException("id is blank");
+            }
             this.id = id;
         }
 

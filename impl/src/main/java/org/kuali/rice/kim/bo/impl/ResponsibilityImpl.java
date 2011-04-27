@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.util.AutoPopulatingList;
 
@@ -48,7 +49,7 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	@Transient
 	protected String assignedToGroupNameForLookup;
 	@Transient
-	protected GroupImpl assignedToGroup;
+	protected GroupBo assignedToGroup;
 	@Transient
 	protected String attributeName;
 	@Transient
@@ -176,14 +177,14 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 	/**
 	 * @return the assignedToGroup
 	 */
-	public GroupImpl getAssignedToGroup() {
+	public GroupBo getAssignedToGroup() {
 		return this.assignedToGroup;
 	}
 
 	/**
 	 * @param assignedToGroup the assignedToGroup to set
 	 */
-	public void setAssignedToGroup(GroupImpl assignedToGroup) {
+	public void setAssignedToGroup(GroupBo assignedToGroup) {
 		this.assignedToGroup = assignedToGroup;
 	}
 

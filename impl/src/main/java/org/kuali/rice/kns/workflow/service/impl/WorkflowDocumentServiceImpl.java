@@ -29,10 +29,10 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -374,7 +374,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 		if (group == null) {
                 			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}
-                    	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, newAnnotation, group.getGroupId() , "", true, notificationLabel);
+                    	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, newAnnotation, group.getId() , "", true, notificationLabel);
                     }
                 }
             }

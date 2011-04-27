@@ -51,7 +51,7 @@
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl</class>
     <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl</class>
-    <class>org.kuali.rice.kim.bo.impl.GroupImpl</class>
+    <class>org.kuali.rice.kim.impl.group.GroupBo</class>
     <class>org.kuali.rice.kim.bo.group.impl.GroupMemberImpl</class>
     <class>org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl</class>
     <class>org.kuali.rice.kim.bo.impl.RoleImpl</class>

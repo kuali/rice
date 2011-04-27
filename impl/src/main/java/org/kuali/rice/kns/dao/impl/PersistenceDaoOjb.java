@@ -19,6 +19,7 @@ import org.apache.ojb.broker.Identity;
 import org.apache.ojb.broker.core.IdentityFactoryImpl;
 import org.apache.ojb.broker.core.proxy.IndirectionHandlerCGLIBImpl;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
+import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.dao.PersistenceDao;
 
 public class PersistenceDaoOjb extends PlatformAwareDaoBaseOjb implements PersistenceDao {

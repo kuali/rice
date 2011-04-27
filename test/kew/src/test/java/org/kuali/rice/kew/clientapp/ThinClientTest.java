@@ -38,6 +38,7 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.config.ThinClientResourceLoader;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 
@@ -129,7 +130,7 @@ public class ThinClientTest extends KEWTestCase {
 		assertTrue(principal.getPrincipalName().equals(KIM_PRINCIPAL_NAME));
 
 		// test KIM group service
-		List<GroupInfo> groups = thinRL.getGroupService().getGroupsForPrincipal(principal.getPrincipalId());
+		List<Group> groups = thinRL.getGroupService().getGroupsForPrincipal(principal.getPrincipalId());
 		assertNotNull(groups);
 		assertTrue(groups.size() > 0);
 

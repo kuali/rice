@@ -21,7 +21,7 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -84,7 +84,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     public List<?> findActivatedByGroup(Group group) {
         
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindActivatedByGroup");
-        query.setParameter("groupId", group.getGroupId());
+        query.setParameter("groupId", group.getId());
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
         

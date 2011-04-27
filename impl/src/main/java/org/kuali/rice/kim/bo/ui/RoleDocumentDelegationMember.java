@@ -20,12 +20,12 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.util.AutoPopulatingList;
 
@@ -239,7 +239,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 
 	protected void populateDerivedValues() {
 		if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
-        	GroupInfo groupInfo = null;
+        	Group groupInfo = null;
         	groupInfo = KIMServiceLocator.getIdentityManagementService().getGroup(getMemberId());
         	if (groupInfo != null) {
         		setMemberNamespaceCode(groupInfo.getNamespaceCode());

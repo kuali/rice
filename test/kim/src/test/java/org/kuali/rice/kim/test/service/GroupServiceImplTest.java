@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -38,6 +39,7 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Ignore
 public class GroupServiceImplTest extends KIMTestCase {
 
 	private GroupServiceImpl groupService;

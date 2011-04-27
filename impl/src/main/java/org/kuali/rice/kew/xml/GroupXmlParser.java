@@ -23,15 +23,20 @@ import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.attribute.KimAttribute;
+import org.kuali.rice.kim.api.group.GroupAttribute;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
+import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -47,7 +52,7 @@ import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 /**
  * Parses groups from XML.
  *
- * @see KimGroups
+ * @see Group
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -61,7 +66,7 @@ public class GroupXmlParser {
     private HashMap<String, List<String>> memberPrincipalIds = new HashMap<String, List<String>>();
     private AttributeSet groupAttributes = new AttributeSet();
 
-    public List<GroupInfo> parseGroups(InputStream input) throws IOException, XmlException {
+    public List<Group> parseGroups(InputStream input) throws IOException, XmlException {
         try {
             Document doc = XmlHelper.trimSAXXml(input);
             Element root = doc.getRootElement();
@@ -83,91 +88,76 @@ public class GroupXmlParser {
      * @throws XmlException
      */
     @SuppressWarnings("unchecked")
-	public List<GroupInfo> parseGroups(Element element) throws XmlException {
-        List<GroupInfo> groupInfos = new ArrayList<GroupInfo>();
+	public List<Group> parseGroups(Element element) throws XmlException {
+        List<Group> groups = new ArrayList<Group>();
         for (Element groupsElement: (List<Element>) element.getChildren(GROUPS, GROUP_NAMESPACE)) {
 
             for (Element groupElement: (List<Element>) groupsElement.getChildren(GROUP, GROUP_NAMESPACE)) {
-                groupInfos.add(parseGroup(groupElement));
+                groups.add(parseGroup(groupElement));
             }
         }
-        for (GroupInfo groupInfo : groupInfos) {
+        for (Group group : groups) {
             IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 
             // check if group already exists
-            GroupInfo foundGroup = identityManagementService.getGroupByName(groupInfo.getNamespaceCode(), groupInfo.getGroupName());
+            Group foundGroup = identityManagementService.getGroupByName(group.getNamespaceCode(), group.getName());
 
             if (foundGroup == null) {
                 if ( LOG.isInfoEnabled() ) {
-                	LOG.info("Group named '" + groupInfo.getGroupName() + "' not found, creating new group named '" + groupInfo.getGroupName() + "'");
+                	LOG.info("Group named '" + group.getName() + "' not found, creating new group named '" + group.getName() + "'");
                 }
                 try {
-                    GroupInfo newGroupInfo =  identityManagementService.createGroup(groupInfo);
+                    //Group newGroup =  identityManagementService.createGroup(group);
+                    //TODO: use identitymanagementservice createGroup once updated
+                    GroupBo newGroupBo = (GroupBo)KNSServiceLocator.getBusinessObjectService().save(GroupBo.from(group));
+                    Group newGroup = GroupBo.to(newGroupBo);
 
-                    String key = newGroupInfo.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroupInfo.getGroupName().trim();
-                    addGroupMembers(newGroupInfo, key);
+
+                    String key = newGroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroup.getName().trim();
+                    addGroupMembers(newGroup, key);
                 } catch (Exception e) {
-                    throw new RuntimeException("Error creating group with name '" + groupInfo.getGroupName() + "'", e);
+                    throw new RuntimeException("Error creating group with name '" + group.getName() + "'", e);
                 }
             } else {
             	if ( LOG.isInfoEnabled() ) {
-            		LOG.info("Group named '" + groupInfo.getGroupName() + "' found, creating a new version");
+            		LOG.info("Group named '" + group.getName() + "' found, creating a new version");
             	}
                 try {
-                    groupInfo.setGroupId(foundGroup.getGroupId());
-                    identityManagementService.updateGroup(foundGroup.getGroupId(), groupInfo);
+                    Group.Builder builder = Group.Builder.create(group);
+                    builder.setId(foundGroup.getId());
+                    group = builder.build();
+                    //identityManagementService.updateGroup(foundGroup.getId(), group);
+                    //todo Use updateGroup method
+                    GroupBo groupBo = (GroupBo)KNSServiceLocator.getBusinessObjectService().save(GroupBo.from(group));
 
                     //delete existing group members and replace with new
-                    identityManagementService.removeAllGroupMembers(foundGroup.getGroupId());
+                    identityManagementService.removeAllGroupMembers(foundGroup.getId());
 
-                    String key = groupInfo.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + groupInfo.getGroupName().trim();
-                    addGroupMembers(groupInfo, key);
+                    String key = group.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName().trim();
+                    addGroupMembers(group, key);
 
                 } catch (Exception e) {
                     throw new RuntimeException("Error updating group.", e);
                 }
             }
         }
-        return groupInfos;
+        return groups;
     }
 
     @SuppressWarnings("unchecked")
-	private GroupInfo parseGroup(Element element) throws XmlException {
-        GroupInfo groupInfo = new GroupInfo();
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
-        groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
+	private Group parseGroup(Element element) throws XmlException {
 
-        if (groupInfo.getGroupName() == null) {
-            throw new XmlException("Group must have a name.");
-        }
-
-        String groupNamespace = element.getChildText(NAMESPACE, GROUP_NAMESPACE);
-        if (groupNamespace != null) {
-            groupInfo.setNamespaceCode(groupNamespace.trim());
-        } else {
-            throw new XmlException("Namespace must have a value.");
-        }
-
-        String id = element.getChildText(ID, GROUP_NAMESPACE);
-        if (id != null) {
-            groupInfo.setGroupId(id.trim());
-        } else {
-        	
-        }
-
-        String description = element.getChildText(DESCRIPTION, GROUP_NAMESPACE);
-        if (description != null && !description.trim().equals("")) {
-            groupInfo.setGroupDescription(description);
-        }
 
         // Type element and children (namespace and name)
+
         String typeId = null;
+        KimType kimTypeInfo;
         List<KimTypeAttribute> kimTypeAttributes = new ArrayList<KimTypeAttribute>();
         if (element.getChild(TYPE, GROUP_NAMESPACE) != null) {
             Element typeElement = element.getChild(TYPE, GROUP_NAMESPACE);
             String typeNamespace = typeElement.getChildText(NAMESPACE, GROUP_NAMESPACE);
             String typeName = typeElement.getChildText(NAME, GROUP_NAMESPACE);
-            KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(typeNamespace, typeName);
+            kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(typeNamespace, typeName);
             if (kimTypeInfo != null) {
             	typeId = kimTypeInfo.getId();
                 kimTypeAttributes = kimTypeInfo.getAttributeDefinitions();
@@ -175,15 +165,45 @@ public class GroupXmlParser {
                 throw new XmlException("Invalid type name and namespace specified.");
             }
         } else { //set to default type
-            KimType kimTypeDefault = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
-            if (kimTypeDefault != null) {
-            	typeId = kimTypeDefault.getId();
-                kimTypeAttributes = kimTypeDefault.getAttributeDefinitions();
+            kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+            if (kimTypeInfo != null) {
+            	typeId = kimTypeInfo.getId();
+                kimTypeAttributes = kimTypeInfo.getAttributeDefinitions();
             } else {
             	throw new RuntimeException("Failed to locate the 'Default' group type!  Please ensure that it's in your database.");
             }
         }
-        groupInfo.setKimTypeId(typeId);
+        //groupInfo.setKimTypeId(typeId);
+
+        String groupNamespace = element.getChildText(NAMESPACE, GROUP_NAMESPACE);
+        if (groupNamespace == null) {
+            throw new XmlException("Namespace must have a value.");
+        }
+
+        String groupName = element.getChildText(NAME, GROUP_NAMESPACE);
+        if (groupName == null) {
+            throw new XmlException("Name must have a value.");
+        }
+
+        Group.Builder groupInfo = Group.Builder.create(groupNamespace, groupName, typeId);
+        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        //groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
+
+
+
+        String id = element.getChildText(ID, GROUP_NAMESPACE);
+        if (id != null) {
+            groupInfo.setId(id.trim());
+        } else {
+        	
+        }
+
+        String description = element.getChildText(DESCRIPTION, GROUP_NAMESPACE);
+        if (description != null && !description.trim().equals("")) {
+            groupInfo.setDescription(description);
+        }
+
+
 
         //Active Indicator
         groupInfo.setActive(DEFAULT_ACTIVE_VALUE);
@@ -203,16 +223,23 @@ public class GroupXmlParser {
         if (element.getChild(ATTRIBUTES, GROUP_NAMESPACE) != null) {
             List<Element> attributes = element.getChild(ATTRIBUTES, GROUP_NAMESPACE).getChildren();
             AttributeSet attributeSet = new AttributeSet();
+            List<GroupAttribute.Builder> groupAttributes = new ArrayList<GroupAttribute.Builder>();
             for (Element attr : attributes ) {
+                GroupAttribute.Builder attrBuilder = GroupAttribute.Builder.create(KimType.Builder.create(kimTypeInfo));
                 String key = attr.getAttributeValue(KEY);
                 String value = attr.getAttributeValue(VALUE);
-                attributeSet.put(key, value);
+                attrBuilder.setKimAttribute(KimAttribute.Builder.create("org.kuali.rice.kim.bo.impl.KimAttributes", key, kimTypeInfo.getNamespaceCode()));
+                attrBuilder.setValue(value);
+                attrBuilder.setGroupId(groupInfo.getId());
+
+                //attributeSet.put(key, value);
+                groupAttributes.add(attrBuilder);
                 if (!validAttributeKeys.contains(key)) {
                     throw new XmlException("Invalid attribute specified.");
                 }
             }
-            if (attributeSet.size() > 0) {
-                groupInfo.setAttributes(attributeSet);
+            if (groupAttributes.size() > 0) {
+                groupInfo.setAttributes(groupAttributes);
             }
         }
 
@@ -225,7 +252,7 @@ public class GroupXmlParser {
                 String principalName = member.getText().trim();
                 KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
                 if (principal != null) {
-                    addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), principal.getPrincipalId());
+                    addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), principal.getPrincipalId());
                 } else {
                     throw new XmlException("Principal Name "+principalName+" cannot be found.");
                 }
@@ -233,18 +260,18 @@ public class GroupXmlParser {
                 String xmlPrincipalId = member.getText().trim();
                 KimPrincipal principal = identityManagementService.getPrincipal(xmlPrincipalId);
                 if (principal != null) {
-                    addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), principal.getPrincipalId());
+                    addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), principal.getPrincipalId());
                 } else {
                     throw new XmlException("Principal Id "+xmlPrincipalId+" cannot be found.");
                 }
             // Groups are handled differently since the member group may not be saved yet.  Therefore they need to be validated after the groups are saved.
             } else if (elementName.equals(GROUP_ID)) {
                 String xmlGroupId = member.getText().trim();
-                addGroupToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), xmlGroupId);
+                addGroupToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), xmlGroupId);
             } else if (elementName.equals(GROUP_NAME)) {
                 String xmlGroupName = member.getChildText(NAME, GROUP_NAMESPACE).trim();
                 String xmlGroupNamespace = member.getChildText(NAMESPACE, GROUP_NAMESPACE).trim();
-                addGroupNameToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), xmlGroupNamespace, xmlGroupName);
+                addGroupNameToGroup(groupInfo.getNamespaceCode(), groupInfo.getName(), xmlGroupNamespace, xmlGroupName);
             } else {
                 LOG.error("Unknown member element: " + elementName);
             }
@@ -252,7 +279,7 @@ public class GroupXmlParser {
 
         }
 
-        return groupInfo;
+        return groupInfo.build();
 
     }
 
@@ -286,14 +313,21 @@ public class GroupXmlParser {
         memberGroupNames.put(key, groupNames);
     }
 
-    private void addGroupMembers(GroupInfo groupInfo, String key) throws XmlException {
+    private void addGroupMembers(Group groupInfo, String key) throws XmlException {
         IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {
                 Group group = identityManagementService.getGroup(groupId);
                 if (group != null) {
-                    identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
+                    //identityManagementService.addGroupToGroup(group.getId(), groupInfo.getId());
+                    //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
+                    GroupMemberBo groupMember = new GroupMemberBo();
+                    groupMember.setGroupId(groupInfo.getId());
+                    groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE );
+                    groupMember.setMemberId(group.getId());
+
+                    groupMember = (GroupMemberBo)KNSServiceLocator.getBusinessObjectService().save(groupMember);
                 } else {
                     throw new XmlException("Group Id "+groupId+" cannot be found.");
                 }
@@ -304,7 +338,14 @@ public class GroupXmlParser {
             for (String groupName : groupNames) {
                 Group group = identityManagementService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
                 if (group != null) {
-                	identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
+                    //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
+                    GroupMemberBo groupMember = new GroupMemberBo();
+                    groupMember.setGroupId(groupInfo.getId());
+                    groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE );
+                    groupMember.setMemberId(group.getId());
+
+                    groupMember = (GroupMemberBo)KNSServiceLocator.getBusinessObjectService().save(groupMember);
+                	//identityManagementService.addGroupToGroup(group.getId(), groupInfo.getId());
                 } else {
                     throw new XmlException("Group "+groupName+" cannot be found.");
                 }
@@ -313,8 +354,15 @@ public class GroupXmlParser {
         List<String> principalIds = memberPrincipalIds.get(key);
         if (principalIds != null) {
             for (String principalId : principalIds) {
-            	
-            	identityManagementService.addPrincipalToGroup(principalId, groupInfo.getGroupId());
+                //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
+                GroupMemberBo groupMember = new GroupMemberBo();
+                groupMember.setGroupId(groupInfo.getId());
+                groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );
+                groupMember.setMemberId(principalId);
+
+                groupMember = (GroupMemberBo)KNSServiceLocator.getBusinessObjectService().save(groupMember);
+
+            	//identityManagementService.addPrincipalToGroup(principalId, groupInfo.getId());
             }
         }
 

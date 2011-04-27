@@ -78,9 +78,9 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.xml.sax.SAXException;
 
 /**
@@ -500,7 +500,7 @@ public class RuleXmlParser {
             if (group == null) {
                 throw new XmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
             }
-            responsibility.setRuleResponsibilityName(group.getGroupId());
+            responsibility.setRuleResponsibilityName(group.getId());
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if (!StringUtils.isBlank(role)) {
         	role = Utilities.substituteConfigParameters(role);
@@ -529,7 +529,7 @@ public class RuleXmlParser {
             if (workgroupObject == null) {
                 throw new XmlException("Could not locate workgroup: " + workgroup);
             }
-            responsibility.setRuleResponsibilityName(workgroupObject.getGroupId());
+            responsibility.setRuleResponsibilityName(workgroupObject.getId());
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else {
         	return null;

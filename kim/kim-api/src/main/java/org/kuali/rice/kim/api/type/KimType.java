@@ -266,12 +266,14 @@ public final class KimType implements KimTypeContract, ModelObjectComplete {
             builder.setNamespaceCode(contract.getNamespaceCode());
             builder.setName(contract.getName());
 
-            final List<KimTypeAttribute.Builder> temp = new ArrayList<KimTypeAttribute.Builder>();
-            for (KimTypeAttributeContract attr : contract.getAttributeDefinitions()) {
-                temp.add(KimTypeAttribute.Builder.create(attr));
-            }
+            if (contract.getAttributeDefinitions() != null) {
+                final List<KimTypeAttribute.Builder> temp = new ArrayList<KimTypeAttribute.Builder>();
+                for (KimTypeAttributeContract attr : contract.getAttributeDefinitions()) {
+                    temp.add(KimTypeAttribute.Builder.create(attr));
+                }
 
-            builder.setAttributeDefinitions(Collections.unmodifiableList(temp));
+                builder.setAttributeDefinitions(Collections.unmodifiableList(temp));
+            }
 
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
@@ -343,7 +345,7 @@ public final class KimType implements KimTypeContract, ModelObjectComplete {
         }
 
         public void setVersionNumber(final Long versionNumber) {
-            if (versionNumber == null || versionNumber <= 0) {
+            if (versionNumber != null && versionNumber <= 0) {
                 throw new IllegalArgumentException("versionNumber is invalid");
             }
 

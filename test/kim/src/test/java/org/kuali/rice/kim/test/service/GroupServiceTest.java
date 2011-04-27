@@ -21,11 +21,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
@@ -83,10 +83,13 @@ public class GroupServiceTest extends KIMTestCase {
 		assertFalse( "p4 should not be reported as a member of g2 (g4 is inactive)", getGroupService().isMemberOfGroup("p4", "g2") );
 		
 		// re-activate group 4
-		GroupInfo g4Info = getGroupService().getGroupInfo("g4");
-		g4Info.setActive(true);
-		getGroupUpdateService().updateGroup("g4", g4Info);
-		g4Info = getGroupService().getGroupInfo("g4");
+		Group g4Info = getGroupService().getGroup("g4");
+        Group.Builder builder = Group.Builder.create(g4Info);
+		builder.setActive(true);
+
+        //todo: reenable this once update service updated
+		//getGroupUpdateService().updateGroup("g4", g4Info);
+		g4Info = getGroupService().getGroup("g4");
 		
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", getGroupService().isMemberOfGroup("p4", "g2") );
 	}

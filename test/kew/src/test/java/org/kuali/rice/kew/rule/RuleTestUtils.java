@@ -20,9 +20,9 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 import java.util.List;
 
@@ -118,7 +118,7 @@ public final class RuleTestUtils {
 	 * @param delegateGroup
 	 */
 	public static RuleDelegation createRuleDelegationToGroup(RuleBaseValues parentRule, RuleResponsibility parentResponsibility, Group delegateGroup) {
-		return createRuleDelegation(parentRule, parentResponsibility, delegateGroup.getGroupId(), KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+		return createRuleDelegation(parentRule, parentResponsibility, delegateGroup.getId(), KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
 	}
 	
 	/**

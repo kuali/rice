@@ -34,7 +34,7 @@ public interface Person extends ExternalizableBusinessObject {
 	String getPrincipalName();
 	String getEntityId();
 	String getEntityTypeCode();
-	
+
 	/**
 	 * The first name from the default name record for the entity.
 	 */
@@ -44,7 +44,7 @@ public interface Person extends ExternalizableBusinessObject {
 	String getMiddleNameUnmasked();
 	String getLastName();
 	String getLastNameUnmasked();
-	
+
 	/*
 	 * Method which composites the first, middle and last names.
 	 */
@@ -53,73 +53,73 @@ public interface Person extends ExternalizableBusinessObject {
 
 	String getEmailAddress();
 	String getEmailAddressUnmasked();
-	
+
 	/**
 	 * Returns line1 of the default address for the Person.  Will lazy-load the information from the
-	 * IdentityManagementService if requested. 
+	 * IdentityManagementService if requested.
 	 */
 	String getAddressLine1();
 	String getAddressLine1Unmasked();
 	/**
 	 * Returns line2 of the default address for the Person.  Will lazy-load the information from the
-	 * IdentityManagementService if requested. 
+	 * IdentityManagementService if requested.
 	 */
 	String getAddressLine2();
 	String getAddressLine2Unmasked();
-	
+
 	/**
 	 * Returns line3 of the default address for the Person.  Will lazy-load the information from the
-	 * IdentityManagementService if requested. 
+	 * IdentityManagementService if requested.
 	 */
 	String getAddressLine3();
 	String getAddressLine3Unmasked();
 	/**
 	 * Returns the city name from the default address for the Person.  Will lazy-load the information from the
-	 * IdentityManagementService if requested. 
+	 * IdentityManagementService if requested.
 	 */
 	String getAddressCityName();
 	String getAddressCityNameUnmasked();
 	/**
 	 * Returns the state code from the default address for the Person.  Will lazy-load the information from the
-	 * IdentityManagementService if requested. 
+	 * IdentityManagementService if requested.
 	 */
 	String getAddressStateCode();
 	String getAddressStateCodeUnmasked();
 	/**
 	 * Returns the postal code from the default address for the Person.  Will lazy-load the information from the
-	 * IdentityManagementService if requested. 
+	 * IdentityManagementService if requested.
 	 */
 	String getAddressPostalCode();
 	String getAddressPostalCodeUnmasked();
 	/**
 	 * Returns the country code from the default address for the Person.  Will lazy-load the information from the
-	 * IdentityManagementService if requested. 
+	 * IdentityManagementService if requested.
 	 */
 	String getAddressCountryCode();
 	String getAddressCountryCodeUnmasked();
-	
+
 	/** Returns the default phone number for the entity.
 	 */
 	String getPhoneNumber();
 	String getPhoneNumberUnmasked();
 
 	String getCampusCode();
-		
+
 	Map<String,String> getExternalIdentifiers();
-	
+
 	/** Checks whether the person has an affiliation of a particular type: staff/faculty/student/etc... */
 	boolean hasAffiliationOfType( String affiliationTypeCode );
-	
+
 	List<String> getCampusCodesForAffiliationOfType(String affiliationTypeCode);
-	
+
 	String getEmployeeStatusCode();
 	String getEmployeeTypeCode();
 	KualiDecimal getBaseSalaryAmount();
-	
+
 	String getExternalId( String externalIdentifierTypeCode );
-	
+
 	String getPrimaryDepartmentCode();
-	
+
 	String getEmployeeId();
 	boolean isActive();
 }

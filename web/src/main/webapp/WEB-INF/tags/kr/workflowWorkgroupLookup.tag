@@ -19,7 +19,7 @@
 <%@ attribute name="tabKey" required="false" description="The tab key to use as the HTML named anchor to scroll to on return from the lookup." %>
 
 <%--<input type="image" tabindex="-1" name="methodToCall.performWorkgroupLookup.(((${fieldConversions})))" title="Search Workgroup" alt="Search Workgroup" src="${ConfigProperties.kr.externalizable.images.url}searchicon.gif" border="0" class="tinybutton" />--%>
-<kul:lookup boClassName="org.kuali.rice.kim.bo.impl.GroupImpl"
+<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo"
     fieldConversions="${fieldConversions}"
     lookupParameters="${lookupParameters}"
     anchor="${tabKey}"

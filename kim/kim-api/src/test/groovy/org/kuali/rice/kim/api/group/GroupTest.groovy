@@ -111,7 +111,52 @@ class GroupTest {
           <name>${NAME}</name>
           <description>${DESCRIPTION}</description>
           <kimTypeId>${KIM_TYPE_ID}</kimTypeId>
-          <members>
+          <attributes>
+              <attribute>
+                <id>${ATTRIBUTES_1_ID}</id>
+                <groupId>${ATTRIBUTES_1_GROUP_ID}</groupId>
+                <kimType>
+                    <id>${KIM_TYPE_1.id}</id>
+                    <versionNumber>${VERSION_NUMBER}</versionNumber>
+                </kimType>
+                <kimAttribute>
+                    <id>${KIM_ATTRIBUTE_1.id}</id>
+                    <componentName>${KIM_ATTRIBUTE_1.componentName}</componentName>
+                    <attributeName>${KIM_ATTRIBUTE_1.attributeName}</attributeName>
+                    <namespaceCode>${KIM_ATTRIBUTE_1.namespaceCode}</namespaceCode>
+                    <versionNumber>${VERSION_NUMBER}</versionNumber>
+                </kimAttribute>
+                <attributeValue>${ATTRIBUTES_1_VALUE}</attributeValue>
+                <versionNumber>${ATTRIBUTES_1_VER_NBR}</versionNumber>
+                <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
+              </attribute>
+              <attribute>
+                <id>${ATTRIBUTES_2_ID}</id>
+                <groupId>${ATTRIBUTES_2_GROUP_ID}</groupId>
+                <kimType>
+                    <id>${KIM_TYPE_2.id}</id>
+                    <versionNumber>${VERSION_NUMBER}</versionNumber>
+                </kimType>
+                <kimAttribute>
+                    <id>${KIM_ATTRIBUTE_2.id}</id>
+                    <componentName>${KIM_ATTRIBUTE_2.componentName}</componentName>
+                    <attributeName>${KIM_ATTRIBUTE_2.attributeName}</attributeName>
+                    <namespaceCode>${KIM_ATTRIBUTE_2.namespaceCode}</namespaceCode>
+                    <versionNumber>${VERSION_NUMBER}</versionNumber>
+                </kimAttribute>
+                <attributeValue>${ATTRIBUTES_2_VALUE}</attributeValue>
+                <versionNumber>${ATTRIBUTES_2_VER_NBR}</versionNumber>
+                <objectId>${ATTRIBUTES_2_OBJ_ID}</objectId>
+              </attribute>
+          </attributes>
+          <active>${ACTIVE}</active>
+          <versionNumber>${VERSION_NUMBER}</versionNumber>
+          <objectId>${OBJECT_ID}</objectId>
+        </group>
+        """
+    }
+
+    /*<members>
             <id>${MEMBER_1_ID}</id>
             <groupId>${MEMBER_1_GROUP_ID}</groupId>
             <memberId>${MEMBER_1_MEMBER_ID}</memberId>
@@ -128,49 +173,7 @@ class GroupTest {
             <typeCode>${MEMBER_2_TYPE_CD}</typeCode>
             <versionNumber>${MEMBER_2_VER_NBR}</versionNumber>
             <objectId>${MEMBER_2_OBJ_ID}</objectId>
-          </members>
-          <attributes>
-            <id>${ATTRIBUTES_1_ID}</id>
-            <groupId>${ATTRIBUTES_1_GROUP_ID}</groupId>
-            <kimType>
-                <id>${KIM_TYPE_1.id}</id>
-                <versionNumber>${VERSION_NUMBER}</versionNumber>
-            </kimType>
-            <kimAttribute>
-                <id>${KIM_ATTRIBUTE_1.id}</id>
-                <componentName>${KIM_ATTRIBUTE_1.componentName}</componentName>
-                <attributeName>${KIM_ATTRIBUTE_1.attributeName}</attributeName>
-                <namespaceCode>${KIM_ATTRIBUTE_1.namespaceCode}</namespaceCode>
-                <versionNumber>${VERSION_NUMBER}</versionNumber>
-            </kimAttribute>
-            <attributeValue>${ATTRIBUTES_1_VALUE}</attributeValue>
-            <versionNumber>${ATTRIBUTES_1_VER_NBR}</versionNumber>
-            <objectId>${ATTRIBUTES_1_OBJ_ID}</objectId>
-          </attributes>
-          <attributes>
-            <id>${ATTRIBUTES_2_ID}</id>
-            <groupId>${ATTRIBUTES_2_GROUP_ID}</groupId>
-            <kimType>
-                <id>${KIM_TYPE_2.id}</id>
-                <versionNumber>${VERSION_NUMBER}</versionNumber>
-            </kimType>
-            <kimAttribute>
-                <id>${KIM_ATTRIBUTE_2.id}</id>
-                <componentName>${KIM_ATTRIBUTE_2.componentName}</componentName>
-                <attributeName>${KIM_ATTRIBUTE_2.attributeName}</attributeName>
-                <namespaceCode>${KIM_ATTRIBUTE_2.namespaceCode}</namespaceCode>
-                <versionNumber>${VERSION_NUMBER}</versionNumber>
-            </kimAttribute>
-            <attributeValue>${ATTRIBUTES_2_VALUE}</attributeValue>
-            <versionNumber>${ATTRIBUTES_2_VER_NBR}</versionNumber>
-            <objectId>${ATTRIBUTES_2_OBJ_ID}</objectId>
-          </attributes>
-          <active>${ACTIVE}</active>
-          <versionNumber>${VERSION_NUMBER}</versionNumber>
-          <objectId>${OBJECT_ID}</objectId>
-        </group>
-        """
-    }
+          </members>*/
 
     @Test
 	public void testXmlMarshaling() {
@@ -195,7 +198,7 @@ class GroupTest {
 			String getName() {GroupTest.NAME}
             String getDescription() {GroupTest.DESCRIPTION}
             String getKimTypeId() {GroupTest.KIM_TYPE_ID}
-			List<GroupMember> getMembers() {[
+			/*List<GroupMember> getMembers() {[
                     GroupMember.Builder.create(new GroupMemberContract() {
 				        String getId() {GroupTest.MEMBER_1_ID}
                         String getGroupId() {GroupTest.MEMBER_1_GROUP_ID}
@@ -213,7 +216,7 @@ class GroupTest {
                         Timestamp getActiveFromDate() {null}
                         Timestamp getActiveToDate() {null}
                         Long getVersionNumber() { GroupTest.MEMBER_2_VER_NBR }
-                        String getObjectId() { GroupTest.MEMBER_2_OBJ_ID }}).build() ]}
+                        String getObjectId() { GroupTest.MEMBER_2_OBJ_ID }}).build() ]}*/
             List<GroupAttribute> getAttributes() {[
                     GroupAttribute.Builder.create(new GroupAttributeContract() {
 				        String getId() {GroupTest.ATTRIBUTES_1_ID}
@@ -248,7 +251,7 @@ class GroupTest {
         Assert.assertEquals(NAME,group.name)
         Assert.assertEquals(NAMESPACE,group.namespaceCode)
         Assert.assertEquals(new Boolean(ACTIVE).booleanValue(),group.active)
-	    Assert.assertEquals(2, group.members.size())
+	    /*Assert.assertEquals(2, group.members.size())
         Assert.assertEquals(MEMBER_1_ID, group.members[0].id)
         Assert.assertEquals(MEMBER_1_GROUP_ID, group.members[0].groupId)
         Assert.assertEquals(MEMBER_1_MEMBER_ID, group.members[0].memberId)
@@ -265,7 +268,7 @@ class GroupTest {
         Assert.assertEquals(null, group.members[1].activeFromDate)
         Assert.assertEquals(null, group.members[1].activeToDate)
         Assert.assertEquals(MEMBER_2_OBJ_ID, group.members[1].objectId)
-        Assert.assertEquals(MEMBER_2_VER_NBR, group.members[1].versionNumber)
+        Assert.assertEquals(MEMBER_2_VER_NBR, group.members[1].versionNumber)*/
 
 	    Assert.assertEquals(2, group.attributes.size())
         Assert.assertEquals(ATTRIBUTES_1_ID, group.attributes[0].id)

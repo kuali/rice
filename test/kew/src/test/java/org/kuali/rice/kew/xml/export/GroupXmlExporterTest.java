@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.test.BaselineTestCase;
 
 /**

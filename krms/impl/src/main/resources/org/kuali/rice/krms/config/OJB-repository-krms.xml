@@ -41,10 +41,9 @@
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="label" column="LBL" jdbc-type="VARCHAR" />
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"
+		<field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR"
 			conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="componentName" column="CMPNT_NM" jdbc-type="VARCHAR" />
 	</class-descriptor>
 
@@ -53,8 +52,7 @@
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="serviceName" column="SRVC_NM" jdbc-type="VARCHAR" />
-		<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.KrmsTypeAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="typeId" />
@@ -66,9 +64,8 @@
     	<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
     	<field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     	<field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER" />
-    	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+    	<field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     	<reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       		<foreignkey field-ref="id" />
     	</reference-descriptor>
@@ -88,13 +85,12 @@
   	 -->
   	 
   	<class-descriptor class="org.kuali.rice.krms.impl.repository.ContextBo" table="KRMS_CNTXT_T">
-        <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" primarykey="true" 
+        <field-descriptor name="id" column="CNTXT_ID" jdbc-type="VARCHAR" primarykey="true" 
             autoincrement="true" sequence-name="KRMS_CNTXT_S"/>
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
         <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
-        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     </class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionParameterBo" table="KRMS_PROP_PARM_T">
@@ -103,7 +99,6 @@
 		<field-descriptor name="value" column="PARM_VAL" jdbc-type="VARCHAR" />
 		<field-descriptor name="parameterType" column="PARM_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	</class-descriptor>
 
@@ -112,7 +107,6 @@
 		<field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
 		<field-descriptor name="propositionTypeCode" column="DSCRM_TYP_CD" jdbc-type="VARCHAR" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.PropositionParameterBo" 
 	        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" 
@@ -143,7 +137,6 @@
 		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER"  />		
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.ActionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       		<inverse-foreignkey field-ref="actionId" />
@@ -157,7 +150,6 @@
     	<field-descriptor name="actionTypeId" column="ACTN_TYP_ID" jdbc-type="VARCHAR" />
     	<field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     	<reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       		<foreignkey field-ref="id" />
     	</reference-descriptor>
@@ -169,7 +161,6 @@
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR"  />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     	<reference-descriptor name="proposition" class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       		<foreignkey field-ref="propId" />
@@ -188,7 +179,6 @@
     	<field-descriptor name="value" column="ATTR_VAL" jdbc-type="VARCHAR" />
     	<field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     	<reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       		<foreignkey field-ref="id" />
     	</reference-descriptor>
@@ -199,6 +189,7 @@
          <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
          <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
          <field-descriptor name="type" column="TYP" jdbc-type="VARCHAR" />
+         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
   	</class-descriptor>
 
     <class-descriptor class="org.kuali.rice.krms.impl.repository.TermParameterBo" table="KRMS_TERM_PARM_T">
@@ -206,11 +197,13 @@
          <field-descriptor name="termId" column="TERM_ID" jdbc-type="VARCHAR" />
          <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
          <field-descriptor name="value" column="VAL" jdbc-type="VARCHAR" />
+         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     </class-descriptor>
 
     <class-descriptor class="org.kuali.rice.krms.impl.repository.TermBo" table="KRMS_TERM_T">
         <field-descriptor name="id" column="TERM_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TERM_S" />
         <field-descriptor name="specificationId" column="TERM_SPEC_ID" jdbc-type="VARCHAR" />
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <reference-descriptor name="specification" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
             <foreignkey field-ref="id" />
         </reference-descriptor>
@@ -225,7 +218,6 @@
         <field-descriptor name="value" column="ATTR_VAL" jdbc-type="VARCHAR" />
         <field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
         <reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="id" />
         </reference-descriptor>
@@ -235,6 +227,7 @@
          <field-descriptor name="id" column="TERM_RSLVR_PARM_SPEC_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TERM_RSLVR_PARM_SPEC_S"/>
          <field-descriptor name="termResolverId" column="TERM_RSLVR_ID" jdbc-type="VARCHAR" />
          <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     </class-descriptor>
     
     <class-descriptor class="org.kuali.rice.krms.impl.repository.TermResolverBo" table="KRMS_TERM_RSLVR_T">
@@ -244,10 +237,6 @@
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
         <!-- field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" / -->
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-        <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-        <!-- reference-descriptor name="output" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="link" auto-delete="none">
-            <foreignkey field-id-ref="ouputId" />
-        </reference-descriptor -->
         <field-descriptor name="outputId" column="OUTPUT_TERM_SPEC_ID" jdbc-type="VARCHAR"  />
         <reference-descriptor name="output" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
             <foreignkey field-ref="id" />

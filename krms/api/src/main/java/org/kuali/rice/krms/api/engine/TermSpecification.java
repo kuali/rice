@@ -1,21 +1,25 @@
 package org.kuali.rice.krms.api.engine;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
- * Specifies name and type for Terms.  
+ * Specifies name and type for Terms.
  * @author gilesp
  */
-public final class TermSpecification implements Comparable<TermSpecification> {
-	
+public final class TermSpecification implements Comparable<TermSpecification>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private final String name;
 	private final String type;
-	
+
 	/**
-	 * This constructs a TermSpecification, which defines a (blech) type of data that is most likely obtainable 
-	 * through the {@link TermResolutionEngine}.  Or perhaps more accurately, it maps a kind of data item to a 
+	 * This constructs a TermSpecification, which defines a (blech) type of data that is most likely obtainable
+	 * through the {@link TermResolutionEngine}.  Or perhaps more accurately, it maps a kind of data item to a
 	 * specific service (a {@link TermResolver}) to resolve instances of it.
-	 * 
+	 *
 	 * @param name
 	 * @param type
 	 */
@@ -27,7 +31,7 @@ public final class TermSpecification implements Comparable<TermSpecification> {
 		this.name = name;
 		this.type = type;
 	}
-	
+
 	public String getName() { return name; }
 	public String getType() { return type; }
 
@@ -68,10 +72,10 @@ public final class TermSpecification implements Comparable<TermSpecification> {
 			.append(this.type, o.type)
 			.toComparison();
 	}
-	
+
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "(name: " + name + ", type: " + type + ")";
 	}
-	
+
 }

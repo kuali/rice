@@ -35,7 +35,7 @@ public class KrmsTypeBo extends PersistableBusinessObjectBase implements Inactiv
 		bo.name = im.name
 		bo.namespace = im.namespace
 		bo.serviceName = im.serviceName
-		bo.active = im.active
+		bo.active = (im.active == null) ? true : im.active;
 		bo.attributes = new ArrayList<KrmsTypeAttributeBo>()
 		for( attr in im.attributes ){
 			bo.attributes.add(KrmsTypeAttributeBo.from(attr))

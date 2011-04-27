@@ -17,8 +17,6 @@ package org.kuali.rice.krms.api.repository.term;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,8 +36,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition.Builder;
-import org.springframework.util.CollectionUtils;
 
 /**
  * Immutable DTO for Terms.  Construction must be done via the {@link Builder} inner class.

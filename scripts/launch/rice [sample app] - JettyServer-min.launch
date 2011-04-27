@@ -39,6 +39,7 @@
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/impl/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/rice/shareddata/rice-shareddata-web/target/classes&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
 
+    
     <!-- Converted -->
     <!-- 
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-internal-test-tools&quot; type=&quot;1&quot;/&gt;&#10;"/>
@@ -48,12 +49,8 @@
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-api&quot; type=&quot;1&quot;/&gt;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-core-api&quot; type=&quot;1&quot;/&gt;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-core-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;krad-app-framework&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;krad-web-framework&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-development-tools&quot; type=&quot;1&quot;/&gt;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-sampleapp&quot; type=&quot;1&quot;/&gt;&#10;"/>
-    <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-web&quot; type=&quot;1&quot;/&gt;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-kim-impl&quot; type=&quot;1&quot;/&gt;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-standalone&quot; type=&quot;1&quot;/&gt;&#10;"/>
     <listEntry value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;rice-core-framework&quot; type=&quot;1&quot;/&gt;&#10;"/>

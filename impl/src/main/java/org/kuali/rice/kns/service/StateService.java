@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.List;
-
 import org.kuali.rice.kns.bo.State;
+
+import java.util.List;
 
 public interface StateService {
 
@@ -71,4 +71,11 @@ public interface StateService {
      * @return all states in the given country 
      */
     public List<State> findAllStates(String postalCountryCode);
+
+    /*
+    * get all states by the alternative postal country code
+    * @param alternatePostalCountryCode the alternative postal country code
+    * @return all states within the given alternative postal country code
+    */
+    public List<State> findAllStatesByAltCountryCode(String alternatePostalCountryCode);
 }

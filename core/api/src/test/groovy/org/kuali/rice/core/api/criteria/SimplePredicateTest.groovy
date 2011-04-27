@@ -15,20 +15,16 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.junit.Test;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Calendar;
-
-import static org.junit.Assert.*;
+import javax.xml.bind.annotation.XmlAccessType
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlAttribute
+import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlElements
+import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlType
+import org.junit.Test
+import static org.junit.Assert.*
 
 /**
  * A test for the {@link SingleValuedPredicate} abstract base class.
@@ -148,21 +144,21 @@ public class SimplePredicateTest {
      * 
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    @XmlRootElement(name = LikePredicate.Constants.ROOT_ELEMENT_NAME)
+    @XmlRootElement(name = "like")
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "AllExpressionType")
     private static final class AllExpression extends AbstractPredicate implements SingleValuedPredicate {
 
     	private static final long serialVersionUID = -5606375770690671272L;
     	
-		@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
+		@XmlAttribute(name = "propertyPath")
     	private final String propertyPath;
-    	@XmlElements(value = {
-        		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
-        		@XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
-        		@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
-        		@XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true)
-        })
+    	@XmlElements(value = [
+        		@XmlElement(name = "stringValue", type = CriteriaStringValue.class, required = true),
+        		@XmlElement(name = "dateTimeValue", type = CriteriaDateTimeValue.class, required = true),
+        		@XmlElement(name = "decimalValue", type = CriteriaDecimalValue.class, required = true),
+        		@XmlElement(name = "integerValue", type = CriteriaIntegerValue.class, required = true)
+        ])
     	private final CriteriaValue<?> value;
     	
         private AllExpression() {
@@ -193,18 +189,18 @@ public class SimplePredicateTest {
      * 
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    @XmlRootElement(name = LikePredicate.Constants.ROOT_ELEMENT_NAME)
+    @XmlRootElement(name = "like")
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "StringOnlyExpressionType")
     private static final class StringOnlyExpression extends AbstractPredicate implements SingleValuedPredicate {
 
     	private static final long serialVersionUID = 5874946840884110187L;
     	
-		@XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
+		@XmlAttribute(name = "propertyPath")
     	private final String propertyPath;
-    	@XmlElements(value = {
-        		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true)
-        })
+    	@XmlElements(value = [
+        		@XmlElement(name = "stringValue", type = CriteriaStringValue.class, required = true)
+        ])
     	private final CriteriaValue<?> value;
     	
         private StringOnlyExpression() {

@@ -15,21 +15,18 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.Collection;
-import java.util.Date;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.w3c.dom.Element;
+import javax.xml.bind.annotation.XmlAccessType
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlAnyElement
+import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlType
+import org.apache.commons.lang.builder.EqualsBuilder
+import org.apache.commons.lang.builder.HashCodeBuilder
+import org.apache.commons.lang.builder.ToStringBuilder
+import org.kuali.rice.core.api.CoreConstants
+import org.w3c.dom.Element
 
 /**
  * A simple class used in Criteria testing. 
@@ -39,12 +36,12 @@ import org.w3c.dom.Element;
  */
 @XmlRootElement(name = "person")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "PersonType", propOrder = {
+@XmlType(name = "PersonType", propOrder = [
         "name",
         "displayName",
         "birthDate",
         CoreConstants.CommonElements.FUTURE_ELEMENTS
-})
+])
 class Person {
 
 	@XmlElement(name = "name", required = true)
@@ -87,12 +84,12 @@ class Person {
 	
 	@Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, new String[] { "_futureElements" });
+        return HashCodeBuilder.reflectionHashCode(this, [ "_futureElements" ]);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, new String[] { "_futureElements" });
+        return EqualsBuilder.reflectionEquals(obj, this, [ "_futureElements" ]);
     }
 
     @Override
@@ -102,11 +99,11 @@ class Person {
 	
 	@XmlRootElement(name = "name")
 	@XmlAccessorType(XmlAccessType.NONE)
-	@XmlType(name = "NameType", propOrder = {
+	@XmlType(name = "NameType", propOrder = [
 	        "first",
 	        "last",
 	        CoreConstants.CommonElements.FUTURE_ELEMENTS
-	})
+	])
 	static final class Name {
 		
 		@XmlElement(name = "first", required = true)
@@ -140,12 +137,12 @@ class Person {
 		
 		@Override
 	    public int hashCode() {
-	        return HashCodeBuilder.reflectionHashCode(this, new String[] { "_futureElements" });
+	        return HashCodeBuilder.reflectionHashCode(this, [ "_futureElements" ]);
 	    }
 
 	    @Override
 	    public boolean equals(Object obj) {
-	        return EqualsBuilder.reflectionEquals(obj, this, new String[] { "_futureElements" });
+	        return EqualsBuilder.reflectionEquals(obj, this, [ "_futureElements" ]);
 	    }
 
 	    @Override

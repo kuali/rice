@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An abstract implementation of a {@link CompositePredicate}.  This class defines all of the JAXB
@@ -53,7 +53,7 @@ abstract class AbstractCompositePredicate extends AbstractPredicate implements C
             @XmlElement(name = NullPredicate.Constants.ROOT_ELEMENT_NAME, type = NullPredicate.class, required = true),
             @XmlElement(name = OrPredicate.Constants.ROOT_ELEMENT_NAME, type = OrPredicate.class, required = true)
     })
-    private final List<Predicate> predicates;
+    private final Set<Predicate> predicates;
 
 	/**
 	 * This default constructor exists only to be invoked by sub-classes
@@ -65,28 +65,28 @@ abstract class AbstractCompositePredicate extends AbstractPredicate implements C
 
     /**
      * When invoked by a subclass, this constructor will set the predicates
-     * to the given list. If the list is null then it will be translated
-     * internally to an empty list.
+     * to the given set. If the set is null then it will be translated
+     * internally to an empty set.
      * 
      * @param predicates the list of predicates to set
      */
-    AbstractCompositePredicate(final List<Predicate> predicates) {
+    AbstractCompositePredicate(final Set<Predicate> predicates) {
         if (predicates == null) {
-            this.predicates = Collections.emptyList();
+            this.predicates = Collections.emptySet();
         } else {
-            final List<Predicate> temp = new ArrayList<Predicate>();
+            final Set<Predicate> temp = new HashSet<Predicate>();
             for (Predicate predicate: predicates) {
                 if (predicate != null) {
                     temp.add(predicate);
                 }
             }
-            this.predicates = Collections.unmodifiableList(temp);
+            this.predicates = Collections.unmodifiableSet(temp);
         }
     }
 
     @Override
-    public List<Predicate> getPredicates() {
-        return Collections.unmodifiableList(predicates);
+    public Set<Predicate> getPredicates() {
+        return Collections.unmodifiableSet(predicates);
     }
 
     /**

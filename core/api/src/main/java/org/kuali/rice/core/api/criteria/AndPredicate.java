@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 /**
  * An immutable composite predicate which implements "and-ing" of multiple
@@ -62,7 +62,7 @@ public final class AndPredicate extends AbstractCompositePredicate {
 	 * 
 	 * @param predicates the List of predicates to set on the And predicate
 	 */
-	AndPredicate(List<Predicate> predicates) {
+	AndPredicate(Set<Predicate> predicates) {
         //don't worry about defensive copy of list here - super class takes care of it.
 	    super(predicates);
 	}

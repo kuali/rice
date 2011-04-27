@@ -15,23 +15,19 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.w3c.dom.Element;
+import javax.xml.bind.annotation.XmlAccessType
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlAnyElement
+import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlElementWrapper
+import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlType
+import org.apache.commons.lang.builder.EqualsBuilder
+import org.apache.commons.lang.builder.HashCodeBuilder
+import org.apache.commons.lang.builder.ToStringBuilder
+import org.kuali.rice.core.api.CoreConstants
+import org.w3c.dom.Element
 
 /**
  * TODO 
@@ -41,11 +37,11 @@ import org.w3c.dom.Element;
  */
 @XmlRootElement(name = PersonQueryResults.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = PersonQueryResults.Constants.TYPE_NAME, propOrder = {
+@XmlType(name = PersonQueryResults.Constants.TYPE_NAME, propOrder = [
 		PersonQueryResults.Elements.RESULTS,
 		PersonQueryResults.Elements.TOTAL_ROW_COUNT,
 		PersonQueryResults.Elements.MORE_RESULTS_AVAILALBE,
-		CoreConstants.CommonElements.FUTURE_ELEMENTS })
+		CoreConstants.CommonElements.FUTURE_ELEMENTS ])
 public class PersonQueryResults implements CountAwareQueryResults<Person> {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)

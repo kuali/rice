@@ -1,6 +1,9 @@
 package org.kuali.rice.core.api.criteria;
 
-import java.util.Arrays;
+import org.apache.commons.collections.CollectionUtils;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This is a factory class to construct {@link Predicate Predicates}.
@@ -22,7 +25,7 @@ import java.util.Arrays;
  * to create a compound predicate where the property
  * foo.bar equals "baz" and foo.id equals 1 do the following:
  * <code>
- *     Predicate coumpound = and(equals("foo.bar", "baz"), equals("foo.id", 1))
+ *     Predicate compound = and(equals("foo.bar", "baz"), equals("foo.id", 1))
  * </code>
  *
  * to create a deeply nested predicate where lots of
@@ -194,7 +197,7 @@ public final class PredicateFactory {
 	 * restriction that all items in the list of values must be of the same type.
 	 *
 	 * @param propertyPath the path to the property which should be evaluated
-	 * @param value the value to compare with the property value located at the
+	 * @param values the values to compare with the property value located at the
 	 * propertyPath
 	 *
 	 * @return a NotInPredicate
@@ -359,6 +362,12 @@ public final class PredicateFactory {
 	 * internal predicates and, if all of them evaluate to true, then
 	 * the and predicate itself should evaluate to true.  The implementation
      * of an and predicate may short-circuit.
+     *
+     * <p>
+     *     This factory method does automatic reductions such that
+     *     this method may return a different predicate than expected.
+     *     Do not assume the concrete return type of this method.
+     * </p>
 	 *
      * @param predicates to "and" together
      *
@@ -367,7 +376,13 @@ public final class PredicateFactory {
 	 * @see AndPredicate for more information
 	 */
 	public static Predicate and(Predicate... predicates) {
-		return new AndPredicate(Arrays.asList(predicates));
+        //reduce single item compound
+        if (predicates != null && predicates.length == 1 && predicates[0] != null) {
+            return predicates[0];
+        }
+        final Set<Predicate> predicateSet = new HashSet<Predicate>();
+        CollectionUtils.addAll(predicateSet, predicates);
+        return new AndPredicate(predicateSet);
 	}
 
 	/**
@@ -381,6 +396,11 @@ public final class PredicateFactory {
 	 * evaluate to false.   The implementation of an or predicate may
      * short-circuit.
 	 *
+     * <p>
+     *     This factory method does automatic reductions such that
+     *     this method may return a different predicate than expected.
+     *     Do not assume the concrete return type of this method.
+     * </p>
      * @param predicates to "or" together
      *
 	 * @return an OrPredicate
@@ -388,6 +408,13 @@ public final class PredicateFactory {
 	 * @see OrPredicate for more information
 	 */
 	public static Predicate or(Predicate... predicates) {
-		return new OrPredicate(Arrays.asList(predicates));
+        //reduce single item compound
+        if (predicates != null && predicates.length == 1 && predicates[0] != null) {
+            return predicates[0];
+        }
+
+        final Set<Predicate> predicateSet = new HashSet<Predicate>();
+        CollectionUtils.addAll(predicateSet, predicates);
+		return new OrPredicate(predicateSet);
 	}
 }

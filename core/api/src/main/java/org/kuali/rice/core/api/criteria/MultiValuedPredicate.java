@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -26,12 +26,12 @@ import java.util.List;
 public interface MultiValuedPredicate extends PropertyPathPredicate {
 	
 	/**
-	 * Gets an immutable list of criteria values for this predicate.  All values should
-	 * be of the same parameterized CriteriaValue type.  The returned list can
+	 * Gets an immutable set of criteria values for this predicate.  All values should
+	 * be of the same parameterized CriteriaValue type.  The returned set can
 	 * be empty but should never be null.
 	 * 
-	 * @return the list of criteria values for this predicate
+	 * @return the set of criteria values for this predicate
 	 */
-	List<CriteriaValue<?>> getValues();
+	Set<CriteriaValue<?>> getValues();
     
 }

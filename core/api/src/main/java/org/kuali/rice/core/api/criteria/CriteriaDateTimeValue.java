@@ -17,6 +17,7 @@ package org.kuali.rice.core.api.criteria;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.util.EqualsUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -72,20 +73,14 @@ public final class CriteriaDateTimeValue implements CriteriaValue<Calendar> {
     
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        //FIXME: add hashcode for calendar
+        return HashCodeBuilder.reflectionHashCode(this, new String[] { "value"});
     }
 
-    /**
-     * Two CriteriaDateTimeValues are equal if they have the same epoch value (Calendar.getTimeInMillis())
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
-    	if (obj instanceof CriteriaDateTimeValue) {
-    		return value.getTimeInMillis() == ((CriteriaDateTimeValue)obj).value.getTimeInMillis();
-    	}
-        return false;
+        //calendars equals use state that is not marshalled/unmarshalled by jaxb
+        return EqualsUtils.areObjectsEqualUsingCompareTo(this, obj, "value");
     }
 
     @Override

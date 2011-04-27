@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-import org.kuali.rice.core.api.criteria.Person.Name;
-import org.kuali.rice.core.test.JAXBAssert;
+import org.junit.Test
+import org.kuali.rice.core.api.criteria.Person.Name
+import org.kuali.rice.core.test.JAXBAssert
+import static org.junit.Assert.*
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 

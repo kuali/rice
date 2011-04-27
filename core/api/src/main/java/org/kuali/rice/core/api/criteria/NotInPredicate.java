@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An immutable predicate which represents a "not in" statement which is
@@ -59,7 +59,7 @@ public final class NotInPredicate extends AbstractPredicate implements MultiValu
             @XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true),
             @XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true)
 	})
-	private final List<? extends CriteriaValue<?>> values;
+	private final Set<? extends CriteriaValue<?>> values;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -84,7 +84,7 @@ public final class NotInPredicate extends AbstractPredicate implements MultiValu
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 * @throws IllegalArgumentException if the list of values is null, empty, or contains {@link CriteriaValue} of different types
 	 */
-    NotInPredicate(String propertyPath, List<? extends CriteriaValue<?>> values) {
+    NotInPredicate(String propertyPath, Set<? extends CriteriaValue<?>> values) {
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
@@ -92,9 +92,15 @@ public final class NotInPredicate extends AbstractPredicate implements MultiValu
 		this.propertyPath = propertyPath;
 
         if (values == null) {
-            this.values = new ArrayList<CriteriaValue<?>>();
+            this.values = Collections.emptySet();
         } else {
-            this.values = new ArrayList<CriteriaValue<?>>(values);
+            final Set<CriteriaValue<?>> temp = new HashSet<CriteriaValue<?>>();
+            for (CriteriaValue<?> value: values) {
+                if (value != null) {
+                    temp.add(value);
+                }
+            }
+            this.values = Collections.unmodifiableSet(temp);
         }
     }
 
@@ -104,8 +110,8 @@ public final class NotInPredicate extends AbstractPredicate implements MultiValu
     }
     
     @Override
-    public List<CriteriaValue<?>> getValues() {
-    	return Collections.unmodifiableList(values);
+    public Set<CriteriaValue<?>> getValues() {
+    	return Collections.unmodifiableSet(values);
     }
         
 	/**

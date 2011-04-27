@@ -23,11 +23,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -170,15 +170,17 @@ final class CriteriaSupportUtils {
 		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
 	}
 	
-	static List<CriteriaValue<?>> determineCriteriaValueList(Object[] values) {
+	static Set<CriteriaValue<?>> determineCriteriaValueList(Object[] values) {
 		if (values == null) {
 			return null;
 		} else if (values.length == 0) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
-		List<CriteriaValue<?>> criteriaValues = new ArrayList<CriteriaValue<?>>();
+		Set<CriteriaValue<?>> criteriaValues = new HashSet<CriteriaValue<?>>();
 		for (Object value : values) {
-			criteriaValues.add(determineCriteriaValue(value));
+			if (value != null) {
+                criteriaValues.add(determineCriteriaValue(value));
+            }
 		}
 		return criteriaValues;
 	}
@@ -193,7 +195,7 @@ final class CriteriaSupportUtils {
      *   <li>The list of values must all be of the same parameterized {@link CriteriaValue} type.</li>
      * </ol>
      */
-    static void validateValuesForMultiValuedPredicate(List<? extends CriteriaValue<?>> values) {
+    static void validateValuesForMultiValuedPredicate(Set<? extends CriteriaValue<?>> values) {
     	if (values == null) {
     		throw new IllegalArgumentException("Criteria values cannot be null.");
     	} else if (values.isEmpty()) {

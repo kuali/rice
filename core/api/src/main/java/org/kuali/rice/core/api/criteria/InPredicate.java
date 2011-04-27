@@ -27,20 +27,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An immutable predicate which represents an "in" statement which is
  * evaluated against a list of values.
- * 
- * <p>Constructed as part of a {@link Criteria} when built using a
- * {@link CriteriaBuilder}.
- * 
- * @see Criteria
- * @see CriteriaBuilder
+ *
+ * @see PredicateFactory for a convenient way to construct this class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -63,7 +59,7 @@ public final class InPredicate extends AbstractPredicate implements MultiValuedP
             @XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true),
             @XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true)
 	})
-	private final List<? extends CriteriaValue<?>> values;
+	private final Set<? extends CriteriaValue<?>> values;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -88,7 +84,7 @@ public final class InPredicate extends AbstractPredicate implements MultiValuedP
 	 * @throws IllegalArgumentException if the propertyPath is null or blank
 	 * @throws IllegalArgumentException if the list of values is null, empty, or contains {@link CriteriaValue} of different types
 	 */
-    InPredicate(String propertyPath, List<? extends CriteriaValue<?>> values) {
+    InPredicate(String propertyPath, Set<? extends CriteriaValue<?>> values) {
     	if (StringUtils.isBlank(propertyPath)) {
 			throw new IllegalArgumentException("Property path cannot be null or blank.");
 		}
@@ -96,15 +92,15 @@ public final class InPredicate extends AbstractPredicate implements MultiValuedP
 		this.propertyPath = propertyPath;
 
         if (values == null) {
-            this.values = Collections.emptyList();
+            this.values = Collections.emptySet();
         } else {
-            final List<CriteriaValue<?>> temp = new ArrayList<CriteriaValue<?>>();
+            final Set<CriteriaValue<?>> temp = new HashSet<CriteriaValue<?>>();
             for (CriteriaValue<?> value: values) {
                 if (value != null) {
                     temp.add(value);
                 }
             }
-            this.values = Collections.unmodifiableList(temp);
+            this.values = Collections.unmodifiableSet(temp);
         }
     }
     
@@ -114,8 +110,8 @@ public final class InPredicate extends AbstractPredicate implements MultiValuedP
     }
     
     @Override
-    public List<CriteriaValue<?>> getValues() {
-    	return Collections.unmodifiableList(values);
+    public Set<CriteriaValue<?>> getValues() {
+    	return Collections.unmodifiableSet(values);
     }
         
 	/**

@@ -15,15 +15,10 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.junit.Test;
-import org.kuali.rice.core.test.JAXBAssert;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import org.junit.Test
+import org.kuali.rice.core.test.JAXBAssert
+import static org.junit.Assert.*
 
 /**
  * Tests the {@link OrPredicate} class.
@@ -35,7 +30,7 @@ public class OrPredicateTest {
 	private static final String XML = "<or xmlns=\"http://rice.kuali.org/core/v2_0\"><equal propertyPath=\"property.path\"><stringValue>abcdefg</stringValue></equal><greaterThan propertyPath=\"property.path2\"><decimalValue>100</decimalValue></greaterThan><and><greaterThan propertyPath=\"property.path3\"><integerValue>10000</integerValue></greaterThan><like propertyPath=\"property.path4\"><stringValue>wildcard*</stringValue></like></and></or>"; 
 		
 	/**
-	 * Test method for {@link OrPredicate#OrPredicate(java.util.List)}.
+	 * Test method for {@link OrPredicate#OrPredicate(java.util.Set)}.
 	 */
 	@Test
 	public void testOrExpression() {
@@ -49,7 +44,7 @@ public class OrPredicateTest {
 	}
 
 	/**
-	 * Test method for {@link AbstractCompositePredicate#getExpressions()}.
+	 * Test method for {@link AbstractCompositePredicate#getPredicates()}.
 	 */
 	@Test
 	public void testGetExpressions() {
@@ -73,11 +68,11 @@ public class OrPredicateTest {
 	}
 	
 	private OrPredicate create() {
-		List<Predicate> orExpressions = new ArrayList<Predicate>();
+		Set<Predicate> orExpressions = new HashSet<Predicate>();
 		orExpressions.add(new EqualPredicate("property.path", new CriteriaStringValue("abcdefg")));
 		orExpressions.add(new GreaterThanPredicate("property.path2", new CriteriaDecimalValue(new BigDecimal(100))));
 		
-		List<Predicate> andExpressions = new ArrayList<Predicate>();
+		Set<Predicate> andExpressions = new HashSet<Predicate>();
 		andExpressions.add(new GreaterThanPredicate("property.path3", new CriteriaIntegerValue(BigInteger.valueOf(10000))));
 		andExpressions.add(new LikePredicate("property.path4", new CriteriaStringValue("wildcard*")));
 		

@@ -15,16 +15,11 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.junit.Test;
-import org.kuali.rice.core.test.JAXBAssert;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.TimeZone;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Test
+import org.kuali.rice.core.test.JAXBAssert
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.fail
 
 /**
  * A test for the {@link GreaterThanPredicate} class.

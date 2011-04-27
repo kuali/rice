@@ -15,16 +15,10 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.junit.Test;
-import org.kuali.rice.core.test.JAXBAssert;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.TimeZone;
-
-import static org.junit.Assert.*;
+import org.junit.Test
+import org.kuali.rice.core.test.JAXBAssert
+import static org.junit.Assert.*
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -32,23 +26,45 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class NotInPredicateTest {
+public class InPredicateTest {
 
-	private static final String STRING_XML = "<notIn propertyPath=\"stringValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>abcdefg</stringValue><stringValue>gfedcabc</stringValue><stringValue>should have failed by now!</stringValue></notIn>";
-	private static final String DECIMAL_XML = "<notIn propertyPath=\"decimalValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>1.0</decimalValue><decimalValue>1.1</decimalValue><decimalValue>2.5</decimalValue></notIn>";
-	private static final String INTEGER_XML = "<notIn propertyPath=\"integerValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>1</integerValue><integerValue>2</integerValue><integerValue>3</integerValue><integerValue>10</integerValue><integerValue>4</integerValue></notIn>";
-	private static final String DATE_TIME_XML = "<notIn propertyPath=\"dateTimeValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></notIn>";
+	private static final String STRING_XML =
+        """<in propertyPath="stringValues.path" xmlns="http://rice.kuali.org/core/v2_0">
+            <stringValue>abcdefg</stringValue>
+            <stringValue>gfedcabc</stringValue>
+            <stringValue>should have failed by now!</stringValue>
+          </in>""";
+	private static final String DECIMAL_XML =
+        """<in propertyPath="decimalValues.path" xmlns="http://rice.kuali.org/core/v2_0">
+            <decimalValue>1.0</decimalValue>
+            <decimalValue>1.1</decimalValue>
+            <decimalValue>2.5</decimalValue>
+          </in>""";
+	private static final String INTEGER_XML =
+        """<in propertyPath="integerValues.path" xmlns="http://rice.kuali.org/core/v2_0">
+            <integerValue>1</integerValue>
+            <integerValue>2</integerValue>
+            <integerValue>3</integerValue>
+            <integerValue>10</integerValue>
+            <integerValue>4</integerValue>
+          </in>""";
+	private static final String DATE_TIME_XML =
+        """<in propertyPath="dateTimeValues.path" xmlns="http://rice.kuali.org/core/v2_0">
+            <dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue>
+           </in>""";
 	
 	/**
-	 * Test method for {@link NotInPredicate#NotInPredicate(java.lang.String, java.util.List)}.
+	 * Test method for {@link InPredicate#InPredicate(java.lang.String, java.util.Set)}.
 	 */
 	@Test
 	public void testInExpression() {
 		
 		// test failure case, null propertyPath, but a valid list
 		try {
+			Set<CriteriaStringValue> set = new HashSet<CriteriaStringValue>();
 			CriteriaStringValue value = new CriteriaStringValue("value1");
-			new NotInPredicate(null, Collections.singletonList(value));
+            set.add(value);
+			new InPredicate(null, set);
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -56,7 +72,7 @@ public class NotInPredicateTest {
 		
 		// test a null list
 		try {
-			new NotInPredicate("property.path", null);
+			new InPredicate("property.path", null);
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -64,7 +80,7 @@ public class NotInPredicateTest {
 		
 		// test an empty list
 		try {
-			new NotInPredicate("property.path", new ArrayList<CriteriaValue<?>>());
+			new InPredicate("property.path", new HashSet<CriteriaValue<?>>());
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
@@ -72,19 +88,19 @@ public class NotInPredicateTest {
 		
 		// test a list with different CriteriaValue types in it
 		try {
-			List<CriteriaValue<?>> valueList = new ArrayList<CriteriaValue<?>>();
+			Set<CriteriaValue<?>> valueList = new HashSet<CriteriaValue<?>>();
 			valueList.add(new CriteriaStringValue("abcdefg"));
 			valueList.add(new CriteriaStringValue("gfedcabc"));
 			valueList.add(new CriteriaIntegerValue(100));
 			valueList.add(new CriteriaStringValue("should have failed by now!"));
-			new NotInPredicate("property.path", valueList);
+			new InPredicate("property.path", valueList);
 			fail("IllegalArgumentException should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			// expected exception
 		}
 		
-		// now create a valid NotInExpression
-		NotInPredicate expression = createWithStringCriteria();
+		// now create a valid InExpression
+		InPredicate expression = createWithStringCriteria();
 		assertNotNull(expression);
 		expression = createWithDecimalCriteria();
 		assertNotNull(expression);
@@ -96,11 +112,11 @@ public class NotInPredicateTest {
 	}
 
 	/**
-	 * Test method for {@link NotInPredicate#getPropertyPath()}.
+	 * Test method for {@link InPredicate#getPropertyPath()}.
 	 */
 	@Test
 	public void testGetPropertyPath() {
-		NotInPredicate expression = createWithStringCriteria();
+		InPredicate expression = createWithStringCriteria();
 		assertEquals("stringValues.path", expression.getPropertyPath());
 		expression = createWithDecimalCriteria();
 		assertEquals("decimalValues.path", expression.getPropertyPath());
@@ -111,11 +127,11 @@ public class NotInPredicateTest {
 	}
 
 	/**
-	 * Test method for {@link NotInPredicate#getValues()}.
+	 * Test method for {@link InPredicate#getValues()}.
 	 */
 	@Test
 	public void testGetValues() {
-		NotInPredicate expression = createWithStringCriteria();
+		InPredicate expression = createWithStringCriteria();
 		assertEquals(3, expression.getValues().size());
 		for (CriteriaValue<?> value : expression.getValues()) {
 			assertTrue("Expression should be CriteriaStringValue", value instanceof CriteriaStringValue);
@@ -146,47 +162,48 @@ public class NotInPredicateTest {
 	@Test
 	public void testJAXB() {
 		
-		NotInPredicate expression = createWithStringCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, STRING_XML, NotInPredicate.class);
+		InPredicate expression = createWithStringCriteria();
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, STRING_XML, InPredicate.class);
 		
 		expression = createWithDecimalCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DECIMAL_XML, NotInPredicate.class);
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DECIMAL_XML, InPredicate.class);
 		
 		expression = createWithIntegerCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, INTEGER_XML, NotInPredicate.class);
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, INTEGER_XML, InPredicate.class);
 		
 		expression = createWithDateTimeCriteria();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DATE_TIME_XML, NotInPredicate.class);
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DATE_TIME_XML, InPredicate.class);
 	}
 	
-	private static NotInPredicate createWithStringCriteria() {
-		List<CriteriaStringValue> valueList = new ArrayList<CriteriaStringValue>(); 
+	private static InPredicate createWithStringCriteria() {
+		Set<CriteriaStringValue> valueList = new HashSet<CriteriaStringValue>();
 		valueList.add(new CriteriaStringValue("abcdefg"));
 		valueList.add(new CriteriaStringValue("gfedcabc"));
 		valueList.add(new CriteriaStringValue("should have failed by now!"));
-		return new NotInPredicate("stringValues.path", valueList);
+		return new InPredicate("stringValues.path", valueList);
 	}
 	
-	private static NotInPredicate createWithDecimalCriteria() {
-		List<CriteriaDecimalValue> valueList = new ArrayList<CriteriaDecimalValue>(); 
+	private static InPredicate createWithDecimalCriteria() {
+		Set<CriteriaDecimalValue> valueList = new HashSet<CriteriaDecimalValue>();
 		valueList.add(new CriteriaDecimalValue(1.0));
 		valueList.add(new CriteriaDecimalValue(1.1));
 		valueList.add(new CriteriaDecimalValue(2.5));
-		return new NotInPredicate("decimalValues.path", valueList);
+		return new InPredicate("decimalValues.path", valueList);
 	}
 	
-	private static NotInPredicate createWithIntegerCriteria() {
-		List<CriteriaIntegerValue> valueList = new ArrayList<CriteriaIntegerValue>(); 
+	private static InPredicate createWithIntegerCriteria() {
+		Set<CriteriaIntegerValue> valueList = new HashSet<CriteriaIntegerValue>();
 		valueList.add(new CriteriaIntegerValue(1));
 		valueList.add(new CriteriaIntegerValue(2));
 		valueList.add(new CriteriaIntegerValue(3));
 		valueList.add(new CriteriaIntegerValue(10));
 		valueList.add(new CriteriaIntegerValue(4));
-		return new NotInPredicate("integerValues.path", valueList);
+		return new InPredicate("integerValues.path", valueList);
 	}
 	
-	private static NotInPredicate createWithDateTimeCriteria() {
+	private static InPredicate createWithDateTimeCriteria() {
 		// set the date and time to January 15, 2100 at 5:30:15.500 am in the GMT timezone
+        //<dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue>
 		Calendar dateTime = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		dateTime.set(Calendar.HOUR_OF_DAY, 5);
 		dateTime.set(Calendar.MINUTE, 30);
@@ -195,9 +212,9 @@ public class NotInPredicateTest {
 		dateTime.set(Calendar.MONTH, 0);
 		dateTime.set(Calendar.DATE, 15);
 		dateTime.set(Calendar.YEAR, 2011);
-		List<CriteriaDateTimeValue> valueList = new ArrayList<CriteriaDateTimeValue>(); 
+		Set<CriteriaDateTimeValue> valueList = new HashSet<CriteriaDateTimeValue>();
 		valueList.add(new CriteriaDateTimeValue(dateTime));
-		return new NotInPredicate("dateTimeValues.path", valueList);
+		return new InPredicate("dateTimeValues.path", valueList);
 	}
 
 }

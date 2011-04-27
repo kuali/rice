@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * An predicate that contains other predicates.
@@ -25,12 +25,12 @@ import java.util.List;
 public interface CompositePredicate extends Predicate {
 
 	/**
-	 * Returns an unmodifiable list of predicates contained within
-	 * this composite predicate.  This list could be empty but should
+	 * Returns an unmodifiable set of predicates contained within
+	 * this composite predicate.  This set could be empty but should
 	 * never be null.
 	 * 
-	 * @return the list of predicates contained within this composite
+	 * @return the set of predicates contained within this composite
 	 */
-	List<Predicate> getPredicates();
+	Set<Predicate> getPredicates();
 	
 }

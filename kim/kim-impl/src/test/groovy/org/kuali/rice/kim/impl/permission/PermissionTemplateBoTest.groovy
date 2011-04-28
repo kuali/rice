@@ -21,7 +21,7 @@ import org.junit.Test
 import org.kuali.rice.kim.api.permission.KimPermissionTemplate
 import org.kuali.rice.kim.api.type.KimType
 
-class PermissionTemplateTest {
+class PermissionTemplateBoTest {
 	
 	private static final String ID = "50"
 	private static final String NAMESPACE_CODE = "KUALI"

@@ -23,6 +23,11 @@ import org.kuali.rice.kim.api.attribute.KimAttributeDataContract;
 
 public interface PermissionAttributeContract extends KimAttributeDataContract, Versioned, GloballyUnique {
 	
+    /**
+     * The Permission ID referenced by the Permission Attribute.
+     * 
+     * @return permissionId
+     */
     String getPermissionId();
     
 }

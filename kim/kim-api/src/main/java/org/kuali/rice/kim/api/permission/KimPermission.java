@@ -111,8 +111,7 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
         this.namespaceCode = builder.getNamespaceCode();
         this.name = builder.getName();
         this.description = builder.getDescription();
-        this.templateId = builder.getTemplateId();
-        
+        this.templateId = builder.getTemplateId();        
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();

@@ -44,13 +44,31 @@ class ContextDefinitionTest {
 	private static final String AGENDA_ITEM_ID_1 = "AgendaItem1"
 
 	private static final String SMALL_CONTEXT = """
-<context xmlns:="http://rice.kuali.org/krms">
+<ns2:context xmlns:ns2="http://rice.kuali.org/krms/repository/v2_0">
+    <ns2:id>CONTEXTID001</ns2:id>
+    <ns2:namespace>Context1</ns2:namespace>
+    <ns2:name>KRMS_TEST</ns2:name>
+    <ns2:typeId>1234XYZ</ns2:typeId>
+    <ns2:agendas/>
+</ns2:context> """
+
+	private static final String SMALL_CONTEXT_2 = """
+<blah:context xmlns:blah="http://rice.kuali.org/krms/repository/v2_0">
+    <blah:id>CONTEXTID001</blah:id>
+    <blah:namespace>Context1</blah:namespace>
+    <blah:name>KRMS_TEST</blah:name>
+    <blah:typeId>1234XYZ</blah:typeId>
+    <blah:agendas/>
+</blah:context> """
+
+	private static final String SMALL_CONTEXT_NO_NAMESPACE = """
+<context xmlns:="http://rice.kuali.org/krms/repository/v2_0">
     <id>CONTEXTID001</id>
     <namespace>Context1</namespace>
     <name>KRMS_TEST</name>
     <typeId>1234XYZ</typeId>
     <agendas/>
-</context>	"""
+</context> """
 
 	private static final String FULL_CONTEXT = """
 		<context xmlns="http://rice.kuali.org/krms">
@@ -144,22 +162,27 @@ class ContextDefinitionTest {
 	
 	@Test
 	public void testXmlMarshaling_small_ContextDefinition() {
-//		ContextDefinition.Builder builder = ContextDefinition.Builder.create(CONTEXT_NAME, NAMESPACE)
-//		builder.setId(CONTEXT_ID_1)
-//		builder.setTypeId(TYPE_ID)
-//		ContextDefinition myContext = builder.build()
-//
-//		JAXBContext jc = JAXBContext.newInstance(ContextDefinition.class)
-//		Marshaller marshaller = jc.createMarshaller()
-//		StringWriter sw = new StringWriter()
-//		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-//		marshaller.marshal(myContext, sw)
-//		String xml = sw.toString()
-//		print xml
-//		
-//		Unmarshaller unmarshaller = jc.createUnmarshaller();
-//		Object actual = unmarshaller.unmarshal(new StringReader(xml))
-//		Object expected = unmarshaller.unmarshal(new StringReader(SMALL_CONTEXT))
+		ContextDefinition.Builder builder = ContextDefinition.Builder.create(CONTEXT_NAME, NAMESPACE)
+		builder.setId(CONTEXT_ID_1)
+		builder.setTypeId(TYPE_ID)
+		ContextDefinition myContext = builder.build()
+
+		JAXBContext jc = JAXBContext.newInstance(ContextDefinition.class, AgendaDefinition.class)
+		Marshaller marshaller = jc.createMarshaller()
+		StringWriter sw = new StringWriter()
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
+//		marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", new CustomNamespacePrefixMapper());
+		marshaller.marshal(myContext, sw)
+		String xml = sw.toString()
+		print xml
+		
+		Unmarshaller unmarshaller = jc.createUnmarshaller();
+		Object actual = unmarshaller.unmarshal(new StringReader(xml))
+		Object expected = unmarshaller.unmarshal(new StringReader(SMALL_CONTEXT_2))
+		Assert.assertEquals(expected, actual)
+
+		// TODO: unmarshall without namespaces
+//		expected = unmarshaller.unmarshal(new StringReader(SMALL_CONTEXT_NO_NAMESPACE))
 //		Assert.assertEquals(expected, actual)
 	}
 

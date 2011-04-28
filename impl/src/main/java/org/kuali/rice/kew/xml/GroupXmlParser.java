@@ -31,6 +31,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.util.KimConstants;
@@ -41,6 +42,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -121,15 +123,35 @@ public class GroupXmlParser {
             		LOG.info("Group named '" + group.getName() + "' found, creating a new version");
             	}
                 try {
-                    Group.Builder builder = Group.Builder.create(group);
-                    builder.setId(foundGroup.getId());
+                    Group.Builder builder = Group.Builder.create(foundGroup);
+                    builder.setActive(group.isActive());
+                    builder.setDescription(group.getDescription());
+                    builder.setKimTypeId(group.getKimTypeId());
+
+                    //builder.setVersionNumber(foundGroup.getVersionNumber());
                     group = builder.build();
                     //identityManagementService.updateGroup(foundGroup.getId(), group);
                     //todo Use updateGroup method
                     GroupBo groupBo = (GroupBo)KNSServiceLocator.getBusinessObjectService().save(GroupBo.from(group));
 
                     //delete existing group members and replace with new
-                    identityManagementService.removeAllGroupMembers(foundGroup.getId());
+
+                    //identityManagementService.removeAllGroupMembers(foundGroup.getId());
+
+                    //HACK!!!!!!!!
+                    Collection<GroupMemberBo> toDeactivate = groupBo.getMembers();
+                    java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
+
+                    // Set principals as inactive
+                    if (toDeactivate != null) {
+                        for (GroupMemberBo aToDeactivate : toDeactivate) {
+                            aToDeactivate.setActiveToDate(today);
+                        }
+
+                        // Save
+                        KNSServiceLocator.getBusinessObjectService().save(new ArrayList<GroupMemberBo>(toDeactivate));
+                    }
+                    //END HACK!!!!!!!!
 
                     String key = group.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName().trim();
                     addGroupMembers(group, key);

@@ -97,6 +97,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+      		<groupId>${project.groupId}</groupId>
+            <artifactId>rice-edl-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
 	      	<groupId>${project.groupId}</groupId>
 	      	<artifactId>rice-internal-test-tools</artifactId>
 	      	<version>${project.version}</version>

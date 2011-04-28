@@ -16,7 +16,6 @@
 package org.kuali.rice.core.api.criteria;
 
 
-import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAnyElement
 import javax.xml.bind.annotation.XmlElement
@@ -36,12 +35,12 @@ import org.w3c.dom.Element
  *
  */
 @XmlRootElement(name = PersonQueryResults.Constants.ROOT_ELEMENT_NAME)
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
 @XmlType(name = PersonQueryResults.Constants.TYPE_NAME, propOrder = [
 		PersonQueryResults.Elements.RESULTS,
 		PersonQueryResults.Elements.TOTAL_ROW_COUNT,
 		PersonQueryResults.Elements.MORE_RESULTS_AVAILALBE,
-		CoreConstants.CommonElements.FUTURE_ELEMENTS ])
+		"_futureElements" ])
 public class PersonQueryResults implements CountAwareQueryResults<Person> {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)

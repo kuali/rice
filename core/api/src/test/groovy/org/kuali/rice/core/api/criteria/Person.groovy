@@ -16,7 +16,6 @@
 package org.kuali.rice.core.api.criteria;
 
 
-import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAnyElement
 import javax.xml.bind.annotation.XmlElement
@@ -25,7 +24,6 @@ import javax.xml.bind.annotation.XmlType
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 import org.apache.commons.lang.builder.ToStringBuilder
-import org.kuali.rice.core.api.CoreConstants
 import org.w3c.dom.Element
 
 /**
@@ -35,12 +33,12 @@ import org.w3c.dom.Element
  *
  */
 @XmlRootElement(name = "person")
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
 @XmlType(name = "PersonType", propOrder = [
         "name",
         "displayName",
         "birthDate",
-        CoreConstants.CommonElements.FUTURE_ELEMENTS
+        "_futureElements"
 ])
 class Person {
 
@@ -98,11 +96,11 @@ class Person {
     }
 	
 	@XmlRootElement(name = "name")
-	@XmlAccessorType(XmlAccessType.NONE)
+	@XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
 	@XmlType(name = "NameType", propOrder = [
 	        "first",
 	        "last",
-	        CoreConstants.CommonElements.FUTURE_ELEMENTS
+	        "_futureElements"
 	])
 	static final class Name {
 		

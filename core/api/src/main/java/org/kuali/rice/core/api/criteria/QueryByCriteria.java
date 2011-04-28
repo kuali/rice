@@ -33,13 +33,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Defines a criteria-based query.  Consists of a {@link Criteria} definition
+ * Defines a criteria-based query.  Consists of a {@link Predicate} definition
  * as well as a set of additional properties which control paging and other
  * aspects of the results which should be returned from the query.
  * 
  * <p>In order to construct a new {@link QueryByCriteria}, the {@link Builder}
- * should be used.  This contains an internal {@link CriteriaBuilder} which
- * can be used to define the {@link Criteria} for use by the query.
+ * should be used.  Use the {@link PredicateFactory} to construct
+ * the predicate for use by the query.
  * 
  * <p>This class specifies nothing regarding how the query will be executed.
  * It is expected that an instance will be constructed and then passed to code
@@ -51,8 +51,8 @@ import java.util.Collection;
  * @param <T> the type of the class which is being queried for based on the
  * specified criteria
  * 
- * @see Criteria
- * @see CriteriaBuilder
+ * @see Predicate
+ * @see PredicateFactory
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
@@ -64,6 +64,7 @@ import java.util.Collection;
 		QueryByCriteria.Elements.START_AT_INDEX,
 		QueryByCriteria.Elements.MAX_RESULTS,
 		QueryByCriteria.Elements.COUNT_FLAG,
+        QueryByCriteria.Elements.QUERY_CLASS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class QueryByCriteria<T> implements ModelObjectComplete {
 
@@ -96,7 +97,8 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	@XmlElement(name = Elements.COUNT_FLAG, required = true)
 	private final CountFlag countFlag;
 
-    private final String queryClass;
+    @XmlElement(name = Elements.QUERY_CLASS, required = true)
+    private final Class<T> queryClass;
 
 	@SuppressWarnings("unused")
 	@XmlAnyElement
@@ -124,7 +126,7 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		this.startAtIndex = builder.getStartAtIndex();
 		this.maxResults = builder.getMaxResults();
 		this.countFlag = builder.getCountFlag();
-        this.queryClass = builder.getQueryClass().getName();
+        this.queryClass = builder.getQueryClass();
 	}
 
 	/**
@@ -176,6 +178,10 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	public CountFlag getCountFlag() {
 		return this.countFlag;
 	}
+
+    public Class<T> getQueryClass() {
+        return this.queryClass;
+    }
 
 	@Override
 	public int hashCode() {

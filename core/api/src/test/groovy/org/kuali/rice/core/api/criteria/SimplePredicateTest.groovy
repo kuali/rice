@@ -16,7 +16,6 @@
 package org.kuali.rice.core.api.criteria;
 
 
-import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAttribute
 import javax.xml.bind.annotation.XmlElement
@@ -145,7 +144,7 @@ public class SimplePredicateTest {
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     @XmlRootElement(name = "like")
-    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
     @XmlType(name = "AllExpressionType")
     private static final class AllExpression extends AbstractPredicate implements SingleValuedPredicate {
 
@@ -190,7 +189,7 @@ public class SimplePredicateTest {
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     @XmlRootElement(name = "like")
-    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.NONE)
     @XmlType(name = "StringOnlyExpressionType")
     private static final class StringOnlyExpression extends AbstractPredicate implements SingleValuedPredicate {
 

@@ -35,45 +35,45 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 /**
- * An immutable representation of a {@link KimPermissionContract}.
+ * An immutable representation of a {@link PermissionTemplateContract}.
  *
- * <p>To construct an instance of a KimPermission, use the {@link KimPermission.Builder} class.<p/>
+ * <p>To construct an instance of a KimPermissionTemplate, use the {@link PermissionTemplate.Builder} class.<p/>
  *
- * @see KimPermissionContract
+ * @see PermissionContract
  */
-@XmlRootElement(name = KimPermission.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = PermissionTemplate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = KimPermission.Constants.TYPE_NAME, propOrder = {
-		KimPermission.Elements.ID,
-		KimPermission.Elements.NAMESPACE_CODE,
-		KimPermission.Elements.NAME,
-		KimPermission.Elements.DESCRIPTION,
-		KimPermission.Elements.TEMPLATE_ID,
-        KimPermission.Elements.ACTIVE,
+@XmlType(name = PermissionTemplate.Constants.TYPE_NAME, propOrder = {
+		PermissionTemplate.Elements.ID,
+		PermissionTemplate.Elements.NAMESPACE_CODE,
+		PermissionTemplate.Elements.NAME,
+		PermissionTemplate.Elements.DESCRIPTION,
+		PermissionTemplate.Elements.KIM_TYPE_ID,
+        PermissionTemplate.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class KimPermission implements KimPermissionContract, ModelObjectComplete{
+public final class PermissionTemplate implements PermissionTemplateContract, ModelObjectComplete{
 
 	private static final long serialVersionUID = 1L;
 	
-    @XmlElement(name = KimPermission.Elements.ID, required = true)
+    @XmlElement(name = PermissionTemplate.Elements.ID, required = true)
     private final String id;
 
-    @XmlElement(name = KimPermission.Elements.NAMESPACE_CODE, required = true)
+    @XmlElement(name = PermissionTemplate.Elements.NAMESPACE_CODE, required = true)
     private final String namespaceCode;
 
-    @XmlElement(name = KimPermission.Elements.NAME, required = true)
+    @XmlElement(name = PermissionTemplate.Elements.NAME, required = true)
     private final String name;
 
-    @XmlElement(name = KimPermission.Elements.DESCRIPTION, required = false)
+    @XmlElement(name = PermissionTemplate.Elements.DESCRIPTION, required = false)
     private final String description;
 
-    @XmlElement(name = KimPermission.Elements.TEMPLATE_ID, required = true)
-    private final String templateId;
+    @XmlElement(name = PermissionTemplate.Elements.KIM_TYPE_ID, required = true)
+    private final String kimTypeId;
     
-    @XmlElement(name = KimPermission.Elements.ACTIVE, required = false)
+    @XmlElement(name = PermissionTemplate.Elements.ACTIVE, required = false)
     private final boolean active;
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -88,14 +88,14 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
     
     /**
 	 *  A constructor to be used only by JAXB unmarshalling.
-	 *  
+	 * 
 	 */
-	private KimPermission() {
+	private PermissionTemplate() {
 		this.id = null;
         this.namespaceCode = null;
         this.name = null;
         this.description = null;
-        this.templateId = null;
+        this.kimTypeId = null;
         this.active = false;
         this.versionNumber = Long.valueOf(1L);
         this.objectId = null;
@@ -106,19 +106,20 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
 	 * 
 	 * @param builder
 	 */
-	private KimPermission(Builder builder) {
+	private PermissionTemplate(Builder builder) {
 		this.id = builder.getId();
         this.namespaceCode = builder.getNamespaceCode();
         this.name = builder.getName();
         this.description = builder.getDescription();
-        this.templateId = builder.getTemplateId();        
+        this.kimTypeId = builder.getKimTypeId();
+        
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.KimPermissionContract#getId()
+	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getId()
 	 */
 	@Override
 	public String getId() {
@@ -126,7 +127,7 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.KimPermissionContract#getNamespaceCode()
+	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getNamespaceCode()
 	 */
 	@Override
 	public String getNamespaceCode() {
@@ -134,7 +135,7 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.KimPermissionContract#getName()
+	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getName()
 	 */
 	@Override
 	public String getName() {
@@ -142,7 +143,7 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.KimPermissionContract#getDescription()
+	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getDescription()
 	 */
 	@Override
 	public String getDescription() {
@@ -150,15 +151,15 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.permission.KimPermissionContract#getTemplateId()
+	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#getTemplateId()
 	 */
 	@Override
-	public String getTemplateId() {
-		return templateId;
+	public String getKimTypeId() {
+		return kimTypeId;
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.permission.KimPermissionContract#isActive()
+	 * @see org.kuali.rice.kim.api.permission.PermissionTemplateContract#isActive()
 	 */
 	@Override
 	public boolean isActive() {
@@ -197,37 +198,37 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
     }
 	
     /**
-     * This builder constructs a KimPermission enforcing the constraints of the {@link KimPermissionContract}.
+     * This builder constructs a KimPermissionTemplate enforcing the constraints of the {@link PermissionTemplateContract}.
      */
-    public static final class Builder implements KimPermissionContract, ModelBuilder, Serializable {
+    public static final class Builder implements PermissionTemplateContract, ModelBuilder, Serializable {
         private String id;
         private String namespaceCode;
         private String name;
         private String description;
-        private String templateId;
+        private String kimTypeId;
         private Long versionNumber = 1L;
         private String objectId;
         private boolean active;
         
-        private Builder(String id, String namespaceCode, String name, String templateId) {
+        private Builder(String id, String namespaceCode, String name, String kimTypeId) {
             setId(id);
             setNamespaceCode(namespaceCode);
             setName(name);
-            setTemplateId(templateId);
+            setKimTypeId(kimTypeId);
         }
 
         /**
-         * Creates a KimPermission with the required fields.
+         * creates a KimPermission with the required fields.
          */
-        public static Builder create(String id, String namespaceCode, String name, String templateId) {
-            return new Builder(id, namespaceCode, name, templateId);
+        public static Builder create(String id, String namespaceCode, String name, String kimTypeId) {
+            return new Builder(id, namespaceCode, name, kimTypeId);
         }
 
         /**
-         * Creates a KimPermission from an existing {@link KimPermissionContract}.
+         * creates a KimPermission from an existing {@link PermissionContract}.
          */
-        public static Builder create(KimPermissionContract contract) {
-            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getTemplateId());
+        public static Builder create(PermissionTemplateContract contract) {
+            Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getKimTypeId());
             builder.setDescription(contract.getDescription());
             
             builder.setActive(contract.isActive());
@@ -283,15 +284,15 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
 		}
 
 		@Override
-		public String getTemplateId() {
-			if (StringUtils.isEmpty(templateId)) {
-                throw new IllegalArgumentException("templateId is blank");
+		public String getKimTypeId() {
+			if (StringUtils.isEmpty(kimTypeId)) {
+                throw new IllegalArgumentException("kimTypeId is blank");
             }
-			return templateId;
+			return kimTypeId;
 		}
 		
-		public void setTemplateId(final String templateId) {
-			this.templateId = templateId;
+		public void setKimTypeId(final String kimTypeId) {
+			this.kimTypeId = kimTypeId;
 		}
 		
 		@Override
@@ -325,8 +326,8 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
         }
         
         @Override
-        public KimPermission build() {
-            return new KimPermission(this);
+        public PermissionTemplate build() {
+            return new PermissionTemplate(this);
         }
     }
     
@@ -334,8 +335,8 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        static final String ROOT_ELEMENT_NAME = "kimPermission";
-        static final String TYPE_NAME = "KimPermissionType";
+        static final String ROOT_ELEMENT_NAME = "permissionTemplate";
+        static final String TYPE_NAME = "PermissionTemplateType";
         static final String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
@@ -348,7 +349,7 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
         static final String NAMESPACE_CODE = "namespaceCode";
         static final String NAME = "name";
         static final String DESCRIPTION = "description";
-        static final String TEMPLATE_ID = "templateId";        
+        static final String KIM_TYPE_ID = "kimTypeId";        
         static final String ACTIVE = "active";
     }
 }

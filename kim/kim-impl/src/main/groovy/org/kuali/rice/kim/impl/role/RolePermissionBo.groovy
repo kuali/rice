@@ -33,7 +33,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.role.RolePermission
 import org.kuali.rice.kim.api.role.RolePermissionContract
-import org.kuali.rice.kim.impl.permission.KimPermissionBo
+import org.kuali.rice.kim.impl.permission.PermissionBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.springframework.util.AutoPopulatingList;
 
@@ -56,9 +56,9 @@ public class RolePermissionBo extends PersistableBusinessObjectBase implements R
 	@Type(type="yes_no")
 	boolean active
 
-	@OneToOne(targetEntity=KimPermissionBo.class,cascade=[],fetch=FetchType.EAGER)
+	@OneToOne(targetEntity=PermissionBo.class,cascade=[],fetch=FetchType.EAGER)
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
-	KimPermissionBo kimPermission;
+	PermissionBo kimPermission;
 		
     /**
      * Converts a mutable bo to its immutable counterpart

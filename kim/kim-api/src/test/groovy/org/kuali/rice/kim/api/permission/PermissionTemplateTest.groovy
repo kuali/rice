@@ -19,60 +19,60 @@ import javax.xml.bind.JAXBContext
 import org.junit.Assert
 import org.junit.Test;
 
-class KimPermissionTest {
+class PermissionTemplateTest {
 
 	private static final String ID = "50"
 	private static final String NAMESPACE_CODE = "KUALI"
-	private static final String NAME = "KimPermissionName"
-	private static final String DESCRIPTION = "Some KIM Permission Description"
-	private static final String TEMPLATE_ID = "7317791873"
+	private static final String NAME = "PermissionTemplateName"
+	private static final String DESCRIPTION = "Some KIM Permission Template Description"
+	private static final String KIM_TYPE_ID = "611777493"
 	private static final String OBJECT_ID = UUID.randomUUID()
 	private static final Long VERSION_NUMBER = new Long(1) 
 	private static final boolean ACTIVE = "true"
 	
 	private static final String XML = """
-		<kimPermission xmlns="http://rice.kuali.org/kim/v2_0">
+		<permissionTemplate xmlns="http://rice.kuali.org/kim/v2_0">
 			<id>${ID}</id>
 			<namespaceCode>${NAMESPACE_CODE}</namespaceCode>
 			<name>${NAME}</name>
 			<description>${DESCRIPTION}</description>
-			<templateId>${TEMPLATE_ID}</templateId>
+			<kimTypeId>${KIM_TYPE_ID}</kimTypeId>
 			<active>${ACTIVE}</active>
 			<versionNumber>${VERSION_NUMBER}</versionNumber>
         	<objectId>${OBJECT_ID}</objectId>
-		</kimPermission>
+		</permissionTemplate>
 		"""
 	
     @Test
     void happy_path() {
-        KimPermission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+        Permission.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		KimPermission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(null);
+		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		KimPermission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID).setVersionNumber(-1);
+		Permission.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = KimPermission.Builder.create(ID, NAMESPACE_CODE, NAME, TEMPLATE_ID)
+		def o1b = Permission.Builder.create(ID, NAMESPACE_CODE, NAME, KIM_TYPE_ID)
 		o1b.description = DESCRIPTION
 
 		def o1 = o1b.build()
 
-		def o2 = KimPermission.Builder.create(o1).build()
+		def o2 = Permission.Builder.create(o1).build()
 
 		Assert.assertEquals(o1, o2)
 	}
 	
 	@Test
 	public void test_Xml_Marshal_Unmarshal() {
-	  def jc = JAXBContext.newInstance(KimPermission.class)
+	  def jc = JAXBContext.newInstance(PermissionTemplate.class)
 	  def marshaller = jc.createMarshaller()
 	  def sw = new StringWriter()
 
@@ -87,15 +87,15 @@ class KimPermissionTest {
 	}
 	
 	private create() {
-		return KimPermission.Builder.create(new KimPermissionContract() {
-			String id = KimPermissionTest.ID
-			String namespaceCode = KimPermissionTest.NAMESPACE_CODE
-			String name = KimPermissionTest.NAME
-			String description = KimPermissionTest.DESCRIPTION
-			String templateId = KimPermissionTest.TEMPLATE_ID
-			boolean active = KimPermissionTest.ACTIVE
-			Long versionNumber = KimPermissionTest.VERSION_NUMBER
-			String objectId = KimPermissionTest.OBJECT_ID
+		return PermissionTemplate.Builder.create(new PermissionTemplateContract() {
+			String id = PermissionTemplateTest.ID
+			String namespaceCode = PermissionTemplateTest.NAMESPACE_CODE
+			String name = PermissionTemplateTest.NAME
+			String description = PermissionTemplateTest.DESCRIPTION
+			String kimTypeId = PermissionTemplateTest.KIM_TYPE_ID
+			boolean active = PermissionTemplateTest.ACTIVE
+			Long versionNumber = PermissionTemplateTest.VERSION_NUMBER
+			String objectId = PermissionTemplateTest.OBJECT_ID
 		}).build()
 	}
 }

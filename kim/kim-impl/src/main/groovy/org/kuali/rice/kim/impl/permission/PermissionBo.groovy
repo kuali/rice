@@ -16,24 +16,35 @@
 
 package org.kuali.rice.kim.impl.permission
 
+import java.util.List;
+
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.Id
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.permission.KimPermissionTemplate
-import org.kuali.rice.kim.api.permission.KimPermissionTemplateContract
+import org.kuali.rice.kim.api.permission.Permission
+import org.kuali.rice.kim.api.permission.PermissionContract
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
+import org.kuali.rice.kim.impl.role.RolePermissionBo
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
+import org.springframework.util.AutoPopulatingList;
 
 @Entity
-@Table(name="KRIM_PERM_TMPL_T")
-public class KimPermissionTemplateBo extends PersistableBusinessObjectBase implements KimPermissionTemplateContract {
+@Table(name="KRIM_PERM_T")
+public class PermissionBo extends PersistableBusinessObjectBase implements PermissionContract {
     private static final long serialVersionUID = 1L;
 
     @Id
-	@Column(name="PERM_TMPL_ID")
+	@Column(name="PERM_ID")
 	String id
 
 	@Column(name="NMSPC_CD")
@@ -45,24 +56,36 @@ public class KimPermissionTemplateBo extends PersistableBusinessObjectBase imple
 	@Column(name="DESC_TXT", length=400)
 	String description;
 
-	@Column(name="KIM_TYP_ID")
-	String kimTypeId
+	@Column(name="PERM_TMPL_ID")
+	String templateId
 	
 	@Column(name="ACTV_IND")
 	@Type(type="yes_no")
 	boolean active
 
+	@OneToOne(targetEntity=PermissionTemplateBo.class,cascade=[],fetch=FetchType.EAGER)
+	@JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
+	PermissionTemplateBo template;
+	
+	@OneToMany(targetEntity=PermissionAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
+	@Fetch(value = FetchMode.SELECT)
+	List<PermissionAttributeBo> permissionAttributes
+	
+	@OneToMany(targetEntity=RolePermissionBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
+    @Fetch(value = FetchMode.SELECT)
+	List<RolePermissionBo> rolePermissions
+		
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
      * @return the immutable object
      */
-    static KimPermissionTemplate to(KimPermissionTemplateBo bo) {
+    static Permission to(PermissionBo bo) {
         if (bo == null) {
             return null
         }
 
-        return KimPermissionTemplate.Builder.create(bo).build();
+        return Permission.Builder.create(bo).build();
     }
 
     /**
@@ -70,18 +93,18 @@ public class KimPermissionTemplateBo extends PersistableBusinessObjectBase imple
      * @param im immutable object
      * @return the mutable bo
      */
-    static KimPermissionTemplateBo from(KimPermissionTemplate im) {
+    static PermissionBo from(Permission im) {
         if (im == null) {
             return null
         }
 
-        KimPermissionTemplateBo bo = new KimPermissionTemplateBo()
+        PermissionBo bo = new PermissionBo()
         bo.id = im.id
         bo.namespaceCode = im.namespaceCode
         bo.name = im.name
         bo.description = im.description
         bo.active = im.active
-        bo.kimTypeId = im.kimTypeId
+        bo.templateId = im.templateId
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 

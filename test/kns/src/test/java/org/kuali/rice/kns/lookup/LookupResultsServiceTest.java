@@ -25,7 +25,7 @@ import java.util.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -55,7 +55,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 		parameterPK.put("componentCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
 		parameterPK.put("name", MOCK_PARAMETER_NAME);
 		final ParameterBo parameter = (ParameterBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ParameterBo.class, parameterPK);
-		final Person person = KIMServiceLocator.getPersonService().getPerson(LookupResultsServiceTest.MOCK_PERSON);
+		final Person person = KimApiServiceLocator.getPersonService().getPerson(LookupResultsServiceTest.MOCK_PERSON);
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("horse");
 		final LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
 		

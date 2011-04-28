@@ -30,7 +30,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -176,10 +176,10 @@ public class DisapproveAction extends ActionTakenEvent {
 
         if( !StringUtils.isBlank(groupName))
         {
-            Group systemUserWorkgroup = KIMServiceLocator.getIdentityManagementService().
+            Group systemUserWorkgroup = KimApiServiceLocator.getIdentityManagementService().
                 getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
 
-            List<String> principalIds = KIMServiceLocator.
+            List<String> principalIds = KimApiServiceLocator.
             getIdentityManagementService().getGroupMemberPrincipalIds( systemUserWorkgroup.getId());
 
             if (systemUserWorkgroup != null)

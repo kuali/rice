@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -45,7 +45,7 @@ public class PermissionServiceTest extends KIMTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		setPermissionService(KIMServiceLocator.getPermissionService());
+		setPermissionService(KimApiServiceLocator.getPermissionService());
 	}
 
 	@Test

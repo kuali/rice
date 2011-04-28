@@ -27,7 +27,7 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -66,7 +66,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
     @Test public void testCustomDocSearchGeneratorResultSetLimit() throws Exception {
         String documentTypeName = "SearchDocType_DefaultCustomProcessor";
         String userNetworkId = "rkirkend";
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -123,7 +123,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
     @Test public void testSearchOnExtraDocType() throws Exception {
         String userNetworkId = "rkirkend";
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         String documentTypeName1 = "SearchDocType_DefaultCustomProcessor";
         WorkflowDocument workDoc_Matching1 = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName1);

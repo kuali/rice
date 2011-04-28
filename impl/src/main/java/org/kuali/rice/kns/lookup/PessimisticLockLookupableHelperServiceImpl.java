@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -125,7 +125,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         //set owner's principal id and remove owner principal name field 
         String principalName = fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
         if (!StringUtils.isEmpty(principalName)) {
-            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+            KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
             if (principal != null) { 
                 fieldValues.put(OWNER_PRINCIPAL_ID_PROPERTY_NAME, principal.getPrincipalId());
             }
@@ -154,7 +154,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     public void validateSearchParameters(Map fieldValues) {
         super.validateSearchParameters(fieldValues);
         if (StringUtils.isNotEmpty((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME))) {
-            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME));
+            Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME));
             if (person == null) {
                 String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
                 GlobalVariables.getMessageMap().putError(OWNER_PRINCIPAL_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_EXISTENCE, attributeLabel);

@@ -25,7 +25,7 @@ import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.NoOpStringFormatter;
 import org.kuali.rice.core.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
@@ -185,7 +185,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
          	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
-         	 		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
+         	 		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
          	 	 	workflowDocument = KNSServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(getDocument().getDocumentNumber()), person);
          	 	 	sessionDocumentService.addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)
@@ -580,7 +580,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
     public Person getInitiator() {
     	String initiatorPrincipalId = getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
-    	return KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+    	return KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
     }
 
     /**

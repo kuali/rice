@@ -38,7 +38,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 import java.sql.Timestamp;
@@ -123,7 +123,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String groupId,
 			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		KimPrincipal principal = loadPrincipal(principalId);
-		final Recipient recipient = new KimGroupRecipient(KIMServiceLocator.getIdentityManagementService().getGroup(groupId));
+		final Recipient recipient = new KimGroupRecipient(KimApiServiceLocator.getIdentityManagementService().getGroup(groupId));
 		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);

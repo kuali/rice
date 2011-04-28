@@ -43,7 +43,7 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -390,7 +390,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         */
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         // begin string attribute value testing
         DocSearchCriteriaDTO criteria = null;
@@ -733,7 +733,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         String documentTypeName = "RangeDefinitionTestDocType";
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         String principalName = "rkirkend";
-        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         WorkflowDocument workflowDocument = new WorkflowDocument(principalId, documentTypeName);
 
         // adding inclusive-lower-bound searchable attribute

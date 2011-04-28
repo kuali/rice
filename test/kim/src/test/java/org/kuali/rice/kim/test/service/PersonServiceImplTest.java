@@ -19,7 +19,7 @@ import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
@@ -63,7 +63,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	@Test
 	public void testGetPersonByExternalIdentifier() {
 		//insert external identifier
-		KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal("p1");
+		KimPrincipal principal = KimApiServiceLocator.getIdentityService().getPrincipal("p1");
 		
 		SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
 		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", KimEntityExternalIdentifierImpl.class);
@@ -294,7 +294,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 			this.personPrincipalId = personPrincipalId;
 		}
 		public Person getPersonAttribute() {
-			personAttribute = KIMServiceLocator.getPersonService().updatePersonIfNecessary( personPrincipalId, personAttribute );
+			personAttribute = KimApiServiceLocator.getPersonService().updatePersonIfNecessary( personPrincipalId, personAttribute );
 			return personAttribute;
 		}
 		public void setPersonAttribute(Person personAttribute) {
@@ -330,7 +330,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 			this.childsPersonPrincipalId = childsPersonPrincipalId;
 		}
 		public Person getChildsPersonAttribute() {
-			childsPersonAttribute = KIMServiceLocator.getPersonService().updatePersonIfNecessary( childsPersonPrincipalId, childsPersonAttribute );
+			childsPersonAttribute = KimApiServiceLocator.getPersonService().updatePersonIfNecessary( childsPersonPrincipalId, childsPersonAttribute );
 			return childsPersonAttribute;
 		}
 		public void setChildsPersonAttribute(Person childsPersonAttribute) {

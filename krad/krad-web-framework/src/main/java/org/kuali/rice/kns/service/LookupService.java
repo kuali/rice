@@ -28,7 +28,7 @@ public interface LookupService {
     /**
      * Returns a collection of objects based on the given search parameters.
      * Will not limit results, so the returned Collection could be huge.
-     * 
+     *                                                         o
      * @param example
      * @param formProps
      * @return

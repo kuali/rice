@@ -43,7 +43,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -221,7 +221,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                List<String> delegatorGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                List<String> delegatorGroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }
@@ -241,7 +241,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorWorkflowId", principalId);
-                List<String> delegatorGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+                List<String> delegatorGroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }

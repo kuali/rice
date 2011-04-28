@@ -26,7 +26,7 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.web.ui.Column;
 
@@ -94,7 +94,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
     private DocumentSearchResultComponents performSearch(String documentTypeName,String userNetworkId) {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);

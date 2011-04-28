@@ -25,7 +25,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 
@@ -54,7 +54,7 @@ public class WorkflowInfoTest extends KEWTestCase {
     public void testGetRouteHeader() throws Exception {
      // ensure the UserSession is cleared out (could have been set up by other tests)
     GlobalVariables.setUserSession(null);
-    String ewestfalPrincipalId = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
+    String ewestfalPrincipalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
     GlobalVariables.setUserSession(new UserSession("ewestfal"));
     WorkflowDocument document = new WorkflowDocument(ewestfalPrincipalId, "TestDocumentType");
 	Long documentId = document.getRouteHeaderId();
@@ -104,7 +104,7 @@ public class WorkflowInfoTest extends KEWTestCase {
      */
     @Test
     public void testBlanketApproverSubmitted() throws WorkflowException {
-    	Person blanketApprover = KIMServiceLocator.getPersonService().getPersonByPrincipalName("ewestfal");
+    	Person blanketApprover = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("ewestfal");
 
         WorkflowDocument document = new WorkflowDocument(blanketApprover.getPrincipalId(), "BlanketApproveParallelTest");
         document.blanketApprove("");

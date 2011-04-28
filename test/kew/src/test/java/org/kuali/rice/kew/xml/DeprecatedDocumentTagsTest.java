@@ -31,7 +31,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Row;
@@ -95,7 +95,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
     	RuleResponsibility testResp = testRule.getResponsibility(0);
     	assertNotNull("The responsibility on TestRule1 should not be null", testResp);
     	assertEquals("The responsibility on TestRule1 has the wrong type", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, testResp.getRuleResponsibilityType());
-    	Group testGroup = KIMServiceLocator.getIdentityManagementService().getGroup(testResp.getRuleResponsibilityName());
+    	Group testGroup = KimApiServiceLocator.getIdentityManagementService().getGroup(testResp.getRuleResponsibilityName());
     	assertGroupIsCorrect("<responsibility><workgroup>", "TestWorkgroup", "KR-WKFLW", testGroup);
     	// Ensure that the "DocumentType02" document type has a properly-working "isMemberOfWorkgroup" element on its attribute.
     	DocumentSearchContext docSearchContext = DocSearchUtils.getDocumentSearchContext("", "DocumentType02", "");
@@ -107,7 +107,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
         	LOG.info("Testing visibility of the rule attribute for user '" + testPrincipalNames[i] + "'");
         	// Set up a new KEW UserSession in a manner similar to that of WorkflowInfoTest.
             GlobalVariables.setUserSession(null);
-            String testPrincipalId = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(testPrincipalNames[i]).getPrincipalId();
+            String testPrincipalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(testPrincipalNames[i]).getPrincipalId();
             GlobalVariables.setUserSession(new UserSession(testPrincipalNames[i]));
             // Get the visibility of the rule attribute, which should be dependent on how the UserSession compares with the "isMemberOfWorkgroup" element.
             StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();

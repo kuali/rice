@@ -28,7 +28,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -442,7 +442,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     }
 
 	protected PersonService getPersonService() {
-        return personService != null ? personService : (personService = KIMServiceLocator.getPersonService());
+        return personService != null ? personService : (personService = KimApiServiceLocator.getPersonService());
     }
 
     /**

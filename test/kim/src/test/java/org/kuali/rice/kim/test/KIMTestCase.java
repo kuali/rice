@@ -22,7 +22,6 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -89,8 +88,8 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
-			KIMServiceLocator.getIdentityManagementService().flushAllCaches();
-			KIMServiceLocator.getRoleManagementService().flushRoleCaches();
+			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
+			KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
 			super.stop();
 		}
 

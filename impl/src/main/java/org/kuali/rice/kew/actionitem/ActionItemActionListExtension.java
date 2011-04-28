@@ -23,7 +23,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
 import javax.persistence.MappedSuperclass;
@@ -72,14 +72,14 @@ public class ActionItemActionListExtension extends ActionItem {
             group = super.getGroup();
         }
         if (getDelegatorWorkflowId() != null) {
-        	delegatorPerson = KIMServiceLocator.getPersonService().getPerson(getDelegatorWorkflowId());
+        	delegatorPerson = KimApiServiceLocator.getPersonService().getPerson(getDelegatorWorkflowId());
             if (delegatorPerson != null) {
                 delegatorName = delegatorPerson.getName();
             }
         }
 
         if (getDelegatorGroupId() != null) {
-        	delegatorGroup = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId());
+        	delegatorGroup = KimApiServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId());
         	if (delegatorGroup !=null)
         		delegatorName = delegatorGroup.getName();
         }

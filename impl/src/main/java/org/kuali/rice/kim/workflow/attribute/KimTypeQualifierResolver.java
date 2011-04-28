@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
@@ -128,7 +127,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService != null ) {
     		// QUESTION: can roles be modified in a way which requires routing?
     		// get the existing role members
-    		List<RoleMembershipInfo> currentRoleMembers = KIMServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
+    		List<RoleMembershipInfo> currentRoleMembers = KimApiServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
     		// loop over the role members on the document, check  if added or removed
     		for ( KimDocumentRoleMember rm : roleDoc.getMembers() ) {
     			boolean foundMember = false;
@@ -253,14 +252,14 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 
 	public static GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KimApiServiceLocator.getGroupService();
 		}
 		return groupService;
 	}
 
 	public static RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KimApiServiceLocator.getRoleService();
 		}
 		return roleService;
 	}

@@ -31,10 +31,9 @@ import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.bo.Person
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes
-import org.kuali.rice.kim.api.services.KIMServiceLocator
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import javax.persistence.Transient
 import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.kim.api.services.KimApiServiceLocator
 
 @Entity
 @Table(name="KRIM_GRP_T")
@@ -138,12 +137,12 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
             for ( GroupMemberBo groupMember : getMembers() ) {
                 if (groupMember.isActive()) {
                     if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )) {
-                        Person tempPerson =  KIMServiceLocator.getPersonService().getPerson(groupMember.getMemberId())
+                        Person tempPerson =  KimApiServiceLocator.getPersonService().getPerson(groupMember.getMemberId())
                         if (tempPerson != null && tempPerson.isActive()) {
                             memberPersons.add(tempPerson)
                         }
                     } else if (groupMember.getTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE ) ) {
-                        Group tempGroup =  KIMServiceLocator.getGroupService().getGroup(groupMember.getMemberId())
+                        Group tempGroup =  KimApiServiceLocator.getGroupService().getGroup(groupMember.getMemberId())
                         if (tempGroup != null && tempGroup.isActive()) {
                             memberGroups.add(tempGroup)
                         }

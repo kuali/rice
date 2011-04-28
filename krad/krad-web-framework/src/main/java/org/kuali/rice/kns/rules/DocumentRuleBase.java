@@ -22,9 +22,9 @@ import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
@@ -76,14 +76,14 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     protected PersonService getPersonService() {
         if ( personService == null ) {
-            personService = KIMServiceLocator.getPersonService();
+            personService = KimApiServiceLocator.getPersonService();
         }
         return personService;
     }
 
     public static IdentityManagementService getIdentityManagementService() {
         if ( identityManagementService == null ) {
-            identityManagementService = KIMServiceLocator.getIdentityManagementService();
+            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         }
         return identityManagementService;
     }

@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -50,7 +50,7 @@ public class BaseSendNotificationController extends MultiActionController {
 
     protected static IdentityManagementService getIdentityManagementService() {
         if ( identityManagementService == null ) {
-            identityManagementService = KIMServiceLocator.getIdentityManagementService();
+            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         }
         return identityManagementService;
     }

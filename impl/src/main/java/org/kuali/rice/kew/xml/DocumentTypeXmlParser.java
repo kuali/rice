@@ -106,7 +106,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.MaintenanceUtils;
@@ -1467,7 +1467,7 @@ public class DocumentTypeXmlParser {
     }
 
     protected IdentityManagementService getIdentityManagementService() {
-        return KIMServiceLocator.getIdentityManagementService();
+        return KimApiServiceLocator.getIdentityManagementService();
     }
 
     /**

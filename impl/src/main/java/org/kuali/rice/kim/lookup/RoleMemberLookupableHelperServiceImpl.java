@@ -27,11 +27,11 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -156,7 +156,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put("principals.principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
-        	List<KimEntityInfo> kimEntityInfoList = KIMServiceLocator.getIdentityManagementService().lookupEntityInfo(searchCriteria, true);
+        	List<KimEntityInfo> kimEntityInfoList = KimApiServiceLocator.getIdentityManagementService().lookupEntityInfo(searchCriteria, true);
         	if(kimEntityInfoList == null || kimEntityInfoList.isEmpty()) {
         		return null;
         	}
@@ -177,7 +177,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
         	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
-        	groups = (List<Group>) KIMServiceLocator.getGroupService().lookupGroups(searchCriteria);
+        	groups = (List<Group>) KimApiServiceLocator.getGroupService().lookupGroups(searchCriteria);
         	if(CollectionUtils.isEmpty(groups))
         		return null;
         }

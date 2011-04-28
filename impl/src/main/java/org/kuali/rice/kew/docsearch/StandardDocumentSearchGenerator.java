@@ -40,7 +40,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
@@ -978,7 +978,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         List<String> initiatorPrincipalIds = new ArrayList<String>();
         initiatorPrincipalIds.addAll(initiatorPrincipalIdSet);
         if(initiatorPrincipalIds != null && !initiatorPrincipalIds.isEmpty()){ // don't call the service if the search returned nothing.
-	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
+	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
 	        for (DocSearchDTO docSearchRow : docList) {
 	        	KimEntityNamePrincipalNameInfo name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
 	        	if (name != null) {
@@ -1030,7 +1030,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         UserSession userSession = GlobalVariables.getUserSession();
         if ( (userSession == null) && StringUtils.isNotBlank(principalId)) {
             LOG.info("Authenticated User Session is null... using parameter user: " + principalId);
-            Person user = KIMServiceLocator.getPersonService().getPerson(principalId);
+            Person user = KimApiServiceLocator.getPersonService().getPerson(principalId);
             if (user != null) {
             	userSession = new UserSession(user.getPrincipalName());
             }
@@ -1040,7 +1040,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 throw new WorkflowRuntimeException("Search criteria specified UserSession override but given user is null.");
             }
             LOG.info("Search Criteria specified UserSession override.  Using user: " + principalId);
-            Person user = KIMServiceLocator.getPersonService().getPerson(principalId);
+            Person user = KimApiServiceLocator.getPersonService().getPerson(principalId);
             if (user != null) {
             	userSession = new UserSession(user.getPrincipalName());
             }
@@ -1127,7 +1127,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         Person user = KIMServiceLocatorInternal.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
 
         if (user != null) {
-            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
+            KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
 
             docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
             docCriteriaDTO.setInitiatorName(user.getName());
@@ -1375,7 +1375,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         m.put("principalName", initiator);
 
         // This will search for people with the ability for the valid operands.
-        List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+        List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
 
         if(pList == null || pList.isEmpty() ){
             // they entered something that returned nothing... so we should return nothing
@@ -1465,7 +1465,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             m.put("principalName", viewer);
 
             // This will search for people with the ability for the valid operands.
-            List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+            List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
 
             if(pList == null || pList.isEmpty() ){
                 // they entered something that returned nothing... so we should return nothing
@@ -1490,7 +1490,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             if(principalList != null && !principalList.isEmpty()){
                 for(String principalId: principalList){
-                        viewerGroupIds.addAll(KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId));
+                        viewerGroupIds.addAll(KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId));
                 }
             }
 
@@ -1521,7 +1521,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public String getWorkgroupViewerSql(String id, String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
         if (!org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
+            Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(id);
             sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getId();
         }
         return sql;
@@ -1534,7 +1534,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             m.put("principalName", approver);
 
             // This will search for people with the ability for the valid operands.
-            List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+            List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
 
             if(pList == null || pList.isEmpty() ){
                  return "";

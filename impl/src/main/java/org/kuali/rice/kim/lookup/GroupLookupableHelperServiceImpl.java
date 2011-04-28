@@ -25,14 +25,12 @@ import org.kuali.rice.core.web.format.CollectionFormatter;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -127,7 +125,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
      */
     @Override
     public List<GroupBo> getSearchResults(java.util.Map<String,String> fieldValues)  {
-    	List<? extends Group> groupInfoObjs = KIMServiceLocator.getGroupService().lookupGroups(fieldValues);
+    	List<? extends Group> groupInfoObjs = KimApiServiceLocator.getGroupService().lookupGroups(fieldValues);
     	List<GroupBo> groupBoList = new ArrayList<GroupBo>();
 
     	for(Group g : groupInfoObjs){

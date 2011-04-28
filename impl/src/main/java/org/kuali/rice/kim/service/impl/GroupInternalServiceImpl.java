@@ -30,12 +30,12 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -54,7 +54,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
 
 
     public GroupService getGroupService(){
-    	return KIMServiceLocator.getGroupService();
+    	return KimApiServiceLocator.getGroupService();
     }
 
     public GroupImpl saveWorkgroup(GroupImpl group) {
@@ -71,7 +71,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	List<String> oldIds = ims.getMemberPrincipalIds(group.getId());
         GroupBo groupBo = GroupBo.from(group);
         //add members
-        Collection<GroupMember> members = KIMServiceLocator.getGroupService().getMembersOfGroup(group.getId());
+        Collection<GroupMember> members = KimApiServiceLocator.getGroupService().getMembersOfGroup(group.getId());
         if (!CollectionUtils.isEmpty(members)) {
             for (GroupMember member : members) {
                 groupBo.getMembers().add(GroupMemberBo.from(member));

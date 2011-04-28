@@ -31,7 +31,7 @@ import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -97,11 +97,11 @@ public class KimRoleDaoJpa implements KimRoleDao {
 	            && principalId == null) {
 	        groupIdValues = new ArrayList<String>(groupIds);
 	    } else if (principalId != null) {
-	        groupIdValues = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+	        groupIdValues = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
 	    }
 	    if (groupIdValues != null
 	            && groupIdValues.size() > 0) {
-    	    Collection<GroupMember> groupMembershipInfos = KIMServiceLocator.getGroupService().getMembers(groupIdValues);
+    	    Collection<GroupMember> groupMembershipInfos = KimApiServiceLocator.getGroupService().getMembers(groupIdValues);
             for (GroupMember groupMembershipInfo : groupMembershipInfos) {
                 if (principalId != null) {
                     if (StringUtils.equals(groupMembershipInfo.getTypeCode(), Role.PRINCIPAL_MEMBER_TYPE)
@@ -129,8 +129,8 @@ public class KimRoleDaoJpa implements KimRoleDao {
 
 	        if (groupIdValues != null
 	                && groupIdValues.size() > 0) {
-                Collection<GroupMember> groupMembershipInfos = KIMServiceLocator.getGroupService().getMembers(groupIdValues);
-	            //Collection<GroupMember> groupMembershipInfos = KIMServiceLocator.getGroupService().g.getGroupMembers(groupIdValues);
+                Collection<GroupMember> groupMembershipInfos = KimApiServiceLocator.getGroupService().getMembers(groupIdValues);
+	            //Collection<GroupMember> groupMembershipInfos = KimApiServiceLocator.getGroupService().g.getGroupMembers(groupIdValues);
 
                 if (!CollectionUtils.isEmpty(groupMembershipInfos)) {
                     for (GroupMember groupMembershipInfo : groupMembershipInfos) {
@@ -407,7 +407,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
     private List<String> getPrincipalIdsForPrincipalName(String principalName){
     	Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("principals.principalName", principalName);
-        List<? extends KimEntityDefaultInfo> entities = KIMServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
+        List<? extends KimEntityDefaultInfo> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
 
         List<String> principalIds = new ArrayList<String>();
         for (KimEntityDefaultInfo entity : entities) {
@@ -426,7 +426,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 		Criteria memberSubCrit = new Criteria(RoleMemberImpl.class.getName());
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("principals.principalName", principalName);
-        List<? extends KimEntityDefaultInfo> entities = KIMServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
+        List<? extends KimEntityDefaultInfo> entities = KimApiServiceLocator.getIdentityService().lookupEntityDefaultInfo(criteria, false);
         if (entities == null
                 || entities.size() == 0) {
             return roleIds;
@@ -452,7 +452,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 
 		List<String> groupIds = new ArrayList<String>();
 		for (String principalId : principalIds) {
-		    List<String> principalGroupIds = KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+		    List<String> principalGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
 		    for (String groupId : principalGroupIds) {
 		        if (!groupIds.contains(groupId)) {
 		            groupIds.add(groupId);
@@ -555,11 +555,11 @@ public class KimRoleDaoJpa implements KimRoleDao {
         	}
         }
 
-        List<KimPermissionInfo> permList = KIMServiceLocator.getPermissionService().lookupPermissions(searchCrit, true);
+        List<KimPermissionInfo> permList = KimApiServiceLocator.getPermissionService().lookupPermissions(searchCrit, true);
         List<String> roleIds = null;
 
         if(permList != null && !permList.isEmpty()){
-        	roleIds = KIMServiceLocator.getPermissionService().getRoleIdsForPermissions(permList);
+        	roleIds = KimApiServiceLocator.getPermissionService().getRoleIdsForPermissions(permList);
         }
 
         if(roleIds == null || roleIds.isEmpty()){
@@ -603,11 +603,11 @@ public class KimRoleDaoJpa implements KimRoleDao {
         	}
         }
 
-        List<? extends KimResponsibilityInfo> kriList = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCrit, true);
+        List<? extends KimResponsibilityInfo> kriList = KimApiServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCrit, true);
         List<String> roleIds = new ArrayList<String>();
 
         for(KimResponsibilityInfo kri : kriList){
-        	roleIds.addAll(KIMServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(kri, null));
+        	roleIds.addAll(KimApiServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(kri, null));
         }
 
         if(roleIds == null || roleIds.isEmpty()){
@@ -635,7 +635,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 
         Criteria crit = new Criteria(RoleMemberImpl.class.getName());
 
-        List<String> groupIds = KIMServiceLocator.getGroupService().lookupGroupIds(searchCrit);
+        List<String> groupIds = KimApiServiceLocator.getGroupService().lookupGroupIds(searchCrit);
 
         if(groupIds == null || groupIds.isEmpty()){
         	groupIds = new ArrayList<String>();
@@ -766,7 +766,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
     	searchCrit.put(KimConstants.AttributeConstants.GROUP_NAME, memberName);
     	searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode);
 
-    	return KIMServiceLocator.getGroupService().lookupGroupIds(searchCrit);
+    	return KimApiServiceLocator.getGroupService().lookupGroupIds(searchCrit);
     }
     
     public EntityManager getEntityManager() {

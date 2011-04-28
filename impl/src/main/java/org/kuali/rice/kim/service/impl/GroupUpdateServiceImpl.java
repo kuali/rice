@@ -25,9 +25,10 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+
 import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -115,7 +116,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
     */
    public void removeAllGroupMembers(String groupId) {
-	   GroupService groupService = KIMServiceLocator.getGroupService();
+	   GroupService groupService = KimApiServiceLocator.getGroupService();
        List<String> memberPrincipalsBefore = groupService.getMemberPrincipalIds(groupId);
 
        Collection<GroupMemberImpl> toDeactivate = getActiveGroupMembers(groupId, null, null);

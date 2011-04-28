@@ -26,7 +26,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.RowStyleable;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -232,7 +232,7 @@ public class ActionItem implements RowStyleable, Serializable {
     	if (StringUtils.isBlank(groupId)) {
     		return null;
     	}
-    	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+    	return KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
 
     public Group getGroup(){
@@ -243,7 +243,7 @@ public class ActionItem implements RowStyleable, Serializable {
     	if (StringUtils.isBlank(workflowId)) {
     		return null;
     	}
-    	return KIMServiceLocator.getPersonService().getPerson(workflowId);
+    	return KimApiServiceLocator.getPersonService().getPerson(workflowId);
     }
 
     public Person getPerson() {
@@ -277,7 +277,7 @@ public class ActionItem implements RowStyleable, Serializable {
     }
     
     public KimPrincipal getPrincipal(){
-        return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        return KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     }
 
     public void setRowStyleClass(String rowStyleClass) {

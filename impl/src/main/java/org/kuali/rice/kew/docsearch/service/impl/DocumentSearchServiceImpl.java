@@ -50,7 +50,7 @@ import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
@@ -364,7 +364,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			return true;
 		}
 		try {
-			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId.trim()) != null;
+			return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId.trim()) != null;
 		} catch (Exception ex) {
 			LOG.debug(ex, ex);
 			return false;
@@ -376,7 +376,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		/*if(StringUtils.isBlank(principalName)) {
 			return true;
 		}
-		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
 		return person != null;*/
 	}
 
@@ -414,7 +414,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
             return true;
         }
-        Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
+        Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(id);
         return group != null;
     }
 

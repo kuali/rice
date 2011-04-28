@@ -64,7 +64,7 @@ import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -596,7 +596,7 @@ public class DTOConverter {
         }
         String groupId = responsiblePartyVO.getGroupId();
         if (groupId != null) {
-        	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+        	Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
         	if (group == null) {
         		throw new RiceRuntimeException("Failed to locate group with ID: " + groupId);
         	}
@@ -1081,7 +1081,7 @@ public class DTOConverter {
         criteria.setFlattenNodes(criteriaVO.isFlattenNodes());
         if (criteriaVO.getRoutingPrincipalId() != null) {
         	KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingPrincipalId());
-            Person user = KIMServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
+            Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
             if (user == null) {
                 throw new RiceRuntimeException("Could not locate user for the given id: " + criteriaVO.getRoutingPrincipalId());
             }
@@ -1128,7 +1128,7 @@ public class DTOConverter {
             throw new IllegalArgumentException("ReportActionToTakeVO must contain a principalId and does not");
         }
         KimPrincipal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getPrincipalId());
-        Person user = KIMServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
+        Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
         if (user == null) {
             throw new RiceRuntimeException("Could not locate Person for the given id: " + actionToTakeVO.getPrincipalId());
         }

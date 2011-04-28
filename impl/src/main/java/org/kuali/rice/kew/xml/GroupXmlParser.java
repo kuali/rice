@@ -24,15 +24,13 @@ import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.attribute.KimAttribute;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupAttribute;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.util.KimConstants;
@@ -97,7 +95,7 @@ public class GroupXmlParser {
             }
         }
         for (Group group : groups) {
-            IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+            IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 
             // check if group already exists
             Group foundGroup = identityManagementService.getGroupByName(group.getNamespaceCode(), group.getName());
@@ -186,7 +184,7 @@ public class GroupXmlParser {
         }
 
         Group.Builder groupInfo = Group.Builder.create(groupNamespace, groupName, typeId);
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         //groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
 
 
@@ -314,7 +312,7 @@ public class GroupXmlParser {
     }
 
     private void addGroupMembers(Group groupInfo, String key) throws XmlException {
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {
@@ -357,7 +355,7 @@ public class GroupXmlParser {
                 //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
                 GroupMemberBo groupMember = new GroupMemberBo();
                 groupMember.setGroupId(groupInfo.getId());
-                groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );
+                groupMember.setTypeCode(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
                 groupMember.setMemberId(principalId);
 
                 groupMember = (GroupMemberBo)KNSServiceLocator.getBusinessObjectService().save(groupMember);

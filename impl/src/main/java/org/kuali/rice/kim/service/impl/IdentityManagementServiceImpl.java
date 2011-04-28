@@ -15,24 +15,15 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.jws.WebService;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
-import org.kuali.rice.kim.service.IdentityUpdateService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -55,15 +46,23 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.service.AuthenticationService;
-//import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.springframework.beans.factory.InitializingBean;
+
+import javax.jws.WebService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+//import org.kuali.rice.kim.service.GroupService;
 
 @WebService(endpointInterface = KIMWebServiceConstants.IdentityManagementService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityManagementService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityManagementService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class IdentityManagementServiceImpl implements IdentityManagementService, InitializingBean {
@@ -1014,28 +1013,28 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocator.getIdentityService();
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
 		return identityService;
 	}
 
 	public GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KimApiServiceLocator.getGroupService();
 		}
 		return groupService;
 	}
 
 	public PermissionService getPermissionService() {
 		if ( permissionService == null ) {
-			permissionService = KIMServiceLocator.getPermissionService();
+			permissionService = KimApiServiceLocator.getPermissionService();
 		}
 		return permissionService;
 	}
 
 	public ResponsibilityService getResponsibilityService() {
 		if ( responsibilityService == null ) {
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KimApiServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
 	}
@@ -1182,7 +1181,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public GroupUpdateService getGroupUpdateService() {
 		try {
 			if ( groupUpdateService == null ) {
-				groupUpdateService = KIMServiceLocatorInternal.getGroupUpdateService();
+				groupUpdateService = KimApiServiceLocator.getGroupUpdateService();
 				if ( groupUpdateService == null ) {
 					throw new UnsupportedOperationException( "null returned for GroupUpdateService, unable to update group data");
 				}
@@ -1196,7 +1195,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public IdentityUpdateService getIdentityUpdateService() {
 		try {
 			if ( identityUpdateService == null ) {
-				identityUpdateService = KIMServiceLocatorInternal.getIdentityUpdateService();
+				identityUpdateService = KimApiServiceLocator.getIdentityUpdateService();
 				if ( identityUpdateService == null ) {
 					throw new UnsupportedOperationException( "null returned for IdentityUpdateService, unable to update identity data");
 				}

@@ -57,7 +57,7 @@ import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -1578,7 +1578,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return KIMServiceLocator.getIdentityManagementService();
+        return KimApiServiceLocator.getIdentityManagementService();
     }
 
     /**

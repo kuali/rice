@@ -19,8 +19,8 @@ package org.kuali.rice.kns;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.SessionTicket;
 
@@ -65,7 +65,7 @@ public class UserSession implements Serializable {
      * @param principalName
      */
     public UserSession(String principalName) {
-        this.person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        this.person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
         if (this.person == null) {
         	throw new IllegalArgumentException("Failed to locate a principal with principal name '" + principalName + "'");
         }
@@ -127,7 +127,7 @@ public class UserSession implements Serializable {
     public void setBackdoorUser(String principalName) {
        // only allow backdoor in non-production environments
        if ( !isProductionEnvironment()) {
-        this.backdoorUser = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        this.backdoorUser = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
         if (backdoorUser == null) {
         	throw new RiceRuntimeException(principalName + " is not a valid principalName");
         }

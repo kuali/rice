@@ -18,7 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
@@ -86,7 +86,7 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 	    	}
 	    	getBusinessObjectService().save(resp);
 	    	// flush the IdM service caches
-	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
+	    	KimApiServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
 	    	// flush the local implementation class cache
 	    	flushResponsibilityImplCache();
     	} catch ( RuntimeException ex ) {

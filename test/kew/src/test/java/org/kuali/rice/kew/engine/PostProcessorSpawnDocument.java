@@ -23,7 +23,7 @@ import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
 /**
@@ -39,7 +39,7 @@ public class PostProcessorSpawnDocument extends DefaultPostProcessor {
     	LOG.info("Moving document " + statusChangeEvent.getRouteHeaderId() + " from status '" + statusChangeEvent.getOldRouteStatus() + "' to status '" + statusChangeEvent.getNewRouteStatus() + "'");
     	if (StringUtils.equals(KEWConstants.ROUTE_HEADER_PROCESSED_CD, statusChangeEvent.getNewRouteStatus())) {
     		// spawn and route a new document
-        	WorkflowDocument document = new WorkflowDocument(KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId(), "SpawnedDocumentType");
+        	WorkflowDocument document = new WorkflowDocument(KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId(), "SpawnedDocumentType");
         	document.routeDocument("");
     	}
         return new ProcessDocReport(true, "");

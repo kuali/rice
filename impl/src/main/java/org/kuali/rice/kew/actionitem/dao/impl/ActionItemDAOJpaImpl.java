@@ -37,7 +37,7 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 /**
  * OJB implementation of {@link ActionItemDAO}.
@@ -180,7 +180,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         	String delegatorGroupId = ((ActionItem)actionItem).getDelegatorGroupId();
 
         	if (delegatorWorkflowId != null && !delegators.containsKey(delegatorWorkflowId)) {
-                delegators.put(delegatorWorkflowId,new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson(delegatorWorkflowId)));
+                delegators.put(delegatorWorkflowId,new WebFriendlyRecipient(KimApiServiceLocator.getPersonService().getPerson(delegatorWorkflowId)));
             }else if (delegatorGroupId != null) {
                 if (!delegators.containsKey(delegatorGroupId)) {
                     delegators.put(delegatorGroupId, new KimGroupRecipient(getIdentityManagementService().getGroup(delegatorGroupId)));
@@ -191,7 +191,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
         delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);
@@ -212,7 +212,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
         	String princlId = ((ActionItem)actionItem).getPrincipalId();
             if (princlId != null && !delegators.containsKey(princlId)) {
-                delegators.put(princlId, new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson(princlId)));
+                delegators.put(princlId, new WebFriendlyRecipient(KimApiServiceLocator.getPersonService().getPerson(princlId)));
             }
         }
 
@@ -231,7 +231,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return KIMServiceLocator.getIdentityManagementService();
+        return KimApiServiceLocator.getIdentityManagementService();
     }
 
     public EntityManager getEntityManager() {

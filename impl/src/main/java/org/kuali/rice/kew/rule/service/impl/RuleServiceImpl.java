@@ -45,7 +45,6 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -78,7 +77,7 @@ import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.UserSession;
@@ -1194,7 +1193,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public IdentityManagementService getIdentityManagementService() {
-        return KIMServiceLocator.getIdentityManagementService();
+        return KimApiServiceLocator.getIdentityManagementService();
     }
 
     public ActionRequestService getActionRequestService() {

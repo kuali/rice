@@ -78,7 +78,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.xml.sax.SAXException;
@@ -463,7 +463,7 @@ public class RuleXmlParser {
         // in code below, we allow core config parameter replacement in responsibilities
         if (!StringUtils.isBlank(principalId)) {
         	principalId = Utilities.substituteConfigParameters(principalId);
-        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given id: " + principalId);
             }
@@ -471,7 +471,7 @@ public class RuleXmlParser {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(principalName)) {
         	principalName = Utilities.substituteConfigParameters(principalName);
-        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given name: " + principalName);
             }
@@ -479,7 +479,7 @@ public class RuleXmlParser {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(groupId)) {
             groupId = Utilities.substituteConfigParameters(groupId);
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+            Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
             if (group == null) {
                 throw new XmlException("Could not locate group with the given id: " + groupId);
             }
@@ -496,7 +496,7 @@ public class RuleXmlParser {
         	}
             groupName = Utilities.substituteConfigParameters(groupName);
             groupNamespace = Utilities.substituteConfigParameters(groupNamespace);
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 throw new XmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
             }
@@ -525,7 +525,7 @@ public class RuleXmlParser {
             String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
             String workgroupName = Utilities.parseGroupName(workgroup);
 
-            Group workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
+            Group workgroupObject = KimApiServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
             if (workgroupObject == null) {
                 throw new XmlException("Could not locate workgroup: " + workgroup);
             }

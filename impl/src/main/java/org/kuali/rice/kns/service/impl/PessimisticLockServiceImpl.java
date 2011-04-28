@@ -26,7 +26,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants.PermissionNames;
@@ -469,7 +469,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
     public PersonService getPersonService() {
         if ( personService == null ) {
-            personService = KIMServiceLocator.getPersonService();
+            personService = KimApiServiceLocator.getPersonService();
         }
         return personService;
     }
@@ -483,7 +483,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
 	public IdentityManagementService getIdentityManagementService() {
         if ( identityManagementService == null ) {
-        	identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        	identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         }
 		return identityManagementService;
 	}

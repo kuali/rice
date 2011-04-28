@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.service;
 
 import org.junit.Test;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -29,7 +28,7 @@ import javax.xml.namespace.QName;
 import static org.junit.Assert.*;
 
 /**
- * Tests the {@link KIMServiceLocatorInternal} class.
+ * Tests the {@link org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -88,7 +87,7 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		// test by passing a QName for a valid service, but not one which is a KimTypeService, null should be returned
 		
 		// fetch the group service instead
-		KimTypeService typeService2 = KIMServiceLocatorWeb.getKimTypeService(new QName(KIMServiceLocator.KIM_GROUP_SERVICE));
+		KimTypeService typeService2 = KIMServiceLocatorWeb.getKimTypeService(new QName(KimApiServiceLocator.KIM_GROUP_SERVICE));
 		assertNull("A null KimTypeService should have been returned.", typeService2);
 
 		// test by passing the QName for the Permission TypeService

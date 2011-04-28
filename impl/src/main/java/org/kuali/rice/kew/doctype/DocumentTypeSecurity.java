@@ -37,7 +37,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -140,7 +140,7 @@ public class DocumentTypeSecurity implements Serializable {
         	value = Utilities.substituteConfigParameters(value);
             String namespaceCode = Utilities.parseGroupNamespaceCode(value);
             String groupName = Utilities.parseGroupName(value);
-        	Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+        	Group groupObject = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
         	if (groupObject == null) {
         		throw new WorkflowException("Could not find group: " + value);
         	}
@@ -158,7 +158,7 @@ public class DocumentTypeSecurity implements Serializable {
             if (!org.apache.commons.lang.StringUtils.isEmpty(groupName)) {
               groupName = Utilities.substituteConfigParameters(groupName).trim();
               String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
-              Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+              Group groupObject = KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
               
               
               if (groupObject != null) {
@@ -209,7 +209,7 @@ public class DocumentTypeSecurity implements Serializable {
         			}
         		}
         		
-              if ( KIMServiceLocator.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails())) {
+              if ( KimApiServiceLocator.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails())) {
             	  permissions.add(securityPermission); 
               } else {
             	  LOG.warn("Could not find permission with name '" + securityPermission.getPermissionName() + "' and namespace '" + securityPermission.getPermissionNamespaceCode() + "' which was defined on Document Type security");

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.rule.RuleTestUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
 /**
@@ -70,7 +70,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
-		Person person = KIMServiceLocator.getPersonService().getPerson(ewestfalPrincipalId);
+		Person person = KimApiServiceLocator.getPersonService().getPerson(ewestfalPrincipalId);
 		// this would blow up before the fix
 		EmailContent emailContent = emailContentService.generateDailyReminder(person, actionItems);
 	}
@@ -97,7 +97,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
-		Person person = KIMServiceLocator.getPersonService().getPerson(user1PrincipalId);
+		Person person = KimApiServiceLocator.getPersonService().getPerson(user1PrincipalId);
 		EmailContent emailContent = emailContentService.generateDailyReminder(person, actionItems);
 	}
 	
@@ -123,7 +123,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
-		Person person = KIMServiceLocator.getPersonService().getPerson(user1PrincipalId);
+		Person person = KimApiServiceLocator.getPersonService().getPerson(user1PrincipalId);
 		EmailContent emailContent = emailContentService.generateDailyReminder(person, actionItems);
 	}
 }

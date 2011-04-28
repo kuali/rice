@@ -25,7 +25,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
@@ -460,11 +460,11 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	}
 	
 	protected IdentityManagementService getIdentityManagementService() {
-		return KIMServiceLocator.getIdentityManagementService();
+		return KimApiServiceLocator.getIdentityManagementService();
 	}
 	
 	protected PermissionService getPermissionService() {
-		return KIMServiceLocator.getPermissionService();
+		return KimApiServiceLocator.getPermissionService();
 	}
 
 }

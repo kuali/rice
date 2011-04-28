@@ -18,7 +18,7 @@ package org.kuali.rice.kim.document.rule;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
@@ -58,7 +58,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
-            identityService = KIMServiceLocator.getIdentityService();
+            identityService = KimApiServiceLocator.getIdentityService();
         }
         return identityService;
     }
@@ -102,7 +102,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 
     @SuppressWarnings("unchecked")
 	protected boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
-        Group group = KIMServiceLocator.getGroupService().getGroupByName(groupDoc.getGroupNamespace(), groupDoc.getGroupName());
+        Group group = KimApiServiceLocator.getGroupService().getGroupByName(groupDoc.getGroupNamespace(), groupDoc.getGroupName());
         boolean rulePassed = true;
     	if(group!=null){
     		if(group.getId().equals(groupDoc.getGroupId()))

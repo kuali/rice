@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
@@ -477,7 +477,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	@SuppressWarnings("unchecked")
 	public static PersonService getPersonService() {
 		if ( personService == null ) {
-			personService = KIMServiceLocator.getPersonService();
+			personService = KimApiServiceLocator.getPersonService();
 		}
 		return personService;
 	}
@@ -487,7 +487,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 */
 	public static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}

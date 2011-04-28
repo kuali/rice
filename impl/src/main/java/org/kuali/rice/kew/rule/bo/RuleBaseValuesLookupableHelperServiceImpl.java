@@ -37,7 +37,7 @@ import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
@@ -235,7 +235,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if (!org.apache.commons.lang.StringUtils.isEmpty(networkIdParam)) {
-        	Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam);
+        	Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam);
         	if (person != null) {
         		workflowId = person.getPrincipalId();
         	}
@@ -400,7 +400,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
 
     private IdentityManagementService getIdentityManagementService() {
-       return KIMServiceLocator.getIdentityManagementService();
+       return KimApiServiceLocator.getIdentityManagementService();
     }
 
     private RuleTemplateService getRuleTemplateService() {
@@ -430,14 +430,14 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!org.apache.commons.lang.StringUtils.isEmpty(groupName) && !org.apache.commons.lang.StringUtils.isEmpty(groupNamespace)) {
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }
         }
 
         if  (!org.apache.commons.lang.StringUtils.isEmpty(principalName)) {
-            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+            Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
             if (person == null) {
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
             }

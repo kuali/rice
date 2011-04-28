@@ -25,7 +25,7 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -193,7 +193,7 @@ public class UserLoginFilter implements Filter {
 	
     private IdentityManagementService getIdentityManagementService() {
     	if (this.identityManagementService == null) {
-    		this.identityManagementService = KIMServiceLocator.getIdentityManagementService();
+    		this.identityManagementService = KimApiServiceLocator.getIdentityManagementService();
     	}
     	
     	return this.identityManagementService;

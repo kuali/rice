@@ -51,7 +51,7 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -151,7 +151,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "user";
             delegatorId = actionItem.getDelegatorWorkflowId();
-            KimPrincipal delegator = KIMServiceLocator.getIdentityManagementService().getPrincipal(delegatorId);
+            KimPrincipal delegator = KimApiServiceLocator.getIdentityManagementService().getPrincipal(delegatorId);
             
             if (delegator == null) {
             	LOG.error("Cannot find user for id " + delegatorId);
@@ -162,7 +162,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         } else if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "workgroup";
             delegatorId = actionItem.getDelegatorGroupId().toString();
-            delegatorDisplayValue = KIMServiceLocator.getIdentityManagementService().getGroup(actionItem.getDelegatorGroupId()).getName();
+            delegatorDisplayValue = KimApiServiceLocator.getIdentityManagementService().getGroup(actionItem.getDelegatorGroupId()).getName();
         }
         delegatorElement.setAttribute("type", delegatorType);
         // add the id element

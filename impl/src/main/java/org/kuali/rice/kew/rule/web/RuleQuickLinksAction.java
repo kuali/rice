@@ -33,7 +33,7 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -210,7 +210,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 				searchCriteria.put("detailCriteria",
 						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						);
-				permissions = KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
+				permissions = KimApiServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
 //				sqlLogger.setLevel( Level.INFO );
 			}
 			return permissions;
@@ -330,7 +330,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						+ ","
 						+ KimConstants.AttributeConstants.ROUTE_NODE_NAME+"="+getRouteNodeName() );
-				responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
+				responsibilities = KimApiServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
 			}
 			return responsibilities;
 		}

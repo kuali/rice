@@ -45,7 +45,7 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
@@ -319,7 +319,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if(!org.apache.commons.lang.StringUtils.isEmpty(networkIdParam)){
         workflowId = networkIdParam;
-        workflowId = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
+        workflowId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
         }
 
         Iterator<RuleDelegation> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();
@@ -369,7 +369,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
 
     private IdentityManagementService getIdentityManagementService() {
-       return KIMServiceLocator.getIdentityManagementService();
+       return KimApiServiceLocator.getIdentityManagementService();
     }
 
     private RuleTemplateService getRuleTemplateService() {
@@ -407,7 +407,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if  (!org.apache.commons.lang.StringUtils.isEmpty(personId)) {
             //Person person = KIMServiceLocatorInternal.getPersonService().getPerson(personId);
-            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(personId);/** IU fix EN-1552 */
+            Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(personId);/** IU fix EN-1552 */
             if (person == null) {
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
             }

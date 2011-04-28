@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -81,7 +81,7 @@ public class LookupController extends UifControllerBase {
                     lookupForm.setSuppressActions( true );
                 }
             	// check if user is allowed to lookup object
-                if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KNSUtils.getNamespaceAndComponentSimpleName(dataObjectClass), null)) {
+                if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(user.getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KNSUtils.getNamespaceAndComponentSimpleName(dataObjectClass), null)) {
                     throw new AuthorizationException(user.getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
                     		dataObjectClass.getSimpleName());

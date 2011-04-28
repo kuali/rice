@@ -31,7 +31,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.util.GlobalVariables;
 
@@ -162,7 +162,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     }
 
     protected String getPrincipalId(String networkId){
-    	return KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId).getPrincipalId();
+    	return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(networkId).getPrincipalId();
     }
 
     @Test public void testCustomSearchableAttributesWithDataType() throws Exception {
@@ -211,7 +211,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 		*/
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -324,7 +324,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setFromDateCreated("01/01/2004");
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals(1, result.getSearchResults().size());
 
@@ -377,7 +377,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         String documentTypeName = "WildcardTestDocType";
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         String principalName = "rkirkend";
-        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         String[][] searchableAttributeValuesAsStrings = { {"testString", "9984", "38.1357", "06/24/2009"},
         		{"anotherStr", "33", "80000.65432", "07/08/2010"}, {"MoreText", "432", "-0.765", "12/12/2012"} };
 

@@ -17,7 +17,7 @@ package org.kuali.rice.kew.user;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.UserSession;
 
@@ -59,7 +59,7 @@ public final class UserUtils {
 	 */
 	public static PersonService getPersonService() {
 		if ( personService == null ) {
-			personService = KIMServiceLocator.getPersonService();
+			personService = KimApiServiceLocator.getPersonService();
 		}
 		return personService;
 	}

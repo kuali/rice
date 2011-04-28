@@ -45,7 +45,7 @@ import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -268,7 +268,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         if (!actionRequest.isPrimaryDelegator()) {
             if (actionRequest.isGroupRequest()) {
-                List<String> principalIds =  KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId());
+                List<String> principalIds =  KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId());
                 actionItems.addAll(createActionItemsForPrincipals(actionRequest, principalIds));
             } else if (actionRequest.isUserRequest()) {
                 ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
@@ -314,7 +314,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 	                    return;
 	                }
 	                if (responsibleParty.getPrincipalId() != null) {
-	                    KimPrincipal user = KIMServiceLocator.getIdentityManagementService()
+	                    KimPrincipal user = KimApiServiceLocator.getIdentityManagementService()
 	                            .getPrincipal(responsibleParty.getPrincipalId());
 	                    actionRequest.setPrincipalId(user.getPrincipalId());
 	                } else if (responsibleParty.getGroupId() != null) {
@@ -384,7 +384,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      */
     protected boolean deactivateOnEmptyGroup(ActionRequestValue actionRequestToActivate, ActivationContext activationContext) {
     	if (actionRequestToActivate.isGroupRequest()) {
-    		 if (KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequestToActivate.getGroup().getId()).isEmpty()) {
+    		 if (KimApiServiceLocator.getGroupService().getMemberPrincipalIds(actionRequestToActivate.getGroup().getId()).isEmpty()) {
     			 deactivateRequest(null, actionRequestToActivate, null, activationContext);
     			 return true;
          	}
@@ -521,7 +521,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode) {
         List matchedArs = new ArrayList();
-        List<String> arGroups = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+        List<String> arGroups = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         return filterActionRequestsByCode((List<ActionRequestValue>)actionRequests, principalId, arGroups, requestCode);
     }
     
@@ -665,7 +665,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 				principalIds.add(actionRequest.getPrincipalId());
 			} else if(actionRequest.isGroupRequest()){
 				principalIds.addAll(
-						KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()));
+						KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()));
 			}
 		}
     	return principalIds;
@@ -924,7 +924,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 if (workgroupId == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup null.",
                             "actionrequest.workgroup.empty", actionRequest.getActionRequestId().toString()));
-                } else if (KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId) == null) {
+                } else if (KimApiServiceLocator.getIdentityManagementService().getGroup(workgroupId) == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup invalid.",
                             "actionrequest.workgroup.invalid", actionRequest.getActionRequestId().toString()));
                 }
@@ -936,7 +936,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest person id null.", "actionrequest.persosn.empty",
                             actionRequest.getActionRequestId().toString()));
                 } else {
-                	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+                	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
                 	if (principal == null) {
                 		errors.add(new WorkflowServiceErrorImpl("ActionRequest person id invalid.",
                 				"actionrequest.personid.invalid", actionRequest.getActionRequestId().toString()));
@@ -989,7 +989,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         // than we need get all the requests with workgroup ids and see if our user is in that group
         List<String> groupIds = getActionRequestDAO().getRequestGroupIds(documentId);
         for (String groupId : groupIds) {
-            if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId)) {
+            if (KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, groupId)) {
                 return true;
             }
         }

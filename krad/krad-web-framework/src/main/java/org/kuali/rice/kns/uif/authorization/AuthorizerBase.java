@@ -22,8 +22,8 @@ import java.util.Set;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -229,14 +229,14 @@ public class AuthorizerBase implements Authorizer {
 
     protected static final IdentityManagementService getIdentityManagementService() {
         if (identityManagementService == null) {
-            identityManagementService = KIMServiceLocator.getIdentityManagementService();
+            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         }
         return identityManagementService;
     }
 
     protected static final PersonService getPersonService() {
         if (personService == null) {
-            personService = KIMServiceLocator.getPersonService();
+            personService = KimApiServiceLocator.getPersonService();
         }
         return personService;
     }

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
 public class RuleDAOJpaImpl implements RuleDAO {
@@ -250,13 +250,13 @@ public class RuleDAOJpaImpl implements RuleDAO {
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups) {
             KimPrincipal principal = null;
 
-            principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 
             if (principal == null)
             {
             	throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
             }
-            kimGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            kimGroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
         addResponsibilityCriteria(crit, kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
         //if (responsibilityCrit != null) {

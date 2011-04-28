@@ -19,8 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -32,6 +31,7 @@ import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
@@ -436,7 +436,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
 
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleManagementService();
+			roleService = KimApiServiceLocator.getRoleManagementService();
 		}
 
 		return roleService;

@@ -22,7 +22,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.Iterator;
 import java.util.List;
@@ -342,14 +342,14 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 
 
 	private String getPrincipalIdFromPrincipalName(String principalName) {
-	    return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+	    return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
 	}
 
     private String getGroupIdFromGroupName(String namespace, String groupName) {
-        return KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getId();
+        return KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getId();
     }
 
     private String getRoleIdFromRoleName(String namespaceCode, String roleName) {
-        return KIMServiceLocator.getRoleService().getRoleIdByName(namespaceCode, roleName);
+        return KimApiServiceLocator.getRoleService().getRoleIdByName(namespaceCode, roleName);
     }
 }

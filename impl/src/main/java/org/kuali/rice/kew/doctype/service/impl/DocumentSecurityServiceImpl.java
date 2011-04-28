@@ -40,7 +40,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.UserSession;
 
@@ -87,7 +87,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
 	  if (session.getUserSession() == null) {
 		  return false;
 	  }
-	  return KIMServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
+	  return KimApiServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
   protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorPrincipalId, SecuritySession session) {
@@ -206,7 +206,7 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
   }
 
 	private boolean isMemberOfGroupWithName(String namespace, String groupName, String principalId) {
-		for (Group group : KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principalId)) {
+		for (Group group : KimApiServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principalId)) {
 			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getName())) {
 				return true;
 			}
@@ -237,7 +237,7 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 			LOG.error(e.getMessage(), e);
 			return false;
 		}
-		return KIMServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), permissionNamespaceCode, permissionName, permissionDetails, qualification);
+		return KimApiServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), permissionNamespaceCode, permissionName, permissionDetails, qualification);
 	}
 
 	private String getReplacementString(RouteHeaderDTO routeHeader, String value) throws Exception {

@@ -28,7 +28,7 @@ import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
 import java.util.Collection;
@@ -91,7 +91,7 @@ public class EmailMessageTest extends KEWTestCase {
         loadXmlFile("customEmailStyleData.xml");
         assertNotNull(CoreApiServiceLocator.getStyleService().getStyle("kew.email.style"));
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, user);
 
         Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null);
@@ -125,7 +125,7 @@ public class EmailMessageTest extends KEWTestCase {
         assertNotNull(CoreApiServiceLocator.getStyleService().getStyle("kew.email.style"));
         assertNotNull(CoreApiServiceLocator.getStyleService().getStyle("doc.custom.email.style"));
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocumentCustomStyle" }, user);
 
         Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null);

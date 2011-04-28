@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.WebUtils;
@@ -61,7 +61,7 @@ public class DummyLoginFilter implements Filter {
         final UserSession session = WebUtils.getUserSessionFromRequest(request);
         
         if (session == null) {
-        	IdentityManagementService auth = KIMServiceLocator.getIdentityManagementService();
+        	IdentityManagementService auth = KimApiServiceLocator.getIdentityManagementService();
        		request.setAttribute("showPasswordField", Boolean.valueOf(showPassword));
             final String user = request.getParameter("__login_user");
             final String password = request.getParameter("__login_pw");

@@ -33,8 +33,8 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -270,7 +270,7 @@ public class NoteAction extends KewKualiAction {
         Person user = null;
         String id = "";
         if (note != null && note.getNoteAuthorWorkflowId() != null && ! "".equalsIgnoreCase(note.getNoteAuthorWorkflowId())) {
-        	user = KIMServiceLocator.getPersonService().getPerson(note.getNoteAuthorWorkflowId());
+        	user = KimApiServiceLocator.getPersonService().getPerson(note.getNoteAuthorWorkflowId());
             id = note.getNoteAuthorWorkflowId();
         }
         if (user != null) {

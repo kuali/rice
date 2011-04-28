@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
 /**
@@ -53,7 +53,7 @@ public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHe
      */
     public String getInitiatorName() {
         String initiatorName = null;
-        Person initiator = KIMServiceLocator.getPersonService().getPerson(getActionListInitiatorPrincipal().getPrincipalId());
+        Person initiator = KimApiServiceLocator.getPersonService().getPerson(getActionListInitiatorPrincipal().getPrincipalId());
     	if (initiator != null) {
     	    initiatorName = initiator.getName();
     	}

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
@@ -423,7 +423,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public PermissionService getPermissionService() {
 		if ( permissionService == null ) {
-			permissionService = KIMServiceLocator.getPermissionService();
+			permissionService = KimApiServiceLocator.getPermissionService();
 		}
 		return permissionService;
 	}
@@ -433,7 +433,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public RoleManagementService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleManagementService();
+			roleService = KimApiServiceLocator.getRoleManagementService();
 		}
 		return roleService;
 	}
@@ -443,7 +443,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public ResponsibilityService getResponsibilityService() {
 		if ( responsibilityService == null ) {
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KimApiServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
 	}

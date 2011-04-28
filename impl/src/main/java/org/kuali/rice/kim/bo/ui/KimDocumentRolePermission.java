@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 
 /**
@@ -82,7 +82,7 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	 */
 	public KimPermissionInfo getKimPermission() {
 		if ( kimPermission == null || !StringUtils.equals( kimPermission.getPermissionId(), permissionId ) ) {
-			kimPermission = KIMServiceLocator.getPermissionService().getPermission(permissionId);
+			kimPermission = KimApiServiceLocator.getPermissionService().getPermission(permissionId);
 		}
 		return kimPermission;
 	}

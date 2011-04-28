@@ -27,8 +27,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
 import org.springframework.util.AutoPopulatingList;
 
@@ -85,7 +85,7 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
-			kimResponsibility = ((ResponsibilityServiceImpl) KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getResponsibilityId());
+			kimResponsibility = ((ResponsibilityServiceImpl) KimApiServiceLocator.getResponsibilityService()).getResponsibilityImpl(getResponsibilityId());
 		}
 		return this.kimResponsibility;
 	}

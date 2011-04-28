@@ -16,10 +16,10 @@
 package org.kuali.rice.kim.document;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
@@ -48,7 +48,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			}
 			GenericPermission perm = (GenericPermission)getBusinessObject();
 			
-			KIMServiceLocatorInternal.getPermissionUpdateService().savePermission( perm.getPermissionId(),
+			KimApiServiceLocator.getPermissionUpdateService().savePermission( perm.getPermissionId(),
 					perm.getTemplateId(),
 					perm.getNamespaceCode(), 
 					perm.getName(), 

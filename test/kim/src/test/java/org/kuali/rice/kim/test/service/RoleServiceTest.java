@@ -17,7 +17,7 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -39,7 +39,7 @@ public class RoleServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		setRoleService(KIMServiceLocator.getRoleService());
+		setRoleService(KimApiServiceLocator.getRoleService());
 	}
 	
 	@Test

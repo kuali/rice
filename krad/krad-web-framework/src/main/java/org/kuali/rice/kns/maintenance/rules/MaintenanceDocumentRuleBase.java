@@ -32,7 +32,7 @@ import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
@@ -135,7 +135,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setDocumentHelperService(KNSServiceLocatorWeb.getDocumentHelperService());
             this.setMaintDocDictionaryService(KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService());
             this.setWorkflowDocumentService(KNSServiceLocatorWeb.getWorkflowDocumentService());
-            this.setPersonService( KIMServiceLocator.getPersonService() );
+            this.setPersonService( KimApiServiceLocator.getPersonService() );
             this.setBusinessObjectAuthorizationService(KNSServiceLocatorWeb.getBusinessObjectAuthorizationService());
         } catch ( Exception ex ) {
             // do nothing, avoid blowing up if called prior to spring initialization
@@ -1569,7 +1569,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     protected RoleService getRoleService(){
         if(this.roleService==null){
-            this.roleService = KIMServiceLocator.getRoleService();
+            this.roleService = KimApiServiceLocator.getRoleService();
         }
         return this.roleService;
     }

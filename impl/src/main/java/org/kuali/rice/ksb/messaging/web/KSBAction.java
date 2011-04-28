@@ -30,7 +30,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -118,7 +118,7 @@ public abstract class KSBAction extends DispatchAction {
     	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
     	AttributeSet permissionDetails = KNSUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
+        if (!KimApiServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
         {
         	throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(), 

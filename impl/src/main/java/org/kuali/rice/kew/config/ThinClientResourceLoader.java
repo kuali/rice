@@ -34,7 +34,7 @@ import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
@@ -125,11 +125,11 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 			WorkflowDocumentActions documentActions = getWorkflowDocument();
 			services.put(serviceName, documentActions);
 			return documentActions;
-		} else if (serviceName.equals(KIMServiceLocator.KIM_IDENTITY_SERVICE)) {
+		} else if (serviceName.equals(KimApiServiceLocator.KIM_IDENTITY_SERVICE)) {
 			IdentityService identityService = getIdentityService();
 			services.put(serviceName, identityService);
 			return identityService;
-		} else if (serviceName.equals(KIMServiceLocator.KIM_GROUP_SERVICE)) {
+		} else if (serviceName.equals(KimApiServiceLocator.KIM_GROUP_SERVICE)) {
 			GroupService groupService = getGroupService();
 			services.put(serviceName, groupService);
 			return groupService;

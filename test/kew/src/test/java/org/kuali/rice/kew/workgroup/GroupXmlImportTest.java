@@ -18,7 +18,7 @@ package org.kuali.rice.kew.workgroup;
 import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.BaselineTestCase;
@@ -46,7 +46,7 @@ public class GroupXmlImportTest extends KEWTestCase {
     @Test public void testGroupImportXml() throws Exception {
     	loadXmlFile("GroupXmlImportTest.xml");
 
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         //verify that the group was ingested
         Group group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
 
@@ -56,6 +56,6 @@ public class GroupXmlImportTest extends KEWTestCase {
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getId()));
         assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getId()));
         assertTrue(identityManagementService.isMemberOfGroup("2015", group.getId()));
-        assertTrue(KIMServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getId(), group.getId()));
+        assertTrue(KimApiServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getId(), group.getId()));
     }
 }

@@ -22,7 +22,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.Role;
@@ -81,14 +80,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 	
     protected IdentityService getIdentityService() {
     	if ( identityService == null ) {
-    		identityService = KIMServiceLocator.getIdentityService();
+    		identityService = KimApiServiceLocator.getIdentityService();
     	}
 		return identityService;
 	}
 
     protected ResponsibilityService getResponsibilityService() {
     	if ( responsibilityService == null ) {
-    		responsibilityService = KIMServiceLocator.getResponsibilityService();
+    		responsibilityService = KimApiServiceLocator.getResponsibilityService();
     	}
 		return responsibilityService;
 	}

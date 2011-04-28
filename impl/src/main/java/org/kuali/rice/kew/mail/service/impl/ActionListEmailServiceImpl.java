@@ -41,8 +41,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.CronTrigger;
@@ -318,7 +318,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 			String workflowId = ((UserOptions) iter.next()).getWorkflowId();
 			try {
 
-				users.add(KIMServiceLocator.getPersonService().getPerson(workflowId));
+				users.add(KimApiServiceLocator.getPersonService().getPerson(workflowId));
 			} catch (Exception e) {
 				LOG.error("error retrieving workflow user with ID: "
 						+ workflowId);

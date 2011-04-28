@@ -44,7 +44,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -146,7 +146,7 @@ public class EmailNode implements SimpleNode {
 	    to = toAddresses.item(0).getTextContent();
 	    if ("initiator".equalsIgnoreCase(to))
 	    {	
-	    	Person person = KIMServiceLocator.getPersonService().getPerson(context.getDocument().getInitiatorWorkflowId());
+	    	Person person = KimApiServiceLocator.getPersonService().getPerson(context.getDocument().getInitiatorWorkflowId());
 			to = (person == null ? "" : person.getEmailAddressUnmasked());
 	    }
 	    if (StringUtils.isBlank(to)) {

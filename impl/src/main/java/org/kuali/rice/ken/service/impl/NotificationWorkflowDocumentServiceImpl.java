@@ -22,12 +22,11 @@ import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 
 
 /**
@@ -90,7 +89,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
 	// param 5 - this is the "force action" requests - if set to true, this will be delivered to the recipients list regardless of
 	//           whether the recipient has already taken action on this request; in our case, this doesn't really apply at this point in time,
 	//           so we'll set to true just to be safe
-	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipientUserId);
+	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipientUserId);
 	document.adHocRouteDocumentToPrincipal(actionRequested, annotation, principal.getPrincipalId(),
 		messageDelivery.getNotification().getProducer().getName(), true);
 

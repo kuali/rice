@@ -17,7 +17,7 @@ package org.kuali.rice.kim.inquiry;
 
 import java.util.Map;
 
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
@@ -45,7 +45,7 @@ public class PersonInquirableImpl extends KualiInquirableImpl {
 
 	public PersonService getPersonService() {
 		if ( personService == null ) {
-			personService = KIMServiceLocator.getPersonService();
+			personService = KimApiServiceLocator.getPersonService();
 		}
 		return personService;
 	}

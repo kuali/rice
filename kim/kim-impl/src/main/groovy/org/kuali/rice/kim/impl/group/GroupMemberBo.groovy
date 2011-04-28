@@ -26,9 +26,6 @@ import org.kuali.rice.kim.api.group.GroupMemberContract
 import org.kuali.rice.kim.impl.membership.AbstractMember
 import org.kuali.rice.kim.api.group.GroupMember
 import javax.persistence.GeneratedValue
-import org.kuali.rice.kim.api.services.KIMServiceLocator
-import org.kuali.rice.kim.util.KimConstants
-
 
 @Entity
 @Table(name="KRIM_GRP_MBR_T")
@@ -89,9 +86,9 @@ public class GroupMemberBo extends AbstractMember implements GroupMemberContract
         if (tempIsActive) {
             //check to see if underlying member is active
             if (typeCode.equals(KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
-                return KIMServiceLocator.getIdentityManagementService().getGroup(memberId).isActive()
+                return KimApiServiceLocator.getIdentityManagementService().getGroup(memberId).isActive()
             } else if (typeCode.equals(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-                return KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).isActive()
+                return KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberId).isActive()
             } else {
                 return tempIsActive
             }

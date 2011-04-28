@@ -29,7 +29,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -69,11 +69,11 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
 		String operation = parameters[0];
 		String principalId = parameters[1];
 		String groupId = parameters[2];
-		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+		KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate the user for the given principal id '" + principalId + "'");
 		}
-		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+		Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(groupId);
 		if (group == null) {
 			throw new RiceRuntimeException("Could not locate the group with the given id '" + groupId + "'");
 		}
@@ -109,7 +109,7 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
      */
     private void updateActionListForUserAddedToGroup(String principalId, String groupId) {
 		List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-		List<String> allGroupsToCheck = KIMServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
+		List<String> allGroupsToCheck = KimApiServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
         allGroupsToCheck.add(0, groupId);
         for (String groupToCheckId : allGroupsToCheck) {
             actionRequests.addAll(getActionRequestService().findActivatedByGroup(groupToCheckId));
@@ -123,7 +123,7 @@ public class WorkgroupMembershipChangeProcessor implements KSBXMLService {
     }
     
     private void updateActionListForUserRemovedFromGroup(String principalId, String groupId) {
-		List<String> allGroupsToCheck = KIMServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
+		List<String> allGroupsToCheck = KimApiServiceLocator.getIdentityManagementService().getParentGroupIds(groupId);
         allGroupsToCheck.add(0, groupId);
         Collection<ActionItem> actionItems = getActionListService().findByPrincipalId(principalId);
 		for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {

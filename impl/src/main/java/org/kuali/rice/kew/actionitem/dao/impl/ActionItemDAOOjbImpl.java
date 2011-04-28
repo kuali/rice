@@ -34,7 +34,7 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -138,7 +138,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         while (iterator.hasNext()) {
             Object[] ids = (Object[]) iterator.next();
             if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
-            	WebFriendlyRecipient rec = new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson((String) ids[0]));
+            	WebFriendlyRecipient rec = new WebFriendlyRecipient(KimApiServiceLocator.getPersonService().getPerson((String) ids[0]));
                 delegators.put((String) ids[0], rec);
             } else if (ids[1] != null) {
                 String workgroupId = ids[1].toString();
@@ -151,7 +151,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
         delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", principalId);
@@ -176,7 +176,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             Object[] ids = (Object[]) iterator.next();
             if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
                
-            	Person person = KIMServiceLocator.getPersonService().getPerson((String) ids[0]);
+            	Person person = KimApiServiceLocator.getPersonService().getPerson((String) ids[0]);
             	if (person != null) {
             		WebFriendlyRecipient rec = new WebFriendlyRecipient(person);
             	    delegators.put((String) ids[0],rec);
@@ -189,7 +189,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return KIMServiceLocator.getIdentityManagementService();
+        return KimApiServiceLocator.getIdentityManagementService();
     }
 
 	/**

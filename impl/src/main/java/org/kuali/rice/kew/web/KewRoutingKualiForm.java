@@ -27,7 +27,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
@@ -167,7 +167,7 @@ public class KewRoutingKualiForm extends KualiForm {
 
     public void setAppSpecificWorkgroupId(String workgroupId){
         if(workgroupId != null){
-            Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
+            Group workgroup = KimApiServiceLocator.getIdentityManagementService().getGroup(workgroupId);
             if(workgroup != null){
                 getAppSpecificRouteRecipient2().setId(workgroup.getId());
             }

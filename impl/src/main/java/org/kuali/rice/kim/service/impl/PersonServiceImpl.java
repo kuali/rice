@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -834,14 +834,14 @@ public class PersonServiceImpl implements PersonService {
 
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}
 
 	protected RoleManagementService getRoleManagementService() {
 		if ( roleManagementService == null ) {
-			roleManagementService = KIMServiceLocator.getRoleManagementService();
+			roleManagementService = KimApiServiceLocator.getRoleManagementService();
 		}
 		return roleManagementService;
 	}

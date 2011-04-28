@@ -24,7 +24,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -107,7 +107,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends
 		criteria.put( "template.namespaceCode", KEWConstants.KEW_NAMESPACE );
 		criteria.put( "template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME );
 		criteria.put( "detailCriteria", "documentTypeName="+resp.getDocumentTypeName()+",routeNodeName="+resp.getRouteNodeName() );
-		List<? extends KimResponsibilityInfo> results = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo( criteria, true );
+		List<? extends KimResponsibilityInfo> results = KimApiServiceLocator.getResponsibilityService().lookupResponsibilityInfo( criteria, true );
 		return results.isEmpty() || results.get(0).getResponsibilityId().equals( resp.getResponsibilityId() );
 	}
 }

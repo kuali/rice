@@ -29,7 +29,7 @@ import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +62,7 @@ public class FYIByUniversityId extends RequestActivationNode {
                		String employeeId = field.getChildText("value");
             		LOG.debug("Should send an FYI to employee ID:  " + employeeId);
                		if (!StringUtils.isBlank(employeeId)) {
-               			Person person = KIMServiceLocator.getPersonService().getPerson(employeeId);
+               			Person person = KimApiServiceLocator.getPersonService().getPerson(employeeId);
 
                			if (person == null) {
                				throw new WorkflowRuntimeException("Failed to locate a Person with the given employee ID: " + employeeId);

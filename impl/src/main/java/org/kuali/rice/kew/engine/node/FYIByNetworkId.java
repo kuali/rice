@@ -28,7 +28,7 @@ import org.kuali.rice.kew.rule.NetworkIdRoleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +61,7 @@ public class FYIByNetworkId extends RequestActivationNode {
                	if (field.getAttribute("name")!= null && field.getAttributeValue("name").equals("networkId")) {
             		LOG.debug("Should send an FYI to netID:  " + field.getChildText("value"));
                		if (field.getChildText("value") != null) {
-               			Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(field.getChildText("value"));
+               			Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(field.getChildText("value"));
 
                			//WorkflowDocument wfDoc = new WorkflowDocument(new NetworkIdVO(field.getChildText("value")), routeHeaderId);
                			if (!context.isSimulation()) {

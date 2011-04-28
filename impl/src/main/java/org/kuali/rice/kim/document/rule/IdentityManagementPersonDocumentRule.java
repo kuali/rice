@@ -19,7 +19,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -576,14 +575,14 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocator.getIdentityService();
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
 		return identityService;
 	}
 
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KimApiServiceLocator.getRoleService();
 		}
 		return roleService;
 	}

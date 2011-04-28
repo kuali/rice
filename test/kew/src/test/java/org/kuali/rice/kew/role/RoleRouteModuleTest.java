@@ -24,7 +24,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -151,7 +151,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleMemberImpl adminRolePrincipal = new RoleMemberImpl();
         adminRolePrincipal.setRoleMemberId(roleMemberId1);
         adminRolePrincipal.setRoleId(roleId);
-        KimPrincipal adminPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
+        KimPrincipal adminPrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
         assertNotNull(adminPrincipal);
         adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
         adminRolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
@@ -160,7 +160,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleMemberImpl user2RolePrincipal = new RoleMemberImpl();
         user2RolePrincipal.setRoleMemberId(roleMemberId2);
         user2RolePrincipal.setRoleId(roleId);
-        KimPrincipal user2Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
+        KimPrincipal user2Principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
         assertNotNull(user2Principal);
         user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
         user2RolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
@@ -169,7 +169,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleMemberImpl user1RolePrincipal = new RoleMemberImpl();
         user1RolePrincipal.setRoleMemberId(roleMemberId3);
         user1RolePrincipal.setRoleId(roleId);
-        KimPrincipal user1Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+        KimPrincipal user1Principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
         assertNotNull(user1Principal);
         user1RolePrincipal.setMemberId(user1Principal.getPrincipalId());
         user1RolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
@@ -573,7 +573,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		 * Assign it a role that was created above.  This should mean that every
 		 * principle in the role can have the delegate added below as a delegate
 		 */
-		KimRoleInfo role = KIMServiceLocator.getRoleService().getRoleByName(NAMESPACE, ROLE_NAME);
+		KimRoleInfo role = KimApiServiceLocator.getRoleService().getRoleByName(NAMESPACE, ROLE_NAME);
 		assertNotNull("Role should exist.", role);
 		delegate.setRoleId(role.getRoleId());
 		delegate = (KimDelegationImpl) KNSServiceLocator.getBusinessObjectService().save(delegate);
@@ -583,7 +583,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	    KimDelegationMemberImpl user1RoleDelegate = new KimDelegationMemberImpl();
 	    user1RoleDelegate.setDelegationMemberId(delgMemberId);
 	    // This is the user the delegation requests should be sent to.
-	    KimPrincipal kPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+	    KimPrincipal kPrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 	    assertNotNull(kPrincipal);
 	    user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
 	    /*
@@ -760,7 +760,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 				
 					// first let's clear all of the members out of our role
 				
-					KimRoleInfo role = KIMServiceLocator.getRoleManagementService().getRoleByName(NAMESPACE, ROLE_NAME);
+					KimRoleInfo role = KimApiServiceLocator.getRoleManagementService().getRoleByName(NAMESPACE, ROLE_NAME);
 					Map<String, String> criteria = new HashMap<String, String>();
 					criteria.put("roleId", role.getRoleId());
 					List<RoleMemberImpl> roleMembers = (List<RoleMemberImpl>) KNSServiceLocator.getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
@@ -772,7 +772,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 						KNSServiceLocator.getBusinessObjectService().delete(roleMember);
 					}
 				
-					List<RoleMembershipInfo> roleMemberInfos = KIMServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getRoleId()), new AttributeSet());
+					List<RoleMembershipInfo> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getRoleId()), new AttributeSet());
 					assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
 				
 					// now that we've removed all members from the Role, let's trying routing the doc!

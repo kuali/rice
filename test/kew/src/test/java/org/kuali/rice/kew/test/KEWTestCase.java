@@ -28,7 +28,7 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
@@ -152,8 +152,8 @@ public abstract class KEWTestCase extends BaselineTestCase {
 		@Override
 		public void stop() throws Exception {
 			KEWServiceLocator.getCacheAdministrator().flushAll();
-			KIMServiceLocator.getIdentityManagementService().flushAllCaches();
-			KIMServiceLocator.getRoleManagementService().flushRoleCaches();
+			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
+			KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
 			super.stop();
 		}
 
@@ -207,14 +207,14 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	}
 
 	protected String getPrincipalIdForName(String principalName) {
-		return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+		return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
 	}
 
 	protected String getPrincipalNameForId(String principalId) {
-		return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId).getPrincipalName();
+		return KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId).getPrincipalName();
 	}
 
 	protected String getGroupIdForName(String namespace, String groupName) {
-		return KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getId();
+		return KimApiServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName).getId();
 	}
 }

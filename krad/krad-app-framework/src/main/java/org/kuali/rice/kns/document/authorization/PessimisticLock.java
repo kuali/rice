@@ -18,8 +18,8 @@ package org.kuali.rice.kns.document.authorization;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -165,7 +165,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
      * @return the ownedByUser
      */
     public Person getOwnedByUser() {
-        ownedByUser = KIMServiceLocator.getPersonService().updatePersonIfNecessary(ownedByPrincipalIdentifier, ownedByUser);
+        ownedByUser = KimApiServiceLocator.getPersonService().updatePersonIfNecessary(ownedByPrincipalIdentifier, ownedByUser);
         return ownedByUser;
     }
 

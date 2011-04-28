@@ -17,7 +17,7 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -81,8 +81,8 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		permissionService = KIMServiceLocator.getPermissionService();
-		roleService = KIMServiceLocator.getRoleService();
+		permissionService = KimApiServiceLocator.getPermissionService();
+		roleService = KimApiServiceLocator.getRoleService();
 		
 		if (true) return;
 		

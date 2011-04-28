@@ -18,7 +18,7 @@ package org.kuali.rice.kim.document.rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -103,7 +103,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
-            identityService = KIMServiceLocator.getIdentityService();
+            identityService = KimApiServiceLocator.getIdentityService();
         }
         return identityService;
     }
@@ -615,7 +615,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		// Verify that the new role is not already related to the role either directly or indirectly
 		if (newMember.isRole()){
 			// get all nested role member ids that are of type role
-			RoleService roleService = KIMServiceLocator.getRoleService();
+			RoleService roleService = KimApiServiceLocator.getRoleService();
 			roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
 
 			// check to see if the document role is not a member of the new member role
@@ -735,7 +735,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
 	public ResponsibilityService getResponsibilityService() {
 		if(responsibilityService == null){
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KimApiServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
 	}

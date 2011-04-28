@@ -15,18 +15,15 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -36,6 +33,8 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -92,7 +91,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 				details.put( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
 			}
 			
-			KIMServiceLocatorInternal.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(),
+			KimApiServiceLocator.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(),
 					reviewTemplateId,
 					resp.getNamespaceCode(), 
 					resp.getName(), 
@@ -106,7 +105,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	}
 	
 	protected void populateReviewTemplateInfo() {
-		KimResponsibilityTemplateInfo template = KIMServiceLocator.getResponsibilityService().getResponsibilityTemplateByName( KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
+		KimResponsibilityTemplateInfo template = KimApiServiceLocator.getResponsibilityService().getResponsibilityTemplateByName( KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
 		
 		reviewTemplateId = template.getResponsibilityTemplateId();
 	}

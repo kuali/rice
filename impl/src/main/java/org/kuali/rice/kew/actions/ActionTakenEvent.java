@@ -38,7 +38,7 @@ import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -291,7 +291,7 @@ public abstract class ActionTakenEvent {
 	
 	protected List<String> getGroupIdsForPrincipal() {
 		if (groupIdsForPrincipal == null) {
-			groupIdsForPrincipal = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
+			groupIdsForPrincipal = KimApiServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
 		}
 		return groupIdsForPrincipal;
 	}

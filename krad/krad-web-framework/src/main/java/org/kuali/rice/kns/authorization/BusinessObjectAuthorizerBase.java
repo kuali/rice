@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -246,7 +246,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 
 	protected static final IdentityManagementService getIdentityManagementService() {
 		if (identityManagementService == null) {
-			identityManagementService = KIMServiceLocator
+			identityManagementService = KimApiServiceLocator
 					.getIdentityManagementService();
 		}
 		return identityManagementService;
@@ -254,7 +254,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 
 	protected static final PersonService getPersonService() {
 		if (personService == null) {
-			personService = KIMServiceLocator.getPersonService();
+			personService = KimApiServiceLocator.getPersonService();
 		}
 		return personService;
 	}

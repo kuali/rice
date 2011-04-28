@@ -20,7 +20,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
@@ -56,7 +56,7 @@ public final class RuleTestUtils {
     	
     	RuleResponsibility originalResp = responsibilities.get(0);
 
-    	KimPrincipal delegatePrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(delegateUser);
+    	KimPrincipal delegatePrincipal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(delegateUser);
 
 		// save the new rule delegation
 		// this *SHOULD* requeue

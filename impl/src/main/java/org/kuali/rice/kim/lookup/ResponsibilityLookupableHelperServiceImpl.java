@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -201,7 +201,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 					responsibilities.add(responsibility);
 				}
 				//need to find roles that current role is a member of and build search string
-				List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+				List<String> parentRoleIds = KimApiServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
 				for (String parentRoleId : parentRoleIds) {
 					Map<String, String> roleSearchCriteria = new HashMap<String, String>();
 					roleSearchCriteria.put("roleId", parentRoleId);

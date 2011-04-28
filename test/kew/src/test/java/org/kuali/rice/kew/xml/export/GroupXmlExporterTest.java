@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.test.BaselineTestCase;
 
@@ -42,7 +42,7 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
      */
     @Override
     protected void assertExport() throws Exception {
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         List<? extends Group> oldGroups = identityManagementService.getGroupsForPrincipal(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
 
         KewExportDataSet dataSet = new KewExportDataSet();

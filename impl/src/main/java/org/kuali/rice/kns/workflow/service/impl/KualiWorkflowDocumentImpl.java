@@ -34,7 +34,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -269,7 +269,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
                         isAdHocRequested = true;
                     }
                     else if (actionRequests[actionRequestIndex].isGroupRequest()) {
-                    	if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequests[actionRequestIndex].getGroupId())) {
+                    	if (KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequests[actionRequestIndex].getGroupId())) {
                     		isAdHocRequested = true;
                     	}
                     }
@@ -581,7 +581,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
      */
     public Set<Person> getAllPriorApprovers() throws WorkflowException {
-        org.kuali.rice.kim.service.PersonService personService = KIMServiceLocator.getPersonService();
+        org.kuali.rice.kim.service.PersonService personService = KimApiServiceLocator.getPersonService();
         ActionTakenDTO[] actionsTaken = workflowDocument.getActionsTaken();
         Set<String> principalIds = new HashSet<String>();
         Set<Person> persons = new HashSet<Person>();

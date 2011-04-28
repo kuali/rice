@@ -28,7 +28,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase;
@@ -75,7 +75,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         assertEquals("Should be a single exception request", 1, actionRequests.length);
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
+            Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
             assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
@@ -170,7 +170,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
         for (int i = 0; i < actionRequests.length; i++) {
             ActionRequestDTO actionRequest = actionRequests[i];
             if (actionRequest.isCompleteRequest()) {
-            	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
+            	Group group = KimApiServiceLocator.getIdentityManagementService().getGroup(actionRequest.getGroupId());
                 assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
                 assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
                 assertNull("For exception routing, node instance should have a null id.", actionRequest.getNodeInstanceId());

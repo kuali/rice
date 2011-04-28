@@ -30,7 +30,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -179,7 +179,7 @@ public final class TestUtilities {
      * Asserts that the given document id is in the given user's action list.
      */
     public static void assertInActionList(String principalId, Long documentId) {
-    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
@@ -195,7 +195,7 @@ public final class TestUtilities {
      * Asserts that the given document id is NOT in the given user's action list.
      */
     public static void assertNotInActionList(String principalId, Long documentId) {
-    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
@@ -224,7 +224,7 @@ public final class TestUtilities {
 				foundRequest = true;
 				break;
 			} else if (actionRequest.isGroupRequest() && 
-			        KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getId())) {
+			        KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getId())) {
 				foundRequest = true;
 				break;
 			}
@@ -241,7 +241,7 @@ public final class TestUtilities {
      */
     public static void assertApprovals(Long docId, String[] users, boolean shouldHaveApproval) throws WorkflowException {
         List<String> failedUsers = new ArrayList<String>();
-        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService ims = KimApiServiceLocator.getIdentityManagementService();
         for (String user: users) {
             WorkflowDocument doc = new WorkflowDocument(ims.getPrincipalByPrincipalName(user).getPrincipalId(), docId);
             boolean appRqsted = doc.isApprovalRequested();

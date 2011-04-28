@@ -35,7 +35,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
@@ -481,7 +481,7 @@ public class KualiDocumentActionBase extends KualiAction {
             //fill id if not already filled
             AdHocRouteWorkgroup newWorkgroup = kualiDocumentFormBase.getNewAdHocRouteWorkgroup();
             if (newWorkgroup.getId() == null) {
-                newWorkgroup.setId(KIMServiceLocator.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getId());
+                newWorkgroup.setId(KimApiServiceLocator.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getId());
             }
             kualiDocumentFormBase.getAdHocRouteWorkgroups().add(newWorkgroup);
             AdHocRouteWorkgroup workgroup = new AdHocRouteWorkgroup();
@@ -1782,7 +1782,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected IdentityManagementService getIdentityManagementService() {
         if (identityManagementService == null) {
-            identityManagementService = KIMServiceLocator.getIdentityManagementService();
+            identityManagementService = KimApiServiceLocator.getIdentityManagementService();
         }
         return this.identityManagementService;
     }

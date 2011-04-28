@@ -45,7 +45,7 @@ import org.kuali.rice.kew.webservice.NoteResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
 
@@ -727,7 +727,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			noteVO = routeHeader.getNotes()[routeHeader.getNotes().length-1];
 
 			// return note info
-			Person person = KIMServiceLocator.getPersonService().getPerson(noteVO.getNoteAuthorWorkflowId());
+			Person person = KimApiServiceLocator.getPersonService().getPerson(noteVO.getNoteAuthorWorkflowId());
 			author = person.getName();
 			noteId = noteVO.getNoteId().toString();
 			timestamp = formatCalendar(noteVO.getNoteCreateDate());
@@ -787,7 +787,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				errorMessage = "Error retrieving note for id [" + noteId + "].";
 			} else {
 				// return note info
-				Person person = KIMServiceLocator.getPersonService().getPerson(noteVO.getNoteAuthorWorkflowId());
+				Person person = KimApiServiceLocator.getPersonService().getPerson(noteVO.getNoteAuthorWorkflowId());
 				author = person.getName();
 				resultsNoteId = noteVO.getNoteId().toString();
 				timestamp = formatCalendar(noteVO.getNoteCreateDate());
@@ -1136,7 +1136,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			    NoteDetail noteDetail = new NoteDetail();
 				NoteDTO note = (NoteDTO)notes.get(i);
 				//author, noteId, timestamp, noteText
-				Person person = KIMServiceLocator.getPersonService().getPerson(note.getNoteAuthorWorkflowId());
+				Person person = KimApiServiceLocator.getPersonService().getPerson(note.getNoteAuthorWorkflowId());
 				noteDetail.setAuthor(person.getName());
 				noteDetail.setId(note.getNoteId().toString());
 				noteDetail.setTimestamp(formatCalendar(note.getNoteCreateDate()));
@@ -1230,7 +1230,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 				errorMessage += "Error: NULL Initiator; ";
 			} else {
 				initiatorPrincipalId = routeHeader.getInitiatorPrincipalId();
-				Person initiator = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+				Person initiator = KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
 				if (initiator != null) {
 				    initiatorName = initiator.getName();
 				}
@@ -1243,7 +1243,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
                 }
             } else {
                 routedByPrincipalId = routeHeader.getRoutedByPrincipalId();
-                Person routedByUser = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+                Person routedByUser = KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
                 if (routedByUser != null) {
                     routedByUserName = routedByUser.getName();
                 }

@@ -22,16 +22,15 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -146,7 +145,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 
 
     protected void loadGroupIntoDocument( String groupId, IdentityManagementGroupDocumentForm groupDocumentForm){
-        Group group = KIMServiceLocator.getGroupService().getGroup(groupId);
+        Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
         getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
     }    
         
@@ -190,7 +189,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
-        	Group tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
+        	Group tempGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
         	if (tempGroup != null) {
         		newMember.setMemberId(tempGroup.getId());
         	}
@@ -200,7 +199,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if (StringUtils.isEmpty(newMember.getMemberId()) 
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+        	KimPrincipalInfo principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
         	if (principal != null) {
         		newMember.setMemberId(principal.getPrincipalId());
         	}
@@ -246,7 +245,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
         	KimRoleInfo roleInfo = null;
-        	roleInfo = KIMServiceLocator.getRoleService().getRole(newMember.getMemberId());
+        	roleInfo = KimApiServiceLocator.getRoleService().getRole(newMember.getMemberId());
         	if (roleInfo == null) {
         		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
             			new String[] {newMember.getMemberId()});

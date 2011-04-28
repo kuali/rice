@@ -30,7 +30,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
@@ -121,7 +121,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		//docSearchService = KEWServiceLocator.getDocumentSearchService();
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("AccountWithDDAttributes");
         String principalName = "quickstart";
-        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
 		
         // Route some test documents.
 		docService.routeDocument(DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(docService), "Routing NORMAL_DOCUMENT", null);
@@ -382,7 +382,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		//docSearchService = KEWServiceLocator.getDocumentSearchService();
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("AccountWithDDAttributes");
         String principalName = "quickstart";
-        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
 		
         // Route some test documents.
 		docService.routeDocument(DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(docService), "Routing NORMAL_DOCUMENT", null);

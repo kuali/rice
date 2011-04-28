@@ -21,15 +21,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.util.AttributeSet;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupAttribute;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
@@ -57,7 +57,6 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -99,7 +98,6 @@ import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.ResponsibilityService;
@@ -241,7 +239,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		// boservice.save(bos) does not handle deleteawarelist
 		getBusinessObjectService().save(bos);
 
-		//KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
+		//KimApiServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
 		service.principalUpdated();
 
@@ -250,7 +248,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		if ( inactivatingPrincipal ) {
 			//when a person is inactivated, inactivate their group, role, and delegation memberships
-			KIMServiceLocator.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
+			KimApiServiceLocator.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
 		}
 	}
 
@@ -1471,21 +1469,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}
 
 	protected IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocator.getIdentityService();
+			identityService = KimApiServiceLocator.getIdentityService();
 		}
 		return identityService;
 	}
 
 	protected GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KimApiServiceLocator.getGroupService();
 		}
 		return groupService;
 	}
@@ -1499,14 +1497,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected RoleService getRoleService() {
 	   	if(roleService == null){
-	   		roleService = KIMServiceLocator.getRoleService();
+	   		roleService = KimApiServiceLocator.getRoleService();
     	}
 		return roleService;
 	}
 
 	protected RoleManagementService getRoleManagementService() {
 	   	if(roleManagementService == null){
-	   		roleManagementService = KIMServiceLocator.getRoleManagementService();
+	   		roleManagementService = KimApiServiceLocator.getRoleManagementService();
     	}
 		return roleManagementService;
 	}
@@ -1517,7 +1515,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected ResponsibilityService getResponsibilityService() {
 	   	if ( responsibilityService == null ) {
-    		responsibilityService = KIMServiceLocator.getResponsibilityService();
+    		responsibilityService = KimApiServiceLocator.getResponsibilityService();
     	}
 		return responsibilityService;
 	}
@@ -1722,7 +1720,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
-			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			KimPrincipal kp = KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberId);
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}
@@ -1740,7 +1738,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         	principalInfo = getIdentityManagementService().getPrincipal(memberId);
         	if (principalInfo != null) {
         		String principalName = principalInfo.getPrincipalName();
-        		Person psn = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        		Person psn = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
         		memberFullName = psn.getFirstName() + " " + psn.getLastName();
         	}        	        	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
@@ -2030,7 +2028,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(!kimRole.isActive()){
 			// when a role is inactivated, inactivate the memberships of principals, groups, and roles in
 			// that role, delegations, and delegation members, and that roles memberships in other roles
-			KIMServiceLocator.getRoleManagementService().roleInactivated(identityManagementRoleDocument.getRoleId());
+			KimApiServiceLocator.getRoleManagementService().roleInactivated(identityManagementRoleDocument.getRoleId());
 		}
 	}
 
@@ -2483,7 +2481,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementGroupDocument.setActive(groupInfo.isActive());
 		identityManagementGroupDocument.setGroupNamespace(groupInfo.getNamespaceCode());
 
-        List<GroupMember> members = new ArrayList(KIMServiceLocator.getGroupService().getMembersOfGroup(groupInfo.getId()));
+        List<GroupMember> members = new ArrayList(KimApiServiceLocator.getGroupService().getMembersOfGroup(groupInfo.getId()));
         identityManagementGroupDocument.setMembers(loadGroupMembers(identityManagementGroupDocument, members));
 
 
@@ -2624,7 +2622,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(!kimGroup.isActive()){
 			// when a group is inactivated, inactivate the memberships of principals in that group
 			// and the memberships of that group in roles
-			KIMServiceLocator.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
+			KimApiServiceLocator.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
 		}
 
 	}

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
@@ -59,7 +59,7 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     @Test public void testDocSearch() throws Exception {
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         List searchResults = null;
         DocumentSearchResultComponents result = null;
@@ -77,7 +77,7 @@ public class DocumentSearchTest extends KEWTestCase {
         criteria.setDocRouteNodeId("3");
         criteria.setDocRouteNodeLogic("equal");
         result = docSearchService.getList(user.getPrincipalId(), criteria);
-        user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         SavedSearchResult savedSearchResults = docSearchService.getSavedSearchResults(user.getPrincipalId(), "DocSearch.NamedSearch.bytitle");
         assertNotNull(savedSearchResults);
         assertNotNull(savedSearchResults.getSearchResult());
@@ -110,7 +110,7 @@ public class DocumentSearchTest extends KEWTestCase {
         new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
 
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
@@ -141,7 +141,7 @@ public class DocumentSearchTest extends KEWTestCase {
         new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
 
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setInitiator("bogus user");
 
@@ -177,7 +177,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.isApprovalRequested());
 
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
@@ -220,13 +220,13 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     @Test public void testGetNamedDocSearches() throws Exception {
-    	Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+    	Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         List namedSearches = docSearchService.getNamedSearches(user.getPrincipalId());
         assertNotNull(namedSearches);
     }
 
     @Test public void testDefaultCreateDateSearchCriteria() throws Exception {
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
@@ -293,7 +293,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setSuperUserSearch("YES");
         criteria.setDocTypeFullName(customDocHandlerDocumentType);
@@ -308,7 +308,7 @@ public class DocumentSearchTest extends KEWTestCase {
 	    assertTrue("The document handler redirect for the client should include the command value for super user search", kvs.getValue().contains(KEWConstants.SUPERUSER_COMMAND));
 	}
 
-        user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
         criteria = new DocSearchCriteriaDTO();
         criteria.setSuperUserSearch("YES");
         result = docSearchService.getList(user.getPrincipalId(), criteria);
@@ -347,17 +347,17 @@ public class DocumentSearchTest extends KEWTestCase {
     	String[] approverNames = {null, "jhopf", null};
     	for (int i = 0; i < titles.length; i++) {
         	WorkflowDocument workflowDocument = new WorkflowDocument(
-        			KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalNames[i]).getPrincipalId(), docTypeName);
+        			KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalNames[i]).getPrincipalId(), docTypeName);
         	workflowDocument.setTitle(titles[i]);
         	workflowDocument.setAppDocId(appDocIds[i]);
         	workflowDocument.routeDocument("routing this document.");
         	docIds[i] = workflowDocument.getRouteHeaderId().toString();
         	if (approverNames[i] != null) {
-        		workflowDocument.setPrincipalId(KIMServiceLocator.getPersonService().getPersonByPrincipalName(approverNames[i]).getPrincipalId());
+        		workflowDocument.setPrincipalId(KimApiServiceLocator.getPersonService().getPersonByPrincipalName(approverNames[i]).getPrincipalId());
         		workflowDocument.approve("approving this document.");
         	}
     	}
-        String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough").getPrincipalId();
+        String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough").getPrincipalId();
         DocSearchCriteriaDTO criteria = null;
         List<DocumentSearchResult> searchResults = null;
         DocumentSearchResultComponents result = null;
@@ -445,6 +445,6 @@ public class DocumentSearchTest extends KEWTestCase {
     }
     
     private String getPrincipalId(String principalName) {
-    	return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+    	return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
 }

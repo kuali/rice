@@ -27,7 +27,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.test.BaselineTestCase;
@@ -52,7 +52,7 @@ public class AdHocRouteTest extends KEWTestCase {
     @Test
     public void testRequestLabel() throws Exception{
     	String note = "test note";
-    	Person per = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+    	Person per = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
     	WorkflowDocument doc = new WorkflowDocument(per.getPrincipalId(), ADHOC_DOC);
 
     	docId = doc.getRouteHeaderId();

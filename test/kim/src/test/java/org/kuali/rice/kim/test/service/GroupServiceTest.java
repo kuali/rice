@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.service.GroupUpdateService;
+import org.kuali.rice.kim.test.KIMTestCase;
 
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.test.KIMTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test the GroupService 
@@ -41,8 +40,8 @@ public class GroupServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		setGroupService(KIMServiceLocator.getGroupService());
-		setGroupUpdateService(KIMServiceLocatorInternal.getGroupUpdateService());
+		setGroupService(KimApiServiceLocator.getGroupService());
+		setGroupUpdateService(KimApiServiceLocator.getGroupUpdateService());
 	}
 	
 	@Test

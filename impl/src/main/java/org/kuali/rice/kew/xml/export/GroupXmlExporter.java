@@ -20,11 +20,10 @@ import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupAttribute;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.group.Group;
 
 import java.util.Iterator;
 
@@ -110,20 +109,20 @@ public class GroupXmlExporter implements XmlExporter {
             }
         }
 
-        java.util.List<String> memberGroupIds = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(group.getId());
+        java.util.List<String> memberGroupIds = KimApiServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(group.getId());
 
-        java.util.List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getId());
+        java.util.List<String> memberPrincipalIds = KimApiServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getId());
 
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
             for (String memberGroupId : memberGroupIds) {
-                Group memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
+                Group memberGroup = KimApiServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
                 Element groupNameElement = renderer.renderElement(membersElement, GROUP_NAME);
                 renderer.renderTextElement(groupNameElement, NAME, memberGroup.getName());
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());
             }
             for (String memberPrincipalId : memberPrincipalIds) {
-                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KIMServiceLocator.getIdentityManagementService().getPrincipal(memberPrincipalId).getPrincipalName());
+                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberPrincipalId).getPrincipalName());
             }
         }
     }

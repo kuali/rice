@@ -16,16 +16,15 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.framework.group.GroupEbo;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.service.RoleService;
@@ -156,21 +155,21 @@ public class KimModuleService extends ModuleServiceBase {
 	@SuppressWarnings("unchecked")
 	protected PersonService getPersonService() {
 		if ( personService == null ) {
-			personService = KIMServiceLocator.getPersonService();
+			personService = KimApiServiceLocator.getPersonService();
 		}
 		return personService;
 	}
 
 	protected RoleService getKimRoleService() {
 		if ( kimRoleService == null ) {
-			kimRoleService = KIMServiceLocator.getRoleManagementService();
+			kimRoleService = KimApiServiceLocator.getRoleManagementService();
 		}
 		return kimRoleService;
 	}
 
 	protected GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KimApiServiceLocator.getGroupService();
 		}
 		return groupService;
 	}

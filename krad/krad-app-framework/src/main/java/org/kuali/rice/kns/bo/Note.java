@@ -19,7 +19,7 @@ package org.kuali.rice.kns.bo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -275,7 +275,7 @@ public class Note extends PersistableBusinessObjectBase {
      * @return Returns the authorUniversal.
      */
     public Person getAuthorUniversal() {
-        authorUniversal = KIMServiceLocator.getPersonService().updatePersonIfNecessary(authorUniversalIdentifier, authorUniversal);
+        authorUniversal = KimApiServiceLocator.getPersonService().updatePersonIfNecessary(authorUniversalIdentifier, authorUniversal);
         return authorUniversal;
     }
 

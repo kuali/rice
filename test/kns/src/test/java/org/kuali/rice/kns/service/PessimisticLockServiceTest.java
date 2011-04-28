@@ -18,7 +18,7 @@ package org.kuali.rice.kns.service;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.kns.UserSession;
@@ -87,15 +87,15 @@ public class PessimisticLockServiceTest extends KNSTestCase {
 
         String userId = "employee";
         String[] lockIdsToVerify = new String[]{"1112", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "frank";
         lockIdsToVerify = new String[]{"1111", "1113"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
         userId = "fred";
         lockIdsToVerify = new String[]{"1111", "1112"};
-        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertFalse("User " + userId + " should not be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(lockIdsToVerify), AuthorizationException.class, true);
 
         verifyDelete("employee", Arrays.asList(new String[]{"1111"}), null, false);
@@ -106,9 +106,9 @@ public class PessimisticLockServiceTest extends KNSTestCase {
 
         // test admin user can delete any lock
         userId = "fran";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         userId = "admin";
-        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KIMServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
+        assertTrue("User " + userId + " should be member of pessimistic lock admin permission", KimApiServiceLocator.getIdentityManagementService().isAuthorized(new UserSession(userId).getPerson().getPrincipalId(), KNSConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null ) );
         verifyDelete(userId, Arrays.asList(new String[]{"1114"}), null, false);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 0 locks left in DB", 0, locks.size());
@@ -237,27 +237,27 @@ public class PessimisticLockServiceTest extends KNSTestCase {
         List<PessimisticLock> locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 8 manually inserted locks", 8, locks.size());
 
-        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fran"), lockDescriptor);
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fran"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 7 locks left after releasing locks for fran using lock descriptor " + lockDescriptor, 7, locks.size());
 
-        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("frank"), lockDescriptor);
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("frank"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 5 locks left after releasing locks for fran and frank using lock descriptor " + lockDescriptor, 5, locks.size());
 
-        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fred"), lockDescriptor);
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fred"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks left after releasing locks for fran, frank, and fred using lock descriptor " + lockDescriptor, 4, locks.size());
 
-        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fran"));
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fran"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 3 locks left after releasing locks for fran with no lock descriptor", 3, locks.size());
 
-        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("frank"));
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("frank"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 1 lock left after releasing locks for fran and frank with no lock descriptor", 1, locks.size());
 
-        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fred"));
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KimApiServiceLocator.getPersonService().getPerson("fred"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be no locks left after releasing locks for fran, frank, and fred with no lock descriptor", 0, locks.size());
     }

@@ -32,7 +32,6 @@ import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kim.service.RoleService;
@@ -644,7 +643,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		sb.append( "   Principal : " ).append( principalId );
 		if ( principalId != null ) {
-			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal( principalId );
+			KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal( principalId );
 			if ( principal != null ) {
 				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
 			}
@@ -779,7 +778,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KimApiServiceLocator.getRoleService();
 		}
 		return roleService;
 	}
@@ -794,7 +793,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public RoleUpdateService getRoleUpdateService() {
 		try {
 			if ( roleUpdateService == null ) {
-				roleUpdateService = KIMServiceLocatorInternal.getRoleUpdateService();
+				roleUpdateService = KimApiServiceLocator.getRoleUpdateService();
 				if ( roleUpdateService == null ) {
 					throw new UnsupportedOperationException( "null returned for RoleUpdateService, unable to update role data");
 				}

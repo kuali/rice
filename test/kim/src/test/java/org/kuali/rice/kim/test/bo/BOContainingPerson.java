@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.test.bo;
 
 
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -59,7 +59,7 @@ public class BOContainingPerson extends PersistableBusinessObjectBase {
 	}
 
 	public Person getPerson() {
-		person = KIMServiceLocator.getPersonService().updatePersonIfNecessary( principalId, person );
+		person = KimApiServiceLocator.getPersonService().updatePersonIfNecessary( principalId, person );
 		return this.person;
 	}
 

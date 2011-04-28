@@ -23,7 +23,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
@@ -501,7 +500,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     public KimTypeAttributesHelper getKimTypeAttributesHelper(String roleId) {
-        KimRoleInfo roleInfo = KIMServiceLocator.getRoleService().getRole(roleId);
+        KimRoleInfo roleInfo = KimApiServiceLocator.getRoleService().getRole(roleId);
         KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().getKimType(roleInfo.getKimTypeId());
         return new KimTypeAttributesHelper(kimTypeInfo);
         //addDelegationRoleKimTypeAttributeHelper(roleId, helper);

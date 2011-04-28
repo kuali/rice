@@ -22,7 +22,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
@@ -66,7 +66,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         workflowDocument.setTitle("testDocSearch_PermissionSecurity");
         workflowDocument.routeDocument("routing this document.");
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("edna");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("edna");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
@@ -83,7 +83,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         workflowDocument.setTitle("testDocSearch_PermissionSecurity");
         workflowDocument.routeDocument("routing this document.");
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("edna");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("edna");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
@@ -134,10 +134,10 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // verify that workgroup can see the document
         String workgroupName = "Test_Security_Group";
-        Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, workgroupName);
+        Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, workgroupName);
         assertNotNull("Workgroup '" + workgroupName + "' should be valid", group);
-        for (String workgroupUserId : KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getId())) {
-            Person workgroupUser = KIMServiceLocator.getPersonService().getPerson(workgroupUserId);
+        for (String workgroupUserId : KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getId())) {
+            Person workgroupUser = KimApiServiceLocator.getPersonService().getPerson(workgroupUserId);
             criteria = new DocSearchCriteriaDTO();
             criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
             resultComponents = KEWServiceLocator.getDocumentSearchService().getList(workgroupUser.getPrincipalId(), criteria);
@@ -232,7 +232,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     }
 
     private String getPrincipalId(String principalName) {
-    	return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+    	return KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
 	
 }

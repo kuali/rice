@@ -29,7 +29,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -82,7 +82,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		
 		final DocumentService documentService = KNSServiceLocatorWeb.getDocumentService();
 		final String principalName = "quickstart";
-        final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        final String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         GlobalVariables.setUserSession(new UserSession(principalName));
         RouteContext.clearCurrentRouteContext();
 
@@ -192,7 +192,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		
 		final DocumentService documentService = KNSServiceLocatorWeb.getDocumentService();
 		final String principalName = "admin";
-        final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
+        final String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         GlobalVariables.setUserSession(new UserSession(principalName));
 
 		SearchAttributeIndexTestDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);

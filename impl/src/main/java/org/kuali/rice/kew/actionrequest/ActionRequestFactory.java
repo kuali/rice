@@ -37,7 +37,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -608,7 +608,7 @@ public class ActionRequestFactory {
 	 */
     protected static RoleManagementService getRoleManagementService() {
 		if ( roleManagementService == null ) {
-			roleManagementService = KIMServiceLocator.getRoleManagementService();
+			roleManagementService = KimApiServiceLocator.getRoleManagementService();
 		}
 		return roleManagementService;
 	}
@@ -628,7 +628,7 @@ public class ActionRequestFactory {
 	 */
     protected static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}

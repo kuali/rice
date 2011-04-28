@@ -28,7 +28,7 @@ import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 
@@ -67,7 +67,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        if  ( (groupId != null) && (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId))) {
+        if  ( (groupId != null) && (!KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId))) {
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
         return "";

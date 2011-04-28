@@ -30,7 +30,7 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -124,7 +124,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
-				Group group = KIMServiceLocator.getIdentityManagementService().
+				Group group = KimApiServiceLocator.getIdentityManagementService().
 	                  getGroup(getRuleResponsibilityName());
 				setReviewer(group.getName());
 				setReviewerId(group.getId());
@@ -177,7 +177,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void setWorkgroupId(String workgroupId) {
-	    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
+	    Group workgroup = KimApiServiceLocator.getIdentityManagementService().getGroup(workgroupId);
 		//Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
 		if (workgroup != null) {
 			setReviewer(workgroup.getName());
@@ -299,7 +299,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (!invalidUser)
 			{
 				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
-				KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
+				KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
 				if( principal != null)
 				{
 					setRuleResponsibilityName(principal.getPrincipalId());
@@ -316,7 +316,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			boolean invalidWorkgroup = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
-			    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
+			    Group workgroup = KimApiServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
 				if (workgroup == null) {
 					invalidWorkgroup = true;
 				} else {

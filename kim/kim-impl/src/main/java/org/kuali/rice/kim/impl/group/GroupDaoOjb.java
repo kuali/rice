@@ -24,7 +24,6 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.api.services.CoreApiServiceLocator;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
@@ -36,7 +35,6 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -140,7 +138,7 @@ public class GroupDaoOjb extends PlatformAwareDaoBaseOjb implements GroupDao  {
         					String principalName = entry.getValue();
         					// Search for the Principal using the Identity Management service
         					LOG.debug("Searching on Principal Name: " + entry.getValue());
-        					KimPrincipalInfo principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        					KimPrincipalInfo principalInfo = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         					// If a Principal is returned, plug in the Principal ID as the Member ID
         					if (principalInfo != null)
         					{

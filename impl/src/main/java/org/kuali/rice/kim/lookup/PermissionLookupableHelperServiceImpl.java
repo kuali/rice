@@ -26,12 +26,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -187,7 +187,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				}
 			}
 			//need to find roles that current role is a member of and build search string
-			List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+			List<String> parentRoleIds = KimApiServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
 			for (String parentRoleId : parentRoleIds) {
 				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
 				roleSearchCriteria.put("roleId", parentRoleId);
@@ -276,7 +276,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 
 	public RoleService getRoleService() {
 		if (roleService == null) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KimApiServiceLocator.getRoleService();
 		}
 		return roleService;
 	}

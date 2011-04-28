@@ -32,7 +32,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -173,7 +173,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         */
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
@@ -302,7 +302,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
@@ -349,7 +349,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
@@ -401,7 +401,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         String validSearchValue = TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString();
         DocSearchCriteriaDTO criteria = null;
@@ -456,7 +456,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkId);
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(networkId);
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
@@ -572,7 +572,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
@@ -618,7 +618,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
@@ -1135,7 +1135,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));
@@ -1183,7 +1183,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
          // prepare to search
          DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-         Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
 
          // execute the search by our chart, we should see one result
          DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -1237,7 +1237,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         // prepare to search
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
 
         // execute the search by our chart, we should see one result
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
@@ -1277,7 +1277,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
-        Person user = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend");
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(key, "jack", docType));

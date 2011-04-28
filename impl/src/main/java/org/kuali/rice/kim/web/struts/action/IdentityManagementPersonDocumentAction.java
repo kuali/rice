@@ -24,7 +24,7 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -95,7 +95,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         String principalId = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID);
         String principalName = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_NAME);
         if ( StringUtils.isBlank(principalId) && StringUtils.isNotBlank(principalName) ) {
-        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	KimPrincipalInfo principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         	if ( principal != null ) {
         		principalId = principal.getPrincipalId();
         	}
@@ -305,14 +305,14 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         if (newGroup.getGroupName() == null 
         		&& newGroup.getNamespaceCode() == null 
         		&& newGroup.getGroupId() != null) {
-        	Group tempGroup = KIMServiceLocator.getIdentityManagementService().getGroup(newGroup.getGroupId());
+        	Group tempGroup = KimApiServiceLocator.getIdentityManagementService().getGroup(newGroup.getGroupId());
         	newGroup.setGroupName(tempGroup.getName());
 	        newGroup.setNamespaceCode(tempGroup.getNamespaceCode());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         } else if (newGroup.getGroupName() != null 
         		&& newGroup.getNamespaceCode() != null 
         		&& newGroup.getGroupId() == null) {
-        	Group tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
+        	Group tempGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
         	newGroup.setGroupId(tempGroup.getId());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         }
@@ -340,7 +340,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentRole newRole = personDocumentForm.getNewRole();
         if (getKualiRuleService().applyRules(new AddRoleEvent("",personDocumentForm.getPersonDocument(), newRole))) {
-	        KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(newRole.getRoleId());
+	        KimRoleInfo role = KimApiServiceLocator.getRoleService().getRole(newRole.getRoleId());
 	        if(!validateRole(newRole.getRoleId(), role, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
@@ -476,7 +476,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
 	        //RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleImpl().getRoleId());
 	        KimRoleInfo roleInfo = null;
-        	roleInfo = KIMServiceLocator.getRoleService().getRole(newDelegationMember.getRoleImpl().getRoleId());
+        	roleInfo = KimApiServiceLocator.getRoleService().getRole(newDelegationMember.getRoleImpl().getRoleId());
 	        if (roleInfo != null) {
 		        if(!validateRole(newDelegationMember.getRoleImpl().getRoleId(),roleInfo, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 		        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -562,7 +562,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
 	        //RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
             KimRoleInfo roleInfo = null;
-        	roleInfo = KIMServiceLocator.getRoleService().getRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
+        	roleInfo = KimApiServiceLocator.getRoleService().getRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
 	        if (roleInfo != null) {
 		        if(!validateRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId(), roleInfo, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 		        	return mapping.findForward(RiceConstants.MAPPING_BASIC);

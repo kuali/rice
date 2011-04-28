@@ -17,7 +17,7 @@ package org.kuali.rice.kim.inquiry;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -98,7 +98,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ROLE_ID);
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
-			RoleService roleService = KIMServiceLocator.getRoleService();
+			RoleService roleService = KimApiServiceLocator.getRoleService();
 			KimRoleInfo roleInfo;
 			AnchorHtmlData inquiryHtmlData;
 			for(RoleImpl roleImpl: assignedToRoles){
@@ -131,7 +131,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 
 	public PermissionService getPermissionService() {
 		if (permissionService == null ) {
-			permissionService = KIMServiceLocator.getPermissionService();
+			permissionService = KimApiServiceLocator.getPermissionService();
 		}
 		return permissionService;
 	}

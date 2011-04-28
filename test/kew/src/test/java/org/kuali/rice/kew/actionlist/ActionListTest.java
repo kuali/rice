@@ -31,7 +31,7 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.jdbc.core.StatementCallback;
@@ -167,7 +167,7 @@ public class ActionListTest extends KEWTestCase {
     	String jitruePrincipalId = getPrincipalIdForName("jitrue");
     	String user1PrincipalId = getPrincipalIdForName("user1");
 
-    	Group NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
+    	Group NonSIT = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();
     	ActionListFilter excludeSecondaryFilter = new ActionListFilter();
@@ -216,7 +216,7 @@ public class ActionListTest extends KEWTestCase {
     	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
-        List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getId());
+        List<String> memberPrincipalIds = KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getId());
         for (String memberPrincipalId : memberPrincipalIds)
         {
             //will want to convert to Kim Principal
@@ -369,8 +369,8 @@ public class ActionListTest extends KEWTestCase {
      */
     @Test public void testGettingDelegationUsers() throws Exception {
 
-        Person jhopf = KIMServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
-        Person bmcgough = KIMServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        Person jhopf = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
+        Person bmcgough = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
     	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
         document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
@@ -382,9 +382,9 @@ public class ActionListTest extends KEWTestCase {
         assertEquals("Wrong size of users who were delegated to via Primary Delegation", 0, recipients.size());
     	recipients = getActionListService().findUserPrimaryDelegations(bmcgough.getPrincipalId());
     	assertEquals("Wrong size of users who were delegated to via Primary Delegation", 3, recipients.size());
-    	String user1 = KIMServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend").getPrincipalId();
-    	String user2 = KIMServiceLocator.getPersonService().getPersonByPrincipalName("temay").getPrincipalId();
-    	String user3 = KIMServiceLocator.getPersonService().getPersonByPrincipalName("delyea").getPrincipalId();
+    	String user1 = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("rkirkend").getPrincipalId();
+    	String user2 = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("temay").getPrincipalId();
+    	String user3 = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("delyea").getPrincipalId();
 
     	boolean foundUser1 = false;
         boolean foundUser2 = false;

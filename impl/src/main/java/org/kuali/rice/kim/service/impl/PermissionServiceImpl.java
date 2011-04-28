@@ -30,7 +30,6 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.dao.KimPermissionDao;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
@@ -464,7 +463,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleManagementService();
+			roleService = KimApiServiceLocator.getRoleManagementService();
 		}
 
 		return roleService;

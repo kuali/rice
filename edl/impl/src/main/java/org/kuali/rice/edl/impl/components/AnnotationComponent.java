@@ -27,8 +27,8 @@ import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -74,7 +74,7 @@ public class AnnotationComponent implements EDLModelComponent {
                     annotation = actionTaken.getAnnotation();
                     if (annotation != null) {
                         LOG.debug("Adding annotation: " + annotation);
-                        Person person = KIMServiceLocator.getPersonService().getPerson(actionTaken.getPrincipalId());
+                        Person person = KimApiServiceLocator.getPersonService().getPerson(actionTaken.getPrincipalId());
                         EDLXmlUtils.createTextElementOnParent(currentVersion, "annotation", person.getName() + ": " + annotation);
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("dom: " + XmlJotter.jotNode(dom));

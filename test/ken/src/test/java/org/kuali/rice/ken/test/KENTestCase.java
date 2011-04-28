@@ -26,7 +26,7 @@ import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -144,8 +144,8 @@ public abstract class KENTestCase extends BaselineTestCase {
         @Override
         public void stop() throws Exception {
             KEWServiceLocator.getCacheAdministrator().flushAll();
-            KIMServiceLocator.getIdentityManagementService().flushAllCaches();
-            KIMServiceLocator.getRoleManagementService().flushRoleCaches();
+            KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
+            KimApiServiceLocator.getRoleManagementService().flushRoleCaches();
             super.stop();
         }
 

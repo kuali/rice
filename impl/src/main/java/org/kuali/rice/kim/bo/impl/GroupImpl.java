@@ -21,7 +21,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.kim.api.services.KIMServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -276,11 +275,11 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
             for ( GroupMemberImpl groupMemberImpl : getMembers() ) {
                 if ( groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )
                         && groupMemberImpl.isActive() ) {
-                    personMembers.add( KIMServiceLocator.getPersonService().getPerson(groupMemberImpl.getMemberId()) );
+                    personMembers.add( KimApiServiceLocator.getPersonService().getPerson(groupMemberImpl.getMemberId()) );
                 } else if (groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )
                         && groupMemberImpl.isActive() ) {
                     //groupMembers.add(
-                   // 		KIMServiceLocator.getIdentityManagementService().getGroup(groupMemberImpl.getMemberId()) );
+                   // 		KimApiServiceLocator.getIdentityManagementService().getGroup(groupMemberImpl.getMemberId()) );
                 }
             }
         }

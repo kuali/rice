@@ -17,8 +17,6 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 	
-    <!-- import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/ -->
-	
     <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
       <property name="localServiceName" value="KRMSContext" />
     </bean>
@@ -37,14 +35,14 @@
 	</bean>
  	-->
  	
-	    <bean id="krmsModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+	<bean id="krmsModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
         <property name="namespaceCode" value="krms"/>
-        <property name="initializeDataDictionary" value="false"/>
-        <!-- property name="dataDictionaryPackages">
+        <property name="initializeDataDictionary" value="true"/>
+        <property name="dataDictionaryPackages">
             <list>
-                <value>classpath:org/kuali/rice/krms/datadictionary/Proposition.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/ContextBo.xml</value>
             </list>
-        </property -->
+        </property>
         <property name="databaseRepositoryFilePaths">
             <list>
                 <value>org/kuali/rice/krms/config/OJB-repository-krms.xml</value>
@@ -60,16 +58,5 @@
     <bean id="krmsModuleService" class="org.kuali.rice.kns.service.impl.ModuleServiceBase">
         <property name="moduleConfiguration" ref="krmsModuleConfiguration" />
     </bean>
-	
-	<!-- 
-	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
-	
-	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/kns/config/KNSConfigSpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/krms/config/KRMSModuleBeans.xml"/>
-	-->
-	
+
 </beans>

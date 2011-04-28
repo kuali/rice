@@ -17,13 +17,11 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-<!-- 
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties" value="#{bootstrapConfig.getProperties()}" />
 	</bean>
- -->
  
-	<bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
+	<bean id="krmsConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:org/kuali/rice/krms/config/krms-config-defaults.xml</value>
@@ -34,7 +32,7 @@
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
 		<property name="arguments">
-			<list><ref bean="bootstrapConfig"/></list>
+			<list><ref bean="krmsConfig"/></list>
 		</property>
 	</bean>
 

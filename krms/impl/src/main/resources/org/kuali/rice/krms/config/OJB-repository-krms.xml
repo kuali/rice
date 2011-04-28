@@ -55,8 +55,8 @@
 		<field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.KrmsTypeAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
-      <inverse-foreignkey field-ref="typeId" />
-    </collection-descriptor>
+             <inverse-foreignkey field-ref="typeId" />
+        </collection-descriptor>
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.KrmsTypeAttributeBo" table="KRMS_TYP_ATTR_T">
@@ -90,7 +90,16 @@
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
         <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
-        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
+        <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+        <!-- collection-descriptor name="attributes" element-class-ref="org.kuali.rice.krms.impl.repository.ContextAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="false" auto-update="object" auto-delete="object" proxy="true">
+            <inverse-foreignkey field-ref="contextId" />
+        </collection-descriptor>
+        <collection-descriptor name="validActions" element-class-ref="org.kuali.rice.krms.impl.repository.ContextValidActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="false" auto-update="object" auto-delete="object" proxy="true">
+            <inverse-foreignkey field-ref="contextId" />
+        </collection-descriptor>
+        <collection-descriptor name="validEvents" element-class-ref="org.kuali.rice.krms.impl.repository.ContextValidEventBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="false" auto-update="object" auto-delete="object" proxy="true">
+            <inverse-foreignkey field-ref="contextId" />
+        </collection-descriptor -->
     </class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionParameterBo" table="KRMS_PROP_PARM_T">

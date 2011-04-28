@@ -104,15 +104,6 @@ class CountryTest {
     marshaller.marshal(country, sw)
     String xml = sw.toString()
 
-//    String expectedCountryElementXml = """
-//    <country xmlns="http://rice.kuali.org/shareddata">
-//      <code>US</code>
-//      <name>United States</name>
-//      <restricted>false</restricted>
-//      <active>true</active>
-//    </country>
-//    """
-
     Unmarshaller unmarshaller = jc.createUnmarshaller();
     Object actual = unmarshaller.unmarshal(new StringReader(xml))
     Object expected = unmarshaller.unmarshal(new StringReader(XML))

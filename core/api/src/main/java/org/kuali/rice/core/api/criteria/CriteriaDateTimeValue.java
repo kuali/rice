@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.util.EqualsUtils;
+import org.kuali.rice.core.util.EqualsAndHashCodeUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -73,14 +72,13 @@ public final class CriteriaDateTimeValue implements CriteriaValue<Calendar> {
     
     @Override
     public int hashCode() {
-        //FIXME: add hashcode for calendar
-        return HashCodeBuilder.reflectionHashCode(this, new String[] { "value"});
+        return EqualsAndHashCodeUtils.hashCodeForCalendars(value);
     }
 
     @Override
     public boolean equals(Object obj) {
         //calendars equals use state that is not marshalled/unmarshalled by jaxb
-        return EqualsUtils.areObjectsEqualUsingCompareTo(this, obj, "value");
+        return EqualsAndHashCodeUtils.equalsUsingCompareToOnFields(this, obj, "value");
     }
 
     @Override

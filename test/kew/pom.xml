@@ -62,11 +62,17 @@
 	      <scope>test</scope>
 	</dependency>
     <dependency>
-	     <groupId>${project.groupId}</groupId>
-	      <artifactId>rice-kim-impl</artifactId>
-	      <version>${project.version}</version>
-	      <scope>test</scope>
-	</dependency>
+         <groupId>${project.groupId}</groupId>
+          <artifactId>rice-kim-impl</artifactId>
+          <version>${project.version}</version>
+          <scope>test</scope>
+    </dependency>
+    <dependency>
+         <groupId>${project.groupId}</groupId>
+          <artifactId>rice-krms-impl</artifactId>
+          <version>${project.version}</version>
+          <scope>test</scope>
+    </dependency>
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>

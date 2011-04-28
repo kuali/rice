@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
 /**
  * An immutable representation of a {@link KimPermissionTemplateContract}.
  *
- * <p>To construct an instance of a KimPermission, use the {@link KimPermissionTemplate.Builder} class.<p/>
+ * <p>To construct an instance of a KimPermissionTemplate, use the {@link KimPermissionTemplate.Builder} class.<p/>
  *
  * @see KimPermissionContract
  */
@@ -89,7 +89,6 @@ public final class KimPermissionTemplate implements KimPermissionTemplateContrac
     /**
 	 *  A constructor to be used only by JAXB unmarshalling.
 	 * 
-	 * @param builder
 	 */
 	private KimPermissionTemplate() {
 		this.id = null;

@@ -26,8 +26,8 @@ class KimPermissionTest {
 	private static final String NAME = "KimPermissionName"
 	private static final String DESCRIPTION = "Some KIM Permission Description"
 	private static final String TEMPLATE_ID = "7317791873"
-	private static final String OBJECT_ID = "hgw4yreydsheye65"
-	private static final Long VERSION_NUMBER = "1"
+	private static final String OBJECT_ID = UUID.randomUUID()
+	private static final Long VERSION_NUMBER = new Long(1) 
 	private static final boolean ACTIVE = "true"
 	
 	private static final String XML = """

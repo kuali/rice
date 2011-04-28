@@ -88,8 +88,7 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
     
     /**
 	 *  A constructor to be used only by JAXB unmarshalling.
-	 * 
-	 * @param builder
+	 *  
 	 */
 	private KimPermission() {
 		this.id = null;
@@ -219,14 +218,14 @@ public final class KimPermission implements KimPermissionContract, ModelObjectCo
         }
 
         /**
-         * creates a KimPermission with the required fields.
+         * Creates a KimPermission with the required fields.
          */
         public static Builder create(String id, String namespaceCode, String name, String templateId) {
             return new Builder(id, namespaceCode, name, templateId);
         }
 
         /**
-         * creates a KimPermission from an existing {@link KimPermissionContract}.
+         * Creates a KimPermission from an existing {@link KimPermissionContract}.
          */
         public static Builder create(KimPermissionContract contract) {
             Builder builder = new Builder(contract.getId(), contract.getNamespaceCode(), contract.getName(), contract.getTemplateId());

@@ -56,8 +56,8 @@ class KrmsAttributeDefinitionRepositoryService {
 
   @Test
   public void test_getType() {
-    mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-      Class clazz, Map map -> return sampleTypes.get(map.get(KrmsTypeDefinition.Elements.ID))
+    mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {
+      Class clazz, id -> return sampleTypes.get("1")
     }
 
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
@@ -155,7 +155,7 @@ class KrmsAttributeDefinitionRepositoryService {
     BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
     KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
     service.setBusinessObjectService(bos)
-    service.findAllTypesByNamespace()
+    service.findAllTypesByNamespace("KRMS_TEST")
 
     mockBusinessObjectService.verify(bos)
   }

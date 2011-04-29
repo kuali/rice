@@ -29,6 +29,7 @@
     <previous.version>1.0.3</previous.version>
     <previous.reldate>October 2010</previous.reldate>
     <branchdir>rice-release-2-0-0-br</branchdir>
+    <rice.doc.generation.phase>pre-site</rice.doc.generation.phase>
   </properties>
 
   <build>
@@ -42,7 +43,7 @@
             <goals>
               <goal>copy-resources</goal>
             </goals>
-            <phase>generate-sources</phase>
+            <phase>${rice.doc.generation.phase}</phase>
             <configuration>
               <outputDirectory>${basedir}/target/docbook-filtered</outputDirectory>
               <resources>
@@ -64,7 +65,7 @@
             <goals>
               <goal>generate-pdf</goal>
             </goals>
-            <phase>generate-sources</phase>
+            <phase>${rice.doc.generation.phase}</phase>
             <configuration>
               <foCustomization>${basedir}/src/main/stylesheets/fo-stylesheet.xsl</foCustomization>
               <targetDirectory>${project.build.outputDirectory}/pdf</targetDirectory>
@@ -75,7 +76,7 @@
             <goals>
               <goal>generate-html</goal>
             </goals>
-            <phase>generate-sources</phase>
+            <phase>${rice.doc.generation.phase}</phase>
             <configuration>
               <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
               <targetDirectory>${project.build.outputDirectory}/html</targetDirectory>
@@ -98,7 +99,7 @@
             <goals>
               <goal>generate-html</goal>
             </goals>
-            <phase>generate-sources</phase>
+            <phase>${rice.doc.generation.phase}</phase>
             <configuration>
               <chunkedOutput>true</chunkedOutput>
               <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>

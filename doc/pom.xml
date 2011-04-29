@@ -14,125 +14,125 @@
   ~ limitations under the License.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<name>Kuali Rice Documentation</name>
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.kuali.rice</groupId>
-		<artifactId>rice</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
-	</parent>
-	<artifactId>rice-doc</artifactId>
+  <name>Kuali Rice Documentation</name>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kuali.rice</groupId>
+    <artifactId>rice</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>rice-doc</artifactId>
 
 
-	<properties>
-		<reldate>August 2011</reldate>
-		<previous.version>1.0.3</previous.version>
-		<previous.reldate>October 2010</previous.reldate>
-		<branchdir>rice-release-2-0-0-br</branchdir>
-	</properties>
+  <properties>
+    <reldate>August 2011</reldate>
+    <previous.version>1.0.3</previous.version>
+    <previous.reldate>October 2010</previous.reldate>
+    <branchdir>rice-release-2-0-0-br</branchdir>
+  </properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-source</id>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<outputDirectory>${basedir}/target/docbook-filtered</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/main/docbook</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.agilejava.docbkx</groupId>
-				<artifactId>docbkx-maven-plugin</artifactId>
-				<executions>			
- 				<execution>
-				   <id>pdf-docs</id>
-				   <goals>
-				     <goal>generate-pdf</goal>
-				   </goals>
-				   <phase>generate-sources</phase>
-				   <configuration>
-				     <foCustomization>${basedir}/src/main/stylesheets/fo-stylesheet.xsl</foCustomization>
-				   	 <targetDirectory>${project.build.outputDirectory}/pdf</targetDirectory>
-				   </configuration>
-				 </execution>
-				 <execution>
-				   <id>html-docs</id>
-				   <goals>
-				     <goal>generate-html</goal>
-				   </goals>
-				   <phase>generate-sources</phase>
-				   <configuration>
-				      <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
-				      <targetDirectory>${project.build.outputDirectory}/html</targetDirectory>
-				      <postProcess>		                
-		                  <copy todir="${project.build.outputDirectory}/css">
-		                    <fileset dir="${basedir}/src/main/css">
-		                      <include name="**/*.*" />
-		                    </fileset>
-		                  </copy>
-		                  <copy todir="${project.build.outputDirectory}/images">
-		                    <fileset dir="${basedir}/src/main/docbook/images">
-		                      <include name="**/*.*" />
-		                    </fileset>
-		                  </copy>
-		              </postProcess>
-				    </configuration>
-				  </execution>
-				<execution>
-				   <id>multi-page-html</id>
-				   <goals>
-				     <goal>generate-html</goal>
-				   </goals>
-				   <phase>generate-sources</phase>
-				   <configuration>
-				   	  <chunkedOutput>true</chunkedOutput>
-				      <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
-				      <targetDirectory>${project.build.outputDirectory}/html-multi</targetDirectory>
-				      <postProcess>		                
-		                  <copy todir="${project.build.outputDirectory}/css">
-		                    <fileset dir="${basedir}/src/main/css">
-		                      <include name="**/*.*" />
-		                    </fileset>
-		                  </copy>
-		                  <copy todir="${project.build.outputDirectory}/images">
-		                    <fileset dir="${basedir}/src/main/docbook/images">
-		                      <include name="**/*.*" />
-		                    </fileset>
-		                  </copy>
-		              </postProcess>
-				    </configuration>
-				  </execution>
-				</executions>
-				<configuration>
-					<sourceDirectory>${basedir}/target/docbook-filtered</sourceDirectory>
-					<xincludeSupported>true</xincludeSupported>
-					<useExtensions>1</useExtensions> 
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.docbook</groupId>
-						<artifactId>docbook-xml</artifactId>
-						<version>4.4</version>
-						<scope>runtime</scope>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
-	</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-source</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <outputDirectory>${basedir}/target/docbook-filtered</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/docbook</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.agilejava.docbkx</groupId>
+        <artifactId>docbkx-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>pdf-docs</id>
+            <goals>
+              <goal>generate-pdf</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <foCustomization>${basedir}/src/main/stylesheets/fo-stylesheet.xsl</foCustomization>
+              <targetDirectory>${project.build.outputDirectory}/pdf</targetDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>html-docs</id>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
+              <targetDirectory>${project.build.outputDirectory}/html</targetDirectory>
+              <postProcess>
+                <copy todir="${project.build.outputDirectory}/css">
+                  <fileset dir="${basedir}/src/main/css">
+                    <include name="**/*.*"/>
+                  </fileset>
+                </copy>
+                <copy todir="${project.build.outputDirectory}/images">
+                  <fileset dir="${basedir}/src/main/docbook/images">
+                    <include name="**/*.*"/>
+                  </fileset>
+                </copy>
+              </postProcess>
+            </configuration>
+          </execution>
+          <execution>
+            <id>multi-page-html</id>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <chunkedOutput>true</chunkedOutput>
+              <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
+              <targetDirectory>${project.build.outputDirectory}/html-multi</targetDirectory>
+              <postProcess>
+                <copy todir="${project.build.outputDirectory}/css">
+                  <fileset dir="${basedir}/src/main/css">
+                    <include name="**/*.*"/>
+                  </fileset>
+                </copy>
+                <copy todir="${project.build.outputDirectory}/images">
+                  <fileset dir="${basedir}/src/main/docbook/images">
+                    <include name="**/*.*"/>
+                  </fileset>
+                </copy>
+              </postProcess>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${basedir}/target/docbook-filtered</sourceDirectory>
+          <xincludeSupported>true</xincludeSupported>
+          <useExtensions>1</useExtensions>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.docbook</groupId>
+            <artifactId>docbook-xml</artifactId>
+            <version>4.4</version>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

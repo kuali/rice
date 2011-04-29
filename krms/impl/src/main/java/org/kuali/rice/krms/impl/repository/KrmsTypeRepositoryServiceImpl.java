@@ -86,7 +86,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
             throw new IllegalArgumentException("id is blank");
         }
 
-        KrmsTypeBo krmsTypeBo = businessObjectService.findByPrimaryKey(KrmsTypeBo.class, Collections.singletonMap("id", id));
+        KrmsTypeBo krmsTypeBo = businessObjectService.findBySinglePrimaryKey(KrmsTypeBo.class, id);
 
         return KrmsTypeBo.to(krmsTypeBo);
     }
@@ -104,16 +104,15 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
         map.put("name", name);
         map.put("namespace", namespace);
 
-        Collection<KrmsTypeBo> typeList = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
-        if (typeList == null || typeList.isEmpty()) {
-            return null;
-        } else if (typeList.size() == 1) {
-            return KrmsTypeBo.to(typeList.iterator().next());
-        } else throw new IllegalStateException("Multiple KRMS types found with same name and namespace");
+        KrmsTypeBo myType = businessObjectService.findByPrimaryKey(KrmsTypeBo.class, Collections.unmodifiableMap(map));
+        return KrmsTypeBo.to(myType);
     }
 
     @Override
     public List<KrmsTypeDefinition> findAllTypesByNamespace(final String namespace) {
+        if (StringUtils.isBlank(namespace)) {
+            throw new IllegalArgumentException("namespace is blank");
+        }
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespace);
         map.put("active", Boolean.TRUE);
@@ -164,7 +163,7 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	@Override
 	public void createKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {
 		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -175,6 +174,6 @@ public final class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositorySe
 	@Override
 	public void updateKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {
 		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		
+		throw new UnsupportedOperationException();
 	}
 }

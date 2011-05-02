@@ -5,7 +5,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="kns-application-unit" />
+        </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../../test/kns/src/test/resources/META-INF/kns-test-persistence.xml" />
       </configuration>
     </facet>
@@ -54,6 +56,7 @@
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="module" module-name="rice-kim-framework" scope="TEST" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
@@ -189,7 +192,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: ant:ant:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="module" module-name="rice-edl-impl" />
-    <orderEntry type="module" module-name="rice-edl-web" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
   </component>

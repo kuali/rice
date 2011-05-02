@@ -6,6 +6,11 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../standalone/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../standalone/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../standalone/src/main/resources" />
+          <root url="file://$MODULE_DIR$/../../../standalone/src/main/groovy" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -24,7 +29,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-web (2)" />
+    <orderEntry type="module" module-name="rice-web (1)" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
@@ -49,6 +54,7 @@
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-api" />
+    <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
@@ -167,7 +173,6 @@
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="module" module-name="rice-edl-impl" />
-    <orderEntry type="module" module-name="rice-edl-web" />
   </component>
 </module>
 

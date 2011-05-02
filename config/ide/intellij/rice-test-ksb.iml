@@ -72,6 +72,7 @@
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-api" scope="TEST" />
+    <orderEntry type="module" module-name="rice-kim-framework" scope="TEST" />
     <orderEntry type="module" module-name="krad-app-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
@@ -189,7 +190,7 @@
     <orderEntry type="module" module-name="rice-shareddata-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
-    <orderEntry type="module" module-name="rice-edl-web" scope="TEST" />
+    <orderEntry type="module" module-name="rice-edl-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-internal-test-tools" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.4.0.v20110414" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.4.0.v20110414" level="project" />

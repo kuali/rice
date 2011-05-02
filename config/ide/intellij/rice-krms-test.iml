@@ -156,6 +156,7 @@
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.14.0-GA" level="project" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
+    <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="rice-kim-web" />
     <orderEntry type="module" module-name="rice-core-web" />
     <orderEntry type="module" module-name="rice-shareddata-framework" />
@@ -184,7 +185,6 @@
     <orderEntry type="module" module-name="rice-krms-framework" />
     <orderEntry type="module" module-name="rice-krms-api" />
     <orderEntry type="module" module-name="rice-edl-impl" />
-    <orderEntry type="module" module-name="rice-edl-web" />
     <orderEntry type="library" scope="TEST" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
   </component>
 </module>

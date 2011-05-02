@@ -8,8 +8,14 @@
           <element id="module-output" name="rice-web" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="rice-impl-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-impl" />
+          <element id="archive" name="rice-krms-impl-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-krms-impl" />
+          </element>
+          <element id="archive" name="rice-core-impl-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-core-impl" />
+          </element>
+          <element id="archive" name="rice-api-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-api" />
           </element>
           <element id="archive" name="rice-core-api-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
@@ -33,26 +39,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
           <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" />
-          <element id="archive" name="rice-kim-impl-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-kim-impl" />
-          </element>
-          <element id="archive" name="rice-kim-api-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-kim-api" />
-          </element>
-          <element id="archive" name="rice-api-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-api" />
-          </element>
-          <element id="archive" name="krad-app-framework-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="krad-app-framework" />
-          </element>
-          <element id="archive" name="rice-shareddata-api-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-shareddata-api" />
-          </element>
-          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" />
-          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" />
-          <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="archive" name="rice-core-framework-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
@@ -64,6 +50,11 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springmodules:spring-modules-ojb:0.8a" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
+          <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:3.6.3.Final" />
           <element id="library" level="project" name="Maven: xapool:xapool:1.5.0-patch3" />
           <element id="library" level="project" name="Maven: org.ow2.jotm:jotm-core:2.1.9" />
@@ -78,6 +69,15 @@
           <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.5-RC2" />
           <element id="library" level="project" name="Maven: com.google.collections:google-collections:1.0" />
           <element id="library" level="project" name="Maven: com.google.code.gson:gson:1.4" />
+          <element id="archive" name="krad-app-framework-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="krad-app-framework" />
+          </element>
+          <element id="archive" name="rice-kim-api-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-kim-api" />
+          </element>
+          <element id="archive" name="rice-shareddata-api-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-shareddata-api" />
+          </element>
           <element id="archive" name="krad-web-framework-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="krad-web-framework" />
           </element>
@@ -101,12 +101,6 @@
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-template:2.2.2" />
-          <element id="archive" name="rice-kim-web-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-kim-web" />
-          </element>
-          <element id="archive" name="rice-core-impl-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-core-impl" />
-          </element>
           <element id="archive" name="rice-ksb-framework-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-framework" />
           </element>
@@ -168,6 +162,24 @@
           <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.2.2" />
           <element id="library" level="project" name="Maven: bsf:bsf:2.4.0" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.14.0-GA" />
+          <element id="archive" name="rice-krms-framework-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-krms-framework" />
+          </element>
+          <element id="archive" name="rice-krms-api-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-krms-api" />
+          </element>
+          <element id="archive" name="rice-impl-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-impl" />
+          </element>
+          <element id="archive" name="rice-kim-impl-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-kim-impl" />
+          </element>
+          <element id="archive" name="rice-kim-framework-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-kim-framework" />
+          </element>
+          <element id="archive" name="rice-kim-web-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-kim-web" />
+          </element>
           <element id="archive" name="rice-core-web-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-web" />
           </element>
@@ -188,9 +200,6 @@
           </element>
           <element id="archive" name="rice-edl-impl-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-impl" />
-          </element>
-          <element id="archive" name="rice-edl-web-2.0.0-SNAPSHOT.jar">
-            <element id="module-output" name="rice-edl-web" />
           </element>
           <element id="library" level="project" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" />
         </element>

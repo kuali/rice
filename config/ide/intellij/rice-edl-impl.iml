@@ -52,11 +52,11 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
-    <orderEntry type="module" module-name="rice-edl-web" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />

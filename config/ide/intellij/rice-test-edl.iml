@@ -38,6 +38,7 @@
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-api" scope="TEST" />
+    <orderEntry type="module" module-name="rice-kim-framework" scope="TEST" />
     <orderEntry type="module" module-name="krad-app-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-shareddata-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />

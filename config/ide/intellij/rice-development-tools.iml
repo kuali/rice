@@ -46,6 +46,7 @@
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="krad-app-framework" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />

@@ -151,6 +151,7 @@
     <orderEntry type="module" module-name="rice-internal-test-tools" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
+    <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="module" module-name="rice-kim-web" />
     <orderEntry type="module" module-name="rice-core-web" />
     <orderEntry type="module" module-name="rice-shareddata-framework" />

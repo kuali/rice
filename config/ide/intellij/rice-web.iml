@@ -9,6 +9,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../web/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../web/src/main/resources" />
+          <root url="file://$MODULE_DIR$/../../../web/src/main/groovy" />
+        </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
         <configuration>
@@ -35,7 +39,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-impl" />
+    <orderEntry type="module" module-name="rice-krms-impl" />
+    <orderEntry type="module" module-name="rice-core-impl" />
+    <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch6" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
@@ -56,16 +62,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.10" level="project" />
-    <orderEntry type="module" module-name="rice-kim-impl" />
-    <orderEntry type="module" module-name="rice-kim-api" />
-    <orderEntry type="module" module-name="rice-api" />
-    <orderEntry type="module" module-name="krad-app-framework" />
-    <orderEntry type="module" module-name="rice-shareddata-api" />
-    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
-    <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
@@ -75,6 +71,11 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.3.Final" level="project" />
+    <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.3.Final" level="project" />
     <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.9" level="project" />
@@ -90,6 +91,9 @@
     <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
+    <orderEntry type="module" module-name="krad-app-framework" />
+    <orderEntry type="module" module-name="rice-kim-api" />
+    <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="module" module-name="krad-web-framework" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="library" name="Maven: displaytag:displaytag:1.2" level="project" />
@@ -109,8 +113,6 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
-    <orderEntry type="module" module-name="rice-kim-web" />
-    <orderEntry type="module" module-name="rice-core-impl" />
     <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: opensymphony:oscache:2.4.1" level="project" />
@@ -170,6 +172,12 @@
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: bsf:bsf:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.14.0-GA" level="project" />
+    <orderEntry type="module" module-name="rice-krms-framework" />
+    <orderEntry type="module" module-name="rice-krms-api" />
+    <orderEntry type="module" module-name="rice-impl" />
+    <orderEntry type="module" module-name="rice-kim-impl" />
+    <orderEntry type="module" module-name="rice-kim-framework" />
+    <orderEntry type="module" module-name="rice-kim-web" />
     <orderEntry type="module" module-name="rice-core-web" />
     <orderEntry type="module" module-name="rice-shareddata-framework" />
     <orderEntry type="module" module-name="rice-shareddata-impl" />
@@ -177,7 +185,6 @@
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="module" module-name="rice-edl-impl" />
-    <orderEntry type="module" module-name="rice-edl-web" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.15" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
   </component>

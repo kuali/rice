@@ -42,6 +42,9 @@
           <element id="archive" name="rice-api-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-api" />
           </element>
+          <element id="archive" name="rice-kim-framework-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-kim-framework" />
+          </element>
           <element id="archive" name="krad-app-framework-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="krad-app-framework" />
           </element>
@@ -185,6 +188,9 @@
           </element>
           <element id="archive" name="rice-edl-framework-2.0.0-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
+          </element>
+          <element id="archive" name="rice-edl-impl-2.0.0-SNAPSHOT.jar">
+            <element id="module-output" name="rice-edl-impl" />
           </element>
         </element>
       </element>

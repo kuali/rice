@@ -16,7 +16,11 @@
 
 package org.kuali.rice.core.api.parameter;
 
-import java.util.Collection;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.util.jaxb.ImmutableCollectionAdapter;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -24,12 +28,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.util.jaxb.ImmutableCollectionAdapter;
+import java.util.Collection;
 
 /**
  * Service for interacting with {@link Parameter Parameters}.
@@ -266,5 +265,5 @@ public interface ParameterRepositoryService {
     
     @WebMethod(operationName="findParameters")
     @WebResult(name = "results")
-    ParameterQueryResults findParameters(@WebParam(name = "query") QueryByCriteria<Parameter> queryByCriteria);
+    ParameterQueryResults findParameters(@WebParam(name = "query") QueryByCriteria queryByCriteria);
 }

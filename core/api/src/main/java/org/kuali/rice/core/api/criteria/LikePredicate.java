@@ -34,11 +34,7 @@ import java.util.Collection;
  * value for a like predicate should support wildcards using "*" for multiple
  * values and "?" for a single value.
  * 
- * <p>Constructed as part of a {@link Criteria} when built using a
- * {@link CriteriaBuilder}.
- * 
- * @see Criteria
- * @see CriteriaBuilder
+ * @see PredicateFactory for a convenient way to construct this class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

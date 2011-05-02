@@ -174,7 +174,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     }
 
 	@Override
-	public ParameterQueryResults findParameters(QueryByCriteria<Parameter> queryByCriteria) {
+	public ParameterQueryResults findParameters(QueryByCriteria queryByCriteria) {
 		
 		// TODO - implement this operation
 		

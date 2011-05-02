@@ -18,7 +18,7 @@
 <beans>
 
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties" value="#{bootstrapConfig.getProperties()}" />
+		<property name="properties" value="#{krmsConfig.getProperties()}" />
 	</bean>
  
 	<bean id="krmsConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">

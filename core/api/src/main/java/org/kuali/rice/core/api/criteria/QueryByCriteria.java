@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -48,9 +50,6 @@ import java.util.Collection;
  * <p>This class is mapped for use by JAXB and can therefore be used by clients
  * as part of remotable service definitions.
  * 
- * @param <T> the type of the class which is being queried for based on the
- * specified criteria
- * 
  * @see Predicate
  * @see PredicateFactory
  * 
@@ -64,9 +63,8 @@ import java.util.Collection;
 		QueryByCriteria.Elements.START_AT_INDEX,
 		QueryByCriteria.Elements.MAX_RESULTS,
 		QueryByCriteria.Elements.COUNT_FLAG,
-        QueryByCriteria.Elements.QUERY_CLASS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class QueryByCriteria<T> implements ModelObjectComplete {
+public final class QueryByCriteria implements ModelObjectComplete {
 
 	private static final long serialVersionUID = 2210627777648920180L;
 
@@ -97,9 +95,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 	@XmlElement(name = Elements.COUNT_FLAG, required = true)
 	private final CountFlag countFlag;
 
-    @XmlElement(name = Elements.QUERY_CLASS, required = true)
-    private final Class<T> queryClass;
-
 	@SuppressWarnings("unused")
 	@XmlAnyElement
 	private final Collection<Element> _futureElements = null;
@@ -109,10 +104,9 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		this.startAtIndex = null;
 		this.maxResults = null;
 		this.countFlag = null;
-        this.queryClass = null;
 	}
 
-	private QueryByCriteria(Builder<T> builder) {
+	private QueryByCriteria(Builder builder) {
 		final Predicate[] preds = builder.predicates;
         if (preds != null && preds.length > 1) {
             //implicit "and"
@@ -126,7 +120,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		this.startAtIndex = builder.getStartAtIndex();
 		this.maxResults = builder.getMaxResults();
 		this.countFlag = builder.getCountFlag();
-        this.queryClass = builder.getQueryClass();
 	}
 
 	/**
@@ -179,10 +172,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		return this.countFlag;
 	}
 
-    public Class<T> getQueryClass() {
-        return this.queryClass;
-    }
-
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this,
@@ -200,29 +189,19 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		return ToStringBuilder.reflectionToString(this);
 	}
 
-	public static final class Builder<T> {
+	public static final class Builder<T> implements ModelBuilder, Serializable {
 
 		private Predicate[] predicates;
 		private Integer startAtIndex;
 		private Integer maxResults;
 		private CountFlag countFlag;
-        private final Class<T> queryClass;
 
-		private Builder(Class<T> queryClass) {
+		private Builder() {
 			this.countFlag = CountFlag.NONE;
-            this.queryClass = queryClass;
 		}
 
-		public static <T> Builder<T> create(Class<T> queryClass) {
-			if (queryClass == null) {
-                throw new IllegalArgumentException("the queryClass is null");
-            }
-
-            return new Builder<T>(queryClass);
-		}
-
-        public Class<T> getQueryClass() {
-			return this.queryClass;
+		public static <T> Builder<T> create() {
+            return new Builder<T>();
 		}
 
 		public Integer getStartAtIndex() {
@@ -263,16 +242,21 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		}
 
         /**
-         * Sets the predicats. If multiple predicates are specified then they are wrapped
+         * Sets the predicates. If multiple predicates are specified then they are wrapped
          * in an "and" predicate. If a null predicate is specified then there will be no
-         * constrainsts on the query.
+         * constraints on the query.
          * @param predicates the predicates to set.
          */
         public void setPredicates(Predicate... predicates) {
             //defensive copies on array
             this.predicates = predicates != null ? Arrays.copyOf(predicates, predicates.length) : null;
 		}
-	}
+
+        @Override
+        public QueryByCriteria build() {
+            return new QueryByCriteria(this);
+        }
+    }
 
 	/**
 	 * Defines some internal constants used on this class.
@@ -292,7 +276,6 @@ public final class QueryByCriteria<T> implements ModelObjectComplete {
 		final static String START_AT_INDEX = "startAtIndex";
 		final static String MAX_RESULTS = "maxResults";
 		final static String COUNT_FLAG = "countFlag";
-        final static String QUERY_CLASS = "queryClass";
 	}
 
 }

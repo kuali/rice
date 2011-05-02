@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.core.api.parameter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.criteria.CountAwareQueryResults;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -26,10 +26,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.criteria.CountAwareQueryResults;
-import org.w3c.dom.Element;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO 
@@ -92,12 +91,16 @@ public class ParameterQueryResults implements CountAwareQueryResults<Parameter> 
 		private List<Parameter> results;
 		private Integer totalRowCount;
 		private boolean moreResultsAvailable;
-		
+
+        public static Builder create() {
+            return new Builder();
+        }
+
 		private Builder() {
 			this.results = new ArrayList<Parameter>();
 			this.moreResultsAvailable = false;
 		}
-				
+
 		public ParameterQueryResults build() {
 			return new ParameterQueryResults(this);
 		}

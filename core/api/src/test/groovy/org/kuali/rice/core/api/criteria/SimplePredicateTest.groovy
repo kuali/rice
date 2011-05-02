@@ -34,7 +34,7 @@ import static org.junit.Assert.*
 public class SimplePredicateTest {
     
     /**
-     * Test method for {@link SingleValuedPredicate#SimpleExpression()}.
+     * Test method for {@link SingleValuedPredicate#getValue()}.
      * 
      * This empty constructor should only be invoked by JAXB.  We will invoke to ensure that it doesn't raise an exception.
      */
@@ -48,7 +48,7 @@ public class SimplePredicateTest {
     }
 
     /**
-     * Test method for {@link SingleValuedPredicate#SimpleExpression(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+     * Test method for {@link SingleValuedPredicate#getValue()}.
      */
     @Test
     public void testSimpleExpressionStringCriteriaValueOfObject() {
@@ -98,7 +98,7 @@ public class SimplePredicateTest {
     }
 
     /**
-     * Test method for {@link SingleValuedPredicate#supportsCriteriaValue(java.lang.Class, org.kuali.rice.core.api.criteria.CriteriaValue)}.
+     * Test method for {@link CriteriaSupportUtils#supportsCriteriaValue(Class<? extends org.kuali.rice.core.api.criteria.SingleValuedPredicate>, CriteriaValue<?>) }.
      */
     @Test
     public void testSupportsCriteriaValue() {

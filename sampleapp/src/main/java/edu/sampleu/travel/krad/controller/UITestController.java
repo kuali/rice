@@ -101,6 +101,7 @@ public class UITestController extends UifControllerBase {
 		
 		uiTestForm.setField1("Field1");
 		uiTestForm.setField2("Field2");
+		uiTestForm.setField6("212431234");
 
 		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
 	}

@@ -17,6 +17,7 @@ package org.kuali.rice.kns.uif.field;
 
 import java.util.List;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -131,13 +132,6 @@ public class AttributeField extends FieldBase implements DataBinding {
             bindingInfo.setDefaults(view, getPropertyName());
         }
         
-        if (alternateDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
-        	alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());        	
-        }
-        
-        if (additionalDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAdditionalDisplayAttributeName())){
-        	additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());        	
-        }
     }
 
     /**
@@ -167,6 +161,14 @@ public class AttributeField extends FieldBase implements DataBinding {
             constraintMessageField.setMessageText(constraint);
         }
 
+        if (alternateDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
+        	alternateDisplayAttributeBindingInfo.setDefaults(view, getAlternateDisplayAttributeName());        	
+        }
+        
+        if (additionalDisplayAttributeBindingInfo != null && StringUtils.isNotBlank(getAdditionalDisplayAttributeName())){
+        	additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());        	
+        }
+        
         // if read only or the control is not set no need to set client side
         // validation
         if (isReadOnly() || getControl() == null) {
@@ -302,23 +304,24 @@ public class AttributeField extends FieldBase implements DataBinding {
         //alternate property name and binding object
         if (getAlternateDisplayAttributeName() == null && StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())){
         	setAlternateDisplayAttributeName(attributeDefinition.getAlternateDisplayAttributeName());
-        	
-        	if (attributeDefinition.getAlternateDisplayAttributeBindingInfo() != null &&
-        	    attributeDefinition.getAlternateDisplayAttributeBindingInfo().getBindingObjectPath() != null){
-            	setAlternateDisplayAttributeBindingInfo(attributeDefinition.getAlternateDisplayAttributeBindingInfo());
-            }
         }
         
         //additional property display name and binding object
         if (getAdditionalDisplayAttributeName() == null && StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())){
         	setAdditionalDisplayAttributeName(attributeDefinition.getAdditionalDisplayAttributeName());
-        	
-        	if (attributeDefinition.getAdditionalDisplayAttributeBindingInfo() != null &&
-        		attributeDefinition.getAdditionalDisplayAttributeBindingInfo().getBindingObjectPath() != null){
-        		setAdditionalDisplayAttributeBindingInfo(attributeDefinition.getAdditionalDisplayAttributeBindingInfo());
-        	}
         }
         
+        if (getFormatter() == null && StringUtils.isNotBlank(attributeDefinition.getFormatterClass())){
+        	try {
+				Class clazz = ClassUtils.getClass(attributeDefinition.getFormatterClass());
+				Formatter formatter;
+				formatter = (Formatter)clazz.newInstance();
+				setFormatter(formatter);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+        	
+        }
     }
 
     /**

@@ -99,9 +99,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	protected String alternateDisplayAttributeName;
     protected String additionalDisplayAttributeName;
     
-    private BindingInfo alternateDisplayAttributeBindingInfo;
-	private BindingInfo additionalDisplayAttributeBindingInfo;
-	
 
 	public AttributeDefinition() {
 		// Empty
@@ -638,14 +635,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		return this.additionalDisplayAttributeName;
 	}
 
-	public void setAdditionalDisplayAttributeBindingInfo(BindingInfo additionalDisplayAttributeBindingInfo) {
-		this.additionalDisplayAttributeBindingInfo = additionalDisplayAttributeBindingInfo;
-	}
-	
-	public BindingInfo getAdditionalDisplayAttributeBindingInfo() {
-		return this.additionalDisplayAttributeBindingInfo;
-	}
-	
 	public void setAlternateDisplayAttributeName(String alternateDisplayAttributeName) {
 		this.alternateDisplayAttributeName = alternateDisplayAttributeName;
 	}
@@ -654,11 +643,4 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		return this.alternateDisplayAttributeName;
 	}
 
-	public void setAlternateDisplayAttributeBindingInfo(BindingInfo alternateDisplayAttributeBindingInfo) {
-		this.alternateDisplayAttributeBindingInfo = alternateDisplayAttributeBindingInfo;
-	}
-	
-	public BindingInfo getAlternateDisplayAttributeBindingInfo() {
-		return this.alternateDisplayAttributeBindingInfo;
-	}
 }

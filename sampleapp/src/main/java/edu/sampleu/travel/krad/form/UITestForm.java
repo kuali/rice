@@ -36,7 +36,7 @@ public class UITestForm extends UifFormBase {
 	private String field3;
 	private String field4;
 	private String field5;
-	private Date field6;
+	private String field6;
 	private int field7;
 	private boolean field8;
 
@@ -132,11 +132,11 @@ public class UITestForm extends UifFormBase {
 		this.field5 = field5;
 	}
 
-	public Date getField6() {
+	public String getField6() {
 		return this.field6;
 	}
 
-	public void setField6(Date field6) {
+	public void setField6(String field6) {
 		this.field6 = field6;
 	}
 

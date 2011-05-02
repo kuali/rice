@@ -25,6 +25,7 @@ import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.core.Ordered;
+import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.layout.LayoutManager;
@@ -174,6 +175,16 @@ public class ComponentUtils {
             bindingPrefix += "." + field.getBindingInfo().getBindByNamePrefix();
         }
         field.getBindingInfo().setBindByNamePrefix(bindingPrefix);
+        
+        if (field instanceof AttributeField){
+        	AttributeField attrfield = (AttributeField)field;
+        	if (StringUtils.isNotBlank(attrfield.getAdditionalDisplayAttributeName())){
+        		attrfield.getAdditionalDisplayAttributeBindingInfo().setBindByNamePrefix(bindingPrefix);
+        	}
+        	if (StringUtils.isNotBlank(attrfield.getAlternateDisplayAttributeName())){
+        		attrfield.getAlternateDisplayAttributeBindingInfo().setBindByNamePrefix(bindingPrefix);
+        	}
+        }
     }
 
     public static void updateIdsWithSuffix(List<? extends Component> components, String idSuffix) {

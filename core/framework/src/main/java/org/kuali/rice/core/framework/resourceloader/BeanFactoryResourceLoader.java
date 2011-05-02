@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.core.framework.resourceloader;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
@@ -32,19 +35,30 @@ import org.springframework.beans.factory.BeanFactory;
  */
 public class BeanFactoryResourceLoader extends BaseResourceLoader {
 
-	private BeanFactory beanFactory;
+	private final BeanFactory beanFactory;
+	private final Set<String> beanNames;
 	
 	public BeanFactoryResourceLoader(QName name, BeanFactory beanFactory) {
+		this(name, beanFactory, null);
+	}
+	
+	public BeanFactoryResourceLoader(QName name, BeanFactory beanFactory, Set<String> beanNames) {
 		super(name);
 		this.beanFactory = beanFactory;
+		this.beanNames = beanNames;
 	}
 
 	@Override
 	public Object getService(QName serviceName) {
-		if (this.beanFactory.containsBean(serviceName.toString())) {
-			return this.beanFactory.getBean(serviceName.toString());
+		String beanName = translateBeanName(serviceName);
+		if ((beanNames == null || beanNames.contains(beanName)) && beanFactory.containsBean(beanName)) {
+			return beanFactory.getBean(beanName);
 		}
 		return super.getService(serviceName);
+	}
+	
+	protected String translateBeanName(QName serviceName) {
+		return serviceName.toString();
 	}
 	
 }

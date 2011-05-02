@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.framework.resourceloader;
 
+import java.util.Set;
+
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.config.ConfigurationException;
@@ -38,6 +40,7 @@ public class RiceSpringResourceLoaderConfigurer implements BeanFactoryAware, Ini
 	private QName name;
 	private String localServiceName;
 	private String serviceNameSpaceURI;
+	private Set<String> beanNames;
 
 	private BeanFactory beanFactory;
 
@@ -55,7 +58,7 @@ public class RiceSpringResourceLoaderConfigurer implements BeanFactoryAware, Ini
 			}
 		}
 		
-		ResourceLoader beanFactoryRL = new BeanFactoryResourceLoader(getName(), this.beanFactory);
+		ResourceLoader beanFactoryRL = new BeanFactoryResourceLoader(getName(), this.beanFactory, this.beanNames);
 		GlobalResourceLoader.addResourceLoaderFirst(beanFactoryRL);
 	}
 
@@ -84,6 +87,10 @@ public class RiceSpringResourceLoaderConfigurer implements BeanFactoryAware, Ini
 
 	public void setServiceNameSpaceURI(String serviceNameSpaceURI) {
 		this.serviceNameSpaceURI = serviceNameSpaceURI;
+	}
+	
+	public void setBeanNames(Set<String> beanNames) {
+		this.beanNames = beanNames;
 	}
 
 }

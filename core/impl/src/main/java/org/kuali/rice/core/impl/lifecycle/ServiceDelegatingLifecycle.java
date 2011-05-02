@@ -22,6 +22,8 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
+import com.mysql.jdbc.log.Log;
+
 /**
  * A lifecycle that wraps a service.  This fetches and calls a lifecycle available
  * in the GRL and calls lifecycle methods on that.
@@ -29,6 +31,8 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ServiceDelegatingLifecycle extends BaseLifecycle {
+	
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseLifecycle.class);
 
 	private QName serviceName;
 
@@ -49,7 +53,12 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 
 	public void stop() throws Exception {
 	    if (isStarted()) {
-	        loadService(this.serviceName).stop();
+	    	try {
+	    		loadService(this.serviceName).stop();
+	    	} catch (Exception e) {
+	    		LOG.warn("couldn't stop service " + this.serviceName);
+	    		throw e;
+	    	}
 	    }
 		super.stop();
 	}

@@ -209,6 +209,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>
   </bean>
   
+  <bean id="MaintenanceGroupSection" abstract="true" parent="MaintenanceGroupSection-parentBean"/>
+  <bean id="MaintenanceGroupSection-parentBean" parent="GroupSection" />
+  
   <bean id="MaintenanceCollectionGroupSection" abstract="true" parent="MaintenanceCollectionGroupSection-parentBean"/>
   <bean id="MaintenanceCollectionGroupSection-parentBean" parent="CollectionGroupSection">  
     <property name="layoutManager.lineGroupPrototype">   

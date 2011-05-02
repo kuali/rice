@@ -41,6 +41,9 @@
         <property name="dataDictionaryPackages">
             <list>
                 <value>classpath:org/kuali/rice/krms/datadictionary/ContextBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/AgendaDefinitionBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</value>
+                <value>classpath:org/kuali/rice/krms/uif/EditorDocumentView.xml</value>
             </list>
         </property>
         <property name="databaseRepositoryFilePaths">

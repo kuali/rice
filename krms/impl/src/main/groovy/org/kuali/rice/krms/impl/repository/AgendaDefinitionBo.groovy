@@ -17,6 +17,8 @@ public class AgendaDefinitionBo extends PersistableBusinessObjectBase implements
 
 	def String firstItemId
 	def Set<AgendaAttributeBo> attributes
+	
+	def Set<AgendaItemBo> items
 
 	public String getNamespaceCode(){
 		return namespace

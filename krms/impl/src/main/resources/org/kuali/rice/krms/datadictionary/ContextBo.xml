@@ -52,34 +52,34 @@
   <bean id="ContextBo-name" parent="ContextBo-name-parentBean"/>
   <bean id="ContextBo-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
-    <property name="shortLabel" value="Context name"/>
+    <property name="shortLabel" value="Name"/>
     <property name="controlField">
       <bean parent="TextControl" p:size="100"/>
     </property>
     <property name="name" value="name"/>
-    <property name="label" value="Context name"/>
+    <property name="label" value="Context Name"/>
   </bean>  
   
   <bean id="ContextBo-namespace" parent="ContextBo-namespace-parentBean"/>
   <bean id="ContextBo-namespace-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
-    <property name="shortLabel" value="Context Namespace"/>
+    <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="namespace"/>
-    <property name="label" value="Context Id"/>
+    <property name="label" value="Context Namespace"/>
   </bean>  
   
   <bean id="ContextBo-typeId" parent="ContextBo-typeId-parentBean"/>
   <bean id="ContextBo-typeId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
-    <property name="shortLabel" value="Context typeId"/>
+    <property name="shortLabel" value="Type Id"/>
     <property name="controlField">
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="typeId"/>
-    <property name="label" value="Context typeId"/>
+    <property name="label" value="Context Type Id"/>
   </bean>
     
   <bean id="ContextBo-LookupView" parent="LookupView">
@@ -89,13 +89,53 @@
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" />        
       </list>
     </property>
     <property name="resultFields">
       <list>
         <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="name" />
+        <bean parent="AttributeField" p:propertyName="namespace" />
+        <bean parent="AttributeField" p:propertyName="typeId" />
       </list>
+    </property>
+  </bean>
+  
+  <bean id="ContextBo-InquiryView" parent="InquiryView">
+    <property name="title" value="Context Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+    <property name="singlePageView" value="true"/>
+    <property name="items">
+        <list>
+            <bean parent="Page" p:id="page1">
+                <property name="items">
+                    <list>
+					  <bean parent="GroupSectionGridLayout">
+					      <property name="layoutManager.numberOfColumns" value="2"/>
+					      <property name="items">
+					        <list>
+					          <bean parent="AttributeField" p:propertyName="id"/>
+					          <bean parent="AttributeField" p:propertyName="name"/>
+					          <bean parent="AttributeField" p:propertyName="namespace"/>
+					        </list>
+					      </property>
+					      <property name="title" value="Context Attributes"/>
+					  </bean>
+                      <bean parent="GroupSectionGridLayout">
+                          <property name="layoutManager.numberOfColumns" value="2"/>
+                          <property name="items">
+                            <list>
+                              <bean parent="AttributeField" p:propertyName="typeId"/>
+                            </list>
+                          </property>
+                          <property name="title" value="Context Type"/>
+                      </bean>
+                    </list>
+                </property>
+            </bean>
+        </list>
     </property>
   </bean>
   

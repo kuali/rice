@@ -55,11 +55,14 @@
 
     /** gets the current height of the passed in frame in numeric form (ex: 500). Could generate a permission exception.  */
     function getFrameHeight(frame) {
-      if (frame.contentWindow){
+      if (frame.contentWindow && frame.contentWindow.document.body){
         return frame.contentWindow.document.body.offsetHeight;
-      } else {
+      } else if(frame.contentDocument.body){
         //using the offsetHeight to set the correct height for IE
         return frame.contentDocument.body.offsetHeight;
+      }
+      else{
+    	return '${frameHeight}';
       }
     }
 

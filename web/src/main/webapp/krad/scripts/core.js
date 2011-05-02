@@ -172,6 +172,32 @@ function submitForm() {
 	});
 }
 
+//called when a line is added to a collection
+function addLineToCollection(collectionId){
+	if(collectionId){
+		var addFields = jq("td." + collectionId + "-addField").find("input:visible");
+		jq.watermark.hideAll();
+		var valid = true;
+		addFields.each(function(){
+			jq(this).removeClass("ignoreValid");
+			jq(this).valid();
+			if(jq(this).hasClass("error")){
+				valid = false;
+			}
+			jq(this).addClass("ignoreValid");
+		});
+		jq.watermark.showAll();
+		if(valid){
+			//change to add line ajax call in future
+			submitForm();
+		}
+		else{
+			alert("This addition contains errors.  Please correct these errors and try again.");
+		}
+	}
+	
+}
+
 //Called when a form is being persisted to assure all validation passes
 function validateAndSubmit(){
 	jq.watermark.hideAll();
@@ -232,23 +258,29 @@ function performFocus(){
 
 //Jump(scroll) to an element by name
 function jumpToElementByName(name){
-	if(top == self){
-		jq.scrollTo(jq("[name='" + name + "']"), 0);
-	}
-	else{
-		var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
-		top.$.scrollTo(jq("[name='" + name + "']"), 0, {offset: {top:headerOffset}});
+	var theElement =  jq("[name='" + name + "']");
+	if(theElement.length != 0){
+		if(top == self){
+			jq.scrollTo(theElement, 0);
+		}
+		else{
+			var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
+			top.$.scrollTo(theElement, 0, {offset: {top:headerOffset}});
+		}
 	}
 }
 
 //Jump(scroll) to an element by Id
 function jumpToElementById(id){
-	if(top == self){
-		jq.scrollTo(jq("#" + id), 0);
-	}
-	else{
-		var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
-		top.$.scrollTo(jq("#" + id), 0, {offset: {top:headerOffset}});
+	var theElement =  jq("#" + id);
+	if(theElement.length != 0){
+		if(top == self){
+			jq.scrollTo(theElement, 0);
+		}
+		else{
+			var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
+			top.$.scrollTo(theElement, 0, {offset: {top:headerOffset}});
+		}
 	}
 }
 
@@ -677,6 +709,7 @@ function setupValidator(){
 	jq('#kualiForm').validate(
 	{ 
 		onsubmit: false,
+		ignore: ".ignoreValid",
 		onclick: function(element) { 
 			jq(element).valid();
 			dependsOnCheck(element); 

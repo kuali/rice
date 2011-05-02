@@ -191,7 +191,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionLinkField-parentBean" abstract="true" parent="ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionLinkField.jsp"/>
       <property name="styleClasses" value="action"/>
-      <property name="scriptFormSubmit" value="true"/>
   </bean> 
   
 <!-- RECOMMENDED: Use the navigation action fields to scroll to the top of the page when a navigation completes
@@ -201,12 +200,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="NavigationActionLinkField-parentBean" abstract="true" parent="ActionLinkField" scope="prototype">
       <property name="jumpToIdAfterSubmit" value="TOP" />
       <property name="focusOnAfterSubmit" value="FIRST" />
+      <property name="clientSideJs" value="submitForm();"/>
   </bean>
   
   <bean id="NavigationActionField" abstract="true" parent="NavigationActionField-parentBean"/>
   <bean id="NavigationActionField-parentBean" abstract="true" parent="ActionField" scope="prototype">
       <property name="jumpToIdAfterSubmit" value="TOP" />
       <property name="focusOnAfterSubmit" value="FIRST" />
+      <property name="clientSideJs" value="submitForm();"/>
+  </bean>
+  
+  <bean id="NavigationActionField_Secondary" abstract="true" parent="NavigationActionField_Secondary-parentBean"/>
+  <bean id="NavigationActionField_Secondary-parentBean" abstract="true" parent="ActionField_Secondary" scope="prototype">
+      <property name="jumpToIdAfterSubmit" value="TOP" />
+      <property name="focusOnAfterSubmit" value="FIRST" />
+      <property name="clientSideJs" value="submitForm();"/>
   </bean>
   
   <bean id="LinkField" abstract="true" parent="LinkField-parentBean"/>
@@ -261,17 +269,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="MessageField_RequiredIndicator" parent="MessageField" p:messageText="* indicates required field" 
         p:messageType="REQUIRED" p:id="msg_reqind"/>
         
-  <bean id="ActionLinkField_JumpToTop" parent="ActionLinkField" p:methodToCall="jumpToTop" 
-        p:clientSideCall="true" p:actionLabel="Top" p:id="top_action" p:scriptFormSubmit="false"/>
+  <bean id="ActionLinkField_JumpToTop" parent="ActionLinkField" p:clientSideJs="jumpToTop();" 
+        p:actionLabel="Top" p:id="top_action"/>
   
-  <bean id="ActionLinkField_JumpToBottom" parent="ActionLinkField" p:methodToCall="jumpToBottom" 
-        p:clientSideCall="true" p:actionLabel="Bottom" p:id="bottom_action" p:scriptFormSubmit="false"/>
+  <bean id="ActionLinkField_JumpToBottom" parent="ActionLinkField" p:clientSideJs="jumpToBottom();" 
+        p:actionLabel="Bottom" p:id="bottom_action"/>
   
-  <bean id="ActionField_ExpandAccordions" parent="ActionField_SmallSecondary" p:methodToCall="expandAccordions" 
-        p:clientSideCall="true" p:actionLabel="expand all" p:id="actn_expn"/>
+  <bean id="ActionField_ExpandAccordions" parent="ActionField_SmallSecondary" p:clientSideJs="expandAccordions();" 
+        p:actionLabel="expand all" p:id="actn_expn"/>
                  
-  <bean id="ActionField_CollapseAccordions" parent="ActionField_SmallSecondary" p:methodToCall="collapseAccordions" 
-        p:clientSideCall="true" p:actionLabel="collapse all" p:id="actn_cllps"/>
+  <bean id="ActionField_CollapseAccordions" parent="ActionField_SmallSecondary" p:clientSideJs="collapseAccordions();" 
+        p:actionLabel="collapse all" p:id="actn_cllps"/>
         
   <bean id="AttributeField_DocumentNumber" parent="AttributeField" p:propertyName="documentNumber" 
         p:dictionaryObjectEntry="org.kuali.rice.kns.bo.DocumentHeader"/>  

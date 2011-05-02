@@ -31,21 +31,23 @@
 <c:if test="${!empty manager.style}">
   <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if> 
- 
-<table id="${manager.id}" ${style} ${styleClass}>
-  <thead>
-     <krad:grid items="${manager.headerFields}" numberOfColumns="${manager.numberOfColumns}" 
-                renderHeaderRow="true" renderAlternatingHeaderColumns="false"
-                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"/>
-  </thead>
-  
-  <tbody>
-     <krad:grid items="${manager.dataFields}" numberOfColumns="${manager.numberOfColumns}" 
-                applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"
-                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"
-                renderAlternatingHeaderColumns="false"/>
-  </tbody>
-</table>
- 
+<c:if test="${!empty manager.headerFields}">
+	<table id="${manager.id}" ${style} ${styleClass}>
+		
+		  <thead>
+		     <krad:grid items="${manager.headerFields}" numberOfColumns="${manager.numberOfColumns}" 
+		                renderHeaderRow="true" renderAlternatingHeaderColumns="false"
+		                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"/>
+		  </thead>
+	
+		  <tbody>
+		     <krad:grid items="${manager.dataFields}" numberOfColumns="${manager.numberOfColumns}" 
+		                applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"
+		                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"
+		                renderAlternatingHeaderColumns="false"/>
+		  </tbody>
+	  	
+	</table>
+</c:if>
 <%-- invoke table tools widget --%>
 <krad:template component="${manager.tableTools}" componentId="${manager.id}"/>    

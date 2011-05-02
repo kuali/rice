@@ -18,6 +18,9 @@
 var $dialog = null;
 var jq = jQuery.noConflict();
 
+//BlockUi defaults
+var loadingMessage =  '<h1><img src="/kr-dev/krad/images/loading.gif" alt="working..." />Loading...</h1>';
+var savingMessage = '<h1><img src="/kr-dev/krad/images/loading.gif" alt="working..." />Saving...</h1>';
 //Custom built in validator methods
 jQuery.validator.addMethod("minExclusive", function(value, element, param){
 	if (param.length == 1 || param[1]()) {
@@ -52,12 +55,27 @@ jQuery.validator.addMethod("maxLengthConditional", function(value, element, para
 	}
 });
 
+window.onerror = errorHandler;
+
+function errorHandler(msg,url,lno)
+{
+  if (top == self) {
+	  jq.unblockUI();
+	  jq.growlUI('Error', 'A javascript error occured: <br/>'  + msg);
+  }
+  else{
+	  top.$.unblockUI(); 
+	  top.$.growlUI('Error', 'A javascript error occured: <br/>'  + msg);
+  }
+  return false;
+}
+
 // common event registering done here through JQuery ready event
 jq(document).ready(function() {
 
 	// buttons
-	jq( "input:submit" ).button();
-	jq( "input:button" ).button();
+	jq("input:submit").button();
+	jq("input:button").button();
 	jq.ajaxSetup({
 		  beforeSend: function() {
 		     createLoading(true);
@@ -489,11 +507,33 @@ function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandI
  *          (true) or hidden (false)
  */
 function createLoading(showLoading) {
-	if (showLoading) {
-	  jq("#view_div").showLoading({'hPos': 'center', 'vPos': 'center'});
+	var methodToCall = jq("input[name='methodToCall']").val();
+	if(top == self){
+		//no portal
+		if (showLoading) {
+			if(methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()){
+				jq.blockUI({message: savingMessage});
+			}
+			else{
+				jq.blockUI({message: loadingMessage});
+			}
+		}
+		else {
+			jq.unblockUI();
+		}
 	}
-	else {
-		jq("#view_div").hideLoading();
+	else{
+		if (showLoading) {
+			if(methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()){
+				top.$.blockUI({message: savingMessage});
+			}
+			else{
+				top.$.blockUI({message: loadingMessage});
+			}
+		}
+		else {
+			top.$.unblockUI();
+		}
 	}
 }
 
@@ -518,88 +558,90 @@ function createTable(controlId, options) {
 * Applies the error coloring for fields with errors, warnings, or information
 */
 function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide){
-	var div = jq("#" + errorDivId);
-	var label = jq("#" + errorDivId.replace("errors_div", "label"));
-	var highlightLine = "";
-	//check to see if the option to highlight fields is on
-	if(!div.hasClass("noHighlight")){
-		if (div.parent().is("td")) {
-			highlightLine = div.parent();
-		}
-		else{
-			highlightLine = div.closest(".fieldLine");
-		}
-		if (highlightLine) {
-			if(errorNum && !clientSide){
-				highlightLine.addClass("serverError");
-				label.addClass("serverError"); 
-			}
-			else if(errorNum){
-				highlightLine.addClass("clientError");
-				label.addClass("clientError");
-			}
-			else if(warningNum){
-				highlightLine.addClass("warning");
-				label.addClass("warning");
-			}
-			else if(infoNum){
-				highlightLine.addClass("information");
-				label.addClass("information");
+	if(errorDivId){
+		var div = jq("#" + errorDivId);
+		var label = jq("#" + errorDivId.replace("errors_div", "label"));
+		var highlightLine = "";
+		//check to see if the option to highlight fields is on
+		if(div.length > 0 && !div.hasClass("noHighlight")){
+			if (div.parent().is("td")) {
+				highlightLine = div.parent();
 			}
 			else{
-				//we are only removing errors client side - no knowledge of warnings/infos
-				if(div.parent().hasClass("errorsField")){
-					var error_li = div.parent().find(".errorMessages").find("li");
-					var moreErrors = false;
-					error_li.each(function(){
-						if(jq(this).css("display") != "none"){
-							moreErrors = true;
-						}
-					});
-					
-					label.removeClass("clientError");
-					if(!moreErrors){
-						highlightLine.removeClass("clientError");
-					}
+				highlightLine = div.closest(".fieldLine");
+			}
+			if (highlightLine.length > 0) {
+				if(errorNum && !clientSide){
+					highlightLine.addClass("serverError");
+					label.addClass("serverError"); 
+				}
+				else if(errorNum){
+					highlightLine.addClass("clientError");
+					label.addClass("clientError");
+				}
+				else if(warningNum){
+					highlightLine.addClass("warning");
+					label.addClass("warning");
+				}
+				else if(infoNum){
+					highlightLine.addClass("information");
+					label.addClass("information");
 				}
 				else{
-					highlightLine.removeClass("clientError");
-					label.removeClass("clientError");
+					//we are only removing errors client side - no knowledge of warnings/infos
+					if(div.parent().hasClass("errorsField")){
+						var error_li = div.parent().find(".errorMessages").find("li");
+						var moreErrors = false;
+						error_li.each(function(){
+							if(jq(this).css("display") != "none"){
+								moreErrors = true;
+							}
+						});
+						
+						label.removeClass("clientError");
+						if(!moreErrors){
+							highlightLine.removeClass("clientError");
+						}
+					}
+					else{
+						highlightLine.removeClass("clientError");
+						label.removeClass("clientError");
+					}
 				}
 			}
 		}
-	}
-	
-	//highlight tab that contains errors - no setting to turn this off because it is necessary
-	var tabDiv = div.closest(".ui-tabs-panel");
-	if(tabDiv){
-		var tabId = tabDiv.attr("id");
-		var tabAnchor = jq("a[href='#" + tabId + "']");
-		var errorIcon = jq("#" + tabId + "_errorIcon");
-		if(tabAnchor){
-			
-			var hasErrors = false;
-			if(errorNum){
-				hasErrors = true;
-			}
-			else{
-				var error_li = tabDiv.find(".errorMessages").find("li");
-				error_li.each(function(){
-					if(jq(this).css("display") != "none"){
-						hasErrors = true;
-					}
-				});
-			}
-
-			if(hasErrors){
-				tabAnchor.addClass("clientError");
-				if(errorIcon.length == 0){
-					tabAnchor.append("<img id='"+ tabId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+		
+		//highlight tab that contains errors - no setting to turn this off because it is necessary
+		var tabDiv = div.closest(".ui-tabs-panel");
+		if(tabDiv.length > 0){
+			var tabId = tabDiv.attr("id");
+			var tabAnchor = jq("a[href='#" + tabId + "']");
+			var errorIcon = jq("#" + tabId + "_errorIcon");
+			if(tabAnchor.length > 0){
+				
+				var hasErrors = false;
+				if(errorNum){
+					hasErrors = true;
 				}
-			}
-			else if(!hasErrors){
-				tabAnchor.removeClass("clientError");
-				errorIcon.remove();
+				else{
+					var error_li = tabDiv.find(".errorMessages").find("li");
+					error_li.each(function(){
+						if(jq(this).css("display") != "none"){
+							hasErrors = true;
+						}
+					});
+				}
+	
+				if(hasErrors){
+					tabAnchor.addClass("clientError");
+					if(errorIcon.length == 0){
+						tabAnchor.append("<img id='"+ tabId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+					}
+				}
+				else if(!hasErrors){
+					tabAnchor.removeClass("clientError");
+					errorIcon.remove();
+				}
 			}
 		}
 	}
@@ -609,26 +651,30 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 *  Shows the field error icon if errorCount is greater than one and errorsField has the option turned on
 */
 function showFieldIcon(errorsDivId, errorCount){
-	var div = jq("#" + errorsDivId);
-	var inputId = errorsDivId.replace("_errors_div", "");
-	var input = jq("#" + inputId);
-	var errorIcon = jq("#" + inputId + "_errorIcon");
-	if (div.hasClass("addFieldIcon") && errorCount && errorIcon.length == 0) {
-		if (input) {
-			input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
-		}
-		else {
-			//try for radios and checkboxes
-			input = jq("#" + errorDivId.replace("errors_div", "attribute1"));
-			if (input) {
-				input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+	if(errorsDivId){
+		var div = jq("#" + errorsDivId);
+		var inputId = errorsDivId.replace("_errors_div", "");
+		if(inputId){
+			var input = jq("#" + inputId);
+			var errorIcon = jq("#" + inputId + "_errorIcon");
+			if (div.length > 0 && div.hasClass("addFieldIcon") && errorCount && errorIcon.length == 0) {
+				if (input.length > 0) {
+					input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+				}
+				else {
+					//try for radios and checkboxes
+					input = jq("#" + errorDivId.replace("errors_div", "attribute1"));
+					if (input.length > 0) {
+						input.after("<img id='"+ inputId +"_errorIcon' alt='error' src='/kr-dev/kr/static/images/errormark.gif'>");
+					}
+				}
 			}
-		}
+			else if(div.length > 0 && div.hasClass("addFieldIcon") && errorCount == 0){
+				if(errorIcon.length > 0){
+					errorIcon.remove();
+				}
+			}
 	}
-	else if(div.hasClass("addFieldIcon") && errorCount == 0){
-		if(errorIcon){
-			errorIcon.remove();
-		}
 	}
 }
 

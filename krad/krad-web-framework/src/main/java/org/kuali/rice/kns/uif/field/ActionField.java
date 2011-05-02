@@ -38,9 +38,8 @@ public class ActionField extends FieldBase {
 
 	private String methodToCall;
 	private String navigateToPageId;
-
-	private boolean clientSideCall;
-	private boolean scriptFormSubmit;
+	
+	private String clientSideJs;
 	
 	private String jumpToIdAfterSubmit;
 	private String jumpToNameAfterSubmit;
@@ -54,8 +53,6 @@ public class ActionField extends FieldBase {
 	private LightBoxLookup lightBoxLookup;
 
 	public ActionField() {
-		clientSideCall = false;
-		scriptFormSubmit = false;
 
 		actionParameters = new HashMap<String, String>();
 	}
@@ -108,49 +105,47 @@ public class ActionField extends FieldBase {
 		}
 
 		if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)
-				&& StringUtils.isNotBlank(methodToCall) && !clientSideCall) {
+				&& StringUtils.isNotBlank(methodToCall)) {
 			actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
 		}
-
-		if (!actionParameters.isEmpty()) {
-			
-			// If there is no lightBox then create the on click script
-			if (lightBoxLookup == null) {
+		
+		// If there is no lightBox then create the on click script
+		if (lightBoxLookup == null) {
 			String prefixScript = this.getOnClickScript();
 			if (prefixScript == null) {
 				prefixScript = "";
 			}
 
-			String writeParamsScript = "";
-			
 			boolean validateFormDirty = false;
 			if (view instanceof FormView){
 				validateFormDirty = ((FormView)view).isValidateDirty();
 			}
 			
 			boolean includeDirtyCheckScript = false;
-			
-			for (String key : actionParameters.keySet()) {
-				String parameterPath = key;
-				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-					parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
-				}
-
-				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
-						+ actionParameters.get(key) + "'); ";
-				
-				/**
-				 * Include dirtycheck js function call if the method to call is refresh, navigate, cancel or close
-				 */
-				if (validateFormDirty && !includeDirtyCheckScript && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)){
-						String keyValue = (String)actionParameters.get(key);
-						if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || 
-							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.NAVIGATE) ||
-							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CANCEL) || 
-							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CLOSE)){
-							includeDirtyCheckScript = true;
-						}
-				}
+			String writeParamsScript = "";
+			if (!actionParameters.isEmpty()) {
+    			for (String key : actionParameters.keySet()) {
+    				String parameterPath = key;
+    				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+    					parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
+    				}
+    
+    				writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
+    						+ actionParameters.get(key) + "'); ";
+    				
+    				/**
+    				 * Include dirtycheck js function call if the method to call is refresh, navigate, cancel or close
+    				 */
+    				if (validateFormDirty && !includeDirtyCheckScript && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)){
+    						String keyValue = (String)actionParameters.get(key);
+    						if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || 
+    							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.NAVIGATE) ||
+    							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CANCEL) || 
+    							StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CLOSE)){
+    							includeDirtyCheckScript = true;
+    						}
+    				}
+    			}
 			}
 			
 			if(StringUtils.isBlank(focusOnAfterSubmit)){
@@ -184,39 +179,37 @@ public class ActionField extends FieldBase {
             }
 
 			String postScript = "";
-			if (scriptFormSubmit) {
-				postScript = "submitForm();";
+			if(StringUtils.isNotBlank(clientSideJs)){
+			    postScript = clientSideJs;
 			}
 
-			
 			if (includeDirtyCheckScript){
-				this.setOnClickScript(" if (checkDirty(e) == false) { " + prefixScript + writeParamsScript + postScript + " ; } ");
+				this.setOnClickScript("e.preventDefault(); if (checkDirty(e) == false) { " + prefixScript + writeParamsScript + postScript + " ; } ");
 			}else{
-				this.setOnClickScript(prefixScript + writeParamsScript + postScript);	
+				this.setOnClickScript("e.preventDefault();" + prefixScript + writeParamsScript + postScript);	
 			}
-			
-			}else{
-				// When there is a light box - don't add the on click script as it will be prevented from executing
-				// Create a script map object which will be used to build the on click script
-				// Could use eval() instead and just pass the script?
-				StringBuffer sb = new StringBuffer();
-				sb.append("{");
-				for (String key : actionParameters.keySet()) {
-					String optionValue = actionParameters.get(key);
-					if (sb.length() > 1) {
-						sb.append(",");
-					}
-					if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
-						sb.append("\"" + UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]" + "\"");
-					}else{
-						sb.append("\"" + key + "\"");
-					}
-					sb.append(":");
-					sb.append("\"" + optionValue + "\"");
+		
+		}else{
+			// When there is a light box - don't add the on click script as it will be prevented from executing
+			// Create a script map object which will be used to build the on click script
+			// Could use eval() instead and just pass the script?
+			StringBuffer sb = new StringBuffer();
+			sb.append("{");
+			for (String key : actionParameters.keySet()) {
+				String optionValue = actionParameters.get(key);
+				if (sb.length() > 1) {
+					sb.append(",");
 				}
-				sb.append("}");
-				lightBoxLookup.setActionParameterMapString(sb.toString());
+				if (!key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+					sb.append("\"" + UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]" + "\"");
+				}else{
+					sb.append("\"" + key + "\"");
+				}
+				sb.append(":");
+				sb.append("\"" + optionValue + "\"");
 			}
+			sb.append("}");
+			lightBoxLookup.setActionParameterMapString(sb.toString());
 		}
 	}
 
@@ -243,66 +236,6 @@ public class ActionField extends FieldBase {
 	 */
 	public void setMethodToCall(String methodToCall) {
 		this.methodToCall = methodToCall;
-	}
-
-	/**
-	 * Indicates whether the action invokes a client side function or a server
-	 * side. For server side calls this will typically be a form post
-	 * 
-	 * @return boolean true if action makes a client side call, false if the
-	 *         call is server side
-	 */
-	public boolean isClientSideCall() {
-		return this.clientSideCall;
-	}
-
-	/**
-	 * Setter for the client side call indicator
-	 * 
-	 * @param clientSideCall
-	 */
-	public void setClientSideCall(boolean clientSideCall) {
-		this.clientSideCall = clientSideCall;
-	}
-
-	/**
-	 * Builds up the client side JavaScript code for calling the action's method
-	 * 
-	 * @return String JavaScript handing code
-	 */
-	public String getClientSideEventCode() {
-		String eventCode = "";
-
-		if (clientSideCall) {
-			if(!methodToCall.contains("(")){
-				eventCode = methodToCall + "();";
-			}
-			else{
-				eventCode = methodToCall;
-			}
-		}
-
-		return eventCode;
-	}
-
-	/**
-	 * Indicates whether the form should be submitted with a JavaScript call
-	 * (for instance in cases where we have an action link)
-	 * 
-	 * @return boolean true if form should be submitted with script, false if
-	 *         not (regular input or image submit)
-	 */
-	public boolean isScriptFormSubmit() {
-		return this.scriptFormSubmit;
-	}
-
-	/**
-	 * Setter for the script submit indicator
-	 * 
-	 * @param scriptFormSubmit
-	 */
-	public void setScriptFormSubmit(boolean scriptFormSubmit) {
-		this.scriptFormSubmit = scriptFormSubmit;
 	}
 
 	/**
@@ -427,6 +360,14 @@ public class ActionField extends FieldBase {
 
 		this.actionParameters.put(parameterName, parameterValue);
 	}
+	
+	   /**
+     * Get an actionParameter by name
+     */
+    public String getActionParameter(String parameterName) {
+
+        return this.actionParameters.get(parameterName);
+    }
 
 	/**
 	 * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnClick()
@@ -507,6 +448,29 @@ public class ActionField extends FieldBase {
 	public void setFocusOnAfterSubmit(String focusOnAfterSubmit) {
 		this.focusOnAfterSubmit = focusOnAfterSubmit;
 	}
+
+    /**
+     * Client side javascript to be executed when this actionField is clicked.  This overrides
+     * the default action for this ActionField so the method called must explicitly submit, navigate,
+     * etc. through js, if necessary. In addition, this js occurs AFTER onClickScripts set on this field,
+     * it will be the last script executed by the click event.
+     * Sidenote: This js is always called after hidden actionParameters and methodToCall methods
+     * are written by the js to the html form.
+     * @return the clientSideJs
+     */
+    public String getClientSideJs() {
+        return this.clientSideJs;
+    }
+
+    /**
+     * @param clientSideJs the clientSideJs to set
+     */
+    public void setClientSideJs(String clientSideJs) {
+        if(!StringUtils.endsWith(clientSideJs, ";")){
+            clientSideJs = clientSideJs + ";";
+        }
+        this.clientSideJs = clientSideJs;
+    }
 
 	
 	

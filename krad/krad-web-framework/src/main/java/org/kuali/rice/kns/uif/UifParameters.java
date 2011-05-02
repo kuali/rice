@@ -51,5 +51,6 @@ public class UifParameters {
 	public static final String VIEW_ID = "viewId";
 	public static final String VIEW_NAME = "viewName";
 	public static final String VIEW_TYPE_NAME = "viewTypeName";
-
+	public static final String ACTION_TYPE = "actionType";
+	public static final String ADD_LINE = "addLine";
 }

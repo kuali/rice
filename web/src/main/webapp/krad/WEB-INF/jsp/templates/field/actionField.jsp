@@ -35,19 +35,7 @@
    
      <input type="submit" id="${field.id}" value="${field.actionLabel}" ${style} ${styleClass} ${title}/>
   </c:otherwise>
-</c:choose>       
-       
-<%-- setup client side call --%>
-<c:if test="${field.clientSideCall}">
-<krad:script value="
- 	 jq(document).ready(function() {
-		 jq('#' + '${field.id}').click(function(e) {
-			 e.preventDefault();
-			 ${field.clientSideEventCode}
-			 return false;
-		 });
- 	 });"/>
-</c:if>
+</c:choose>
 
 <c:if test="${(field.lightBoxLookup != null)}">
 		<krad:template component="${field.lightBoxLookup}" componentId="${field.id}"/>

@@ -109,8 +109,8 @@ limitations under the License.
     <property name="items">
         <list>
         	<bean parent="ActionLinkField_JumpToBottom" />
-        	  <bean id="ActionLinkField_JumpToField3" parent="ActionLinkField" p:methodToCall="jumpToElementByName('field3');" 
-        p:clientSideCall="true" p:actionLabel="Jump to Field3" p:id="goto_field3" p:scriptFormSubmit="false"/>
+        	  <bean id="ActionLinkField_JumpToField3" parent="ActionLinkField" p:clientSideJs="jumpToElementByName('field3');" 
+        p:actionLabel="Jump to Field3" p:id="goto_field3" />
             <ref bean="testValidationGroup1"/>
         </list>
     </property>

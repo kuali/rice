@@ -3,6 +3,7 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.krms.api.engine.EngineResults;
@@ -30,12 +31,18 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 			throw new IllegalArgumentException("Facts must not be null.");
 		}
 		this.selectionCriteria = selectionCriteria;
-		this.facts = new HashMap<Term, Object>(facts.size());
-		this.facts.putAll(facts);
 		this.executionOptions = new ExecutionOptions(executionOptions);
 		this.engineResults = new EngineResultsImpl();
 		// TODO: inject this (will have to make it non-final)
 		this.termResolutionEngine = new TermResolutionEngineImpl();
+		
+		// Add facts
+		this.facts = new HashMap<Term, Object>(facts.size());
+		this.facts.putAll(facts);
+		
+		for (Entry<Term, Object> factsEntry : facts.entrySet()) {
+			this.termResolutionEngine.addTermValue(factsEntry.getKey(), factsEntry.getValue());
+		}
 	}
 	
 	@Override

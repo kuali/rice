@@ -13,25 +13,25 @@ public class CollectionOfComparablesTermBasedProposition<T> extends ComparableTe
 
 	private CollectionOperator collectionOper;
 	private Term term;
-	
+
 	public CollectionOfComparablesTermBasedProposition(CollectionOperator collectionOper, ComparisonOperator compareOper, Term term, T expectedValue) {
 		super(compareOper, term, expectedValue);
 		this.term = term;
 		this.collectionOper = collectionOper;
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.krms.framework.engine.ComparableTermBasedProposition#evaluate(org.kuali.rice.krms.api.engine.ExecutionEnvironment)
+	 * @throws TermResolutionException if there is a problem resolving a {@link Term}
+	 */
 	@Override
 	public boolean evaluate(ExecutionEnvironment environment) {
 		boolean collatedResult = collectionOper.getInitialCollatedResult();
-		
+
 		Collection<? extends Comparable<T>> termValue;
-		try {
-			termValue = environment.resolveTerm(term);
-		} catch (TermResolutionException e) {
-			// TODO Something better than this
-			throw new RuntimeException(e);
-		}
-		
+
+		termValue = environment.resolveTerm(term);
+
 		if (termValue != null) {
 			for (Comparable<T> item : termValue) {
 				collatedResult = collectionOper.reduce(compare(item), collatedResult);
@@ -43,7 +43,7 @@ public class CollectionOfComparablesTermBasedProposition<T> extends ComparableTe
 		if (LOG.isEnabled(environment)) {
 			LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, collatedResult));
 		}
-		
+
 		return collatedResult;
 	}
 

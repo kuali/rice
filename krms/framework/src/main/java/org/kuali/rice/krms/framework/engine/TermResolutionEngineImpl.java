@@ -94,19 +94,20 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				} else {
 					if (!CollectionUtils.isEmpty(resolver.getParameterNames())) {
 						// Shouldn't happen due to checks in buildResolutionPlan
-						throw new TermResolutionException("TermResolvers requiring parameters cannot be intermediates in the Term resolution plan");
+						throw new TermResolutionException("TermResolvers requiring parameters cannot be intermediates in the Term resolution plan", resolver, providedParameters);
 					}
 					termCache.put(new Term(resolver.getOutput(), null), resolvedTerm);
 				}
 			}		
 		} else {
-			throw new TermResolutionException("Unable to plan the resolution of " + term);
+			throw new TermResolutionException("Unable to plan the resolution of " + term, null, null);
 		}
 		return (T)termCache.get(term);
 	}
 
 	/**
-	 * This method ...
+	 * This method checks that the required parameters (as returned by the {@link TermResolver} via 
+	 * {@link TermResolver#getParameterNames()}) are met in the {@link Map} of provided parameters.
 	 * 
 	 * @param resolver
 	 * @param providedParameters
@@ -118,7 +119,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		// validate that params match what the TermResolver requires
 		if (!providedParameters.keySet().equals(resolver.getParameterNames())) {
 			StringBuilder sb = new StringBuilder();
-			
+
 			boolean first = true;
 			for (Entry<String,String> param : providedParameters.entrySet()) {
 				if (first) {
@@ -130,38 +131,38 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				sb.append("=");
 				sb.append(param.getValue());
 			}
-			
-			throw new TermResolutionException("provided parameters ("+ sb 
+
+			throw new TermResolutionException("provided parameters ("+ sb
 					+") do not match requirements ("
-					+ StringUtils.join(resolver.getParameterNames(), ",") +")");
+					+ StringUtils.join(resolver.getParameterNames(), ",") +")", resolver, providedParameters);
 		}
 	}
-	
+
 	protected List<TermResolverKey> buildTermResolutionPlan(TermSpecification term) {
 		// our result
 		List<TermResolverKey> resolutionPlan = null;
-		
+
 		// Holds the resolvers we've visited, along with the needed metadata for generating our final plan
 		Map<TermResolverKey, Visited> visitedByKey = new HashMap<TermResolverKey, Visited>();
-		
+
 		// this holds a least cost first list of nodes remaining to be explored
 		PriorityQueue<ToVisit> toVisits = new PriorityQueue<ToVisit>(); // nice grammar there cowboy
-		
+
 		// dummy resolver to be the root of this tree
 		// Do I really need this?  Yes, because there may be more than one resolver that resolves to the desired term,
 		// so this destination unifies the trees of those candidate resolvers
 		TermResolver destination = createDestination(term); // problem is we can't get this one out of the registry
 		TermResolverKey destinationKey = new TermResolverKey(destination);
-		
+
 		LOG.debug("Beginning resolution tree search for " + term);
-		
+
 		// seed our queue of resolvers to visit
 		// need to be aware of null parent for root ToVisit
 		toVisits.add(new ToVisit(0, destination, null));
-		
+
 		// there may not be a viable plan
 		boolean plannedToDestination = false;
-		
+
 		// We'll do a modified Dijkstra's shortest path algorithm, where at each leaf we see if we've planned out
 		// term resolution all the way up to the root, our destination.  If so, we just reconstruct our plan.
 		while (!plannedToDestination && toVisits.size() > 0) {
@@ -169,22 +170,22 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			ToVisit visiting = toVisits.poll();
 
 			LOG.debug("visiting " + visiting.getTermResolverKey());
-			
+
 			// the resolver is the edge in our tree -- we don't get it directly from the termResolversByKey Map, because it could be our destination
 			TermResolver resolver = getResolver(visiting.getTermResolverKey(), destination, destinationKey);
 			TermResolver parent = getResolver(visiting.getParentKey(), destination, destinationKey);
-			
+
 			if (visitedByKey.containsKey(visiting.getTermResolverKey())) {
 				continue; // We've already visited this one
 			}
-			
+
 			Visited parentVisited = visitedByKey.get(visiting.getParentKey());
-			
+
 			if (resolver == null) throw new RuntimeException("Unable to get TermResolver by its key");
 			Set<TermSpecification> prereqs = resolver.getPrerequisites();
 			// keep track of any prereqs that we already have handy
 			List<TermSpecification> metPrereqs = new LinkedList<TermSpecification>();
-			
+
 			// see what prereqs we have already, and which we'll need to visit
 			if (prereqs != null) for (TermSpecification prereq : prereqs) {
 				if (!termCache.containsKey(new Term(prereq, null))) {
@@ -193,8 +194,8 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 					if (prereqResolvers != null) for (TermResolver prereqResolver : prereqResolvers) {
 						// Only TermResolvers that don't take paramaterized terms can be chained, so:
 						// if the TermResolver doesn't take parameters, or it resolves the output term
-						if (CollectionUtils.isEmpty(prereqResolver.getParameterNames()) || 
-								term.equals(prereqResolver.getOutput())) 
+						if (CollectionUtils.isEmpty(prereqResolver.getParameterNames()) ||
+								term.equals(prereqResolver.getOutput()))
 						{
 							// queue it up for visiting
 							toVisits.add(new ToVisit(visiting.getCost() /* cost to get to this resolver */, prereqResolver, resolver));
@@ -204,37 +205,37 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 					metPrereqs.add(prereq);
 				}
 			}
-			
+
 			// Build visited info
 			Visited visited = buildVisited(resolver, parentVisited, metPrereqs);
 			visitedByKey.put(visited.getResolverKey(), visited);
-			
+
 			plannedToDestination = isPlannedBackToDestination(visited, destinationKey, visitedByKey);
 		}
-		
+
 		if (plannedToDestination) {
 			// build result from Visited tree.
 			resolutionPlan = new LinkedList<TermResolverKey>();
-			
+
 			assembleLinearResolutionPlan(visitedByKey.get(destinationKey), visitedByKey, resolutionPlan);
 		}
 		return resolutionPlan;
 	}
-	
+
 	/**
 	 *  @return the Visited object for the resolver we just, er, well, visited.
 	 */
 	private Visited buildVisited(TermResolver resolver, Visited parentVisited, Collection<TermSpecification> metPrereqs) {
 		Visited visited = null;
-		
+
 		List<TermResolverKey> pathTo = new ArrayList<TermResolverKey>(1 + (parentVisited == null ? 0 : parentVisited.pathTo.size()));
 		if (parentVisited != null && parentVisited.getPathTo() != null) pathTo.addAll(parentVisited.getPathTo());
 		if (parentVisited != null) pathTo.add(parentVisited.getResolverKey());
 		TermResolverKey resolverKey = new TermResolverKey(resolver);
-		
+
 		visited = new Visited(resolverKey, pathTo, resolver.getPrerequisites(), resolver.getCost() + (parentVisited == null ? 0 : parentVisited.getCost()));
 		for (TermSpecification metPrereq : metPrereqs) { visited.addPlannedPrereq(metPrereq); }
-	
+
 		return visited;
 	}
 
@@ -265,25 +266,25 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		boolean plannedToDestination = false;
 		if (visited.isFullyPlanned()) {
 			LOG.debug("Leaf! this resolver's prereqs are all avialable.");
-			// no traversing further yet, instead we need to check how far up the tree is fully planned out 
+			// no traversing further yet, instead we need to check how far up the tree is fully planned out
 			// step backwards toward the root of the tree and see if we're good all the way to our objective.
 			// if a node fully planned, move up the tree (towards the root) to see if its parent is fully planned, and so on.
-			
+
 			if (visited.getPathTo().size() > 0) {
 				// reverse the path to
 				List<TermResolverKey> reversePathTo = new ArrayList<TermResolverKey>(visited.getPathTo());
 				Collections.reverse(reversePathTo);
-				
+
 				// we use this to propagate resolutions up the tree
 				Visited previousAncestor = visited;
-				
+
 				for (TermResolverKey ancestorKey : reversePathTo) {
-					
+
 					Visited ancestorVisited = visitedByKey.get(ancestorKey);
 					ancestorVisited.addPlannedPrereq(previousAncestor.getResolverKey());
-					
+
 					LOG.debug("checking ancestor " + ancestorKey);
-					
+
 					if (ancestorVisited.isFullyPlanned() && ancestorKey.equals(destinationKey)) {
 						// Woot! Job's done!
 						plannedToDestination = true;
@@ -303,7 +304,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		}
 		return plannedToDestination;
 	}
-	
+
 	private void assembleLinearResolutionPlan(Visited visited, Map<TermResolverKey, Visited> visitedByKey, List<TermResolverKey> plan) {
 		// DFS
 		for (TermResolverKey prereqResolverKey : visited.getPrereqResolvers()) {
@@ -343,17 +344,17 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		};
 		return destination;
 	}
-	
-	
+
+
 	private static class ToVisit implements Comparable<ToVisit> {
-		
+
 		private final int precost;
 		private final int addcost;
 		private final TermResolverKey resolverKey;
-		
+
 		// the parent key is not being used for comparison purposes currently
 		private final TermResolverKey parentKey;
-		
+
 		/**
 		 * @param precost
 		 * @param resolver
@@ -363,7 +364,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			this.precost = precost;
 			this.addcost = resolver.getCost();
 			this.resolverKey = new TermResolverKey(resolver);
-			
+
 			if (parent != null) {
 				this.parentKey = new TermResolverKey(parent);
 			} else {
@@ -374,17 +375,17 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		public int getCost() {
 			return precost + addcost;
 		}
-		
+
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj) return true;
 			if (obj == null) return false;
 			if (getClass() != obj.getClass())
-				return false;			
+				return false;
 			ToVisit other = (ToVisit)obj;
 			return this.compareTo(other) == 0;
 		}
-		
+
 		/* (non-Javadoc)
 		 * @see java.lang.Object#hashCode()
 		 */
@@ -396,7 +397,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			result = prime * result + ((resolverKey == null) ? 0 : resolverKey.hashCode());
 			return result;
 		}
-		
+
 		/**
 		 * {@inheritDoc Comparable}
 		 */
@@ -407,33 +408,33 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			if (getCost() < o.getCost()) return -1;
 			return resolverKey.compareTo(o.resolverKey);
 		}
-		
+
 		public TermResolverKey getTermResolverKey() {
 			return resolverKey;
 		}
-		
+
 		public TermResolverKey getParentKey() {
 			return parentKey;
 		}
-		
+
 		@Override
 		public String toString() {
 			return getClass().getSimpleName()+"("+getTermResolverKey()+")";
 		}
 	}
-	
+
 	protected static class TermResolverKey implements Comparable<TermResolverKey> {
 		private final List<TermSpecification> data;
 		private final String [] params;
-		
+
 		// just used for toArray call
 		private static final TermSpecification[] TERM_SPEC_TYPER = new TermSpecification[0];
 		private static final String[] STRING_TYPER = new String[0];
-		
+
 		public TermResolverKey(TermResolver resolver) {
 			this(resolver.getOutput(), resolver.getParameterNames(), resolver.getPrerequisites());
 		}
-		
+
 		private TermResolverKey(TermSpecification dest, Set<String> paramSet, Set<TermSpecification> prereqs) {
 			if (dest == null) throw new IllegalArgumentException("dest parameter must not be null");
 			data = new ArrayList<TermSpecification>(1 + ((prereqs == null) ? 0 : prereqs.size())); // size ArrayList perfectly
@@ -445,7 +446,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				params = STRING_TYPER; // just assigning a handy zero length String array
 			}
 			if (prereqs != null) {
-				// this is painful, but to be able to compare we need a defined order 
+				// this is painful, but to be able to compare we need a defined order
 				TermSpecification [] prereqsArray = prereqs.toArray(TERM_SPEC_TYPER);
 				Arrays.sort(prereqsArray);
 				for (TermSpecification prereq : prereqsArray) {
@@ -453,26 +454,26 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				}
 			}
 		}
-		
+
 		public TermSpecification getOutput() {
 			return data.get(0);
 		}
-			
+
 		@Override
 		public int compareTo(TermResolverKey o) {
 			if (o == null) return 1;
-			
+
 			Iterator<TermSpecification> mDataIter = data.iterator();
 			Iterator<TermSpecification> oDataIter = o.data.iterator();
-			
+
 			while (mDataIter.hasNext() && oDataIter.hasNext()) {
 				int itemCompareResult = mDataIter.next().compareTo(oDataIter.next());
 				if (itemCompareResult != 0) return itemCompareResult;
 			}
-			
+
 			if (mDataIter.hasNext()) return 1;
 			if (oDataIter.hasNext()) return -1;
-			
+
 			return 0;
 		}
 
@@ -498,7 +499,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			TermResolverKey other = (TermResolverKey) obj;
 			return this.compareTo(other) == 0;
 		}
-		
+
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
@@ -510,7 +511,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				sb.append("+");
 				ArrayUtils.toString(params);
 			}
-			
+
 			if (iter.hasNext()) sb.append(" <- ");
 			boolean first = true;
 			while (iter.hasNext()) {
@@ -518,20 +519,20 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				else sb.append(", ");
 				sb.append(iter.next().toString());
 			}
-			
-			
+
+
 			return sb.toString();
 		}
 	}
-	
-	
+
+
 	private static class Visited {
-		private TermResolverKey resolverKey; 
+		private TermResolverKey resolverKey;
 		private List<TermResolverKey> pathTo;
 		private Set<TermSpecification> remainingPrereqs;
 		private Map<TermSpecification, TermResolverKey> prereqResolvers;
 		private int cost;
-		
+
 		/**
 		 * @param resolver
 		 * @param pathTo
@@ -553,42 +554,42 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		public List<TermResolverKey> getPathTo() {
 			return pathTo;
 		}
-		
+
 		public TermResolverKey getResolverKey() {
 			return resolverKey;
 		}
-		
+
 		public Collection<TermResolverKey> getPrereqResolvers() {
 			return prereqResolvers.values();
 		}
-		
+
 		/**
 		 * @return true if resolution of all the prerequisites has been planned
 		 */
 		public boolean isFullyPlanned() {
 			return remainingPrereqs.isEmpty();
 		}
-		
+
 		public int getCost() {
 			return cost;
 		}
-		
+
 		public void addPlannedPrereq(TermResolverKey termResolverKey) {
 			remainingPrereqs.remove(termResolverKey.getOutput());
 			prereqResolvers.put(termResolverKey.getOutput(), termResolverKey);
 		}
-		
+
 		public void addPlannedPrereq(TermSpecification termSpec) {
 			remainingPrereqs.remove(termSpec);
 		}
 	}
-	
+
 	private static class InvalidResolutionPathException extends Exception {
 		private static final long serialVersionUID = 1L;
 
 		public InvalidResolutionPathException() {
 		}
-	}	
+	}
 
 }
 

@@ -22,9 +22,9 @@ import org.kuali.rice.krms.api.engine.TermResolutionException;
 
 /**
  * TODO...
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
 public final class TermExpression implements Expression<Object> {
 
@@ -36,14 +36,13 @@ public final class TermExpression implements Expression<Object> {
 		this.termResolutionEngine = termResolutionEngine;
 	}
 
+	/**
+	 * @see org.kuali.rice.krms.framework.engine.expression.Expression#invoke(org.kuali.rice.krms.api.engine.ExecutionEnvironment)
+	 * @throws TermResolutionException if there is a problem resolving the {@link Term}
+	 */
 	@Override
 	public Object invoke(ExecutionEnvironment environment) {
-		try {
-			return termResolutionEngine.resolveTerm(term);
-		} catch (TermResolutionException e) {
-			// TODO - term resolution exception needs to become runtime
-			throw new RuntimeException(e);
-		}
+		return termResolutionEngine.resolveTerm(term);
 	}
 
 }

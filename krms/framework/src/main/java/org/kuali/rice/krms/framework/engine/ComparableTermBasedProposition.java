@@ -12,26 +12,26 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 	private final ComparisonOperator operator;
 	private final Term term;
 	private final T expectedValue;
-	
-	
+
+
 	public ComparableTermBasedProposition(ComparisonOperator operator, Term term, T expectedValue) {
 		this.operator = operator;
 		this.term = term;
 		this.expectedValue = expectedValue;
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.krms.framework.engine.Proposition#evaluate(org.kuali.rice.krms.api.engine.ExecutionEnvironment)
+	 * @throws TermResolutionException if there is a problem resolving the {@link Term}
+	 */
 	@Override
 	public boolean evaluate(ExecutionEnvironment environment) {
 		Comparable<T> termValue;
-		try {
-			termValue = environment.resolveTerm(term);
-		} catch (TermResolutionException e) {
-			// TODO Something better than this
-			throw new RuntimeException(e);
-		}
-		
+
+		termValue = environment.resolveTerm(term);
+
 		boolean result = compare(termValue);
-		
+
 		if (LOG.isEnabled(environment)){
 			LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, result));
 		}
@@ -40,7 +40,7 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 
 	/**
 	 * This method does the actual comparison of the term value w/ the expected value
-	 * 
+	 *
 	 * @param termValue
 	 * @return the boolean result of the comparison
 	 */
@@ -48,7 +48,7 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 		boolean result = Boolean.valueOf(operator.compare(termValue, getExpectedValue()));
 		return result;
 	}
-	
+
 	/**
 	 * @return the expectedValue
 	 */

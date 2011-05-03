@@ -31,28 +31,12 @@ import javax.xml.namespace.QName;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public abstract class CORETestCase extends BaselineTestCase {
 
-	//private static final String SQL_FILE = "classpath:org/kuali/rice/core/test/DefaultSuiteTestData.sql";
-	//private static final String XML_FILE = "classpath:org/kuali/rice/core/test/DefaultSuiteTestData.xml";
     private static final String CORE_MODULE_NAME = "core";
 
     public CORETestCase() {
 		super(CORE_MODULE_NAME);
 	}
 
-    /*
-    @Override
-	protected List<Lifecycle> getSuiteLifecycles() {
-		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
-		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle(XML_FILE));
-		return suiteLifecycles;
-	}
-
-	@Override
-	protected void loadSuiteTestData() throws Exception {
-		super.loadSuiteTestData();
-        new SQLDataLoader(SQL_FILE, ";").runSql();
-	}
-    */
 	@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
         SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("CORETestResourceLoader"), "CORETestHarnessSpringBeans.xml", null);

@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.krms.api.test;
 
-import static org.junit.Assert.assertEquals;
-
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,9 +25,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import static org.junit.Assert.assertEquals;
 
 /**
  * A class with some assertion utilities for JAXB-related operations. 

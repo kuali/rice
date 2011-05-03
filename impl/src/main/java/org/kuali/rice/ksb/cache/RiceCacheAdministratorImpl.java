@@ -137,12 +137,12 @@ public class RiceCacheAdministratorImpl implements RiceCacheAdministrator {
 		if (!properties.containsKey(AbstractCacheAdministrator.CACHE_BLOCKING_KEY)) {
 			properties.put(AbstractCacheAdministrator.CACHE_BLOCKING_KEY, "false");
 		}
-		properties.put(RiceCacheAdministrator.FORCE_REGISTRY_REFRESH_KEY, new Boolean(this.forceRegistryRefresh));
-		properties.put(RiceCacheAdministrator.REMOTED_SERVICE_REGISTRY, remotedServiceRegistry);
+		properties.put(CacheProperties.FORCE_REGISTRY_REFRESH_KEY, new Boolean(this.forceRegistryRefresh));
+		properties.put(CacheProperties.REMOTED_SERVICE_REGISTRY, remotedServiceRegistry);
 		if (StringUtils.isBlank(this.serviceName)) {
 		    this.serviceName = DEFAULT_SERVICE_NAME;
 		}
-		properties.put(RiceCacheAdministrator.SERVICE_NAME_KEY, this.serviceName);
+		properties.put(CacheProperties.SERVICE_NAME_KEY, this.serviceName);
 		return properties;
 	}
 

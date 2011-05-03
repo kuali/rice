@@ -58,9 +58,9 @@ public class RiceDistributedCacheListener extends AbstractBroadcastingListener i
 		super.initialize(cache, config);
 		// the following property was put on the OSCache properties used for
 		// cache configuration
-		this.serviceName = config.getProperty(RiceCacheAdministrator.SERVICE_NAME_KEY);
-		boolean forceRegistryRefresh = new Boolean((Boolean)config.getProperties().get(RiceCacheAdministrator.FORCE_REGISTRY_REFRESH_KEY));
-		remotedServiceRegistry = (RemotedServiceRegistry)config.getProperties().get(RiceCacheAdministrator.REMOTED_SERVICE_REGISTRY);
+		this.serviceName = config.getProperty(CacheProperties.SERVICE_NAME_KEY);
+		boolean forceRegistryRefresh = new Boolean((Boolean)config.getProperties().get(CacheProperties.FORCE_REGISTRY_REFRESH_KEY));
+		remotedServiceRegistry = (RemotedServiceRegistry)config.getProperties().get(CacheProperties.REMOTED_SERVICE_REGISTRY);
 		if (StringUtils.isBlank(this.serviceName)) {
 			throw new RiceRuntimeException("Cannot create DistributedCacheListener with empty serviceName");
 		}

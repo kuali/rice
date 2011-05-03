@@ -24,10 +24,6 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RiceCacheAdministrator extends Lifecycle {
-	
-	public static final String FORCE_REGISTRY_REFRESH_KEY = "_FORCE_REGISTRY_REFRESH";
-	public static final String SERVICE_NAME_KEY = "_SERVICE_NAME";
-	public static final String REMOTED_SERVICE_REGISTRY = "remotedServiceRegistry";
 
 	public Object getFromCache(String key);
 

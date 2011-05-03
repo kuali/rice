@@ -260,6 +260,9 @@ public final class KimType implements KimTypeContract, ModelObjectComplete {
          * creates a KimType from an existing {@link KimTypeContract}.
          */
         public static Builder create(KimTypeContract contract) {
+        	if (contract == null) {
+        		throw new IllegalArgumentException("contract was null");
+        	}
             Builder builder = new Builder();
             builder.setId(contract.getId());
             builder.setServiceName(contract.getServiceName());

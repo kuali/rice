@@ -29,6 +29,20 @@
             <artifactId>rice-core-impl</artifactId>
             <scope>test</scope>
         </dependency>
+            <!-- HACK!! this dependency should not be here -->
+    <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>rice-edl-impl</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <version>${project.version}</version>

@@ -35,17 +35,17 @@
       </c:if>
       
       <c:if test="${!field.fieldInquiry.render}">
-         <%-- Display alternate attribute value if it's set --%>
-         <c:if test="${not empty field.alternateDisplayAttributeName}">
-  	     	<s:bind path="${field.alternateDisplayAttributeBindingInfo.bindingPath}">${status.value}</s:bind>
+         <%-- Display alternate display value if it's set --%>
+         <c:if test="${not empty field.alternateDisplayValue}">
+  	     	<c:out value="${field.alternateDisplayValue}"/>
   	     </c:if>
-  	     <c:if test="${empty field.alternateDisplayAttributeName}">
-  	        <%-- If alternate attribute name is not present, look for additional property to display --%>
+  	     <c:if test="${empty field.alternateDisplayValue}">
+  	        <%-- If alternate display value is not present, look for additional property to display --%>
   	        <c:if test="${not empty field.additionalDisplayAttributeName}">
   	        	<s:bind path="${field.bindingInfo.bindingPath}">${status.value} - </s:bind>
   	        	<s:bind path="${field.additionalDisplayAttributeBindingInfo.bindingPath}">${status.value}</s:bind>
   	        </c:if>
-  	        <%-- If either additional or alternate property not preset, display the actual property value --%>
+  	        <%-- If either alternate value or additional property not preset, display the actual property value --%>
   	        <c:if test="${empty field.additionalDisplayAttributeName}">
   	     		<s:bind path="${field.bindingInfo.bindingPath}">${status.value}</s:bind>
   	     	</c:if>

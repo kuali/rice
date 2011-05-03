@@ -57,6 +57,11 @@ public class LookupCriteriaAttributeField extends AttributeField {
 	public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
 		LookupInquiryUtils.initializeAttributeFieldFromAttributeDefinition(this, attributeDefinition);
 		
+		// security
+		if (attributeSecurity == null) {
+			attributeSecurity = attributeDefinition.getAttributeSecurity();
+		}
+		
 		if (getControl() == null) {
 		    return;
 		}

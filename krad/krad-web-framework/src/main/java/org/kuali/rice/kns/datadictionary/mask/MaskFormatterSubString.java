@@ -16,24 +16,16 @@
 package org.kuali.rice.kns.datadictionary.mask;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.web.format.Formatter;
 
 /**
   The maskTo element is to used hide the beginning part of the
   value for unauthorized users.  The number of leading characters
   to hide and the replacement character can be specified.
  */
-public class MaskFormatterSubString   extends Formatter implements MaskFormatter {
+public class MaskFormatterSubString implements MaskFormatter {
     protected String maskCharacter = "*";
     protected int maskLength;
 
-    public Object formatObject(Object value) {
-        if (value == null)
-            return formatNull();
-        
-        return maskValue(value);
-    }
-    
     public String maskValue(Object value) {
         if (value == null) {
             return null;

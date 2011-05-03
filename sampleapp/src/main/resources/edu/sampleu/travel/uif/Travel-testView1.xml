@@ -74,10 +74,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Test Group @{travelAccount1.name}"/> 
       <property name="items">
         <list>
-          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="15" p:minLength="2"
-               p:summary="This title is used for identifying the proposal through the apporval process." p:constraint="Must be 4 chars" >
+          <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="4" p:minLength="2"
+               p:summary="This title is used for identifying the proposal through the apporval process." p:readOnly="true"  p:conditionalReadOnly="" p:constraint="Must be 4 chars" p:alternateDisplayAttributeName="field2">
             <property name="control">
-              <bean parent="TextControl" p:size="15" p:watermarkText="Field1"/>
+              <bean parent="TextControl" p:size="5" p:watermarkText="Field1"/>
             </property>
             <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
             <property name="fieldLookup.fieldConversions">
@@ -86,7 +86,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </map>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:conditionalReadOnly="true" p:maxLength="25" p:readOnly="true" p:alternateDisplayAttributeName="field1">
+          <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Field 2" p:conditionalReadOnly="true" p:maxLength="25" p:readOnly="true" p:additionalDisplayAttributeName="field1">
             <property name="control">
               <bean parent="TextControl" p:size="26"/>
             </property>
@@ -125,18 +125,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               </map>
             </property>
           </bean>
-          <bean parent="AttributeField_Form" p:propertyName="field6" p:label="SSN" p:readOnly="true" p:conditionalReadOnly="" p:required="true" p:width="auto" p:maxLength="25">
+          <bean parent="AttributeField_Form" p:propertyName="field6" p:label="Field 6" p:readOnly="true" p:required="true" p:width="auto" p:maxLength="25">
             <property name="control">
               <bean parent="TextControl" p:size="26"/>
             </property>
-            <property name="attributeSecurity">
-	            <bean parent="AttributeSecurity">
-		  			<property name="partialMask" value="true"/> 
-	  				<property name="partialMaskFormatter">
-	  					<bean parent="MaskFormatterSubString" p:maskLength="5"/> 
-	  				</property>
-	  			</bean>
-	  		</property>	
           </bean>
           <bean parent="AttributeField_Form" p:propertyName="field7" p:label="Field 8" p:width="auto" p:maxLength="9">
             <property name="control">

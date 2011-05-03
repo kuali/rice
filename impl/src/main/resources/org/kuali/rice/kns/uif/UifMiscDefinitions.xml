@@ -255,8 +255,4 @@
   
   <bean id="PropertyReplacer" class="org.kuali.rice.kns.uif.core.PropertyReplacer" scope="prototype"/>
   
-  <bean id="dateFormatter" class="org.kuali.rice.core.web.format.DateFormatter"	scope="prototype"/>
-  
-  <bean id="phoneNumberFormatter" class="org.kuali.rice.core.web.format.PhoneNumberFormatter" scope="prototype"/>
-		
 </beans>

@@ -15,23 +15,14 @@
  */
 package org.kuali.rice.kns.datadictionary.mask;
 
-import org.kuali.rice.core.web.format.Formatter;
-
 /**
       The maskLiteral element is used to completely hide the field
       value for unauthorized users.  The specified literal will be
       shown instead of the field value.
  */
-public class MaskFormatterLiteral  extends Formatter implements MaskFormatter {
+public class MaskFormatterLiteral implements MaskFormatter {
     protected String literal;
 
-    public Object formatObject(Object value) {
-        if (value == null)
-            return formatNull();
-        
-        return maskValue(value);
-    }
-    
     public String maskValue(Object value) {
         return literal;
     }

@@ -75,84 +75,39 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         
         AttributeField af = form.getView().getViewIndex().getAttributeFieldByPath(propertyName);
         boolean requiresEncryption = false;
-        boolean requiresMasking = false;
-        Formatter maskFormatter = null;
-        
         if(af != null) {
         	if (af.getAttributeSecurity() != null) {
-        		
         		if (af.getAttributeSecurity().hasRestrictionThatRemovesValueFromUI()) {
-        			/**
-        			 * For testing, we dont need encryption
-        			 */
-//        			requiresEncryption = true;
-        		}
-        		
-        		if (af.getAttributeSecurity().isMask()){
-            		maskFormatter = (Formatter)(Formatter)af.getAttributeSecurity().getMaskFormatter();
-            	}else if (af.getAttributeSecurity().isPartialMask()){
-            		maskFormatter = (Formatter)(Formatter)af.getAttributeSecurity().getPartialMaskFormatter();
-                }
-        		
-        		if (maskFormatter != null && (form.getView().isReadOnly() || af.isReadOnly())){ // and Check for auth
-        			requiresMasking = true;
+        			requiresEncryption = true;
         		}
         	}
-        	
-    	    Formatter formatter = af.getFormatter();
+            
+            Formatter formatter = af.getFormatter();
             if(formatter != null) {
                 formatterClass = formatter.getClass();
             }
-            
-        	PropertyEditor propertyEditor = null;
-        	/**
-        	 * If it's encrypted property and doesn't have formatterClass, find the editor for this property
-        	 */
-        	if (formatterClass == null && requiresEncryption){
-        		if (LOG.isDebugEnabled()) {
-            		LOG.debug("No custom formatter for property path '" + propertyName + "' but property does require encryption");
-            	}
-				propertyEditor = findEditorForPropertyName(propertyName); // Unable to get for some like jave.util.Date as it's NOT registered by default
-			}else if (formatterClass != null){
-				propertyEditor = new UifKnsFormatterPropertyEditor(formatterClass);
-			}
-        	
-        	if (requiresEncryption){ // If encrypted, constuct encrypt property editor
-        		this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(propertyEditor));
-        	}else if (requiresMasking){ // If masked, construct masked property editor with formatclass
-        		/**
-        		 * TODO: Not sure about encryption
-        		 */
-        		if (formatterClass != null){
-        			this.registerCustomEditor(null, propertyName, new UifKnsMaskFormatterPropertyEditor(maskFormatter,formatterClass));
-        		}else{
-        			this.registerCustomEditor(null, propertyName, new UifKnsMaskFormatterPropertyEditor(maskFormatter));
-        		}
-        	}else if (propertyEditor != null){ // If formatter present in the bean def, set it
-        		this.registerCustomEditor(null, propertyName, propertyEditor);
-        	}
+        }
         
-        	// really these should be PropertyEditors after we evaluate how many are
-            // needed vs how many spring provides
-            /*if(formatterClass != null) {
+        // really these should be PropertyEditors after we evaluate how many are
+        // needed vs how many spring provides
+        if(formatterClass != null) {
+        	if (LOG.isDebugEnabled()) {
+        		LOG.debug("Registering custom editor for property path '" + propertyName + "' and formatter class '" + formatterClass.getName() + "'");
+        	}
+        	PropertyEditor customEditor = new UifKnsFormatterPropertyEditor(formatterClass);
+        	if (requiresEncryption) {
             	if (LOG.isDebugEnabled()) {
-            		LOG.debug("Registering custom editor for property path '" + propertyName + "' and formatter class '" + formatterClass.getName() + "'");
+            		LOG.debug("Enabling encryption for custom editor '" + propertyName + "' and formatter class '" + formatterClass.getName() + "'");
             	}
-            	PropertyEditor customEditor = new UifKnsFormatterPropertyEditor(formatterClass);
-            	if (requiresEncryption) {
-                	if (LOG.isDebugEnabled()) {
-                		LOG.debug("Enabling encryption for custom editor '" + propertyName + "' and formatter class '" + formatterClass.getName() + "'");
-                	}
-            		this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(customEditor));
-            	} else {
-            		this.registerCustomEditor(null, propertyName, customEditor);
-            	}
-            } else if (requiresEncryption) {
-            	if (LOG.isDebugEnabled()) {
-            		LOG.debug("No custom formatter for property path '" + propertyName + "' but property does require encryption");
-            	}
-            	this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(findEditorForPropertyName(propertyName)));
-            }*/
+        		this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(customEditor));
+        	} else {
+        		this.registerCustomEditor(null, propertyName, customEditor);
+        	}
+        } else if (requiresEncryption) {
+        	if (LOG.isDebugEnabled()) {
+        		LOG.debug("No custom formatter for property path '" + propertyName + "' but property does require encryption");
+        	}
+        	this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(findEditorForPropertyName(propertyName)));
         }
         
         processedProperties.add(propertyName);

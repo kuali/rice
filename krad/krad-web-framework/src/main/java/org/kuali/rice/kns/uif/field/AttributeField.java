@@ -29,6 +29,9 @@ import org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.container.CollectionGroup;
+import org.kuali.rice.kns.uif.container.FormView;
+import org.kuali.rice.kns.uif.container.InquiryView;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.control.MultiValueControlBase;
@@ -36,6 +39,7 @@ import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.Component;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.util.ClientValidationUtils;
+import org.kuali.rice.kns.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.kns.uif.widget.Inquiry;
 import org.kuali.rice.kns.uif.widget.QuickFinder;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -94,7 +98,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     private String description;
 
-    private AttributeSecurity attributeSecurity;
+    protected AttributeSecurity attributeSecurity;
     private MessageField summaryMessageField;
     private MessageField constraintMessageField;
 
@@ -103,6 +107,8 @@ public class AttributeField extends FieldBase implements DataBinding {
     
     private BindingInfo alternateDisplayAttributeBindingInfo;
 	private BindingInfo additionalDisplayAttributeBindingInfo;
+	
+	private String alternateDisplayValue;
 	
     // widgets
     private Inquiry fieldInquiry;
@@ -169,6 +175,78 @@ public class AttributeField extends FieldBase implements DataBinding {
         	additionalDisplayAttributeBindingInfo.setDefaults(view, getAdditionalDisplayAttributeName());        	
         }
         
+        /**
+         * Alternate display value (Masking)
+         */
+        if ( isReadOnly() || view.isReadOnly() ){ // Check for authorization???
+        	AttributeSecurity security = null;
+        	String bindingPath = null;
+        	/**
+        	 * If alternate display property is set, check for that fields security
+        	 */
+        	if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())){
+        		AttributeField alternateField = null;
+        		
+        		bindingPath = getAlternateDisplayAttributeBindingInfo().getBindingObjectPath() + "." + getAlternateDisplayAttributeBindingInfo().getBindingName();
+        		String strippedBindingPath = stripIndexesFromPropertyPath(bindingPath);
+        		
+        		/**
+        		 * Get the attribute field for the alterdate display property
+        		 */
+        		alternateField = view.getViewIndex().getAttributeFieldByPath(strippedBindingPath);
+        		
+        		if (alternateField == null){
+        			/**
+        			 * If the attribute field present in a collection, get the AttributeField object from the collection
+        			 */
+        			 CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(strippedBindingPath);
+        			 if (collectionGroup == null){
+        				 throw new RuntimeException("AttributeField doesnt exists for the alternate display attribute " + getAlternateDisplayAttributeName());
+        			 }
+        			 
+        			 for (Component item : ((CollectionGroup)collectionGroup).getItems()) {
+         				if (item instanceof AttributeField){
+ 	        				if (StringUtils.equals(((AttributeField)item).getBindingInfo().getBindingPath(), strippedBindingPath)){
+ 	        					alternateField = (AttributeField)item;
+ 	        					break;
+ 	        				}
+         				}
+         			}
+        		}
+        			 
+    			if (alternateField == null){
+    				throw new RuntimeException("AttributeField doesnt exists for the alternate display attribute " + getAlternateDisplayAttributeName());
+    			}
+    			
+    			if (alternateField != null && alternateField.getAttributeSecurity() != null){
+        			security = alternateField.getAttributeSecurity();
+        		}
+    		}else if (getAttributeSecurity() != null){ // else, if security present in this field
+        		security = getAttributeSecurity();
+        		bindingPath = getBindingInfo().getBindingPath();
+        	}
+        		
+        	/**
+        	 * If attribute security present either in this field or in alternate display field, get the masked value	
+        	 */
+    		if (security != null){
+        		Object fieldValue = null;
+        		if (view instanceof InquiryView){
+        			fieldValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+        		}else if (model instanceof FormView){
+        			fieldValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+        		}
+        		
+        		if(security.isMask()){
+        			alternateDisplayValue = security.getMaskFormatter().maskValue(fieldValue);
+        		}else if(getAttributeSecurity().isPartialMask()){
+        			alternateDisplayValue = security.getPartialMaskFormatter().maskValue(fieldValue);
+        		}
+        		
+        	}
+        		
+        }
+        	
         // if read only or the control is not set no need to set client side
         // validation
         if (isReadOnly() || getControl() == null) {
@@ -184,8 +262,28 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
 
         ClientValidationUtils.processAndApplyConstraints(this, view);
+        
     }
 
+    /**
+     * Strips indexes from the property path. 
+     * bo.fiscalOfficer.accounts[0].name returns bo.fiscalOfficer.accounts.name which can be used 
+     * to find the components from the viewindex
+     * 
+     * TODO:Have to move this code to some util classes. Not sure whether we have this
+     * kind of method already. Have to check with Jerry
+     */
+    private String stripIndexesFromPropertyPath(String propertyPath){
+    	String returnValue = propertyPath;
+    	String index = StringUtils.substringBetween(propertyPath, "[", "]");
+    	if (StringUtils.isNotBlank(index)){
+    		returnValue = StringUtils.remove(propertyPath, "[" + index + "]");
+    		return stripIndexesFromPropertyPath(returnValue);
+    	}else{
+    		return returnValue;
+    	}
+    }
+    
     /**
      * Sets the ids on all components the attribute field uses so they will all
      * contain this attribute's id in their ids. This is useful for jQuery
@@ -287,7 +385,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         // security
         if (getAttributeSecurity() == null) {
-            setAttributeSecurity(attributeDefinition.getAttributeSecurity());
+        	attributeSecurity = attributeDefinition.getAttributeSecurity();
         }
 
         // constraint
@@ -625,9 +723,9 @@ public class AttributeField extends FieldBase implements DataBinding {
      * 
      * @param attributeSecurity
      */
-    public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
-        this.attributeSecurity = attributeSecurity;
-    }
+//    private void setAttributeSecurity(AttributeSecurity attributeSecurity) {
+//        this.attributeSecurity = attributeSecurity;
+//    }
 
     /**
      * @see org.kuali.rice.kns.uif.core.ComponentBase#getSupportsOnLoad()
@@ -997,5 +1095,9 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 */
 	public BindingInfo getAlternateDisplayAttributeBindingInfo() {
 		return this.alternateDisplayAttributeBindingInfo;
+	}
+	
+	public String getAlternateDisplayValue(){
+		return alternateDisplayValue;
 	}
 }

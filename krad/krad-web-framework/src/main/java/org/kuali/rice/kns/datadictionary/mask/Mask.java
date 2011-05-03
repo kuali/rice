@@ -17,26 +17,17 @@ package org.kuali.rice.kns.datadictionary.mask;
 
 import java.io.Serializable;
 
-import org.kuali.rice.core.web.format.Formatter;
-
 /**
     The displayMask element specifies the type of masking to
     be used to hide the value from un-authorized users.
     There are three types of masking.
  */
-public class Mask extends Formatter implements Serializable {   
+public class Mask implements Serializable {   
     private static final long serialVersionUID = 4035984416568235531L;
     
 	protected MaskFormatter maskFormatter;
     protected Class<? extends MaskFormatter> maskFormatterClass;
 
-    public Object formatObject(Object value) {
-        if (value == null)
-            return formatNull();
-        
-        return maskValue(value);
-    }
-    
     /**
      * Masks a data value with the configured maskFormatter;
      * @param value of the object

@@ -56,11 +56,6 @@ public class LookupInquiryUtils {
 			attributeField.setShortLabel(attributeDefinition.getShortLabel());
 		}
 
-		// security
-		if (attributeField.getAttributeSecurity() == null) {
-			attributeField.setAttributeSecurity(attributeDefinition.getAttributeSecurity());
-		}
-
 		// control
 		setupControlFromAttributeDefinition(attributeField, attributeDefinition);
 

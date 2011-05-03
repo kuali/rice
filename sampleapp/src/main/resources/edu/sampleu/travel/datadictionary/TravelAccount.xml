@@ -93,7 +93,6 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Account Name"/>
     <property name="maxLength" value="30"/>
-    <property name="additionalDisplayAttributeName" value="number"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
@@ -106,6 +105,14 @@
     <property name="name" value="name"/>
     <property name="label" value="Account Name"/>
     <property name="description" value="Account Name"/>
+    <property name="attributeSecurity">
+		<bean parent="AttributeSecurity">
+  			<property name="mask" value="true" /> 
+			<property name="maskFormatter">
+  			<bean parent="MaskFormatterLiteral" p:literal="*********" /> 
+  			</property>
+  		</bean>
+  	</property>
   </bean>
   
   <bean id="TravelAccount-subAccountName" parent="TravelAccount-name-parentBean">
@@ -133,19 +140,18 @@
     <property name="shortLabel" value="Date Created"/>
     <property name="label" value="Date Created"/>
     <property name="description" value="Date Created"/>
+    <property name="alternateDisplayAttributeName" value="name"/>
     <property name="controlField">
       <bean parent="DateControl"/>
     </property>     
     <property name="attributeSecurity">
-        <bean parent="AttributeSecurity">
-		<property name="partialMask" value="true"/> 
-		<property name="partialMaskFormatter">
-			<bean parent="MaskFormatterSubString" p:maskLength="6"/> 
-		</property>
-	</bean>
-	</property>	
-  	<property name="formatterClass" value="org.kuali.rice.core.web.format.DateFormatter"/>
-  	
+	            <bean parent="AttributeSecurity">
+		  			<property name="partialMask" value="true"/> 
+	  				<property name="partialMaskFormatter">
+	  					<bean parent="MaskFormatterSubString" p:maskLength="2"/> 
+	  				</property>
+	  			</bean>
+	  		</property>	
   </bean>
   
   <bean id="TravelAccount-extension.accountTypeCode" parent="TravelAccount-extension.accountTypeCode-parentBean"/>

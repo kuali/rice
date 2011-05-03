@@ -38,6 +38,7 @@ import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -204,6 +205,12 @@ public class KualiInquiryAction extends KualiAction {
         checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
+
+        // For files the FormFile is not being persisted instead the file data is stored in
+        // individual fields as defined by PersistableAttachment.
+        if (bo instanceof PersistableAttachment) {
+            request.setAttribute(KNSConstants.BO_ATTACHMENT_FILE_NAME, ((PersistableAttachment) bo).getFileName());
+        }
         
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

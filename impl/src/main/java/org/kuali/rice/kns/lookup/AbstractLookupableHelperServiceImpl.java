@@ -28,11 +28,13 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
@@ -1129,7 +1131,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				String propValueBeforePotientalMasking = propValue;
 				propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue,
 						businessObjectRestrictions);
-				col.setPropertyValue(propValue);
+				
+		        // For files the FormFile is not being persisted instead the file data is stored in
+		        // individual fields as defined by PersistableAttachment.
+				if ((FormFile.class.equals(propClass)) && (element instanceof PersistableAttachment)) {
+				    col.setPropertyValue(((PersistableAttachment) element).getFileName());    
+				} else {
+				    col.setPropertyValue(propValue);
+				}
 
 				// if property value is masked, don't display additional or alternate properties, or allow totals
 				if (StringUtils.equals(propValueBeforePotientalMasking, propValue)) {

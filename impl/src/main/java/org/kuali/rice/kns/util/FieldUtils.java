@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -50,8 +49,8 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -64,7 +63,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.format.FormatException;
-import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
@@ -596,6 +594,14 @@ public class FieldUtils {
 
     public static void populateReadableField(Field field, BusinessObject businessObject){
 		Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
+
+        // For files the FormFile is not being persisted instead the file data is stored in
+		// individual fields as defined by PersistableAttachment.
+	    if (Field.FILE.equals(field.getFieldType())) {
+            Object fileName = ObjectUtils.getNestedValue(businessObject, KNSConstants.BO_ATTACHMENT_FILE_NAME);
+            field.setPropertyValue(fileName);
+        }
+      
 		if (obj != null) {
 			String formattedValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(businessObject, field.getPropertyName());
 			field.setPropertyValue(formattedValue);

@@ -91,7 +91,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
 
-        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getDocumentId());
         //List groupRequestsToActivate = new ArrayList();//requests for this group that need action items
         for (ActionRequestValue actionRequest : actionRequests)
         {

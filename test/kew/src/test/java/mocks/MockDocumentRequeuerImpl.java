@@ -30,10 +30,10 @@ import org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl;
  */
 public class MockDocumentRequeuerImpl extends DocumentRequeuerImpl {
 
-	private static final Set<Long> requeuedDocumentIds = new HashSet<Long>();
+	private static final Set<String> requeuedDocumentIds = new HashSet<String>();
 	private static Lock lock;
 	
-	public static Set<Long> getRequeuedDocumentIds() {
+	public static Set<String> getRequeuedDocumentIds() {
 		return Collections.unmodifiableSet(requeuedDocumentIds);
 	}
 	
@@ -45,7 +45,7 @@ public class MockDocumentRequeuerImpl extends DocumentRequeuerImpl {
 	 * @see org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl#requeueDocument(java.lang.Long)
 	 */
 	@Override
-	public void requeueDocument(Long documentId) {
+	public void requeueDocument(String documentId) {
 		requeuedDocumentIds.add(documentId);
 		super.requeueDocument(documentId);
 	}

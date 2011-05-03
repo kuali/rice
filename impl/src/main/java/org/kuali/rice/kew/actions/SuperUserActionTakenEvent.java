@@ -106,7 +106,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
 
         ActionTakenValue actionTaken = saveActionTaken();
 
-        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getDocumentId());
 
         for (ActionRequestValue actionRequest : actionRequests)
         {

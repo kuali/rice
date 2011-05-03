@@ -59,11 +59,11 @@ public class RoleServiceImpl implements RoleService {
             throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveRole: "+infoString);
         }
         LOG.debug("Re-resolving role asynchronously for "+infoString);
-    	Set routeHeaderIds = new HashSet();
-    	findAffectedDocuments(documentType, roleName, null, routeHeaderIds);
-    	LOG.debug(routeHeaderIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
-    	for (Iterator iterator = routeHeaderIds.iterator(); iterator.hasNext();) {
-    		Long documentId = (Long) iterator.next();
+    	Set documentIds = new HashSet();
+    	findAffectedDocuments(documentType, roleName, null, documentIds);
+    	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
+    	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
+    		String documentId = (String) iterator.next();
     		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
     		RolePoker rolePoker = (RolePoker)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName);
@@ -78,12 +78,11 @@ public class RoleServiceImpl implements RoleService {
             throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving qualified role asynchronously for "+infoString);
-    	Set routeHeaderIds = new HashSet();
-    	findAffectedDocuments(documentType, roleName, qualifiedRoleNameLabel, routeHeaderIds);
-    	LOG.debug(routeHeaderIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
-    	for (Iterator iterator = routeHeaderIds.iterator(); iterator.hasNext();) {
-    		Long documentId = (Long) iterator.next();
-
+    	Set documentIds = new HashSet();
+    	findAffectedDocuments(documentType, roleName, qualifiedRoleNameLabel, documentIds);
+    	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
+    	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
+    		String documentId = (String) iterator.next();
     		QName rolePokerName = new QName(documentType.getServiceNamespace(), MessageServiceNames.ROLE_POKER);
     		RolePoker rolePoker = (RolePoker)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
@@ -95,7 +94,7 @@ public class RoleServiceImpl implements RoleService {
      * route level and then filters in the approriate ones.
      */
     public void reResolveQualifiedRole(DocumentRouteHeaderValue routeHeader, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-        String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getRouteHeaderId())+", role="+roleName+", qualifiedRole="+qualifiedRoleNameLabel;
+        String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getDocumentId())+", role="+roleName+", qualifiedRole="+qualifiedRoleNameLabel;
         if (routeHeader == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName) ||
                 org.apache.commons.lang.StringUtils.isEmpty(qualifiedRoleNameLabel)) {
@@ -105,7 +104,7 @@ public class RoleServiceImpl implements RoleService {
         List nodeInstances = findNodeInstances(routeHeader, roleName);
         int requestsGenerated = 0;
         if (!nodeInstances.isEmpty()) {
-            deletePendingRoleRequests(routeHeader.getRouteHeaderId(), roleName, qualifiedRoleNameLabel);
+            deletePendingRoleRequests(routeHeader.getDocumentId(), roleName, qualifiedRoleNameLabel);
             for (Iterator nodeIt = nodeInstances.iterator(); nodeIt.hasNext();) {
                 RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeIt.next();
                 RuleTemplate ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
@@ -134,7 +133,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public void reResolveRole(DocumentRouteHeaderValue routeHeader, String roleName) throws WorkflowException {
-    	String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getRouteHeaderId())+", role="+roleName;
+    	String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getDocumentId())+", role="+roleName;
         if (routeHeader == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
             throw new IllegalArgumentException("Cannot pass null arguments to reResolveRole: "+infoString);
@@ -143,7 +142,7 @@ public class RoleServiceImpl implements RoleService {
         List nodeInstances = findNodeInstances(routeHeader, roleName);
         int requestsGenerated = 0;
         if (!nodeInstances.isEmpty()) {
-            deletePendingRoleRequests(routeHeader.getRouteHeaderId(), roleName, null);
+            deletePendingRoleRequests(routeHeader.getDocumentId(), roleName, null);
             for (Iterator nodeIt = nodeInstances.iterator(); nodeIt.hasNext();) {
                 RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeIt.next();
                 RuleTemplate ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
@@ -171,23 +170,23 @@ public class RoleServiceImpl implements RoleService {
     }
 
     // search the document type and all its children
-    private void findAffectedDocuments(DocumentType documentType, String roleName, String qualifiedRoleNameLabel, Set routeHeaderIds) {
+    private void findAffectedDocuments(DocumentType documentType, String roleName, String qualifiedRoleNameLabel, Set documentIds) {
     	List pendingRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(documentType.getDocumentTypeId());
     	for (Iterator iterator = pendingRequests.iterator(); iterator.hasNext();) {
 			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
 			if (roleName.equals(actionRequest.getRoleName()) &&
 					(qualifiedRoleNameLabel == null || qualifiedRoleNameLabel.equals(actionRequest.getQualifiedRoleNameLabel()))) {
-				routeHeaderIds.add(actionRequest.getRouteHeaderId());
+				documentIds.add(actionRequest.getDocumentId());
 			}
 		}
     	for (Iterator iterator = documentType.getChildrenDocTypes().iterator(); iterator.hasNext();) {
 			DocumentType childDocumentType = (DocumentType) iterator.next();
-			findAffectedDocuments(childDocumentType, roleName, qualifiedRoleNameLabel, routeHeaderIds);
+			findAffectedDocuments(childDocumentType, roleName, qualifiedRoleNameLabel, documentIds);
 		}
     }
 
-    private void deletePendingRoleRequests(Long routeHeaderId, String roleName, String qualifiedRoleNameLabel) {
-        List pendingRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeaderId);
+    private void deletePendingRoleRequests(String documentId, String roleName, String qualifiedRoleNameLabel) {
+        List pendingRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
         pendingRequests = KEWServiceLocator.getActionRequestService().getRootRequests(pendingRequests);
         List requestsToDelete = new ArrayList();
         for (Iterator iterator = pendingRequests.iterator(); iterator.hasNext();) {
@@ -205,7 +204,7 @@ public class RoleServiceImpl implements RoleService {
 
     private List findNodeInstances(DocumentRouteHeaderValue routeHeader, String roleName) throws WorkflowException {
         List nodeInstances = new ArrayList();
-        Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeader.getRouteHeaderId());
+        Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeader.getDocumentId());
         if (CollectionUtils.isEmpty(activeNodeInstances)) {
             throw new WorkflowException("Document does not currently have any active nodes so re-resolving is not legal.");
         }
@@ -245,7 +244,7 @@ public class RoleServiceImpl implements RoleService {
     	QName documentServiceName = new QName(document.getDocumentType().getServiceNamespace(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
     	KSBXMLService documentRoutingService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, document);
     	try {
-			documentRoutingService.invoke(String.valueOf(document.getRouteHeaderId()));
+			documentRoutingService.invoke(document.getDocumentId());
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}

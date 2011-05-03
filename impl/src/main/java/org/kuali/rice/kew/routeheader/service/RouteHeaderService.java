@@ -39,15 +39,15 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
  */
 public interface RouteHeaderService {
 
-    public DocumentRouteHeaderValue getRouteHeader(Long routeHeaderId);
-    public DocumentRouteHeaderValue getRouteHeader(Long routeHeaderId, boolean clearCache);
-    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<Long> routeHeaderIds);
-    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<Long> routeHeaderIds, boolean clearCache);
-    public Map<Long,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems);
-    public void lockRouteHeader(Long routeHeaderId, boolean wait);
+    public DocumentRouteHeaderValue getRouteHeader(String documentId);
+    public DocumentRouteHeaderValue getRouteHeader(String documentId, boolean clearCache);
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds);
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds, boolean clearCache);
+    public Map<String,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems);
+    public void lockRouteHeader(String documentId, boolean wait);
     public void saveRouteHeader(DocumentRouteHeaderValue routeHeader);
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
-    public Long getNextRouteHeaderId();
+    public String getNextDocumentId();
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader);
     public Collection findPendingByResponsibilityIds(Set responsibilityIds);
     public Collection findByDocTypeAndAppId(String documentTypeName, String appId);
@@ -56,26 +56,26 @@ public interface RouteHeaderService {
      * Removes all SearchableAttributeValues associated with the RouteHeader.
      * @param routeHeader
      */
-    public void clearRouteHeaderSearchValues(Long routeHeaderId);
+    public void clearRouteHeaderSearchValues(String documentId);
 
     /**
      * Updates the searchable attribute values for the document with the given id to the given values.
      * This method will clear existing search attribute values and replace with the ones given.
      */
-    public void updateRouteHeaderSearchValues(Long routeHeaderId, List<SearchableAttributeValue> searchAttributes);
+    public void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes);
     
     /**
      * Returns the Service Namespace of the {@link DocumentType} for the Document with the given ID.
      */
-    public String getServiceNamespaceByDocumentId(Long documentId);
+    public String getServiceNamespaceByDocumentId(String documentId);
 
-    public DocumentRouteHeaderValueContent getContent(Long routeHeaderId);
+    public DocumentRouteHeaderValueContent getContent(String documentId);
 
-    public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue);
+    public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue);
 
-    public String getDocumentStatus(Long documentId);
+    public String getDocumentStatus(String documentId);
 
-    public String getAppDocId(Long documentId);
+    public String getAppDocId(String documentId);
     
     /**
      *
@@ -85,7 +85,7 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<String> getSearchableAttributeStringValuesByKey(Long documentId, String key);
+    public List<String> getSearchableAttributeStringValuesByKey(String documentId, String key);
     /**
      *
      * This method is a more direct way to get the searchable attribute values
@@ -94,7 +94,7 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(Long documentId, String key);
+    public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(String documentId, String key);
     /**
      *
      * This method is a more direct way to get the searchable attribute values
@@ -103,7 +103,7 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<BigDecimal> getSearchableAttributeFloatValuesByKey(Long documentId, String key);
+    public List<BigDecimal> getSearchableAttributeFloatValuesByKey(String documentId, String key);
     /**
      *
      * This method is a more direct way to get the searchable attribute values
@@ -112,6 +112,6 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<Long> getSearchableAttributeLongValuesByKey(Long documentId, String key);
+    public List<Long> getSearchableAttributeLongValuesByKey(String documentId, String key);
 
 }

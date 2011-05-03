@@ -137,9 +137,9 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		entityManager.remove(entityManager.find(RuleBaseValues.class, ruleBaseValuesId));
 	}
 
-	public List findByRouteHeaderId(Long routeHeaderId) {
+	public List findByDocumentId(String documentId) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
-		crit.eq("routeHeaderId", routeHeaderId);
+		crit.eq("documentId", documentId);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 

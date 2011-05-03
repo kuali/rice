@@ -48,7 +48,7 @@ import java.util.List;
 //@Sequence(name="KREW_DOC_NTE_S",property="noteId")
 @NamedQueries({
 	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from org.kuali.rice.kew.notes.Note as n where n.noteId = :noteId"),
-	@NamedQuery(name="KewNote.FindNoteByRouteHeaderId", query="select n from org.kuali.rice.kew.notes.Note as n where n.routeHeaderId = :routeHeaderId order by n.noteId")
+	@NamedQuery(name="KewNote.FindNoteByDocumentId", query="select n from org.kuali.rice.kew.notes.Note as n where n.documentId = :documentId order by n.noteId")
 })
 public class Note implements Serializable {
 
@@ -62,7 +62,7 @@ public class Note implements Serializable {
 	@Column(name="DOC_NTE_ID")
 	private Long noteId;
     @Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+	private String documentId;
     @Column(name="AUTH_PRNCPL_ID")
 	private String noteAuthorWorkflowId;
 	@Column(name="CRT_DT")
@@ -132,12 +132,12 @@ public class Note implements Serializable {
         this.noteText = noteText;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public String getNoteAuthorEmailAddress() {

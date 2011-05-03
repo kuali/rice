@@ -87,7 +87,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         this.dao = dao;
     }
 
-	public EDLController getEDLController(String edlName) {
+    public EDLController getEDLControllerUsingEdlName(String edlName) {
 		EDocLiteAssociation edlAssociation = this.dao.getEDocLiteAssociation(edlName);
         if (edlAssociation == null) {
             throw new WorkflowRuntimeException("No document association active for EDL: " + edlName);
@@ -98,7 +98,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
 		return EDLControllerFactory.createEDLController(edlAssociation, edlGlobalConfig);
 	}
 
-	public EDLController getEDLController(Long documentId) {
+	public EDLController getEDLControllerUsingDocumentId(String documentId) {
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		String edlName = document.getAppDocId();//components working with workflow docs will need to know this, perhaps through a document utils.
 		if (edlName == null) {

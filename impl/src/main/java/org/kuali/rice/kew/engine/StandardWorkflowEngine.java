@@ -85,7 +85,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	    return this.runPostProcessorLogic;
 	}
 
-	public void process(Long documentId, Long nodeInstanceId) throws Exception {
+	public void process(String documentId, Long nodeInstanceId) throws Exception {
 		if (documentId == null) {
 			throw new IllegalArgumentException("Cannot process a null document id.");
 		}
@@ -333,7 +333,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				context.getDocument().updateAppDocStatus(nextStatus);
 			}
 
-			DocumentRouteLevelChange event = new DocumentRouteLevelChange(context.getDocument().getRouteHeaderId(), context.getDocument().getAppDocId(), CompatUtils.getLevelForNode(context.getDocument().getDocumentType(), context.getNodeInstance()
+			DocumentRouteLevelChange event = new DocumentRouteLevelChange(context.getDocument().getDocumentId(), context.getDocument().getAppDocId(), CompatUtils.getLevelForNode(context.getDocument().getDocumentType(), context.getNodeInstance()
 					.getRouteNode().getRouteNodeName()), CompatUtils.getLevelForNode(context.getDocument().getDocumentType(), nextNodeInstance.getRouteNode().getRouteNodeName()), nodeInstance.getRouteNode().getRouteNodeName(), nextNodeInstance
 					.getRouteNode().getRouteNodeName(), nodeInstance.getRouteNodeInstanceId(), nextNodeInstance.getRouteNodeInstanceId());
 			context.setDocument(notifyPostProcessor(context.getDocument(), nodeInstance, event));
@@ -387,13 +387,13 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	// document state
 	protected DocumentRouteHeaderValue nodePostProcess(RouteContext context) throws InvalidActionTakenException {
 		DocumentRouteHeaderValue document = context.getDocument();
-		Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+		Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
 		boolean moreNodes = false;
 		for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
 			RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
 			moreNodes = moreNodes || !nodeInstance.isComplete();
 		}
-		List pendingRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+		List pendingRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
 		boolean activeApproveRequests = false;
 		boolean activeAckRequests = false;
 		for (Iterator iterator = pendingRequests.iterator(); iterator.hasNext();) {
@@ -404,19 +404,19 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// TODO is the logic for going processed still going to be valid?
 		if (!document.isProcessed() && (!moreNodes || !activeApproveRequests)) {
 			if ( LOG.isDebugEnabled() ) {
-				LOG.debug("No more nodes for this document " + document.getRouteHeaderId());
+				LOG.debug("No more nodes for this document " + document.getDocumentId());
 			}
 			// TODO perhaps the policies could also be factored out?
 			checkDefaultApprovalPolicy(document);
 			LOG.debug("Marking document approved");
 			// TODO factor out this magical post processing
-			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_APPROVED_CD);
+			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_APPROVED_CD);
 			document.markDocumentApproved();
 			// saveDocument(context);
 			notifyPostProcessor(context, event);
 
 			LOG.debug("Marking document processed");
-			event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_PROCESSED_CD);
+			event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_PROCESSED_CD);
 			document.markDocumentProcessed();
 			// saveDocument(context);
 			notifyPostProcessor(context, event);
@@ -425,8 +425,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// if document is processed and no pending action requests put the
 		// document into the finalized state.
 		if (document.isProcessed()) {
-			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_FINAL_CD);
-			List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_FINAL_CD);
+			List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
 			if (actionRequests.isEmpty()) {
 				document.markDocumentFinalized();
 				// saveDocument(context);
@@ -465,7 +465,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	private void checkDefaultApprovalPolicy(DocumentRouteHeaderValue document) throws RouteManagerException {
 		if (!document.getDocumentType().getDefaultApprovePolicy().getPolicyValue().booleanValue()) {
 			LOG.debug("Checking if any requests have been generated for the document");
-			List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+			List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
 			boolean approved = false;
 			for (Iterator iter = requests.iterator(); iter.hasNext();) {
 				ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
@@ -497,8 +497,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		if (hasContactedPostProcessor(context, event)) {
 			return document;
 		}
-		Long routeHeaderId = event.getRouteHeaderId();
-		PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);
+		String documentId = event.getDocumentId();
+		PerformanceLogger performanceLogger = new PerformanceLogger(documentId);
 		ProcessDocReport processReport = null;
 		PostProcessor postProc = null;
         try {
@@ -509,8 +509,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
                 postProc = document.getDocumentType().getPostProcessor();
             }
         } catch (Exception e) {
-            LOG.error("Error retrieving PostProcessor for document " + document.getRouteHeaderId(), e);
-            throw new RouteManagerException("Error retrieving PostProcessor for document " + document.getRouteHeaderId(), e);
+            LOG.error("Error retrieving PostProcessor for document " + document.getDocumentId(), e);
+            throw new RouteManagerException("Error retrieving PostProcessor for document " + document.getDocumentId(), e);
         }
 		try {
 			processReport = postProc.doRouteStatusChange(event);
@@ -590,7 +590,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			LOG.warn("Problems contacting PostProcessor", e);
 			throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
 		}
-		document = getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+		document = getRouteHeaderService().getRouteHeader(document.getDocumentId());
 		if (!report.isSuccess()) {
 			LOG.error("PostProcessor rejected route level change::" + report.getMessage(), report.getProcessException());
 			throw new RouteManagerException("Route Level change failed in post processor::" + report.getMessage());
@@ -603,7 +603,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
      * than the nodeInstance
      */
 	private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(DocumentRouteHeaderValue document, Long nodeInstanceId) {
-	    return notifyPostProcessorBeforeProcess(document, nodeInstanceId, new BeforeProcessEvent(document.getRouteHeaderId(),document.getAppDocId(),nodeInstanceId));
+	    return notifyPostProcessorBeforeProcess(document, nodeInstanceId, new BeforeProcessEvent(document.getDocumentId(),document.getAppDocId(),nodeInstanceId));
 	}
 
     /**
@@ -625,7 +625,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
             LOG.warn("Problems contacting PostProcessor", e);
             throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
         }
-        document = getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        document = getRouteHeaderService().getRouteHeader(document.getDocumentId());
         if (!report.isSuccess()) {
             LOG.error("PostProcessor rejected route level change::" + report.getMessage(), report.getProcessException());
             throw new RouteManagerException("Route Level change failed in post processor::" + report.getMessage());
@@ -634,7 +634,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
     }
 
     protected void lockAdditionalDocuments(DocumentRouteHeaderValue document) throws Exception {
-		DocumentLockingEvent lockingEvent = new DocumentLockingEvent(document.getRouteHeaderId(), document.getAppDocId());
+		DocumentLockingEvent lockingEvent = new DocumentLockingEvent(document.getDocumentId(), document.getAppDocId());
 		// TODO this shows up in a few places and could totally be extracted to a method
 		PostProcessor postProcessor = null;
         // use the document's post processor unless specified by the runPostProcessorLogic not to
@@ -643,9 +643,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         } else {
             postProcessor = document.getDocumentType().getPostProcessor();
         }
-        List<Long> documentIdsToLock = postProcessor.getDocumentIdsToLock(lockingEvent);
+        List<String> documentIdsToLock = postProcessor.getDocumentIdsToLock(lockingEvent);
         if (documentIdsToLock != null && !documentIdsToLock.isEmpty()) {
-        	for (Long documentId : documentIdsToLock) {
+        	for (String documentId : documentIdsToLock) {
         		if ( LOG.isInfoEnabled() ) {
     				LOG.info("Aquiring additional lock on document " + documentId);
     			}
@@ -666,7 +666,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
     		// this could happen if we failed to acquire the lock on the document
     		return null;
     	}
-        return notifyPostProcessorAfterProcess(document, nodeInstanceId, new AfterProcessEvent(document.getRouteHeaderId(),document.getAppDocId(),nodeInstanceId,successfullyProcessed));
+        return notifyPostProcessorAfterProcess(document, nodeInstanceId, new AfterProcessEvent(document.getDocumentId(),document.getAppDocId(),nodeInstanceId,successfullyProcessed));
     }
 
     /**
@@ -688,7 +688,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
             LOG.warn("Problems contacting PostProcessor", e);
             throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
         }
-        document = getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        document = getRouteHeaderService().getRouteHeader(document.getDocumentId());
         if (!report.isSuccess()) {
             LOG.error("PostProcessor rejected route level change::" + report.getMessage(), report.getProcessException());
             throw new RouteManagerException("Route Level change failed in post processor::" + report.getMessage());
@@ -719,7 +719,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		    }
 			return;
 		}
-		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), process.getInitialRouteNode());
+		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
 		nodeInstance.setActive(true);
 		helper.getNodeFactory().createBranch(KEWConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
 		document.getInitialRouteNodeInstances().add(nodeInstance);

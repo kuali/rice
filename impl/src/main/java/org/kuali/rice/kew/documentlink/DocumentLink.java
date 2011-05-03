@@ -46,9 +46,9 @@ public class DocumentLink implements Serializable {
 	@Column(name="DOC_LNK_ID")
 	private Long docLinkId;
     @Column(name="ORGN_DOC_ID")
-	private Long orgnDocId;
+	private String orgnDocId;
     @Column(name="DEST_DOC_ID")
-	private Long destDocId;
+	private String destDocId;
     
 	/**
 	 * @return the docLinkId
@@ -67,28 +67,28 @@ public class DocumentLink implements Serializable {
 	/**
 	 * @return the orgnDocId
 	 */
-	public Long getOrgnDocId() {
+	public String getOrgnDocId() {
 		return this.orgnDocId;
 	}
 
 	/**
 	 * @param orgnDocId the orgnDocId to set
 	 */
-	public void setOrgnDocId(Long orgnDocId) {
+	public void setOrgnDocId(String orgnDocId) {
 		this.orgnDocId = orgnDocId;
 	}
 
 	/**
 	 * @return the destDocId
 	 */
-	public Long getDestDocId() {
+	public String getDestDocId() {
 		return this.destDocId;
 	}
 
 	/**
 	 * @param destDocId the destDocId to set
 	 */
-	public void setDestDocId(Long destDocId) {
+	public void setDestDocId(String destDocId) {
 		this.destDocId = destDocId;
 	}
 	

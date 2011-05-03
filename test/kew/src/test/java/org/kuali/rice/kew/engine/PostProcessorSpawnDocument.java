@@ -36,10 +36,10 @@ public class PostProcessorSpawnDocument extends DefaultPostProcessor {
 
 	@Override
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-    	LOG.info("Moving document " + statusChangeEvent.getRouteHeaderId() + " from status '" + statusChangeEvent.getOldRouteStatus() + "' to status '" + statusChangeEvent.getNewRouteStatus() + "'");
+    	LOG.info("Moving document " + statusChangeEvent.getDocumentId() + " from status '" + statusChangeEvent.getOldRouteStatus() + "' to status '" + statusChangeEvent.getNewRouteStatus() + "'");
     	if (StringUtils.equals(KEWConstants.ROUTE_HEADER_PROCESSED_CD, statusChangeEvent.getNewRouteStatus())) {
     		// spawn and route a new document
-        	WorkflowDocument document = new WorkflowDocument(KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId(), "SpawnedDocumentType");
+        	WorkflowDocument document = WorkflowDocument.createDocument(KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId(), "SpawnedDocumentType");
         	document.routeDocument("");
     	}
         return new ProcessDocReport(true, "");

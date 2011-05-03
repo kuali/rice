@@ -324,7 +324,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         String documentTypeName = "SearchDocTypeRangeSearchDataType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
 
         /*
          *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
@@ -350,10 +350,10 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getDocumentId());
 
         /*
-        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
         assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
         for (Iterator iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
             SearchableAttributeValue attributeValue = (SearchableAttributeValue) iter.next();
@@ -734,7 +734,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         String principalName = "rkirkend";
         String principalId = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
-        WorkflowDocument workflowDocument = new WorkflowDocument(principalId, documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(principalId, documentTypeName);
 
         // adding inclusive-lower-bound searchable attribute
         WorkflowAttributeDefinitionDTO inclusiveLowerXMLDef = new WorkflowAttributeDefinitionDTO("TextFieldWithInclusiveLower");
@@ -752,7 +752,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         workflowDocument.setTitle("Range Def Test");
         workflowDocument.routeDocument("routing range def doc.");
 
-        workflowDocument = new WorkflowDocument(principalId, workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(principalId, workflowDocument.getDocumentId());
 
         // Verify that the "TextFieldWithInclusiveLower" attribute behaves as expected (lower-bound-inclusive and (by default) case-insensitive).
         assertSearchBehavesAsExpected(docType, principalId, "textFieldWithInclusiveLower",

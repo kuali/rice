@@ -34,9 +34,9 @@ import org.kuali.rice.kew.web.RowStyleable;
 public class DocSearchDTO implements Serializable, RowStyleable {
 
 	private static final long serialVersionUID = 7850758046316186962L;
-	private static final String URL_SUFFIX = "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=";
+	private static final String URL_SUFFIX = "?" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.DOCUMENT_ID_PARAMETER + "=";
 
-	private Long routeHeaderId;
+	private String documentId;
 	private String docRouteStatusCode;
 	private java.sql.Timestamp dateCreated;
 	private String documentTitle;
@@ -74,8 +74,8 @@ public class DocSearchDTO implements Serializable, RowStyleable {
 		return documentTitle;
 	}
 
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
 
 	public void setDocRouteStatusCode(String docRouteStatusCode) {
@@ -86,8 +86,8 @@ public class DocSearchDTO implements Serializable, RowStyleable {
 		this.documentTitle = documentTitle;
 	}
 
-	public void setRouteHeaderId(Long routeHeaderId) {
-		this.routeHeaderId = routeHeaderId;
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 
 	public String getActiveIndicatorCode() {
@@ -199,9 +199,9 @@ public class DocSearchDTO implements Serializable, RowStyleable {
             return "";
         } else {
             if (isUsingSuperUserSearch()) {
-                return "SuperUser.do?command=displayFrame&routeHeaderId=" + this.getRouteHeaderId().toString();
+                return "SuperUser.do?command=displayFrame&documentId=" + this.getDocumentId();
             } else {
-                return this.getDocTypeHandlerUrl() + URL_SUFFIX + this.getRouteHeaderId().toString();
+                return this.getDocTypeHandlerUrl() + URL_SUFFIX + this.getDocumentId();
             }
         }
     }

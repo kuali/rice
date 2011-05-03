@@ -56,7 +56,7 @@ public interface RouteNodeService {
      * those node instances which are at the very beginning of the route.  Usually, this will
      * just be a single node instance.
      */
-    public List getInitialNodeInstances(Long documentId);
+    public List getInitialNodeInstances(String documentId);
 
     /**
      * Retrieves the active node instances of the given Document.  The active node instances
@@ -64,7 +64,7 @@ public interface RouteNodeService {
      * @param documentId of the document
      * @return list of route node instances
      */
-    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId);
+    public List<RouteNodeInstance> getActiveNodeInstances(String documentId);
     
     public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document);
     
@@ -76,30 +76,30 @@ public interface RouteNodeService {
      * @param documentId for the given Document
      * @return list of terminal node instances
      */
-    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId);
+    public List<RouteNodeInstance> getTerminalNodeInstances(String documentId);
     
     /**
      * Returns the node instances representing the most recent node instances in the document.
      * The algorithm for locating the current nodes is as follows: If the document has
      * active node instances, return those, otherwise return it's terminal node instances.
      */
-    public List getCurrentNodeInstances(Long documentId);
+    public List getCurrentNodeInstances(String documentId);
 
     public NodeState findNodeState(Long nodeInstanceId, String key);
     public RouteNode findRouteNodeByName(Long documentTypeId, String name);
     public List findFinalApprovalRouteNodes(Long documentTypeId);
     public List findNextRouteNodesInPath(RouteNodeInstance nodeInstance, String nodeName);
     public boolean isNodeInPath(DocumentRouteHeaderValue document, String nodeName);
-    public List findRouteNodeInstances(Long documentId);
+    public List findRouteNodeInstances(String documentId);
     public List findProcessNodeInstances(RouteNodeInstance process);
-    public Set findPreviousNodeNames(Long documentId);
+    public Set findPreviousNodeNames(String documentId);
     
     /**
      * Returns a List of the distinct node names through which this document might pass in it's future 
      * routing.  In certain cases this will be an approximation based on what the system knows at the
      * time of execution. 
      */
-    public List<String> findFutureNodeNames(Long documentId);
+    public List<String> findFutureNodeNames(String documentId);
     
     /**
      * Flatten all the document types route nodes into a single List.  This includes all processes 

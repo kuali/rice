@@ -41,7 +41,7 @@
     <html-el:hidden name="NoteForm" property="sortNotes" />
     <html-el:hidden name="NoteForm" property="sortOrder" />
     <html-el:hidden name="NoteForm" property="note.noteId" />
-    <html-el:hidden name="NoteForm" property="note.routeHeaderId" />
+    <html-el:hidden name="NoteForm" property="note.documentId" />
     <html-el:hidden name="NoteForm" property="note.noteAuthorWorkflowId" />
     <html-el:hidden name="NoteForm" property="note.noteCreateLongDate" />
     <html-el:hidden name="NoteForm" property="note.lockVerNbr" />

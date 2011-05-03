@@ -71,7 +71,7 @@ public class CompleteAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()));
     }
 
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
@@ -127,11 +127,11 @@ public class CompleteAction extends ActionTakenEvent {
      * @throws ResourceUnavailableException
      */
     public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
         LOG.debug("Completing document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (actionRequests == null || actionRequests.isEmpty()) {
             DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
             if (allowUnrequested != null) {

@@ -45,7 +45,7 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
     
     protected void markDocument() throws WorkflowException {
         if (getRouteHeader().isInException()) {
-            //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+            //this.event = new DocumentRouteStatusChange(this.documentId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_ENROUTE_CD);
             getRouteHeader().markDocumentEnroute();
         }
         ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(this.getActionTakenCode(), getRouteHeader(), getPrincipal(), annotation, nodeName, true, isRunPostProcessorLogic());

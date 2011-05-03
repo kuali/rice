@@ -49,7 +49,7 @@ public class DocumentRouteStatusChangeDTO extends DocumentEventDTO {
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("RouteHeaderID ").append(getRouteHeaderId());
+        buffer.append("DocumentId ").append(getDocumentId());
         buffer.append(" changing from routeStatus ").append(oldRouteStatus);
         buffer.append(" to routeStatus ").append(newRouteStatus);
 

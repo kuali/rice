@@ -35,7 +35,7 @@ public interface ActionTakenService {
 
     public ActionTakenValue findByActionTakenId(Long actionTakenId);
 
-    public Collection getActionsTaken(Long routeHeaderId);
+    public Collection getActionsTaken(String documentId);
 
     public void saveActionTaken(ActionTakenValue actionTaken);
 
@@ -43,21 +43,21 @@ public interface ActionTakenService {
 
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken);
 
-    public Collection<ActionTakenValue> findByRouteHeaderId(Long routeHeaderId);
+    public Collection<ActionTakenValue> findByDocumentId(String documentId);
 
-    public Collection findByDocIdAndAction(Long docId, String action);
+    public Collection findByDocIdAndAction(String docId, String action);
 
-    public List findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId);
+    public List findByDocumentIdWorkflowId(String documentId, String workflowId);
 
     public void delete(ActionTakenValue actionTaken);
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId);
 
-    public void deleteByRouteHeaderId(Long routeHeaderId);
+    public void deleteByDocumentId(String documentId);
 
     public void validateActionTaken(ActionTakenValue actionTaken);
 
-    public boolean hasUserTakenAction(String principalId, Long documentId);
+    public boolean hasUserTakenAction(String principalId, String documentId);
 
-    public Timestamp getLastApprovedDate(Long routeHeaderId);
+    public Timestamp getLastApprovedDate(String documentId);
 }

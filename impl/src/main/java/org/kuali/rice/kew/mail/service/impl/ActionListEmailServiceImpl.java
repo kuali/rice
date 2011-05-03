@@ -175,7 +175,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             LOG.debug("sending immediate reminder");
 			DocumentRouteHeaderValue document = KEWServiceLocator
 					.getRouteHeaderService().getRouteHeader(
-							actionItem.getRouteHeaderId());
+							actionItem.getDocumentId());
 			StringBuffer emailBody = new StringBuffer(
 					buildImmediateReminderBody(user, actionItem, document
 							.getDocumentType()));
@@ -328,7 +328,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	}
 
     /**
-     * 0 = actionItem.getRouteHeaderId()
+     * 0 = actionItem.getDocumentId()
      * 1 = actionItem.getRouteHeader().getInitiatorUser().getDisplayName()
      * 2 = actionItem.getRouteHeader().getDocumentType().getName()
      * 3 = actionItem.getDocTitle()
@@ -356,7 +356,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     );
 
     /**
-     * 0 = actionItem.getRouteHeaderId()
+     * 0 = actionItem.getDocumentId()
      * 1 = actionItem.getRouteHeader().getInitiatorUser().getDisplayName()
      * 2 = actionItem.getRouteHeader().getDocumentType().getName()
      * 3 = actionItem.getDocTitle()
@@ -389,8 +389,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     		} else {
     			docHandlerUrl += "&";
     		}
-    		docHandlerUrl += KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
-    				+ actionItem.getRouteHeaderId();
+    		docHandlerUrl += KEWConstants.DOCUMENT_ID_PARAMETER + "="
+    				+ actionItem.getDocumentId();
     		docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "="
     				+ KEWConstants.ACTIONLIST_COMMAND;
 		}
@@ -398,7 +398,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 		/*sf
 				.append("Your Action List has an eDoc(electronic document) that needs your attention: \n\n");
-		sf.append("Document ID:\t" + actionItem.getRouteHeaderId() + "\n");
+		sf.append("Document ID:\t" + actionItem.getDocumentId() + "\n");
 		sf.append("Initiator:\t\t");
 		try {
 			sf.append(actionItem.getRouteHeader().getInitiatorUser()
@@ -406,7 +406,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 					+ "\n");
 		} catch (Exception e) {
 			LOG.error("Error retrieving initiator for action item "
-					+ actionItem.getRouteHeaderId());
+					+ actionItem.getDocumentId());
 			sf.append("\n");
 		}
 		sf.append("Type:\t\t" + "Add/Modify "
@@ -419,7 +419,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		sf.append("\tOr you may access the eDoc from your Action List: \n");
 		sf.append("\tGo to " + getActionListUrl()
 				+ ", and then click on the numeric Document ID: "
-				+ actionItem.getRouteHeaderId()
+				+ actionItem.getDocumentId()
 				+ " in the first column of the List. \n");
 		sf.append("\n\n\n");
 		sf
@@ -439,7 +439,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         String initiatorUser = (person == null ? "" : person.getName());
 
         if (StringUtils.isNotBlank(docHandlerUrl)) {
-            Object[] args = { actionItem.getRouteHeaderId(), 
+            Object[] args = { actionItem.getDocumentId(), 
                     initiatorUser,
                     documentType.getName(),
                     actionItem.getDocTitle(), 
@@ -453,7 +453,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
             LOG.debug("default immediate reminder: " + DEFAULT_IMMEDIATE_REMINDER.format(args));
         } else {
-            Object[] args = { actionItem.getRouteHeaderId(), 
+            Object[] args = { actionItem.getDocumentId(), 
                     initiatorUser,
                     documentType.getName(),
                     actionItem.getDocTitle(), 
@@ -542,11 +542,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	private HashMap<String,Integer> getActionListItemsStat(Collection<ActionItem> actionItems) {
 		HashMap<String,Integer> docTypes = new LinkedHashMap<String,Integer>();
-		Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionItems);
+		Map<String,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionItems);
 		Iterator<ActionItem> iter = actionItems.iterator();
 
 		while (iter.hasNext()) {
-			String docTypeName = routeHeaders.get(iter.next().getRouteHeaderId()).getDocumentType().getName();
+			String docTypeName = routeHeaders.get(iter.next().getDocumentId()).getDocumentType().getName();
 			if (docTypes.containsKey(docTypeName)) {
 				docTypes.put(docTypeName, new Integer(docTypes.get(docTypeName).intValue() + 1));
 			} else {

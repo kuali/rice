@@ -75,10 +75,8 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 			AttributeSet qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		try {
-			if ( (qualification != null && !qualification.isEmpty()) && StringUtils.isNumeric( qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER) ) ) {
-				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(Long
-									.parseLong(qualification
-											.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER)), null, principalId);
+			if ( (qualification != null && !qualification.isEmpty()))  {
+				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
 				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequestDTO ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )

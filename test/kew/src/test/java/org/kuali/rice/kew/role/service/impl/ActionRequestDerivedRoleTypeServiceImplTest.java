@@ -50,7 +50,7 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 
 
 	@Test public void testHasApplicationRole() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
 		
 		// let's send an adhoc request to rkirkend
 		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", getPrincipalIdForName("rkirkend"), "", true);
@@ -59,7 +59,7 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		KimDerivedRoleTypeServiceBase roleTypeService = new ActionRequestDerivedRoleTypeServiceImpl();
 		
 		AttributeSet qualifications = new AttributeSet();
-		qualifications.put(KimConstants.AttributeConstants.DOCUMENT_NUMBER, ""+document.getRouteHeaderId());
+		qualifications.put(KimConstants.AttributeConstants.DOCUMENT_NUMBER, ""+document.getDocumentId());
 		
 		// rkirkend should have role as an approver
 		assertTrue("rkirkend should have role.", roleTypeService.hasApplicationRole(getPrincipalIdForName("rkirkend"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
@@ -97,7 +97,7 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		assertTrue("pmckown should have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("pmckown"), null, null, FYI_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 				
 		// create a new doc and "save" as ewestfal, this should generate a "complete" request to ewestfal
-		document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
+		document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
 		document.saveDocument("");
 		assertTrue(document.stateIsSaved());
 		assertTrue(document.isCompletionRequested());

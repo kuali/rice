@@ -46,26 +46,26 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
         boolean errorThrown = false;
         boolean result = true;
         try {
-            result = KNSServiceLocatorWeb.getWorkflowInfoService().routeHeaderExists(new Long(-10));
+            result = KNSServiceLocatorWeb.getWorkflowInfoService().routeHeaderExists("-10");
         }
         catch (Exception e) {
             errorThrown = true;
         }
         assertFalse("An error should not have been thrown.", errorThrown);
-        assertFalse("The routeHeader should never exist for a negative routeHeaderId.", result);
+        assertFalse("The routeHeader should never exist for a negative documentId.", result);
     }
-
+    
     @Test public void testRouteHeaderExists_KnownBadZeroId() {
         boolean errorThrown = false;
         boolean result = true;
         try {
-            result = KNSServiceLocatorWeb.getWorkflowInfoService().routeHeaderExists(new Long(0));
+            result = KNSServiceLocatorWeb.getWorkflowInfoService().routeHeaderExists("0");
         }
         catch (Exception e) {
             errorThrown = true;
         }
         assertFalse("An error should not have been thrown.", errorThrown);
-        assertFalse("The routeHeader should never exist for a negative routeHeaderId.", result);
+        assertFalse("The routeHeader should never exist for a documentId of 0.", result);
     }
 
     @Test public void testRouteHeaderExists_KnownGood() {

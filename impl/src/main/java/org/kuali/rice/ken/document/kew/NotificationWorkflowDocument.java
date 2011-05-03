@@ -16,7 +16,6 @@
 package org.kuali.rice.ken.document.kew;
 
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 
@@ -27,51 +26,28 @@ import org.kuali.rice.kew.service.WorkflowDocument;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationWorkflowDocument extends WorkflowDocument {
+	
     private static final long serialVersionUID = 6125662798733898964L;
+
+    /**
+     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
+     * for the given user.
+     * @param principalId
+     * @throws WorkflowException
+     */
+    public static NotificationWorkflowDocument createNotificationDocument(String principalId) throws WorkflowException {
+    	return new NotificationWorkflowDocument(principalId, NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE, null);
+    }
     
     /**
-     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW 
-     * for the given user.
-     * @param user
-     * @throws WorkflowException
-     */
-    /*@Deprecated
-    public NotificationWorkflowDocument(UserIdDTO user) throws WorkflowException {
-    	super(user, NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE);
-    }*/
-
-    /**
-     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
-     * for the given user.
-     * @param principalId
-     * @throws WorkflowException
-     */
-    public NotificationWorkflowDocument(String principalId) throws WorkflowException {
-    	super(principalId, NotificationConstants.KEW_CONSTANTS.NOTIFICATION_DOC_TYPE);
-    }
-
-    /**
      * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
      * for the given user and document type name.
      * @param user
      * @param documentTypeName
      * @throws WorkflowException
      */
-    /*@Deprecated
-    public NotificationWorkflowDocument(UserIdDTO user, String documentTypeName) throws WorkflowException {
-    	super(user, documentTypeName);
-    }*/
-
-    /**
-     * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable document in KEW
-     * for the given user and document type name.
-     * @param principalId
-     * @param documentTypeName
-     * @throws WorkflowException
-     */
-
-    public NotificationWorkflowDocument(String principalId, String documentTypeName) throws WorkflowException {
-    	super(principalId, documentTypeName);
+    public static NotificationWorkflowDocument createNotificationDocument(String principalId, String documentTypeName) throws WorkflowException {
+    	return new NotificationWorkflowDocument(principalId, documentTypeName, null);
     }
     
     /**
@@ -81,19 +57,12 @@ public class NotificationWorkflowDocument extends WorkflowDocument {
      * @param documentId
      * @throws WorkflowException
      */
-    /*@Deprecated
-    public NotificationWorkflowDocument(UserIdDTO user, Long documentId) throws WorkflowException {
-    	super(user, documentId);
-    }*/
-
-    /**
-     * Constructs a NotificationWorkflowDocument instance - this one is used to get a handle on a workflow
-     * document that was already created in the system.
-     * @param princpipalId
-     * @param documentId
-     * @throws WorkflowException
-     */
-    public NotificationWorkflowDocument(String princpipalId, Long documentId) throws WorkflowException {
-    	super(princpipalId, documentId);
+    public static NotificationWorkflowDocument loadNotificationDocument(String principalId, String documentId) throws WorkflowException {
+    	return new NotificationWorkflowDocument(principalId, null, documentId);
     }
+    	
+    private NotificationWorkflowDocument(String principalId, String documentTypeName, String documentId) throws WorkflowException {
+    	super(principalId, documentTypeName, documentId);
+    }
+
 }

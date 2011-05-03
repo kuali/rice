@@ -57,7 +57,7 @@ public interface WorkflowDocumentService {
     public void logDocumentAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
 
     public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, String documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue superUserApprove(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue superUserCancelAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue superUserDisapproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
@@ -114,12 +114,12 @@ public interface WorkflowDocumentService {
     /**
      * @since 2.2
      */
-    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, String documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
     /**
      * @since 2.2.7
      */
-    public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, String documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
 
     // Introduced in 2.2.2
 

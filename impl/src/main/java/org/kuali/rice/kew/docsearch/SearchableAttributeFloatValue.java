@@ -46,8 +46,8 @@ import java.util.regex.Pattern;
 @Table(name="KREW_DOC_HDR_EXT_FLT_T")
 //@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeFloatValue.FindByRouteHeaderId", query="select s from SearchableAttributeFloatValue as s where s.routeHeaderId = :routeHeaderId"),
-	@NamedQuery(name="SearchableAttributeFloatValue.FindByKey", query="select s from SearchableAttributeFloatValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeFloatValue.FindByDocumentId", query="select s from SearchableAttributeFloatValue as s where s.documentId = :documentId"),
+	@NamedQuery(name="SearchableAttributeFloatValue.FindByKey", query="select s from SearchableAttributeFloatValue as s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
 })
 public class SearchableAttributeFloatValue implements SearchableAttributeValue, Serializable {
 
@@ -77,7 +77,7 @@ public class SearchableAttributeFloatValue implements SearchableAttributeValue, 
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
 
     @Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+	private String documentId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
 	private DocumentRouteHeaderValue routeHeader;
@@ -246,12 +246,12 @@ public class SearchableAttributeFloatValue implements SearchableAttributeValue, 
         this.routeHeader = routeHeader;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public String getSearchableAttributeKey() {

@@ -61,43 +61,43 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         return (ActionTakenValue) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
-    public Collection<ActionTakenValue> findByDocIdAndAction(Long routeHeaderId, String action) {
-        LOG.debug("finding Action Taken by routeHeaderId " + routeHeaderId + " and action " + action);
+    public Collection<ActionTakenValue> findByDocIdAndAction(String documentId, String action) {
+        LOG.debug("finding Action Taken by documentId " + documentId + " and action " + action);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("documentId", documentId);
         crit.eq("actionTaken", action);
         crit.eq("currentIndicator", Boolean.TRUE);
         return (Collection<ActionTakenValue>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public Collection<ActionTakenValue> findByRouteHeaderId(Long routeHeaderId) {
-        LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId);
+    public Collection<ActionTakenValue> findByDocumentId(String documentId) {
+        LOG.debug("finding Action Takens by documentId " + documentId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("documentId", documentId);
         crit.eq("currentIndicator", Boolean.TRUE);
         crit.orderBy("actionDate", true);
         return (Collection<ActionTakenValue>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public List<ActionTakenValue> findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId) {
-        LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId + " and workflowId" + workflowId);
+    public List<ActionTakenValue> findByDocumentIdWorkflowId(String documentId, String workflowId) {
+        LOG.debug("finding Action Takens by documentId " + documentId + " and workflowId" + workflowId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("documentId", documentId);
         crit.eq("principalId", workflowId);
         crit.eq("currentIndicator", Boolean.TRUE);
         return (List<ActionTakenValue>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
-        LOG.debug("finding ActionsTaken ignoring currentInd by routeHeaderId:" + routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId) {
+        LOG.debug("finding ActionsTaken ignoring currentInd by documentId:" + documentId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("documentId", documentId);
         return (List) new QueryByCriteria(entityManager, crit);
     }
 
     public void saveActionTaken(ActionTakenValue actionTaken) {
         LOG.debug("saving ActionTaken");
-        checkNull(actionTaken.getRouteHeaderId(), "Document ID");
+        checkNull(actionTaken.getDocumentId(), "Document ID");
         checkNull(actionTaken.getActionTaken(), "action taken code");
         checkNull(actionTaken.getDocVersion(), "doc version");
         checkNull(actionTaken.getPrincipalId(), "principal ID");
@@ -108,7 +108,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         if (actionTaken.getCurrentIndicator() == null) {
             actionTaken.setCurrentIndicator(Boolean.TRUE);
         }
-        LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getRouteHeaderId() +
+        LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getDocumentId() +
                 ", actionTaken " + actionTaken.getActionTaken() + ", principalId " + actionTaken.getPrincipalId());
 
         if(actionTaken.getActionTakenId()==null){
@@ -125,16 +125,16 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         }
     }
 
-    public void deleteByRouteHeaderId(Long routeHeaderId){
+    public void deleteByDocumentId(String documentId){
 	    Criteria crit = new Criteria(ActionRequestValue.class.getName());
-	    crit.eq("routeHeaderId", routeHeaderId);
+	    crit.eq("documentId", documentId);
 	    ActionRequestValue actionRequestValue = (ActionRequestValue) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	    entityManager.remove(actionRequestValue);
     }
 
-    public boolean hasUserTakenAction(String workflowId, Long routeHeaderId) {
+    public boolean hasUserTakenAction(String workflowId, String documentId) {
     	Criteria crit = new Criteria(ActionTakenValue.class.getName());
-	    crit.eq("routeHeaderId", routeHeaderId);
+	    crit.eq("documentId", documentId);
 	    crit.eq("principalId", workflowId);
 	    crit.eq("currentIndicator", Boolean.TRUE);
 	    long count = (Long) new QueryByCriteria(entityManager, crit).toCountQuery().getSingleResult();

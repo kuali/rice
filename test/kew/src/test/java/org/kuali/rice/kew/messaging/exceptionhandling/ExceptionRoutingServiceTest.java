@@ -38,17 +38,17 @@ public class ExceptionRoutingServiceTest extends KEWTestCase {
 	 */
 	@Test public void testKimExceptionRouting() throws Exception {
 		loadXmlFile("RouteExceptionTestDoc.xml");
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("admin"), "TestFinalApproverDocumentType");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("admin"), "TestFinalApproverDocumentType");
         document.setTitle("");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         try {
             document.approve("");
             fail("document should have thrown routing exception");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
 	}
@@ -63,17 +63,17 @@ public class ExceptionRoutingServiceTest extends KEWTestCase {
 		// Test the child doc and then the grandchild doc.
 		for (int i = 0; i < docNames.length; i++) {
 			// Perform the same steps as in the previous unit test.
-			WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("admin"), docNames[i]);
+			WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("admin"), docNames[i]);
 	        document.setTitle("");
 	        document.routeDocument("");
-	        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+	        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
 	        try {
 	            document.approve("");
 	            fail("document should have thrown routing exception");
 	        } catch (Exception e) {
 	            //deal with single transaction issue in test.
 	        	TestUtilities.getExceptionThreader().join();
-	        	document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+	        	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
 	            assertTrue("Document should be in exception routing", document.stateIsException());
 	        }
 		}
@@ -85,17 +85,17 @@ public class ExceptionRoutingServiceTest extends KEWTestCase {
 	 */
 	@Test public void testKimExceptionRoutingWithRiceDocumentChild() throws Exception {
 		loadXmlFile("RouteExceptionTestDoc.xml");
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("admin"), "DocumentTypeDocument_New");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("admin"), "DocumentTypeDocument_New");
         document.setTitle("");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         try {
             document.approve("");
             fail("document should have thrown routing exception");
         } catch (Exception e) {
             //deal with single transaction issue in test.
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        	document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
 	}

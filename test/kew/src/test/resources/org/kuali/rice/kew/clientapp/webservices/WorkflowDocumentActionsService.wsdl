@@ -36,7 +36,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="attributeContent" nillable="true" type="soapenc:string"/>
      <element name="attributeDefinitions" nillable="true" type="impl:ArrayOf_tns1_WorkflowAttributeDefinitionVO"/>
      <element name="fullContent" nillable="true" type="soapenc:string"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
      <element name="searchableContent" nillable="true" type="soapenc:string"/>
      <element name="searchableDefinitions" nillable="true" type="impl:ArrayOf_tns1_WorkflowAttributeDefinitionVO"/>
     </sequence>
@@ -61,7 +61,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="noteCreateDate" nillable="true" type="xsd:dateTime"/>
      <element name="noteId" nillable="true" type="soapenc:long"/>
      <element name="noteText" nillable="true" type="soapenc:string"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
     </sequence>
    </complexType>
    <complexType name="RouteHeaderVO">
@@ -87,7 +87,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="notes" nillable="true" type="impl:ArrayOf_tns1_NoteVO"/>
      <element name="notesToDelete" nillable="true" type="impl:ArrayOf_tns1_NoteVO"/>
      <element name="overrideInd" nillable="true" type="soapenc:string"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
      <element name="userBlanketApprover" type="xsd:boolean"/>
     </sequence>
    </complexType>

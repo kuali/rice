@@ -72,7 +72,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @return  returns an error message to give system better identifier for problem
      */
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()));
     }
 
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
@@ -127,13 +127,13 @@ public class AcknowledgeAction extends ActionTakenEvent {
      * @throws ResourceUnavailableException
      */
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Acknowledging document : " + annotation);
 
         LOG.debug("Checking to see if the action is legal");
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         if (actionRequests == null || actionRequests.isEmpty()) {
             DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
             if (allowUnrequested != null) {

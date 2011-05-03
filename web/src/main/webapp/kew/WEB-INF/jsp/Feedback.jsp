@@ -102,12 +102,12 @@
 
 									<!-- Document Id in Request -->
 									<c:choose>
-										<c:when test="${FeedbackForm.routeHeaderId != ''}">
-											<c:out value="${FeedbackForm.routeHeaderId}" />
-											<html-el:hidden name="FeedbackForm" property="routeHeaderId" />
+										<c:when test="${FeedbackForm.documentId != ''}">
+											<c:out value="${FeedbackForm.documentId}" />
+											<html-el:hidden name="FeedbackForm" property="documentId" />
 										</c:when>
             							<c:otherwise>
-              								<html-el:text name="FeedbackForm" property="routeHeaderId" />
+              								<html-el:text name="FeedbackForm" property="documentId" />
             							</c:otherwise>
           							</c:choose>
     							</td>

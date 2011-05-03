@@ -38,7 +38,7 @@ public class FeedbackForm extends KualiForm {
     private String exception;
     private String timeDate;
     private String comments;
-    private String routeHeaderId;
+    private String documentId;
     private String firstName;
     private String lastName;
     private String phone;
@@ -125,12 +125,12 @@ public class FeedbackForm extends KualiForm {
         return comments;
     }
 
-    public void setRouteHeaderId(String routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
-    public String getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
     public void setFirstName(String firstName) {

@@ -51,12 +51,12 @@ public interface DatabasePlatform {
     
     /**
      * Generates the query used to select route header rows for update
-     * @param routeHeaderId id of the routeHeader to select for update
+     * @param documentId id of the routeHeader to select for update
      * @param wait whether to block until lock is released
      * @return the query used to select route header rows for update
      */
     
-    String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait);
+    String getLockRouteHeaderQuerySQL(String documentId, boolean wait);
     /**
      * Supplies the sql for a given date string that will satisfy a where clause
      * @param date in YYYY/MM/DD format

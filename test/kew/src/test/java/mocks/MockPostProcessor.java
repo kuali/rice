@@ -34,7 +34,7 @@ public class MockPostProcessor implements PostProcessor {
     private boolean processDocReportResult = true;
     private boolean actionTakenResult = true;
     private boolean processMethodsDocReportResult = true;
-    private List<Long> documentIdsToLockResult = null;
+    private List<String> documentIdsToLockResult = null;
     
     public MockPostProcessor() {
         this(true);
@@ -52,7 +52,7 @@ public class MockPostProcessor implements PostProcessor {
     	this(processDocReportResult, actionTakenResult, processMethodsDocReportResult, null);
     }
     
-    public MockPostProcessor(boolean processDocReportResult, boolean actionTakenResult, boolean processMethodsDocReportResult, List<Long> documentIdsToLockResult) {
+    public MockPostProcessor(boolean processDocReportResult, boolean actionTakenResult, boolean processMethodsDocReportResult, List<String> documentIdsToLockResult) {
         this.processDocReportResult = processDocReportResult;
         this.actionTakenResult = actionTakenResult;
         this.processMethodsDocReportResult = processMethodsDocReportResult;
@@ -81,7 +81,7 @@ public class MockPostProcessor implements PostProcessor {
         return new ProcessDocReport(processMethodsDocReportResult, "testing");
     }
 
-    public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
+    public List<String> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
 		return documentIdsToLockResult;
 	}
 
@@ -97,7 +97,7 @@ public class MockPostProcessor implements PostProcessor {
         this.processMethodsDocReportResult = processMethodsDocReportResult;
     }
     
-    public void setDocumentIdsToLockResult(List<Long> documentIdsToLockResult) {
+    public void setDocumentIdsToLockResult(List<String> documentIdsToLockResult) {
     	this.documentIdsToLockResult = documentIdsToLockResult;
     }
 

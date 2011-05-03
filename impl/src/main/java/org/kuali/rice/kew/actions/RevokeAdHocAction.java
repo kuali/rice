@@ -75,7 +75,7 @@ public class RevokeAdHocAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      */
     public void recordAction() throws InvalidActionTakenException {
-    	MDC.put("docId", getRouteHeader().getRouteHeaderId());
+    	MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
         String errorMessage = validateActionRules();
@@ -86,7 +86,7 @@ public class RevokeAdHocAction extends ActionTakenEvent {
         LOG.debug("Revoking adhoc request : " + annotation);
 
         List<ActionRequestValue> requestsToRevoke = new ArrayList<ActionRequestValue>();
-        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingRootRequestsByDocId(getRouteHeaderId());
+        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingRootRequestsByDocId(getDocumentId());
         for (ActionRequestValue actionRequest : actionRequests)
         {
             if (revoke.matchesActionRequest(actionRequest))

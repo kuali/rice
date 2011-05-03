@@ -219,7 +219,7 @@ public class StandardDocumentSearchResultProcessor implements
 		}
 
 		List<Column> columns = new ArrayList<Column>();
-		this.addRouteHeaderIdColumn(columns);
+		this.addDocumentIdColumn(columns);
 		columns.addAll(tempColumns);
 		this.addRouteLogColumn(columns);
 		return columns;
@@ -243,11 +243,11 @@ public class StandardDocumentSearchResultProcessor implements
 						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED);
 	}
 
-	public void addRouteHeaderIdColumn(List<Column> columns) {
+	public void addDocumentIdColumn(List<Column> columns) {
 		this
 				.addColumnUsingKey(
 						columns,
-						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
+						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID);
 	}
 
 	public void addRouteLogColumn(List<Column> columns) {
@@ -428,16 +428,16 @@ public class StandardDocumentSearchResultProcessor implements
 		String columnKeyName = column.getPropertyName();
 		SearchableAttributeValue attributeValue = null;
 
-		if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID
+		if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID
 				.equals(columnKeyName)) {
-			fieldValue = this.getRouteHeaderIdFieldDisplayValue(docCriteriaDTO
-					.getRouteHeaderId().toString(), docCriteriaDTO
+			fieldValue = this.getDocumentIdFieldDisplayValue(docCriteriaDTO
+					.getDocumentId(), docCriteriaDTO
 					.isUsingSuperUserSearch(), docCriteriaDTO.getDocTypeName());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG
 				.equals(columnKeyName)) {
 			fieldValue = this.getRouteLogFieldDisplayValue(docCriteriaDTO
-					.getRouteHeaderId().toString());
+					.getDocumentId());
 			sortFieldValue = sortValuesByColumnKey.get(columnKeyName);
 		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED
 				.equals(columnKeyName)) {
@@ -506,24 +506,24 @@ public class StandardDocumentSearchResultProcessor implements
 	 * Search Result columns
 	 */
 
-	public DisplayValues getRouteLogFieldDisplayValue(String routeHeaderId) {
+	public DisplayValues getRouteLogFieldDisplayValue(String documentId) {
 		DisplayValues dv = new DisplayValues();
 		String linkPopup = "";
 		if (this.isRouteLogPopup()) {
 			linkPopup = " target=\"_new\"";
 		}
 		String imageSource = "<img alt=\"Route Log for Document\" src=\"images/my_route_log.gif\"/>";
-		dv.htmlValue = "<a href=\"RouteLog.do?routeHeaderId=" + routeHeaderId
+		dv.htmlValue = "<a href=\"RouteLog.do?documentId=" + documentId
 				+ "\"" + linkPopup + ">" + imageSource + "</a>";
 		dv.userDisplayValue = imageSource;
 		return dv;
 	}
 
-	public DisplayValues getRouteHeaderIdFieldDisplayValue(
-			String routeHeaderId, boolean isSuperUserSearch,
+	public DisplayValues getDocumentIdFieldDisplayValue(
+			String documentId, boolean isSuperUserSearch,
 			String documentTypeName) {
-		return this.getValueEncodedWithDocHandlerUrl(routeHeaderId,
-				routeHeaderId, isSuperUserSearch, documentTypeName);
+		return this.getValueEncodedWithDocHandlerUrl(documentId,
+				documentId, isSuperUserSearch, documentTypeName);
 	}
 
 	public DisplayValues getInitiatorFieldDisplayValue(
@@ -545,8 +545,8 @@ public class StandardDocumentSearchResultProcessor implements
 	 *
 	 * @param value
 	 *            - the value that will show on screen as the clickable link
-	 * @param routeHeaderId
-	 *            - the string value of the route header id the doc handler
+	 * @param documentId
+	 *            - the string value of the document id the doc handler
 	 *            should point to
 	 * @param isSuperUserSearch
 	 *            - boolean indicating whether this search is a super user
@@ -556,10 +556,10 @@ public class StandardDocumentSearchResultProcessor implements
 	 *         parameter 'value'
 	 */
 	public DisplayValues getValueEncodedWithDocHandlerUrl(String value,
-			String routeHeaderId, boolean isSuperUserSearch,
+			String documentId, boolean isSuperUserSearch,
 			String documentTypeName) {
 		DisplayValues dv = new DisplayValues();
-		dv.htmlValue = getDocHandlerUrlPrefix(routeHeaderId, isSuperUserSearch,
+		dv.htmlValue = getDocHandlerUrlPrefix(documentId, isSuperUserSearch,
 				documentTypeName)
 				+ value + getDocHandlerUrlSuffix(isSuperUserSearch);
 		dv.userDisplayValue = value;
@@ -570,8 +570,8 @@ public class StandardDocumentSearchResultProcessor implements
 		Map<String, Object> alternateSort = new HashMap<String, Object>();
 		alternateSort
 				.put(
-						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
-						docCriteriaDTO.getRouteHeaderId());
+						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
+						docCriteriaDTO.getDocumentId());
 		if (StringUtils.isNotBlank(docCriteriaDTO.getInitiatorTransposedName())) {
 		    alternateSort.put(
 				    KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
@@ -600,7 +600,7 @@ public class StandardDocumentSearchResultProcessor implements
 		Map<String, Boolean> sortable = new HashMap<String, Boolean>();
 		sortable
 				.put(
-						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
 						Boolean.TRUE);
 		sortable
 				.put(
@@ -642,7 +642,7 @@ public class StandardDocumentSearchResultProcessor implements
 		Map<String, Boolean> sortable = new HashMap<String, Boolean>();
 		sortable
 				.put(
-						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
 						Boolean.TRUE);
 		sortable
 				.put(
@@ -762,31 +762,31 @@ public class StandardDocumentSearchResultProcessor implements
                 KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND);
 	}
 
-	public String getDocHandlerUrlPrefix(String routeHeaderId,
+	public String getDocHandlerUrlPrefix(String documentId,
 			boolean superUserSearch, String documentTypeName) {
 		String linkPopup = "";
 		if (this.isDocumentHandlerPopup()) {
 			linkPopup = " target=\"_blank\"";
 		}
 		if (superUserSearch) {
-			String url = "<a href=\"SuperUser.do?methodToCall=displaySuperUserDocument&routeHeaderId="
-					+ routeHeaderId + "\"" + linkPopup + " >";
+			String url = "<a href=\"SuperUser.do?methodToCall=displaySuperUserDocument&documentId="
+					+ documentId + "\"" + linkPopup + " >";
 			if (!getDocumentType(documentTypeName)
 					.getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue()
 					.booleanValue()) {
 				url = "<a href=\"" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE
 						+ "?" + KEWConstants.COMMAND_PARAMETER + "="
 						+ KEWConstants.SUPERUSER_COMMAND + "&"
-						+ KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
-						+ routeHeaderId + "\"" + linkPopup + ">";
+						+ KEWConstants.DOCUMENT_ID_PARAMETER + "="
+						+ documentId + "\"" + linkPopup + ">";
 			}
 			return url;
 		} else {
 			return "<a href=\"" + KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?"
 					+ KEWConstants.COMMAND_PARAMETER + "="
 					+ KEWConstants.DOCSEARCH_COMMAND + "&"
-					+ KEWConstants.ROUTEHEADER_ID_PARAMETER + "="
-					+ routeHeaderId + "\"" + linkPopup + ">";
+					+ KEWConstants.DOCUMENT_ID_PARAMETER + "="
+					+ documentId + "\"" + linkPopup + ">";
 		}
 	}
 

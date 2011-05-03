@@ -33,10 +33,10 @@ public class DeleteEvent implements IDocumentEvent {
 
 	private String appDocId;
 
-	private Long routeHeaderId;
+	private String documentId;
 
-	public DeleteEvent(Long routeHeaderId, String appDocId) {
-		this.routeHeaderId = routeHeaderId;
+	public DeleteEvent(String documentId, String appDocId) {
+		this.documentId = documentId;
 		this.appDocId = appDocId;
 	}
 
@@ -52,10 +52,10 @@ public class DeleteEvent implements IDocumentEvent {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.kuali.rice.kew.IDocumentEvent#getRouteHeaderId()
+	 * @see org.kuali.rice.kew.IDocumentEvent#getDocumentId()
 	 */
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
 
 	/*

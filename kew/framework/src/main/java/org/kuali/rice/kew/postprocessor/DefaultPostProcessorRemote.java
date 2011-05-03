@@ -49,7 +49,7 @@ public class DefaultPostProcessorRemote implements PostProcessorRemote {
 	}
 
 	@Override
-	public Long[] getDocumentIdsToLock(DocumentLockingEventDTO event)
+	public String[] getDocumentIdsToLock(DocumentLockingEventDTO event)
 			throws Exception {
 		return null;
 	}

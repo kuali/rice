@@ -66,7 +66,7 @@ public class SaveActionEvent extends ActionTakenEvent {
     		return "Document is not in a state to be saved";
     	}
     	// check state before checking kim
-    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getRouteHeaderId().toString(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+    	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getDocumentId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
     		return "User is not authorized to Save document";
     	}
     	return "";
@@ -83,7 +83,7 @@ public class SaveActionEvent extends ActionTakenEvent {
     }
 
     public void recordAction() throws InvalidActionTakenException {
-	MDC.put("docId", getRouteHeader().getRouteHeaderId());
+	MDC.put("docId", getRouteHeader().getDocumentId());
 	LOG.debug("Checking to see if the action is legal");
 	/* Code below for variable 'checkIfActionIsValid' is used to identify when the 
 	 * DocumentRouteHeaderValue 'legal actions' should be checked for the current
@@ -127,11 +127,11 @@ public class SaveActionEvent extends ActionTakenEvent {
 
     protected ActionRequestValue generateSaveRequest() {
         RouteNodeInstance initialNode = null;
-        List initialNodes = KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getRouteHeaderId());
+        List initialNodes = KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getDocumentId());
     	if (!initialNodes.isEmpty()) {
     	    initialNode = (RouteNodeInstance)initialNodes.get(0);
     	}
-        //RouteNodeInstance initialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getRouteHeaderId()).get(0);
+        //RouteNodeInstance initialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getDocumentId()).get(0);
     	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), initialNode);
     	ActionRequestValue saveRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
                 0, new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,

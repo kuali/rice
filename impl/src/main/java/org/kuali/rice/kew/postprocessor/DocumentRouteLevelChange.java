@@ -31,7 +31,7 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
 	
   private static final long serialVersionUID = 785552701611174468L;
 
-  private Long routeHeaderId;
+  private String documentId;
   private String appDocId;
   private Integer oldRouteLevel;
   private Integer newRouteLevel;
@@ -41,13 +41,13 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
   private Long newNodeInstanceId;
   
   //  this constructor is for backwards compatibility
-  public DocumentRouteLevelChange(Long routeHeaderId, String appDocId, Integer oldRouteLevel, Integer newRouteLevel) {
-	  this(routeHeaderId, appDocId, oldRouteLevel, newRouteLevel, null, null, null, null);
+  public DocumentRouteLevelChange(String documentId, String appDocId, Integer oldRouteLevel, Integer newRouteLevel) {
+	  this(documentId, appDocId, oldRouteLevel, newRouteLevel, null, null, null, null);
   }
   
-  public DocumentRouteLevelChange(Long routeHeaderId, String appDocId, Integer oldRouteLevel,
+  public DocumentRouteLevelChange(String documentId, String appDocId, Integer oldRouteLevel,
     Integer newRouteLevel, String oldNodeName, String newNodeName, Long oldNodeInstanceId, Long newNodeInstanceId) {
-    this.routeHeaderId = routeHeaderId;
+    this.documentId = documentId;
     this.oldRouteLevel = oldRouteLevel;
     this.newRouteLevel = newRouteLevel;
     this.oldNodeName = oldNodeName;
@@ -61,8 +61,8 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
     return ROUTE_LEVEL_CHANGE;
   }
 
-  public Long getRouteHeaderId() {
-    return routeHeaderId;
+  public String getDocumentId() {
+    return documentId;
   }
 
   public Integer getOldRouteLevel() {
@@ -91,7 +91,7 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
 
   public String toString() {
     StringBuffer buffer = new StringBuffer();
-    buffer.append("RouteHeaderID ").append(routeHeaderId);
+    buffer.append("DocumentId ").append(documentId);
     buffer.append(" changing from routeLevel ").append(oldRouteLevel);
     buffer.append(" to routeLevel ").append(newRouteLevel);
 

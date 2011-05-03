@@ -33,14 +33,14 @@ public interface RouteNodeDAO {
     public void save(Branch branch);
     public RouteNode findRouteNodeById(Long nodeId);
     public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId);
-    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId);
-    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId);
-    public List getInitialNodeInstances(Long documentId);
+    public List<RouteNodeInstance> getActiveNodeInstances(String documentId);
+    public List<RouteNodeInstance> getTerminalNodeInstances(String documentId);
+    public List getInitialNodeInstances(String documentId);
     public NodeState findNodeState(Long nodeInstanceId, String key);
     public RouteNode findRouteNodeByName(Long documentTypeId, String name);
     public List findFinalApprovalRouteNodes(Long documentTypeId);
     public List findProcessNodeInstances(RouteNodeInstance process);
-    public List findRouteNodeInstances(Long documentId);
+    public List findRouteNodeInstances(String documentId);
     public void deleteLinksToPreNodeInstances(RouteNodeInstance routeNodeInstance);
     public void deleteRouteNodeInstancesHereAfter(RouteNodeInstance routeNodeInstance);
     public void deleteNodeStateById(Long nodeStateId);

@@ -124,7 +124,7 @@ public class DynamicTransitionEngine extends TransitionEngine {
         }
         RouteNodeInstance finalNodeInstance = null;
         if (!nextNodes.isEmpty()) {
-            finalNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), (RouteNode) nextNodes.get(0));
+            finalNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), (RouteNode) nextNodes.get(0));
             finalNodeInstance.setBranch(dynamicNodeInstance.getBranch());
             finalNodeInstance.setProcess(dynamicNodeInstance.getProcess());
         }

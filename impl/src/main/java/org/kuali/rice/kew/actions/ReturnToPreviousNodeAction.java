@@ -140,7 +140,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-    	return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
+    	return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()));
     }
 
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
@@ -206,17 +206,17 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     }
 
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
-        LOG.debug("Returning document " + getRouteHeader().getRouteHeaderId() + " to previous node: " + nodeName + ", annotation: " + annotation);
+        LOG.debug("Returning document " + getRouteHeader().getDocumentId() + " to previous node: " + nodeName + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
 
-            Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId());
+            Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getDocumentId());
             NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, nodeName);
             NodeGraphSearchResult result = KEWServiceLocator.getRouteNodeService().searchNodeGraph(criteria);
             validateReturnPoint(nodeName, activeNodeInstances, result);
@@ -233,7 +233,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             	// mark the node instance as having been revoked
             	KEWServiceLocator.getRouteNodeService().revokeNodeInstance(getRouteHeader(), nodeInstance);
                 Long nodeInstanceId = nodeInstance.getRouteNodeInstanceId();
-                List nodeRequests = getActionRequestService().findRootRequestsByDocIdAtRouteNode(getRouteHeader().getRouteHeaderId(), nodeInstanceId);
+                List nodeRequests = getActionRequestService().findRootRequestsByDocIdAtRouteNode(getRouteHeader().getDocumentId(), nodeInstanceId);
                 for (Iterator requestIt = nodeRequests.iterator(); requestIt.hasNext();) {
                     ActionRequestValue request = (ActionRequestValue) requestIt.next();
                     if (request.isDone()) {
@@ -244,7 +244,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
                 }
             }
             revokeRequests(doneRequests);
-            LOG.debug("Change pending requests to FYI and activate for docId " + getRouteHeader().getRouteHeaderId());
+            LOG.debug("Change pending requests to FYI and activate for docId " + getRouteHeader().getDocumentId());
             revokePendingRequests(pendingRequests, actionTaken, delegator);
             notifyActionTaken(actionTaken);
             executeNodeChange(activeNodeInstances, result);
@@ -330,7 +330,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             int returnPathLength = result.getPath().size()-1;
             oldRouteLevel = getRouteHeader().getDocRouteLevel();
             newRouteLevel = oldRouteLevel - returnPathLength;
-            LOG.debug("Changing route header "+ getRouteHeader().getRouteHeaderId()+" route level for backward compatibility to "+newRouteLevel);
+            LOG.debug("Changing route header "+ getRouteHeader().getDocumentId()+" route level for backward compatibility to "+newRouteLevel);
             getRouteHeader().setDocRouteLevel(newRouteLevel);
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
         }
@@ -348,13 +348,13 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             LOG.debug("Notifying post processor of route node change '"+oldNodeInstance.getName()+"'->'"+newNodeInstance.getName());
             PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
-            DocumentRouteLevelChange routeNodeChange = new DocumentRouteLevelChange(routeHeader.getRouteHeaderId(),
+            DocumentRouteLevelChange routeNodeChange = new DocumentRouteLevelChange(routeHeader.getDocumentId(),
                     routeHeader.getAppDocId(),
                     oldRouteLevel, newRouteLevel,
                     oldNodeInstance.getName(), newNodeInstance.getName(),
                     oldNodeInstance.getRouteNodeInstanceId(), newNodeInstance.getRouteNodeInstanceId());
             ProcessDocReport report = postProcessor.doRouteLevelChange(routeNodeChange);
-            setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId()));
+            setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getDocumentId()));
             if (!report.isSuccess()) {
                 LOG.warn(report.getMessage(), report.getProcessException());
                 throw new InvalidActionTakenException(report.getMessage());
@@ -390,7 +390,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private RouteNodeInstance materializeReturnPoint(Collection<RouteNodeInstance> startingNodes, NodeGraphSearchResult result) {
         RouteNodeService nodeService = KEWServiceLocator.getRouteNodeService();
         RouteNodeInstance returnInstance = result.getResultNodeInstance();
-        RouteNodeInstance newNodeInstance = helper.getNodeFactory().createRouteNodeInstance(getRouteHeaderId(), returnInstance.getRouteNode());
+        RouteNodeInstance newNodeInstance = helper.getNodeFactory().createRouteNodeInstance(getDocumentId(), returnInstance.getRouteNode());
         newNodeInstance.setBranch(returnInstance.getBranch());
         newNodeInstance.setProcess(returnInstance.getProcess());
         newNodeInstance.setComplete(false);

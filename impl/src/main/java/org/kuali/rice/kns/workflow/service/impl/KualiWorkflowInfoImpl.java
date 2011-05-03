@@ -55,16 +55,16 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         return workflowInfo;
     }
 
-    public RouteHeaderDTO getRouteHeader(String principalId, Long routeHeaderId) throws WorkflowException {
-        return getWorkflowUtility().getRouteHeader(principalId, routeHeaderId);
+    public RouteHeaderDTO getRouteHeader(String principalId, String documentId) throws WorkflowException {
+        return getWorkflowUtility().getRouteHeader(principalId, documentId);
     }
 
-    public RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException {
     	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(KNSConstants.SYSTEM_USER);
     	if (principal == null) {
     		throw new WorkflowException("Failed to locate System User with principal name 'kr'");
     	}
-    	return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), routeHeaderId);
+    	return getWorkflowUtility().getRouteHeader(principal.getPrincipalId(), documentId);
     }
 
     public DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException {
@@ -79,38 +79,38 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     	return getWorkflowUtility().getNewResponsibilityId();
     }
 
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getActionRequests(routeHeaderId);
+    public ActionRequestDTO[] getActionRequests(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getActionRequests(documentId);
     }
 
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
-    	return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
+    public ActionRequestDTO[] getActionRequests(String documentId, String nodeName, String principalId) throws WorkflowException {
+    	return getWorkflowUtility().getActionRequests(documentId, nodeName, principalId);
     }
 
-    public ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getActionsTaken(routeHeaderId);
+    public ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getActionsTaken(documentId);
+    }
+  
+    public void reResolveRoleByDocTypeName(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
+    	getWorkflowUtility().reResolveRoleByDocTypeName(documentTypeName, roleName, qualifiedRoleNameLabel);
     }
 
-    public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-    	getWorkflowUtility().reResolveRole(documentTypeName, roleName, qualifiedRoleNameLabel);
+    public void reResolveRoleByDocumentId(String documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
+    	getWorkflowUtility().reResolveRoleByDocumentId(documentId, roleName, qualifiedRoleNameLabel);
     }
-
-    public void reResolveRole(Long routeHeaderId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-    	getWorkflowUtility().reResolveRole(routeHeaderId, roleName, qualifiedRoleNameLabel);
-    }
-
+    
     /**
      * 
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowInfo#routeHeaderExists(java.lang.Long)
      */
-    public boolean routeHeaderExists(Long routeHeaderId) {
-        if (routeHeaderId == null) {
-            throw new IllegalArgumentException("Null argument passed in for routeHeaderId.");
+    public boolean routeHeaderExists(String documentId) {
+        if (documentId == null) {
+            throw new IllegalArgumentException("Null argument passed in for documentId.");
         }
 
         RouteHeaderDTO routeHeader = null;
         try {
-            routeHeader = getRouteHeader(routeHeaderId);
+            routeHeader = getRouteHeader(documentId);
         }
         catch (WorkflowException e) {
             LOG.error("Caught Exception from workflow", e);
@@ -141,10 +141,10 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
     }
     
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowInfo#getApprovalRequestedUsers(java.lang.Long)
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowInfo#getApprovalRequestedUsers(java.lang.String)
      */
-    public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException {
-    	ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(routeHeaderId, new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
+    public List<String> getApprovalRequestedUsers(String documentId) throws WorkflowException {
+    	ActionItemDTO[] actionItemVOs = getWorkflowUtility().getActionItems(documentId, new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
     	List<String> users = new ArrayList<String>();
     	for (int i = 0; i < actionItemVOs.length; i++) {
     		ActionItemDTO actionItemVO = actionItemVOs[i];

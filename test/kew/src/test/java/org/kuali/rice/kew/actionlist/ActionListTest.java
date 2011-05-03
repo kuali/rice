@@ -94,13 +94,13 @@ public class ActionListTest extends KEWTestCase {
 
     @Test public void testRouteHeaderDelete() throws Exception {
     	setUpOldSchool();
-        Collection<ActionItem> actionItems = getActionListService().findByRouteHeaderId(routeHeader1.getRouteHeaderId());
-        assertEquals("Route header " + routeHeader1.getRouteHeaderId() + " should have action items.", AUTHENTICATION_IDS.length, actionItems.size());
-        getActionListService().deleteByRouteHeaderId(routeHeader1.getRouteHeaderId());
-        actionItems = getActionListService().findByRouteHeaderId(routeHeader1.getRouteHeaderId());
-        assertEquals("There should be no remaining action items for route header " + routeHeader1.getRouteHeaderId(), 0, actionItems.size());
-        actionItems = getActionListService().findByRouteHeaderId(routeHeader2.getRouteHeaderId());
-        assertEquals("Route header " + routeHeader2.getRouteHeaderId() + " should have action items.", AUTHENTICATION_IDS.length, actionItems.size());
+        Collection<ActionItem> actionItems = getActionListService().findByDocumentId(routeHeader1.getDocumentId());
+        assertEquals("Route header " + routeHeader1.getDocumentId() + " should have action items.", AUTHENTICATION_IDS.length, actionItems.size());
+        getActionListService().deleteByDocumentId(routeHeader1.getDocumentId());
+        actionItems = getActionListService().findByDocumentId(routeHeader1.getDocumentId());
+        assertEquals("There should be no remaining action items for route header " + routeHeader1.getDocumentId(), 0, actionItems.size());
+        actionItems = getActionListService().findByDocumentId(routeHeader2.getDocumentId());
+        assertEquals("Route header " + routeHeader2.getDocumentId() + " should have action items.", AUTHENTICATION_IDS.length, actionItems.size());
     }
 
     @Test public void testActionListCount() throws Exception {
@@ -150,7 +150,7 @@ public class ActionListTest extends KEWTestCase {
      * their secondary list.
      */
     @Test public void testSecondaryActionList() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
 
     	// at this point the document should be routed to the following people
@@ -227,9 +227,9 @@ public class ActionListTest extends KEWTestCase {
             assertEquals("Should be to a workgroup.", NonSIT.getId(), actionItem.getGroupId());
         }
 
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
@@ -285,7 +285,7 @@ public class ActionListTest extends KEWTestCase {
      * their secondary list.
      */
     @Test public void testPrimaryDelegationActionList() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
 
     	// at this point the document should be routed to the following people
@@ -313,9 +313,9 @@ public class ActionListTest extends KEWTestCase {
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, new ActionListFilter());
     	assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 
-    	document = new WorkflowDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate");
+    	document = WorkflowDocument.createDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate");
     	document.routeDocument("");
-    	document = new WorkflowDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate2");
+    	document = WorkflowDocument.createDocument(jhopfPrincipalId, "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
         actionItems = getActionListService().getActionList(bmcgoughPrincipalId, showPrimaryFilter);
@@ -371,11 +371,11 @@ public class ActionListTest extends KEWTestCase {
 
         Person jhopf = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
         Person bmcgough = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType");
     	document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionListDocumentType_PrimaryDelegate2");
         document.routeDocument("");
 
         Collection<Recipient> recipients = getActionListService().findUserPrimaryDelegations(jhopf.getPrincipalId());
@@ -432,7 +432,7 @@ public class ActionListTest extends KEWTestCase {
         actionItem.setActionRequestCd(actionRequested);
         actionItem.setActionRequestId((long) 1);
         actionItem.setPrincipalId(getPrincipalIdForName(authenticationId));
-        actionItem.setRouteHeaderId(routeHeader.getRouteHeaderId());
+        actionItem.setDocumentId(routeHeader.getDocumentId());
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
         actionItem.setDocHandlerURL("Unit testing");
         actionItem.setDocLabel("unit testing");

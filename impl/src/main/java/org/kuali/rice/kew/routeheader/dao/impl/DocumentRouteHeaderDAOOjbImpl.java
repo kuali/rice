@@ -59,8 +59,8 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
 
     public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {
         if ( LOG.isDebugEnabled() ) {
-            LOG.debug( "About to Save the route Header: " + routeHeader.getRouteHeaderId() + " / version=" + routeHeader.getVersionNumber() );
-            DocumentRouteHeaderValue currHeader = findRouteHeader(routeHeader.getRouteHeaderId());
+            LOG.debug( "About to Save the route Header: " + routeHeader.getDocumentId() + " / version=" + routeHeader.getVersionNumber() );
+            DocumentRouteHeaderValue currHeader = findRouteHeader(routeHeader.getDocumentId());
             if ( currHeader != null ) {
                 LOG.debug( "Current Header Version: " + currHeader.getVersionNumber() );
 //                for ( SearchableAttributeValue s : currHeader.get() ) {
@@ -73,27 +73,27 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         }
         try {
             getPersistenceBrokerTemplate().store(routeHeader);
-            routeHeader.getDocumentContent().setRouteHeaderId(routeHeader.getRouteHeaderId());
+            routeHeader.getDocumentContent().setDocumentId(routeHeader.getDocumentId());
             getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
         } catch ( RuntimeException ex ) {
             if ( ex.getCause() instanceof OptimisticLockException ) {
                  LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject() 
-                 + "; RouteHeaderID = " + routeHeader.getRouteHeaderId() + " ;  Version Number = " + routeHeader.getVersionNumber());
+                 + "; DocumentId = " + routeHeader.getDocumentId() + " ;  Version Number = " + routeHeader.getVersionNumber());
             }
             LOG.error( "Unable to save document header or content. Route Header: " + routeHeader, ex );
             throw ex;
         }
     }
 
-    public DocumentRouteHeaderValueContent getContent(Long routeHeaderId) {
+    public DocumentRouteHeaderValueContent getContent(String documentId) {
     	Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         return (DocumentRouteHeaderValueContent)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentRouteHeaderValueContent.class, crit));
     }
 
-    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
+    public void clearRouteHeaderSearchValues(String documentId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         QueryByCriteria query = new QueryByCriteria(SearchableAttributeValue.class, crit);
         query.addOrderByAscending("searchableAttributeValueId");
         Collection<SearchableAttributeValue> results = this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -104,10 +104,10 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         }
     }
 
-    public void lockRouteHeader(final Long routeHeaderId, final boolean wait) {
+    public void lockRouteHeader(final String documentId, final boolean wait) {
 
         /*
-         * String sql = (wait ? LOCK_SQL_WAIT : LOCK_SQL_NOWAIT); try { getJdbcTemplate().update(sql, new Object[] { routeHeaderId }); } catch (CannotAcquireLockException e) { throw new LockingException("Could not aquire lock on document, routeHeaderId=" + routeHeaderId, e); }
+         * String sql = (wait ? LOCK_SQL_WAIT : LOCK_SQL_NOWAIT); try { getJdbcTemplate().update(sql, new Object[] { documentId }); } catch (CannotAcquireLockException e) { throw new LockingException("Could not aquire lock on document, documentId=" + documentId, e); }
          */
 
     	this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
@@ -115,17 +115,17 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 PreparedStatement statement = null;
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
-                    String sql = getPlatform().getLockRouteHeaderQuerySQL(routeHeaderId, wait);
+                    String sql = getPlatform().getLockRouteHeaderQuerySQL(documentId, wait);
                     statement = connection.prepareStatement(sql);
-                    statement.setLong(1, routeHeaderId.longValue());
+                    statement.setString(1, documentId);
                     statement.execute();
                     return null;
                 } catch (SQLException e) {
-                    throw new LockingException("Could not aquire lock on document, routeHeaderId=" + routeHeaderId, e);
+                    throw new LockingException("Could not aquire lock on document, documentId=" + documentId, e);
                 } catch (LookupException e) {
-                    throw new LockingException("Could not aquire lock on document, routeHeaderId=" + routeHeaderId, e);
+                    throw new LockingException("Could not aquire lock on document, documentId=" + documentId, e);
                 } catch (CannotAcquireLockException e) {
-                    throw new LockingException("Could not aquire lock on document, routeHeaderId=" + routeHeaderId, e);
+                    throw new LockingException("Could not aquire lock on document, documentId=" + documentId, e);
                 } finally {
                     if (statement != null) {
                         try {
@@ -139,29 +139,29 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
 
     }
 
-    public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId) {
-    	return findRouteHeader(routeHeaderId, false);
+    public DocumentRouteHeaderValue findRouteHeader(String documentId) {
+    	return findRouteHeader(documentId, false);
     }
 
-    public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId, boolean clearCache) {
+    public DocumentRouteHeaderValue findRouteHeader(String documentId, boolean clearCache) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         if (clearCache) {
         	this.getPersistenceBrokerTemplate().clearCache();
         }
         return (DocumentRouteHeaderValue) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentRouteHeaderValue.class, crit));
     }
 
-    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds) {
-    	return findRouteHeaders(routeHeaderIds, false);
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds) {
+    	return findRouteHeaders(documentIds, false);
     }
     
-    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache) {
-    	if (routeHeaderIds == null || routeHeaderIds.isEmpty()) {
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache) {
+    	if (documentIds == null || documentIds.isEmpty()) {
     		return null;
     	}
     	Criteria crit = new Criteria();
-    	crit.addIn("routeHeaderId", routeHeaderIds);
+    	crit.addIn("documentId", documentIds);
     	if (clearCache) {
         	this.getPersistenceBrokerTemplate().clearCache();
         }
@@ -171,7 +171,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
     	// need to clear action list cache for users who have this item in their action list
     	ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-    	Collection actionItems = actionListSrv.findByRouteHeaderId(routeHeader.getRouteHeaderId());
+    	Collection actionItems = actionListSrv.findByDocumentId(routeHeader.getDocumentId());
     	for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
     		ActionItem actionItem = (ActionItem) iter.next();
     		try {
@@ -183,10 +183,10 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	this.getPersistenceBrokerTemplate().delete(routeHeader);
     }
 
-    public Long getNextRouteHeaderId() {
-        return (Long)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+    public String getNextDocumentId() {
+        return (String)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-            	return getPlatform().getNextValSQL("KREW_DOC_HDR_S", broker);
+            	return getPlatform().getNextValSQL("KREW_DOC_HDR_S", broker).toString();
                     }
         });
     }
@@ -196,9 +196,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     }
 
     public Collection findPendingByResponsibilityIds(Set responsibilityIds) {
-        Collection routeHeaderIds = new ArrayList();
+        Collection documentIds = new ArrayList();
         if (responsibilityIds.isEmpty()) {
-            return routeHeaderIds;
+            return documentIds;
         }
         PersistenceBroker broker = null;
         Connection conn = null;
@@ -224,7 +224,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             while (rs.next()) {
-                routeHeaderIds.add(Long.valueOf(rs.getLong(1)));
+            	documentIds.add(rs.getString(1));
             }
         } catch (SQLException sqle) {
             LOG.error("SQLException: " + sqle.getMessage(), sqle);
@@ -255,12 +255,12 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 LOG.error("Failed closing connection: " + e.getMessage(), e);
             }
         }
-        return routeHeaderIds;
+        return documentIds;
     }
 
-    public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
+    public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue) {
     	Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", documentId);
+        crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("searchableAttributeKey", searchableAttributeKey);
         Collection results = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(SearchableAttributeValue.class, crit));
         if (!results.isEmpty()) {
@@ -274,7 +274,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return false;
     }
 
-    public String getServiceNamespaceByDocumentId(Long documentId) {
+    public String getServiceNamespaceByDocumentId(String documentId) {
     	if (documentId == null) {
     		throw new IllegalArgumentException("Encountered a null document ID.");
     	}
@@ -290,7 +290,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             	"WHERE DH.DOC_TYP_ID=DT.DOC_TYP_ID AND "+
             	"DH.DOC_HDR_ID=?";
             statement = conn.prepareStatement(query);
-            statement.setLong(1, documentId);
+            statement.setString(1, documentId);
             rs = statement.executeQuery();
             if (rs.next()) {
                 serviceNamespace = rs.getString(1);
@@ -330,9 +330,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return serviceNamespace;
     }
 
-    public String getDocumentStatus(Long documentId) {
+    public String getDocumentStatus(String documentId) {
 	Criteria crit = new Criteria();
-    	crit.addEqualTo("routeHeaderId", documentId);
+    	crit.addEqualTo("documentId", documentId);
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
     	query.setAttributes(new String[] { "docRouteStatus" });
     	String status = null;
@@ -344,9 +344,9 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	return status;
     }
     
-    public String getAppDocId(Long documentId) {
+    public String getAppDocId(String documentId) {
  	 	Criteria crit = new Criteria();
- 	 	crit.addEqualTo("routeHeaderId", documentId);
+ 	 	crit.addEqualTo("documentId", documentId);
  	 	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
  	 	query.setAttributes(new String[] { "appDocId" });
  	 	String appDocId = null;
@@ -364,7 +364,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
 
 	public Collection findByDocTypeAndAppId(String documentTypeName,
 			String appId) {
-        Collection routeHeaderIds = new ArrayList();
+        Collection documentIds = new ArrayList();
 
         PersistenceBroker broker = null;
         Connection conn = null;
@@ -392,7 +392,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             rs = stmt.executeQuery();
             
             while (rs.next()) {
-                routeHeaderIds.add(Long.valueOf(rs.getLong(1)));
+            	documentIds.add(new String(rs.getString(1)));
             }
             rs.close();
         } catch (SQLException sqle) {
@@ -410,7 +410,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 LOG.error("Failed closing connection: " + e.getMessage(), e);
             }
         }
-        return routeHeaderIds;
+        return documentIds;
 	}
 
 }

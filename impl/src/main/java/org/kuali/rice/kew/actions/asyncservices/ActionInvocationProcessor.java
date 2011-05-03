@@ -35,7 +35,7 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 
     private static final Logger LOG = Logger.getLogger(ActionInvocationProcessor.class);
 
-    public void invokeAction(String principalId, Long documentId, ActionInvocation invocation) {
+    public void invokeAction(String principalId, String documentId, ActionInvocation invocation) {
 
 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
@@ -49,10 +49,10 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 	try {
 	    action = KEWServiceLocator.getActionRegistry().createAction(invocation.getActionCode(), parameters);
 	    if (!document.isValidActionToTake(invocation.getActionCode())) {
-		LOG.warn("Action " + invocation.getActionCode() + " is not a valid action to take against document " + document.getRouteHeaderId() + " by principal with name '" + principal.getPrincipalName() + "'");
+		LOG.warn("Action " + invocation.getActionCode() + " is not a valid action to take against document " + document.getDocumentId() + " by principal with name '" + principal.getPrincipalName() + "'");
 		return;
 	    } else if (!KEWServiceLocator.getActionRegistry().getValidActions(principal, document).getActionTakenCodes().contains(action.getActionTakenCode())) {
-		LOG.warn("Action " + action.getActionTakenCode() + " is not valid for document " + document.getRouteHeaderId() + " by principal with name '" + principal.getPrincipalName() + "'");
+		LOG.warn("Action " + action.getActionTakenCode() + " is not valid for document " + document.getDocumentId() + " by principal with name '" + principal.getPrincipalName() + "'");
 		return;
 	    }
 	    action.performAction();

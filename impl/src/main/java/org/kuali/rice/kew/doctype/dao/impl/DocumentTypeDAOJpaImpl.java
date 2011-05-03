@@ -58,13 +58,13 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	}
 
 	public void delete(DocumentType documentType) {
-		DocumentType docType = findByDocId(documentType.getDocumentTypeId());
+		DocumentType docType = findById(documentType.getDocumentTypeId());
 		entityManager.remove(documentType);
 	}
 
-	public DocumentType findByDocId(Long docId) {
+	public DocumentType findById(Long docTypeId) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
-		crit.eq("documentTypeId", docId);
+		crit.eq("documentTypeId", docTypeId);
 			return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	}
 
@@ -127,9 +127,9 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		}
 	}
 
-	public List findByRouteHeaderId(Long routeHeaderId) {
+	public List findByDocumentId(String documentId) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
-		crit.eq("routeHeaderId", routeHeaderId);
+		crit.eq("documentId", documentId);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
@@ -253,9 +253,9 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     	return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public Long findDocumentTypeIdByDocumentId(Long documentId) {
+    public Long findDocumentTypeIdByDocumentId(String documentId) {
     	Criteria crit = new Criteria(DocumentRouteHeaderValue.class.getName());
-    	crit.eq("routeHeaderId", documentId);
+    	crit.eq("documentId", documentId);
 
     	final DocumentRouteHeaderValue docHeader = (DocumentRouteHeaderValue)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     	return (docHeader != null) ? docHeader.getDocumentTypeId() : null;

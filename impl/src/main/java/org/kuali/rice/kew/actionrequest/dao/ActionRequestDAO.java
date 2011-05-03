@@ -33,42 +33,42 @@ public interface ActionRequestDAO {
 
     public void saveActionRequest(ActionRequestValue actionRequest);
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(Long routeHeaderId, Integer routeLevel);
+    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel);
+    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel);
+    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
     public void delete(Long actionRequestId);
 
-     public List findPendingByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId);
+     public List findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId);
 
-    public List findAllPendingByDocId(Long routeHeaderId);
+    public List findAllPendingByDocId(String documentId);
 
-    public List findAllByDocId(Long routeHeaderId);
+    public List findAllByDocId(String documentId);
 
-    public List findAllRootByDocId(Long routeHeaderId);
+    public List findAllRootByDocId(String documentId);
 
-    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId);
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId);
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId);
 
     public List findActivatedByGroup(String groupId);
 
     public List findPendingByResponsibilityIds(Collection responsibilityIds);
 
-    public  void deleteByRouteHeaderId(Long routeHeaderId);
+    public  void deleteByDocumentId(String documentId);
 
     public List findPendingRootRequestsByDocumentType(Long documentTypeId);
 
-    public List findPendingRootRequestsByDocIdAtRouteNode(Long routeHeaderId, Long nodeInstanceId);
+    public List findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
 
-    public List findRootRequestsByDocIdAtRouteNode(Long documentId, Long nodeInstanceId);
+    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
 
-    //public List findFutureAdHocRequestsByDocIdAtRouteNode(Long documentId, String nodeName);
+    //public List findFutureAdHocRequestsByDocIdAtRouteNode(String documentId, String nodeName);
 
-    public boolean doesDocumentHaveUserRequest(String workflowId, Long documentId);
+    public boolean doesDocumentHaveUserRequest(String workflowId, String documentId);
   
-    public List<String> getRequestGroupIds(Long documentId);
+    public List<String> getRequestGroupIds(String documentId);
 
 }

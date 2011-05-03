@@ -52,22 +52,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     private KualiWorkflowInfo workflowInfoService;
 
-    public boolean workflowDocumentExists(String documentHeaderId) {
+    public boolean workflowDocumentExists(String documentId) {
         boolean exists = false;
 
-        if (StringUtils.isBlank(documentHeaderId)) {
-            throw new IllegalArgumentException("invalid (blank) documentHeaderId");
+        if (StringUtils.isBlank(documentId)) {
+            throw new IllegalArgumentException("invalid (blank) documentId");
         }
 
-        Long routeHeaderId = null;
-        try {
-            routeHeaderId = new Long(documentHeaderId);
-        }
-        catch (NumberFormatException e) {
-            throw new IllegalArgumentException("cannot convert '" + documentHeaderId + "' into a Long");
-        }
-
-        exists = workflowInfoService.routeHeaderExists(routeHeaderId);
+        exists = workflowInfoService.routeHeaderExists(documentId);
 
         return exists;
     }
@@ -98,15 +90,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("creating workflowDoc(" + documentTypeId + "," + person.getPrincipalName() + ")");
         }
 
-        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(person.getPrincipalId(), documentTypeId);
+        KualiWorkflowDocument document = KualiWorkflowDocumentImpl.createKualiDocumentImpl(person.getPrincipalId(), documentTypeId);
 
-        // workflow doesn't complain about invalid docTypes until the first call to getRouteHeaderId, but the rest of our code
+        // workflow doesn't complain about invalid docTypes until the first call to getDocumentId, but the rest of our code
         // assumes that you get the exception immediately upon trying to create a document of that invalid type
         //
         // and it throws the generic WorkflowException, apparently, instead of the more specific DocumentTypeNotFoundException,
         // so as long as I'm here I'll do that conversion as well
         try {
-            document.getRouteHeaderId();
+            document.getDocumentId();
         }
         catch (WorkflowException e) {
             if (e.getMessage().contains("Could not locate the given document type name")) {
@@ -127,8 +119,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#createWorkflowDocument(java.lang.Long,
      *      org.kuali.rice.kew.user.WorkflowUser)
      */
-    public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, Person user) throws WorkflowException {
-        if (documentHeaderId == null) {
+    public KualiWorkflowDocument loadWorkflowDocument(String documentId, Person user) throws WorkflowException {
+        if (documentId == null) {
             throw new IllegalArgumentException("invalid (null) documentHeaderId");
         }
         if (user == null) {
@@ -139,12 +131,12 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("retrieving document(" + documentHeaderId + "," + user.getPrincipalName() + ")");
+            LOG.debug("retrieving document(" + documentId + "," + user.getPrincipalName() + ")");
         }
+        KualiWorkflowDocument document = KualiWorkflowDocumentImpl.LoadKualiDocumentImpl(user.getPrincipalId(), documentId);
 
-        KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(user.getPrincipalId(), documentHeaderId);
         if (document.getRouteHeader() == null) {
-            throw new UnknownDocumentIdException("unable to locate document with documentHeaderId '" + documentHeaderId + "'");
+            throw new UnknownDocumentIdException("unable to locate document with documentHeaderId '" + documentId + "'");
         }
         return document;
     }
@@ -154,7 +146,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("acknowleding document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("acknowleding document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ }));
@@ -166,7 +158,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void approve(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("approving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("approving document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ }));
@@ -180,7 +172,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void superUserApprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
     	if ( LOG.isInfoEnabled() ) {
-    		LOG.info("super user approve document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    		LOG.info("super user approve document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
     	}
         workflowDocument.superUserApprove(annotation);
     }
@@ -190,7 +182,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      *      java.lang.String)
      */
     public void superUserCancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
-        LOG.info("super user cancel document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+        LOG.info("super user cancel document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         workflowDocument.superUserCancel(annotation);
     }
 
@@ -200,7 +192,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void superUserDisapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
     	if ( LOG.isInfoEnabled() ) {
-    		LOG.info("super user disapprove document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    		LOG.info("super user disapprove document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
     	}
         workflowDocument.superUserDisapprove(annotation);
     }
@@ -210,7 +202,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("blanket approving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("blanket approving document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ }));
@@ -222,7 +214,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void cancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("canceling document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("canceling document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
         workflowDocument.cancel(annotation);
@@ -233,7 +225,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void clearFyi(KualiWorkflowDocument workflowDocument, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("clearing FYI for document(" + workflowDocument.getRouteHeaderId() + ")");
+            LOG.debug("clearing FYI for document(" + workflowDocument.getDocumentId() + ")");
         }
 
         handleAdHocRouteRequests(workflowDocument, "", filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_FYI_REQ }));
@@ -249,7 +241,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients, String notificationLabel) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("sending FYI for document(" + workflowDocument.getRouteHeaderId() + ")");
+            LOG.debug("sending FYI for document(" + workflowDocument.getDocumentId() + ")");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients, notificationLabel);
@@ -260,7 +252,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void disapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("disapproving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("disapproving document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
         workflowDocument.disapprove(annotation);
@@ -271,7 +263,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void route(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("routing document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("routing document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ }));
@@ -284,7 +276,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     public void save(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (workflowDocument.isStandardSaveAllowed()) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("saving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("saving document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
         workflowDocument.saveDocument(annotation);
@@ -299,7 +291,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void saveRoutingData(KualiWorkflowDocument workflowDocument) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("saving document(" + workflowDocument.getRouteHeaderId() + ")");
+            LOG.debug("saving document(" + workflowDocument.getDocumentId() + ")");
         }
 
         workflowDocument.saveRoutingData();
@@ -310,10 +302,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public String getCurrentRouteLevelName(KualiWorkflowDocument workflowDocument) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("getting current route level name for document(" + workflowDocument.getRouteHeaderId());
+            LOG.debug("getting current route level name for document(" + workflowDocument.getDocumentId());
         }
-//        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId()).getCurrentRouteLevelName();
-        KualiWorkflowDocument freshCopyWorkflowDoc = createWorkflowDocument(workflowDocument.getRouteHeaderId(), GlobalVariables.getUserSession().getPerson());
+//        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId()).getCurrentRouteLevelName();
+        KualiWorkflowDocument freshCopyWorkflowDoc = loadWorkflowDocument(workflowDocument.getDocumentId(), GlobalVariables.getUserSession().getPerson());
         return freshCopyWorkflowDoc.getCurrentRouteNodeNames();
     }
 
@@ -338,7 +330,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             String[] currentNodes = workflowDocument.getNodeNames();
             if (currentNodes.length == 0) {
                 WorkflowInfo workflowInfo = new WorkflowInfo();
-                RouteNodeInstanceDTO[] nodes = workflowInfo.getTerminalNodeInstances(workflowDocument.getRouteHeaderId());
+                RouteNodeInstanceDTO[] nodes = workflowInfo.getTerminalNodeInstances(workflowDocument.getDocumentId());
                 currentNodes = new String[nodes.length];
                 for (int nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
                     currentNodes[nodeIndex] = nodes[nodeIndex].getName();

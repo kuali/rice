@@ -119,15 +119,15 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
         assertEquals("Incorrect number of total document type instances for name " + TemporaryDocumentType.NAME, 2, docTypeService.findPreviousInstances(TemporaryDocumentType.NAME).size());
 
         // create a document and route it so we have at least one action item and one outbox item
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), TemporaryDocumentType.NAME);
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), TemporaryDocumentType.NAME);
         document.routeDocument("Test Doc");
-        Long documentHeaderId = document.getRouteHeaderId();
+        String documentHeaderId = document.getDocumentId();
         assertTrue("Document should be ENROUTE", document.stateIsEnroute());
         // verify routing worked properly
         // for the first user we should approve and verify that an outbox item has been created
         String userPrincipalName = TemporaryDocumentType.FIRST_NODE_APPROVER_1;
         turnOnOutboxForUser(getPrincipalIdForName(userPrincipalName));
-        document = new WorkflowDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
         TestUtilities.assertAtNode("Document should be at the first 'requests' node", document, TemporaryDocumentType.FIRST_NODE_NAME);
         assertTrue("User " + userPrincipalName + " should have approval requested.", document.isApprovalRequested());
         document.approve("Test Approval");
@@ -135,7 +135,7 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
         TestUtilities.assertNotInActionList(getPrincipalIdForName(userPrincipalName), documentHeaderId);
         // for the second user we should not approve but verify an action item exists in the user's action list
         userPrincipalName = TemporaryDocumentType.FIRST_NODE_APPROVER_2;
-        document = new WorkflowDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName(userPrincipalName), documentHeaderId);
         assertTrue("User " + userPrincipalName + " should have approval requested.", document.isApprovalRequested());
         TestUtilities.assertInActionList(getPrincipalIdForName(userPrincipalName), documentHeaderId);
 

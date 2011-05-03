@@ -40,10 +40,10 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 		TestRuleAttribute.setRecipientPrincipalIds("TestRole", "QualRole", getRecipients());
 
 		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
-		WorkflowDocument doc = new WorkflowDocument(rkirkendPrincipalId, "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
 		doc.routeDocument("");
 
-		List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId());
+		List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(doc.getDocumentId());
 		assertFalse(requests.isEmpty());
 
 		ActionRequestValue request = null;
@@ -58,12 +58,14 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 		assertNotNull(request);
 
 		String user1PrincipalId = getPrincipalIdForName("user1");
-		new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
+        Long actionItemID = Long.parseLong(request.getDocumentId().trim());
+
+		new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getDocumentId(), new ActionInvocation(actionItemID, request.getActionRequested()));
 		//do it again and make sure we don't have a blow up
-		new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getRouteHeaderId(), new ActionInvocation(request.getRouteHeaderId(), request.getActionRequested()));
+		new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getDocumentId(), new ActionInvocation(actionItemID, request.getActionRequested()));
 
 		//verify that user1 doesn't have any AR's
-		requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(doc.getRouteHeaderId());
+		requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(doc.getDocumentId());
 		assertFalse(requests.isEmpty());
 
 		request = null;

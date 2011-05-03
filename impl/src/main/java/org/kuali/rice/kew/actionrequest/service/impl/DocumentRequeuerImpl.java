@@ -52,7 +52,7 @@ public class DocumentRequeuerImpl implements DocumentRequeuerService {
 	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService#requeueDocument(java.lang.Long)
 	 */
 	@SuppressWarnings("unchecked")
-	public void requeueDocument(Long documentId) {
+	public void requeueDocument(String documentId) {
 		PerformanceLogger performanceLogger = new PerformanceLogger();
         KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
         Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(documentId);

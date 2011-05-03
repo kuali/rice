@@ -913,7 +913,7 @@ public final class KEWConstants {
 
 	public static final String COMMAND_PARAMETER = "command";
 
-	public static final String ROUTEHEADER_ID_PARAMETER = "docId";
+	public static final String DOCUMENT_ID_PARAMETER = "docId";
 
 	public static final String BACKDOOR_ID_PARAMETER = "backdoorId";
 

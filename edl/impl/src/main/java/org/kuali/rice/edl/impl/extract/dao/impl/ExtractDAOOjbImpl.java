@@ -30,17 +30,17 @@ public class ExtractDAOOjbImpl extends PersistenceBrokerDaoSupport implements Ex
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExtractDAOOjbImpl.class);
 
-	public Dump getDumpByRouteHeaderId(Long docId) {
-		LOG.debug("finding Document Extract by routeHeaderId " + docId);
+	public Dump getDumpByDocumentId(String docId) {
+		LOG.debug("finding Document Extract by documentId " + docId);
         Criteria crit = new Criteria();
         crit.addEqualTo("docId", docId);
         return (Dump) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(Dump.class, crit));
 	}
 
-	public List getFieldsByRouteHeaderId(Long docId) {
-		LOG.debug("finding Extract Fileds by routeHeaderId " + docId);
+	public List getFieldsByDocumentId(String docId) {
+		LOG.debug("finding Extract Fileds by documentId " + docId);
 	    Criteria crit = new Criteria();
-	    crit.addEqualTo("routeHeaderId", docId);
+	    crit.addEqualTo("documentId", docId);
 	    QueryByCriteria query = new QueryByCriteria(Fields.class, crit);
 	    query.addOrderByAscending("docId");
 	    return (List) getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -74,10 +74,10 @@ public class ExtractDAOOjbImpl extends PersistenceBrokerDaoSupport implements Ex
         }
     }
 
-	public void deleteDump(Long routeHeaderId) {
+	public void deleteDump(String documentId) {
         LOG.debug("deleting record form Extract Dump table");
         Criteria crit = new Criteria();
-        crit.addEqualTo("docId", routeHeaderId);
+        crit.addEqualTo("docId", documentId);
         getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(Note.class, crit));
 	}
 }

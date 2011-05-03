@@ -23,7 +23,7 @@ public class FieldDTO implements Serializable {
 	private static final long serialVersionUID = -6136544551121011531L;
 
 	private Long fieldId;
-	private Long docId;
+	private String docId;
 	private String fieldName;
 	private String fieldValue;
 	private Integer lockVerNbr;
@@ -31,10 +31,10 @@ public class FieldDTO implements Serializable {
 	public Long getFieldId() {
 		return fieldId;
 	}
-	public Long getDocId() {
+	public String getDocId() {
 		return docId;
 	}
-	public void setDocId(final Long docId) {
+	public void setDocId(final String docId) {
 		this.docId = docId;
 	}
 	public String getFieldValue() {

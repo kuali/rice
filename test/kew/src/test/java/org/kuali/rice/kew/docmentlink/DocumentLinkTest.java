@@ -40,18 +40,18 @@ public class DocumentLinkTest extends KEWTestCase{
 	private static final Logger LOG = Logger.getLogger(DocumentLinkTest.class);
 
 	@Test public void testAddLinkBTW2DocsSucess() throws Exception {
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 		doc.addLinkedDocument(testDocLinkVO);
 
 		DocumentLinkDTO link1 = doc.getLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(6000));
-		testDocLinkVO.setDestDocId(Long.valueOf(5000));
+		testDocLinkVO.setOrgnDocId("6000");
+		testDocLinkVO.setDestDocId("5000");
 
 		DocumentLinkDTO link2 = doc.getLinkedDocument(testDocLinkVO);
 
@@ -61,20 +61,20 @@ public class DocumentLinkTest extends KEWTestCase{
 	}
 
 	@Test public void testAddDuplicatedLinkBTW2DocsFailure() throws Exception {
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId(Long.valueOf(5000));
+		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId("5000");
 
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId(Long.valueOf(5000));
+		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("5000");
 
 		assertEquals(links.size(), links2.size());
 
@@ -82,7 +82,7 @@ public class DocumentLinkTest extends KEWTestCase{
 
 	@Test public void testAddIncomplelteLinkBTW2DocsFailure() throws Exception{
 
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 
@@ -96,7 +96,7 @@ public class DocumentLinkTest extends KEWTestCase{
 
 		try{
 
-			testDocLinkVO.setOrgnDocId(Long.valueOf(6000));
+			testDocLinkVO.setOrgnDocId("6000");
 			doc.addLinkedDocument(testDocLinkVO);
 			assertFalse(true);
 		}
@@ -108,12 +108,12 @@ public class DocumentLinkTest extends KEWTestCase{
 
 	@Test public void testGetLinkBTW2DocsSucess() throws Exception{
 
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 		doc.addLinkedDocument(testDocLinkVO);
 
 		DocumentLinkDTO link1 = doc.getLinkedDocument(testDocLinkVO);
@@ -126,15 +126,15 @@ public class DocumentLinkTest extends KEWTestCase{
 
 	@Test public void testGetLinkBTW2DocsFailure() throws Exception{
 
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5001));
+		testDocLinkVO.setOrgnDocId("5001");
 
 		DocumentLinkDTO link1 = doc.getLinkedDocument(testDocLinkVO);
 
@@ -145,28 +145,28 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testGetAllLinksFromOrgnDocSucess() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5009));
-		testDocLinkVO.setDestDocId(Long.valueOf(6009));
+		testDocLinkVO.setOrgnDocId("5009");
+		testDocLinkVO.setDestDocId("6009");
 		doc.addLinkedDocument(testDocLinkVO);
 		//		
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6003));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6003");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6004));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6004");
 
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId(Long.valueOf(5000));
+		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("5000");
 
 		assertEquals(3, links2.size());
 
@@ -175,22 +175,22 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testGetAllLinksFromOrgnDocFailure()throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5009));
-		testDocLinkVO.setDestDocId(Long.valueOf(6009));
+		testDocLinkVO.setOrgnDocId("5009");
+		testDocLinkVO.setDestDocId("6009");
 		doc.addLinkedDocument(testDocLinkVO);
 		//		
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6003));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6003");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId(Long.valueOf(8000));
+		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("8000");
 
 		assertEquals(0, links2.size());
 
@@ -199,24 +199,24 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testRemoveLinkBTW2DocsSucess() throws Exception{
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links1 = doc.getLinkedDocumentsByDocId(Long.valueOf(5000));
+		List<DocumentLinkDTO> links1 = doc.getLinkedDocumentsByDocId("5000");
 
 		assertEquals(1, links1.size());
 
-		List<DocumentLinkDTO> links0 = doc.getLinkedDocumentsByDocId(Long.valueOf(6000));
+		List<DocumentLinkDTO> links0 = doc.getLinkedDocumentsByDocId("6000");
 
 		assertEquals(1, links0.size());
 
 		doc.removeLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId(Long.valueOf(5000));
+		List<DocumentLinkDTO> links2 = doc.getLinkedDocumentsByDocId("5000");
 
 		assertEquals(0, links2.size());
 	}
@@ -224,31 +224,31 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testRemoveAllLinksFromOrgnDocSucess() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6000));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6000");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-		testDocLinkVO.setDestDocId(Long.valueOf(6002));
+		testDocLinkVO.setOrgnDocId("5000");
+		testDocLinkVO.setDestDocId("6002");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links01 = doc.getLinkedDocumentsByDocId(Long.valueOf(5000));
-		List<DocumentLinkDTO> links02 = doc.getLinkedDocumentsByDocId(Long.valueOf(6000));
-		List<DocumentLinkDTO> links03 = doc.getLinkedDocumentsByDocId(Long.valueOf(6002));
+		List<DocumentLinkDTO> links01 = doc.getLinkedDocumentsByDocId("5000");
+		List<DocumentLinkDTO> links02 = doc.getLinkedDocumentsByDocId("6000");
+		List<DocumentLinkDTO> links03 = doc.getLinkedDocumentsByDocId("6002");
 
 		assertEquals(2, links01.size());
 		assertEquals(1, links02.size());
 		assertEquals(1, links03.size());
 
 
-		doc.removeLinkedDocuments(Long.valueOf(5000));
+		doc.removeLinkedDocuments("5000");
 
-		links01 = doc.getLinkedDocumentsByDocId(Long.valueOf(5000));
-		links02 = doc.getLinkedDocumentsByDocId(Long.valueOf(6000));
-		links03 = doc.getLinkedDocumentsByDocId(Long.valueOf(6002));
+		links01 = doc.getLinkedDocumentsByDocId("5000");
+		links02 = doc.getLinkedDocumentsByDocId("6000");
+		links03 = doc.getLinkedDocumentsByDocId("6002");
 
 		assertEquals(0, links01.size());
 		assertEquals(0, links02.size());
@@ -262,11 +262,11 @@ public class DocumentLinkTest extends KEWTestCase{
 
 		try{
 			//DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-			WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+			WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 			//Test add link	
-			testDocLinkVO.setOrgnDocId(Long.valueOf(5000));
-			testDocLinkVO.setDestDocId(Long.valueOf(5000));
+			testDocLinkVO.setOrgnDocId("5000");
+			testDocLinkVO.setDestDocId("5000");
 			doc.addLinkedDocument(testDocLinkVO);
 			fail();
 		}
@@ -280,26 +280,26 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testDocLinkClient() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5009));
-		testDocLinkVO.setDestDocId(Long.valueOf(6008));
+		testDocLinkVO.setOrgnDocId("5009");
+		testDocLinkVO.setDestDocId("6008");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5009));
-		testDocLinkVO.setDestDocId(Long.valueOf(6009));
+		testDocLinkVO.setOrgnDocId("5009");
+		testDocLinkVO.setDestDocId("6009");
 		doc.addLinkedDocument(testDocLinkVO);
 		//		
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5002));
-		testDocLinkVO.setDestDocId(Long.valueOf(6002));
+		testDocLinkVO.setOrgnDocId("5002");
+		testDocLinkVO.setDestDocId("6002");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5003));
-		testDocLinkVO.setDestDocId(Long.valueOf(6003));
+		testDocLinkVO.setOrgnDocId("5003");
+		testDocLinkVO.setDestDocId("6003");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId(Long.valueOf(5009));
+		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId("5009");
 
 		for(DocumentLinkDTO link : links)
 			LOG.info("******************************\t link btw:\t" + link.getOrgnDocId()+ "\t" + link.getDestDocId());
@@ -311,16 +311,16 @@ public class DocumentLinkTest extends KEWTestCase{
 	@Test public void testAddDocLinkWithLinkID() throws Exception {
 
 		DocumentLinkDTO testDocLinkVO = new DocumentLinkDTO();
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 
 		//Test add link	
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5009));
-		testDocLinkVO.setDestDocId(Long.valueOf(6009));
+		testDocLinkVO.setOrgnDocId("5009");
+		testDocLinkVO.setDestDocId("6009");
 		doc.addLinkedDocument(testDocLinkVO);
 
 		testDocLinkVO.setLinbkId(Long.valueOf(2106));
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5010));
-		testDocLinkVO.setDestDocId(Long.valueOf(6010));
+		testDocLinkVO.setOrgnDocId("5010");
+		testDocLinkVO.setDestDocId("6010");
 		doc.addLinkedDocument(testDocLinkVO);
 
 		//add non-null link id
@@ -331,11 +331,11 @@ public class DocumentLinkTest extends KEWTestCase{
 		//get the one just insserted, repuse the id
 
 		testDocLinkVO.setLinbkId(null);
-		testDocLinkVO.setOrgnDocId(Long.valueOf(5011));
-		testDocLinkVO.setDestDocId(Long.valueOf(6011));
+		testDocLinkVO.setOrgnDocId("5011");
+		testDocLinkVO.setDestDocId("6011");
 		doc.addLinkedDocument(testDocLinkVO);
 
-		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId(Long.valueOf(5009));
+		List<DocumentLinkDTO> links = doc.getLinkedDocumentsByDocId("5009");
 
 		for(DocumentLinkDTO link : links)
 			LOG.info("******************************\t link btw:\t" + link.getOrgnDocId()+ "\t" + link.getDestDocId());

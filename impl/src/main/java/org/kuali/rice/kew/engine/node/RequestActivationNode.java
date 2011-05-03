@@ -62,7 +62,7 @@ public class RequestActivationNode extends RequestActivationNodeBase {
     }
     
     public boolean shouldTransition(DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) {
-        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
         boolean shouldTransition = true;
         for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
@@ -88,13 +88,13 @@ public class RequestActivationNode extends RequestActivationNodeBase {
      * @throws WorkflowException
      */
     public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
-        MDC.put("docId", document.getRouteHeaderId());
-        PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
+        MDC.put("docId", document.getDocumentId());
+        PerformanceLogger performanceLogger = new PerformanceLogger(document.getDocumentId());
         List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
         List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
         if (context.isSimulation()) {
         	for (ActionRequestValue ar : context.getDocument().getActionRequests()) {
-        		// logic check below duplicates behavior of the ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(routeHeaderId, routeNodeInstanceId) method
+        		// logic check below duplicates behavior of the ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(documentId, routeNodeInstanceId) method
 				if (ar.getCurrentIndicator()
 						&& (KEWConstants.ACTION_REQUEST_INITIALIZED.equals(ar.getStatus()) || KEWConstants.ACTION_REQUEST_ACTIVATED.equals(ar.getStatus()))
 						&& ar.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())
@@ -104,7 +104,7 @@ public class RequestActivationNode extends RequestActivationNodeBase {
 			}
             requests.addAll(context.getEngineState().getGeneratedRequests());
         } else {
-            requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+            requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
         }
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Pending Root Requests " + requests.size());
@@ -149,7 +149,7 @@ public class RequestActivationNode extends RequestActivationNodeBase {
     
     protected boolean activateRequest(RouteContext context, ActionRequestValue actionRequest, RouteNodeInstance nodeInstance, List generatedActionItems) {
         if (actionRequest.isRoleRequest()) {
-            List actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(actionRequest.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+            List actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(actionRequest.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
                 ActionRequestValue siblingRequest = (ActionRequestValue) iterator.next();
                 if (actionRequest.getRoleName().equals(siblingRequest.getRoleName())) {

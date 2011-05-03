@@ -98,12 +98,12 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     @Test public void testSearchableAttributeSearch()throws Exception {
     	String documentTypeName = "SearchDocType";
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), workflowDocument.getRouteHeaderId());
-        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
 
         /*
         assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
@@ -113,18 +113,18 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
             if (attributeValue instanceof SearchableAttributeStringValue) {
                 SearchableAttributeStringValue realValue = (SearchableAttributeStringValue) attributeValue;
 
-                for(String value:getRouteHeaderService().getSearchableAttributeStringValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                for(String value:getRouteHeaderService().getSearchableAttributeStringValuesByKey(doc.getDocumentId(), realValue.getSearchableAttributeKey())){
                 	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
                 }
 
             } else if (attributeValue instanceof SearchableAttributeLongValue) {
                 SearchableAttributeLongValue realValue = (SearchableAttributeLongValue) attributeValue;
-                for(Long value:getRouteHeaderService().getSearchableAttributeLongValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                for(Long value:getRouteHeaderService().getSearchableAttributeLongValuesByKey(doc.getDocumentId(), realValue.getSearchableAttributeKey())){
                 	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
                 }
             } else if (attributeValue instanceof SearchableAttributeFloatValue) {
                 SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
-                for(BigDecimal value:getRouteHeaderService().getSearchableAttributeFloatValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                for(BigDecimal value:getRouteHeaderService().getSearchableAttributeFloatValuesByKey(doc.getDocumentId(), realValue.getSearchableAttributeKey())){
                 	assertEquals("Assert that the values are the same", value, attributeValue.getSearchableAttributeValue());
                 }
 
@@ -137,7 +137,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
                 testDate.set(Calendar.SECOND, 0);
                 testDate.set(Calendar.MILLISECOND, 0);
 
-                for(Timestamp value:getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(doc.getRouteHeaderId(), realValue.getSearchableAttributeKey())){
+                for(Timestamp value:getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(doc.getDocumentId(), realValue.getSearchableAttributeKey())){
                 	Calendar attributeDate = Calendar.getInstance();
                     attributeDate.setTimeInMillis(value.getTime());
                     attributeDate.set(Calendar.SECOND, 0);
@@ -169,12 +169,12 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         String documentTypeName = "SearchDocType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), workflowDocument.getRouteHeaderId());
-        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
         /*assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
         for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
             SearchableAttributeValue attributeValue = iter.next();
@@ -314,7 +314,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         loadXmlFile("testdoc0.xml");
 
         String documentTypeName = "SearchDoc";
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), documentTypeName);
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), documentTypeName);
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         doc.routeDocument("routing");
 
@@ -333,7 +333,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
 
         // route a new doc
-        doc = new WorkflowDocument(getPrincipalIdForName("arh14"), documentTypeName);
+        doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), documentTypeName);
         doc.routeDocument("routing");
 
         // with no attribute criteria, both docs should be found
@@ -383,7 +383,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
         // Route some documents containing the searchable attribute values given by the above array.
         for (int i = 0; i < searchableAttributeValuesAsStrings.length; i++) {
-        	WorkflowDocument workflowDocument = new WorkflowDocument(principalId, documentTypeName);
+        	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(principalId, documentTypeName);
 
         	// Add the string searchable attribute.
         	WorkflowAttributeDefinitionDTO wcStringXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttributeWildcardString");

@@ -36,7 +36,7 @@ public class DynamicSplitTestNode implements DynamicNode {
             if (node == null) {
                 throw new WorkflowException("Couldn't locate node for name: " + NEXT_NODE_NAME);
             }
-            RouteNodeInstance nextNodeInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), node);
+            RouteNodeInstance nextNodeInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), node);
             Branch branch = helper.getNodeFactory().createBranch(roleName, context.getNodeInstance().getBranch(), nextNodeInstance);
             branch.addBranchState(new BranchState("role", roleName));
             branch.setSplitNode(context.getNodeInstance());

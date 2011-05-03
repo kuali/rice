@@ -79,7 +79,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     @Column(name="DOC_TYP_NM")
 	private String docTypeName;
     @Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+	private String documentId;
 	@Column(name="FRM_DT")
 	private Timestamp fromDate;
 	@Column(name="TO_DT")
@@ -490,12 +490,12 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         return null;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public Boolean getDelegateRule() {

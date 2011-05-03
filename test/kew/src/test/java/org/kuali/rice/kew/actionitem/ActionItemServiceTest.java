@@ -59,7 +59,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      */
     @Test public void testUpdateActionItemsForWorkgroupChange() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
@@ -111,7 +111,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         assertTrue("Did not find user 1 on workgroup.", foundUser1);
         assertTrue("Did not find user 2 on workgroup.", foundUser2);
 
-        Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+        Collection actionItems = KEWServiceLocator.getActionListService().findByDocumentId(document.getDocumentId());
         boolean foundrkirkend = false;
         boolean foundlshen = false;
         boolean founduser1 = false;
@@ -147,7 +147,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
     @Test public void testUpdateActionItemsForNestedGroupChange() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
 
         Group workgroup1 = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Admin");
@@ -185,7 +185,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          // test nested
          KimPrincipal user1 = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
 
-         document = new WorkflowDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
+         document = WorkflowDocument.createDocument(getPrincipalIdForName("jhopf"), "ActionItemDocumentType");
          document.setTitle("");
 
          workgroup1 = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KR-WKFLW", "AIWG-Nested1");
@@ -214,11 +214,11 @@ public class ActionItemServiceTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testWorkgroupActionItemGenerationWhenMultipleWorkgroupRequests() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("jitrue"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jitrue"), document.getDocumentId());
 
         Group testGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Test");
         Group adminGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "AIWG-Admin");
@@ -242,7 +242,7 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+        Collection actionItems = KEWServiceLocator.getActionListService().findByDocumentId(document.getDocumentId());
 
         assertEquals("There should be 6 action items to the AIWG-Admin.", 6, actionItems.size());
 
@@ -258,7 +258,7 @@ public class ActionItemServiceTest extends KEWTestCase {
      * multiple Action Items but only one of them will show up in their Action List.
      */
     @Test public void testMultipleActionItemGeneration() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "ActionItemDocumentType");
         document.setTitle("");
         document.routeDocument("");
 
@@ -267,22 +267,22 @@ public class ActionItemServiceTest extends KEWTestCase {
         String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
         String jitruePrincipalId = getPrincipalIdForName("jitrue");
 
-        Collection actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(ewestfalPrincipalId, document.getRouteHeaderId());
+        Collection actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserDocumentId(ewestfalPrincipalId, document.getDocumentId());
         assertEquals("Ewestfal should have two action items.", 2, actionItems.size());
 
         // now check the action list, there should be only one entry
         actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
-        document = new WorkflowDocument(ewestfalPrincipalId, document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(ewestfalPrincipalId, document.getDocumentId());
         assertTrue("Ewestfal should have an approval requested.", document.isApprovalRequested());
 
         // approve as a member from the first workgroup
-        document = new WorkflowDocument(jitruePrincipalId, document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(jitruePrincipalId, document.getDocumentId());
         assertTrue("Jitrue should have an approval requested.", document.isApprovalRequested());
         document.approve("");
 
         // now ewestfal should have only one action item in both his action items and his action list
-        actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserRouteHeaderId(ewestfalPrincipalId, document.getRouteHeaderId());
+        actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserDocumentId(ewestfalPrincipalId, document.getDocumentId());
         assertEquals("Ewestfal should have one action item.", 1, actionItems.size());
         Long actionItemId = ((ActionItem)actionItems.iterator().next()).getActionItemId();
         actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, null);
@@ -304,35 +304,35 @@ public class ActionItemServiceTest extends KEWTestCase {
      * The routing is configured in the BAOrphanedRequestDocumentType.
      */
     @Test public void testOrphanedAcknowledgeFromBlanketApprovalFix() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BAOrphanedRequestDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BAOrphanedRequestDocumentType");
     	document.blanketApprove("");
     	assertTrue("Document should be processed.", document.stateIsProcessed());
 
     	// after the document has blanket approved there should be 2 action items since the blanket approver
     	// is in the final workgroup.  These action items should be the acknowledges generated to both
     	// rkirkend and user1
-    	int numActionItems = actionListService.findByRouteHeaderId(document.getRouteHeaderId()).size();
+    	int numActionItems = actionListService.findByDocumentId(document.getDocumentId()).size();
     	assertEquals("Incorrect number of action items.", 2, numActionItems);
 
     	String user1PrincipalId = getPrincipalIdForName("user1");
     	String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
 
     	// check that user1 has 1 action item
-    	Collection actionItems = actionListService.findByWorkflowUserRouteHeaderId(user1PrincipalId, document.getRouteHeaderId());
+    	Collection actionItems = actionListService.findByWorkflowUserDocumentId(user1PrincipalId, document.getDocumentId());
     	assertEquals("user1 should have one action item.", 1, actionItems.size());
 
     	// check that rkirkend still has 1, the is where the bug would have manifested itself before, rkirkend would have had
     	// no action item (hence the orphaned request)
-    	actionItems = actionListService.findByWorkflowUserRouteHeaderId(rkirkendPrincipalId, document.getRouteHeaderId());
+    	actionItems = actionListService.findByWorkflowUserDocumentId(rkirkendPrincipalId, document.getDocumentId());
     	assertEquals("rkirkend should have one action item.", 1, actionItems.size());
 
     	// lets go ahead and take it to final for funsies
-    	document = new WorkflowDocument(rkirkendPrincipalId, document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(rkirkendPrincipalId, document.getDocumentId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
     	assertTrue("Should still be PROCESSED.", document.stateIsProcessed());
 
-    	document = new WorkflowDocument(user1PrincipalId, document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(user1PrincipalId, document.getDocumentId());
     	assertTrue("Should have ack request.", document.isAcknowledgeRequested());
     	document.acknowledge("");
     	assertTrue("Should now be FINAL.", document.stateIsFinal());

@@ -70,7 +70,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	return RouteNodeUtils.findRouteNodeInstanceById(nodeInstanceId, document);
     }
     
-    public List getCurrentNodeInstances(Long documentId) {
+    public List getCurrentNodeInstances(String documentId) {
         List<RouteNodeInstance> currentNodeInstances = getActiveNodeInstances(documentId);
         if (currentNodeInstances.isEmpty()) {
             currentNodeInstances = getTerminalNodeInstances(documentId);
@@ -78,7 +78,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return currentNodeInstances;
     }
     
-    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getActiveNodeInstances(String documentId) {
     	return routeNodeDAO.getActiveNodeInstances(documentId);
     }
     
@@ -93,11 +93,11 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return activeNodeInstances;
     }
     
-    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
         return routeNodeDAO.getTerminalNodeInstances(documentId);
     }
     
-    public List getInitialNodeInstances(Long documentId) {
+    public List getInitialNodeInstances(String documentId) {
     	return routeNodeDAO.getInitialNodeInstances(documentId);
     }
     
@@ -148,7 +148,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     
     public boolean isNodeInPath(DocumentRouteHeaderValue document, String nodeName) {
         boolean isInPath = false;
-        Collection<RouteNodeInstance> activeNodes = getActiveNodeInstances(document.getRouteHeaderId());
+        Collection<RouteNodeInstance> activeNodes = getActiveNodeInstances(document.getDocumentId());
         for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
             RouteNodeInstance nodeInstance = iterator.next();
             List nextNodesInPath = findNextRouteNodesInPath(nodeInstance, nodeName);
@@ -157,7 +157,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return isInPath;
     }
     
-    public List findRouteNodeInstances(Long documentId) {
+    public List findRouteNodeInstances(String documentId) {
         return this.routeNodeDAO.findRouteNodeInstances(documentId);
     }
     
@@ -169,7 +169,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
        return this.routeNodeDAO.findProcessNodeInstances(process);
     }
     
-    public Set findPreviousNodeNames(Long documentId) {
+    public Set findPreviousNodeNames(String documentId) {
         List currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId);
         List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
         for (Iterator iterator = currentNodeInstances.iterator(); iterator.hasNext();) {
@@ -185,7 +185,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return nodeNames;
     }
     
-    public List<String> findFutureNodeNames(Long documentId) {
+    public List<String> findFutureNodeNames(String documentId) {
         List currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId);
         List<RouteNode> nodes = new ArrayList<RouteNode>();
         for (Iterator iterator = currentNodeInstances.iterator(); iterator.hasNext();) {
@@ -335,7 +335,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document, String nodeName) {
-		Collection<RouteNodeInstance> activeNodes = getActiveNodeInstances(document.getRouteHeaderId());
+		Collection<RouteNodeInstance> activeNodes = getActiveNodeInstances(document.getDocumentId());
 		List<RouteNodeInstance> foundNodes = new ArrayList<RouteNodeInstance>();
         for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
             RouteNodeInstance nodeInstance = iterator.next();

@@ -130,7 +130,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     @Column(name = "PREV_DOC_TYP_VER_NBR")
     private Long previousVersionId;
     @Column(name = "DOC_HDR_ID")
-    private Long routeHeaderId;
+    private String documentId;
 
     @Column(name = "HELP_DEF_URL")
     private String unresolvedHelpDefinitionUrl;
@@ -842,12 +842,12 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         this.previousVersionId = previousVersionId;
     }
 
-    public java.lang.Long getRouteHeaderId() {
-        return routeHeaderId;
+    public java.lang.String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(java.lang.Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(java.lang.String documentId) {
+        this.documentId = documentId;
     }
 
     public java.lang.Integer getVersion() {

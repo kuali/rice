@@ -42,29 +42,29 @@ public class ReleaseWorkgroupAuthorityTest extends KEWTestCase {
     }
 
     @Test public void testReleaseWorkgroupAuthority() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), TakeWorkgroupAuthorityTest.DOC_TYPE);
         doc.routeDocument("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
         //have member rkirkend take authority
-        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
         doc.takeGroupAuthority("", groupId);
 
         // verify there is only one action item and that it's to rkirkend
         ActionListService aiService = KEWServiceLocator.getActionListService();
-        Collection actionItems = aiService.findByRouteHeaderId(doc.getRouteHeaderId());
+        Collection actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertEquals("There should be only one action item", 1, actionItems.size());
         ActionItem ai = (ActionItem)actionItems.iterator().next();
         assertEquals("action item should be to rkirkend", getPrincipalIdForName("rkirkend"), ai.getPrincipalId());
         assertEquals("action item should be to group", groupId, ai.getGroupId());
         
         //have rkirkend release authority
-        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
 
         doc.releaseGroupAuthority("", groupId);
 
         //verify that all members have the action item
-        actionItems = aiService.findByRouteHeaderId(doc.getRouteHeaderId());
+        actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertTrue("There should be more than one action item", actionItems.size() > 1);
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();

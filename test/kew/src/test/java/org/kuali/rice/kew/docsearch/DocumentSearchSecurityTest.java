@@ -62,7 +62,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String documentTypeName = "SecurityDoc_PermissionOnly";
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_PermissionSecurity");
         workflowDocument.routeDocument("routing this document.");
 
@@ -79,7 +79,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String documentTypeName = "SecurityDoc_InvalidPermissionOnly";
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_PermissionSecurity");
         workflowDocument.routeDocument("routing this document.");
 
@@ -95,24 +95,24 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFilteringInitiator() throws Exception {    	
         String documentType = "SecurityDoc_InitiatorOnly";
         String initiator = getPrincipalId(STANDARD_USER_NETWORK_ID);
-        WorkflowDocument document = new WorkflowDocument(initiator, documentType);
+        WorkflowDocument document = WorkflowDocument.createDocument(initiator, documentType);
         document.routeDocument("");
         assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
 
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         DocumentSearchResultComponents resultComponents = KEWServiceLocator.getDocumentSearchService().getList(initiator, criteria);
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId("user3"), criteria);
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
 
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId(WORKFLOW_ADMIN_USER_NETWORK_ID), criteria);
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
@@ -121,13 +121,13 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     @Test public void testFiltering_Workgroup() throws Exception {
         String documentType = "SecurityDoc_WorkgroupOnly";
         String initiator = getPrincipalId(STANDARD_USER_NETWORK_ID);
-        WorkflowDocument document = new WorkflowDocument(initiator, documentType);
+        WorkflowDocument document = WorkflowDocument.createDocument(initiator, documentType);
         document.routeDocument("");
         assertFalse("Document should not be in init status after routing", document.stateIsInitiated());
 
         // verify that initiator cannot see the document
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         DocumentSearchResultComponents resultComponents = KEWServiceLocator.getDocumentSearchService().getList(initiator, criteria);
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
@@ -139,7 +139,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         for (String workgroupUserId : KimApiServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(group.getId())) {
             Person workgroupUser = KimApiServiceLocator.getPersonService().getPerson(workgroupUserId);
             criteria = new DocSearchCriteriaDTO();
-            criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+            criteria.setDocumentId(document.getDocumentId());
             resultComponents = KEWServiceLocator.getDocumentSearchService().getList(workgroupUser.getPrincipalId(), criteria);
             assertEquals("Should retrive one record from search for user " + workgroupUser, 1, resultComponents.getSearchResults().size());
             assertEquals("No rows should have been filtered due to security for user " + workgroupUser, 0, criteria.getSecurityFilteredRows());
@@ -147,14 +147,14 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // verify that user3 cannot see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId("user3"), criteria);
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
 
         // verify that WorkflowAdmin can see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId(WORKFLOW_ADMIN_USER_NETWORK_ID), criteria);
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
@@ -166,7 +166,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         String searchAttributeFieldName = "employeeId";
         String documentTypeName = "SecurityDoc_SearchAttributeOnly";
         String initiatorNetworkId = STANDARD_USER_NETWORK_ID;
-        WorkflowDocument document = new WorkflowDocument(getPrincipalId(initiatorNetworkId), documentTypeName);
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalId(initiatorNetworkId), documentTypeName);
         WorkflowAttributeDefinitionDTO definition = new WorkflowAttributeDefinitionDTO(searchAttributeName);
         definition.addProperty(searchAttributeFieldName, "user3");
         document.addSearchableDefinition(definition);
@@ -175,34 +175,34 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // verify that initiator cannot see the document
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         DocumentSearchResultComponents resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId(initiatorNetworkId), criteria);
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
 
         // verify that user3 can see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId("user3"), criteria);
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
         // verify that user2 cannot see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId("user2"), criteria);
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
 
         // verify that WorkflowAdmin can see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId(WORKFLOW_ADMIN_USER_NETWORK_ID), criteria);
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
         RouteContext.clearCurrentRouteContext();
-        document = new WorkflowDocument(getPrincipalId(APPROVER_USER_NETWORK_ID), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalId(APPROVER_USER_NETWORK_ID), document.getDocumentId());
         document.clearSearchableContent();
         definition = new WorkflowAttributeDefinitionDTO(searchAttributeName);
         definition.addProperty(searchAttributeFieldName, "user2");
@@ -211,21 +211,21 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
 
         // verify that user2 can see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId("user2"), criteria);
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
         // verify that user3 cannot see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId("user3"), criteria);
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
 
         // verify that initiator cannot see the document
         criteria = new DocSearchCriteriaDTO();
-        criteria.setRouteHeaderId(document.getRouteHeaderId().toString());
+        criteria.setDocumentId(document.getDocumentId());
         resultComponents = KEWServiceLocator.getDocumentSearchService().getList(getPrincipalId(initiatorNetworkId), criteria);
         assertEquals("Should retrive no records from search", 0, resultComponents.getSearchResults().size());
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());

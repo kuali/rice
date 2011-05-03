@@ -50,7 +50,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
 
         String docHandler = null;
 
-        if (request.getParameter(KEWConstants.ROUTEHEADER_ID_PARAMETER) != null) {
+        if (request.getParameter(KEWConstants.DOCUMENT_ID_PARAMETER) != null) {
             RouteHeaderService rhSrv = (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
             DocumentRouteHeaderValue routeHeader = rhSrv.getRouteHeader(docHandlerForm.getDocId());
 
@@ -59,14 +59,14 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             }
             docHandler = routeHeader.getDocumentType().getDocHandlerUrl();
             if (StringUtils.isBlank(docHandler)) {
-                throw new WorkflowRuntimeException("Document Type '" + routeHeader.getDocumentType().getName() + "' does not have a document handler url set (attempted to open document handler url for document id " + routeHeader.getRouteHeaderId() + ")");
+                throw new WorkflowRuntimeException("Document Type '" + routeHeader.getDocumentType().getName() + "' does not have a document handler url set (attempted to open document handler url for document id " + routeHeader.getDocumentId() + ")");
             }
             if (!docHandler.contains("?")) {
                 docHandler += "?";
             } else {
                 docHandler += "&";
             }
-            docHandler += KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + docHandlerForm.getDocId();
+            docHandler += KEWConstants.DOCUMENT_ID_PARAMETER + "=" + docHandlerForm.getDocId();
         } else if (request.getParameter(KEWConstants.DOCTYPE_PARAMETER) != null) {
             DocumentTypeService documentTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = documentTypeService.findByName(docHandlerForm.getDocTypeName());

@@ -129,71 +129,71 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	testDoc("BlanketApprovePolicy", null);
     	
     	// on BlanketApprovePolicy1 anyone can blanket approve
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy1");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy1");
     	document.saveRoutingData();
     	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
 
     	// on BlanketApprovePolicy2 no-one can blanket approve
-    	document = new WorkflowDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy2");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy2");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy3 no-one can blanket approve
-    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BlanketApprovePolicy3");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApprovePolicy3");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
     	// on BlanketApprovePolicy4 TestWorkgroup can blanket approve
-    	/*document = new WorkflowDocument(new NetworkIdVO("ewestfal"), "BlanketApprovePolicy4");
+    	/*document = WorkflowDocument.createDocument(new NetworkIdVO("ewestfal"), "BlanketApprovePolicy4");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));*/
     	
     	// on Blanket ApprovePolicy 5, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (getPrincipalIdForName("pzhang"), "BlanketApprovePolicy5");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy5");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on Blanket ApprovePolicy 6, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (getPrincipalIdForName("pzhang"), "BlanketApprovePolicy6");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy6");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on Blanket ApprovePolicy 7, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (getPrincipalIdForName("pzhang"), "BlanketApprovePolicy7");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy7");
     	document.saveRoutingData();
     	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on BlanketApprovePolicy_Override_NONE, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_NONE");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_NONE");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     	
 //   	 on BlanketApprovePolicy_Override_ANY, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_ANY");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_Override_ANY");
     	document.saveRoutingData();
     	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
 
 //  	 on BlanketApprovePolicy_Override_ANY, BlanketApprovePolicy is not allowed since no elements are defined on any document types in the hierarchy
-    	document = new WorkflowDocument (getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_NoOverride");
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("pzhang"), "BlanketApprovePolicy_NoOverride");
     	document.saveRoutingData();
     	assertFalse(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
-    	document = new WorkflowDocument (getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	assertTrue(document.isActionCodeValidForDocument(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD));
     }
     

@@ -62,15 +62,15 @@ public interface WorkflowUtility {
 
 	public RouteHeaderDTO getRouteHeaderWithPrincipal(
 			@WebParam(name = "principalId") String principalId,
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public RouteHeaderDTO getRouteHeader(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public DocumentDetailDTO getDocumentDetail(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public RouteNodeInstanceDTO getNodeInstance(
@@ -92,26 +92,26 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	public ActionItemDTO[] getAllActionItems(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public ActionItemDTO[] getActionItems(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes)
 			throws WorkflowException;
 
 	public ActionRequestDTO[] getAllActionRequests(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public ActionRequestDTO[] getActionRequests(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "nodeName") String nodeName,
 			@WebParam(name = "principalId") String principalId)
 			throws WorkflowException;
 
 	public ActionTakenDTO[] getActionsTaken(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(
@@ -119,26 +119,26 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	public boolean isUserInRouteLog(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "principalId") String principalId,
 			@WebParam(name = "lookFuture") boolean lookFuture)
 			throws WorkflowException;
 
 	public boolean isUserInRouteLogWithOptionalFlattening(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "principalId") String principalId,
 			@WebParam(name = "lookFuture") boolean lookFuture,
 			@WebParam(name = "flattenNodes") boolean flattenNodes)
 			throws WorkflowException;
 
-	public void reResolveRole(
+	public void reResolveRoleByDocTypeName(
 			@WebParam(name = "documentTypeName") String documentTypeName,
 			@WebParam(name = "roleName") String roleName,
 			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
 			throws WorkflowException;
 
 	public void reResolveRoleByDocumentId(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "roleName") String roleName,
 			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
 			throws WorkflowException;
@@ -148,7 +148,7 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	public boolean isFinalApprover(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "principalId") String principalId)
 			throws WorkflowException;
 
@@ -158,7 +158,7 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	public String getAppDocId(
-			@WebParam(name = "documentId") Long documentId);
+			@WebParam(name = "documentId") String documentId);
 	
 	public DocumentSearchResultDTO performDocumentSearch(
 			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
@@ -181,7 +181,7 @@ public interface WorkflowUtility {
 	 * @deprecated use isLastApproverAtNode instead
 	 */
 	public boolean isLastApproverInRouteLevel(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "principalId") String principalId,
 			@WebParam(name = "routeLevel") Integer routeLevel)
 			throws WorkflowException;
@@ -198,7 +198,7 @@ public interface WorkflowUtility {
 	// new in 2.1
 
 	public boolean isLastApproverAtNode(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "principalId") String principalId,
 			@WebParam(name = "nodeName") String nodeName)
 			throws WorkflowException;
@@ -210,24 +210,24 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public RouteNodeInstanceDTO[] getActiveNodeInstances(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public RouteNodeInstanceDTO[] getTerminalNodeInstances(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public DocumentContentDTO getDocumentContent(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	// 2.2
 	public String[] getPreviousRouteNodeNames(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	// 2.4
@@ -240,11 +240,11 @@ public interface WorkflowUtility {
 	 * @since 0.9.1
 	 */
 	public String getDocumentStatus(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	public RouteNodeInstanceDTO[] getCurrentNodeInstances(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	// added for KS per Scott
@@ -264,7 +264,7 @@ public interface WorkflowUtility {
 	 */
 	public String[] getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
 			@WebParam(name = "actionRequestedCd") String actionRequestedCd,
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	/**
@@ -279,7 +279,7 @@ public interface WorkflowUtility {
 	 * @throws WorkflowException
 	 */
 	public String[] getPrincipalIdsInRouteLog(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "lookFuture") boolean lookFuture)
 			throws WorkflowException;
 
@@ -290,7 +290,7 @@ public interface WorkflowUtility {
 	 * @throws WorkflowException
 	 */
 	public String getDocumentInitiatorPrincipalId(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	/**
@@ -300,13 +300,13 @@ public interface WorkflowUtility {
 	 * @throws WorkflowException
 	 */
 	public String getDocumentRoutedByPrincipalId(
-			@WebParam(name = "documentId") Long documentId)
+			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
 	@XmlJavaTypeAdapter(value = AttributeSetAdapter.class)
 	public AttributeSet getActionsRequested(
 			@WebParam(name = "principalId") String principalId,
-			@WebParam(name = "documentId") Long documentId);
+			@WebParam(name = "documentId") String documentId);
 
 	/**
 	 * 
@@ -318,7 +318,7 @@ public interface WorkflowUtility {
 	 * @return
 	 */
 	public String[] getSearchableAttributeStringValuesByKey(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "key") String key);
 
 	/**
@@ -332,7 +332,7 @@ public interface WorkflowUtility {
 	 */
 	@XmlJavaTypeAdapter(value = SqlTimestampAdapter.class)
 	public Timestamp[] getSearchableAttributeDateTimeValuesByKey(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "key") String key);
 
 	/**
@@ -345,7 +345,7 @@ public interface WorkflowUtility {
 	 * @return
 	 */
 	public BigDecimal[] getSearchableAttributeFloatValuesByKey(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "key") String key);
 
 	/**
@@ -358,7 +358,7 @@ public interface WorkflowUtility {
 	 * @return
 	 */
 	public Long[] getSearchableAttributeLongValuesByKey(
-			@WebParam(name = "documentId") Long documentId,
+			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "key") String key);
 
 	public String getFutureRequestsKey(
@@ -381,7 +381,7 @@ public interface WorkflowUtility {
 			
     // new for 1.0.kc
     public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(
-    		@WebParam(name = "routeHeaderId") Long routeHeaderId)
+    		@WebParam(name = "documentId") String documentId)
     		throws WorkflowException;
     
     //for docmentlink
@@ -389,9 +389,9 @@ public interface WorkflowUtility {
 
     public void deleteDocumentLink(DocumentLinkDTO docLinkVO) throws WorkflowException;
     
-    public void deleteDocumentLinksByDocId(Long docId) throws WorkflowException;
+    public void deleteDocumentLinksByDocId(String docId) throws WorkflowException;
     
-    public List<DocumentLinkDTO> getLinkedDocumentsByDocId(Long id) throws WorkflowException;
+    public List<DocumentLinkDTO> getLinkedDocumentsByDocId(String documentId) throws WorkflowException;
     
     public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException;
 

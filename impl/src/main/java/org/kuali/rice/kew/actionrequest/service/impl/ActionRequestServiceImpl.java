@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.actionrequest.service.impl;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -124,7 +125,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     public ActionRequestValue initializeActionRequestGraph(ActionRequestValue actionRequest,
             DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) {
         if (actionRequest.getParentActionRequest() != null) {
-            LOG.warn("-->A non parent action request from doc " + document.getRouteHeaderId());
+            LOG.warn("-->A non parent action request from doc " + document.getDocumentId());
             actionRequest = KEWServiceLocator.getActionRequestService().getRoot(actionRequest);
         }
         propagatePropertiesToRequestGraph(actionRequest, document, nodeInstance);
@@ -142,7 +143,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     private void setPropertiesToRequest(ActionRequestValue actionRequest, DocumentRouteHeaderValue document,
             RouteNodeInstance nodeInstance) {
-        actionRequest.setRouteHeaderId(document.getRouteHeaderId());
+        actionRequest.setDocumentId(document.getDocumentId());
         actionRequest.setDocVersion(document.getDocVersion());
         actionRequest.setRouteLevel(document.getDocRouteLevel());
         actionRequest.setNodeInstance(nodeInstance);
@@ -504,18 +505,18 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     
     /**
      * Returns all pending requests for a given routing entity
-     * @param routeHeaderId the id of the document header being routed
+     * @param documentId the id of the document header being routed
      * @return a List of all pending ActionRequestValues for the document
      */
-    public List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId) {
+    public List<ActionRequestValue> findAllPendingRequests(String documentId) {
     	ActionRequestDAO arDAO = getActionRequestDAO();
-        List<ActionRequestValue> pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
+        List<ActionRequestValue> pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, documentId);
         return pendingArs;
     }
 
-    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
+    public List findAllValidRequests(String principalId, String documentId, String requestCode) {
         ActionRequestDAO arDAO = getActionRequestDAO();
-        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
+        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, documentId);
         return findAllValidRequests(principalId, pendingArs, requestCode);
     }
 
@@ -578,10 +579,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         for (Object aDocumentsAffected : documentsAffected)
         {
-            Long routeHeaderId = (Long) aDocumentsAffected;
+            String documentId = (String) aDocumentsAffected;
 
              String serviceNamespace = null;
-             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(routeHeaderId);
+             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
                     
              if (documentType != null) {
                 serviceNamespace = documentType.getServiceNamespace();
@@ -592,8 +593,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
             }
             DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(serviceNamespace,
-                    routeHeaderId, cacheWait);
-            documentRequeuer.requeueDocument(routeHeaderId);
+                    documentId, cacheWait);
+            documentRequeuer.requeueDocument(documentId);
         }
         if ( LOG.isInfoEnabled() ) {
         	performanceLogger.log("Time to updateActionRequestsForResponsibilityChange");
@@ -638,28 +639,28 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
-        return getActionRequestDAO().findByRouteHeaderIdIgnoreCurrentInd(routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId) {
+        return getActionRequestDAO().findByDocumentIdIgnoreCurrentInd(documentId);
     }
 
-    public List findAllActionRequestsByRouteHeaderId(Long routeHeaderId) {
-        return getActionRequestDAO().findAllByDocId(routeHeaderId);
+    public List findAllActionRequestsByDocumentId(String documentId) {
+        return getActionRequestDAO().findAllByDocId(documentId);
     }
 
-    public List findAllRootActionRequestsByRouteHeaderId(Long routeHeaderId) {
-        return getActionRequestDAO().findAllRootByDocId(routeHeaderId);
+    public List findAllRootActionRequestsByDocumentId(String documentId) {
+        return getActionRequestDAO().findAllRootByDocId(documentId);
     }
 
-    public List findPendingByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) {
-        return getActionRequestDAO().findPendingByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    public List findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId) {
+        return getActionRequestDAO().findPendingByActionRequestedAndDocId(actionRequestedCd, documentId);
     }
 
     /**
-     * @see org.kuali.rice.kew.actionrequest.service.ActionRequestService#getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(java.lang.String, java.lang.Long)
+     * @see org.kuali.rice.kew.actionrequest.service.ActionRequestService#getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(java.lang.String, java.lang.String)
      */
-    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) {
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId) {
     	List<String> principalIds = new ArrayList<String>();
-    	List<ActionRequestValue> actionRequests = findPendingByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+    	List<ActionRequestValue> actionRequests = findPendingByActionRequestedAndDocId(actionRequestedCd, documentId);
 		for(ActionRequestValue actionRequest: actionRequests){
 			if(actionRequest.isUserRequest()){
 				principalIds.add(actionRequest.getPrincipalId());
@@ -671,28 +672,28 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     	return principalIds;
     }
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel) {
-        return getActionRequestDAO().findPendingByDocIdAtOrBelowRouteLevel(routeHeaderId, routeLevel);
+    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
+        return getActionRequestDAO().findPendingByDocIdAtOrBelowRouteLevel(documentId, routeLevel);
     }
 
-    public List findPendingRootRequestsByDocId(Long routeHeaderId) {
-        return getRootRequests(findPendingByDoc(routeHeaderId));
+    public List findPendingRootRequestsByDocId(String documentId) {
+        return getRootRequests(findPendingByDoc(documentId));
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteNode(Long routeHeaderId, Long nodeInstanceId) {
-        return getActionRequestDAO().findPendingRootRequestsByDocIdAtRouteNode(routeHeaderId, nodeInstanceId);
+    public List findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
+        return getActionRequestDAO().findPendingRootRequestsByDocIdAtRouteNode(documentId, nodeInstanceId);
     }
 
-    public List findRootRequestsByDocIdAtRouteNode(Long documentId, Long nodeInstanceId) {
+    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
         return getActionRequestDAO().findRootRequestsByDocIdAtRouteNode(documentId, nodeInstanceId);
     }
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel) {
-        return getActionRequestDAO().findPendingRootRequestsByDocIdAtOrBelowRouteLevel(routeHeaderId, routeLevel);
+    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
+        return getActionRequestDAO().findPendingRootRequestsByDocIdAtOrBelowRouteLevel(documentId, routeLevel);
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(Long routeHeaderId, Integer routeLevel) {
-        return getActionRequestDAO().findPendingRootRequestsByDocIdAtRouteLevel(routeHeaderId, routeLevel);
+    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel) {
+        return getActionRequestDAO().findPendingRootRequestsByDocIdAtRouteLevel(documentId, routeLevel);
     }
 
     public List findPendingRootRequestsByDocumentType(Long documentTypeId) {
@@ -708,13 +709,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         getActionRequestDAO().saveActionRequest(actionRequest);
     }
 
-    public List findPendingByDoc(Long routeHeaderId) {
-        return getActionRequestDAO().findAllPendingByDocId(routeHeaderId);
+    public List findPendingByDoc(String documentId) {
+        return getActionRequestDAO().findAllPendingByDocId(documentId);
     }
 
-    public List findPendingByDocRequestCdRouteLevel(Long routeHeaderId, String requestCode, Integer routeLevel) {
+    public List findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel) {
         List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
-        for (Object object : getActionRequestDAO().findAllPendingByDocId(routeHeaderId))
+        for (Object object : getActionRequestDAO().findAllPendingByDocId(documentId))
         {
             ActionRequestValue actionRequest = (ActionRequestValue) object;
             if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0)
@@ -729,9 +730,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return requests;
     }
 
-    public List findPendingByDocRequestCdNodeName(Long routeHeaderId, String requestCode, String nodeName) {
+    public List findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName) {
         List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
-        for (Object object : getActionRequestDAO().findAllPendingByDocId(routeHeaderId))
+        for (Object object : getActionRequestDAO().findAllPendingByDocId(documentId))
         {
             ActionRequestValue actionRequest = (ActionRequestValue) object;
             if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0)
@@ -770,8 +771,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 
-    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId) {
-        return getActionRequestDAO().findByStatusAndDocId(statusCd, routeHeaderId);
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId) {
+        return getActionRequestDAO().findByStatusAndDocId(statusCd, documentId);
     }
 
     public void alterActionRequested(List actionRequests, String actionRequestCd) {
@@ -791,7 +792,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     // TODO this still won't work in certain cases when checking from the root
     public boolean isDuplicateRequest(ActionRequestValue actionRequest) {
-        List<ActionRequestValue> requests = findAllRootActionRequestsByRouteHeaderId(actionRequest.getRouteHeaderId());
+        List<ActionRequestValue> requests = findAllRootActionRequestsByDocumentId(actionRequest.getDocumentId());
         for (ActionRequestValue existingRequest : requests) {
             if (existingRequest.getStatus().equals(KEWConstants.ACTION_REQUEST_DONE_STATE)
                     && existingRequest.getRouteLevel().equals(actionRequest.getRouteLevel())
@@ -842,8 +843,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return parentRequest;
     }
 
-    public void deleteByRouteHeaderId(Long routeHeaderId) {
-        actionRequestDAO.deleteByRouteHeaderId(routeHeaderId);
+    public void deleteByDocumentId(String documentId) {
+        actionRequestDAO.deleteByDocumentId(documentId);
     }
 
     public void deleteByActionRequestId(Long actionRequestId) {
@@ -863,13 +864,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     actionRequest.getActionRequestId().toString()));
         }
 
-        Long routeHeaderId = actionRequest.getRouteHeaderId();
-        if (routeHeaderId == null || routeHeaderId == 0) {
-            errors.add(new WorkflowServiceErrorImpl("ActionRequest Document id empty.", "actionrequest.routeheaderid.empty",
+        String documentId = actionRequest.getDocumentId();
+        if (documentId == null || StringUtils.isEmpty(documentId)) {
+        	errors.add(new WorkflowServiceErrorImpl("ActionRequest Document id empty.", "actionrequest.documentid.empty",
                     actionRequest.getActionRequestId().toString()));
-        } else if (getRouteHeaderService().getRouteHeader(routeHeaderId) == null) {
+        } else if (getRouteHeaderService().getRouteHeader(documentId) == null) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest Document id invalid.",
-                    "actionrequest.routeheaderid.invalid", actionRequest.getActionRequestId().toString()));
+                    "actionrequest.documentid.invalid", actionRequest.getActionRequestId().toString()));
         }
 
         String actionRequestStatus = actionRequest.getStatus();
@@ -981,7 +982,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return actionRequestCode != null && KEWConstants.ACTION_REQUEST_CODES.containsKey(actionRequestCode);
     }
 
-    public boolean doesPrincipalHaveRequest(String principalId, Long documentId) {
+    public boolean doesPrincipalHaveRequest(String principalId, String documentId) {
         if (getActionRequestDAO().doesDocumentHaveUserRequest(principalId, documentId)) {
             return true;
         }

@@ -84,7 +84,7 @@ public class ActionItemActionListExtension extends ActionItem {
         		delegatorName = delegatorGroup.getName();
         }
         if (KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
-        	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getRouteHeaderId()));
+        	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getDocumentId()));
         }
         isInitialized = true;
     }

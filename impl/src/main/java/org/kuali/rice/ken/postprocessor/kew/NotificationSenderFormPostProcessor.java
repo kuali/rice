@@ -16,6 +16,8 @@
 
 package org.kuali.rice.ken.postprocessor.kew;
 
+import java.rmi.RemoteException;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
@@ -31,11 +33,8 @@ import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import java.rmi.RemoteException;
 
 
 /**
@@ -96,10 +95,10 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
      * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
      */
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO arg0) throws RemoteException {
-	LOG.debug("ENTERING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId());
+	LOG.debug("ENTERING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with document ID: " + arg0.getDocumentId());
 	
 	if(arg0.getNewRouteStatus().equals(KEWConstants.ROUTE_HEADER_PROCESSED_CD)) {
-	    LOG.debug("Workflow status has changed to RESOLVED for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId() + 
+	    LOG.debug("Workflow status has changed to RESOLVED for Notification Sender Form with document ID: " + arg0.getDocumentId() + 
 		    ".  We are now calling the NotificationService.sendNotification() service.");
 	    
 	    // obtain a workflow user object first
@@ -109,7 +108,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
 	    // now construct the workflow document, which will interact with workflow
 	    NotificationWorkflowDocument document;
 	    try {	
-		document = new NotificationWorkflowDocument(proxyUserId, arg0.getRouteHeaderId());
+		document = NotificationWorkflowDocument.loadNotificationDocument(proxyUserId, arg0.getDocumentId());
 		
 		LOG.debug("XML:" + document.getApplicationContent());
 		
@@ -121,13 +120,13 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
                 // send the notification
                 notificationService.sendNotification(notification);
                 
-                LOG.debug("NotificationService.sendNotification() was successfully called for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId());
+                LOG.debug("NotificationService.sendNotification() was successfully called for Notification Sender Form with document ID: " + arg0.getDocumentId());
 	    } catch(Exception e) {
 		throw new RuntimeException(e);
 	    }
 	}
 	
-	LOG.debug("LEAVING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with route header ID: " + arg0.getRouteHeaderId());
+	LOG.debug("LEAVING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with document ID: " + arg0.getDocumentId());
 	return true;
     }
 
@@ -148,7 +147,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
     /**
      * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#getDocumentIdsToLock(org.kuali.rice.kew.dto.DocumentLockingEventDTO)
      */
-	public Long[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
+	public String[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
 		return null;
 	}
 	

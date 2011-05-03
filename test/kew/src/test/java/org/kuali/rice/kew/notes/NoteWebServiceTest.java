@@ -32,7 +32,7 @@ public class NoteWebServiceTest extends KEWTestCase {
 	
 	@Test public void testNotesClient() throws Exception {
 		NoteDTO testNoteVO;
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
 		//Test add notes
 		testNoteVO = new NoteDTO();
 		testNoteVO.setNoteAuthorWorkflowId("andlee");
@@ -80,7 +80,7 @@ public class NoteWebServiceTest extends KEWTestCase {
 			
 		}
         
-        /*List notesFromDB = SpringServiceLocator.getNoteService().getNotesByRouteHeaderId(doc.getRouteHeaderId());
+        /*List notesFromDB = SpringServiceLocator.getNoteService().getNotesByDocumentId(doc.getDocumentId());
         for (Iterator iter = notesFromDB.iterator(); iter.hasNext();) {
 			Note note = (Note) iter.next();
 			System.out.println(note.getNoteText());

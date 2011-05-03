@@ -23,12 +23,12 @@ package org.kuali.rice.kew.postprocessor;
 public class BeforeProcessEvent implements IDocumentEvent {
 
 	private static final long serialVersionUID = 2945081851810845704L;
-	private Long routeHeaderId;
+	private String documentId;
 	private Long nodeInstanceId;
 	private String appDocId;
 
-	public BeforeProcessEvent(Long routeHeaderId, String appDocId, Long nodeInstanceId) {
-		this.routeHeaderId = routeHeaderId;
+	public BeforeProcessEvent(String documentId, String appDocId, Long nodeInstanceId) {
+		this.documentId = documentId;
 		this.appDocId = appDocId;
 		this.nodeInstanceId = nodeInstanceId;
 	}
@@ -37,8 +37,8 @@ public class BeforeProcessEvent implements IDocumentEvent {
 	    return nodeInstanceId;
 	}
 
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
 
 	public String getAppDocId() {

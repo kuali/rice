@@ -45,45 +45,45 @@ public class DynamicRoutingTest extends KEWTestCase {
     }
 
     @Test public void testDynamicParallelRoute() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SEQ_DOC_TYPE_NAME);
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SEQ_DOC_TYPE_NAME);
         document.saveRoutingData();
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
         assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
-        Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+        Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
         assertEquals("Wrong active node.", INIT, ((RouteNodeInstance) nodeInstances.iterator().next()).getRouteNode().getRouteNodeName());
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+        nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-        document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Approve should be requested.", document.isApprovalRequested());
         document.approve("");
 
-        //        document = new WorkflowDocument(new NetworkIdVO("ewestfal"), document.getRouteHeaderId());
+        //        document = WorkflowDocument.loadDocument(new NetworkIdVO("ewestfal"), document.getDocumentId());
         //        assertTrue("Document should be final.", document.stateIsFinal());
 
-        verifyRoutingPath(document.getRouteHeaderId());
+        verifyRoutingPath(document.getDocumentId());
     }
 
-    private void verifyRoutingPath(Long documentId) {
+    private void verifyRoutingPath(String documentId) {
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
         List initial = document.getInitialRouteNodeInstances();
         assertEquals(1, initial.size());
@@ -138,11 +138,11 @@ public class DynamicRoutingTest extends KEWTestCase {
         public DynamicResult transitioningInto(RouteContext context, RouteNodeInstance process, RouteHelper helper) throws Exception {
             RouteNodeInstance routeNodeInstance = context.getNodeInstance();
             RouteNode dynamicRequestNode = helper.getNodeFactory().getRouteNode(context, SUB_REQUESTS);
-            RouteNodeInstance dynamicRequestNodeInstance1 = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), dynamicRequestNode);
+            RouteNodeInstance dynamicRequestNodeInstance1 = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), dynamicRequestNode);
             dynamicRequestNodeInstance1.addNodeState(new NodeState("role", "pmckown"));
-            RouteNodeInstance dynamicRequestNodeInstance2 = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), dynamicRequestNode);
+            RouteNodeInstance dynamicRequestNodeInstance2 = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), dynamicRequestNode);
             dynamicRequestNodeInstance2.addNodeState(new NodeState("role", "temay"));
-            RouteNodeInstance dynamicRequestNodeInstance3 = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), dynamicRequestNode);
+            RouteNodeInstance dynamicRequestNodeInstance3 = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), dynamicRequestNode);
             dynamicRequestNodeInstance3.addNodeState(new NodeState("role", "jhopf"));
             dynamicRequestNodeInstance1.addNextNodeInstance(dynamicRequestNodeInstance2);
             dynamicRequestNodeInstance2.addNextNodeInstance(dynamicRequestNodeInstance3);

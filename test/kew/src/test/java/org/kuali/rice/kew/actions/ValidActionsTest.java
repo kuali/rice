@@ -44,11 +44,11 @@ public class ValidActionsTest extends KEWTestCase {
     @Test public void testValidActions() throws Exception {
         WorkflowDocument document = null;
         String networkId = null;
-        document = new WorkflowDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
-        Long routeHeaderId = document.getRouteHeaderId();
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOCUMENT_TYPE_NAME);
+        String documentId = document.getDocumentId();
 
         networkId = "rkirkend";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD}, 
                 new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
         // check for super user action "c", "a"
@@ -57,7 +57,7 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no save "S"
 
         networkId = "pmckown";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
                 new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no super user action "c", "a"
@@ -66,7 +66,7 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no save "S"
 
         networkId = "user1";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD}, 
                 new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD});
         // check for no blanket approve "B"
@@ -76,7 +76,7 @@ public class ValidActionsTest extends KEWTestCase {
         document.saveDocument("");
 
         networkId = "rkirkend";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD}, 
                 new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
         // check for super user action "c", "a"
@@ -85,7 +85,7 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no save "S"
 
         networkId = "pmckown";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
                 new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no super user action "c", "a"
@@ -94,7 +94,7 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no save "S"
 
         networkId = "user1";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD}, 
                 new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD});
         // check for no blanket approve "B"
@@ -105,7 +105,7 @@ public class ValidActionsTest extends KEWTestCase {
         assertEquals("Document should be ENROUTE", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
 
         networkId = "user1";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
                 new String[]{KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no blanket approve "B"
@@ -114,7 +114,7 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no savable "S"
 
         networkId = "rkirkend";
-        document = this.checkActions(networkId, routeHeaderId, 
+        document = this.checkActions(networkId, documentId, 
                 new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_APPROVED_CD}, 
                 new String[]{KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD});
         // check for super user action "c", "a"
@@ -123,23 +123,23 @@ public class ValidActionsTest extends KEWTestCase {
         // check for no route "O"
         // check for no save "S"
 
-        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("pmckown"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         document.approve("");
 
         // SHOULD NOW BE ONLY ACKNOWLEDGED
 
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         // test for Processed Status on document
         document.acknowledge("");
-        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         document.acknowledge("");
     }
 
-    private WorkflowDocument checkActions(String networkId,Long routeHeaderId,String[] validActionsAllowed,String[] invalidActionsNotAllowed) throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName(networkId), routeHeaderId);
+    private WorkflowDocument checkActions(String networkId,String documentId,String[] validActionsAllowed,String[] invalidActionsNotAllowed) throws Exception {
+        WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName(networkId), documentId);
         ValidActionsDTO validActions = document.getRouteHeader().getValidActions();
         Set<String> validActionsSet = (validActions.getValidActionCodesAllowed() != null) ? new HashSet<String>(Arrays.asList(validActions.getValidActionCodesAllowed())) : new HashSet<String>();
 

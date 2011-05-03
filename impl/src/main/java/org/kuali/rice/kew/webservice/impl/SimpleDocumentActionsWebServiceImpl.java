@@ -219,14 +219,14 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String docId = "";
 
 		try {
-			WorkflowDocument workflowDocument = new WorkflowDocument(initiatorPrincipalId, docType);
+			WorkflowDocument workflowDocument = WorkflowDocument.createDocument(initiatorPrincipalId, docType);
 			workflowDocument.setTitle(docTitle);
 			workflowDocument.setAppDocId(appDocId);
 			workflowDocument.saveRoutingData();
 
 			results = createResults(workflowDocument);
-			if (workflowDocument.getRouteHeaderId() != null) {
-				docId = workflowDocument.getRouteHeaderId().toString();
+			if (workflowDocument.getDocumentId() != null) {
+				docId = workflowDocument.getDocumentId();
 			}
 	        DocumentResponse docResponse = new DocumentResponse(results);
 	        docResponse.setDocId(docId);
@@ -410,8 +410,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		boolean isUserInRouteLog = false;
 		WorkflowInfo info = new WorkflowInfo();
 		try {
-			Long id = Long.parseLong(docId);
-			isUserInRouteLog = info.isUserAuthenticatedByRouteLog(id, principalId, true);
+			isUserInRouteLog = info.isUserAuthenticatedByRouteLog(docId, principalId, true);
 		} catch (NumberFormatException e) {
 			errorMessage = "Invalid (non-numeric) docId";
 		} catch (WorkflowException e) {
@@ -714,7 +713,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			noteVO.setNoteAuthorWorkflowId(principalId);
 			noteVO.setNoteCreateDate(new GregorianCalendar());
 			noteVO.setNoteText(noteText);
-			noteVO.setRouteHeaderId(workflowDocument.getRouteHeaderId());
+			noteVO.setDocumentId(workflowDocument.getDocumentId());
 			workflowDocument.updateNote(noteVO);
 
 			//TODO: is this necessary?
@@ -838,7 +837,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			workflowDocument.saveRoutingData();
 
 ////	      update notes database based on notes and notesToDelete arrays in routeHeaderVO
-//	        DTOConverter.updateNotes(routeHeader, routeHeader.getRouteHeaderId());
+//	        DTOConverter.updateNotes(routeHeader, routeHeader.getDocumentId());
 		} catch (WorkflowException e) {
 			errorMessage = "Workflow Error: " + e.getLocalizedMessage();
 		}
@@ -1056,9 +1055,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
                 workflowDocument.saveRoutingData();
             }
             // perform the return to previous
-            KEWServiceLocator.getWorkflowDocumentActionsService().superUserReturnToPreviousNode(superUserPrincipalId, Long.valueOf(docId), nodeName, annotation);
+            KEWServiceLocator.getWorkflowDocumentActionsService().superUserReturnToPreviousNode(superUserPrincipalId, docId, nodeName, annotation);
             // refetch the WorkflowDocument after the return to previous is completed
-            results = createResults(new WorkflowDocument(superUserPrincipalId, Long.decode(docId)));
+            results = createResults(WorkflowDocument.loadDocument(superUserPrincipalId, docId));
         } catch (WorkflowServiceErrorException e) {
             results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
         } catch (WorkflowException e) {
@@ -1106,7 +1105,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @throws WorkflowException if something goes wrong
 	 */
 	private WorkflowDocument setupWorkflowDocument(String docId, String principalId, String docTitle, String docContent) throws WorkflowException {
-		WorkflowDocument workflowDocument = new WorkflowDocument(principalId, Long.decode(docId));
+		WorkflowDocument workflowDocument = WorkflowDocument.loadDocument(principalId, docId);
 		if (StringUtils.isNotEmpty(docTitle)) {
 			workflowDocument.setTitle(docTitle);
 		}

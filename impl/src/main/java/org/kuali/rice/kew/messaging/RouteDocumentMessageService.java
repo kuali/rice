@@ -38,10 +38,10 @@ public class RouteDocumentMessageService implements KSBXMLService {
 			RouteMessageXmlElement newElement = RouteMessageXmlElement.construct(xml);
 			WorkflowEngine engine = KEWServiceLocator.getWorkflowEngine();
 			engine.setRunPostProcessorLogic(newElement.runPostProcessor);
-			engine.process(newElement.routeHeaderId, null);
+			engine.process(newElement.documentId, null);
 			if (newElement.shouldSearchAttributeIndex) {
-				SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(newElement.routeHeaderId));
-				searchableAttService.indexDocument(newElement.routeHeaderId);
+				SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(newElement.documentId));
+				searchableAttService.indexDocument(newElement.documentId);
 			}
 		} catch (Exception e) {
 			LOG.error(e);
@@ -50,18 +50,18 @@ public class RouteDocumentMessageService implements KSBXMLService {
 	}
 	
 	public static class RouteMessageXmlElement {
-		public Long routeHeaderId;
+		public String documentId;
 		public boolean runPostProcessor = true;
 		public boolean shouldSearchAttributeIndex = false;
-		public RouteMessageXmlElement(Long routeHeaderId) {
-			this.routeHeaderId = routeHeaderId;
+		public RouteMessageXmlElement(String documentId) {
+			this.documentId = documentId;
 		}
-		public RouteMessageXmlElement(Long routeHeaderId, boolean runPostProcessor) {
-			this(routeHeaderId);
+		public RouteMessageXmlElement(String documentId, boolean runPostProcessor) {
+			this(documentId);
 			this.runPostProcessor = runPostProcessor;
 		}
-		public RouteMessageXmlElement(Long routeHeaderId, boolean runPostProcessor, boolean shouldIndex) {
-			this(routeHeaderId, runPostProcessor);
+		public RouteMessageXmlElement(String documentId, boolean runPostProcessor, boolean shouldIndex) {
+			this(documentId, runPostProcessor);
 			this.shouldSearchAttributeIndex = shouldIndex;
 		}
 		private static final String SPLIT = "::~~::";
@@ -69,16 +69,16 @@ public class RouteDocumentMessageService implements KSBXMLService {
 			if (content.contains(SPLIT)) {
 				String[] values = content.split(SPLIT);
 				if (values.length == 3) {
-					return new RouteMessageXmlElement(Long.valueOf(values[0]), Boolean.valueOf(values[1]), Boolean.valueOf(values[2]));
+					return new RouteMessageXmlElement(values[0], Boolean.valueOf(values[1]), Boolean.valueOf(values[2]));
 				} else {
-					return new RouteMessageXmlElement(Long.valueOf(values[0]),Boolean.valueOf(values[1]));
+					return new RouteMessageXmlElement(values[0],Boolean.valueOf(values[1]));
 				}
 			} else {
-				return new RouteMessageXmlElement(Long.valueOf(content));
+				return new RouteMessageXmlElement(content);
 			}
 		}
 		public String translate() {
-			return routeHeaderId + SPLIT + String.valueOf(runPostProcessor) + SPLIT + String.valueOf(shouldSearchAttributeIndex);
+			return documentId + SPLIT + String.valueOf(runPostProcessor) + SPLIT + String.valueOf(shouldSearchAttributeIndex);
 		}
 	}
 

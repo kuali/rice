@@ -38,7 +38,7 @@ public class DocumentOperationForm extends KualiForm {
 
 	private static final long serialVersionUID = 2994179393392218743L;
 	private DocumentRouteHeaderValue routeHeader;
-    private String routeHeaderId;
+    private String documentId;
 
     private List actionRequestOps = new ArrayList();
     private List actionTakenOps = new ArrayList();
@@ -318,11 +318,11 @@ public class DocumentOperationForm extends KualiForm {
         return actionTakenCds;
     }
 
-    public String getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
-    public void setRouteHeaderId(String routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public List getRouteModules() {

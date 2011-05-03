@@ -68,7 +68,7 @@ public class AdHocAction extends ActionTakenEvent {
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
-		List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
+		List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getDocumentId());
         String error = adhocRouteAction(targetNodes, false);
         if (!org.apache.commons.lang.StringUtils.isEmpty(error)) {
             throw new InvalidActionTakenException(error);
@@ -80,7 +80,7 @@ public class AdHocAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
+        List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getDocumentId());
         return validateActionRulesInternal(targetNodes);
     }
     

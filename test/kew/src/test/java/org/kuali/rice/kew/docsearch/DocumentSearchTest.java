@@ -97,17 +97,17 @@ public class DocumentSearchTest extends KEWTestCase {
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_MissingInitiator");
         workflowDocument.routeDocument("routing this document.");
 
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
         // now nuke the initiator...
-        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
+        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getDocumentId());
 
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
@@ -128,17 +128,17 @@ public class DocumentSearchTest extends KEWTestCase {
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_MissingInitiator");
         workflowDocument.routeDocument("routing this document.");
 
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
         // now nuke the initiator...
-        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getRouteHeaderId());
+        new JdbcTemplate(TestHarnessServiceLocator.getDataSource()).execute("update " + KREW_DOC_HDR_T + " set " + INITIATOR_COL + " = 'bogus user' where DOC_HDR_ID = " + workflowDocument.getDocumentId());
 
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
@@ -158,21 +158,21 @@ public class DocumentSearchTest extends KEWTestCase {
         String userNetworkId = "rkirkend";
 
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         workflowDocument.approve("");
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsFinal());
-        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
+        workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
@@ -195,7 +195,7 @@ public class DocumentSearchTest extends KEWTestCase {
         // load the document type again to change the route node ids
         loadXmlFile("DocSearchTest_RouteNode.xml");
 
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         criteria.setDocRouteNodeId(getRouteNodeForSearch(documentTypeName,workflowDocument.getNodeNames()));
@@ -266,30 +266,30 @@ public class DocumentSearchTest extends KEWTestCase {
         String userNetworkId = "rkirkend";
 
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), standardDocHandlerDocumentType);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), standardDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
 
         // route a document to enroute and route one to final
-        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), customDocHandlerDocumentType);
+        workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), customDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         workflowDocument.approve("");
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsFinal());
 
-        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), customDocHandlerDocumentType);
+        workflowDocument = WorkflowDocument.createDocument(getPrincipalId(userNetworkId), customDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalId("jhopf"),workflowDocument.getDocumentId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
@@ -304,7 +304,7 @@ public class DocumentSearchTest extends KEWTestCase {
         for (DocumentSearchResult resultElement : result.getSearchResults()) {
 	    KeyValueSort kvs = resultElement.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
 	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, kvs);
-	    assertTrue("The document handler redirect for the client should be included in the route header id url", kvs.getValue().contains(KEWConstants.DOC_HANDLER_REDIRECT_PAGE));
+	    assertTrue("The document handler redirect for the client should be included in the document id url", kvs.getValue().contains(KEWConstants.DOC_HANDLER_REDIRECT_PAGE));
 	    assertTrue("The document handler redirect for the client should include the command value for super user search", kvs.getValue().contains(KEWConstants.SUPERUSER_COMMAND));
 	}
 
@@ -316,15 +316,15 @@ public class DocumentSearchTest extends KEWTestCase {
         assertNotNull(result.getSearchResults());
         assertEquals("Search returned invalid number of documents", 3, result.getSearchResults().size());
         for (DocumentSearchResult resultElement : result.getSearchResults()) {
-	    KeyValueSort routeHeaderIdValue = resultElement.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
-	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, routeHeaderIdValue);
+	    KeyValueSort documentIdValue = resultElement.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
+	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID, documentIdValue);
 	    KeyValueSort documentTypeValue = resultElement.getResultContainer(DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL);
 	    assertNotNull("A valid column field value should be returned for key " + DocumentSearchResult.PROPERTY_NAME_DOC_TYPE_LABEL, documentTypeValue);
 	    if (customDocHandlerDocumentType.equals(documentTypeValue.getValue())) {
-		assertTrue("The document handler redirect for the client should be included in the route header id url", routeHeaderIdValue.getValue().contains(KEWConstants.DOC_HANDLER_REDIRECT_PAGE));
-		assertTrue("The document handler redirect for the client should include the command value for super user search", routeHeaderIdValue.getValue().contains(KEWConstants.SUPERUSER_COMMAND));
+		assertTrue("The document handler redirect for the client should be included in the document id url", documentIdValue.getValue().contains(KEWConstants.DOC_HANDLER_REDIRECT_PAGE));
+		assertTrue("The document handler redirect for the client should include the command value for super user search", documentIdValue.getValue().contains(KEWConstants.SUPERUSER_COMMAND));
 	    } else if (standardDocHandlerDocumentType.equals(documentTypeValue.getValue())) {
-		assertTrue("The document handler redirect for the client should be included in the route header id url", !routeHeaderIdValue.getValue().contains(KEWConstants.DOC_HANDLER_REDIRECT_PAGE));
+		assertTrue("The document handler redirect for the client should be included in the document id url", !documentIdValue.getValue().contains(KEWConstants.DOC_HANDLER_REDIRECT_PAGE));
 	    } else {
 		fail("Found document search result row with document type '" + documentTypeValue.getValue() + "' that should not have existed");
 	    }
@@ -346,12 +346,12 @@ public class DocumentSearchTest extends KEWTestCase {
     	String[] appDocIds = {"6543", "5432", "4321"};
     	String[] approverNames = {null, "jhopf", null};
     	for (int i = 0; i < titles.length; i++) {
-        	WorkflowDocument workflowDocument = new WorkflowDocument(
+        	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(
         			KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalNames[i]).getPrincipalId(), docTypeName);
         	workflowDocument.setTitle(titles[i]);
         	workflowDocument.setAppDocId(appDocIds[i]);
         	workflowDocument.routeDocument("routing this document.");
-        	docIds[i] = workflowDocument.getRouteHeaderId().toString();
+        	docIds[i] = workflowDocument.getDocumentId();
         	if (approverNames[i] != null) {
         		workflowDocument.setPrincipalId(KimApiServiceLocator.getPersonService().getPersonByPrincipalName(approverNames[i]).getPrincipalId());
         		workflowDocument.approve("approving this document.");
@@ -392,7 +392,7 @@ public class DocumentSearchTest extends KEWTestCase {
         expectedResults = new int[] {1, 2, 2, 1, 0, 1, 1, 3/*2*/, 1, 0};
         for (int i = 0; i < searchStrings.length; i++) {
         	criteria = new DocSearchCriteriaDTO();
-        	criteria.setRouteHeaderId(searchStrings[i]);
+        	criteria.setDocumentId(searchStrings[i]);
         	result = docSearchService.getList(principalId, criteria);
         	searchResults = result.getSearchResults();
         	assertEquals("Doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], searchResults.size());

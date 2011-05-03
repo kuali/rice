@@ -269,7 +269,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 		
 		if (documentNumber == null) {
-			documentNumber = request.getParameter("routeHeaderId");
+			documentNumber = request.getParameter("documentId");
 		}
 		
 		return documentNumber;

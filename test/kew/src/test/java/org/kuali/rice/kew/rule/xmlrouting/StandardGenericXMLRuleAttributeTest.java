@@ -200,7 +200,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
      */
     @Test public void testNonMatchingExtensionKey() throws WorkflowException {
         loadXmlFile("TestExtensionValueMatching.xml");
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("arh14"), "TestDocument");
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("arh14"), "TestDocument");
 
         WorkflowAttributeDefinitionDTO attr = new WorkflowAttributeDefinitionDTO(StandardGenericXMLRuleAttribute.class.getName());
         attr.setAttributeName("Attr1");
@@ -210,12 +210,12 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
         doc.routeDocument("");
 
-        Long id = doc.getRouteHeaderId();
+        String id = doc.getDocumentId();
 
-        doc = new WorkflowDocument(getPrincipalIdForName("user1"), id);
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), id);
         assertTrue("Request should have been generated to user1", doc.isApprovalRequested());
 
-        doc = new WorkflowDocument(getPrincipalIdForName("user2"), id);
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), id);
         assertTrue("Expected approval request to user2", doc.isApprovalRequested());
     }
 

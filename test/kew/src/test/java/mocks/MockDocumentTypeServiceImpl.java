@@ -56,7 +56,7 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         postProcessors.put(documentType.getDocumentTypeId(), postProcessor);
     }
 
-    public DocumentType findByDocumentId(Long documentId) {
+    public DocumentType findByDocumentId(String documentId) {
 		throw new UnsupportedOperationException("not yet implemented");
 	}
 
@@ -96,10 +96,10 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         documentsByName.remove(documentType.getName());
     }
 
-    public List findByRouteHeaderId(Long routeHeaderId) {
+    public List findByRouteHeaderId (String documentId) {
         throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
     }
-    public void makeCurrent(Long routeHeaderId) {
+    public void makeCurrent(String documentId) {
         throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
     }
 

@@ -87,9 +87,9 @@ public class EDLServlet extends HttpServlet {
 		        	}
 		        }
 		        requestParser.setAttribute("docId", documentId);
-		        edlController = EdlServiceLocator.getEDocLiteService().getEDLController(new Long(documentId));
+		        edlController = EdlServiceLocator.getEDocLiteService().getEDLControllerUsingDocumentId(documentId);
 		    } else {
-		        edlController = EdlServiceLocator.getEDocLiteService().getEDLController(edlName);
+		        edlController = EdlServiceLocator.getEDocLiteService().getEDLControllerUsingEdlName(edlName);
 		    }
 
 		    //TODO Fix this in a better way (reworking the command structure maybe?)

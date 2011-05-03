@@ -130,7 +130,7 @@ public class RoutingReportAction extends KewKualiAction {
 		DocumentType docType = documentTypeService.findByName(routingForm.getDocumentType());
 
 		DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
-		routeHeader.setRouteHeaderId(new Long(0));
+		routeHeader.setDocumentId("");
 		routeHeader.setDocumentTypeId(docType.getDocumentTypeId());
 		routeHeader.setDocRouteLevel(new Integer(0));
         routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));

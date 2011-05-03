@@ -63,7 +63,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 	@NamedQuery(name="RouteNodeInstance.FindByRouteNodeInstanceId",query="select r from RouteNodeInstance r where r.routeNodeInstanceId = :routeNodeInstanceId"),
 	@NamedQuery(name="RouteNodeInstance.FindActiveNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = true"),
 	@NamedQuery(name="RouteNodeInstance.FindTerminalNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = false and r.complete = true"),
-	@NamedQuery(name="RouteNodeInstance.FindInitialNodeInstances",query="select d.initialRouteNodeInstances from DocumentRouteHeaderValue d where d.routeHeaderId = :routeHeaderId"),
+	@NamedQuery(name="RouteNodeInstance.FindInitialNodeInstances",query="select d.initialRouteNodeInstances from DocumentRouteHeaderValue d where d.documentId = :documentId"),
 	@NamedQuery(name="RouteNodeInstance.FindProcessNodeInstances", query="select r from RouteNodeInstance r where r.process.routeNodeInstanceId = :processId"),
 	@NamedQuery(name="RouteNodeInstance.FindRouteNodeInstances", query="select r from RouteNodeInstance r where r.documentId = :documentId")
 })
@@ -80,7 +80,7 @@ public class RouteNodeInstance implements Serializable {
 	@Column(name="RTE_NODE_INSTN_ID")
 	private Long routeNodeInstanceId;
     @Column(name="DOC_HDR_ID")
-	private Long documentId;
+	private String documentId;
     @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_ID")
 	private Branch branch;
@@ -146,11 +146,11 @@ public class RouteNodeInstance implements Serializable {
     public void setRouteNodeInstanceId(Long routeNodeInstanceId) {
         this.routeNodeInstanceId = routeNodeInstanceId;
     }
-    public Long getDocumentId() {
+    public String getDocumentId() {
         return documentId;
     }
-    public void setDocumentId(Long routeHeaderId) {
-        this.documentId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
     public List<RouteNodeInstance> getNextNodeInstances() {
         return nextNodeInstances;

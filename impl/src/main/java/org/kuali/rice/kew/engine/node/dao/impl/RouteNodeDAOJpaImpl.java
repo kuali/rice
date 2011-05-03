@@ -95,14 +95,14 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getActiveNodeInstances(String documentId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindActiveNodeInstances");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
     	return (List<RouteNodeInstance>)query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
-    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindTerminalNodeInstances");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
 		
@@ -117,10 +117,10 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 		return terminalNodes;
     }
 
-    public List getInitialNodeInstances(Long documentId) {
+    public List getInitialNodeInstances(String documentId) {
     	//FIXME: Not sure this query is returning what it needs to     	                                              
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindInitialNodeInstances");
-    	query.setParameter(KEWPropertyConstants.ROUTE_HEADER_ID, documentId);
+    	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
 		return (List)query.getResultList();
     }
 
@@ -151,7 +151,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	return (List) query.getResultList();
     }
 
-    public List findRouteNodeInstances(Long documentId) {
+    public List findRouteNodeInstances(String documentId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindRouteNodeInstances");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
     	return (List) query.getResultList();

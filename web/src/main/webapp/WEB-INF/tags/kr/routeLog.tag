@@ -17,7 +17,7 @@
 <kul:tab tabTitle="Route Log" defaultOpen="false">
 <div class="tab-container" align=center>
 	<c:if test="${ConfigProperties.test.mode ne 'true'}">
-	  <iframe onload="setRouteLogIframeDimensions();" name="routeLogIFrame" id="routeLogIFrame" src="${ConfigProperties.workflow.url}/RouteLog.do?routeHeaderId=${KualiForm.workflowDocument.routeHeaderId}" height="500" width="95%" hspace='0' vspace='0' frameborder='0' title='Workflow Route Log for document id: ${KualiForm.workflowDocument.routeHeaderId}'>
+	  <iframe onload="setRouteLogIframeDimensions();" name="routeLogIFrame" id="routeLogIFrame" src="${ConfigProperties.workflow.url}/RouteLog.do?documentId=${KualiForm.workflowDocument.documentId}" height="500" width="95%" hspace='0' vspace='0' frameborder='0' title='Workflow Route Log for document id: ${KualiForm.workflowDocument.documentId}'>
 	  </iframe>
 	</c:if>
 </div>

@@ -136,7 +136,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         String userNetworkId = "rkirkend";
         DocumentSearchResultComponents result = performSearch(documentTypeName, userNetworkId);
         /*  columns that should be shown
-         *    - routeHeaderId
+         *    - documentId
          *    - doctypelabel
          *    - givenname_hidden
          *    - doc title
@@ -149,7 +149,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - create date
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
         		searchableAttributeKey_Hidden,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
@@ -169,7 +169,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         documentTypeName = "SearchDocType_AllCustomProcessor";
         result = performSearch(documentTypeName, userNetworkId);
         /*  columns that should be shown
-         *    - routeHeaderId
+         *    - documentId
          *    - doctypelabel
          *    - doc title
          *    - init
@@ -182,7 +182,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - create date
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
@@ -203,7 +203,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         documentTypeName = "SearchDocType_SearchAttCustomProcessor";
         result = performSearch(documentTypeName, userNetworkId);
         /*  columns that should be shown
-         *    - routeHeaderId
+         *    - documentId
          *    - docTypeLabel
          *    - documentTitle
          *    - docRouteStatusCodeDesc
@@ -216,7 +216,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - givenname
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
@@ -237,7 +237,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         documentTypeName = "SearchDocType_StandardCustomProcessor";
         result = performSearch(documentTypeName, userNetworkId);
         /*  columns that should be shown
-         *    - routeHeaderId
+         *    - documentId
          *    - doc title
          *    - doctypelabel
          *    - docroutestat
@@ -250,7 +250,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - create date
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,
@@ -271,7 +271,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
         documentTypeName = "SearchDocType_NormalCustomProcessor";
         result = performSearch(documentTypeName, userNetworkId);
         /*  columns that should be shown
-         *    - routeHeaderId
+         *    - documentId
          *    - docTypeLabel
          *    - documentTitle
          *    - docRouteStatusCodeDesc
@@ -284,7 +284,7 @@ public class CustomDocumentSearchResultProcessorTest extends DocumentSearchTestB
          *    - givenname_hidden
          */
         parseList(result.getColumns(), Arrays.asList(new String[]{
-        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
+        		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE,
         		KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC,

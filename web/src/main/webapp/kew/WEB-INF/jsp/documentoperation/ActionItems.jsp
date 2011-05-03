@@ -39,7 +39,7 @@
 	  </tr>	 
 	  <tr>
   	    <td width="33%" align="right" class="thnormal">* Document ID:</td>
-  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].routeHeaderId" /></td>
+  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].documentId" /></td>
   	  </tr> 
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">* Doc Type Name:</td>

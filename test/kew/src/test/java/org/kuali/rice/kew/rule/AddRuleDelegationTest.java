@@ -58,7 +58,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
     	String docType = "RiceDocument.testNewDelegationTriggersRequeue";
     	
     	// route a document of this type
-    	WorkflowDocument wd = new WorkflowDocument(getPrincipalIdForName("ewestfal"), DOCTYPE);
+    	WorkflowDocument wd = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCTYPE);
     	wd.routeDocument("");
     	
     	// clear the current set of requeued document ids
@@ -68,7 +68,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		RuleTestUtils.createDelegationToUser(DOCTYPE, RULE_TEMPLATE, DELEGATE_USER);
     	
 		assertTrue("our document should have been requeued!", 
-				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(wd.getRouteHeaderId()));
+				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(wd.getDocumentId()));
     }
 
 

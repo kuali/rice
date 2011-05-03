@@ -26,7 +26,7 @@ public interface NoteDAO {
 
     public Note getNoteByNoteId(Long noteId);
 
-    public List getNotesByRouteHeaderId(Long routeHeaderId);
+    public List getNotesByDocumentId(String documentId);
     
     public void saveNote(Note note);
 

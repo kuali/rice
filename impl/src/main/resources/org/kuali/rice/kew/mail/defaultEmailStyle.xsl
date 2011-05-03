@@ -21,7 +21,7 @@
             <subject>Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
             <body>Your Action List has an eDoc(electronic document) that needs your attention: 
 
-Document ID:&tab;<xsl:value-of select="actionItem/actionItem/routeHeaderId"/>
+Document ID:&tab;<xsl:value-of select="actionItem/actionItem/documentId"/>
 Initiator:&tab;&tab;<xsl:value-of select="actionItem/docInitiatorDisplayName"/>
 Type:&tab;&tab;Add/Modify <xsl:value-of select="actionItem/documentType/name"/>
 Title:&tab;&tab;<xsl:value-of select="actionItem/actionItem/docTitle"/>
@@ -31,10 +31,10 @@ To respond to this eDoc:
 &tab;Go to <xsl:value-of select="$docHandlerUrl"/><xsl:choose>
   <xsl:when test="contains($docHandlerUrl, '?')">&amp;</xsl:when>
   <xsl:otherwise>?</xsl:otherwise>
-</xsl:choose>docId=<xsl:value-of select="actionItem/actionItem/routeHeaderId"/>&amp;command=displayActionListView
+</xsl:choose>docId=<xsl:value-of select="actionItem/actionItem/documentId"/>&amp;command=displayActionListView
 
 &tab;Or you may access the eDoc from your Action List: 
-&tab;Go to <xsl:value-of select="@actionListUrl"/>, and then click on the numeric Document ID: <xsl:value-of select="actionItem/actionItem/routeHeaderId"/> in the first column of the List. 
+&tab;Go to <xsl:value-of select="@actionListUrl"/>, and then click on the numeric Document ID: <xsl:value-of select="actionItem/actionItem/documentId"/> in the first column of the List. 
 
 
 
@@ -138,9 +138,9 @@ For additional help, email <![CDATA[<mailto:]]><xsl:value-of select="@applicatio
     <xsl:template match="feedback">
         <email>
             <subject>Feedback from <xsl:value-of select="networkId"/>
-              <xsl:variable name="routeHeaderId" select="routeHeaderId"/>
+              <xsl:variable name="documentId" select="documentId"/>
               <xsl:choose>
-                <xsl:when test="string($routeHeaderId)"> for document <xsl:value-of select="$routeHeaderId"/></xsl:when>
+                <xsl:when test="string($documentId)"> for document <xsl:value-of select="$documentId"/></xsl:when>
               </xsl:choose>
             </subject>
             <body>
@@ -152,7 +152,7 @@ Time: <xsl:value-of select="timeDate"/>
 Environment: <xsl:value-of select="@env"/>
 
 Document type: <xsl:value-of select="documentType"/>
-Document id: <xsl:value-of select="routeHeaderId"/>
+Document id: <xsl:value-of select="documentId"/>
 
 Category: <xsl:value-of select="category"/>
 Comments: 

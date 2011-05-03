@@ -38,7 +38,7 @@ public interface DocumentRouteHeaderEBO extends ExternalizableBusinessObject {
 
 	public String getInitiator();
 
-	public String getRouteHeaderId();
+	public String getDocumentId();
 
 	/**
 	 * @return the dateCreated

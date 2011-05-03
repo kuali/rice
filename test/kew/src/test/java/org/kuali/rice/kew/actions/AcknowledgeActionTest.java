@@ -37,11 +37,11 @@ public class AcknowledgeActionTest extends KEWTestCase {
     }
 
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
         doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
         String userId = getPrincipalIdForName("dewey");
-        doc = new WorkflowDocument(userId, doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(userId, doc.getDocumentId());
         assertTrue("Acknowledge should be requested of user " + userId, doc.isAcknowledgeRequested());
         try {
             doc.acknowledge("");
@@ -51,11 +51,11 @@ public class AcknowledgeActionTest extends KEWTestCase {
         assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.stateIsSaved());
 
         String workgroupUserId = getPrincipalIdForName("dewey");
-        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
 
         doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "annotation1", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "respDesc1", false);
-        doc = new WorkflowDocument(workgroupUserId, doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(workgroupUserId, doc.getDocumentId());
         assertTrue("Acknowledge should be requested of user " + workgroupUserId, doc.isAcknowledgeRequested());
         try {
             doc.acknowledge("");

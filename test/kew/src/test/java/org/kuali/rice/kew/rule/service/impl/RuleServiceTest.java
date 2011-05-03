@@ -42,15 +42,15 @@ public class RuleServiceTest extends KEWTestCase {
 
     @Test public void testClearCacheWithDocumentTypeUpdate() throws Exception {
         //put the rules in the cache by routing documents
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child2");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child2");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child3");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child3");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "NotRelated");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "NotRelated");
         document.routeDocument("");
 
         //verify the cache's contents are correct
@@ -205,7 +205,7 @@ public class RuleServiceTest extends KEWTestCase {
         assertNull("Rules should not be cached yet.", rulesCached);
 
         // routing a doc should put the rules into the cache
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child1child");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RiceDocument.child1child1child");
         document.routeDocument("");
 
         rulesCached = getListFromCache("DocumentTypeRouting", "RiceDocument.child1child1child");

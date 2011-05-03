@@ -72,8 +72,8 @@
             <div align="right">*Document ID:&nbsp;</div>
           </th>
 		  <td class="datacell">
-	          <%-- <html-el:text property="routeHeader.routeHeaderId" /> --%>
-	          <html-el:text property="routeHeaderId" />
+	          <%-- <html-el:text property="routeHeader.documentId" /> --%>
+	          <html-el:text property="documentId" />
 	      </td>
         </tr>
         <tr>
@@ -89,7 +89,7 @@
     <td width="20" height="30">&nbsp;</td>
   </tr>
 
- <c:if test="${DocumentOperationForm.routeHeader.routeHeaderId != null && DocumentOperationForm.routeHeader.routeHeaderId != 0}">
+ <c:if test="${DocumentOperationForm.routeHeader.documentId != null && DocumentOperationForm.routeHeader.documentId != 0}">
   <tr>
   	<td><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
   	<td> &nbsp;</td>

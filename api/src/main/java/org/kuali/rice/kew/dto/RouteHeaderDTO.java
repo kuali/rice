@@ -34,7 +34,7 @@ public class RouteHeaderDTO implements Serializable {
 
     static final long serialVersionUID = -677289794727007572L;
 
-    private Long routeHeaderId;
+    private String documentId;
     private String docRouteStatus;
     private Calendar dateCreated;
     private Calendar dateLastModified;
@@ -213,12 +213,12 @@ public class RouteHeaderDTO implements Serializable {
 		this.routedByPrincipalId = routedByPrincipalId;
 	}
 
-	public Long getRouteHeaderId() {
-        return routeHeaderId;
+	public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
     public boolean isAckRequested() {
         return ackRequested;

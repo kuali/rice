@@ -28,8 +28,8 @@ public class ExtractServiceImpl implements ExtractService {
 
 	private ExtractDAO extractDAO;
 
-	public DumpDTO getDumpByDocumentId(Long noteId) {
-		return Dump.to(getExtractDAO().getDumpByRouteHeaderId(noteId));
+	public DumpDTO getDumpByDocumentId(String documentId) {
+		return Dump.to(getExtractDAO().getDumpByDocumentId(documentId));
 	}
 
 	public void saveDump(DumpDTO dumpDTO) {
@@ -52,7 +52,7 @@ public class ExtractServiceImpl implements ExtractService {
 	}
 
 
-	public void deleteDump(Long docId) {
+	public void deleteDump(String docId) {
 		try {
 			getExtractDAO().deleteDump(docId);
 		} catch (Exception e) {

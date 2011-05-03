@@ -24,7 +24,7 @@
 	  </tr>
 	  <tr>
 	    <td width="33%" class="headercell3-b-l" align=right><b> Document ID: </b></td>
-	    <td width="66%" class="headercell3-b-l"><c:out value="${DocumentOperationForm.routeHeader.routeHeaderId}" /> &nbsp;</td>
+	    <td width="66%" class="headercell3-b-l"><c:out value="${DocumentOperationForm.routeHeader.documentId}" /> &nbsp;</td>
 	  </tr>
 	  <tr>
   	    <td width="33%" align=right class="thnormal">Document Version:</td>

@@ -40,10 +40,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 public class RulePostProcessor extends DefaultPostProcessor {
 
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-        DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(statusChangeEvent.getRouteHeaderId());
+        DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(statusChangeEvent.getDocumentId());
         
         if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(routeHeader.getDocRouteStatus())) {
-            getRuleService().makeCurrent(routeHeader.getRouteHeaderId());
+            getRuleService().makeCurrent(routeHeader.getDocumentId());
         }
         return new ProcessDocReport(true, "");
     }    

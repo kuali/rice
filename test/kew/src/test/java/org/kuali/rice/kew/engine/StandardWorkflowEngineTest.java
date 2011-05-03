@@ -54,12 +54,12 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 	 */
 	@Test public void testSystemBranchState() throws Exception {
 		// route the document to final
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "SimpleDocType");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "SimpleDocType");
 		document.routeDocument("");
 		assertTrue("Document should be final.", document.stateIsFinal());
 
 		// now look at the branch state
-		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
 		Branch rootBranch = routeHeader.getRootBranch();
 		assertNotNull(rootBranch);
 		BranchState processedBranchState = rootBranch.getBranchState(KEWConstants.POST_PROCESSOR_PROCESSED_KEY);
@@ -79,7 +79,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 	@Test public void testFinalDocumentExceptionRoutingRecovery() throws Exception {
 
 		// route the document to final
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "SimpleDocType");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "SimpleDocType");
 		document.routeDocument("");
 		assertTrue("Document should be final.", document.stateIsFinal());
 		assertEquals(1, TestPostProcessor.processedCount);
@@ -99,16 +99,16 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		serviceDef.validate();
 		KSBServiceLocator.getServiceDeployer().registerService(serviceDef, true);
 
-		KSBJavaService exploderAsService = (KSBJavaService) MessageServiceNames.getServiceAsynchronously(new QName("KEW", "exploader"), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()));
+		KSBJavaService exploderAsService = (KSBJavaService) MessageServiceNames.getServiceAsynchronously(new QName("KEW", "exploader"), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()));
 		exploderAsService.invoke("");
 		// we need to make the exploder a service to get this going again...
-		// SpringServiceLocator.getRouteQueueService().requeueDocument(document.getRouteHeaderId(),
+		// SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(),
 		// ImTheExploderProcessor.class.getName());
 		// fail("Should have exploded!!!");
 		TestUtilities.waitForExceptionRouting();
 
 		// the document should be in exception routing now
-		document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
 		assertTrue("Document should be in exception routing.", document.stateIsException());
 		assertEquals(1, TestPostProcessor.processedCount);
 		assertEquals(1, TestPostProcessor.finalCount);
@@ -117,7 +117,7 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		document.complete("");
 
 		// the document should be final once again
-		document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
 		assertTrue("Document should be final.", document.stateIsFinal());
 		assertEquals(1, TestPostProcessor.processedCount);
 		assertEquals(1, TestPostProcessor.finalCount);

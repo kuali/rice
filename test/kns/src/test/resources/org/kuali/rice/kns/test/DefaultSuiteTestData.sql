@@ -37,11 +37,11 @@ insert into TRV_ACCT_EXT values ('a2', 'EAT', '64BD0F58C50447A89AC1058940DCC6BD'
 ;
 insert into TRV_ACCT_EXT values ('a3', 'IAT', 'E4278BA8AA024A7D90F1F8173EA72082', 1)
 ;
-insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a1')
+insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values ('1', 'a1')
 ;
-insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2')
+insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values ('1', 'a2')
 ;
-insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3')
+insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values ('1', 'a3')
 ;
 insert into KRNS_NTE_TYP_T (NTE_TYP_CD, TYP_DESC_TXT, ACTV_IND, OBJ_ID) values ('BO', 'DOCUMENT BUSINESS OBJECT', 'Y', '13369942-59be-102c-bdf6-89088ca7a02d')
 ;

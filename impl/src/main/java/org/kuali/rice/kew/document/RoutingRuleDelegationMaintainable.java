@@ -59,7 +59,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 		WebRuleUtils.validateRuleAndResponsibility(getOldRuleDelegation(document), getNewRuleDelegation(document), parameters);
 		WebRuleUtils.validateRuleTemplateAndDocumentType(getOldRule(document), getNewRule(document), parameters);
 		WebRuleUtils.establishDefaultRuleValues(getNewRule(document));
-		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
+		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 	}
 		
 	/**
@@ -113,8 +113,8 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
 		}
 		WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
-		getNewRule(document).setPreviousVersionId(getOldRule(document).getRuleBaseValuesId());       
-		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
+		getNewRule(document).setPreviousVersionId(getOldRule(document).getRuleBaseValuesId()); 
+		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 		super.processAfterEdit(document, parameters);
 	}
 

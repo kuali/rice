@@ -92,16 +92,16 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward getDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		Long docId = null;
+		String docId = null;
 		
 		// check if we have a plausible docId first
-		if (StringUtils.isEmpty(docForm.getRouteHeaderId())) {
-			GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_REQUIRED, "Document ID");
+		if (StringUtils.isEmpty(docForm.getDocumentId())) {
+			GlobalVariables.getMessageMap().putError("documentId", RiceKeyConstants.ERROR_REQUIRED, "Document ID");
 		} else {
 			try {
-				docId = Long.valueOf(docForm.getRouteHeaderId().trim());
+				docId = docForm.getDocumentId().trim();
 			} catch (NumberFormatException nfe) {
-				GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_NUMERIC, "Document ID");
+				GlobalVariables.getMessageMap().putError("documentId", RiceKeyConstants.ERROR_NUMERIC, "Document ID");
 			}
 		}
 
@@ -114,13 +114,13 @@ public class DocumentOperationAction extends KewKualiAction {
 			List branches=new ArrayList();
 
 			if (routeHeader == null) {
-				GlobalVariables.getMessageMap().putError("routeHeaderId", RiceKeyConstants.ERROR_EXISTENCE, "document");
+				GlobalVariables.getMessageMap().putError("documentId", RiceKeyConstants.ERROR_EXISTENCE, "document");
 			} else {
 				materializeDocument(routeHeader);
 				docForm.setRouteHeader(routeHeader);
 				setRouteHeaderTimestampsToString(docForm);
 				docForm.setRouteHeaderOp(KEWConstants.NOOP);
-				docForm.setRouteHeaderId(docForm.getRouteHeaderId().trim());
+				docForm.setDocumentId(docForm.getDocumentId().trim());
 				String initials="";
 				for(Iterator lInitials=routeHeader.getInitialRouteNodeInstances().iterator();lInitials.hasNext();){
 					Long initial=((RouteNodeInstance)lInitials.next()).getRouteNodeInstanceId();
@@ -175,7 +175,7 @@ public class DocumentOperationAction extends KewKualiAction {
 	public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
 		docForm.setRouteHeader(new DocumentRouteHeaderValue());
-		docForm.setRouteHeaderId(null);
+		docForm.setDocumentId(null);
 		return mapping.findForward("basic");
 	}
 
@@ -230,7 +230,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				try {
 					actionRequest.setCreateDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(createDateParamName)).getTime()));
 					actionRequest.setCreateDateString(RiceConstants.getDefaultDateFormat().format(actionRequest.getCreateDate()));
-					actionRequest.setRouteHeaderId(docForm.getRouteHeader().getRouteHeaderId());
+					actionRequest.setDocumentId(docForm.getRouteHeader().getDocumentId());
 					actionRequest.setParentActionRequest(getActionRequestService().findByActionRequestId(actionRequest.getParentActionRequestId()));
 					actionRequest.setActionTaken(getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId()));
 					if (actionRequest.getNodeInstance() != null && actionRequest.getNodeInstance().getRouteNodeInstanceId() == null) {
@@ -293,7 +293,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				try {
 					actionItem.setDateAssigned(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(dateAssignedParamName)).getTime()));
 					actionItem.setDateAssignedString(RiceConstants.getDefaultDateFormat().format(actionItem.getDateAssigned()));
-					actionItem.setRouteHeaderId(docForm.getRouteHeader().getRouteHeaderId());
+					actionItem.setDocumentId(docForm.getRouteHeader().getDocumentId());
 					// getActionItemService().validateActionItem(actionItem);
 					getActionListService().saveActionItem(actionItem);
 					change = true;
@@ -473,8 +473,8 @@ public class DocumentOperationAction extends KewKualiAction {
 			getBranchService().deleteBranchStates(branchStatesToBeDeleted);
 		}
 
+		WorkflowDocument workflowDocument = WorkflowDocument.loadDocument(GlobalVariables.getUserSession().getPrincipalId(), docForm.getDocumentId());
 
-		WorkflowDocument workflowDocument = new WorkflowDocument(GlobalVariables.getUserSession().getPrincipalId(), new Long(docForm.getRouteHeaderId()));
 		String annotation = docForm.getAnnotation();
 		if (StringUtils.isEmpty(annotation)) {
 			annotation = DEFAULT_LOG_MSG;
@@ -485,7 +485,7 @@ public class DocumentOperationAction extends KewKualiAction {
 		String forward = null;
 		if (change) {
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("docoperation.operation.saved"));
-			docForm.setRouteHeader(getRouteHeaderService().getRouteHeader(docForm.getRouteHeader().getRouteHeaderId()));
+			docForm.setRouteHeader(getRouteHeaderService().getRouteHeader(docForm.getRouteHeader().getDocumentId()));
 			forward = "summary";
 		} else {
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("docoperation.operation.noop"));
@@ -601,7 +601,7 @@ public class DocumentOperationAction extends KewKualiAction {
 	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
 		String lookupInvocationModule = docForm.getLookupInvocationModule();
-		docForm.getRouteHeader().setRouteHeaderId(new Long(docForm.getRouteHeaderId()));
+		docForm.getRouteHeader().setDocumentId(docForm.getDocumentId());
 
 		if (lookupInvocationModule != null && !lookupInvocationModule.trim().equals("")) {
 			String lookupField = docForm.getLookupInvocationField();
@@ -729,7 +729,7 @@ public class DocumentOperationAction extends KewKualiAction {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
 			KSBXMLService routeDoc = MessageServiceNames.getRouteDocumentMessageService(docForm.getRouteHeader());
-			routeDoc.invoke(docForm.getRouteHeaderId());
+			routeDoc.invoke(docForm.getDocumentId());
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document was successfully queued"));
 			saveMessages(request, messages);
@@ -742,7 +742,7 @@ public class DocumentOperationAction extends KewKualiAction {
 	public ActionForward indexSearchableAttributes(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
 		SearchableAttributeProcessingService searchableAttributeService = MessageServiceNames.getSearchableAttributeService(docForm.getRouteHeader());
-		searchableAttributeService.indexDocument(docForm.getRouteHeader().getRouteHeaderId());
+		searchableAttributeService.indexDocument(docForm.getRouteHeader().getDocumentId());
 		ActionMessages messages = new ActionMessages();
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Searchable Attribute Indexing was successfully scheduled"));
 		saveMessages(request, messages);
@@ -751,8 +751,8 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward queueDocumentRequeuer(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		DocumentRequeuerService docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getServiceNamespace(), docForm.getRouteHeader().getRouteHeaderId(), 0);
-		docRequeue.requeueDocument(docForm.getRouteHeader().getRouteHeaderId());
+		DocumentRequeuerService docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getServiceNamespace(), docForm.getRouteHeader().getDocumentId(), 0);
+		docRequeue.requeueDocument(docForm.getRouteHeader().getDocumentId());
 		ActionMessages messages = new ActionMessages();
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document Requeuer was successfully scheduled"));
 		saveMessages(request, messages);
@@ -771,7 +771,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				}
 			}
 			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
-			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getRouteHeaderId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames, true);
+			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getDocumentId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames, true);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);
@@ -810,7 +810,7 @@ public class DocumentOperationAction extends KewKualiAction {
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getActionInvocationUser());
 			ActionInvocation invocation = new ActionInvocation(new Long(docForm.getActionInvocationActionItemId()), docForm.getActionInvocationActionCode());
 			ActionInvocationService actionInvocationService = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
-			actionInvocationService.invokeAction(principalId, docForm.getRouteHeader().getRouteHeaderId(), invocation);
+			actionInvocationService.invokeAction(principalId, docForm.getRouteHeader().getDocumentId(), invocation);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Action Invocation Processor was successfully scheduled"));
 			saveMessages(request, messages);

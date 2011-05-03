@@ -49,7 +49,7 @@ public interface DocumentSearchGenerator {
      * @param resultSet - resultSet containing data from document search main tables
      * @param searchCriteria - criteria used to perform the search
      * @param principalId - user who performed the search
-     * @return a list of DocSearchDTO objects (one for each route header id)
+     * @return a list of DocSearchDTO objects (one for each document id)
      * @throws SQLException
      */
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria, String principalId) throws SQLException;

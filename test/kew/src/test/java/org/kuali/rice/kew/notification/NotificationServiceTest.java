@@ -41,18 +41,18 @@ public class NotificationServiceTest extends KEWTestCase {
 	 * Tests that when a user is routed to twice at the same time that only email is sent to them.
 	 */
 	@Test public void testNoDuplicateEmails() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "NotificationTest");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "NotificationTest");
 		document.routeDocument("");
 
-		assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-		assertEquals("ewestfal should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-		assertEquals("jhopf should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("ewestfal should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jhopf should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 		// bmcgough is doing primary delegation so he should not recieve an email notification
-		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 		// jitrue should have no email because he is a secondary delegate and his default preferences should be set up to not send an email
-		assertEquals("jitrue should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jitrue should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 		// user1 took action so they should _not_ be sent any emails
-		assertEquals("user1 should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("user1 should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 
 	}
 
@@ -104,21 +104,21 @@ public class NotificationServiceTest extends KEWTestCase {
 		getPreferencesService().savePreferences(jhopfPrincipalId, prefs);
 
 		// route the document
-		WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "NotificationTest");
+		WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "NotificationTest");
 		document.routeDocument("");
 
 		// both ewestfal and jitrue should have one email
-		assertEquals("ewestfal should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-		assertEquals("jitrue should have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("ewestfal should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jitrue should have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// rkirkend (the primary delegate) should now have no emails
-		assertEquals("rkirkend should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("rkirkend should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// jhopf should now have no emails since his top-level requests are no longer notified
-		assertEquals("jhopf should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jhopf should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// bmcgough should now have no emails since his notification preference is DAILY
-		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 	}
 
 	/**
@@ -145,12 +145,12 @@ public class NotificationServiceTest extends KEWTestCase {
 		assertEquals("Wrong notification from address.", "fakey@mcfakey.com", documentType.getNotificationFromAddress());
 
 		// Do an app specific route to a document which should send an email to fakey@mcchild.com
-		WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "NotificationFromAddressChild");
+		WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "NotificationFromAddressChild");
 		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "Initial", "", getPrincipalIdForName("ewestfal"), "", true);
 		document.routeDocument("");
 
 		// verify that ewestfal was sent an email
-		assertEquals("ewestfal should have an email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("ewestfal should have an email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// we currently have no way from this test to determine the email address used for notification
 	}

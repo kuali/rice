@@ -155,9 +155,9 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getRouteHeaderId()
+     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getDocumentId()
      */
-    public Long getRouteHeaderId() throws WorkflowException {
+    public String getDocumentId() throws WorkflowException {
         LOG.debug("Using MockWorkflowDocument");
         return null;
     }

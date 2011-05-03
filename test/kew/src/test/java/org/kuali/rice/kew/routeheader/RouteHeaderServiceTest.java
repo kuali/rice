@@ -72,24 +72,24 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         assertNotNull(documentType);
         document.setDocumentTypeId(documentType.getDocumentTypeId());
         routeHeaderService.saveRouteHeader(document);
-        assertNotNull("Document was saved, it should have an ID now.", document.getRouteHeaderId());
+        assertNotNull("Document was saved, it should have an ID now.", document.getDocumentId());
         
         // now reload from database and verify it's the right size
-        document = routeHeaderService.getRouteHeader(document.getRouteHeaderId());
+        document = routeHeaderService.getRouteHeader(document.getDocumentId());
         String docContent = document.getDocContent();
         assertEquals("Doc content should be the same size as original string buffer.", buffer.length(), docContent.length());
         assertTrue("Should be greater than about 5000 bytes.", docContent.getBytes().length > 5000);
     }
 
     @Test public void testGetServiceNamespaceByDocumentId() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType2");
-    	Long documentId = document.getRouteHeaderId();
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType2");
+    	String documentId = document.getDocumentId();
     	String serviceNamespace = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
     	assertEquals("Service Namespace should be KEWNEW", "KEWNEW", serviceNamespace);
 
     	// now check TestDocumentType
-    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
-    	documentId = document.getRouteHeaderId();
+    	document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	documentId = document.getDocumentId();
     	serviceNamespace = routeHeaderService.getServiceNamespaceByDocumentId(documentId);
     	assertEquals("Service Namespace should be KEW", "KEW", serviceNamespace);
     }
@@ -100,9 +100,9 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     		return;
     	}
 
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
     	document.saveRoutingData();
-    	final Long documentId = document.getRouteHeaderId();
+    	final String documentId = document.getDocumentId();
         Locker locker = null;
         synchronized (lock) {
             locker = new Locker(documentId);
@@ -152,14 +152,14 @@ public class RouteHeaderServiceTest extends KEWTestCase {
 //        assertTrue("Time locked should have been around 2000 milliseconds but was " + timeLocked, timeLocked > (2000-250) && timeLocked < (2000+250));
         
         // document should be unlocked again
-        routeHeaderService.lockRouteHeader(document.getRouteHeaderId(), false);
+        routeHeaderService.lockRouteHeader(document.getDocumentId(), false);
         assertTrue("Locker thread should have completed.", locker.isCompleted());
     }
 
     private class Locker extends Thread {
-        private Long documentId;
+        private String documentId;
         private boolean isCompleted = false;
-        public Locker(Long documentId) {
+        public Locker(String documentId) {
             this.documentId = documentId;
         }
         public void run() {

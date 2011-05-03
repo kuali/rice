@@ -86,7 +86,7 @@ public class DocumentRouteLevelChangeDTO extends DocumentEventDTO {
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("RouteHeaderID ").append(getRouteHeaderId());
+        buffer.append("DocumentId ").append(getDocumentId());
         buffer.append(" changing from routeLevel ").append(oldRouteLevel);
         buffer.append(" to routeLevel ").append(newRouteLevel);
         buffer.append(", from node ").append(oldNodeName);

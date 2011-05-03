@@ -41,7 +41,7 @@ public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
     }
 
     protected void markDocument() throws WorkflowException {
-        //this.event = new DocumentRouteStatusChange(this.routeHeaderId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_CANCEL_CD);
+        //this.event = new DocumentRouteStatusChange(this.documentId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_CANCEL_CD);
         getRouteHeader().markDocumentCanceled();
         KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
     }

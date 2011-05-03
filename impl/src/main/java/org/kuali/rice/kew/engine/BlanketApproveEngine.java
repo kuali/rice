@@ -60,7 +60,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
     /**
      * Orchestrates the document through the blanket approval process. The termination of the process is keyed off of the Set of node names. If there are no node names, then the document will be blanket approved past the terminal node(s) in the document.
      */
-    public void process(Long documentId, Long nodeInstanceId) throws Exception {
+    public void process(String documentId, Long nodeInstanceId) throws Exception {
         if (documentId == null) {
             throw new IllegalArgumentException("Cannot process a null document id.");
         }

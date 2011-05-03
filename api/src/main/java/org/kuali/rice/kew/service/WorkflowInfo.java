@@ -71,27 +71,27 @@ public class WorkflowInfo implements java.io.Serializable {
     /**
      * Returns the RouteHeaderVO of the specified document for the specified user
      * @param principalId principalId as whom to obtain the route header VO
-     * @param routeHeaderId the id of the document whose route header VO to obtain
+     * @param documentId the id of the document whose route header VO to obtain
      * @return the RouteHeaderVO of the specified document for the specified user
      * @throws WorkflowException if an error occurs obtaining the route header VO
      * @see WorkflowUtility#getRouteHeaderWithUser(String, Long)
      */
-    public RouteHeaderDTO getRouteHeader(String principalId, Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, routeHeaderId);
+    public RouteHeaderDTO getRouteHeader(String principalId, String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, documentId);
     }
     
-    public AttributeSet getActionsRequested(String principalId, Long documentId) throws WorkflowException {
+    public AttributeSet getActionsRequested(String principalId, String documentId) throws WorkflowException {
     	return getWorkflowUtility().getActionsRequested(principalId, documentId);
     }
 
     /**
      * Returns the RouteHeaderVO of the specified document
-     * @param routeHeaderId the id of the document whose route header VO to obtain
+     * @param documentId the id of the document whose route header VO to obtain
      * @return the RouteHeaderVO of the specified document
      * @throws WorkflowException if an error occurs obtaining the route header VO
      * @see WorkflowUtility#getRouteHeader(Long)
      */
-    public RouteHeaderDTO getRouteHeader(Long documentId) throws WorkflowException {
+    public RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException {
     	return getWorkflowUtility().getRouteHeader(documentId);
     }
 
@@ -102,7 +102,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if document cannot be found for the given ID or
      * if the given document ID is null.
      */
-    public String getDocumentStatus(Long documentId) throws WorkflowException {
+    public String getDocumentStatus(String documentId) throws WorkflowException {
    		return getWorkflowUtility().getDocumentStatus(documentId);
     }
 
@@ -113,7 +113,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if document cannot be found for the given ID or
      * if the given document ID is null.
      */
-    public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(Long documentId) throws WorkflowException {
+    public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(String documentId) throws WorkflowException {
    		return getWorkflowUtility().getDocumentStatusTransitionHistory(documentId);
     }
 
@@ -153,38 +153,38 @@ public class WorkflowInfo implements java.io.Serializable {
     	return getWorkflowUtility().getUserActionItemCount(principalId);
     }
     
-    public ActionItemDTO[] getActionItems(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getAllActionItems(routeHeaderId);
+    public ActionItemDTO[] getActionItems(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getAllActionItems(documentId);
     }
 
-    public ActionItemDTO[] getActionItems(Long routeHeaderId, String[] actionRequestedCodes) throws WorkflowException {
-    	return getWorkflowUtility().getActionItems(routeHeaderId, actionRequestedCodes);
+    public ActionItemDTO[] getActionItems(String documentId, String[] actionRequestedCodes) throws WorkflowException {
+    	return getWorkflowUtility().getActionItems(documentId, actionRequestedCodes);
     }
 
     /**
      * Returns the pending action requests of the document of the specified id
-     * @param routeHeaderId the id of the document whose action requests will be retrieved
+     * @param documentId the id of the document whose action requests will be retrieved
      * @return the pending action requests of the document of the specified id
      * @throws WorkflowException if an error occurs obtaining the documents action requests
      * @see WorkflowUtility#getActionRequests(Long)
      */
-    public ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getAllActionRequests(routeHeaderId);
+    public ActionRequestDTO[] getActionRequests(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getAllActionRequests(documentId);
     }
 
    /**
     * Returns the pending action requests of the document of the specified id for the specified
     * user and/or the specified node name.  If both user and node name are empty then will
     * return all pending action requests.
-    * @param routeHeaderId the id of the document whose action requests will be retrieved
+    * @param documentId the id of the document whose action requests will be retrieved
     * @param nodeName the node name of the requests to be retrieved
     * @param userId the user that the requests would be satisfied by
     * @return the pending action requests of the document of the specified id
     * @throws WorkflowException if an error occurs obtaining the documents action requests
     * @see WorkflowUtility#getActionRequests(Long)
     */
-   public ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException {
-	   return getWorkflowUtility().getActionRequests(routeHeaderId, nodeName, principalId);
+   public ActionRequestDTO[] getActionRequests(String documentId, String nodeName, String principalId) throws WorkflowException {
+	   return getWorkflowUtility().getActionRequests(documentId, nodeName, principalId);
    }
 
    /**
@@ -192,27 +192,27 @@ public class WorkflowInfo implements java.io.Serializable {
 
     /**
      * Returns the actions taken on the document of the specified id
-     * @param routeHeaderId the id of the document whose actions taken will be retrieved
+     * @param documentId the id of the document whose actions taken will be retrieved
      * @return the actions taken on the document of the specified id
      * @throws WorkflowException if an error occurs obtaining the actions taken
      * @see WorkflowUtility#getActionsTaken(Long)
      */
-    public ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getActionsTaken(routeHeaderId);
+    public ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getActionsTaken(documentId);
     }
 
     /**
      * Returns whether the user is in the document's route log (whether an action request has been, or may be,
      * generated for the user)
-     * @param routeHeaderId the id of the document to analyze
+     * @param documentId the id of the document to analyze
      * @param userId the id of the user to check
      * @param lookFuture whether to evaluate potential future requests
      * @return whether the user is in the document's route log
      * @throws WorkflowException if an error occurs determining whether the user is in the document's route log
      * @see WorkflowUtility#isUserInRouteLog(Long, String, boolean)
      */
-    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture) throws WorkflowException {
-    	return getWorkflowUtility().isUserInRouteLog(routeHeaderId, principalId, lookFuture);
+    public boolean isUserAuthenticatedByRouteLog(String documentId, String principalId, boolean lookFuture) throws WorkflowException {
+    	return getWorkflowUtility().isUserInRouteLog(documentId, principalId, lookFuture);
     }
     
     /**
@@ -221,27 +221,27 @@ public class WorkflowInfo implements java.io.Serializable {
      * a "flattened" evaluation or not and only takes effect if lookFuture is true.  When doing a "flattened"
      * evaluation, all branches will be followed regardless of split and join logic built into the document type.
      * 
-     * @param routeHeaderId the id of the document to analyze
+     * @param documentId the id of the document to analyze
      * @param userId the id of the user to check
      * @param lookFuture whether to evaluate potential future requests
      * @return whether the user is in the document's route log
      * @throws WorkflowException if an error occurs determining whether the user is in the document's route log
      * @see WorkflowUtility#isUserInRouteLog(Long, String, boolean)
      */
-    public boolean isUserAuthenticatedByRouteLog(Long routeHeaderId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
-    	return getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(routeHeaderId, principalId, lookFuture, flattenNodes);
+    public boolean isUserAuthenticatedByRouteLog(String documentId, String principalId, boolean lookFuture, boolean flattenNodes) throws WorkflowException {
+    	return getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(documentId, principalId, lookFuture, flattenNodes);
     }
 
     /**
      * Returns whether the specified user is the final approver for the document
-     * @param routeHeaderId the id of document to check
+     * @param documentId the id of document to check
      * @param userId the id of the user to check
      * @return whether the specified user is the final approver for the document
      * @throws WorkflowException if an error occurs determining whether the user is the final approver on the document
      * @see WorkflowUtility#isFinalApprover(Long, String)
      */
-    public boolean isFinalApprover(Long routeHeaderId, String principalId) throws WorkflowException {
-    	return getWorkflowUtility().isFinalApprover(routeHeaderId, principalId);
+    public boolean isFinalApprover(String documentId, String principalId) throws WorkflowException {
+    	return getWorkflowUtility().isFinalApprover(documentId, principalId);
     }
 
     /**
@@ -281,7 +281,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException
      * @see WorkflowUtility#getDocumentDetail(Long)
      */
-    public DocumentDetailDTO getDocumentDetail(Long documentId) throws WorkflowException {
+    public DocumentDetailDTO getDocumentDetail(String documentId) throws WorkflowException {
     	return getWorkflowUtility().getDocumentDetail(documentId);
     }
 
@@ -299,47 +299,47 @@ public class WorkflowInfo implements java.io.Serializable {
     /**
      * Returns the route node instances that have been created so far during the life of the specified document.  This includes
      * all previous instances which have already been processed and are no longer active.
-     * @param routeHeaderId the id of the document whose route node instances should be returned
+     * @param documentId the id of the document whose route node instances should be returned
      * @return the route node instances that have been created so far during the life of this document
      * @throws WorkflowException if there is an error getting the route node instances for the document
      * @see WorkflowUtility#getDocumentRouteNodeInstances(Long)
      */
-    public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getDocumentRouteNodeInstances(routeHeaderId);
+    public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getDocumentRouteNodeInstances(documentId);
     }
 
     /**
      * Returns all active node instances on the document.
-     * @param routeHeaderId id of the document whose active node instances should be returned
+     * @param documentId id of the document whose active node instances should be returned
      * @return all active node instances on the document
      * @throws WorkflowException if there is an error obtaining the currently active nodes on the document
      * @see WorkflowUtility#getActiveNodeInstances(Long)
      */
-    public RouteNodeInstanceDTO[] getActiveNodeInstances(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getActiveNodeInstances(routeHeaderId);
+    public RouteNodeInstanceDTO[] getActiveNodeInstances(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getActiveNodeInstances(documentId);
     }
 
     /**
      * Returns all node instances on the document which have no successor.
-     * @param routeHeaderId id of the document whose terminal node instances should be returned
+     * @param documentId id of the document whose terminal node instances should be returned
      * @return all terminal node instances of the document
      * @throws WorkflowException if there is an error obtaining the terminal node instances on the document
      * @see WorkflowUtility#getTerminalNodeInstances(Long)
      */
-    public RouteNodeInstanceDTO[] getTerminalNodeInstances(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getTerminalNodeInstances(routeHeaderId);
+    public RouteNodeInstanceDTO[] getTerminalNodeInstances(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getTerminalNodeInstances(documentId);
     }
     
     /**
      * Returns the current node instances on the document.  If the document has active nodes, those will
      * be returned.  Otherwise, all terminal nodes will be returned.
-     * @param routeHeaderId id of the document whose current node instances should be returned
+     * @param documentId id of the document whose current node instances should be returned
      * @return all current node instances of the document
      * @throws WorkflowException if there is an error obtaining the current node instances on the document
      * @see WorkflowUtility#getCurrentNodeInstances(Long)
      */
-    public RouteNodeInstanceDTO[] getCurrentNodeInstances(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getCurrentNodeInstances(routeHeaderId);
+    public RouteNodeInstanceDTO[] getCurrentNodeInstances(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getCurrentNodeInstances(documentId);
     }
     
     /**
@@ -350,7 +350,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if there is an error obtaining the current nodes on the document
      * @see WorkflowUtility#getCurrentNodeInstances(Long)
      */
-    public String[] getCurrentNodeNames(Long documentId) throws WorkflowException {
+    public String[] getCurrentNodeNames(String documentId) throws WorkflowException {
     	RouteNodeInstanceDTO[] currentNodeInstances = getWorkflowUtility().getCurrentNodeInstances(documentId);
     	String[] nodeNames = new String[(currentNodeInstances == null ? 0 : currentNodeInstances.length)];
     	for (int index = 0; index < currentNodeInstances.length; index++) {
@@ -367,8 +367,8 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs re-resolving the role
      * @see WorkflowUtility#reResolveRole(String, String, String)
      */
-    public void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
-    	getWorkflowUtility().reResolveRole(documentTypeName, roleName, qualifiedRoleNameLabel);
+    public void reResolveRoleByDocTypeName(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
+    	getWorkflowUtility().reResolveRoleByDocTypeName(documentTypeName, roleName, qualifiedRoleNameLabel);
     }
 
     /**
@@ -379,7 +379,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs re-resolving the role
      * @see WorkflowUtility#reResolveRoleByDocumentId(Long, String, String)
      */
-    public void reResolveRole(Long documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
+    public void reResolveRoleByDocumentId(String documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
     	getWorkflowUtility().reResolveRoleByDocumentId(documentId, roleName, qualifiedRoleNameLabel);
     }
 
@@ -399,21 +399,21 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param documentId the document id of the document for which to fetch the application document id
      * @return the application document of the document with the given id or null if the document does not have an application document id
      */
-    public String getAppDocId(Long documentId)  throws WorkflowException {
+    public String getAppDocId(String documentId)  throws WorkflowException {
     	return getWorkflowUtility().getAppDocId(documentId);
     }
 
     /**
      * Returns whether the specified user is the last approver at the specified node name
-     * @param routeHeaderId the id of document to check
+     * @param documentId the id of document to check
      * @param userId the id of the user to check
      * @param nodeName name of node to check
      * @return whether the specified user is the last approver at the specified node name
      * @throws WorkflowException if an error occurs determining whether the user is the last approver at the specified node
      * @see WorkflowUtility#isLastApproverAtNode(Long, String, String)
      */
-    public boolean isLastApproverAtNode(Long routeHeaderId, String principalId, String nodeName) throws WorkflowException {
-    	return getWorkflowUtility().isLastApproverAtNode(routeHeaderId, principalId, nodeName);
+    public boolean isLastApproverAtNode(String documentId, String principalId, String nodeName) throws WorkflowException {
+    	return getWorkflowUtility().isLastApproverAtNode(documentId, principalId, nodeName);
     }
 
     /**
@@ -455,13 +455,13 @@ public class WorkflowInfo implements java.io.Serializable {
 
     /**
      * Returns the document content VO of the specified document
-     * @param routeHeaderId the id of the document whose content should be returned
+     * @param documentId the id of the document whose content should be returned
      * @return the document content VO of the specified document
      * @throws WorkflowException if an error occurs obtaining the document content
      * @see WorkflowUtility#getDocumentContent(Long)
      */
-    public DocumentContentDTO getDocumentContent(Long routeHeaderId) throws WorkflowException {
-    	return getWorkflowUtility().getDocumentContent(routeHeaderId);
+    public DocumentContentDTO getDocumentContent(String documentId) throws WorkflowException {
+    	return getWorkflowUtility().getDocumentContent(documentId);
     }
 
     /**
@@ -471,7 +471,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs
      * @see WorkflowUtility#getPreviousRouteNodeNames(Long)
      */
-    public String[] getPreviousRouteNodeNames(Long documentId) throws WorkflowException {
+    public String[] getPreviousRouteNodeNames(String documentId) throws WorkflowException {
     	return getWorkflowUtility().getPreviousRouteNodeNames(documentId);
     }
 
@@ -503,8 +503,8 @@ public class WorkflowInfo implements java.io.Serializable {
     /**
      * @deprecated use {@link #isLastApproverAtNode(Long, String, String) instead
      */
-    protected boolean isLastApproverInRouteLevel(Long routeHeaderId, String principalId, Integer routeLevel) throws WorkflowException {
-    	return getWorkflowUtility().isLastApproverInRouteLevel(routeHeaderId, principalId, routeLevel);
+    protected boolean isLastApproverInRouteLevel(String documentId, String principalId, Integer routeLevel) throws WorkflowException {
+    	return getWorkflowUtility().isLastApproverInRouteLevel(documentId, principalId, routeLevel);
     }
 
     /**
@@ -519,12 +519,12 @@ public class WorkflowInfo implements java.io.Serializable {
      * This method gets a list of ids of all principals who have a pending action request for a document.
      * 
      * @param actionRequestedCd
-     * @param routeHeaderId
+     * @param documentId
      * @return
      * @throws WorkflowException
      */
-	public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) throws WorkflowException {
-		String[] results = getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, routeHeaderId);
+	public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId) throws WorkflowException {
+		String[] results = getWorkflowUtility().getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, documentId);
 		if (ObjectUtils.equals(null, results)) {
 			return null;
 		}
@@ -538,24 +538,24 @@ public class WorkflowInfo implements java.io.Serializable {
      * - people with a pending action request, 
 	 * - people who will receive an action request for the document in question
 	 * 
-     * @param routeHeaderId
+     * @param documentId
      * @param lookFuture
      * @return
      * @throws WorkflowException
      */
-	public List<String> getPrincipalIdsInRouteLog(Long routeHeaderId, boolean lookFuture) throws WorkflowException {
-		String[] results = getWorkflowUtility().getPrincipalIdsInRouteLog(routeHeaderId, lookFuture);
+	public List<String> getPrincipalIdsInRouteLog(String documentId, boolean lookFuture) throws WorkflowException {
+		String[] results = getWorkflowUtility().getPrincipalIdsInRouteLog(documentId, lookFuture);
 		if (ObjectUtils.equals(null, results)) {
 			return null;
 		}
 		return (List<String>) Arrays.asList(results);
     }
     
-    public String getDocumentInitiatorPrincipalId( Long routeHeaderId ) throws WorkflowException {
-    	return getWorkflowUtility().getDocumentInitiatorPrincipalId(routeHeaderId);
+    public String getDocumentInitiatorPrincipalId( String documentId ) throws WorkflowException {
+    	return getWorkflowUtility().getDocumentInitiatorPrincipalId(documentId);
     }
-    public String getDocumentRoutedByPrincipalId( Long routeHeaderId ) throws WorkflowException {
-    	return getWorkflowUtility().getDocumentRoutedByPrincipalId(routeHeaderId);
+    public String getDocumentRoutedByPrincipalId( String documentId ) throws WorkflowException {
+    	return getWorkflowUtility().getDocumentRoutedByPrincipalId(documentId);
     }
     
     public boolean hasRouteNode(String documentTypeName, String routeNodeName) throws WorkflowException {

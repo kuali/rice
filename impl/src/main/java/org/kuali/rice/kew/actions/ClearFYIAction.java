@@ -71,7 +71,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      * @return  returns an error message to give system better identifier for problem
      */
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()));
     }
 
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
@@ -116,13 +116,13 @@ public class ClearFYIAction extends ActionTakenEvent {
      * @throws ResourceUnavailableException
      */
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Clear FYI for document : " + annotation);
         LOG.debug("Checking to see if the action is legal");
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
         if (actionRequests == null || actionRequests.isEmpty()) {
         	DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
         	if (allowUnrequested != null) {

@@ -48,19 +48,19 @@ public class RoutingReportServiceTest extends KEWTestCase {
         
         
         // route a document to the first node
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
         // there should now be 1 active node and 2 pending requests on the document
-        Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
-        List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+        Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
+        List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         assertEquals("Should be one active node.", 1, activeNodeInstances.size());
         Long activeNodeId = ((RouteNodeInstance)activeNodeInstances.iterator().next()).getRouteNodeInstanceId();
         assertEquals("Should be 2 pending requests.", 2, requests.size());
         
         // now, lets "get our report on", the WorkflowInfo.routingReport method will call the service's report method.
         WorkflowInfo info = new WorkflowInfo();
-        ReportCriteriaDTO criteria = new ReportCriteriaDTO(document.getRouteHeaderId());
+        ReportCriteriaDTO criteria = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
         
         long start = System.currentTimeMillis();
         DocumentDetailDTO documentDetail = info.routingReport(criteria);
@@ -112,14 +112,14 @@ public class RoutingReportServiceTest extends KEWTestCase {
         assertTrue("There should be an ack to jhopf", ackToJhopf);
         
         // assert that the report call didn't save any of the nodes or requests
-        activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
-        requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+        activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
+        requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         assertEquals("Should be one active node.", 1, activeNodeInstances.size());
         assertEquals("Should be at the same node.", activeNodeId, ((RouteNodeInstance)activeNodeInstances.iterator().next()).getRouteNodeInstanceId());
         assertEquals("Should be 2 pending requests.", 2, requests.size());
         
         // test reporting to a specified target node
-        criteria = new ReportCriteriaDTO(document.getRouteHeaderId(), SeqSetup.ACKNOWLEDGE_1_NODE);
+        criteria = ReportCriteriaDTO.createReportCritByDocIdAndTargetNdNm(document.getDocumentId(), SeqSetup.ACKNOWLEDGE_1_NODE);
         documentDetail = info.routingReport(criteria);
         
         // document detail should have all of our requests except for the final acknowledge

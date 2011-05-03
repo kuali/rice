@@ -38,7 +38,7 @@ public class RoutingNodeFactory {
         return branch;
     }
     
-    public RouteNodeInstance createRouteNodeInstance(Long documentId, RouteNode node) {
+    public RouteNodeInstance createRouteNodeInstance(String documentId, RouteNode node) {
         RouteNodeInstance nodeInstance = new RouteNodeInstance();
         nodeInstance.setActive(false);
         nodeInstance.setComplete(false);

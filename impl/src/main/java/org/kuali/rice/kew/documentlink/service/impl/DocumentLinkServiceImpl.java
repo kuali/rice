@@ -68,7 +68,7 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
 	 * 
 	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#getLinkedDocumentByDocId(java.lang.Long)
 	 */
-	public List<DocumentLink> getLinkedDocumentsByDocId(Long docId) {
+	public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
 		return getDocumentLinkDAO().getLinkedDocumentsByDocId(docId);
 	}
 
@@ -77,7 +77,7 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
 	 * 
 	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#deleteDocumentLinksByDocId(java.lang.Long)
 	 */
-	public void deleteDocumentLinksByDocId(Long docId) {
+	public void deleteDocumentLinksByDocId(String docId) {
 		getDocumentLinkDAO().deleteDocmentLinksByDocId(docId);
 		
 	}

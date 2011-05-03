@@ -130,7 +130,7 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
         getEmailContentGenerator().resetServiceAccessed();
     }
 
-    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) {
+    public int immediateReminderEmailsSent(String networkId, String documentId, String actionRequestCd) {
     	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
         List actionItemsSentUser = immediateReminders.get(principal.getPrincipalId());
         if (actionItemsSentUser == null) {
@@ -139,7 +139,7 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
         int emailsSent = 0;
         for (Iterator iter = actionItemsSentUser.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
-            if (actionItem.getRouteHeaderId().equals(documentId) && actionItem.getActionRequestCd().equals(actionRequestCd)) {
+            if (actionItem.getDocumentId().equals(documentId) && actionItem.getActionRequestCd().equals(actionRequestCd)) {
                 emailsSent++;
             }
         }

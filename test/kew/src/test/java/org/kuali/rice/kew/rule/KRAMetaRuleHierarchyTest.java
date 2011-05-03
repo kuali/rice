@@ -43,9 +43,9 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
           "</stop>" +
         "</stop>";
 
-    protected void approve(String user, Long docId) throws WorkflowException {
+    protected void approve(String user, String docId) throws WorkflowException {
         log.info("Approving as " + user);
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName(user), docId);
+        WorkflowDocument doc = WorkflowDocument.loadDocument(getPrincipalIdForName(user), docId);
         doc.approve("approving as " + user);
     }
 
@@ -53,72 +53,72 @@ public class KRAMetaRuleHierarchyTest extends KEWTestCase {
     public void test() throws WorkflowException {
         loadXmlFile("KRAMetaRuleHierarchy.xml");
         
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("quickstart"), "KRAMetaRuleHierarchyTest");
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("quickstart"), "KRAMetaRuleHierarchyTest");
         
         doc.getDocumentContent().setApplicationContent(HIERARCHY);
         doc.routeDocument("initial route");
 
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
+        TestUtilities.logActionRequests(doc.getDocumentId());
         // user 2 is before user3 because of ordering between business rules included by meta-rule
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "shenl", "jhopf", "ewestfal" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "user1", "arh14", "rkirkend", "xqi" }, false);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user2", "shenl", "jhopf", "ewestfal" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user3", "user1", "arh14", "rkirkend", "xqi" }, false);
         
-        approve("user2", doc.getRouteHeaderId());
+        approve("user2", doc.getDocumentId());
 
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "shenl", "jhopf", "ewestfal" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user2", "user1", "arh14", "rkirkend", "xqi" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user3", "shenl", "jhopf", "ewestfal" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user2", "user1", "arh14", "rkirkend", "xqi" }, false);
 
-        approve("shenl", doc.getRouteHeaderId());
+        approve("shenl", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "jhopf", "ewestfal" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "shenl", "user2", "user1", "arh14", "rkirkend", "xqi" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user3", "jhopf", "ewestfal" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "shenl", "user2", "user1", "arh14", "rkirkend", "xqi" }, false);
         
-        approve("jhopf", doc.getRouteHeaderId());
+        approve("jhopf", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "ewestfal" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "jhopf", "shenl", "user2", "user1", "arh14", "rkirkend", "xqi" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user3", "ewestfal" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "jhopf", "shenl", "user2", "user1", "arh14", "rkirkend", "xqi" }, false);
         
-        approve("ewestfal", doc.getRouteHeaderId());
+        approve("ewestfal", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "rkirkend" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "ewestfal", "shenl", "user2", "user1", "arh14", "xqi" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user3", "rkirkend" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "ewestfal", "shenl", "user2", "user1", "arh14", "xqi" }, false);
         
-        approve("rkirkend", doc.getRouteHeaderId());
+        approve("rkirkend", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "rkirkend", "ewestfal", "shenl", "user2", "user1", "arh14", "xqi" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user3" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "rkirkend", "ewestfal", "shenl", "user2", "user1", "arh14", "xqi" }, false);
         
-        approve("user3", doc.getRouteHeaderId());
+        approve("user3", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "arh14" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user3", "rkirkend", "ewestfal", "shenl", "user2", "user1", "xqi" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "arh14" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user3", "rkirkend", "ewestfal", "shenl", "user2", "user1", "xqi" }, false);
         
-        approve("arh14", doc.getRouteHeaderId());
+        approve("arh14", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "arh14", "user3", "rkirkend", "ewestfal", "shenl", "user2", "arh14", "xqi" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user1" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "arh14", "user3", "rkirkend", "ewestfal", "shenl", "user2", "arh14", "xqi" }, false);
         
-        approve("user1", doc.getRouteHeaderId());
+        approve("user1", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());        
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "xqi" }, true);
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "user1", "arh14", "user3", "rkirkend", "ewestfal", "shenl", "user2" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());        
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "xqi" }, true);
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "user1", "arh14", "user3", "rkirkend", "ewestfal", "shenl", "user2" }, false);
         
-        approve("xqi", doc.getRouteHeaderId());
+        approve("xqi", doc.getDocumentId());
         
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
-        TestUtilities.assertApprovals(doc.getRouteHeaderId(), new String[] { "xqi", "user1", "arh14", "user3", "rkirkend", "ewestfal", "shenl", "user2" }, false);
+        TestUtilities.logActionRequests(doc.getDocumentId());
+        TestUtilities.assertApprovals(doc.getDocumentId(), new String[] { "xqi", "user1", "arh14", "user3", "rkirkend", "ewestfal", "shenl", "user2" }, false);
 
-        TestUtilities.logActionRequests(doc.getRouteHeaderId());
+        TestUtilities.logActionRequests(doc.getDocumentId());
 
-        doc = new WorkflowDocument(getPrincipalIdForName("quickstart"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("quickstart"), doc.getDocumentId());
         assertTrue(doc.stateIsFinal());
     }
 }

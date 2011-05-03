@@ -18,7 +18,7 @@
     showDocumentInfo="false" htmlFormAction="RouteLog" docTitle="Route Log" headerMenuBar="${KualiForm.headerMenuBar}">
 
     <kul:tabTop
-        tabTitle="ID: ${routeHeader.routeHeaderId}"
+        tabTitle="ID: ${routeHeader.documentId}"
         defaultOpen="true"
         >
         <div class="tab-container" align="center">
@@ -233,7 +233,7 @@
                                 <c:url value="RouteLog.do">
                                     <c:param name="showFuture" value="${!KualiForm.showFuture}" />
                                     <c:param name="showNotes" value="${KualiForm.showNotes}" />
-                                    <c:param name="routeHeaderId" value="${KualiForm.routeHeaderId}" />
+                                    <c:param name="documentId" value="${KualiForm.documentId}" />
                                 </c:url>">
                                     <c:if test="${KualiForm.showFuture}">
                                         <img src="images/tinybutton-hide1.gif">
@@ -300,7 +300,7 @@
                  <tr>
                    <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.RouteLog.newActionMessage.label.actionMessage"/></kul:htmlAttributeHeaderCell>
                    <td class="datacell">
-                       <html-el:hidden property="routeHeaderId" value="${routeHeader.routeHeaderId}" />
+                       <html-el:hidden property="documentId" value="${routeHeader.documentId}" />
                        <html-el:text property="newRouteLogActionMessage" size="40" />&nbsp;
                        <html-el:image src="${ConfigProperties.kr.url}/images/buttonsmall_log.gif" property="methodToCall.logActionMessageInRouteLog" styleClass="tinybutton" />
                    </td>

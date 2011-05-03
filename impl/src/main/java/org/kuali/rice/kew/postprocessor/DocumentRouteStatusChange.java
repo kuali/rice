@@ -39,12 +39,12 @@ public class DocumentRouteStatusChange implements IDocumentEvent {
 
 	private static final long serialVersionUID = -5170568498563302803L;
 	private String appDocId;
-	private Long routeHeaderId;
+	private String documentId;
 	private String newRouteStatus;
 	private String oldRouteStatus;
 
-	public DocumentRouteStatusChange(Long routeHeaderId, String appDocId, String oldStatus, String newStatus) {
-		this.routeHeaderId = routeHeaderId;
+	public DocumentRouteStatusChange(String documentId, String appDocId, String oldStatus, String newStatus) {
+		this.documentId = documentId;
 		this.appDocId = appDocId;
 		this.newRouteStatus = newStatus;
 		this.oldRouteStatus = oldStatus;
@@ -54,8 +54,8 @@ public class DocumentRouteStatusChange implements IDocumentEvent {
 		return ROUTE_STATUS_CHANGE;
 	}
 
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
 
 	public String getNewRouteStatus() {
@@ -68,7 +68,7 @@ public class DocumentRouteStatusChange implements IDocumentEvent {
 
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("RouteHeaderID ").append(routeHeaderId);
+		buffer.append("DocumentId ").append(documentId);
 		buffer.append(" changing from routeStatus ").append(oldRouteStatus);
 		buffer.append(" to routeStatus ").append(newRouteStatus);
 

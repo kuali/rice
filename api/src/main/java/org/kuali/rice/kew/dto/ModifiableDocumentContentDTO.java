@@ -28,7 +28,7 @@ public class ModifiableDocumentContentDTO extends DocumentContentDTO {
 	private boolean modified = false;
 	
 	public ModifiableDocumentContentDTO(DocumentContentDTO documentContentVO) {
-		super.setRouteHeaderId(documentContentVO.getRouteHeaderId());
+		super.setDocumentId(documentContentVO.getDocumentId());
 		super.setApplicationContent(documentContentVO.getApplicationContent());
 		super.setAttributeContent(documentContentVO.getAttributeContent());
 		super.setSearchableContent(documentContentVO.getSearchableContent());
@@ -79,9 +79,9 @@ public class ModifiableDocumentContentDTO extends DocumentContentDTO {
 		super.setAttributeDefinitions(attributeDefinitions);
 	}
 
-	public void setRouteHeaderId(Long routeHeaderId) {
+	public void setDocumentId(String documentId) {
 		modified = true;
-		super.setRouteHeaderId(routeHeaderId);
+		super.setDocumentId(documentId);
 	}
 
 	public void setSearchableContent(String searchableContent) {

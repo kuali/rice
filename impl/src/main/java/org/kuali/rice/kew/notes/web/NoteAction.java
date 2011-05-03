@@ -98,7 +98,7 @@ public class NoteAction extends KewKualiAction {
     	NoteService noteService = KEWServiceLocator.getNoteService();
     	Note note = noteService.getNoteByNoteId(noteForm.getNote().getNoteId());
     	noteService.deleteAttachment(note.getAttachments().remove(0));
-    	noteForm.setDocId(note.getRouteHeaderId());
+    	noteForm.setDocId(note.getDocumentId());
     	noteForm.setNoteIdNumber(note.getNoteId());
     	edit(mapping, form, request, response);
     	return start(mapping, form, request, response);
@@ -134,13 +134,13 @@ public class NoteAction extends KewKualiAction {
         } else {
             noteToSave = new Note();
             noteToSave.setNoteId(null);
-            noteToSave.setRouteHeaderId(noteForm.getDocId());
+            noteToSave.setDocumentId(noteForm.getDocId());
             noteToSave.setNoteCreateDate(new Timestamp((new Date()).getTime()));
             noteToSave.setNoteAuthorWorkflowId(getUserSession().getPrincipalId());
             noteToSave.setNoteText(noteForm.getAddText());
         }
         CustomNoteAttribute customNoteAttribute = null;
-        DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteToSave.getRouteHeaderId());
+        DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteToSave.getDocumentId());
         boolean canEditNote = false;
         boolean canAddNotes = false;
         if (routeHeader != null) {
@@ -215,7 +215,7 @@ public class NoteAction extends KewKualiAction {
 
     private void retrieveNoteList(HttpServletRequest request, NoteForm noteForm) throws Exception {
         if (noteForm.getDocId() != null) {
-//            List allNotes = getNoteService().getNotesByRouteHeaderId(noteForm.getDocId());
+//            List allNotes = getNoteService().getNotesByDocumentId(noteForm.getDocId());
 
             CustomNoteAttribute customNoteAttribute = null;
             DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteForm.getDocId());

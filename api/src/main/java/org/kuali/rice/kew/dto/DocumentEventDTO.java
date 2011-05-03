@@ -34,7 +34,7 @@ public abstract class DocumentEventDTO implements Serializable {
     public static final String LOCK_DOCUMENTS = "lock_documents";
 
     private String documentEventCode;
-    private Long routeHeaderId;
+    private String documentId;
     private String appDocId;
     
     public DocumentEventDTO() {}
@@ -59,12 +59,12 @@ public abstract class DocumentEventDTO implements Serializable {
         this.documentEventCode = documentEventCode;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
     
 }

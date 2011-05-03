@@ -54,7 +54,7 @@ public class DefaultPostProcessor implements PostProcessor {
         return new ProcessDocReport(true, "");
     }
 
-	public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent)
+	public List<String> getDocumentIdsToLock(DocumentLockingEvent lockingEvent)
 			throws Exception {
 		return null;
 	}

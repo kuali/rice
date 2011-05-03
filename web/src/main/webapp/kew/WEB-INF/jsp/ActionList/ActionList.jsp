@@ -248,7 +248,7 @@
                              <br>
                              <a id='A<c:out value="${result.actionItemIndex}"/>'
                               href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
-                             <c:param name="docId" value="${result.routeHeaderId}"/>
+                             <c:param name="docId" value="${result.documentId}"/>
                              <c:param name="command" value="displayActionListInlineView" />
                              </c:url>"
                              target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
@@ -262,20 +262,20 @@
                       </display:column>
                     </c:if>
 					<display:column sortable="true" title="${documentIdLabel}"
-						sortProperty="routeHeaderId">
+						sortProperty="documentId">
 						<c:choose>
 							<c:when test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null}">
                                 <a
 									href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
-                                     <c:param name="${Constants.ROUTEHEADER_ID_PARAMETER}" value="${result.routeHeaderId}"/>
+                                     <c:param name="${Constants.DOCUMENT_ID_PARAMETER}" value="${result.documentId}"/>
                                          <c:param name="${Constants.COMMAND_PARAMETER}" value="${Constants.ACTIONLIST_COMMAND}" />
                                              </c:url>"
 									<c:if test="${ActionListForm.documentPopup}"> target="_blank" </c:if>
-									class="showvisit"> <c:out value="${result.routeHeaderId}" />
+									class="showvisit"> <c:out value="${result.documentId}" />
 								</a>
 							</c:when>
 							<c:otherwise>
-								<c:out value="${result.routeHeaderId}" />
+								<c:out value="${result.documentId}" />
 							</c:otherwise>
 						</c:choose>
 					</display:column>
@@ -411,7 +411,7 @@
                     </display-e1:column>
 					<display:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
-							href="<c:url value="RouteLog.do"><c:param name="routeHeaderId" value="${result.routeHeaderId}"/></c:url>"
+							href="<c:url value="RouteLog.do"><c:param name="documentId" value="${result.documentId}"/></c:url>"
 							<c:if test="${ActionListForm.routeLogPopup}">target="_blank"</c:if>>
 						<img alt="Route Log for Document"
 							src="images/my_route_log.gif" /> </a></div>

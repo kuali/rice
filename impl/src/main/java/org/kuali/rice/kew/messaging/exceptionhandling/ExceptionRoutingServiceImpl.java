@@ -50,12 +50,12 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExceptionRoutingServiceImpl.class);
 
-    public void placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception {
+    public void placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, String documentId) throws Exception {
  	 	RouteNodeInstance nodeInstance = null;
- 	 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
- 	 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+ 	 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+ 	 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
  	 	RouteContext routeContext = establishRouteContext(document, null);
- 	 	List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderId);
+ 	 	List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(documentId);
  	 	if (!activeNodeInstances.isEmpty()) {
  	 		// take the first active nodeInstance found.
  	 		nodeInstance = activeNodeInstances.get(0);
@@ -63,21 +63,21 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
  	 	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, true);
  	 }
     
-    public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception {
-    	placeInExceptionRouting(throwable, persistedMessage, routeHeaderId, true);
+    public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception {
+    	placeInExceptionRouting(throwable, persistedMessage, documentId, true);
     }
     
     /**
      * In our case here, our last ditch effort to put the document into exception routing will try to do so without invoking
      * the Post Processor for do route status change to "Exception" status.
      */
-    public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception {
-    	placeInExceptionRouting(throwable, persistedMessage, routeHeaderId, false);
+    public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception {
+    	placeInExceptionRouting(throwable, persistedMessage, documentId, false);
     }
     
-    protected void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId, boolean invokePostProcessor) throws Exception {
-    	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
-    	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+    protected void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId, boolean invokePostProcessor) throws Exception {
+    	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+    	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
     	throwable = unwrapRouteManagerExceptionIfPossible(throwable);
         RouteContext routeContext = establishRouteContext(document, throwable);
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
@@ -87,13 +87,13 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     }
     
     protected void placeInExceptionRouting(String errorMessage, RouteNodeInstance nodeInstance, PersistedMessageBO persistedMessage, RouteContext routeContext, DocumentRouteHeaderValue document, boolean invokePostProcessor) throws Exception {
-    	Long routeHeaderId = document.getRouteHeaderId();
-        MDC.put("docId", routeHeaderId);
-        PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);
+    	String documentId = document.getDocumentId();
+        MDC.put("docId", documentId);
+        PerformanceLogger performanceLogger = new PerformanceLogger(documentId);
         try {
 
             // mark all active requests to initialized and delete the action items
-            List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeaderId);
+            List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
             for (ActionRequestValue actionRequest : actionRequests) {
                 if (actionRequest.isActive()) {
                     actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
@@ -104,7 +104,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
                 }
             }
 
-            LOG.debug("Generating exception request for doc : " + routeHeaderId);
+            LOG.debug("Generating exception request for doc : " + documentId);
             if (errorMessage == null) {
             	errorMessage = "";
             }
@@ -129,7 +129,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     }
 
     protected void notifyStatusChange(DocumentRouteHeaderValue routeHeader, String newStatusCode, String oldStatusCode) throws InvalidActionTakenException {
-        DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
+        DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getDocumentId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
         try {
             LOG.debug("Notifying post processor of status change "+oldStatusCode+"->"+newStatusCode);
             PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
@@ -195,7 +195,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     protected void activateExceptionRequests(RouteContext routeContext, List<ActionRequestValue> exceptionRequests, String exceptionMessage, boolean invokePostProcessor) throws Exception {
     	setExceptionAnnotations(exceptionRequests, exceptionMessage);
     	// TODO is there a reason we reload the document here?
-    	DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeContext.getDocument().getRouteHeaderId());
+    	DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeContext.getDocument().getDocumentId());
     	String oldStatus = rh.getDocRouteStatus();
     	rh.setDocRouteStatus(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
     	if (invokePostProcessor) {
@@ -243,7 +243,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             routeContext = rmException.getRouteContext();
         } else {
         	routeContext.setDocument(document);
-            List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+            List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
             if (!activeNodeInstances.isEmpty()) {
                 // take the first active nodeInstance found.
                 RouteNodeInstance nodeInstance = (RouteNodeInstance) activeNodeInstances.get(0);

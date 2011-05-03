@@ -485,7 +485,7 @@ public class DocumentServiceImpl implements DocumentService {
             Class<? extends DocumentHeader> documentHeaderClass = getDocumentHeaderService().getDocumentHeaderBaseClass();
             documentHeader = documentHeaderClass.newInstance();
             documentHeader.setWorkflowDocument(workflowDocument);
-            documentHeader.setDocumentNumber(workflowDocument.getRouteHeaderId().toString());
+            documentHeader.setDocumentNumber(workflowDocument.getDocumentId());
             // status and notes are initialized correctly in the constructor
         }
         catch (IllegalAccessException e) {
@@ -562,7 +562,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        if ( LOG.isDebugEnabled() ) {
 	        	LOG.debug("Retrieving doc id: " + documentHeaderId + " from workflow service.");
 	        }
-	        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
+	        workflowDocument = getWorkflowDocumentService().loadWorkflowDocument(documentHeaderId, GlobalVariables.getUserSession().getPerson());
 	        KNSServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
 	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
@@ -597,7 +597,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         Person person = getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
-        workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), person);
+        workflowDocument = workflowDocumentService.loadWorkflowDocument(documentHeaderId, person);
 
         Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
@@ -688,7 +688,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        // post-process them
 	        List<Document> documents = new ArrayList<Document>();
 	        for (Document document : rawDocuments) {
-	            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
+	            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().loadWorkflowDocument(document.getDocumentNumber(), GlobalVariables.getUserSession().getPerson());
 
 	            document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
 	            documents.add(document);

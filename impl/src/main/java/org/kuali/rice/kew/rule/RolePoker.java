@@ -27,7 +27,7 @@ package org.kuali.rice.kew.rule;
  */
 public interface RolePoker {
 	
-	public void reResolveRole(Long documentId, String roleName, String qualifiedRoleNameLabel);
-	public void reResolveRole(Long documentId, String roleName);
+	public void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel);
+	public void reResolveRole(String documentId, String roleName);
 
 }

@@ -66,12 +66,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()), KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getDocumentId()));
     }
 
     @Override
 	public String validateActionRules(List<ActionRequestValue> actionRequests) {
-        return validateActionRules(actionRequests, KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId()));
+        return validateActionRules(actionRequests, KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getDocumentId()));
 	}
 
     private String validateActionRules(List<ActionRequestValue> actionRequests, Collection activeNodes) {
@@ -98,12 +98,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
     }
 
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
-        LOG.debug("Moving document " + getRouteHeader().getRouteHeaderId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);
+        LOG.debug("Moving document " + getRouteHeader().getDocumentId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
-        Collection activeNodes = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId());
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        Collection activeNodes = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getDocumentId());
         String errorMessage = validateActionRules(actionRequests,activeNodes);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -149,7 +149,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
         config.setDestinationNodeNames(nodeNames);
         config.setSendNotifications(false);
         BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config);
-		blanketApproveEngine.process(getRouteHeader().getRouteHeaderId(), null);
+		blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
         
         queueDocumentProcessing();
     }

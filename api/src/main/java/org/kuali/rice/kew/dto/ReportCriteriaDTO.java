@@ -27,7 +27,7 @@ public class ReportCriteriaDTO implements Serializable {
 
 	private static final long serialVersionUID = 4390002636101531058L;
 	
-	private Long routeHeaderId;
+	private String documentId;
 	private String targetNodeName;
     
     private String[] targetPrincipalIds;
@@ -42,16 +42,24 @@ public class ReportCriteriaDTO implements Serializable {
 
 	public ReportCriteriaDTO() {}
 	
-	public ReportCriteriaDTO(Long routeHeaderId) {
-		this(routeHeaderId, null);
+	public static ReportCriteriaDTO createReportCritByDocTypeNm(String documentTypeName) {
+		return new ReportCriteriaDTO(documentTypeName);
 	}
 	
-	public ReportCriteriaDTO(Long routeHeaderId, String targetNodeName) {
-		this.routeHeaderId = routeHeaderId;
+	public static ReportCriteriaDTO createReportCritByDocId(String documentId) {
+		return new ReportCriteriaDTO(documentId, null);
+	}
+	
+	public static ReportCriteriaDTO createReportCritByDocIdAndTargetNdNm(String documentId, String targetNodeName) {
+		return new ReportCriteriaDTO(documentId, targetNodeName);
+	}
+	
+	private ReportCriteriaDTO(String documentId, String targetNodeName) {
+		this.documentId = documentId;
         this.targetNodeName = targetNodeName;
-	}
+    }
 	
-	public ReportCriteriaDTO(String documentTypeName) {
+	private ReportCriteriaDTO(String documentTypeName) {
 		this.documentTypeName = documentTypeName;
 	}
 		
@@ -63,12 +71,12 @@ public class ReportCriteriaDTO implements Serializable {
         this.activateRequests = activateRequests;
     }
 
-    public Long getRouteHeaderId() {
-		return routeHeaderId;
+    public String getDocumentId() {
+		return documentId;
 	}
 
-	public void setRouteHeaderId(Long routeHeaderId) {
-		this.routeHeaderId = routeHeaderId;
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 
 	public String getTargetNodeName() {
@@ -80,7 +88,7 @@ public class ReportCriteriaDTO implements Serializable {
     }
 
     public String toString() {
-		return super.toString()+"[routeHeaderId="+routeHeaderId+
+		return super.toString()+"[documentId="+documentId+
 		",targetNodeName="+targetNodeName+"]";
 	}
 

@@ -34,7 +34,7 @@
 	  </tr> 
 	  <tr>
 	    <td width="33%" class="thnormal" align=right> Document ID: </td>
-	    <td width="66%" class="datacell"><c:out value="${actionItem.routeHeaderId}" />&nbsp;</td>
+	    <td width="66%" class="datacell"><c:out value="${actionItem.documentId}" />&nbsp;</td>
 	  </tr>
 	  <tr>
   	    <td width="33%" align=right class="thnormal">Doc Type Name:</td>

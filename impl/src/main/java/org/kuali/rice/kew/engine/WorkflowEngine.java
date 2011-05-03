@@ -28,7 +28,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  */
 public interface WorkflowEngine {
         
-    public void process(Long documentId, Long nodeInstanceId) throws Exception;
+    public void process(String documentId, Long nodeInstanceId) throws Exception;
     
     public void initializeDocument(DocumentRouteHeaderValue document);
     

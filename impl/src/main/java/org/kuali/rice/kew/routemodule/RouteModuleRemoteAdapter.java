@@ -59,13 +59,13 @@ public class RouteModuleRemoteAdapter implements RouteModule {
         try {
             List actionRequests = new ArrayList();
             RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, null);
-            DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getRouteHeaderId());
+            DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getDocumentId());
             ActionRequestDTO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
             if (actionRequestVOs != null && actionRequestVOs.length > 0) {
             	assertRootRequests(actionRequestVOs);
 
                 for (ActionRequestDTO actionRequestVO : actionRequestVOs) {
-                    actionRequestVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
+                    actionRequestVO.setDocumentId(routeHeader.getDocumentId());
                     
                     // TODO this should be moved to a validate somewhere's...
                     if (actionRequestVO.getPrincipalId() == null && actionRequestVO.getGroupId() == null) {

@@ -84,22 +84,22 @@ public interface WorkflowDocumentActions {
     /**
      * @since 0.9.1.3
      */
-    public void superUserNodeApproveAction(String principalId, Long documentId, String nodeName, String annotation) throws WorkflowException;
+    public void superUserNodeApproveAction(String principalId, String documentId, String nodeName, String annotation) throws WorkflowException;
 
     /**
      * @since 0.9.1.3
      */
-    public void superUserReturnToPreviousNode(String principalId, Long documentId, String destinationNodeName, String annotation) throws WorkflowException;
+    public void superUserReturnToPreviousNode(String principalId, String documentId, String destinationNodeName, String annotation) throws WorkflowException;
 
     /**
      * @since 0.9.1.3
      */
-    public void superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation) throws WorkflowException;
+    public void superUserActionRequestApproveAction(String principalId, String documentId, Long actionRequestId, String annotation) throws WorkflowException;
 
     /**
      * @since 0.9.3
      */
-    public void superUserNodeApproveAction(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws WorkflowException;
+    public void superUserNodeApproveAction(String principalId, String documentId, String nodeName, String annotation, boolean runPostProcessor) throws WorkflowException;
 
     /**
      * @since 0.9.3
@@ -119,12 +119,12 @@ public interface WorkflowDocumentActions {
     /**
      * @since 0.9.3
      */
-    public void superUserReturnToPreviousNode(String principalId, Long documentId, String destinationNodeName, String annotation, boolean runPostProcessor) throws WorkflowException;
+    public void superUserReturnToPreviousNode(String principalId, String documentId, String destinationNodeName, String annotation, boolean runPostProcessor) throws WorkflowException;
 
     /**
      * @since 0.9.3
      */
-    public void superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws WorkflowException;
+    public void superUserActionRequestApproveAction(String principalId, String documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws WorkflowException;
     
     /**
      * 
@@ -132,6 +132,6 @@ public interface WorkflowDocumentActions {
      * 
      * @param documentId
      */
-    public void indexDocument(Long documentId);
+    public void indexDocument(String documentId);
         
 }

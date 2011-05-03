@@ -16,6 +16,18 @@
 
 package org.kuali.rice.ken.web.spring;
 
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
@@ -36,21 +48,9 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.rule.GenericAttributeContent;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -238,9 +238,9 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	Map<String, Object> model = new HashMap<String, Object>();
         String view;
 	try {
-	    document = new NotificationWorkflowDocument(
-		    initiatorId,
-		    NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
+	    document = NotificationWorkflowDocument.createNotificationDocument(
+	    		initiatorId,
+			    NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
 
 	    //parse out the application content into a Notification BO
 	    Notification notification = populateNotificationInstance(request, model);

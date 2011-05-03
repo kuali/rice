@@ -36,7 +36,7 @@
 
       <tr>
 	    <td class="thnormal" align="center">
-	      <html-el:hidden property="docId" value="${ActionForm.workflowDocument.routeHeaderId}" />
+	      <html-el:hidden property="docId" value="${ActionForm.workflowDocument.documentId}" />
           <html-el:hidden property="inputPage" value="${inputLocation}"></html-el:hidden>
 		<%--   <html-el:hidden property="docHandlerReturnUrl" value="${ActionForm.docHandlerReturnUrl}"></html-el:hidden> --%>
 
@@ -76,7 +76,7 @@
           <tr><td>&nbsp;</td></tr>
           <tr>
             <td>
-              <iframe src='<c:out value="${resourcePath}" />Note.do?docId=<c:out value="${ActionForm.workflowDocument.routeHeaderId}" />' name="iframeNOTE" scrolling="yes" width="100%" height="300" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+              <iframe src='<c:out value="${resourcePath}" />Note.do?docId=<c:out value="${ActionForm.workflowDocument.documentId}" />' name="iframeNOTE" scrolling="yes" width="100%" height="300" marginwidth="0" marginheight="0" frameborder="0"></iframe>
             </td>
           </tr>
         </table>

@@ -34,21 +34,21 @@ public interface ActionItemDAO {
 
 	public void deleteActionItem(ActionItem actionItem);
 
-	public void deleteByRouteHeaderId(Long routeHeaderId);
+	public void deleteByDocumentId(String documentId);
 
-	public void deleteByRouteHeaderIdWorkflowUserId(Long routeHeaderId,
+	public void deleteByDocumentIdWorkflowUserId(String documentId,
 			String workflowUserId);
 
 	public void saveActionItem(ActionItem actionItem);
 
 	public Collection<ActionItem> findByPrincipalId(String principalId);
 
-	public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
+	public Collection<ActionItem> findByDocumentId(String documentId);
 
 	public Collection<ActionItem> findByActionRequestId(Long actionRequestId);
 
-	public Collection<ActionItem> findByWorkflowUserRouteHeaderId(
-			String workflowUserId, Long routeHeaderId);
+	public Collection<ActionItem> findByWorkflowUserDocumentId(
+			String workflowUserId, String documentId);
 
     public Collection<ActionItem> findByDocumentTypeName(String documentTypeName);
 

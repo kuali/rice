@@ -47,7 +47,7 @@ public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	}
 
 	//double delete style
-	public void deleteDocmentLinksByDocId(Long docId){
+	public void deleteDocmentLinksByDocId(String docId){
 		List<DocumentLink> links = getLinkedDocumentsByDocId(docId);
 		for(DocumentLink link: links){
 			deleteDocumentLink(link);
@@ -60,7 +60,7 @@ public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	 * 
 	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#getLinkedDocumentByDocId(java.lang.Long)
 	 */
-	public List<DocumentLink> getLinkedDocumentsByDocId(Long docId) {
+	public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("orgnDocId", docId);
 		QueryByCriteria query = new QueryByCriteria(DocumentLink.class, crit);
@@ -89,7 +89,7 @@ public class DocumentLinkDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(DocumentLink.class, crit));
 	}
 
-	public void deleteSingleLinksByOrgnDocId(Long docId){
+	public void deleteSingleLinksByOrgnDocId(String docId){
 		Criteria crit = new Criteria();
 		crit.addEqualTo("orgnDocId", docId);
 		this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(DocumentLink.class, crit));

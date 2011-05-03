@@ -37,7 +37,7 @@
           <td align=left nowrap class="thnormal">
             <div align=right>Document ID:</div>
           </td>
-          <td nowrap class="datacell1"><nobr><a href="RouteLog.do?docId=<c:out value="${ActionForm.workflowDocument.routeHeaderId}"/>"><c:out value="${ActionForm.workflowDocument.routeHeaderId}"/></a></nobr></td>
+          <td nowrap class="datacell1"><nobr><a href="RouteLog.do?docId=<c:out value="${ActionForm.workflowDocument.documentId}"/>"><c:out value="${ActionForm.workflowDocument.documentId}"/></a></nobr></td>
         </tr>
         <tr>
           <td align=left nowrap class="th2">

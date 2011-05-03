@@ -91,10 +91,10 @@ public class EDLControllerFactory {
 				defaultDomEDL.replaceChild(defaultDom.importNode(documentData, true), defaultDomData);
 			}
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("Created default Node from document id " + document.getRouteHeaderId() + " content " + XmlJotter.jotNode(defaultDom));
+				LOG.debug("Created default Node from document id " + document.getDocumentId() + " content " + XmlJotter.jotNode(defaultDom));
 			}
 		} catch (Exception e) {
-			throw new WorkflowRuntimeException("Problems creating controller for EDL " + edlAssociation.getEdlName() + " document " + document.getRouteHeaderId(), e);
+			throw new WorkflowRuntimeException("Problems creating controller for EDL " + edlAssociation.getEdlName() + " document " + document.getDocumentId(), e);
 		}
 		return edlController;
 	}

@@ -151,7 +151,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 			if (workflowDocMap == null) {
 				workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
 			}
-			workflowDocMap.put(document.getRouteHeaderId().toString(), document);
+			workflowDocMap.put(document.getDocumentId(), document);
 			userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
 		} catch (WorkflowException e) {
 			throw new IllegalStateException("could not save the document in the session", e);

@@ -24,16 +24,16 @@ package org.kuali.rice.kew.postprocessor;
 public class DocumentLockingEvent implements IDocumentEvent {
 
 	private static final long serialVersionUID = 1L;
-	private Long routeHeaderId;
+	private String documentId;
 	private String appDocId;
 
-	public DocumentLockingEvent(Long routeHeaderId, String appDocId) {
-		this.routeHeaderId = routeHeaderId;
+	public DocumentLockingEvent(String documentId, String appDocId) {
+		this.documentId = documentId;
 		this.appDocId = appDocId;
 	}
 	
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
 
 	public String getAppDocId() {

@@ -53,11 +53,11 @@ public interface ActionRequestService {
 
     public void deleteActionRequestGraph(ActionRequestValue actionRequest);
 
-    public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode);
+    public List findAllValidRequests(String principalId, String documentId, String requestCode);
 
     public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode);
 
-    public List findPendingByDoc(Long routeHeaderId);
+    public List findPendingByDoc(String documentId);
 
     public void saveActionRequest(ActionRequestValue actionRequest);
 
@@ -79,35 +79,35 @@ public interface ActionRequestService {
 
     public ActionRequestValue findByActionRequestId(Long actionRequestId);
 
-    public List findPendingRootRequestsByDocId(Long routeHeaderId);
+    public List findPendingRootRequestsByDocId(String documentId);
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(Long routeHeaderId, Integer routeLevel);
+    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel);
+    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel);
+    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
     public List findPendingRootRequestsByDocumentType(Long documentTypeId);
 
-    public List findAllActionRequestsByRouteHeaderId(Long routeHeaderId);
+    public List findAllActionRequestsByDocumentId(String documentId);
 
-    public List findPendingByActionRequestedAndDocId(String actionRequestedCdCd, Long routeHeaderId);
+    public List findPendingByActionRequestedAndDocId(String actionRequestedCdCd, String documentId);
 
     /**
      *
      * This method gets a list of ids of all principals who have a pending action request for a document.
      *
      * @param actionRequestedCd
-     * @param routeHeaderId
+     * @param documentId
      * @return
      */
-    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId);
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId);
 
-    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId);
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId);
 
     public void alterActionRequested(List actionRequests, String actionRequestCd);
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId);
 
     public List findActivatedByGroup(String groupId);
 
@@ -119,16 +119,16 @@ public interface ActionRequestService {
 
     public boolean isDuplicateRequest(ActionRequestValue actionRequest);
 
-    public List findPendingByDocRequestCdRouteLevel(Long routeHeaderId, String requestCode, Integer routeLevel);
+    public List findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel);
 
-    public List findPendingByDocRequestCdNodeName(Long routeHeaderId, String requestCode, String nodeName);
+    public List findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName);
     
     /**
      * Returns all pending requests for a given routing entity
-     * @param routeHeaderId the id of the document header being routed
+     * @param documentId the id of the document header being routed
      * @return a List of all pending ActionRequestValues for the document
      */
-    public abstract List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId);
+    public abstract List<ActionRequestValue> findAllPendingRequests(String documentId);
     
 	/**
 	 * Filters action requests based on if they occur after the given requestCode, and if they relate to 
@@ -153,15 +153,15 @@ public interface ActionRequestService {
 
     public ActionRequestValue findDelegatorRequest(ActionRequestValue actionRequest);
 
-    public void deleteByRouteHeaderId(Long routeHeaderId);
+    public void deleteByDocumentId(String documentId);
 
     public void deleteByActionRequestId(Long actionRequestId);
 
     public void validateActionRequest(ActionRequestValue actionRequest);
 
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(Long routeHeaderId, Long nodeInstanceId);
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
 
-    public List findRootRequestsByDocIdAtRouteNode(Long documentId, Long nodeInstanceId);
+    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
 
     public List getDelegateRequests(ActionRequestValue actionRequest);
 
@@ -176,7 +176,7 @@ public interface ActionRequestService {
     /**
      * Checks if the given user has any Action Requests on the given document.
      */
-    public boolean doesPrincipalHaveRequest(String principalId, Long documentId);
+    public boolean doesPrincipalHaveRequest(String principalId, String documentId);
 
     public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame);
 }

@@ -43,12 +43,12 @@ public class LazyLoadSecurityAttribute implements SecurityAttribute {
 	}
 
 	public Boolean docSearchAuthorized(Person currentUser, String docTypeName,
-			Long documentId, String initiatorPrincipalId) {
+			String documentId, String initiatorPrincipalId) {
 		return getSecurityAttribute().docSearchAuthorized(currentUser, docTypeName, documentId, initiatorPrincipalId);
 	}
 
 	public Boolean routeLogAuthorized(Person currentUser, String docTypeName,
-			Long documentId, String initiatorPrincipalId) {
+			String documentId, String initiatorPrincipalId) {
 		return getSecurityAttribute().routeLogAuthorized(currentUser, docTypeName, documentId, initiatorPrincipalId);
 	}
 	

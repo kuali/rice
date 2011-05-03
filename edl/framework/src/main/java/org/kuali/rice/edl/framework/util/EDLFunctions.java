@@ -43,7 +43,7 @@ public class EDLFunctions {
     	UserSession userSession = GlobalVariables.getUserSession();
     	if (userSession != null) {
     		try {
-    			long documentId = Long.parseLong(id.trim());
+    			String documentId = id.trim();
     			WorkflowInfo workflowInfo = new WorkflowInfo();
     			if (userSession.getPrincipalId().equals(workflowInfo.getRouteHeader(documentId).getInitiatorPrincipalId())) {
     				initiator = true;
@@ -55,22 +55,21 @@ public class EDLFunctions {
     	return initiator;
     }
 
-	public static boolean isUserRouteLogAuthenticated(String id) {
+	public static boolean isUserRouteLogAuthenticated(String documentId) {
 		boolean authenticated=false;
 		WorkflowInfo workflowInfo = new WorkflowInfo();
 		UserSession userSession=GlobalVariables.getUserSession();
 		if(userSession!=null){
 			String principalId = userSession.getPrincipalId();
 			try {
-				Long routeHeaderId = new Long(id);
-				authenticated = workflowInfo.isUserAuthenticatedByRouteLog(routeHeaderId, principalId, true);
+				authenticated = workflowInfo.isUserAuthenticatedByRouteLog(documentId, principalId, true);
 			} catch (NumberFormatException e) {
-				LOG.debug("Invalid format routeHeaderId (should be LONG): " + id);
+				LOG.debug("Invalid format documentId (should be LONG): " + documentId);
 			} catch (WorkflowException e) {
-				LOG.debug("Error checking if user is route log authenticated: userId: " + principalId + ";routeHeaderId: " + id);
+				LOG.debug("Error checking if user is route log authenticated: userId: " + principalId + ";documentId: " + documentId);
 
 		    } catch (RiceRuntimeException e) {
-		    	LOG.error("Runtime Exception checking if user is route log authenticated: userId: " + principalId + ";routeHeaderId: " + id);
+		    	LOG.error("Runtime Exception checking if user is route log authenticated: userId: " + principalId + ";documentId: " + documentId);
 
 		    }
 		}
@@ -119,7 +118,7 @@ public class EDLFunctions {
 		String[] previousNodeNames;
 		WorkflowInfo workflowInfo = new WorkflowInfo();
 		try {
-			previousNodeNames = workflowInfo.getPreviousRouteNodeNames(new Long(id));
+			previousNodeNames = workflowInfo.getPreviousRouteNodeNames(id);
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException("Problem generating list of previous node names for documentID = " + id, e);
 		}
@@ -150,7 +149,7 @@ public class EDLFunctions {
 
 	public static boolean isAtNode(String documentId, String nodeName) throws Exception {
 	    WorkflowInfo workflowInfo = new WorkflowInfo();
-	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
+	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(documentId);
 	    for (RouteNodeInstanceDTO nodeInstance : activeNodeInstances) {
 	        if (nodeInstance.getName().equals(nodeName)) {
 	            return true;
@@ -161,7 +160,7 @@ public class EDLFunctions {
 
 	public static boolean hasActiveNode(String documentId) throws Exception {
 	    WorkflowInfo workflowInfo = new WorkflowInfo();
-	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(new Long(documentId));
+	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(documentId);
 	    if (activeNodeInstances.length > 0) {
 	            return true;
 	    }

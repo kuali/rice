@@ -32,7 +32,7 @@
       <list>
         <ref bean="RuleBaseValues-ruleBaseValuesId"/>
         <ref bean="RuleBaseValues-previousVersionId"/>
-        <ref bean="RuleBaseValues-routeHeaderId"/>
+        <ref bean="RuleBaseValues-documentId"/>
 
         <ref bean="RuleBaseValues-name"/>
         <ref bean="RuleBaseValues-documentTypeName"/>
@@ -159,10 +159,10 @@
     <property name="label" value="Previous Version"/>
   </bean> 
 
-  <bean id="RuleBaseValues-routeHeaderId" parent="DocSearchCriteriaDTO-routeHeaderId"/>
+  <bean id="RuleBaseValues-documentId" parent="DocSearchCriteriaDTO-documentId"/>
 
-  <bean id="RuleBaseValues-routeHeaderId-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="routeHeaderId"/>
+  <bean id="RuleBaseValues-documentId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="shortLabel" value="documentId"/>
     <property name="maxLength" value="30"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
@@ -170,7 +170,7 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="name" value="routeHeaderId"/>
+    <property name="name" value="documentId"/>
     <property name="label" value="Document Id"/>
   </bean>
 
@@ -448,7 +448,7 @@
    
               <bean parent="FieldDefinition" p:attributeName="ruleBaseValuesId" p:noInquiry="true"/>
               <bean parent="FieldDefinition" p:attributeName="previousVersionId"/>
-              <bean parent="FieldDefinition" p:attributeName="routeHeaderId"/>
+              <bean parent="FieldDefinition" p:attributeName="documentId"/>
 
               <bean parent="FieldDefinition" p:attributeName="documentType.name"/>
               <bean parent="FieldDefinition" p:attributeName="ruleTemplate.name"/>

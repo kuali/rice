@@ -29,7 +29,7 @@ public interface MockEmailNotificationService extends ActionListEmailService {
     public void sendDailyReminder();
     public void sendWeeklyReminder();
 
-    public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd);
+    public int immediateReminderEmailsSent(String networkId, String documentId, String actionRequestCd);
     public Integer getTotalPeriodicRemindersSent(String emailReminderConstant);
     public Integer getTotalPeriodicRemindersSent();
     /**

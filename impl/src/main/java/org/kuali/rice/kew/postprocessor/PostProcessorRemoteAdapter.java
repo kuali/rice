@@ -62,8 +62,8 @@ public class PostProcessorRemoteAdapter implements PostProcessor {
         return new ProcessDocReport(postProcessor.afterProcess(DTOConverter.convertAfterProcessEvent(event)));
     }
     
-    public List<Long> getDocumentIdsToLock(DocumentLockingEvent event) throws Exception {
-    	Long[] documentIdsToLock = postProcessor.getDocumentIdsToLock(DTOConverter.convertDocumentLockingEvent(event));
+    public List<String> getDocumentIdsToLock(DocumentLockingEvent event) throws Exception {
+    	String[] documentIdsToLock = postProcessor.getDocumentIdsToLock(DTOConverter.convertDocumentLockingEvent(event));
     	if (documentIdsToLock == null) {
     		return null;
     	}

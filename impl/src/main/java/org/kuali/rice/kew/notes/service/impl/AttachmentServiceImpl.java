@@ -43,7 +43,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 		createStorageDirIfNecessary();
 		Long uniqueId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
 		String internalFileIndicator = attachment.getFileName().replace('.', '_');
-		String fileName = ATTACHMENT_PREPEND + attachment.getNote().getRouteHeaderId() + "_" + internalFileIndicator + "_" + uniqueId;
+		String fileName = ATTACHMENT_PREPEND + attachment.getNote().getDocumentId() + "_" + internalFileIndicator + "_" + uniqueId;
 		File file = File.createTempFile(fileName, null, new File(attachmentDir));
 		LOG.info("Persisting attachment at: " + file.getAbsolutePath());
 		if (!file.canWrite()) {

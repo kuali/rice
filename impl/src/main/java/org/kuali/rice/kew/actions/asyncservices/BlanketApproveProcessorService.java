@@ -26,8 +26,8 @@ import java.util.Set;
  */
 public interface BlanketApproveProcessorService {
 	
-	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames);
+	public void doBlanketApproveWork(String documentId, String principalId, Long actionTakenId, Set<String> nodeNames);
 	
-	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex);
+	public void doBlanketApproveWork(String documentId, String principalId, Long actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex);
 
 }

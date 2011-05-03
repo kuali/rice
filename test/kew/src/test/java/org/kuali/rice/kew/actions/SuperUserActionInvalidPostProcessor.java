@@ -48,7 +48,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(getPrincipalId(USER_AUTH_ID), event.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(WorkflowDocument.loadDocument(getPrincipalId(USER_AUTH_ID), event.getDocumentId()))) {
             return new ProcessDocReport(true, "");
         }
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
@@ -58,7 +58,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(getPrincipalId(USER_AUTH_ID), event.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(WorkflowDocument.loadDocument(getPrincipalId(USER_AUTH_ID), event.getDocumentId()))) {
             return new ProcessDocReport(true, "");
         }
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
@@ -68,7 +68,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(getPrincipalId(USER_AUTH_ID), levelChangeEvent.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(WorkflowDocument.loadDocument(getPrincipalId(USER_AUTH_ID), levelChangeEvent.getDocumentId()))) {
             return new ProcessDocReport(true, "");
         }
         if ("WorkflowDocument2".equals(levelChangeEvent.getNewNodeName())) {
@@ -81,7 +81,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(getPrincipalId(USER_AUTH_ID), statusChangeEvent.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(WorkflowDocument.loadDocument(getPrincipalId(USER_AUTH_ID), statusChangeEvent.getDocumentId()))) {
             return new ProcessDocReport(true, "");
         }
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
@@ -91,7 +91,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport beforeProcess(BeforeProcessEvent beforeProcessEvent) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(getPrincipalId(USER_AUTH_ID), beforeProcessEvent.getRouteHeaderId()))) {
+        if (isDocumentPostProcessable(WorkflowDocument.loadDocument(getPrincipalId(USER_AUTH_ID), beforeProcessEvent.getDocumentId()))) {
             return new ProcessDocReport(true, "");
         }
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
@@ -101,7 +101,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
     public ProcessDocReport afterProcess(AfterProcessEvent afterProcessEvent) throws Exception {
-        if (isDocumentPostProcessable(new WorkflowDocument(getPrincipalId(USER_AUTH_ID), afterProcessEvent.getRouteHeaderId()), Arrays.asList(new String[]{"WorkflowDocument2"}))) {
+        if (isDocumentPostProcessable(WorkflowDocument.loadDocument(getPrincipalId(USER_AUTH_ID), afterProcessEvent.getDocumentId()), Arrays.asList(new String[]{"WorkflowDocument2"}))) {
             return new ProcessDocReport(true, "");
         }
         throw new WorkflowRuntimeException("Post Processor should never be called in this instance");
@@ -110,7 +110,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
     /**
      * @see org.kuali.rice.kew.postprocessor.PostProcessor#getDocumentIdsToLock(org.kuali.rice.kew.postprocessor.DocumentLockingEvent)
      */
-    public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
+    public List<String> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
 		return null;
 	}
 

@@ -62,14 +62,14 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		prefs.setEmailNotification(KEWConstants.DAILY);
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
 
-		WorkflowDocument document = new WorkflowDocument(rkirkendPrincipalId, "TestDocumentType");
+		WorkflowDocument document = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
 		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", ewestfalPrincipalId, "", Boolean.TRUE);
 		document.routeDocument("");
 
-		document = new WorkflowDocument(ewestfalPrincipalId, document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(ewestfalPrincipalId, document.getDocumentId());
 		assertTrue(document.isApprovalRequested());
 
-		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 		assertEquals("ewestfal should have no emails.", 0, emailsSent);
 		MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED = false;
 		MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED = false;
@@ -110,14 +110,14 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		prefs.setEmailNotification(KEWConstants.WEEKLY);
 		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
 
-		WorkflowDocument document = new WorkflowDocument(rkirkendPrincipalId, "TestDocumentType");
+		WorkflowDocument document = WorkflowDocument.createDocument(rkirkendPrincipalId, "TestDocumentType");
 		document.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "", ewestfalPrincipalId, "", Boolean.TRUE);
 		document.routeDocument("");
 
-		document = new WorkflowDocument(ewestfalPrincipalId, document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(ewestfalPrincipalId, document.getDocumentId());
 		assertTrue(document.isApprovalRequested());
 
-		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getRouteHeaderId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
 		assertEquals("ewestfal should have no emails.", 0, emailsSent);
 		MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED = false;
 		MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED = false;

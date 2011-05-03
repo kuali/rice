@@ -73,20 +73,20 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     	DocumentRouteHeaderValueContent documentContent = routeHeader.getDocumentContent();    	
 //    	List<SearchableAttributeValue> searchableAttributes = routeHeader.getSearchableAttributeValues();
     	
-    	if (routeHeader.getRouteHeaderId() == null){
+    	if (routeHeader.getDocumentId() == null){
     		entityManager.persist(routeHeader);
     	} else {
     		OrmUtils.merge(entityManager, routeHeader);
     	}
         
         //Save document content (document content retrieved via a service call)
-        documentContent.setRouteHeaderId(routeHeader.getRouteHeaderId());
+        documentContent.setDocumentId(routeHeader.getDocumentId());
         entityManager.merge(documentContent);
         
         /*
         //Save searchable attributes
         for (SearchableAttributeValue searchableAttributeValue:searchableAttributes){
-        	searchableAttributeValue.setRouteHeaderId(routeHeader.getRouteHeaderId());
+        	searchableAttributeValue.setDocumentId(routeHeader.getDocumentId());
         	if (searchableAttributeValue.getSearchableAttributeValueId() == null){
         		entityManager.persist(searchableAttributeValue);
         	} else {
@@ -96,57 +96,57 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         */
     }
 
-    public DocumentRouteHeaderValueContent getContent(Long routeHeaderId) {
-    	Query query = entityManager.createNamedQuery("DocumentRouteHeaderValueContent.FindByRouteHeaderId");
-    	query.setParameter("routeHeaderId", routeHeaderId);
+    public DocumentRouteHeaderValueContent getContent(String documentId) {
+    	Query query = entityManager.createNamedQuery("DocumentRouteHeaderValueContent.FindByDocumentId");
+    	query.setParameter("documentId", documentId);
         return (DocumentRouteHeaderValueContent)query.getSingleResult();
     }
 
-    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
-    	List<SearchableAttributeValue> searchableAttributeValues = findSearchableAttributeValues(routeHeaderId);
+    public void clearRouteHeaderSearchValues(String documentId) {
+    	List<SearchableAttributeValue> searchableAttributeValues = findSearchableAttributeValues(documentId);
     	for (SearchableAttributeValue searchableAttributeValue:searchableAttributeValues){
     		entityManager.remove(searchableAttributeValue);
     	}
     }
    
-    private List<SearchableAttributeValue> findSearchableAttributeValues(Long routeHeaderId){
+    private List<SearchableAttributeValue> findSearchableAttributeValues(String documentId){
     	List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
     	
     	for (int i=1;i<=4; i++){
     		String namedQuery = "";
     		switch (i) {
-				case 1: namedQuery = "SearchableAttributeFloatValue.FindByRouteHeaderId"; break;
-				case 2: namedQuery = "SearchableAttributeDateTimeValue.FindByRouteHeaderId"; break;
-				case 3: namedQuery = "SearchableAttributeLongValue.FindByRouteHeaderId";break;
-				case 4: namedQuery = "SearchableAttributeStringValue.FindByRouteHeaderId"; break;
+				case 1: namedQuery = "SearchableAttributeFloatValue.FindByDocumentId"; break;
+				case 2: namedQuery = "SearchableAttributeDateTimeValue.FindByDocumentId"; break;
+				case 3: namedQuery = "SearchableAttributeLongValue.FindByDocumentId";break;
+				case 4: namedQuery = "SearchableAttributeStringValue.FindByDocumentId"; break;
     		}
 	    	Query query = entityManager.createNamedQuery(namedQuery);
-	    	query.setParameter("routeHeaderId", routeHeaderId);   	
+	    	query.setParameter("documentId", documentId);   	
 	    	searchableAttributeValues.addAll(query.getResultList());
     	}    	
 
     	return searchableAttributeValues;
     }
 
-    public void lockRouteHeader(final Long routeHeaderId, final boolean wait) {
-    	String sql = getPlatform().getLockRouteHeaderQuerySQL(routeHeaderId, wait);
+    public void lockRouteHeader(final String documentId, final boolean wait) {
+    	String sql = getPlatform().getLockRouteHeaderQuerySQL(documentId, wait);
     	try{
 	    	Query query = entityManager.createNativeQuery(sql);
-	    	query.setParameter(1, routeHeaderId);
+	    	query.setParameter(1, documentId);
 	    	query.getSingleResult();
     	} catch (Exception e){
     		//FIXME: Should this check for hibernate LockAcquisitionException
-    		throw new LockingException("Could not aquire lock on document, routeHeaderId=" + routeHeaderId, e);
+    		throw new LockingException("Could not aquire lock on document, documentId=" + documentId, e);
     	}
     }
 
-    public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId) {
-    	return findRouteHeader(routeHeaderId, false);
+    public DocumentRouteHeaderValue findRouteHeader(String documentId) {
+    	return findRouteHeader(documentId, false);
     }
 
-    public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId, boolean clearCache) {
-        Query query = entityManager.createNamedQuery("DocumentRouteHeaderValue.FindByRouteHeaderId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+    public DocumentRouteHeaderValue findRouteHeader(String documentId, boolean clearCache) {
+        Query query = entityManager.createNamedQuery("DocumentRouteHeaderValue.FindByDocumentId");
+        query.setParameter("documentId", documentId);
 
         //TODO: What cache do we clear when using JPA
         if (clearCache) {
@@ -154,20 +154,20 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         }
         
 	    DocumentRouteHeaderValue routeHeader = (DocumentRouteHeaderValue) query.getSingleResult(); 
-//	    routeHeader.setSearchableAttributeValues(findSearchableAttributeValues(routeHeaderId));
+//	    routeHeader.setSearchableAttributeValues(findSearchableAttributeValues(documentId));
 	    return routeHeader;
     }
 
-    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds) {
-    	return findRouteHeaders(routeHeaderIds, false);
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds) {
+    	return findRouteHeaders(documentIds, false);
     }
     
-    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache) {
-    	if (routeHeaderIds == null || routeHeaderIds.isEmpty()) {
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache) {
+    	if (documentIds == null || documentIds.isEmpty()) {
     		return null;
     	}
     	Criteria crit = new Criteria(DocumentRouteHeaderValue.class.getName());
-    	crit.in("routeHeaderId", routeHeaderIds);
+    	crit.in("documentId", documentIds);
     	
     	//TODO: What cache do we clear when using JPA
         if (clearCache) {
@@ -180,7 +180,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
     	// need to clear action list cache for users who have this item in their action list
     	ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-    	Collection actionItems = actionListSrv.findByRouteHeaderId(routeHeader.getRouteHeaderId());
+    	Collection actionItems = actionListSrv.findByDocumentId(routeHeader.getDocumentId());
     	for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
     		ActionItem actionItem = (ActionItem) iter.next();
     		try {
@@ -190,14 +190,15 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     		}
     	}
     	
-    	DocumentRouteHeaderValue attachedRouteHeader = findRouteHeader(routeHeader.getRouteHeaderId());
+    	DocumentRouteHeaderValue attachedRouteHeader = findRouteHeader(routeHeader.getDocumentId());
     	entityManager.remove(attachedRouteHeader);
     }
 
-    public Long getNextRouteHeaderId() {
-        return getPlatform().getNextValSQL("KREW_DOC_HDR_S", entityManager);
+    public String getNextDocumentId() {
+    	Long nextDocumentId = getPlatform().getNextValSQL("KREW_DOC_HDR_S", entityManager);
+        return nextDocumentId.toString();
     }
-
+    
     protected DatabasePlatform getPlatform() {
     	return (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
@@ -233,16 +234,16 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         return idList; //(List<Long>)entityManager.createNativeQuery(query).getResultList();
     }
 
-    public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
+    public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue) {
     	return hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeDateTimeValue.FindByKey")
     		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeStringValue.FindByKey")
     		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeLongValue.FindByKey")
     		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeFloatValue.FindByKey");
     }
     
-    private boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue, String namedQuery) {
+    private boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue, String namedQuery) {
     	Query query = entityManager.createNamedQuery(namedQuery);
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("searchableAttributeKey", searchableAttributeKey);
         Collection results = query.getResultList();
         if (!results.isEmpty()) {
@@ -256,7 +257,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         return false;    	
     }
 
-    public String getServiceNamespaceByDocumentId(Long documentId) {
+    public String getServiceNamespaceByDocumentId(String documentId) {
     	if (documentId == null) {
     		throw new IllegalArgumentException("Encountered a null document ID.");
     	}
@@ -279,15 +280,15 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     	return serviceNamespace;
     }
 
-    public String getDocumentStatus(Long documentId) {
+    public String getDocumentStatus(String documentId) {
     	DocumentRouteHeaderValue document = findRouteHeader(documentId);
 
 		return document.getDocRouteStatus();
     }
     
-    public String getAppDocId(Long documentId) {
+    public String getAppDocId(String documentId) {
     	Query query = entityManager.createNamedQuery("DocumentRouteHeaderValue.GetAppDocId");
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         return (String) query.getSingleResult(); 
  	 }
     

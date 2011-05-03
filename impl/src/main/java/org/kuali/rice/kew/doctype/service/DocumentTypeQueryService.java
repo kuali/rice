@@ -42,6 +42,6 @@ public interface DocumentTypeQueryService extends XmlLoader {
      * 
      * @since 2.3
      */
-    public DocumentType findByDocumentId(Long documentId);
+    public DocumentType findByDocumentId(String documentId);
     
 }

@@ -28,7 +28,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public interface DocumentTypeDAO {
 
-    public DocumentType findByDocId(Long docId);
+    public DocumentType findById(Long docTypeId);
 
     public DocumentType findByName(String name); // docType is case sensitive by default
 
@@ -40,7 +40,7 @@ public interface DocumentTypeDAO {
 
     public void delete(DocumentType documentType);
 
-    public List findByRouteHeaderId(Long routeHeaderId);
+    public List findByDocumentId(String documentId);
 
     public DocumentType getMostRecentDocType(String docTypeName);
 
@@ -60,5 +60,5 @@ public interface DocumentTypeDAO {
 
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute);
 
-    public Long findDocumentTypeIdByDocumentId(Long documentId);
+    public Long findDocumentTypeIdByDocumentId(String documentId);
 }

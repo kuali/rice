@@ -76,9 +76,9 @@ import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -147,8 +147,8 @@ public class RuleServiceImpl implements RuleService {
         getRuleDAO().save(ruleBaseValues);
     }
 
-    public void makeCurrent(Long routeHeaderId) {
-        makeCurrent(findByRouteHeaderId(routeHeaderId));
+    public void makeCurrent(String documentId) {
+        makeCurrent(findByDocumentId(documentId));
     }
 
     public void makeCurrent(List rules) {
@@ -689,7 +689,7 @@ public class RuleServiceImpl implements RuleService {
         return oldDelegations;
     }
 
-    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
+    public String routeRuleWithDelegate(String documentId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         if (parentRule == null) {
             throw new IllegalArgumentException("Cannot route a delegate without a parent rule.");
         }
@@ -729,20 +729,20 @@ public class RuleServiceImpl implements RuleService {
         }
 
         WorkflowDocument workflowDocument = null;
-        if (routeHeaderId != null) {
-            workflowDocument = new WorkflowDocument(principal.getPrincipalId(), routeHeaderId);
+        if (documentId != null) {
+            workflowDocument = WorkflowDocument.loadDocument(principal.getPrincipalId(), documentId);
         } else {
             List rules = new ArrayList();
             rules.add(delegateRule);
             rules.add(parentRule);
-            workflowDocument = new WorkflowDocument(principal.getPrincipalId(), getRuleDocmentTypeName(rules));
+            workflowDocument = WorkflowDocument.createDocument(principal.getPrincipalId(), getRuleDocmentTypeName(rules));
         }
         workflowDocument.setTitle(generateTitle(parentRule, delegateRule));
-        delegateRule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
+        delegateRule.setDocumentId(workflowDocument.getDocumentId());
         workflowDocument.addAttributeDefinition(new RuleRoutingDefinition(parentRule.getDocTypeName()));
         getRuleDAO().save(delegateRule);
         if (isRoutingParent) {
-            parentRule.setRouteHeaderId(workflowDocument.getRouteHeaderId());
+            parentRule.setDocumentId(workflowDocument.getDocumentId());
             getRuleDAO().save(parentRule);
         }
         if (blanketApprove) {
@@ -750,7 +750,7 @@ public class RuleServiceImpl implements RuleService {
         } else {
             workflowDocument.routeDocument(annotation);
         }
-        return workflowDocument.getRouteHeaderId();
+        return workflowDocument.getDocumentId();
     }
 
     /**
@@ -905,8 +905,8 @@ public class RuleServiceImpl implements RuleService {
         }
     }
 
-    public List findByRouteHeaderId(Long routeHeaderId) {
-        return getRuleDAO().findByRouteHeaderId(routeHeaderId);
+    public List findByDocumentId(String documentId) {
+        return getRuleDAO().findByDocumentId(documentId);
     }
 
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId,
@@ -1052,7 +1052,7 @@ public class RuleServiceImpl implements RuleService {
      *
      * In the case of a new delegate rule or a delegate rule edit, this method will take the id of it's parent.
      */
-    public Long isLockedForRouting(Long currentRuleBaseValuesId) {
+    public String isLockedForRouting(Long currentRuleBaseValuesId) {
         // checks for any other versions of the given rule, essentially, if this is a rule edit we want to see how many other
         // pending edits are out there
         List pendingRules = ruleDAO.findByPreviousVersionId(currentRuleBaseValuesId);
@@ -1060,14 +1060,15 @@ public class RuleServiceImpl implements RuleService {
         for (Iterator iterator = pendingRules.iterator(); iterator.hasNext();) {
             RuleBaseValues pendingRule = (RuleBaseValues) iterator.next();
 
-            if (pendingRule.getRouteHeaderId() != null && pendingRule.getRouteHeaderId().longValue() != 0) {
-                DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(pendingRule.getRouteHeaderId());
+            if (pendingRule.getDocumentId() != null && StringUtils.isNotBlank(pendingRule.getDocumentId())) {
+                DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(pendingRule.getDocumentId());
                 // the pending edit is considered dead if it's been disapproved or cancelled and we are allowed to proceed with our own edit
                 isDead = routeHeader.isDisaproved() || routeHeader.isCanceled();
                 if (!isDead) {
-                    return pendingRule.getRouteHeaderId();
+                    return pendingRule.getDocumentId();
                 }
             }
+
             for (Object element : pendingRule.getResponsibilities()) {
                 RuleResponsibility responsibility = (RuleResponsibility) element;
                 for (Object element2 : responsibility.getDelegationRules()) {
@@ -1075,11 +1076,11 @@ public class RuleServiceImpl implements RuleService {
                     List pendingDelegateRules = ruleDAO.findByPreviousVersionId(delegation.getDelegationRuleBaseValues().getRuleBaseValuesId());
                     for (Iterator iterator3 = pendingDelegateRules.iterator(); iterator3.hasNext();) {
                         RuleBaseValues pendingDelegateRule = (RuleBaseValues) iterator3.next();
-                        if (pendingDelegateRule.getRouteHeaderId() != null && pendingDelegateRule.getRouteHeaderId().longValue() != 0) {
-                            DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(pendingDelegateRule.getRouteHeaderId());
+                        if (pendingDelegateRule.getDocumentId() != null && StringUtils.isNotBlank(pendingDelegateRule.getDocumentId())) {
+                            DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(pendingDelegateRule.getDocumentId());
                             isDead = routeHeader.isDisaproved() || routeHeader.isCanceled();
                             if (!isDead) {
-                                return pendingDelegateRule.getRouteHeaderId();
+                                return pendingDelegateRule.getDocumentId();
                             }
                         }
                     }
@@ -1263,12 +1264,12 @@ public class RuleServiceImpl implements RuleService {
      * If a rule has been modified and is no longer current since the original request was made, we need to
      * be sure to NOT update the rule.
      */
-    protected boolean shouldChangeRuleInvolvement(Long documentId, RuleBaseValues rule) {
+    protected boolean shouldChangeRuleInvolvement(String documentId, RuleBaseValues rule) {
         if (!rule.getCurrentInd()) {
             LOG.warn("Rule requested for rule involvement change by document " + documentId + " is no longer current.  Change will not be executed!  Rule id is: " + rule.getRuleBaseValuesId());
             return false;
         }
-        Long lockingDocumentId = KEWServiceLocator.getRuleService().isLockedForRouting(rule.getRuleBaseValuesId());
+        String lockingDocumentId = KEWServiceLocator.getRuleService().isLockedForRouting(rule.getRuleBaseValuesId());
         if (lockingDocumentId != null) {
             LOG.warn("Rule requested for rule involvement change by document " + documentId + " is locked by document " + lockingDocumentId + " and cannot be modified.  " +
                     "Change will not be executed!  Rule id is: " + rule.getRuleBaseValuesId());
@@ -1309,7 +1310,7 @@ public class RuleServiceImpl implements RuleService {
 
     }
 
-    protected RuleBaseValues createNewRuleVersion(RuleBaseValues existingRule, Long documentId) throws Exception {
+    protected RuleBaseValues createNewRuleVersion(RuleBaseValues existingRule, String documentId) throws Exception {
         RuleBaseValues rule = new RuleBaseValues();
         PropertyUtils.copyProperties(rule, existingRule);
         rule.setPreviousVersion(existingRule);
@@ -1318,7 +1319,7 @@ public class RuleServiceImpl implements RuleService {
         rule.setActivationDate(null);
         rule.setDeactivationDate(null);
         rule.setVersionNumber(0L);
-        rule.setRouteHeaderId(documentId);
+        rule.setDocumentId(documentId);
 
         // TODO: FIXME: need to copy the rule expression here too?
 

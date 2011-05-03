@@ -68,7 +68,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
      * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
     public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
-        LOG.debug("ENTERING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + event.getRouteHeaderId());
+        LOG.debug("ENTERING NotificationPostProcessor.doActionTaken() for Notification action item with document ID: " + event.getDocumentId());
 
         // NOTE: this action could be happening because the user initiated it via KEW, OR because a dismiss or autoremove action
         // has been invoked programmatically and the KEWActionListMessageDeliverer is taking an action...so there is a risk of being
@@ -82,7 +82,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         Properties p = new Properties();
         WorkflowDocument doc;
         try {
-            doc = new WorkflowDocument(event.getActionTaken().getPrincipalId(), event.getRouteHeaderId());
+        	doc = WorkflowDocument.loadDocument(event.getActionTaken().getPrincipalId(), event.getDocumentId());
         } catch (WorkflowException we) {
             throw new RuntimeException("Could not create document", we);
         }
@@ -98,18 +98,18 @@ public class NotificationPostProcessor implements PostProcessorRemote {
             return true;
         }
         
-        LOG.info("NotificationPostProcessor detected end-user action " + event.getActionTaken().getActionTaken() + " on document " + event.getActionTaken().getRouteHeaderId());
+        LOG.info("NotificationPostProcessor detected end-user action " + event.getActionTaken().getActionTaken() + " on document " + event.getActionTaken().getDocumentId());
 
         if(actionTakenCode.equals(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD) || actionTakenCode.equals(KEWConstants.ACTION_TAKEN_FYI_CD)) {
             LOG.debug("User has taken either acknowledge or fy action (action code=" + actionTakenCode + 
-                    ") for Notification action item with route header ID: " + event.getRouteHeaderId() + 
+                    ") for Notification action item with document ID: " + event.getDocumentId() + 
             ".  We are now changing the status of the associated NotificationMessageDelivery to REMOVED.");
 
             try {
-                NotificationMessageDelivery nmd = msgDeliverySvc.getNotificationMessageDeliveryByDelivererId(event.getRouteHeaderId());
+                NotificationMessageDelivery nmd = msgDeliverySvc.getNotificationMessageDeliveryByDelivererId(event.getDocumentId());
 
                 if (nmd == null) {
-                    throw new RuntimeException("Could not find message delivery from workflow document " + event.getRouteHeaderId() + " to dismiss");
+                    throw new RuntimeException("Could not find message delivery from workflow document " + event.getDocumentId() + " to dismiss");
                 }
 
                 //get the id of the associated notification message delivery record
@@ -131,7 +131,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
             }
         }
 
-        LOG.debug("LEAVING NotificationPostProcessor.doActionTaken() for Notification action item with route header ID: " + event.getRouteHeaderId());
+        LOG.debug("LEAVING NotificationPostProcessor.doActionTaken() for Notification action item with document ID: " + event.getDocumentId());
         return true;
     }
 
@@ -173,7 +173,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
     /**
      * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#getDocumentIdsToLock(org.kuali.rice.kew.dto.DocumentLockingEventDTO)
      */
-	public Long[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
+	public String[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
 		return null;
 	}
     

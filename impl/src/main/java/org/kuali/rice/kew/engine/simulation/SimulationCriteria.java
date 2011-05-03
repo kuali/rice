@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.engine.simulation;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kim.bo.Person;
 
@@ -33,7 +34,7 @@ import java.util.List;
 public class SimulationCriteria {
 
 	// fields related to document simulation
-	private Long documentId;
+	private String documentId;
     private String destinationNodeName;
     private List<Recipient> destinationRecipients = new ArrayList<Recipient>();
 
@@ -54,14 +55,22 @@ public class SimulationCriteria {
     	this.flattenNodes = false;
     }
 
-    public SimulationCriteria(Long documentId) {
-    	this.documentId = documentId;
+	public static SimulationCriteria createSimulationCritUsingDocumentId(String documentId) {
+		return new SimulationCriteria(null, documentId);
+	}
+	
+	public static SimulationCriteria createSimulationCritUsingDocTypeName(String documentTypeName) {
+		return new SimulationCriteria(documentTypeName, null);
+	}
+	
+    private SimulationCriteria(String documentTypeName, String documentId) {
+    	if (StringUtils.isNotBlank(documentId)) { 
+    		this.documentId = documentId;
+    	} else if (StringUtils.isNotBlank(documentTypeName)) {
+    		this.documentTypeName = documentTypeName;
+    	}
     }
-
-    public SimulationCriteria(String documentTypeName) {
-    	this.documentTypeName = documentTypeName;
-    }
-
+    
     public Boolean isActivateRequests() {
         return this.activateRequests;
     }
@@ -70,11 +79,11 @@ public class SimulationCriteria {
         this.activateRequests = activateRequests;
     }
 
-    public Long getDocumentId() {
+    public String getDocumentId() {
 		return documentId;
 	}
 
-	public void setDocumentId(Long documentId) {
+	public void setDocumentId(String documentId) {
 		this.documentId = documentId;
 	}
 

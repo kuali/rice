@@ -61,20 +61,20 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         entityManager.remove(actionRequestValue);
     }
 
-    public void deleteByRouteHeaderId(Long routeHeaderId) {
+    public void deleteByDocumentId(String documentId) {
         // FIXME should be jpa bulk update?
-        Query query = entityManager.createNamedQuery("ActionRequestValue.FindByRouteHeaderId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        Query query = entityManager.createNamedQuery("ActionRequestValue.FindByDocumentId");
+        query.setParameter("documentId", documentId);
         List<ActionRequestValue> actionRequestValues = (List<ActionRequestValue>) query.getSingleResult();
         for(ActionRequestValue arv : actionRequestValues) {
             entityManager.remove(arv);
         }
     }
 
-    public boolean doesDocumentHaveUserRequest(String principalId, Long documentId) {
+    public boolean doesDocumentHaveUserRequest(String principalId, String documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.GetUserRequestCount");
         query.setParameter("principalId", principalId);
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("recipientTypeCd", KEWConstants.ACTION_REQUEST_USER_RECIPIENT_CD);
         query.setParameter("currentIndicator", Boolean.TRUE);
         
@@ -91,60 +91,60 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findAllByDocId(Long routeHeaderId) {
+    public List findAllByDocId(String documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindAllByDocId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         
         return query.getResultList();
     }
 
-    public List findAllPendingByDocId(Long routeHeaderId) {
+    public List findAllPendingByDocId(String documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindAllPendingByDocId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         
         return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
-    public List<ActionRequestValue> findAllRootByDocId(Long routeHeaderId) {
+    public List<ActionRequestValue> findAllRootByDocId(String documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindAllRootByDocId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         
         return (List<ActionRequestValue>) query.getResultList();
     }
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
-        Query query = entityManager.createNamedQuery("ActionRequestValue.FindByRouteHeaderId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId) {
+        Query query = entityManager.createNamedQuery("ActionRequestValue.FindByDocumentId");
+        query.setParameter("documentId", documentId);
         
         return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
-    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId) {
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindByStatusAndDocId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("status", statusCd);
         query.setParameter("currentIndicator", Boolean.TRUE);
         
         return (List<ActionRequestValue>)query.getResultList();
     }
 
-    public List findPendingByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) {
+    public List findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingByActionRequestedAndDocId");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("actionRequested", actionRequestedCd);
         
         return query.getResultList();
     }
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel) {
+    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingByDocIdAtOrBelowRouteLevel");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("routeLevel", routeLevel);
         query.setParameter("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
@@ -162,9 +162,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(Long routeHeaderId, Integer routeLevel) {
+    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingRootRequestsByDocIdAtOrBelowRouteLevel");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
         query.setParameter("routeLevel", routeLevel);
@@ -172,9 +172,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(Long routeHeaderId, Integer routeLevel) {
+    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteLevel");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
         query.setParameter("routeLevel", routeLevel);
@@ -182,9 +182,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteNode(Long routeHeaderId, Long nodeInstanceId) {
+    public List findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteNode");
-        query.setParameter("routeHeaderId", routeHeaderId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("routeNodeInstanceId", nodeInstanceId);
         
@@ -199,9 +199,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findRootRequestsByDocIdAtRouteNode(Long documentId, Long nodeInstanceId) {
+    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindRootRequestsByDocIdAtRouteNode");
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("routeNodeInstanceId", nodeInstanceId);
         
@@ -213,9 +213,9 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<String> getRequestGroupIds(Long documentId) {
+    public List<String> getRequestGroupIds(String documentId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.GetRequestGroupIds");
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         query.setParameter("recipientTypeCd", KEWConstants.ACTION_REQUEST_GROUP_RECIPIENT_CD);
         

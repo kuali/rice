@@ -173,7 +173,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
      */
     private static boolean blockingRequestsArePending(DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) {
         // returns blocking requests that are *activated*
-        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
         boolean blockingRequestsArePending = false;
         for (ActionRequestValue request: requests) {
             if (request.isApproveOrCompleteRequest()) {
@@ -203,10 +203,10 @@ public class IteratedRequestActivationNode implements SimpleNode {
      * @throws WorkflowException
      */
     private boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
-        MDC.put("docId", document.getRouteHeaderId());
-        PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
+        MDC.put("docId", document.getDocumentId());
+        PerformanceLogger performanceLogger = new PerformanceLogger(document.getDocumentId());
         List generatedActionItems = new ArrayList();
-        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
         if (context.isSimulation()) {
             requests.addAll(context.getEngineState().getGeneratedRequests());
         }
@@ -249,7 +249,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
 
     private boolean activateRequest(RouteContext context, ActionRequestValue actionRequest, RouteNodeInstance nodeInstance, List generatedActionItems) {
         if (actionRequest.isRoleRequest()) {
-            List actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(actionRequest.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+            List actionRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(actionRequest.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
                 ActionRequestValue siblingRequest = (ActionRequestValue) iterator.next();
                 if (actionRequest.getRoleName().equals(siblingRequest.getRoleName())) {

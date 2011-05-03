@@ -55,7 +55,7 @@ public class ActionListPriorityComparator implements Comparator {
 	 * on the same document and for the same user.
 	 */
 	protected boolean requiresComparison(ActionItem actionItem1, ActionItem actionItem2) {
-		return actionItem1.getRouteHeaderId().equals(actionItem2.getRouteHeaderId()) &&
+		return actionItem1.getDocumentId().equals(actionItem2.getDocumentId()) &&
 			actionItem1.getPrincipalId().equals(actionItem2.getPrincipalId());
 	}
 

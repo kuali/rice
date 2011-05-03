@@ -34,9 +34,9 @@ public interface NotificationWorkflowDocumentService {
      * @param initiatorUserId - the person/workflow user who is responsible for "initiating" this workflow document
      * @param recipientUserId - the person/workflow user who will recieve this document via an ad hoc route
      * @param annotation - a description of the workflow ad hoc route transaction
-     * @return Long - the id of the workflow document
+     * @return String - the id of the workflow document
      */
-    public Long createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId, 
+    public String createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId, 
 	    String recipientUserId, String annotation) throws WorkflowException;
     
     /**
@@ -63,5 +63,5 @@ public interface NotificationWorkflowDocumentService {
      * @return NotificationWorkflowDocument
      * @throws WorkflowException
      */
-    public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, Long workflowDocumentId) throws WorkflowException;
+    public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, String workflowDocumentId) throws WorkflowException;
 }

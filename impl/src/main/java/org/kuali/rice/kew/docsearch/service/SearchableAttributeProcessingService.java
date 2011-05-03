@@ -24,7 +24,7 @@ package org.kuali.rice.kew.docsearch.service;
  */
 public interface SearchableAttributeProcessingService {
 
-	public void indexDocument(Long documentId);
+	public void indexDocument(String documentId);
 	
 	
 }

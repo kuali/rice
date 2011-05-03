@@ -44,7 +44,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
     }
 
     @Test public void testSubProcessRoute() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
     	document.saveRoutingData();
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
@@ -52,7 +52,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
         document.routeDocument("");
         assertTrue("Document shoule be ENROUTE.", document.stateIsEnroute());
         
-        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Incorrect pending action requests.", 2, actionRequests.size());
         boolean isAck = false;
         boolean isApprove = false;
@@ -82,11 +82,11 @@ public class SubProcessRoutingTest extends KEWTestCase {
         }
         assertTrue(isAck);
         assertTrue(isApprove);
-        document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Should have acknowledge.", document.isAcknowledgeRequested());
         document.acknowledge("");
         
-        document = new WorkflowDocument(getPrincipalIdForName("temay"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         document.approve("");
         
         // find the subprocess and assert it is complete, not active, and not initial
@@ -103,10 +103,10 @@ public class SubProcessRoutingTest extends KEWTestCase {
         }
         assertTrue("Could not locate sub process node.", foundSubProcess);
         
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         document.approve("");
         
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertTrue("Document should be final.", document.stateIsFinal());
     }
     

@@ -52,7 +52,7 @@ public class CancelAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()));
     }
 
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
@@ -65,7 +65,7 @@ public class CancelAction extends ActionTakenEvent {
             return "No request for the user is compatible with the Cancel Action";
         }
     	// check state before checking kim
-        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getRouteHeaderId().toString(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
+        if (! KEWServiceLocator.getDocumentTypePermissionService().canCancel(getPrincipal().getPrincipalId(), getDocumentId(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
             return "User is not authorized to Cancel document";
         }
         return "";
@@ -102,12 +102,12 @@ public class CancelAction extends ActionTakenEvent {
     }
 
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Canceling document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
@@ -118,7 +118,7 @@ public class CancelAction extends ActionTakenEvent {
         ActionTakenValue actionTaken = saveActionTaken(findDelegatorForActionRequests(actionRequests));
 
         LOG.debug("Deactivate all pending action requests");
-        actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        actionRequests = getActionRequestService().findPendingByDoc(getDocumentId());
 
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
         notifyActionTaken(actionTaken);

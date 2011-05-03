@@ -65,10 +65,10 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
     }
 
     /**
-     * @see org.kuali.rice.ken.service.NotificationMessageDeliveryService#getNotificationMessageDeliveryByDelivererId(java.lang.Long)
+     * @see org.kuali.rice.ken.service.NotificationMessageDeliveryService#getNotificationMessageDeliveryByDelivererId(java.lang.String)
      */
     //switch to JPA criteria
-    public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(Long id) {
+    public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(String id) {
     	Map<String, Object> c = new HashMap<String, Object>();
     	c.put(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);	
         Collection<NotificationMessageDelivery> results = businessObjectDao.findMatching(NotificationMessageDelivery.class, c);

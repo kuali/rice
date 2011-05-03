@@ -38,7 +38,7 @@ public class NoteForm extends KualiForm {
     private String methodToCall = "";
     private String showEdit;
     private Boolean showAdd;
-    private Long docId;
+    private String docId;
     private Long noteIdNumber;
     private Integer numberOfNotes;
     private String sortOrder = "DESCENDING";
@@ -91,11 +91,11 @@ public class NoteForm extends KualiForm {
         this.showEdit = showEdit;
     }
 
-    public Long getDocId() {
+    public String getDocId() {
         return docId;
     }
 
-    public void setDocId(Long docId) {
+    public void setDocId(String docId) {
         this.docId = docId;
     }
 

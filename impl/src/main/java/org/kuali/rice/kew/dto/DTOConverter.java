@@ -136,7 +136,7 @@ public class DTOConverter {
     }
 
     private static void populateRouteHeaderVO(RouteHeaderDTO routeHeaderVO, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
-        routeHeaderVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
+        routeHeaderVO.setDocumentId(routeHeader.getDocumentId());
         routeHeaderVO.setAppDocId(routeHeader.getAppDocId());
         routeHeaderVO.setDateApproved(SQLUtils.convertTimestamp(routeHeader.getApprovedDate()));
         routeHeaderVO.setDateCreated(SQLUtils.convertTimestamp(routeHeader.getCreateDate()));
@@ -150,19 +150,19 @@ public class DTOConverter {
          */
         // by default, a non-initialized document content object will be sent so that it can be fetched lazily
         // DocumentContentVO documentContentVO = new DocumentContentVO();
-        // documentContentVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
+        // documentContentVO.setDocumentId(routeHeader.getDocumentId());
         // routeHeaderVO.setDocumentContent(documentContentVO);
         /**
          * Since we removed the lazy loading in the 2.3 release, this is the code which bypasses lazy loading
          */
         // routeHeaderVO.setDocumentContent(convertDocumentContent(routeHeader.getDocContent(),
-        // routeHeader.getRouteHeaderId()));
+        // routeHeader.getDocumentId()));
         routeHeaderVO.setDocRouteLevel(routeHeader.getDocRouteLevel());
         routeHeaderVO.setCurrentRouteNodeNames(routeHeader.getCurrentRouteLevelName());
 
         /*
          * Collection activeNodes =
-         * SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getRouteHeaderId());
+         * SpringServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeaderVO.getDocumentId());
          * routeHeaderVO.setNodeNames(new String[activeNodes.size()]); int index = 0; for (Iterator iterator =
          * activeNodes.iterator(); iterator.hasNext();) { RouteNodeInstance nodeInstance = (RouteNodeInstance)
          * iterator.next(); routeHeaderVO.getNodeNames()[index++] = nodeInstance.getRouteNode().getRouteNodeName(); }
@@ -219,7 +219,7 @@ public class DTOConverter {
         routeHeader.setFinalizedDate(SQLUtils.convertCalendar(routeHeaderVO.getDateFinalized()));
         routeHeader.setInitiatorWorkflowId(routeHeaderVO.getInitiatorPrincipalId());
         routeHeader.setRoutedByUserWorkflowId(routeHeaderVO.getRoutedByPrincipalId());
-        routeHeader.setRouteHeaderId(routeHeaderVO.getRouteHeaderId());
+        routeHeader.setDocumentId(routeHeaderVO.getDocumentId());
         routeHeader.setStatusModDate(SQLUtils.convertCalendar(routeHeaderVO.getDateLastModified()));
         routeHeader.setAppDocStatus(routeHeaderVO.getAppDocStatus());
         routeHeader.setAppDocStatusDate(SQLUtils.convertCalendar(routeHeaderVO.getAppDocStatusDate()));
@@ -254,7 +254,7 @@ public class DTOConverter {
         actionItemVO.setDocTitle(actionItem.getDocTitle());
         actionItemVO.setResponsibilityId(actionItem.getResponsibilityId());
         actionItemVO.setRoleName(actionItem.getRoleName());
-        actionItemVO.setRouteHeaderId(actionItem.getRouteHeaderId());
+        actionItemVO.setDocumentId(actionItem.getDocumentId());
         actionItemVO.setPrincipalId(actionItem.getPrincipalId());
         actionItemVO.setGroupId(actionItem.getGroupId());
         return actionItemVO;
@@ -271,8 +271,8 @@ public class DTOConverter {
         try {
             // parse the existing content on the document
             String existingDocContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
-            if (documentContentVO.getRouteHeaderId() != null) {
-                DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentContentVO.getRouteHeaderId());
+            if (documentContentVO.getDocumentId() != null) {
+                DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentContentVO.getDocumentId());
                 documentType = document.getDocumentType();
                 existingDocContent = document.getDocContent();
             }
@@ -397,7 +397,7 @@ public class DTOConverter {
         return contentSectionElement;
     }
 
-    public static DocumentContentDTO convertDocumentContent(String documentContentValue, Long documentId) throws WorkflowException {
+    public static DocumentContentDTO convertDocumentContent(String documentContentValue, String documentId) throws WorkflowException {
         if (documentContentValue == null) {
             return null;
         }
@@ -406,7 +406,7 @@ public class DTOConverter {
         documentContentVO.setApplicationContent("");
         documentContentVO.setAttributeContent("");
         documentContentVO.setSearchableContent("");
-        documentContentVO.setRouteHeaderId(documentId);
+        documentContentVO.setDocumentId(documentId);
         try {
             DocumentContent documentContent = new StandardDocumentContent(documentContentValue);
             if (documentContent.getApplicationContent() != null) {
@@ -502,7 +502,7 @@ public class DTOConverter {
         actionRequestVO.setRecipientTypeCd(actionRequest.getRecipientTypeCd());
         actionRequestVO.setResponsibilityDesc(actionRequest.getResponsibilityDesc());
         actionRequestVO.setResponsibilityId(actionRequest.getResponsibilityId());
-        actionRequestVO.setRouteHeaderId(actionRequest.getRouteHeaderId());
+        actionRequestVO.setDocumentId(actionRequest.getDocumentId());
         actionRequestVO.setRouteLevel(actionRequest.getRouteLevel());
         actionRequestVO.setNodeName(actionRequest.getPotentialNodeName());
         actionRequestVO.setNodeInstanceId((actionRequest.getNodeInstance() == null ? null : actionRequest.getNodeInstance().getRouteNodeInstanceId()));
@@ -543,7 +543,7 @@ public class DTOConverter {
         actionTakenVO.setActionTakenId(actionTaken.getActionTakenId());
         actionTakenVO.setAnnotation(actionTaken.getAnnotation());
         actionTakenVO.setDocVersion(actionTaken.getDocVersion());
-        actionTakenVO.setRouteHeaderId(actionTaken.getRouteHeaderId());
+        actionTakenVO.setDocumentId(actionTaken.getDocumentId());
         actionTakenVO.setPrincipalId(actionTaken.getPrincipalId());
         actionTakenVO.setDelegatorPrincpalId(actionTaken.getDelegatorPrincipalId());
         actionTakenVO.setDelegatorGroupId(actionTaken.getDelegatorGroupId());
@@ -696,10 +696,10 @@ public class DTOConverter {
         actionRequest.setResponsibilityDesc(actionRequestDTO.getResponsibilityDesc());
         actionRequest.setResponsibilityId(actionRequestDTO.getResponsibilityId());
         actionRequest.setRoleName(actionRequestDTO.getRoleName());
-        Long routeHeaderId = actionRequestDTO.getRouteHeaderId();
-        if (routeHeaderId != null) {
-            actionRequest.setRouteHeaderId(routeHeaderId);
-            //actionRequest.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId));
+        String documentId = actionRequestDTO.getDocumentId();
+        if (documentId != null) {
+            actionRequest.setDocumentId(documentId);
+            //actionRequest.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId));
         }
         actionRequest.setRouteLevel(actionRequestDTO.getRouteLevel());
 
@@ -726,9 +726,9 @@ public class DTOConverter {
         actionTaken.setDelegatorPrincipalId(actionTakenVO.getDelegatorPrincpalId());
         actionTaken.setDelegatorGroupId(actionTakenVO.getDelegatorGroupId());
         actionTaken.setDocVersion(actionTakenVO.getDocVersion());
-        KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getRouteHeaderId());
+        KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getDocumentId());
         //actionTaken.setRouteHeader(routeHeader);
-        actionTaken.setRouteHeaderId(actionTaken.getRouteHeaderId());
+        actionTaken.setDocumentId(actionTaken.getDocumentId());
         return actionTaken;
     }
 
@@ -737,7 +737,7 @@ public class DTOConverter {
             return null;
         }
         DocumentRouteStatusChangeDTO statusChangeVO = new DocumentRouteStatusChangeDTO();
-        statusChangeVO.setRouteHeaderId(statusChange.getRouteHeaderId());
+        statusChangeVO.setDocumentId(statusChange.getDocumentId());
         statusChangeVO.setAppDocId(statusChange.getAppDocId());
         statusChangeVO.setOldRouteStatus(statusChange.getOldRouteStatus());
         statusChangeVO.setNewRouteStatus(statusChange.getNewRouteStatus());
@@ -749,7 +749,7 @@ public class DTOConverter {
             return null;
         }
         DocumentRouteLevelChangeDTO routeLevelChangeVO = new DocumentRouteLevelChangeDTO();
-        routeLevelChangeVO.setRouteHeaderId(routeLevelChange.getRouteHeaderId());
+        routeLevelChangeVO.setDocumentId(routeLevelChange.getDocumentId());
         routeLevelChangeVO.setAppDocId(routeLevelChange.getAppDocId());
         routeLevelChangeVO.setOldRouteLevel(routeLevelChange.getOldRouteLevel());
         routeLevelChangeVO.setNewRouteLevel(routeLevelChange.getNewRouteLevel());
@@ -765,7 +765,7 @@ public class DTOConverter {
             return null;
         }
         DeleteEventDTO deleteEventVO = new DeleteEventDTO();
-        deleteEventVO.setRouteHeaderId(deleteEvent.getRouteHeaderId());
+        deleteEventVO.setDocumentId(deleteEvent.getDocumentId());
         deleteEventVO.setAppDocId(deleteEvent.getAppDocId());
         return deleteEventVO;
     }
@@ -775,7 +775,7 @@ public class DTOConverter {
             return null;
         }
         ActionTakenEventDTO actionTakenEventVO = new ActionTakenEventDTO();
-        actionTakenEventVO.setRouteHeaderId(actionTakenEvent.getRouteHeaderId());
+        actionTakenEventVO.setDocumentId(actionTakenEvent.getDocumentId());
         actionTakenEventVO.setAppDocId(actionTakenEvent.getAppDocId());
         actionTakenEventVO.setActionTaken(convertActionTaken(actionTakenEvent.getActionTaken()));
         return actionTakenEventVO;
@@ -786,7 +786,7 @@ public class DTOConverter {
             return null;
         }
         BeforeProcessEventDTO beforeProcessEvent = new BeforeProcessEventDTO();
-        beforeProcessEvent.setRouteHeaderId(event.getRouteHeaderId());
+        beforeProcessEvent.setDocumentId(event.getDocumentId());
         beforeProcessEvent.setAppDocId(event.getAppDocId());
         beforeProcessEvent.setNodeInstanceId(event.getNodeInstanceId());
         return beforeProcessEvent;
@@ -797,7 +797,7 @@ public class DTOConverter {
             return null;
         }
         AfterProcessEventDTO afterProcessEvent = new AfterProcessEventDTO();
-        afterProcessEvent.setRouteHeaderId(event.getRouteHeaderId());
+        afterProcessEvent.setDocumentId(event.getDocumentId());
         afterProcessEvent.setAppDocId(event.getAppDocId());
         afterProcessEvent.setNodeInstanceId(event.getNodeInstanceId());
         afterProcessEvent.setSuccessfullyProcessed(event.isSuccessfullyProcessed());
@@ -809,7 +809,7 @@ public class DTOConverter {
             return null;
         }
         DocumentLockingEventDTO documentLockingEvent = new DocumentLockingEventDTO();
-        documentLockingEvent.setRouteHeaderId(event.getRouteHeaderId());
+        documentLockingEvent.setDocumentId(event.getDocumentId());
         documentLockingEvent.setAppDocId(event.getAppDocId());
         return documentLockingEvent;
     }
@@ -1004,7 +1004,7 @@ public class DTOConverter {
     }
 
     // Method added for updating notes on server sites based on NoteVO change. Modfy on April 7, 2006
-    public static void updateNotes(RouteHeaderDTO routeHeaderVO, Long routeHeaderId) {
+    public static void updateNotes(RouteHeaderDTO routeHeaderVO, String documentId) {
         NoteDTO[] notes = routeHeaderVO.getNotes();
         NoteDTO[] notesToDelete = routeHeaderVO.getNotesToDelete();
         Note noteToDelete = null;
@@ -1016,7 +1016,7 @@ public class DTOConverter {
                 if (note != null) {
                     noteToSave = new Note();
                     noteToSave.setNoteId(note.getNoteId());
-                    noteToSave.setRouteHeaderId(routeHeaderId);
+                    noteToSave.setDocumentId(documentId);
                     noteToSave.setNoteAuthorWorkflowId(note.getNoteAuthorWorkflowId());
                     noteToSave.setNoteCreateDate(SQLUtils.convertCalendar(note.getNoteCreateDate()));
                     noteToSave.setNoteText(note.getNoteText());
@@ -1054,7 +1054,7 @@ public class DTOConverter {
                 tempNote = (Note) it.next();
                 tempNoteVO = new NoteDTO();
                 tempNoteVO.setNoteId(tempNote.getNoteId());
-                tempNoteVO.setRouteHeaderId(tempNote.getRouteHeaderId());
+                tempNoteVO.setDocumentId(tempNote.getDocumentId());
                 tempNoteVO.setNoteAuthorWorkflowId(tempNote.getNoteAuthorWorkflowId());
                 tempNoteVO.setNoteCreateDate(SQLUtils.convertTimestamp(tempNote.getNoteCreateDate()));
                 tempNoteVO.setNoteText(tempNote.getNoteText());
@@ -1074,7 +1074,7 @@ public class DTOConverter {
         }
         SimulationCriteria criteria = new SimulationCriteria();
         criteria.setDestinationNodeName(criteriaVO.getTargetNodeName());
-        criteria.setDocumentId(criteriaVO.getRouteHeaderId());
+        criteria.setDocumentId(criteriaVO.getDocumentId());
         criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
         criteria.setXmlContent(criteriaVO.getXmlContent());
         criteria.setActivateRequests(criteriaVO.getActivateRequests());
@@ -1236,7 +1236,7 @@ public class DTOConverter {
         criteria.setInitiator(criteriaVO.getInitiator());
         criteria.setIsAdvancedSearch((criteriaVO.isAdvancedSearch()) ? DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING : "NO");
         criteria.setSuperUserSearch((criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
-        criteria.setRouteHeaderId(criteriaVO.getRouteHeaderId());
+        criteria.setDocumentId(criteriaVO.getDocumentId());
         criteria.setViewer(criteriaVO.getViewer());
         criteria.setWorkgroupViewerName(criteriaVO.getGroupViewerName());
         criteria.setToDateApproved(criteriaVO.getToDateApproved());
@@ -1324,7 +1324,7 @@ public class DTOConverter {
     public static DocumentStatusTransitionDTO convertDocumentStatusTransition(DocumentStatusTransition transition) throws WorkflowException {
     	DocumentStatusTransitionDTO tranVO = new DocumentStatusTransitionDTO();
     	tranVO.setStatusTransitionId(transition.getStatusTransitionId());
-    	tranVO.setRouteHeaderId(transition.getRouteHeaderId());
+    	tranVO.setDocumentId(transition.getDocumentId());
     	tranVO.setOldAppDocStatus(transition.getOldAppDocStatus());
     	tranVO.setNewAppDocStatus(transition.getNewAppDocStatus());
     	tranVO.setStatusTransitionDate(transition.getStatusTransitionDate());    	

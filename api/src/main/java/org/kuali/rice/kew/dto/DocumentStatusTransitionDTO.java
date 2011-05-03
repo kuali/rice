@@ -28,7 +28,7 @@ public class DocumentStatusTransitionDTO implements Serializable{
 	private static final long serialVersionUID = -5694589806200056472L;
 	
 	private Long statusTransitionId;
-	private Long routeHeaderId;
+	private String documentId;
 	private String oldAppDocStatus;
 	private String newAppDocStatus;
 	private java.sql.Timestamp statusTransitionDate;
@@ -39,11 +39,11 @@ public class DocumentStatusTransitionDTO implements Serializable{
 	public void setStatusTransitionId(Long statusTransitionId) {
 		this.statusTransitionId = statusTransitionId;
 	}
-	public Long getRouteHeaderId() {
-		return this.routeHeaderId;
+	public String getDocumentId() {
+		return this.documentId;
 	}
-	public void setRouteHeaderId(Long routeHeaderId) {
-		this.routeHeaderId = routeHeaderId;
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 	public String getOldAppDocStatus() {
 		return this.oldAppDocStatus;

@@ -37,8 +37,8 @@ import java.sql.SQLException;
 @Table(name="KREW_DOC_HDR_EXT_T")
 //@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeStringValue.FindByRouteHeaderId", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId"),
-	@NamedQuery(name="SearchableAttributeStringValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeStringValue.FindByDocumentId", query="select s from SearchableAttributeStringValue as s where s.documentId = :documentId"),
+	@NamedQuery(name="SearchableAttributeStringValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
 })
 public class SearchableAttributeStringValue implements SearchableAttributeValue, Serializable {
 
@@ -67,7 +67,7 @@ public class SearchableAttributeStringValue implements SearchableAttributeValue,
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
 
     @Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+	private String documentId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
 	private DocumentRouteHeaderValue routeHeader;
@@ -175,12 +175,12 @@ public class SearchableAttributeStringValue implements SearchableAttributeValue,
 		this.routeHeader = routeHeader;
 	}
 
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
 
-	public void setRouteHeaderId(Long routeHeaderId) {
-		this.routeHeaderId = routeHeaderId;
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 
 	public String getSearchableAttributeKey() {

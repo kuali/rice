@@ -31,27 +31,27 @@ public class DocumentMessageExceptionHandler extends DefaultMessageExceptionHand
 
 	@Override
 	protected void placeInException(Throwable throwable, PersistedMessageBO message) throws Exception {
-		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, message, getRouteHeaderId(message));
+		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, message, getDocumentId(message));
 	}
 	
 	
 
 	@Override
 	public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
-		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRoutingLastDitchEffort(throwable, message, getRouteHeaderId(message));
+		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRoutingLastDitchEffort(throwable, message, getDocumentId(message));
 	}
 
 
 
 	@Override
 	protected void scheduleExecution(Throwable throwable, PersistedMessageBO message) throws Exception {
-		String description = "DocumentId: " + getRouteHeaderId(message);
+		String description = "DocumentId: " + getDocumentId(message);
 		KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, description);
 	}
 
-	protected Long getRouteHeaderId(PersistedMessageBO message) {
-		if (!StringUtils.isEmpty(message.getValue1()) && StringUtils.isNumeric(message.getValue1())) {
-			return Long.valueOf(message.getValue1());
+	protected String getDocumentId(PersistedMessageBO message) {
+		if (!StringUtils.isEmpty(message.getValue1())) {
+			return message.getValue1();
 		}
 		throw new WorkflowRuntimeException("Unable to put this message in exception routing service name " + message.getServiceName());
 	}

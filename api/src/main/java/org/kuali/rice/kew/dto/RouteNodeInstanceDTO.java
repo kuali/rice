@@ -28,7 +28,7 @@ public class RouteNodeInstanceDTO implements Serializable {
     private static final long serialVersionUID = -5456548621231617447L;
     
     private Long routeNodeInstanceId;
-    private Long documentId;
+    private String documentId;
     private Long branchId;
     private Long routeNodeId;
     private Long processId;
@@ -57,10 +57,10 @@ public class RouteNodeInstanceDTO implements Serializable {
     public void setComplete(boolean complete) {
         this.complete = complete;
     }
-    public Long getDocumentId() {
+    public String getDocumentId() {
         return documentId;
     }
-    public void setDocumentId(Long documentId) {
+    public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
     public boolean isInitial() {

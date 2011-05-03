@@ -34,9 +34,9 @@ public class NoteDAOOjbImpl extends PersistenceBrokerDaoSupport implements NoteD
         return (Note) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(Note.class, crit));          
     }
 
-    public List getNotesByRouteHeaderId(Long routeHeaderId) {
+    public List getNotesByDocumentId(String documentId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         QueryByCriteria query = new QueryByCriteria(Note.class, crit);
         query.addOrderByAscending("noteId");
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(query);        

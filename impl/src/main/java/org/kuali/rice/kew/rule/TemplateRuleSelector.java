@@ -58,7 +58,7 @@ class TemplateRuleSelector implements RuleSelector {
 	Set<MassRuleAttribute> massRules = new HashSet<MassRuleAttribute>();
 	RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
 	if (template == null) {
-	    throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getRouteHeaderId());
+	    throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getDocumentId());
 	}
 	for (Iterator iter = template.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
 

@@ -84,17 +84,17 @@ public class SuperUserAction extends KewKualiAction {
     
     public ActionForward displaySuperUserDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         SuperUserForm superUserForm = (SuperUserForm) form;
-        superUserForm.setDocHandlerUrl(KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?docId=" + superUserForm.getRouteHeaderId() + "&" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.SUPERUSER_COMMAND);
+        superUserForm.setDocHandlerUrl(KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?docId=" + superUserForm.getDocumentId() + "&" + KEWConstants.COMMAND_PARAMETER + "=" + KEWConstants.SUPERUSER_COMMAND);
         return defaultDispatch(mapping, form, request, response);
     }
 
     public ActionForward routeLevelApprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering routeLevelApprove()...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
+        String documentId = superUserForm.getRouteHeader().getDocumentId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserNodeApproveAction(getUserSession(request).getPrincipalId(), documentId, superUserForm.getDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getDocumentId(), null);
         LOG.info("exiting routeLevelApprove()...");
         superUserForm.getActionRequests().clear();
         initForm(request, form);
@@ -104,10 +104,10 @@ public class SuperUserAction extends KewKualiAction {
     public ActionForward approve(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering approve() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
+        String documentId = superUserForm.getRouteHeader().getDocumentId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserApprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentMessage("general.routing.superuser.approved", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.approved", request, superUserForm.getDocumentId(), null);
         LOG.info("exiting approve() ...");
         superUserForm.getActionRequests().clear();
         initForm(request, form);
@@ -117,10 +117,10 @@ public class SuperUserAction extends KewKualiAction {
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering disapprove() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
+        String documentId = superUserForm.getRouteHeader().getDocumentId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserDisapprove(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentMessage("general.routing.superuser.disapproved", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.disapproved", request, superUserForm.getDocumentId(), null);
         LOG.info("exiting disapprove() ...");
         superUserForm.getActionRequests().clear();
         initForm(request, form);
@@ -130,10 +130,10 @@ public class SuperUserAction extends KewKualiAction {
     public ActionForward cancel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering cancel() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
+        String documentId = superUserForm.getRouteHeader().getDocumentId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserCancel(getUserSession(request).getPrincipalId(), DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
-        saveDocumentMessage("general.routing.superuser.canceled", request, superUserForm.getRouteHeaderIdString(), null);
+        saveDocumentMessage("general.routing.superuser.canceled", request, superUserForm.getDocumentId(), null);
         LOG.info("exiting cancel() ...");
         superUserForm.getActionRequests().clear();
         initForm(request, form);
@@ -143,7 +143,7 @@ public class SuperUserAction extends KewKualiAction {
     public ActionForward returnToPreviousNode(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.info("entering returnToPreviousNode() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
-        Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
+        String documentId = superUserForm.getRouteHeader().getDocumentId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserReturnToPreviousNode(getUserSession(request).getPrincipalId(), documentId, superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation(), superUserForm.isRunPostProcessorLogic());
         saveDocumentMessage("general.routing.returnedToPreviousNode", request, "document", superUserForm.getReturnDestNodeName().toString());
@@ -166,7 +166,7 @@ public class SuperUserAction extends KewKualiAction {
         
         LOG.debug("Routing super user action request approve action");
         boolean runPostProcessorLogic = ArrayUtils.contains(superUserForm.getActionRequestRunPostProcessorCheck(), superUserForm.getActionTakenActionRequestId());
-        Long documentId = superUserForm.getRouteHeader().getRouteHeaderId();
+        String documentId = superUserForm.getRouteHeader().getDocumentId();
         WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
         documentActions.superUserActionRequestApproveAction(getUserSession(request).getPrincipalId(), documentId, new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation(), runPostProcessorLogic);
         String messageString;
@@ -182,7 +182,7 @@ public class SuperUserAction extends KewKualiAction {
         }else {
         	messageString = "general.routing.superuser.actionRequestApproved";
         }
-        saveDocumentMessage(messageString, request, superUserForm.getRouteHeaderIdString(), superUserForm.getActionTakenActionRequestId());
+        saveDocumentMessage(messageString, request, superUserForm.getDocumentId(), superUserForm.getActionTakenActionRequestId());
         LOG.info("exiting actionRequestApprove() ...");
         superUserForm.getActionRequests().clear();
         initForm(request, form);
@@ -218,20 +218,20 @@ public class SuperUserAction extends KewKualiAction {
     public ActionForward initForm(HttpServletRequest request, ActionForm form) throws Exception {
         request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
         SuperUserForm superUserForm = (SuperUserForm) form;
-        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(superUserForm.getRouteHeaderId());
+        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(superUserForm.getDocumentId());
         superUserForm.setRouteHeader(routeHeader);
         String principalId = getUserSession(request).getPrincipalId();
         boolean isAuthorized = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId, routeHeader.getDocumentType());
         superUserForm.setAuthorized(isAuthorized);
         if (!isAuthorized) {
-            saveDocumentMessage("general.routing.superuser.notAuthorized", request, superUserForm.getRouteHeaderIdString(), null);
+            saveDocumentMessage("general.routing.superuser.notAuthorized", request, superUserForm.getDocumentId(), null);
             return null;
         }
 
-        superUserForm.setFutureNodeNames(KEWServiceLocator.getRouteNodeService().findFutureNodeNames(routeHeader.getRouteHeaderId()));
+        superUserForm.setFutureNodeNames(KEWServiceLocator.getRouteNodeService().findFutureNodeNames(routeHeader.getDocumentId()));
 
 
-        Collection actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeader.getRouteHeaderId());
+        Collection actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(routeHeader.getDocumentId());
         Iterator requestIterator = actionRequests.iterator();
         while (requestIterator.hasNext()) {
             ActionRequestValue req = (ActionRequestValue) requestIterator.next();
@@ -241,9 +241,9 @@ public class SuperUserAction extends KewKualiAction {
         }
 
 
-        superUserForm.setDocId(superUserForm.getRouteHeaderId());
+        superUserForm.setDocId(superUserForm.getDocumentId());
         if (superUserForm.getDocId() != null) {
-            superUserForm.setWorkflowDocument(new WorkflowDocument(getUserSession(request).getPrincipalId(), superUserForm.getDocId()));
+            superUserForm.setWorkflowDocument(WorkflowDocument.loadDocument(getUserSession(request).getPrincipalId(), superUserForm.getDocId()));
             superUserForm.establishVisibleActionRequestCds();
         }
 
@@ -289,7 +289,7 @@ public class SuperUserAction extends KewKualiAction {
         }
 
         try {
-            String routeNodeName = getAdHocRouteNodeName(superUserForm.getWorkflowDocument().getRouteHeaderId());
+            String routeNodeName = getAdHocRouteNodeName(superUserForm.getWorkflowDocument().getDocumentId());
             //if (KEWConstants.PERSON.equals(recipient.getType())) {
             if (KEWConstants.PERSON.equals(routeType)) {
                 String recipientPrincipalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(recipient.getId());
@@ -373,7 +373,7 @@ public class SuperUserAction extends KewKualiAction {
     	return start(mapping, form, request, response);
     }
 
-    private WorkflowDocumentActions getWorkflowDocumentActions(Long documentId) {
+    private WorkflowDocumentActions getWorkflowDocumentActions(String documentId) {
     	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
     	String serviceNamespace = documentType.getServiceNamespace();
     	WorkflowDocumentActions service = (WorkflowDocumentActions)GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowDocumentActionsService"));
@@ -409,11 +409,11 @@ public class SuperUserAction extends KewKualiAction {
 
     }
 
-    protected String getAdHocRouteNodeName(Long routeHeaderId) throws WorkflowException {
+    protected String getAdHocRouteNodeName(String documentId) throws WorkflowException {
         WorkflowInfo info = new WorkflowInfo();
-        RouteNodeInstanceDTO[] nodeInstances = info.getActiveNodeInstances(routeHeaderId);
+        RouteNodeInstanceDTO[] nodeInstances = info.getActiveNodeInstances(documentId);
         if (nodeInstances == null || nodeInstances.length == 0) {
-            nodeInstances = info.getTerminalNodeInstances(routeHeaderId);
+            nodeInstances = info.getTerminalNodeInstances(documentId);
         }
         if (nodeInstances == null || nodeInstances.length == 0) {
             throw new WorkflowException("Could not locate a node on the document to send the ad hoc request to.");

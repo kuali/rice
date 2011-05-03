@@ -178,7 +178,7 @@ public class FlexRM {
 			context.setNodeInstance(nodeInstance);
 		}
 
-		LOG.debug("Making action requests for document " + routeHeader.getRouteHeaderId());
+		LOG.debug("Making action requests for document " + routeHeader.getDocumentId());
 
 		RuleSelector ruleSelector = loadRuleSelector(routeNodeDef, nodeInstance);
 
@@ -431,7 +431,7 @@ public class FlexRM {
 	}
 
 	private boolean isDuplicateActionRequestDetected(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, RuleResponsibility resp, String qualifiedRoleName) {
-		List<ActionRequestValue> requests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
+		List<ActionRequestValue> requests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getDocumentId());
         for (ActionRequestValue request : requests)
         {
             if (((nodeInstance != null && request.getNodeInstance() != null && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) || request
@@ -465,7 +465,7 @@ public class FlexRM {
 	//  try {
 	//  return new StandardDocumentContent(context.getDocument().getDocContent(), context);
 	//  } catch (Exception e) {
-	//  throw new WorkflowException("Error parsing doc content for document " + context.getDocument().getRouteHeaderId());
+	//  throw new WorkflowException("Error parsing doc content for document " + context.getDocument().getDocumentId());
 	//  }
 	//  }
 }

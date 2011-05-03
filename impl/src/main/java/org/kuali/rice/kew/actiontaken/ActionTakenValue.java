@@ -66,7 +66,7 @@ public class ActionTakenValue implements Serializable {
 	@Column(name="ACTN_TKN_ID")
     private Long actionTakenId;
     @Column(name="DOC_HDR_ID")//,insertable=false, updatable=false)
-	private Long routeHeaderId;
+	private String documentId;
     @Column(name="ACTN_CD")
 	private String actionTaken;
 	@Column(name="ACTN_DT")
@@ -245,13 +245,12 @@ public class ActionTakenValue implements Serializable {
         this.lockVerNbr = lockVerNbr;
     }
 
-    public Long getRouteHeaderId() {
-
-    	return routeHeaderId;
+    public String getDocumentId() {
+    	return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public String getPrincipalId() {

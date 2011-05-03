@@ -941,7 +941,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         setCriteria(searchCriteria);
         int size = 0;
         List<DocSearchDTO> docList = new ArrayList<DocSearchDTO>();
-        Map<Long, DocSearchDTO> resultMap = new HashMap<Long, DocSearchDTO>();
+        Map<String, DocSearchDTO> resultMap = new HashMap<String, DocSearchDTO>();
         PerformanceLogger perfLog = new PerformanceLogger();
         int iteration = 0;
         boolean resultSetHasNext = resultSet.next();
@@ -951,13 +951,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             iteration++;
             DocSearchDTO docCriteriaDTO = processRow(searchAttributeStatement, resultSet);
             docCriteriaDTO.setSuperUserSearch(getCriteria().getSuperUserSearch());
-            if (!resultMap.containsKey(docCriteriaDTO.getRouteHeaderId())) {
+            if (!resultMap.containsKey(docCriteriaDTO.getDocumentId())) {
                 docList.add(docCriteriaDTO);
-                resultMap.put(docCriteriaDTO.getRouteHeaderId(), docCriteriaDTO);
+                resultMap.put(docCriteriaDTO.getDocumentId(), docCriteriaDTO);
                 size++;
             } else {
                 // handle duplicate rows with different search data
-                DocSearchDTO previousEntry = (DocSearchDTO)resultMap.get(docCriteriaDTO.getRouteHeaderId());
+                DocSearchDTO previousEntry = (DocSearchDTO)resultMap.get(docCriteriaDTO.getDocumentId());
                 handleMultipleDocumentRows(previousEntry, docCriteriaDTO);
             }
             resultSetHasNext = resultSet.next();
@@ -1087,7 +1087,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public DocSearchDTO processRow(Statement searchAttributeStatement, ResultSet rs) throws SQLException {
         DocSearchDTO docCriteriaDTO = new DocSearchDTO();
 
-        docCriteriaDTO.setRouteHeaderId(new Long(rs.getLong("DOC_HDR_ID")));
+        docCriteriaDTO.setDocumentId(rs.getString("DOC_HDR_ID"));
 
         String docTypeLabel = rs.getString("LBL");
         String activeIndicatorCode = rs.getString("ACTV_IND");
@@ -1159,7 +1159,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     public void populateRowSearchableAttributes(DocSearchDTO docCriteriaDTO, Statement searchAttributeStatement) throws SQLException {
         searchAttributeStatement.setFetchSize(50);
-        Long documentId = docCriteriaDTO.getRouteHeaderId();
+        String documentId = docCriteriaDTO.getDocumentId();
         List<SearchableAttributeValue> attributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
         PerformanceLogger perfLog = new PerformanceLogger(documentId);
         for (SearchableAttributeValue searchAttValue : attributeValues) {
@@ -1219,7 +1219,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");
 
         StringBuffer whereSQL = new StringBuffer();
-        whereSQL.append(getRouteHeaderIdSql(criteria.getRouteHeaderId(), getGeneratedPredicatePrefix(whereSQL.length()), docHeaderTableAlias));
+        whereSQL.append(getDocumentIdSql(criteria.getDocumentId(), getGeneratedPredicatePrefix(whereSQL.length()), docHeaderTableAlias));
         whereSQL.append(getInitiatorSql(criteria.getInitiator(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getAppDocIdSql(criteria.getAppDocId(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
@@ -1353,12 +1353,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return new QueryComponent(selectSql.toString(),fromSql.toString(),"");
     }
 
-    public String getRouteHeaderIdSql(String routeHeaderId, String whereClausePredicatePrefix, String tableAlias) {
+    public String getDocumentIdSql(String documentId, String whereClausePredicatePrefix, String tableAlias) {
 
-        if ((routeHeaderId == null) || "".equals(routeHeaderId.trim())) {
+        if ((documentId == null) || "".equals(documentId.trim())) {
             return "";
         } else {
-            Criteria crit = getSqlBuilder().createCriteria("DOC_HDR_ID", routeHeaderId, "KREW_DOC_HDR_T", tableAlias,Long.TYPE);
+        	// Using true for caseInsensitive causes bad performance for MYSQL databases since function indexes cannot be added. 
+        	// Due to this, false is passed for caseInsensitive
+            Criteria crit = getSqlBuilder().createCriteria("DOC_HDR_ID", documentId, "KREW_DOC_HDR_T", tableAlias, String.class, false, true);
             return new StringBuffer(whereClausePredicatePrefix + crit.buildWhere()).toString();
         }
 

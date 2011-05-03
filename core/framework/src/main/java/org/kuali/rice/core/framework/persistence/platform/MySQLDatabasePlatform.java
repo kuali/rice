@@ -34,7 +34,7 @@ public class MySQLDatabasePlatform extends ANSISqlDatabasePlatform {
 	private static final Pattern APOS_PAT = Pattern.compile("'");
 	private static final Pattern BSLASH_PAT = Pattern.compile(Matcher.quoteReplacement("\\"));
 	
-    public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
+    public String getLockRouteHeaderQuerySQL(String documentId, boolean wait) {
         return "SELECT DOC_HDR_ID FROM KREW_DOC_HDR_T WHERE DOC_HDR_ID=? FOR UPDATE";
     }
 

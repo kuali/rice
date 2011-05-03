@@ -52,7 +52,7 @@ public class KEWModuleService extends ModuleServiceBase {
 			return pkFields;
 		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectInterfaceClass )){
 			List<String> pkFields = new ArrayList<String>( 1 );
-			pkFields.add( "routeHeaderId" );
+			pkFields.add( "documentId" );
 			return pkFields;
 		}
 		return super.listPrimaryKeyFieldNames(businessObjectInterfaceClass);
@@ -78,8 +78,8 @@ public class KEWModuleService extends ModuleServiceBase {
 			}
 
 		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectClass )){
-			if ( fieldValues.containsKey( "routeHeaderId" ) ) {
-				return (T)createDocSearchCriteriaEBO(KEWServiceLocator.getRouteHeaderService().getRouteHeader(Long.valueOf(fieldValues.get( "routeHeaderId" ).toString())));
+			if ( fieldValues.containsKey( "documentId" ) ) {
+				return (T)createDocSearchCriteriaEBO(KEWServiceLocator.getRouteHeaderService().getRouteHeader(fieldValues.get( "documentId" ).toString()));
 			}
 
 		}
@@ -139,9 +139,9 @@ public class KEWModuleService extends ModuleServiceBase {
 				return routeHeaderValue.getInitiatorPrincipal().getPrincipalName();
 			}
 
-			public String getRouteHeaderId() {
+			public String getDocumentId() {
 
-				return routeHeaderValue.getRouteHeaderId().toString();
+				return routeHeaderValue.getDocumentId();
 			}
 
 			public void refresh() {

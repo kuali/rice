@@ -41,7 +41,7 @@ public class ActionRequestDTO implements Serializable {
     private Boolean currentIndicator = Boolean.TRUE;
     private Calendar dateCreated;
     private Long responsibilityId;
-    private Long routeHeaderId;
+    private String documentId;
     private String routeMethodName;
     private Integer priority;
     private String annotation;
@@ -111,8 +111,8 @@ public class ActionRequestDTO implements Serializable {
         return responsibilityId;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
     public Integer getRouteLevel() {
@@ -139,8 +139,8 @@ public class ActionRequestDTO implements Serializable {
         this.routeLevel = routeLevel;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public void setResponsibilityId(Long responsibilityId) {

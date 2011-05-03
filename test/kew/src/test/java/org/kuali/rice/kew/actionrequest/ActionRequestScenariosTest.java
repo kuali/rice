@@ -53,34 +53,34 @@ public class ActionRequestScenariosTest extends KEWTestCase {
      */
     @Test public void testInlineRequestsRouteModule() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("arh14"), "InlineRequestsDocumentType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("arh14"), "InlineRequestsDocumentType");
         document.setApplicationContent("<blah><step>step1</step></blah>");
         document.routeDocument("");
 
         TestUtilities.assertAtNode(document, "step1");
-        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue user1Request = (ActionRequestValue) requests.get(0);
         assertEquals(getPrincipalIdForName("user1"), user1Request.getPrincipalId());
 
         // open doc as user1 and route it
-        document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("user1"), document.getDocumentId());
         document.setApplicationContent("<blah><step>step2</step></blah>");
         document.approve("");
 
         TestUtilities.assertAtNode(document, "step2");
-        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue workgroupRequest = (ActionRequestValue) requests.get(0);
         assertEquals(getGroupIdFromGroupName("KR-WKFLW", "TestWorkgroup"), workgroupRequest.getGroupId());
 
         // open doc as user in TestWorkgroup and route it
-        document = new WorkflowDocument(getPrincipalIdFromPrincipalName("temay"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("temay"), document.getDocumentId());
         document.setApplicationContent("<blah><step>step3</step></blah>");
         document.approve("");
 
         TestUtilities.assertAtNode(document, "step3");
-        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue initiatorRequest = (ActionRequestValue) requests.get(0);
         assertEquals("INITIATOR", initiatorRequest.getRoleName());
@@ -90,14 +90,14 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertFalse("Document should not be FINAL", document.stateIsFinal());
 
         // open doc as initiator and route it
-        document = new WorkflowDocument(getPrincipalIdFromPrincipalName("arh14"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("arh14"), document.getDocumentId());
         document.approve("");
 
         assertTrue("Document should be FINAL", document.stateIsFinal());
     }
 
     @Test public void testInlineRequestsRouteModule_UsingAttributes() throws Exception {
-        /*WorkflowDocument document = new WorkflowDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType_UsingAttributes");
+        /*WorkflowDocument document = WorkflowDocument.createDocument(new NetworkIdVO("arh14"), "InlineRequestsDocumentType_UsingAttributes");
         try {
             document.routeDocument("");
             fail("Bad route succeeded");
@@ -105,34 +105,34 @@ public class ActionRequestScenariosTest extends KEWTestCase {
             // should throw exception as no approvals were generated
         }*/
 
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("arh14"), "InlineRequestsDocumentType_UsingAttributes");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("arh14"), "InlineRequestsDocumentType_UsingAttributes");
         document.setApplicationContent("<blah><step>step1</step></blah>");
         document.routeDocument("");
 
         TestUtilities.assertAtNode(document, "step1");
-        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue user1Request = (ActionRequestValue) requests.get(0);
         assertEquals(getPrincipalIdForName("user1"), user1Request.getPrincipalId());
 
         // open doc as user1 and route it
-        document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("user1"), document.getDocumentId());
         document.setApplicationContent("<blah><step>step2</step></blah>");
         document.approve("");
 
         TestUtilities.assertAtNode(document, "step2");
-        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue workgroupRequest = (ActionRequestValue) requests.get(0);
         assertEquals(getGroupIdFromGroupName("KR-WKFLW", "TestWorkgroup"), workgroupRequest.getGroupId());
 
         // open doc as user in TestWorkgroup and route it
-        document = new WorkflowDocument(getPrincipalIdFromPrincipalName("temay"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("temay"), document.getDocumentId());
         document.setApplicationContent("<blah><step>step3</step></blah>");
         document.approve("");
 
         TestUtilities.assertAtNode(document, "step3");
-        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+        requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
         assertEquals("Should be 1 request.", 1, requests.size());
         ActionRequestValue initiatorRequest = (ActionRequestValue) requests.get(0);
         assertEquals("INITIATOR", initiatorRequest.getRoleName());
@@ -142,7 +142,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
         assertFalse("Document should not be FINAL", document.stateIsFinal());
 
         // open doc as initiator and route it
-        document = new WorkflowDocument(getPrincipalIdFromPrincipalName("arh14"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("arh14"), document.getDocumentId());
         document.approve("");
 
         assertTrue("Document should be FINAL", document.stateIsFinal());
@@ -156,10 +156,10 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	 */
 	@Test public void testForceActionWithDelegation() throws Exception {
 		// at first, we'll route the document so that the bug is not exposed and verify the action request graph
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testForceActionWithDelegation");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("user1"), "testForceActionWithDelegation");
 		document.routeDocument("");
 		TestUtilities.assertAtNode(document, "Node1");
-		List rootRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
+		List rootRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
 		assertEquals("Should be 1 root request.", 1, rootRequests.size());
 		ActionRequestValue ewestfalRequest = (ActionRequestValue)rootRequests.get(0);
 		assertTrue("Request to ewestfal should be force action of true", ewestfalRequest.getForceAction());
@@ -167,7 +167,7 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 		ActionRequestValue rkirkendRequest = (ActionRequestValue)ewestfalRequest.getChildrenRequests().get(0);
 		assertFalse("Request to rkirkend should be force action of false", rkirkendRequest.getForceAction());
 
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), "testForceActionWithDelegation");
+		document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("ewestfal"), "testForceActionWithDelegation");
 
 		// After we route the document it should be at the first node in the document where "ewestfal"
 		// is the primary approver with force action = true and "rkirkend" is the primary
@@ -191,39 +191,39 @@ public class ActionRequestScenariosTest extends KEWTestCase {
      * @throws Exception
      */
 	@Test public void testRoleToRoleDelegation() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testRoleToRoleDelegation");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("user1"), "testRoleToRoleDelegation");
 		document.routeDocument("");
 
 		// after routing the document we should have an approve request to ewestfal, this request should have
 		// one primary delegate and three secondary delegates
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getDocumentId());
 		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
 		// now check all of ewestfal's delegates
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("xqi"), document.getDocumentId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getDocumentId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
 
 		// now approve as the primary delegator, this is where we were seeing the problem in KULWF-655, the
 		// action request graph was not getting properly deactivated and it was not getting associated with the
 		// "ActionTaken" properly
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 		document.approve("Approving as primary delegate.");
 
 		// after the primary delegate approves, verify that the entire action request graph was
 		// deactivated in grand fashion
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getDocumentId());
 		assertFalse("the primary approver should no longer have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("xqi"), document.getDocumentId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getDocumentId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
 
-		List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+		List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
 		assertEquals("Wrong number of action requests.", 7, actionRequests.size());
 		for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
@@ -240,39 +240,39 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	//testMixedbagRoleToRoleDelegation
 
 	@Test public void testRoleToRoleMixedApprovePoliciesDelegation() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testMixedbagRoleToRoleDelegation");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("user1"), "testMixedbagRoleToRoleDelegation");
 		document.routeDocument("");
 
 		// after routing the document we should have an approve request to ewestfal, this request should have
 		// one primary delegate and three secondary delegates
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getDocumentId());
 		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
 		// now check all of ewestfal's delegates
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("xqi"), document.getDocumentId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getDocumentId());
 		assertTrue("Should have an approve request.", document.isApprovalRequested());
 
 		// now approve as the primary delegator, this is where we were seeing the problem in KULWF-655, the
 		// action request graph was not getting properly deactivated and it was not getting associated with the
 		// "ActionTaken" properly
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 		document.approve("Approving as primary delegate.");
 
 		// after the primary delegate approves, verify that the entire action request graph was
 		// deactivated in grand fashion
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getDocumentId());
 		assertFalse("the primary approver should no longer have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("xqi"), document.getDocumentId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getDocumentId());
 		assertFalse("Should not have an approve request.", document.isApprovalRequested());
 
-		List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+		List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
 		assertEquals("Wrong number of action requests.", 7, actionRequests.size());
 		for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iterator.next();
@@ -294,14 +294,14 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 
 	// see: https://test.kuali.org/jira/browse/KULRICE-2001
 	@Test public void testUnresolvableRoleAttributeRecipients() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "UnresolvableRoleRecipsDocType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("user1"), "UnresolvableRoleRecipsDocType");
         try {
         	document.routeDocument("");
         } catch (Exception e) {
             // this doc has a rule with a role that produces an invalid recipient id
             // should receive an error when it attempts to route to the invalid recipient and trigger exception routing on the document
         	TestUtilities.getExceptionThreader().join();
-        	document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
+        	document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
 	}
@@ -311,32 +311,32 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	 * This is commented out because that is currently not supported in rice.
 	 */
 //	@Test public void testGroupRecipientsWithAllApprovePolicy() throws Exception {
-//        WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testGroupAllApprovePolicy");
+//        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdFromPrincipalName("user1"), "testGroupAllApprovePolicy");
 //        document.routeDocument("");
 //        
 //        assertTrue("Should have approval policy of All", document.getActionRequests()[0].getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE));
 //        
-//    	document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+//    	document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getDocumentId());
 //		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
-//		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+//		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 //		assertTrue("Should have an approve request.", document.isApprovalRequested());
-//		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+//		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("xqi"), document.getDocumentId());
 //		assertTrue("Should have an approve request.", document.isApprovalRequested());
-//		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+//		document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getDocumentId());
 //		assertTrue("Should have an approve request.", document.isApprovalRequested());
 		
 		//approve document as jitrue
 		//document.approve("Approving as primary jitrue.");
 		
 		//make sure other group members still have approve requests.
-		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+		//document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getDocumentId());
 		//assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
-		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		//document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getDocumentId());
 		//assertTrue("Should have an approve request.", document.isApprovalRequested());
-		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+		//document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("xqi"), document.getDocumentId());
 		//assertTrue("Should have an approve request.", document.isApprovalRequested());
 		
-		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+		//document = WorkflowDocument.loadDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getDocumentId());
 		//assertTrue("Should NOT have an approve request.", document.isApprovalRequested());
 //	}
 

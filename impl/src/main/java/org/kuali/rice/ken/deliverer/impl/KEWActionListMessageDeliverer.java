@@ -65,18 +65,14 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
     public void deliverMessage(NotificationMessageDelivery messageDelivery) throws NotificationMessageDeliveryException {
         try {
             // make the call to actually generate and ad-hoc route a workflow document
-            Long workflowDocId = notificationWorkflowDocumentService.createAndAdHocRouteNotificationWorkflowDocument(
+            String documentId = notificationWorkflowDocumentService.createAndAdHocRouteNotificationWorkflowDocument(
                     messageDelivery,
                     Util.getNotificationSystemUser(),
                     messageDelivery.getUserRecipientId(),
                     NotificationConstants.KEW_CONSTANTS.GENERIC_DELIVERY_ANNOTATION);
 
-            // now prepare and set the workflow doc id into the message delivery's delivery system id
-            String deliverySystemId = null;
-            if(workflowDocId != null) {
-                deliverySystemId = workflowDocId.toString();
-            }
-            messageDelivery.setDeliverySystemId(deliverySystemId);
+            // now set the workflow doc id into the message delivery's delivery system id
+            messageDelivery.setDeliverySystemId(documentId);
             LOG.debug("Message Delivery: " + messageDelivery.toString());
         } catch (WorkflowException we) {
             LOG.error(we.getStackTrace());
@@ -100,18 +96,8 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
             return;
         }
         
-        Long docId;
         try {
-            docId = Long.parseLong(sysId);
-        } catch (NumberFormatException nfe) {
-            LOG.error("Invalid workflow document id for NotificationMessageDelivery " + messageDelivery.getId() + ": " + sysId);
-            // there is no possibility for recovery, so since there is no id, we'll just log an error and return successfully instead
-            // of throwing an exception
-            return;
-        }
-
-        try {
-            workflowDoc = notificationWorkflowDocumentService.getNotificationWorkflowDocumentByDocumentId(messageDelivery.getUserRecipientId(), docId);
+            workflowDoc = notificationWorkflowDocumentService.getNotificationWorkflowDocumentByDocumentId(messageDelivery.getUserRecipientId(), sysId);
         } catch(WorkflowException we) {
             throw new NotificationAutoRemoveException(we);
         }
@@ -138,7 +124,7 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
         } else {
             NotificationWorkflowDocument nwd;
             try {
-                nwd = notificationWorkflowDocumentService.getNotificationWorkflowDocumentByDocumentId(user, Long.decode(messageDelivery.getDeliverySystemId()));
+                nwd = notificationWorkflowDocumentService.getNotificationWorkflowDocumentByDocumentId(user, messageDelivery.getDeliverySystemId());
             } catch (WorkflowException we) {
                 LOG.error("Could not get workflow document with docId");
                 throw new RuntimeException("Could not get workflow document with docId", we);
@@ -157,7 +143,7 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
                         LOG.debug("acknowledged "+nwd.getTitle());                      
                         LOG.debug("status display value: "+nwd.getStatusDisplayValue());
                     } else {
-                        LOG.debug("Acknowledgement was not needed for document " + nwd.getRouteHeaderId());
+                        LOG.debug("Acknowledgement was not needed for document " + nwd.getDocumentId());
                     }
                 } else if (NotificationConstants.FYI_CAUSE.equals(cause)) {
                     // moved from NotificationController, fyi command
@@ -169,7 +155,7 @@ public class KEWActionListMessageDeliverer implements NotificationMessageDeliver
                         LOG.debug("fyi "+nwd.getTitle());                      
                         LOG.debug("status display value: "+nwd.getStatusDisplayValue());
                     } else {
-                        LOG.debug("FYI was not needed for document " + nwd.getRouteHeaderId());
+                        LOG.debug("FYI was not needed for document " + nwd.getDocumentId());
                     }
                 }
             } catch (WorkflowException we) {

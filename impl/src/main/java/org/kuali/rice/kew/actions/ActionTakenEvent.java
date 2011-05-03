@@ -172,7 +172,7 @@ public abstract class ActionTakenEvent {
 			routeContext.requestSearchIndexingForContext();
 			
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(getRouteHeader());
-			searchableAttService.indexDocument(getRouteHeaderId());
+			searchableAttService.indexDocument(getDocumentId());
 		}
 	}
 
@@ -186,7 +186,7 @@ public abstract class ActionTakenEvent {
 		try {
 			LOG.debug("Notifying post processor of action taken");
 			PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
-			ProcessDocReport report = postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), actionTaken));
+			ProcessDocReport report = postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), actionTaken));
 			if (!report.isSuccess()) {
 				LOG.warn(report.getMessage(), report.getProcessException());
 				throw new InvalidActionTakenException(report.getMessage());
@@ -202,7 +202,7 @@ public abstract class ActionTakenEvent {
         if (!isRunPostProcessorLogic()) {
             return;
         }
-		DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
+		DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getDocumentId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
 		try {
 			LOG.debug("Notifying post processor of status change " + oldStatusCode + "->" + newStatusCode);
 			PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
@@ -223,8 +223,8 @@ public abstract class ActionTakenEvent {
 		QName documentServiceName = new QName(getRouteHeader().getDocumentType().getServiceNamespace(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
 		KSBXMLService documentRoutingService = (KSBXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
 		try {
-//			String content = String.valueOf(getRouteHeaderId());
-			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getRouteHeaderId(),isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
+//			String content = String.valueOf(getDocumentId());
+			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getDocumentId(),isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
 			String content = element.translate();
 			documentRoutingService.invoke(content);
 		} catch (Exception e) {
@@ -249,7 +249,7 @@ public abstract class ActionTakenEvent {
 		val.setActionTaken(getActionTakenCode());
 		val.setAnnotation(annotation);
 		val.setDocVersion(routeHeader.getDocVersion());
-		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
+		val.setDocumentId(routeHeader.getDocumentId());
 		val.setPrincipalId(principal.getPrincipalId());
 		if (delegator instanceof KimPrincipalRecipient) {
 			val.setDelegatorPrincipalId(((KimPrincipalRecipient)delegator).getPrincipalId());
@@ -277,8 +277,8 @@ public abstract class ActionTakenEvent {
 		actionTakenCode = string;
 	}
 
-	protected Long getRouteHeaderId() {
-		return this.routeHeader.getRouteHeaderId();
+	protected String getDocumentId() {
+		return this.routeHeader.getDocumentId();
 	}
 
 	/*protected void delete() {

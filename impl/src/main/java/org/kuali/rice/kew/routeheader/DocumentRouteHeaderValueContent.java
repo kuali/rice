@@ -29,7 +29,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="KREW_DOC_HDR_CNTNT_T")
-@NamedQuery(name="DocumentRouteHeaderValueContent.FindByRouteHeaderId", query="select d from DocumentRouteHeaderValueContent as d where d.routeHeaderId = :routeHeaderId")
+@NamedQuery(name="DocumentRouteHeaderValueContent.FindByDocumentId", query="select d from DocumentRouteHeaderValueContent as d where d.documentId = :documentId")
 public class DocumentRouteHeaderValueContent implements Serializable {
 
 	/**
@@ -38,7 +38,7 @@ public class DocumentRouteHeaderValueContent implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+	private String documentId;
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
 	@Column(name="DOC_CNTNT_TXT")
@@ -46,8 +46,8 @@ public class DocumentRouteHeaderValueContent implements Serializable {
 		
 	public DocumentRouteHeaderValueContent() {}
 	
-	public DocumentRouteHeaderValueContent(Long routeHeaderId) {
-		this.routeHeaderId = routeHeaderId;
+	public DocumentRouteHeaderValueContent(String documentId) {
+		this.documentId = documentId;
 	}
 	
 	public String getDocumentContent() {
@@ -56,11 +56,11 @@ public class DocumentRouteHeaderValueContent implements Serializable {
 	public void setDocumentContent(String documentContent) {
 		this.documentContent = documentContent;
 	}
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
-	public void setRouteHeaderId(Long routeHeaderId) {
-		this.routeHeaderId = routeHeaderId;
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 
 }

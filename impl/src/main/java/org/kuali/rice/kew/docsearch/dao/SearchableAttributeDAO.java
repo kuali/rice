@@ -29,14 +29,14 @@ import java.util.List;
 public interface SearchableAttributeDAO {
 
 	public List<String> getSearchableAttributeStringValuesByKey(
-			Long documentId, String key);
+			String documentId, String key);
 
 	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
-			Long documentId, String key);
+			String documentId, String key);
 
 	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
-			Long documentId, String key);
+			String documentId, String key);
 
-	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
+	public List<Long> getSearchableAttributeLongValuesByKey(String documentId,
 			String key);
 }

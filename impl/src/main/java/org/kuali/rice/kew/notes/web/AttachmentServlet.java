@@ -80,7 +80,7 @@ public class AttachmentServlet extends HttpServlet {
 				Attachment attachment = noteService.findAttachment(attachmentId);
 				File file = noteService.findAttachmentFile(attachment);
 				
-				DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(noteService.getNoteByNoteId(attachment.getNoteId()).getRouteHeaderId());
+				DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(noteService.getNoteByNoteId(attachment.getNoteId()).getDocumentId());
 				
 				if(!secureChecks || routeHeader != null){// If we can get a valid routeHeader based on the requested attachment ID
 					boolean authorized = KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(userSession, routeHeader, new SecuritySession(userSession));
@@ -103,7 +103,7 @@ public class AttachmentServlet extends HttpServlet {
 						}
 						outputStream.close();
 					} else {// Throw a forbidden page back, they were not approved by DocumentSecurityService
-						LOG.error("Attempt to access attachmentId:"+ attachmentId + " from routeHeaderId:" + routeHeader.getRouteHeaderId() + " from unauthorized user: " + userSession.getPrincipalId());
+						LOG.error("Attempt to access attachmentId:"+ attachmentId + " from documentId:" + routeHeader.getDocumentId() + " from unauthorized user: " + userSession.getPrincipalId());
 						response.sendError(HttpServletResponse.SC_FORBIDDEN);
 						return;
 					}

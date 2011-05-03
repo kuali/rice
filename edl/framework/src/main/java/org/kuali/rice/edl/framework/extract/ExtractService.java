@@ -15,12 +15,9 @@
  */
 package org.kuali.rice.edl.framework.extract;
 
-
-
 public interface ExtractService {
 	
     public void saveDump(DumpDTO dump);
-    public void deleteDump(Long docId);
-	public DumpDTO getDumpByDocumentId(Long noteId);
-
+    public void deleteDump(String docId);
+	public DumpDTO getDumpByDocumentId(String documentId);
 }

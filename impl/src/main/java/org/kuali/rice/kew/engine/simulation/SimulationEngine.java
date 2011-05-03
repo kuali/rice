@@ -95,7 +95,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     }
 
     @Override
-    public void process(Long documentId, Long nodeInstanceId) throws InvalidActionTakenException, DocumentSimulatedRouteException {
+    public void process(String documentId, Long nodeInstanceId) throws InvalidActionTakenException, DocumentSimulatedRouteException {
     	RouteContext context = RouteContext.createNewRouteContext();
     	try {
     		ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
@@ -115,7 +115,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     		}
     		routeDocumentIfNecessary(document, criteria, context);
     		results.setDocument(document);
-    		documentId = document.getRouteHeaderId();
+    		documentId = document.getDocumentId();
     		
     		// detect if MDC already has docId param (to avoid nuking it below)
     		boolean mdcHadDocId = MDC.get("docId") != null;
@@ -285,7 +285,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
 
     private void validateCriteria(SimulationCriteria criteria) {
     	if (criteria.getDocumentId() == null && org.apache.commons.lang.StringUtils.isEmpty(criteria.getDocumentTypeName())) {
-		throw new IllegalArgumentException("No document type name or route header id given, cannot simulate a document without a document type name or a route header id.");
+		throw new IllegalArgumentException("No document type name or document id given, cannot simulate a document without a document type name or a document id.");
     	}
     	if (criteria.getXmlContent() == null) {
     		criteria.setXmlContent("");
@@ -299,7 +299,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
      * If the documentId is available, we load the document from the database, otherwise we create one based on the given
      * DocumentType and xml content.
      */
-    private DocumentRouteHeaderValue createSimulationDocument(Long documentId, SimulationCriteria criteria, RouteContext context) {
+    private DocumentRouteHeaderValue createSimulationDocument(String documentId, SimulationCriteria criteria, RouteContext context) {
     	DocumentRouteHeaderValue document = null;
     	if (criteria.isDocumentSimulation()) {
             document = getDocumentForSimulation(documentId);
@@ -311,10 +311,10 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         	if (documentType == null) {
         		throw new IllegalArgumentException("Specified document type could not be found for name '"+criteria.getDocumentTypeName()+"'");
         	}
-        	documentId = context.getEngineState().getNextSimulationId();
+        	documentId = context.getEngineState().getNextSimulationId().toString();
         	document = new DocumentRouteHeaderValue();
         	context.setDocument(document);
-        	document.setRouteHeaderId(documentId);
+        	document.setDocumentId(documentId);
         	document.setCreateDate(new Timestamp(System.currentTimeMillis()));
         	document.setDocContent(criteria.getXmlContent());
         	document.setDocRouteLevel(new Integer(0));
@@ -337,7 +337,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
 		return document;
     }
 
-    private DocumentRouteHeaderValue getDocumentForSimulation(Long documentId) {
+    private DocumentRouteHeaderValue getDocumentForSimulation(String documentId) {
         DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
         return (DocumentRouteHeaderValue)deepCopy(document);
     }
@@ -454,7 +454,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
 
     	RouteNodeInstance currentNodeInstance = null;//initialNodeInstance;
     	for (RouteNode simulationNode : simulationNodes) {
-			RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getRouteHeaderId(), simulationNode);
+			RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), simulationNode);
 			nodeInstance.setBranch(defaultBranch);
 			if (currentNodeInstance == null) {
 				document.getInitialRouteNodeInstances().add(nodeInstance);
@@ -489,14 +489,14 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     	ActionRequestService actionRequestService = KEWServiceLocator.getActionRequestService();
         // TODO delyea - deep copy below
         List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-        for (Iterator iter = actionRequestService.findPendingByDoc(document.getRouteHeaderId()).iterator(); iter.hasNext();) {
+        for (Iterator iter = actionRequestService.findPendingByDoc(document.getDocumentId()).iterator(); iter.hasNext();) {
             ActionRequestValue arv = (ActionRequestValue) deepCopy( (ActionRequestValue) iter.next() );
             for (ActionItem actionItem : arv.getActionItems()) {
         		arv.getSimulatedActionItems().add((ActionItem) deepCopy(actionItem));
         	}
             actionRequests.add(arv);//(ActionRequestValue)deepCopy(arv));
         }
-//        actionRequests.addAll(actionRequestService.findPendingByDoc(document.getRouteHeaderId()));
+//        actionRequests.addAll(actionRequestService.findPendingByDoc(document.getDocumentId()));
         LOG.debug("Simulate Deactivating all pending action requests");
         // deactivate any requests for the user that routed the document.
         for (Iterator<ActionRequestValue> iter = actionRequests.iterator(); iter.hasNext();) {
@@ -526,7 +526,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         }
 		val.setAnnotation("");
 		val.setDocVersion(routeHeader.getDocVersion());
-		val.setRouteHeaderId(routeHeader.getRouteHeaderId());
+		val.setDocumentId(routeHeader.getDocumentId());
 		val.setPrincipalId(userToPerformAction.getPrincipalId());
 
 		if (delegator != null) {

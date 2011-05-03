@@ -25,7 +25,7 @@ package org.kuali.rice.kew.actions.asyncservices;
  */
 public interface ActionInvocationService {
 
-	public void invokeAction(String principalId, Long documentId, ActionInvocation invocation);
+	public void invokeAction(String principalId, String documentId, ActionInvocation invocation);
 	
 	
 }

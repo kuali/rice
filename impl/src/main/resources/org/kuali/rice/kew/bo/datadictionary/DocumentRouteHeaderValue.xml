@@ -14,7 +14,7 @@
     <property name="lookupDefinition" >
       <ref bean="DocumentRouteHeaderValue-lookupDefinition" />
     </property>
-    <property name="titleAttribute" value="routeHeaderId" />
+    <property name="titleAttribute" value="documentId" />
     <property name="objectLabel" value="Document" />
      <property name="relationships" >
       <list>
@@ -56,7 +56,7 @@
     <property name="attributes" >
       <list>
       	<ref bean="DocumentRouteHeaderValue-documentTypeName"/>
-        <ref bean="DocumentRouteHeaderValue-routeHeaderId"/>
+        <ref bean="DocumentRouteHeaderValue-documentId"/>
 <!--         <ref bean="DocumentRouteHeaderValue-documentTypeId" />  -->
 <!--    <ref bean="DocumentRouteHeaderValue-InitiatorWorkflowIdentifier"/>  -->
         <ref bean="DocumentRouteHeaderValue-createDate"/>
@@ -69,9 +69,9 @@
 
 <!-- Attribute Definitions -->
 
-  <bean id="DocumentRouteHeaderValue-routeHeaderId" parent="DocumentRouteHeaderValue-routeHeaderId-parentBean" />
+  <bean id="DocumentRouteHeaderValue-documentId" parent="DocumentRouteHeaderValue-documentId-parentBean" />
 
-  <bean id="DocumentRouteHeaderValue-routeHeaderId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentRouteHeaderValue-documentId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id" />
     <property name="maxLength" value="30" />
     <property name="validationPattern" >
@@ -80,7 +80,7 @@
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="name" value="routeHeaderId" />
+    <property name="name" value="documentId" />
     <property name="label" value="Document/Notification Id" />
   </bean>
 <!-- 
@@ -245,14 +245,14 @@
         <bean parent="FieldDefinition"
               p:attributeName="initiatorUser.principalName.id" />
         -->
-        <bean parent="FieldDefinition" p:attributeName="routeHeaderId"/>
+        <bean parent="FieldDefinition" p:attributeName="documentId"/>
         <bean parent="FieldDefinition" p:attributeName="createDate"/>
      </list>
     </property>
     <property name="resultFields" >
       <list>
         <bean parent="FieldDefinition"
-              p:attributeName="routeHeaderId" />
+              p:attributeName="documentId" />
         <bean parent="FieldDefinition"
               p:attributeName="documentType.name" />
         <bean parent="FieldDefinition"

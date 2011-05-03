@@ -37,16 +37,16 @@ public interface ActionTakenDAO {
 
     public ActionTakenValue findByActionTakenId(Long actionTakenId);
 
-    public Collection<ActionTakenValue> findByRouteHeaderId(Long routeHeaderId);
+    public Collection<ActionTakenValue> findByDocumentId(String documentId);
 
-    public Collection<ActionTakenValue> findByDocIdAndAction(Long docId, String action);
+    public Collection<ActionTakenValue> findByDocIdAndAction(String docId, String action);
 
-    public List<ActionTakenValue> findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId);
+    public List<ActionTakenValue> findByDocumentIdWorkflowId(String documentId, String workflowId);
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId);
 
-    public void deleteByRouteHeaderId(Long routeHeaderId);
+    public void deleteByDocumentId(String documentId);
 
-    public boolean hasUserTakenAction(String workflowId, Long routeHeaderId);
+    public boolean hasUserTakenAction(String workflowId, String documentId);
 
 }

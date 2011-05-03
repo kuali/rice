@@ -50,15 +50,15 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 
   @Override
 public boolean docSearchAuthorized(UserSession userSession, DocSearchDTO docCriteriaDTO, SecuritySession session) {
-      return checkAuthorization(userSession, session, docCriteriaDTO.getDocTypeName(), docCriteriaDTO.getRouteHeaderId(), docCriteriaDTO.getInitiatorWorkflowId());
+      return checkAuthorization(userSession, session, docCriteriaDTO.getDocTypeName(), docCriteriaDTO.getDocumentId(), docCriteriaDTO.getInitiatorWorkflowId());
   }
 
   @Override
 public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderValue routeHeader, SecuritySession session) {
-      return checkAuthorization(userSession, session, routeHeader.getDocumentType().getName(), routeHeader.getRouteHeaderId(), routeHeader.getInitiatorWorkflowId());
+      return checkAuthorization(userSession, session, routeHeader.getDocumentType().getName(), routeHeader.getDocumentId(), routeHeader.getInitiatorWorkflowId());
   }
 
-  protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, Long routeHeaderId, String initiatorPrincipalId) {
+  protected boolean checkAuthorization(UserSession userSession, SecuritySession session, String documentTypeName, String documentId, String initiatorPrincipalId) {
       DocumentTypeSecurity security = null;
       try {
           security = getDocumentTypeSecurity(userSession, documentTypeName, session);
@@ -70,7 +70,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
               return true;
           }
           for (SecurityAttribute securityAttribute : security.getSecurityAttributes()) {
-              Boolean authorized = securityAttribute.docSearchAuthorized(userSession.getPerson(), documentTypeName, routeHeaderId, initiatorPrincipalId);
+              Boolean authorized = securityAttribute.docSearchAuthorized(userSession.getPerson(), documentTypeName, documentId, initiatorPrincipalId);
               if (authorized != null) {
                   return authorized.booleanValue();
               }
@@ -80,7 +80,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
           LOG.warn("Not able to retrieve DocumentTypeSecurity from remote system for doctype: " + documentTypeName, e);
           return false;
       }
-      return checkStandardAuthorization(security, userSession, documentTypeName, routeHeaderId, initiatorPrincipalId, session);
+      return checkStandardAuthorization(security, userSession, documentTypeName, documentId, initiatorPrincipalId, session);
   }
 
   protected boolean isAdmin(SecuritySession session) {
@@ -90,7 +90,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
 	  return KimApiServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
-  protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorPrincipalId, SecuritySession session) {
+  protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, String documentId, String initiatorPrincipalId, SecuritySession session) {
 	Person user = userSession.getPerson();
 
     LOG.debug("auth check user=" + user.getPrincipalId() +" docId=" + documentId);
@@ -214,7 +214,7 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 		return false;
 	}
 
-	protected boolean isAuthenticatedByPermission(Long documentId, String permissionNamespaceCode,
+	protected boolean isAuthenticatedByPermission(String documentId, String permissionNamespaceCode,
 			String permissionName, AttributeSet permissionDetails,
 			AttributeSet qualification, SecuritySession session)  {
 		

@@ -33,7 +33,7 @@ import org.kuali.rice.kew.notes.Note;
 public interface NoteService {
 
     public Note getNoteByNoteId(Long noteId);
-    public List getNotesByRouteHeaderId(Long routeHeaderId);
+    public List getNotesByDocumentId(String documentId);
     public void saveNote(Note note);
     public void deleteNote(Note note);
     public void deleteAttachment(Attachment attachment);

@@ -56,7 +56,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowDocumentServiceImpl.class);
 
 	private void init(DocumentRouteHeaderValue routeHeader) {
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeader.getRouteHeaderId(), true);
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeader.getDocumentId(), true);
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
 	}
 
@@ -64,7 +64,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     	// reload the document from the database to get a "fresh and clean" copy if we aren't in the context of a
     	// document being routed
     	if (RouteContext.getCurrentRouteContext().getDocument() == null) {
-    		return KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeader.getRouteHeaderId(), true);
+    		return KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeader.getDocumentId(), true);
     	} else {
     		// we could enter this case if someone calls a method on WorkflowDocument (such as app specific route)
     		// from their post processor, in that case, if we cleared the database case as above we would
@@ -104,7 +104,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	
 	public DocumentRouteHeaderValue placeInExceptionRouting(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException {
  	 	try {
- 	 		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(annotation, null, routeHeader.getRouteHeaderId());
+ 	 		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(annotation, null, routeHeader.getDocumentId());
  	 	} catch (Exception e) {
  	 		throw new RiceRuntimeException("Failed to place the document into exception routing!", e);
  	 	}
@@ -169,7 +169,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		RouteContext routeContext = RouteContext.getCurrentRouteContext();
 		if (routeHeader.getDocumentType().hasSearchableAttributes() && routeContext.isSearchIndexingRequestedForContext()) {
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-			searchableAttService.indexDocument(routeHeader.getRouteHeaderId()); 
+			searchableAttService.indexDocument(routeHeader.getDocumentId()); 
 		}
 	}
 
@@ -193,7 +193,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		LOG.debug("Rmi createDocument() with "); // add some sort of a
 													// routeheader logger
 
-		if (routeHeader.getRouteHeaderId() != null) { // this is a debateable
+		if (routeHeader.getDocumentId() != null) { // this is a debateable
 														// check - means the
 														// client is off
 			throw new InvalidActionTakenException("Document already has a Document id");
@@ -282,10 +282,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		// save routing data should invoke the post processor doActionTaken for SAVE
  	 	ActionTakenValue val = new ActionTakenValue();
  	 	val.setActionTaken(KEWConstants.ACTION_TAKEN_SAVED_CD);
- 	 	val.setRouteHeaderId(routeHeader.getRouteHeaderId());
+ 	 	val.setDocumentId(routeHeader.getDocumentId());
  	 	PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
  	 	try {
- 	 		postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), val));
+ 	 		postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), val));
  	 	} catch (Exception e) {
  	 		if (e instanceof RuntimeException) {
  	 			throw (RuntimeException)e;
@@ -298,7 +298,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 		routeContext.requestSearchIndexingForContext();
  	 		
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-			searchableAttService.indexDocument(routeHeader.getRouteHeaderId());
+			searchableAttService.indexDocument(routeHeader.getDocumentId());
 		}
 		return finish(routeHeader);
 	}
@@ -311,7 +311,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
 	public void deleteDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
-		if (routeHeader.getRouteHeaderId() == null) {
+		if (routeHeader.getDocumentId() == null) {
 			LOG.debug("Null Document id passed.");
 			throw new WorkflowException("Document id must not be null.");
 		}
@@ -348,7 +348,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * the document load inside the current running transaction.  Otherwise we get an optimistic lock exception
      * when attempting to save the branch after the transition to the 'A' status.
      */
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor)
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, String documentId, Long actionRequestId, String annotation, boolean runPostProcessor)
         throws InvalidActionTakenException {
         return superUserActionRequestApproveAction(principalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), actionRequestId, annotation, runPostProcessor);
     }
@@ -393,7 +393,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 * the document load inside the current running transaction.  Otherwise we get an optimistic lock exception
 	 * when attempting to save the branch after the transition to the 'A' status.
 	 */
-	public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException {
+	public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, String documentId, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException {
 		return superUserNodeApproveAction(principalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation, runPostProcessor);
 	}
 
@@ -403,7 +403,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 * return to previous node.  This allows us to load the DocumentRouteHeaderValue inside of the transaction interceptor
 	 * so that we can stay within the same PersistenceBroker cache.
 	 */
-	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, Long documentId, String nodeName, String annotation, boolean runPostProcessor)
+	public DocumentRouteHeaderValue superUserReturnDocumentToPreviousNode(String principalId, String documentId, String nodeName, String annotation, boolean runPostProcessor)
 		throws InvalidActionTakenException {
 		return superUserReturnDocumentToPreviousNode(principalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), nodeName, annotation, runPostProcessor);
 	}
@@ -430,9 +430,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			}
 			KEWServiceLocator.getActionListService().deleteActionItem(actionItem, true);
 			ActionInvocationService actionInvocService = MessageServiceNames.getActionInvocationProcessorService(
-					KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()));
-			actionInvocService.invokeAction(principalId, actionItem.getRouteHeaderId(), invocation);
-//			ActionInvocationProcessor.queueActionInvocation(user, actionItem.getRouteHeaderId(), invocation);
+					KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()));
+			actionInvocService.invokeAction(principalId, actionItem.getDocumentId(), invocation);
+//			ActionInvocationProcessor.queueActionInvocation(user, actionItem.getDocumentId(), invocation);
 		}
 	}
 

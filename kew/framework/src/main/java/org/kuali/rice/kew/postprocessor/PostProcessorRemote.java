@@ -126,6 +126,6 @@ public interface PostProcessorRemote {
    * 
    * @return an array of document ids to lock prior to execution of the workflow engine
    */
-  public Long[] getDocumentIdsToLock(DocumentLockingEventDTO event) throws Exception;
+  public String[] getDocumentIdsToLock(DocumentLockingEventDTO event) throws Exception;
   
 }

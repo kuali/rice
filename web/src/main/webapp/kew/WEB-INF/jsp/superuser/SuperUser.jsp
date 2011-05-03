@@ -56,7 +56,7 @@
 
   <tr>
     <td height="30">
-       <strong>Super User Action on RouteHeader <c:out value="${SuperUserForm.routeHeaderId}"/></strong>
+       <strong>Super User Action on RouteHeader <c:out value="${SuperUserForm.documentId}"/></strong>
        <br>
     </td>
   </tr>
@@ -70,8 +70,8 @@
 <c:if test="${(! SuperUserForm.routeHeader.canceled) && (SuperUserForm.authorized)}">
       <%--<html-el:form method="post" action="/SuperUser.do">--%>
       <html-el:hidden property="methodToCall" value="" />
-      <html-el:hidden property="routeHeaderId" value="${SuperUserForm.routeHeader.routeHeaderId}" />
-	  <html-el:hidden property="docId" value="${SuperUserForm.workflowDocument.routeHeaderId}" />
+      <html-el:hidden property="documentId" value="${SuperUserForm.routeHeader.documentId}" />
+	  <html-el:hidden property="docId" value="${SuperUserForm.workflowDocument.documentId}" />
 	  <html-el:hidden property="lookupableImplServiceName" />
   	  <html-el:hidden property="lookupType" />
 

@@ -35,9 +35,9 @@ import org.kuali.rice.kew.exception.WorkflowException;
  * 
  */
 public interface KualiWorkflowInfo {
-    public abstract RouteHeaderDTO getRouteHeader(String principalId, Long routeHeaderId) throws WorkflowException;
+    public abstract RouteHeaderDTO getRouteHeader(String principalId, String documentId) throws WorkflowException;
 
-    public abstract RouteHeaderDTO getRouteHeader(Long routeHeaderId) throws WorkflowException;
+    public abstract RouteHeaderDTO getRouteHeader(String documentId) throws WorkflowException;
 
     public abstract DocumentTypeDTO getDocType(Long documentTypeId) throws WorkflowException;
 
@@ -45,26 +45,26 @@ public interface KualiWorkflowInfo {
 
     public abstract Long getNewResponsibilityId() throws WorkflowException;
 
-    public abstract ActionRequestDTO[] getActionRequests(Long routeHeaderId) throws WorkflowException;
+    public abstract ActionRequestDTO[] getActionRequests(String documentId) throws WorkflowException;
 
-    public abstract ActionRequestDTO[] getActionRequests(Long routeHeaderId, String nodeName, String principalId) throws WorkflowException;
+    public abstract ActionRequestDTO[] getActionRequests(String documentId, String nodeName, String principalId) throws WorkflowException;
     
-    public abstract ActionTakenDTO[] getActionsTaken(Long routeHeaderId) throws WorkflowException;
+    public abstract ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException;
 
-    public abstract void reResolveRole(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
+    public abstract void reResolveRoleByDocTypeName(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
 
-    public abstract void reResolveRole(Long routeHeaderId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
+    public abstract void reResolveRoleByDocumentId(String documentId, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
 
     /**
      * 
-     * Determines whether the given routeHeaderId (also known as a documentNumber, or a docHeaderId) exists and is
+     * Determines whether the given documentId (also known as a documentNumber, or a documentId) exists and is
      * retrievable in workflow.
      * 
-     * @param routeHeaderId The docHeaderId/finDocNumber you would like to test.
+     * @param documentId The docHeaderId/finDocNumber you would like to test.
      * @return True if the document exists in workflow and is retrievable without errors, False otherwise.
      * 
      */
-    public abstract boolean routeHeaderExists(Long routeHeaderId);
+    public abstract boolean routeHeaderExists(String documentId);
 
     /**
      * Determines if a document generated (or retrieved) using the given criteria has (or will have) an action request using
@@ -89,13 +89,13 @@ public interface KualiWorkflowInfo {
     public boolean isCurrentActiveDocumentType( String documentTypeName ) throws WorkflowException;
     
     /**
-     * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the routeHeaderId parameter
+     * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the documentId parameter
      * 
-     * @param routeHeaderId - the id of the document to check
-     * @return a list of Universal User Ids that have approval or completion requested of them for the document with the given route header id
+     * @param documentId - the id of the document to check
+     * @return a list of Universal User Ids that have approval or completion requested of them for the document with the given document id
      * @throws WorkflowException
      */
-    public List<String> getApprovalRequestedUsers(Long routeHeaderId) throws WorkflowException;
+    public List<String> getApprovalRequestedUsers(String documentId) throws WorkflowException;
 
     /**
      * This method allows a document search to be executed just as would occur from the User Interface

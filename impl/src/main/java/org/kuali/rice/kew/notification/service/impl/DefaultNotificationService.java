@@ -108,7 +108,7 @@ public class DefaultNotificationService implements NotificationService {
 	}
 
 	protected boolean shouldNotifyOnSave(ActionItem actionItem) {
-		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
+		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(document.getDocumentTypeId());
 		return documentType.getNotifyOnSavePolicy().getPolicyValue().booleanValue();
 	}

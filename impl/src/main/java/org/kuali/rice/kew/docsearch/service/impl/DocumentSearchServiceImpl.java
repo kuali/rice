@@ -227,14 +227,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 criteria.setDocVersion(criteria.getDocVersion().trim());
             }
         }
-        if (!validateNumber(criteria.getRouteHeaderId())) {
-            errors.add(new WorkflowServiceErrorImpl("Non-numeric document id", "docsearch.DocumentSearchService.routeHeaderId"));
-        } else {
-            if (criteria.getRouteHeaderId() != null && !"".equals(criteria.getRouteHeaderId().trim())) {
-                criteria.setRouteHeaderId(criteria.getRouteHeaderId().trim());
-            }
-        }
 
+        if (criteria.getDocumentId() != null && !"".equals(criteria.getDocumentId().trim())) {
+                criteria.setDocumentId(criteria.getDocumentId().trim());
+        }
+        
         // validate any dates
         boolean compareDatePairs = true;
         if (!validateDate("fromDateCreated", criteria.getFromDateCreated(), "fromDateCreated")) {
@@ -486,7 +483,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		savedSearchString.append(criteria.getFromDateLastModified() == null || "".equals(criteria.getFromDateLastModified()) ? "" : ",,fromDateLastModified=" + criteria.getFromDateLastModified());
 		savedSearchString.append(criteria.getInitiator() == null || "".equals(criteria.getInitiator()) ? "" : ",,initiator=" + criteria.getInitiator());
 		savedSearchString.append(criteria.getOverrideInd() == null || "".equals(criteria.getOverrideInd()) ? "" : ",,overrideInd=" + criteria.getOverrideInd());
-		savedSearchString.append(criteria.getRouteHeaderId() == null || "".equals(criteria.getRouteHeaderId()) ? "" : ",,routeHeaderId=" + criteria.getRouteHeaderId());
+		savedSearchString.append(criteria.getDocumentId() == null || "".equals(criteria.getDocumentId()) ? "" : ",,documentId=" + criteria.getDocumentId());
 		savedSearchString.append(criteria.getToDateApproved() == null || "".equals(criteria.getToDateApproved()) ? "" : ",,toDateApproved=" + criteria.getToDateApproved());
 		savedSearchString.append(criteria.getToDateCreated() == null || "".equals(criteria.getToDateCreated()) ? "" : ",,toDateCreated=" + criteria.getToDateCreated());
 		savedSearchString.append(criteria.getToDateFinalized() == null || "".equals(criteria.getToDateFinalized()) ? "" : ",,toDateFinalized=" + criteria.getToDateFinalized());
@@ -782,7 +779,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			criteria.setFromDateLastModified(getOptionCriteriaField(savedSearch, "fromDateLastModified"));
 			criteria.setInitiator(getOptionCriteriaField(savedSearch, "initiator"));
 			criteria.setOverrideInd(getOptionCriteriaField(savedSearch, "overrideInd"));
-			criteria.setRouteHeaderId(getOptionCriteriaField(savedSearch, "routeHeaderId"));
+			criteria.setDocumentId(getOptionCriteriaField(savedSearch, "documentId"));
 			criteria.setToDateApproved(getOptionCriteriaField(savedSearch, "toDateApproved"));
 			criteria.setToDateCreated(getOptionCriteriaField(savedSearch, "toDateCreated"));
 			criteria.setToDateFinalized(getOptionCriteriaField(savedSearch, "toDateFinalized"));

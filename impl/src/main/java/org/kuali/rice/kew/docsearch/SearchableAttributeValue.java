@@ -59,9 +59,9 @@ public interface SearchableAttributeValue {
 
     public void setRouteHeader(DocumentRouteHeaderValue routeHeader);
 
-    public Long getRouteHeaderId();
+    public String getDocumentId();
 
-    public void setRouteHeaderId(Long routeHeaderId);
+    public void setDocumentId(String documentId);
 
     public String getSearchableAttributeKey();
 

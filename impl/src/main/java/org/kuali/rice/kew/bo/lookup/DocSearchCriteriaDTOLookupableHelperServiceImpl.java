@@ -278,8 +278,8 @@ KualiLookupableHelperServiceImpl {
             		  col.setColumnTitle(labelMessageKey);
             	  }
 
-				if(StringUtils.equals(propertyName, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID)) {
-					((DocSearchCriteriaDTO)element).setRouteHeaderId(col.getPropertyValue());
+				if(StringUtils.equals(propertyName, KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID)) {
+					((DocSearchCriteriaDTO)element).setDocumentId(col.getPropertyValue());
 				}
 
             	Formatter formatter = col.getFormatter();
@@ -359,7 +359,7 @@ KualiLookupableHelperServiceImpl {
 //ADDED (3 lines)
                 	AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
                 	//TODO: change to grab URL from config variable
-                	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getKey())) {
+                	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("documentId", keyValue.getKey())) {
                 	    String target = StringUtils.substringBetween(keyValue.getValue(), "target=\"", "\"");
                 	    if (target == null) {
                 	        target = "_self";
@@ -379,7 +379,7 @@ KualiLookupableHelperServiceImpl {
     									this.getBackLocation()).toString();
     						}
 
-                			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue() + returnLoc);
+                			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "documentId=")+"documentId="+keyValue.getUserDisplayValue() + returnLoc);
                 		}
                         col.setMaxLength(100); //for now force this
                 	} else if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getKey())) {
@@ -446,17 +446,17 @@ KualiLookupableHelperServiceImpl {
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		//FIXME: ctk - make sure and check that it's ok to do this here.  I may move this out to the doc search processor
-		if(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID.equals(propertyName)) {
+		if(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID.equals(propertyName)) {
 
 			AnchorHtmlData link = new AnchorHtmlData();
 			DocumentRouteHeaderValue doc = (DocumentRouteHeaderValue)bo;
 			//if !superuser
-			Long routeHeaderId = doc.getRouteHeaderId();
-			link.setDisplayText(routeHeaderId+"");
+			String documentId = doc.getDocumentId();
+			link.setDisplayText(documentId+"");
 
 			String href = ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/"+ KEWConstants.APP_CODE + "/" +
 			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" +
-			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.DOCUMENT_ID_PARAMETER + "=" + documentId;
 
 			link.setHref(href);
 

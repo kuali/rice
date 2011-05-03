@@ -29,8 +29,8 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 	    .getLogger(TestExceptionRoutingServiceImpl.class);
     
 	@Override
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) {
-		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, persistedMessage, routeHeaderId, this);
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) {
+		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, persistedMessage, documentId, this);
 		ThreadMonitor.addThread(exceptionThreader);
 		exceptionThreader.start();
 	}
@@ -39,27 +39,27 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 
 		private Throwable throwable;
 		private PersistedMessageBO message;
-		Long routeHeaderId;
+		String documentId;
 		private TestExceptionRoutingServiceImpl testExceptionService;
 		
-		public ExceptionThreader(Throwable throwable, PersistedMessageBO message, Long routeHeaderId, TestExceptionRoutingServiceImpl testExceptionService) {
+		public ExceptionThreader(Throwable throwable, PersistedMessageBO message, String documentId, TestExceptionRoutingServiceImpl testExceptionService) {
 			this.throwable = throwable;
 			this.message = message;
-			this.routeHeaderId = routeHeaderId;
+			this.documentId = documentId;
 			this.testExceptionService = testExceptionService;
 			TestUtilities.setExceptionThreader(this);
 		}
 
 		public void run() {
 		    try {
-			testExceptionService.callRealPlaceInExceptionRouting(throwable, message, routeHeaderId);
+			testExceptionService.callRealPlaceInExceptionRouting(throwable, message, documentId);
 		    } catch (Exception e) {
 			LOG.error(e, e);
 		    }
 		}
 	}
 	
-	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessageBO message, Long routeHeaderId) throws Exception {
-		super.placeInExceptionRouting(throwable, message, routeHeaderId);
+	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessageBO message, String documentId) throws Exception {
+		super.placeInExceptionRouting(throwable, message, documentId);
 	}	
 }

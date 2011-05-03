@@ -40,11 +40,11 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 
 	private static Logger LOG = Logger.getLogger(SearchableAttributeProcessor.class);
 
-	public void indexDocument(Long documentId) {
+	public void indexDocument(String documentId) {
 		indexDocument(documentId, true);
 	}
 
-	public void indexDocument(Long documentId, boolean useMostRecentDocType) {
+	public void indexDocument(String documentId, boolean useMostRecentDocType) {
 		long t1 = System.currentTimeMillis();		
 		LOG.info("Indexing document " + documentId + " for document search...");
 		try {
@@ -61,7 +61,7 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 		LOG.info("...finished indexing document " + documentId + " for document search, total time = " + (t2-t1) + " ms.");
 	}
 
-	private List<SearchableAttributeValue> buildSearchableAttributeValues(DocumentType docType, Long documentId, String docContent, boolean useMostRecentDocType) {
+	private List<SearchableAttributeValue> buildSearchableAttributeValues(DocumentType docType, String documentId, String docContent, boolean useMostRecentDocType) {
 		if (useMostRecentDocType) {
 			docType = KEWServiceLocator.getDocumentTypeService().findByName(docType.getName());
 		}
@@ -70,13 +70,13 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 		for (Iterator iterator = docType.getSearchableAttributes().iterator(); iterator.hasNext();) {
 			SearchableAttribute searchableAttribute = (SearchableAttribute) iterator.next();
 			List searchStorageValues = searchableAttribute.getSearchStorageValues(
-					DocSearchUtils.getDocumentSearchContext(documentId.toString(), docType.getName(), docContent));
+					DocSearchUtils.getDocumentSearchContext(documentId, docType.getName(), docContent));
 			if (searchStorageValues != null) {
 				for (Iterator iterator2 = searchStorageValues.iterator(); iterator2.hasNext();) {
 					SearchableAttributeValue searchableAttributeValue = (SearchableAttributeValue) iterator2.next();
-					searchableAttributeValue.setRouteHeaderId(documentId);
+					searchableAttributeValue.setDocumentId(documentId);
 					searchableAttributeValues.add(searchableAttributeValue);
-					searchableAttributeValue.setRouteHeader(null); // let the routeHeaderId we set represent this reference
+					searchableAttributeValue.setRouteHeader(null); // let the documentId we set represent this reference
 				}
 			}
 		}

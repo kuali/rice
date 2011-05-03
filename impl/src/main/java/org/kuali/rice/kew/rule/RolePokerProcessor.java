@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class RolePokerProcessor implements RolePoker {
 
-	public void reResolveRole(Long documentId, String roleName, String qualifiedRoleNameLabel) {
+	public void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		if (org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
 			throw new IllegalArgumentException("Can't poke a role without a role name!");
@@ -49,7 +49,7 @@ public class RolePokerProcessor implements RolePoker {
 		}
 	}
 
-	public void reResolveRole(Long documentId, String roleName) {
+	public void reResolveRole(String documentId, String roleName) {
 		reResolveRole(documentId, roleName, null);
 	}
 		

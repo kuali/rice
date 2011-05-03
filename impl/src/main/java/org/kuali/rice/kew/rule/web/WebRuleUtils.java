@@ -145,12 +145,12 @@ public final class WebRuleUtils {
     public static WebRuleBaseValues copyToNewRule(WebRuleBaseValues webRuleBaseValues) throws Exception {
     	WebRuleBaseValues newRule = copyRuleOntoExistingDocument(webRuleBaseValues);
     	// clear out all document IDs on the rule and it's delegates
-    	newRule.setRouteHeaderId(null);
+    	newRule.setDocumentId(null);
     	for (Iterator iterator = newRule.getResponsibilities().iterator(); iterator.hasNext(); ) {
 			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
 			for (Iterator iterator2 = responsibility.getDelegationRules().iterator(); iterator2.hasNext(); ) {
 				RuleDelegation delegation = (RuleDelegation) iterator2.next();
-				delegation.getDelegationRuleBaseValues().setRouteHeaderId(null);
+				delegation.getDelegationRuleBaseValues().setDocumentId(null);
 			}
 		}
     	return newRule;
@@ -589,7 +589,7 @@ public final class WebRuleUtils {
 	public static void processRuleForCopy(String documentNumber, RuleBaseValues oldRule, RuleBaseValues newRule) {
 		WebRuleUtils.populateForCopyOrEdit(oldRule, newRule);
 		clearKeysForCopy(newRule);
-		newRule.setRouteHeaderId(new Long(documentNumber));
+		newRule.setDocumentId(documentNumber);
 	}
 	
 	public static void clearKeysForCopy(RuleBaseValues rule) {    	

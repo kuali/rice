@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
-<html-el:hidden property="routeHeader.routeHeaderId" />
+<html-el:hidden property="routeHeader.documentId" />
 <html-el:hidden property="routeHeader.versionNumber" />
 <html-el:hidden property="lookupableImplServiceName" />
 <tr>
@@ -26,7 +26,7 @@
 		<td class="thnormal" colspan="2" align="center" height="30"><strong>Document</strong></td>
 	  </tr>	  
 	 	  <tr>
-		    <td width="33%" class="headercell3-b-l" align="right"><b> Document ID: </b><c:out value="${DocumentOperationForm.routeHeader.routeHeaderId}" /> </td>
+		    <td width="33%" class="headercell3-b-l" align="right"><b> Document ID: </b><c:out value="${DocumentOperationForm.routeHeader.documentId}" /> </td>
 		    <td width="66%" class="headercell3-b-l"><html-el:radio property="routeHeaderOp" value="update"/>Update &nbsp;&nbsp;<html-el:radio property="routeHeaderOp" value="noop"/>No Operation&nbsp;&nbsp;</td>
 		  </tr>
 		  <tr>

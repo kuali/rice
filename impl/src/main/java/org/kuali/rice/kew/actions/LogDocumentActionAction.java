@@ -68,7 +68,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      */
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
 
         String errorMessage = validateActionRules();
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {

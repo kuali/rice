@@ -98,7 +98,7 @@ public class KualiPostProcessor implements PostProcessorRemote {
     /**
      * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#getDocumentIdsToLock(org.kuali.rice.kew.dto.DocumentLockingEventDTO)
      */
-	public Long[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
+	public String[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
 		return KNSServiceLocatorInternal.getPostProcessorService().getDocumentIdsToLock(documentLockingEvent);
 	}
     

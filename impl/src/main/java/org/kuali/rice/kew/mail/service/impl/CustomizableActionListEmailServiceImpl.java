@@ -58,7 +58,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         }
         // since this is a message for a single document, we can customize the from
         // line based on DocumentType
-        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
+        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
         EmailContent content = getEmailContentGenerator().generateImmediateReminder(user, actionItem, document.getDocumentType());
         sendEmail(user, new EmailSubject(content.getSubject()),
                         new EmailBody(content.getBody()), document.getDocumentType());

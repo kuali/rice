@@ -24,8 +24,8 @@ import org.kuali.rice.ksb.messaging.PersistedMessageBO;
  */
 public interface WorkflowDocumentExceptionRoutingService {
 	
-	public void placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception;
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception;
-	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception;
+	public void placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, String documentId) throws Exception;
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception;
+	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception;
 	
 }

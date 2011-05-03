@@ -31,7 +31,7 @@ public final class DocumentLinkDaoUtil {
 
 	public static DocumentLink reverseLink(DocumentLink link){
 		
-		Long tmp = link.getDestDocId();
+		String tmp = link.getDestDocId();
 		link.setDocLinkId(null);
 		
 		link.setDestDocId(link.getOrgnDocId());

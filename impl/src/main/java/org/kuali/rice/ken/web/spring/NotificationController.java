@@ -169,7 +169,7 @@ public class NotificationController extends MultiActionController {
         String messageDeliveryId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID);
         String delivererId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.DELIVERER_ID);
         if (delivererId == null) {
-            delivererId = request.getParameter(KEWConstants.ROUTEHEADER_ID_PARAMETER);
+            delivererId = request.getParameter(KEWConstants.DOCUMENT_ID_PARAMETER);
         }
 
         NotificationMessageDelivery messageDelivery;
@@ -183,7 +183,7 @@ public class NotificationController extends MultiActionController {
         } else if (delivererId != null) {  // this means that the request was triggered via the action list
             LOG.debug("Looking up notification with workflowId: "+delivererId);
             try {
-                messageDelivery = messageDeliveryService.getNotificationMessageDeliveryByDelivererId(Long.decode(delivererId));
+                messageDelivery = messageDeliveryService.getNotificationMessageDeliveryByDelivererId(delivererId);
             } catch (Exception e) {
                 LOG.error("Error getting message with from deliverer id: " + delivererId, e);
                 throw new RuntimeException("Error getting message with deliverer id: " + delivererId, e);
@@ -201,7 +201,7 @@ public class NotificationController extends MultiActionController {
      * @return whether the incoming request was from the action list
      */
     protected boolean requestIsFromKEW(HttpServletRequest req) {
-        return req.getParameter(KEWConstants.ROUTEHEADER_ID_PARAMETER) != null;
+        return req.getParameter(KEWConstants.DOCUMENT_ID_PARAMETER) != null;
     }
 
     /**

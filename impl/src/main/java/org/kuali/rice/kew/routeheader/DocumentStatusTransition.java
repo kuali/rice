@@ -44,7 +44,7 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 	private Long statusTransitionId;
 	
 	@Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+	private String documentId;
  	
 	@Column(name="APP_DOC_STAT_FROM")
 	private String oldAppDocStatus;
@@ -58,8 +58,8 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
     public DocumentStatusTransition() {
     }
 
-    public DocumentStatusTransition(Long routeHeaderId, String oldStatus, String newStatus) {
-    	this.routeHeaderId = routeHeaderId;
+    public DocumentStatusTransition(String documentId, String oldStatus, String newStatus) {
+    	this.documentId = documentId;
     	this.oldAppDocStatus = oldStatus;
     	this.newAppDocStatus = newStatus;
     	this.statusTransitionDate = new Timestamp(System.currentTimeMillis());
@@ -73,12 +73,12 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 		this.statusTransitionId = statusTransitionId;
 	}
 
-	public Long getRouteHeaderId() {
-		return this.routeHeaderId;
+	public String getDocumentId() {
+		return this.documentId;
 	}
 
-	public void setRouteHeaderId(Long headerId) {
-		this.routeHeaderId = headerId;
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 
 	public String getOldAppDocStatus() {

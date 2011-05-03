@@ -72,8 +72,8 @@ public class ActionListServiceImpl implements ActionListService {
          return getActionListDAO().getActionList(principalId, filter);
     }
 
-    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
-         return getActionListDAO().getActionListForSingleDocument(routeHeaderId);
+    public Collection<ActionItem> getActionListForSingleDocument(String documentId) {
+         return getActionListDAO().getActionListForSingleDocument(documentId);
     }
 
     public void setActionListDAO(ActionListDAO actionListDAO) {
@@ -106,8 +106,8 @@ public class ActionListServiceImpl implements ActionListService {
         this.saveOutboxItem(actionItem, forceIntoOutbox);
     }
 
-    public void deleteByRouteHeaderId(Long routeHeaderId) {
-        Collection<ActionItem> actionItems = findByRouteHeaderId(routeHeaderId);
+    public void deleteByDocumentId(String documentId) {
+        Collection<ActionItem> actionItems = findByDocumentId(documentId);
         for (Iterator<ActionItem> iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = iter.next();
             try {
@@ -116,19 +116,19 @@ public class ActionListServiceImpl implements ActionListService {
                 LOG.error("error saving refreshUserOption", e);
             }
         }
-        getActionItemDAO().deleteByRouteHeaderId(routeHeaderId);
+        getActionItemDAO().deleteByDocumentId(documentId);
     }
 
-    public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId) {
-        return getActionItemDAO().findByRouteHeaderId(routeHeaderId);
+    public Collection<ActionItem> findByDocumentId(String documentId) {
+        return getActionItemDAO().findByDocumentId(documentId);
     }
 
     public Collection<ActionItem> findByActionRequestId(Long actionRequestId) {
         return getActionItemDAO().findByActionRequestId(actionRequestId);
     }
 
-    public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId) {
-        return getActionItemDAO().findByWorkflowUserRouteHeaderId(workflowUserId, routeHeaderId);
+    public Collection<ActionItem> findByWorkflowUserDocumentId(String workflowUserId, String documentId) {
+        return getActionItemDAO().findByWorkflowUserDocumentId(workflowUserId, documentId);
     }
 
     public Collection<ActionItem> findByDocumentTypeName(String documentTypeName) {
@@ -146,7 +146,7 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setDocName(docType.getName());
         actionItem.setRoleName(actionRequest.getQualifiedRoleName());
         actionItem.setPrincipalId(actionRequest.getPrincipalId());
-        actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
+        actionItem.setDocumentId(actionRequest.getDocumentId());
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
         actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
         actionItem.setDocLabel(docType.getLabel());
@@ -166,8 +166,8 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
 
-    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle) {
-        Collection<ActionItem> items = getActionItemDAO().findByRouteHeaderId(routeHeaderId);
+    public void updateActionItemsForTitleChange(String documentId, String newTitle) {
+        Collection<ActionItem> items = getActionItemDAO().findByDocumentId(documentId);
         for (Iterator<ActionItem> iterator = items.iterator(); iterator.hasNext();) {
             ActionItem item = iterator.next();
             item.setDocTitle(newTitle);
@@ -230,11 +230,11 @@ public class ActionListServiceImpl implements ActionListService {
                     "actionitem.actionrequestid.empty", actionItem.getActionItemId().toString()));
         }
 
-        if (actionItem.getRouteHeaderId() == null) {
-            errors.add(new WorkflowServiceErrorImpl("ActionItem Document id empty.", "actionitem.routeheaderid.empty",
+        if (actionItem.getDocumentId() == null) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem Document id empty.", "actionitem.documentid.empty",
                     actionItem.getActionItemId().toString()));
-        } else if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()) == null) {
-            errors.add(new WorkflowServiceErrorImpl("ActionItem Document id invalid.", "actionitem.routeheaderid.invalid",
+        } else if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()) == null) {
+            errors.add(new WorkflowServiceErrorImpl("ActionItem Document id invalid.", "actionitem.documentid.invalid",
                     actionItem.getActionItemId().toString()));
         }
 
@@ -343,8 +343,8 @@ public class ActionListServiceImpl implements ActionListService {
     	
     	if (isUsingOutBox
             && ConfigContext.getCurrentContextConfig().getOutBoxOn()
-            && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getPrincipalId()) == null
-            && !KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()).getDocRouteStatus().equals(
+            && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getDocumentId(), actionItem.getPrincipalId()) == null
+            && !KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()).getDocRouteStatus().equals(
                     		KEWConstants.ROUTE_HEADER_SAVED_CD)) {
 
     		// only create an outbox item if this user has taken action on the document

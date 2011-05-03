@@ -28,7 +28,7 @@ import org.kuali.rice.kew.documentlink.DocumentLink;
 public interface DocumentLinkDAO {
 	
 	//get all docs linked to orgn doc
-    public List<DocumentLink> getLinkedDocumentsByDocId(Long docId);
+    public List<DocumentLink> getLinkedDocumentsByDocId(String docId);
     
     //get a link between 2 docs
     public DocumentLink getLinkedDocument(DocumentLink link);
@@ -40,6 +40,6 @@ public interface DocumentLinkDAO {
     public void deleteDocumentLink(DocumentLink link); 
     
     //delete all links to orgn doc
-    public void deleteDocmentLinksByDocId(Long docId);
+    public void deleteDocmentLinksByDocId(String docId);
 
 }

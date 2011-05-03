@@ -89,7 +89,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
+        return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()));
     }
 
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
@@ -128,10 +128,10 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
-        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
@@ -169,7 +169,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
             BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
-            blanketApprove.doBlanketApproveWork(routeHeader.getRouteHeaderId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames, shouldIndex);
+            blanketApprove.doBlanketApproveWork(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames, shouldIndex);
 //
 
 //          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(
@@ -182,7 +182,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
             LOG.error(e);
             throw new WorkflowRuntimeException(e);
         }
-//      SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getRouteHeaderId(), KEWConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
+//      SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getDocumentId(), KEWConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
 //              BlanketApproveProcessor.class.getName(), BlanketApproveProcessor.getBlanketApproveProcessorValue(user, action.getActionTaken(), nodeNames));
     }
     
@@ -201,7 +201,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         config.setDestinationNodeNames(nodeNames);
         config.setCause(actionTaken);
         BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config);
-        blanketApproveEngine.process(getRouteHeader().getRouteHeaderId(), null);
+        blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
    
         queueDocumentProcessing();
    }

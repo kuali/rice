@@ -36,7 +36,7 @@ public class DocumentSearchResult implements Serializable {
     /**
      *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID} INSTEAD
      */
-    public static final String PROPERTY_NAME_ROUTE_HEADER_ID = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID;
+    public static final String PROPERTY_NAME_ROUTE_HEADER_ID = KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID;
     /**
      *@deprecated - USE {@link KEWPropertyConstants#DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL} INSTEAD
      */

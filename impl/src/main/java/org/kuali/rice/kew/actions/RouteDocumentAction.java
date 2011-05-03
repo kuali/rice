@@ -80,7 +80,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
      * @throws org.kuali.rice.kew.exception.InvalidActionTakenException
      */
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Routing document : " + annotation);
@@ -97,7 +97,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
         ActionTakenValue actionTaken = saveActionTaken();
 
         //TODO this will get all pending AR's even if they haven't been in an action list... This seems bad
-        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getDocumentId());
         LOG.debug("Deactivate all pending action requests");
         // deactivate any requests for the user that routed the document.
         for (ActionRequestValue actionRequest : actionRequests)

@@ -35,9 +35,9 @@ public class CreateDocumentTest extends KEWTestCase {
 	 * Tests the attempt to create a document from a non-existent document type.
 	 */
 	@Test public void testCreateNonExistentDocumentType() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
 		try {
-			document.getRouteHeaderId();
+			document.getDocumentId();
 			fail("A workflow exception should have been thrown.");
 		} catch (WorkflowException e) {
 			e.printStackTrace();
@@ -50,9 +50,9 @@ public class CreateDocumentTest extends KEWTestCase {
 	@Test public void testCreateNonRoutableDocumentType() throws Exception {
 		// the BlanketApproveTest is a parent document type that has no routing path defined.  Attempts to
 		// create documents of this type should return an error
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
 		try {
-			document.getRouteHeaderId();
+			document.getDocumentId();
 			fail("A workflow exception should have been thrown.");
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -65,9 +65,9 @@ public class CreateDocumentTest extends KEWTestCase {
     @Test public void testCreateInactiveDocumentType() throws Exception {
         // the CreatedDocumentInactive document type is inactive and should not be able to 
         // be initiated for a new document
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
         try {
-            document.getRouteHeaderId();
+            document.getDocumentId();
             fail("A workflow exception should have been thrown.");
         } catch (WorkflowException e) {
             e.printStackTrace();

@@ -40,24 +40,24 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
     @Test public void testUserRouteLogAuthenticated() throws Exception {
     	String user1PrincipalId = getPrincipalIdForName("user1");
 
-    	WorkflowDocument document = new WorkflowDocument(user1PrincipalId, DOCUMENT_TYPE_NAME);
+    	WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, DOCUMENT_TYPE_NAME);
     	document.routeDocument("");
 
     	// ensure the UserSession is cleared out (could have been set up by other tests)
     	GlobalVariables.setUserSession(null);
 
         // false because we didn't set up the user session properly
-        assertFalse(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertFalse(EDLFunctions.isUserRouteLogAuthenticated(document.getDocumentId() + ""));
 
         // these two should be in the route log
         GlobalVariables.setUserSession(new UserSession("user1"));
-        assertTrue(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertTrue(EDLFunctions.isUserRouteLogAuthenticated(document.getDocumentId() + ""));
         GlobalVariables.setUserSession(new UserSession("bmcgough"));
-        assertTrue(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertTrue(EDLFunctions.isUserRouteLogAuthenticated(document.getDocumentId() + ""));
 
         // user2 should NOT be in the route log
         GlobalVariables.setUserSession(new UserSession("user2"));
-        assertFalse(EDLFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
+        assertFalse(EDLFunctions.isUserRouteLogAuthenticated(document.getDocumentId() + ""));
     }
 
 }

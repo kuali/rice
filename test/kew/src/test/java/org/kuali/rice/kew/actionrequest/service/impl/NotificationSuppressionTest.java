@@ -64,7 +64,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testNotificationSuppressionKeys() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
 		document.routeDocument("");
 		ActionRequestDTO[] requests = document.getActionRequests();
 		assertTrue("there must be ActionRequestDTOs to test!", requests != null && requests.length > 0);
@@ -95,7 +95,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testActionItemFiltering() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
 		document.routeDocument("");
 		ActionRequestDTO[] requests = document.getActionRequests();
 		assertTrue("there must be ActionRequestDTOs to test!", requests != null && requests.length > 0);
@@ -134,11 +134,11 @@ public class NotificationSuppressionTest extends KEWTestCase {
 	 * @throws Exception
 	 */
 	@Test public void testSuppression() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), TEST_DOC_TYPE);
 		document.routeDocument("");
 
 		assertTrue("the responsible party should have been notified",
-				1 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
+				1 == getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 		
 		getMockEmailService().resetReminderCounts();
@@ -189,29 +189,29 @@ public class NotificationSuppressionTest extends KEWTestCase {
 		KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 
 		assertTrue("document should have been requeued",
-				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(document.getRouteHeaderId()));
+				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(document.getDocumentId()));
 		
 		assertTrue("should have notified user2", 
-				1 == getMockEmailService().immediateReminderEmailsSent("user2", document.getRouteHeaderId(), 
+				1 == getMockEmailService().immediateReminderEmailsSent("user2", document.getDocumentId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 		assertTrue("the responsible party that is delegating should not be notified",
-				0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
+				0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 
 		getMockEmailService().resetReminderCounts();
 
 		// now if we requeue, nobody should get notified
 		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
-		String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(document.getRouteHeaderId());
+		String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(document.getDocumentId());
 		MessageServiceNames.getDocumentRequeuerService((serviceNamespace != null) ? serviceNamespace : ConfigContext.getCurrentContextConfig().getServiceNamespace(),
-				document.getRouteHeaderId(), 0).requeueDocument(document.getRouteHeaderId());
-		//new DocumentRequeuerImpl().requeueDocument(document.getRouteHeaderId());
+				document.getDocumentId(), 0).requeueDocument(document.getDocumentId());
+		//new DocumentRequeuerImpl().requeueDocument(document.getDocumentId());
 		
 		assertTrue("nobody should have been notified", 
-				0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getRouteHeaderId(), 
+				0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getDocumentId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 		assertTrue("nobody should have been notified",
-				0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getRouteHeaderId(), 
+				0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
 		
 		getMockEmailService().resetReminderCounts();

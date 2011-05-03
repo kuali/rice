@@ -52,19 +52,19 @@ public class RouteLogActionTest extends KEWTestCase
     @SuppressWarnings("unchecked")
 	@Test public void testPopulateRouteLogFutureRequests_HasNoExistingRequests() throws Exception {
     	
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), getClass().getSimpleName());
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), getClass().getSimpleName());
     	document.routeDocument("1 - user1 route");
     	verifyFutureRequestState(document);
 
-    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	document.approve("2 - ewestfal approve");
     	verifyFutureRequestState(document);
 
-    	document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
     	document.approve("3 - user2 approve");
     	verifyFutureRequestState(document);
 
-    	document = new WorkflowDocument(getPrincipalIdForName("user3"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
     	document.acknowledge("4 - user3 acknowledge");
     	verifyFutureRequestState(document);
     }
@@ -80,8 +80,8 @@ public class RouteLogActionTest extends KEWTestCase
 	 */
 	private void verifyFutureRequestState(WorkflowDocument document)
 			throws WorkflowException, Exception {
-		Collection<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByRouteHeaderId(document.getRouteHeaderId());
-    	Collection<ActionRequestValue> actionsPending = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+		Collection<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentId(document.getDocumentId());
+    	Collection<ActionRequestValue> actionsPending = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
     	
     	DocumentRouteHeaderValue docRouteHeaderValue = DTOConverter.convertRouteHeaderVO(document.getRouteHeader());
     	RouteLogForm routeLogForm = new RouteLogForm();
@@ -126,7 +126,7 @@ public class RouteLogActionTest extends KEWTestCase
 
     	RouteLogForm routeLogForm = new RouteLogForm();
 
-    	WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "RouteLogActionTestTrivial");
+    	WorkflowDocument document = WorkflowDocument.createDocument(user1PrincipalId, "RouteLogActionTestTrivial");
     	// for this simple doc type, no future requests
     	document.routeDocument("");
     	

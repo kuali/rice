@@ -156,7 +156,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
 //	protected List getAdHocActionRequests(String docId) throws Exception {
 //	    List<ActionRequestDTO> matchingRequests = new ArrayList<ActionRequestDTO>();
-//	    ActionRequestDTO[] actionRequests = KEWServiceLocator.getWorkflowUtilityService().getActionRequests(Long.valueOf(docId), null, null);
+//	    ActionRequestDTO[] actionRequests = KEWServiceLocator.getWorkflowUtilityService().getActionRequests(docId, null, null);
 //	    for (int i = 0; i < actionRequests.length; i++) {
 //            ActionRequestDTO actionRequestDTO = actionRequests[i];
 //            if (actionRequestDTO.isActivated() && actionRequestDTO.isInitialized())
@@ -164,7 +164,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 //	    return matchingRequests;
 //	}
 
-	protected static void assertNumberOfPendingAdHocRequests(Long documentId, int expectedNumberOfPendingAdHocRequests) {
+	protected static void assertNumberOfPendingAdHocRequests(String documentId, int expectedNumberOfPendingAdHocRequests) {
 	    int actualPendingAdHocRequests = 0;
         List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
@@ -194,20 +194,20 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         sr = simpleService.requestAdHocAckToPrincipal(docId, getPrincipalIdForName("admin"), getPrincipalIdForName("fred"), "");
         verifySuccess(sr);
         // check to make sure the adhoc requests remaining are correct
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 3);
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "delyea");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fred");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fran");
+        assertNumberOfPendingAdHocRequests(docId, 3);
+        TestUtilities.assertUserHasPendingRequest(docId, "delyea");
+        TestUtilities.assertUserHasPendingRequest(docId, "fred");
+        TestUtilities.assertUserHasPendingRequest(docId, "fran");
         String newDocTitle = "newestDocTitle";
         String newDocContent = "<foobar>testerIsNew</foobar>";
         sr = simpleService.revokeAdHocRequestsByNodeName(docId, getPrincipalIdForName("pmckown"), newDocTitle, newDocContent, "WorkflowDocument", "");
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
         // check to make sure the adhoc requests remaining are correct
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 1);
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fred");
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("delyea"), Long.valueOf(docId));
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("fran"), Long.valueOf(docId));
+        assertNumberOfPendingAdHocRequests(docId, 1);
+        TestUtilities.assertUserHasPendingRequest(docId, "fred");
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("delyea"), docId);
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("fran"), docId);
     }
 
     @Test
@@ -220,9 +220,9 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         sr = simpleService.requestAdHocAckToPrincipal(docId, getPrincipalIdForName("admin"), getPrincipalIdForName("fred"), "");
         verifySuccess(sr);
         // verify requests
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 2);
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fred");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fran");
+        assertNumberOfPendingAdHocRequests(docId, 2);
+        TestUtilities.assertUserHasPendingRequest(docId, "fred");
+        TestUtilities.assertUserHasPendingRequest(docId, "fran");
         // revoke the requests
         String newDocTitle = "newestDocTitle";
         String newDocContent = "<foobar>testerIsNew</foobar>";
@@ -230,9 +230,9 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
         // check to make sure the adhoc requests remaining are correct
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 1);
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fred");
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("fran"), Long.valueOf(docId));
+        assertNumberOfPendingAdHocRequests(docId, 1);
+        TestUtilities.assertUserHasPendingRequest(docId, "fred");
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("fran"), docId);
     }
 
     @Test
@@ -247,7 +247,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         sr = simpleService.requestAdHocAckToPrincipal(docId, getPrincipalIdForName("admin"), getPrincipalIdForName("fred"), "");
         verifySuccess(sr);
         // verify requests
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 2);
+        assertNumberOfPendingAdHocRequests(docId, 2);
         assertTrue("group should have pending request", doesGroupHavePendingRequest(docId, groupNamespaceCode, groupName));
         // revoke the requests
         String newDocTitle = "newestDocTitle";
@@ -256,7 +256,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
         // check to make sure the adhoc requests remaining are correct
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 1);
+        assertNumberOfPendingAdHocRequests(docId, 1);
         assertFalse("group should not have pending request", doesGroupHavePendingRequest(docId, groupNamespaceCode, groupName));
     }
 
@@ -266,7 +266,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
     public boolean doesGroupHavePendingRequest(String documentId, String groupNamespaceCode, String groupName) throws WorkflowException {
         Group group = KEWServiceLocator.getIdentityHelperService().getGroupByName(groupNamespaceCode, groupName);
         assertNotNull("group not found for namespace '" + groupNamespaceCode + "' and name '" + groupName, group);
-        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(Long.valueOf(documentId));
+        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
         boolean foundRequest = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
@@ -295,10 +295,10 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         sr = simpleService.requestAdHocAckToPrincipal(docId, getPrincipalIdForName("admin"), getPrincipalIdForName("fred"), "");
         verifySuccess(sr);
         // check to make sure the adhoc requests remaining are correct
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 3);
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "delyea");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fred");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fran");
+        assertNumberOfPendingAdHocRequests(docId, 3);
+        TestUtilities.assertUserHasPendingRequest(docId, "delyea");
+        TestUtilities.assertUserHasPendingRequest(docId, "fred");
+        TestUtilities.assertUserHasPendingRequest(docId, "fran");
         // revoke a single request
         String newDocTitle = "newestDocTitle";
         String newDocContent = "<foobar>testerIsNew</foobar>";
@@ -308,29 +308,29 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
         // check to make sure the adhoc requests remaining are correct
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 2);
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fred");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fran");
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("delyea"), Long.valueOf(docId));
+        assertNumberOfPendingAdHocRequests(docId, 2);
+        TestUtilities.assertUserHasPendingRequest(docId, "fred");
+        TestUtilities.assertUserHasPendingRequest(docId, "fran");
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("delyea"), docId);
         // revoke another request
         actionItems = KEWServiceLocator.getWorkflowUtilityService().getActionItemsForPrincipal(getPrincipalIdForName("fran"));
         assertEquals("incorrect number of action items for user", 1, actionItems.length);
         sr = simpleService.revokeAdHocRequestsByActionRequestId(docId, getPrincipalIdForName("admin"), newDocTitle, newDocContent, actionItems[0].getActionRequestId().toString(), "");
         verifySuccess(sr);
         // check to make sure the adhoc requests remaining are correct
-        assertNumberOfPendingAdHocRequests(Long.valueOf(docId), 1);
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "fred");
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("delyea"), Long.valueOf(docId));
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("fran"), Long.valueOf(docId));
+        assertNumberOfPendingAdHocRequests(docId, 1);
+        TestUtilities.assertUserHasPendingRequest(docId, "fred");
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("delyea"), docId);
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("fran"), docId);
     }
 
     protected void verifySuperUser(SimpleDocumentActionsWebService simpleService, String docId, String principalName) throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName(principalName), Long.valueOf(docId));
+        WorkflowDocument doc = WorkflowDocument.loadDocument(getPrincipalIdForName(principalName), docId);
         assertTrue(principalName + " should be a super user", doc.isSuperUser());
     }
 
     protected void verifyNotSuperUser(SimpleDocumentActionsWebService simpleService, String docId, String principalName) throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName(principalName), Long.valueOf(docId));
+        WorkflowDocument doc = WorkflowDocument.loadDocument(getPrincipalIdForName(principalName), docId);
         assertFalse(principalName + " should not be a super user", doc.isSuperUser());
     }
 
@@ -338,7 +338,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
     public void testSuperUserApprove() throws Exception {
         SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
         String docId = createAndRouteDocument(simpleService, "Doc1Title", "<foo>bar</foo>");
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument");
 
         // attempt to take action as invalid super user
         String notSuperUserPrincipalName = "fred";
@@ -351,7 +351,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         // take action as valid super user
         String superUserPrincipalName = "shenl";
         verifySuperUser(simpleService, docId, superUserPrincipalName);
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName(superUserPrincipalName), Long.valueOf(docId)), "WorkflowDocument");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName(superUserPrincipalName), docId), "WorkflowDocument");
         // super user approve the document
         String newDocTitle = "newestDocTitle";
         String newDocContent = "<foobar>testerIsNew</foobar>";
@@ -359,7 +359,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
         // wait 2 minutes
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName(superUserPrincipalName), Long.valueOf(docId));
+        WorkflowDocument doc = WorkflowDocument.loadDocument(getPrincipalIdForName(superUserPrincipalName), docId);
         assertTrue("state of the document should be final", doc.stateIsProcessed());
     }
 
@@ -367,7 +367,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
     public void testSuperUserDisapprove() throws Exception {
         SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
         String docId = createAndRouteDocument(simpleService, "Doc1Title", "<foo>bar</foo>");
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument");
 
         // attempt to take action as invalid super user
         String notSuperUserPrincipalName = "fred";
@@ -380,14 +380,14 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         // take action as valid super user
         String superUserPrincipalName = "shenl";
         verifySuperUser(simpleService, docId, superUserPrincipalName);
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName(superUserPrincipalName), Long.valueOf(docId)), "WorkflowDocument");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName(superUserPrincipalName), docId), "WorkflowDocument");
         // super user approve the document
         String newDocTitle = "newestDocTitle";
         String newDocContent = "<foobar>testerIsNew</foobar>";
         sr = simpleService.superUserDisapprove(docId, getPrincipalIdForName(superUserPrincipalName), newDocTitle, newDocContent, "");
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName(superUserPrincipalName),Long.valueOf(docId));
+        WorkflowDocument doc = WorkflowDocument.loadDocument(getPrincipalIdForName(superUserPrincipalName),docId);
         assertTrue("document should be disapproved", doc.stateIsDisapproved());
     }
 
@@ -395,7 +395,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
     public void testSuperUserCancel() throws Exception {
         SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
         String docId = createAndRouteDocument(simpleService, "Doc1Title", "<foo>bar</foo>");
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument");
 
         // attempt to take action as invalid super user
         String notSuperUserPrincipalName = "fred";
@@ -414,7 +414,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         sr = simpleService.superUserCancel(docId, getPrincipalIdForName(superUserPrincipalName), newDocTitle, newDocContent, "");
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName(superUserPrincipalName),Long.valueOf(docId));
+        WorkflowDocument doc = WorkflowDocument.loadDocument(getPrincipalIdForName(superUserPrincipalName),docId);
         assertTrue("document should be cancelled", doc.stateIsCanceled());
     }
 
@@ -422,19 +422,19 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
     public void testReturnToPrevious() throws Exception {
         SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
         String docId = createAndRouteDocument(simpleService, "Doc1Title", "<foo>bar</foo>");
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "bmcgough");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "rkirkend");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument");
+        TestUtilities.assertUserHasPendingRequest(docId, "bmcgough");
+        TestUtilities.assertUserHasPendingRequest(docId, "rkirkend");
         // approve past first node
         StandardResponse sr = simpleService.approve(docId, getPrincipalIdForName("bmcgough"), "newDocTitle", "<foobar>test</foobar>", "");
         verifySuccess(sr);
         sr = simpleService.approve(docId, getPrincipalIdForName("rkirkend"), "newDocTitle", "<foobar>test</foobar>", "");
         verifySuccess(sr);
         // verify document is in correct locations
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument2");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "pmckown");
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("bmcgough"), Long.valueOf(docId));
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("rkirkend"), Long.valueOf(docId));
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument2");
+        TestUtilities.assertUserHasPendingRequest(docId, "pmckown");
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("bmcgough"), docId);
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("rkirkend"), docId);
 
         // attempt to return document to previous with invalid user
         sr = simpleService.returnToPreviousNodeWithUpdates(docId, getPrincipalIdForName("delyea"), "", "WorkflowDocument", null, null);
@@ -449,29 +449,29 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
         // verify document is in correct locations
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "bmcgough");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "rkirkend");
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("pmckown"), Long.valueOf(docId));
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument");
+        TestUtilities.assertUserHasPendingRequest(docId, "bmcgough");
+        TestUtilities.assertUserHasPendingRequest(docId, "rkirkend");
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("pmckown"), docId);
     }
 
     @Test
     public void testSuperUserReturnToPrevious() throws Exception {
         SimpleDocumentActionsWebService simpleService = getSimpleDocumentActionsWebService();
         String docId = createAndRouteDocument(simpleService, "Doc1Title", "<foo>bar</foo>");
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "bmcgough");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "rkirkend");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument");
+        TestUtilities.assertUserHasPendingRequest(docId, "bmcgough");
+        TestUtilities.assertUserHasPendingRequest(docId, "rkirkend");
         // approve past first node
         StandardResponse sr = simpleService.approve(docId, getPrincipalIdForName("bmcgough"), "newDocTitle", "<foobar>test</foobar>", "");
         verifySuccess(sr);
         sr = simpleService.approve(docId, getPrincipalIdForName("rkirkend"), "newDocTitle", "<foobar>test</foobar>", "");
         verifySuccess(sr);
         // verify document is in correct locations
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument2");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "pmckown");
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("bmcgough"), Long.valueOf(docId));
-        TestUtilities.assertNotInActionList(getPrincipalIdForName("rkirkend"), Long.valueOf(docId));
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument2");
+        TestUtilities.assertUserHasPendingRequest(docId, "pmckown");
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("bmcgough"), docId);
+        TestUtilities.assertNotInActionList(getPrincipalIdForName("rkirkend"), docId);
 
         // attempt to return document to previous with invalid user
         sr = simpleService.superUserReturnToPrevious(docId, getPrincipalIdForName("delyea"), null, null, "WorkflowDocument", "");
@@ -488,9 +488,9 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         verifySuccess(sr);
         verifyDocumentDataChanges(simpleService, docId, newDocContent, newDocTitle);
         // verify document is in correct locations
-        TestUtilities.assertAtNode(new WorkflowDocument(getPrincipalIdForName("admin"), Long.valueOf(docId)), "WorkflowDocument");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "bmcgough");
-        TestUtilities.assertUserHasPendingRequest(Long.valueOf(docId), "rkirkend");
+        TestUtilities.assertAtNode(WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), docId), "WorkflowDocument");
+        TestUtilities.assertUserHasPendingRequest(docId, "bmcgough");
+        TestUtilities.assertUserHasPendingRequest(docId, "rkirkend");
     }
 
 }

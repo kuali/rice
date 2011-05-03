@@ -32,7 +32,7 @@ public class DumpDTO implements Serializable {
 
 	private static final long serialVersionUID = -6136544551121011531L;
 
-	private Long docId;
+	private String docId;
 	private String docTypeName;
 	private String docRouteStatusCode;
 	private Timestamp docModificationDate;
@@ -62,7 +62,7 @@ public class DumpDTO implements Serializable {
 	public void setDocDescription(final String docDescription) {
 		this.docDescription = docDescription;
 	}
-	public Long getDocId() {
+	public String getDocId() {
 		return docId;
 	}
 	public String getDocInitiatorId() {
@@ -112,7 +112,7 @@ public class DumpDTO implements Serializable {
         DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(date);
     }
-	public void setDocId(final Long docId) {
+	public void setDocId(final String docId) {
 		this.docId = docId;
 	}
 

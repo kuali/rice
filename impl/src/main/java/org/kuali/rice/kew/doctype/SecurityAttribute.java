@@ -42,7 +42,7 @@ public interface SecurityAttribute extends Serializable {
      * 
      * @return true if the Person is authorized to view the row in document search, false otherwise
      */
-    public Boolean docSearchAuthorized(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId);
+    public Boolean docSearchAuthorized(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId);
 
     /**
      * Determines whether or not a Person is authorized to open the route log for the document with the given ID.
@@ -54,6 +54,6 @@ public interface SecurityAttribute extends Serializable {
      * 
      * @return true if the Person is authorized to view the route log, false otherwise
      */
-    public Boolean routeLogAuthorized(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId);
+    public Boolean routeLogAuthorized(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId);
 
 }

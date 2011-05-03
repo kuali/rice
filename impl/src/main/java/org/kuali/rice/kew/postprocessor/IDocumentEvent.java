@@ -39,9 +39,9 @@ public interface IDocumentEvent extends Serializable {
   public String getDocumentEventCode();
 
   /**
-   * @return the route header id for which this event was generated
+   * @return the document id for which this event was generated
    */
-  public Long getRouteHeaderId();
+  public String getDocumentId();
 
   /**
    * @return the application document id registered for this document when it was created

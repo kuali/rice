@@ -34,21 +34,21 @@ public interface DocumentRouteHeaderDAO {
   /**
    * "Locks" the route header at the datasource level.
    */
-  public void lockRouteHeader(Long routeHeaderId, boolean wait);
-  public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId);
-  public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId, boolean clearCache);
-  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds);
-  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache);
+  public void lockRouteHeader(String documentId, boolean wait);
+  public DocumentRouteHeaderValue findRouteHeader(String documentId);
+  public DocumentRouteHeaderValue findRouteHeader(String documentId, boolean clearCache);
+  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds);
+  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache);
   public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
-  public Long getNextRouteHeaderId();
+  public String getNextDocumentId();
   public Collection findPendingByResponsibilityIds(Set responsibilityIds);
-  public void clearRouteHeaderSearchValues(Long routeHeader);
-  public String getServiceNamespaceByDocumentId(Long documentId);
-  public DocumentRouteHeaderValueContent getContent(Long routeHeaderId);
-  public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue);
-  public String getDocumentStatus(Long documentId);
+  public void clearRouteHeaderSearchValues(String documentId);
+  public String getServiceNamespaceByDocumentId(String documentId);
+  public DocumentRouteHeaderValueContent getContent(String documentId);
+  public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue);
+  public String getDocumentStatus(String documentId);
   public void save(SearchableAttributeValue searchableAttribute);
-  public String getAppDocId(Long documentId);
+  public String getAppDocId(String documentId);
 
   public Collection findByDocTypeAndAppId(String documentTypeName, String appId);
 

@@ -47,8 +47,8 @@ import java.util.Calendar;
 @Table(name="KREW_DOC_HDR_EXT_DT_T")
 //@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByRouteHeaderId", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId"),
-	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByDocumentId", query="select s from SearchableAttributeDateTimeValue as s where s.documentId = :documentId"),
+	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from SearchableAttributeDateTimeValue as s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
 })
 public class SearchableAttributeDateTimeValue implements SearchableAttributeValue, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchableAttributeDateTimeValue.class);
@@ -77,7 +77,7 @@ public class SearchableAttributeDateTimeValue implements SearchableAttributeValu
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
 
     @Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+	private String documentId;
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
 	private DocumentRouteHeaderValue routeHeader;
@@ -221,12 +221,12 @@ public class SearchableAttributeDateTimeValue implements SearchableAttributeValu
         this.routeHeader = routeHeader;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public String getSearchableAttributeKey() {

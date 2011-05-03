@@ -35,7 +35,7 @@ public class NoteServiceTest extends KEWTestCase {
     @Test public void testAttachmentSave() throws Exception {
 		Note note = new Note();
 		note.setNoteAuthorWorkflowId("fakeyUser");
-		note.setRouteHeaderId(new Long(2));
+		note.setDocumentId("2");
 		note.setNoteCreateDate(new Timestamp(new Date().getTime()));
 		note.setNoteText("i like notes");
 		

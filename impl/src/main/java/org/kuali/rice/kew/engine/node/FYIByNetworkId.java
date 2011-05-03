@@ -49,7 +49,7 @@ public class FYIByNetworkId extends RequestActivationNode {
 			throws Exception {
 
         LOG.debug("processing FYIByNetworkId simple node");
-        Long routeHeaderId = context.getDocument().getRouteHeaderId();
+        String documentId = context.getDocument().getDocumentId();
         Element rootElement = getRootElement(new StandardDocumentContent(context.getDocument().getDocContent()));
 		Collection<Element> fieldElements = XmlHelper.findElements(rootElement, "field");
         Iterator<Element> elementIter = fieldElements.iterator();
@@ -63,7 +63,7 @@ public class FYIByNetworkId extends RequestActivationNode {
                		if (field.getChildText("value") != null) {
                			Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(field.getChildText("value"));
 
-               			//WorkflowDocument wfDoc = new WorkflowDocument(new NetworkIdVO(field.getChildText("value")), routeHeaderId);
+               			//WorkflowDocument wfDoc = new WorkflowDocument(new NetworkIdVO(field.getChildText("value")), documentId);
                			if (!context.isSimulation()) {
                    			KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(user.getPrincipalId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", user.getPrincipalId(), "Notification Request", true, null);
                		}

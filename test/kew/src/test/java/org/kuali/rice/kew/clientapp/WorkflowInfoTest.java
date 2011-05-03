@@ -56,14 +56,14 @@ public class WorkflowInfoTest extends KEWTestCase {
     GlobalVariables.setUserSession(null);
     String ewestfalPrincipalId = KimApiServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
     GlobalVariables.setUserSession(new UserSession("ewestfal"));
-    WorkflowDocument document = new WorkflowDocument(ewestfalPrincipalId, "TestDocumentType");
-	Long documentId = document.getRouteHeaderId();
+    WorkflowDocument document = WorkflowDocument.createDocument(ewestfalPrincipalId, "TestDocumentType");
+	String documentId = document.getDocumentId();
 	assertNotNull(documentId);
 
 	RouteHeaderDTO routeHeaderVO = new WorkflowInfo().getRouteHeader(documentId);
 	assertNotNull(routeHeaderVO);
 
-	assertEquals(documentId, routeHeaderVO.getRouteHeaderId());
+	assertEquals(documentId, routeHeaderVO.getDocumentId());
 	assertEquals(KEWConstants.ROUTE_HEADER_INITIATED_CD, routeHeaderVO.getDocRouteStatus());
     }
 
@@ -79,13 +79,13 @@ public class WorkflowInfoTest extends KEWTestCase {
     }
 	// verify that a bad document id throws an exception
 	try {
-	    String status = info.getDocumentStatus(new Long(-1));
+	    String status = info.getDocumentStatus("-1");
 	    fail("A WorkflowException Should have been thrown, instead returned status: " + status);
 	} catch (WorkflowException e) {}
 
 	// now create a doc and load it's status
-	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
-	Long documentId = document.getRouteHeaderId();
+	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+	String documentId = document.getDocumentId();
 	assertNotNull(documentId);
 
 	String status = info.getDocumentStatus(documentId);
@@ -106,26 +106,26 @@ public class WorkflowInfoTest extends KEWTestCase {
     public void testBlanketApproverSubmitted() throws WorkflowException {
     	Person blanketApprover = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("ewestfal");
 
-        WorkflowDocument document = new WorkflowDocument(blanketApprover.getPrincipalId(), "BlanketApproveParallelTest");
+        WorkflowDocument document = WorkflowDocument.createDocument(blanketApprover.getPrincipalId(), "BlanketApproveParallelTest");
         document.blanketApprove("");
 
-        String routedByPrincipalId = new WorkflowInfo().getDocumentRoutedByPrincipalId(document.getRouteHeaderId());
+        String routedByPrincipalId = new WorkflowInfo().getDocumentRoutedByPrincipalId(document.getDocumentId());
         assertEquals("the blanket approver should be the routed by", blanketApprover.getPrincipalId(), routedByPrincipalId);
     }
     
     @Test
     public void testGetAppDocId() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
     	document.saveRoutingData();
     	
-    	String appDocId = new WorkflowInfo().getAppDocId(document.getRouteHeaderId());
+    	String appDocId = new WorkflowInfo().getAppDocId(document.getDocumentId());
     	assertNull("appDocId should be null", appDocId);
     	
     	String appDocIdValue = "1234";
     	document.setAppDocId(appDocIdValue);
     	document.saveRoutingData();
     	
-    	appDocId = new WorkflowInfo().getAppDocId(document.getRouteHeaderId());
+    	appDocId = new WorkflowInfo().getAppDocId(document.getDocumentId());
     	assertEquals("Incorrect appDocId", appDocIdValue, appDocId);
     }
 

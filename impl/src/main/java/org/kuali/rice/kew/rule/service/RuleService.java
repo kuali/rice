@@ -47,7 +47,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
      */
     public RuleBaseValues getRuleByName(String name);
 
-    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception;
+    public String routeRuleWithDelegate(String documentId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception;
     //public void save(RuleBaseValues ruleBaseValues) throws Exception;
     public void save2(RuleBaseValues ruleBaseValues) throws Exception;
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws Exception;
@@ -61,13 +61,13 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
-    public List findByRouteHeaderId(Long routeHeaderId);
-    public void makeCurrent(Long routeHeaderId);
+    public List findByDocumentId(String documentId);
+    public void makeCurrent(String documentId);
     public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
     public void makeCurrent(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted);
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
-    public Long isLockedForRouting(Long currentRuleBaseValuesId);
+    public String isLockedForRouting(Long currentRuleBaseValuesId);
     public List fetchAllRules(boolean currentRules);
     public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId);
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType);

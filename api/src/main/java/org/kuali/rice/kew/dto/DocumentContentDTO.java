@@ -43,7 +43,7 @@ public class DocumentContentDTO implements Serializable {
     private String searchableContent = "";
     private List<WorkflowAttributeDefinitionDTO> attributeDefinitions = new ArrayList<WorkflowAttributeDefinitionDTO>();
     private List<WorkflowAttributeDefinitionDTO> searchableDefinitions = new ArrayList<WorkflowAttributeDefinitionDTO>();
-    private Long routeHeaderId;
+    private String documentId;
     
     private static final WorkflowAttributeDefinitionDTO[] ARRAY_TYPE = new WorkflowAttributeDefinitionDTO[0];
     
@@ -116,11 +116,11 @@ public class DocumentContentDTO implements Serializable {
         searchableDefinitions.remove(definition);
     }
     
-    public Long getRouteHeaderId() {
-		return routeHeaderId;
+    public String getDocumentId() {
+		return documentId;
 	}
-	public void setRouteHeaderId(Long routeHeaderId) {
-		this.routeHeaderId = routeHeaderId;
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
 	}
 	
 	private boolean isEmpty(String value) {

@@ -23,13 +23,13 @@ import org.kuali.rice.edl.impl.extract.Fields;
 
 public interface ExtractDAO {
 	
-    public Dump getDumpByRouteHeaderId(Long routeHeaderId);
+    public Dump getDumpByDocumentId(String documentId);
 
-    public List getFieldsByRouteHeaderId(Long routeHeaderId);
+    public List getFieldsByDocumentId(String documentId);
     
     public void saveDump(Dump dump);
     
-    public void deleteDump(Long routeHeaderId);
+    public void deleteDump(String documentId);
 
 	public void saveField(Fields field);
     

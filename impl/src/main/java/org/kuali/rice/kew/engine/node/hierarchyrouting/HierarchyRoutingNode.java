@@ -112,7 +112,7 @@ public class HierarchyRoutingNode implements DynamicNode {
         RouteNode splitNode = documentType.getNamedProcess(SPLIT_PROCESS_NAME).getInitialRouteNode();
 
         //set up initial SplitNodeInstance
-        RouteNodeInstance splitNodeInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), splitNode);
+        RouteNodeInstance splitNodeInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), splitNode);
         splitNodeInstance.setBranch(dynamicNodeInstance.getBranch());
         markAsInitialSplitNode(splitNodeInstance);
         
@@ -121,7 +121,7 @@ public class HierarchyRoutingNode implements DynamicNode {
         if (stops.isEmpty()) {
             // if we have no stops, then just return a no-op node with IU-UNIV attached, this will terminate the process
             RouteNode noStopNode = documentType.getNamedProcess(NO_STOP_NAME).getInitialRouteNode();
-            RouteNodeInstance noChartOrgInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), noStopNode);
+            RouteNodeInstance noChartOrgInstance = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), noStopNode);
             noChartOrgInstance.setBranch(dynamicNodeInstance.getBranch());
 
             provider.setStop(noChartOrgInstance, null);
@@ -168,7 +168,7 @@ public class HierarchyRoutingNode implements DynamicNode {
 
                 //create a join to transition us to the next org
                 RouteNode joinPrototype = documentType.getNamedProcess(JOIN_PROCESS_NAME).getInitialRouteNode();
-                RouteNodeInstance joinNode = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), joinPrototype);
+                RouteNodeInstance joinNode = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), joinPrototype);
                 LOG.debug("Created join node: " + joinNode);
                 String branchName = "Branch for join " + provider.getStopIdentifier(stop);
                 Branch joinBranch = helper.getNodeFactory().createBranch(branchName, null, joinNode);
@@ -212,7 +212,7 @@ public class HierarchyRoutingNode implements DynamicNode {
         Stop futureStop = provider.getParent(stop);
         LOG.debug("Creating next stop request node instance " + provider.getStopIdentifier(futureStop) + " as parent of " + provider.getStopIdentifier(stop));
         RouteNode requestsPrototype = getStopRequestNode(futureStop, context.getDocument().getDocumentType());
-        RouteNodeInstance requestNode = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), requestsPrototype);
+        RouteNodeInstance requestNode = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getDocumentId(), requestsPrototype);
         requestNode.setBranch(processInstance.getBranch());
         NodeState ns = new NodeState();
         ns.setKey(STOP_ID);

@@ -38,7 +38,7 @@ public interface ActionListService {
 
     public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
 
-    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId);
+    public Collection<ActionItem> getActionListForSingleDocument(String documentId);
 
     public Collection<Recipient> findUserSecondaryDelegators(String principalId);
 
@@ -52,17 +52,17 @@ public interface ActionListService {
     
     public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox);
 
-    public void deleteByRouteHeaderId(Long routeHeaderId);
+    public void deleteByDocumentId(String documentId);
 
     public Collection<ActionItem> findByPrincipalId(String principalId);
 
-    public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowUserId, Long routeHeaderId);
+    public Collection<ActionItem> findByWorkflowUserDocumentId(String workflowUserId, String documentId);
 
-    public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId);
+    public Collection<ActionItem> findByDocumentId(String documentId);
 
     public Collection<ActionItem> findByDocumentTypeName(String documentTypeName);
 
-    public void updateActionItemsForTitleChange(Long routeHeaderId, String newTitle);
+    public void updateActionItemsForTitleChange(String documentId, String newTitle);
 
     public void validateActionItem(ActionItem actionItem);
 

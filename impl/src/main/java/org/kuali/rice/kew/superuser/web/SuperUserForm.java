@@ -42,7 +42,7 @@ import org.kuali.rice.kew.web.KewRoutingKualiForm;
 public class SuperUserForm extends KewRoutingKualiForm {
 
     private static final long serialVersionUID = 982228198266403397L;
-    private Long routeHeaderId;
+    private String documentId;
     private String docHandlerUrl;
     private Integer routeLevel;
     private List<String> futureNodeNames = new ArrayList<String>();
@@ -93,12 +93,12 @@ public class SuperUserForm extends KewRoutingKualiForm {
         this.routeHeader = routeHeader;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public String getDocHandlerUrl() {
@@ -107,10 +107,6 @@ public class SuperUserForm extends KewRoutingKualiForm {
 
     public void setDocHandlerUrl(String docHandlerUrl) {
         this.docHandlerUrl = docHandlerUrl;
-    }
-
-    public String getRouteHeaderIdString() {
-        return routeHeaderId.toString();
     }
 
     public Integer getRouteLevel() {
@@ -209,7 +205,7 @@ public class SuperUserForm extends KewRoutingKualiForm {
     }
 
     public Set<KeyValue> getPreviousNodes() throws Exception {
-    	String[] nodeNames = new WorkflowInfo().getPreviousRouteNodeNames(routeHeader.getRouteHeaderId());
+    	String[] nodeNames = new WorkflowInfo().getPreviousRouteNodeNames(routeHeader.getDocumentId());
         Set<KeyValue> previousNodes = new HashSet<KeyValue>();
         for (String nodeName : nodeNames) {
 			previousNodes.add(new ConcreteKeyValue(nodeName, nodeName));

@@ -39,7 +39,7 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
 public class KewRoutingKualiForm extends KualiForm {
     private static final long serialVersionUID = -3537002710069757806L;
     private WorkflowDocument workflowDocument;
-    private Long docId;
+    private String docId;
     private String docTypeName;
     private String initiateURL;
     private String command;
@@ -121,13 +121,13 @@ public class KewRoutingKualiForm extends KualiForm {
     /**
      * @return Returns the docId.
      */
-    public Long getDocId() {
+    public String getDocId() {
         return docId;
     }
     /**
      * @param docId The docId to set.
      */
-    public void setDocId(Long docId) {
+    public void setDocId(String docId) {
         this.docId = docId;
     }
     /**
@@ -245,7 +245,7 @@ public class KewRoutingKualiForm extends KualiForm {
     public void establishVisibleActionRequestCds(){
         try {
             if(getWorkflowDocument() != null){
-                Long docId = workflowDocument.getRouteHeaderId();
+                String docId = workflowDocument.getDocumentId();
                 DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
                 DocumentType documentType = document.getDocumentType();
                 boolean isSuperUser = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(workflowDocument.getPrincipalId(), documentType);

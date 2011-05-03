@@ -37,9 +37,9 @@ public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 		String user2PrincipalId = getPrincipalIdForName("user2");
 		String user3PrincipalId = getPrincipalIdForName("user3");
 
-		WorkflowDocument doc = new WorkflowDocument(user1PrincipalId, "EmptyWorkgroupDocType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(user1PrincipalId, "EmptyWorkgroupDocType");
 
-		doc = new WorkflowDocument("user1", doc.getRouteHeaderId());
+		doc = WorkflowDocument.loadDocument("user1", doc.getDocumentId());
 
 		doc.routeDocument("");
 
@@ -47,12 +47,12 @@ public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 		// skip node 2 (effectively) because that node is using a group with no members,
 		// and then it should land on node 3 being in user 2's action list
 		
-		doc = new WorkflowDocument(user2PrincipalId, doc.getRouteHeaderId());
+		doc = WorkflowDocument.loadDocument(user2PrincipalId, doc.getDocumentId());
 		
 		assertTrue("Document should be enroute", doc.stateIsEnroute());
 		TestUtilities.assertAtNode(doc, "Node3");
 		
-		TestUtilities.assertInActionList(user2PrincipalId, doc.getRouteHeaderId());
+		TestUtilities.assertInActionList(user2PrincipalId, doc.getDocumentId());
 		
 		// verify that an action request was generated at Node 2 to the "EmptyWorkgroup" but was immediately deactivated
 		ActionRequestDTO[] actionRequests = doc.getActionRequests();

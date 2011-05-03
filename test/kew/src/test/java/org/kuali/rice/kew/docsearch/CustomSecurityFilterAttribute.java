@@ -47,20 +47,20 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
     /**
      * @see org.kuali.rice.kew.doctype.SecurityAttribute#docSearchAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, org.kuali.rice.kew.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
      */
-    public Boolean docSearchAuthorized(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId) {
+    public Boolean docSearchAuthorized(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId) {
         return checkAuthorizations(currentUser, docTypeName, documentId, initiatorPrincipalId);
     }
 
     /**
      * @see org.kuali.rice.kew.doctype.SecurityAttribute#routeLogAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, org.kuali.rice.kew.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
      */
-    public Boolean routeLogAuthorized(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId) {
+    public Boolean routeLogAuthorized(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId) {
         return checkAuthorizations(currentUser, docTypeName, documentId, initiatorPrincipalId);
     }
 
-    private Boolean checkAuthorizations(Person currentUser, String docTypeName, Long documentId, String initiatorPrincipalId) {
+    private Boolean checkAuthorizations(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId) {
         try {
-            WorkflowDocument doc = new WorkflowDocument(currentUser.getPrincipalId(),documentId);
+            WorkflowDocument doc = WorkflowDocument.loadDocument(currentUser.getPrincipalId(),documentId);
             String networkId = VIEWERS_BY_STATUS.get(doc.getRouteHeader().getDocRouteStatus());
             return ( (StringUtils.isNotBlank(networkId)) && (networkId.equals(currentUser.getPrincipalName())) );
         } catch (Exception e) {

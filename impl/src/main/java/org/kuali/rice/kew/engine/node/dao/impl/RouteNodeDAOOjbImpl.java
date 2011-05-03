@@ -36,7 +36,6 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
     private static final String ROUTE_NODE_INSTANCE_ID = "routeNodeInstanceId";
     private static final String NODE_INSTANCE_ID = "nodeInstanceId";
     private static final String DOCUMENT_ID = "documentId";
-    private static final String ROUTE_HEADER_ID = "routeHeaderId";
     private static final String ROUTE_NODE_NAME = "routeNodeName";
     private static final String DOCUMENT_TYPE_ID = "documentTypeId";
     private static final String PROCESS_ID = "processId";
@@ -79,7 +78,7 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
     }
 
     @SuppressWarnings(value = "unchecked")
-    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getActiveNodeInstances(String documentId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(DOCUMENT_ID, documentId);
 	criteria.addEqualTo(ACTIVE, Boolean.TRUE);
@@ -88,7 +87,7 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
     }
 
     @SuppressWarnings("unchecked")
-    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(DOCUMENT_ID, documentId);
 	criteria.addEqualTo(ACTIVE, Boolean.FALSE);
@@ -110,9 +109,9 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 	return terminalNodes;
     }
 
-    public List getInitialNodeInstances(Long documentId) {
+    public List getInitialNodeInstances(String documentId) {
 	Criteria subCriteria = new Criteria();
-	subCriteria.addEqualTo(ROUTE_HEADER_ID, documentId);
+	subCriteria.addEqualTo(DOCUMENT_ID, documentId);
 	ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, subCriteria);
 	subQuery.setAttributes(new String[]{"initialRouteNodeInstances.routeNodeInstanceId"});
 	Criteria criteria = new Criteria();
@@ -149,7 +148,7 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 		.getCollectionByQuery(new QueryByCriteria(RouteNodeInstance.class, crit));
     }
 
-    public List findRouteNodeInstances(Long documentId) {
+    public List findRouteNodeInstances(String documentId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(DOCUMENT_ID, documentId);
 	return (List) getPersistenceBrokerTemplate().getCollectionByQuery(

@@ -28,7 +28,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  */
 public interface RoutingReportService {
 
-	//public DocumentRouteHeaderValue report(Long routeHeaderId, Integer startRouteLevel, Integer endRouteLevel, List usersToFilterIn) throws WorkflowException;
+	//public DocumentRouteHeaderValue report(String documentId, Integer startRouteLevel, Integer endRouteLevel, List usersToFilterIn) throws WorkflowException;
 	
 	//public DocumentRouteHeaderValue report(String documentTypeName, DocumentContent documentContent, Integer startRouteLevel, Integer endRouteLevel, List usersToFilterIn) throws WorkflowException;
 	

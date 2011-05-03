@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 
-	public static final String ROUTE_HEADER_ID = "routeHeaderId";
+	public static final String DOCUMENT_ID = "documentId";
 
 
 	/**
@@ -71,17 +71,17 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
     	
-		if(ROUTE_HEADER_ID.equals(attributeName)) {
+		if(DOCUMENT_ID.equals(attributeName)) {
 
 			AnchorHtmlData link = new AnchorHtmlData();
 			RuleBaseValues rule = (RuleBaseValues)businessObject;
 
-			Long routeHeaderId = rule.getRouteHeaderId();
-			link.setDisplayText(routeHeaderId+"");
+			String documentId = rule.getDocumentId();
+			link.setDisplayText(documentId+"");
 
 			String href = ConfigContext.getCurrentContextConfig().getKEWBaseURL() + "/" +
 			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" +
-			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.DOCUMENT_ID_PARAMETER + "=" + documentId;
 
 			link.setHref(href);
 

@@ -56,7 +56,7 @@ public class Fields {
 	@Column(name="EDL_FIELD_DMP_ID")
 	private Long fieldId;
     @Column(name="DOC_HDR_ID")
-	private Long docId;
+	private String docId;
     @Column(name="FLD_NM")
 	private String fieldName;
     @Column(name="FLD_VAL")
@@ -78,10 +78,10 @@ public class Fields {
 	public Long getFieldId() {
 		return fieldId;
 	}
-	public Long getDocId() {
+	public String getDocId() {
 		return docId;
 	}
-	public void setDocId(final Long docId) {
+	public void setDocId(final String docId) {
 		this.docId = docId;
 	}
 	public String getFieldValue() {

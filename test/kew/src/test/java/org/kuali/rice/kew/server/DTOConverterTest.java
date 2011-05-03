@@ -53,12 +53,12 @@ public class DTOConverterTest extends KEWTestCase {
         String searchableContent = null;
         String applicationContent = null;
         String xmlContent = constructContent(attributeContent, searchableContent, applicationContent);
-        DocumentContentDTO contentVO = DTOConverter.convertDocumentContent(xmlContent, new Long(-1234));
+        DocumentContentDTO contentVO = DTOConverter.convertDocumentContent(xmlContent, "-1234");
         assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
         assertEquals("Attribute content is invalid.", "", contentVO.getAttributeContent());
         assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
         assertEquals("Application content is invalid.", "", contentVO.getApplicationContent());
-        assertEquals("Should have fake document id.", new Long(-1234), contentVO.getRouteHeaderId());
+        assertEquals("Should have fake document id.", "-1234", contentVO.getDocumentId());
 
         // test empty content
         attributeContent = "";
@@ -186,7 +186,7 @@ public class DTOConverterTest extends KEWTestCase {
         Long actionRequestId = Long.valueOf(4);
         String docName = "dummy";
         String roleName = "fakeRole";
-        Long routeHeaderId = Long.valueOf(23);
+        String documentId = "23";
         Timestamp dateAssigned = new Timestamp(new Date().getTime());
         String docHandlerUrl = "http://this.is.not.us";
         String docTypeLabel = "Label Me";
@@ -201,7 +201,7 @@ public class DTOConverterTest extends KEWTestCase {
         actionItem.setDocName(docName);
         actionItem.setRoleName(roleName);
         actionItem.setPrincipalId(workflowId);
-        actionItem.setRouteHeaderId(routeHeaderId);
+        actionItem.setDocumentId(documentId);
         actionItem.setDateAssigned(dateAssigned);
         actionItem.setDocHandlerURL(docHandlerUrl);
         actionItem.setDocLabel(docTypeLabel);
@@ -219,7 +219,7 @@ public class DTOConverterTest extends KEWTestCase {
         assertEquals("Action Item VO object has incorrect value", docName, actionItemVO.getDocName());
         assertEquals("Action Item VO object has incorrect value", roleName, actionItemVO.getRoleName());
         assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getPrincipalId());
-        assertEquals("Action Item VO object has incorrect value", routeHeaderId, actionItemVO.getRouteHeaderId());
+        assertEquals("Action Item VO object has incorrect value", documentId, actionItemVO.getDocumentId());
         assertEquals("Action Item VO object has incorrect value", dateAssigned, actionItemVO.getDateAssigned());
         assertEquals("Action Item VO object has incorrect value", docHandlerUrl, actionItemVO.getDocHandlerURL());
         assertEquals("Action Item VO object has incorrect value", docTypeLabel, actionItemVO.getDocLabel());

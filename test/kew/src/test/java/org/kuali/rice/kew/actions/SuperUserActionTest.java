@@ -45,14 +45,14 @@ public class SuperUserActionTest extends KEWTestCase {
     }
 	
     @Test public void testSuperUserApprove() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isSuperUser());
         document.superUserApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.stateIsProcessed());
-        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertTrue("Should be active requests still", requests.size() == 2);//number of acks and fyi's configured through rules
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iter.next();
@@ -63,40 +63,40 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
     @Test public void testSuperUserApproveExceptionCases() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "SUApproveDocument");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "SUApproveDocument");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         try {
         	document.approve("");
         } catch (Exception e) {
         }
         TestUtilities.getExceptionThreader().join();
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Document should be in exception routing", document.stateIsException());
         document.superUserApprove("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Document should be final", document.stateIsFinal());
         
-        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertTrue("Should be no active requests for SU Approved document", actionRequests.isEmpty());
     }
     
     @Test public void testSuperUserApproveExceptionCasesWithNotifications() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("user1"), "SUApproveDocumentNotifications");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), "SUApproveDocumentNotifications");
         document.routeDocument("");
-        document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         try {
         	document.approve("");
         } catch (Exception e) {
         }
         TestUtilities.getExceptionThreader().join();
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Document should be in exception routing", document.stateIsException());
         document.superUserApprove("");
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Document should be 'processed'", document.stateIsProcessed());
         
-        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertFalse("Should be active requests for SU Approved document", actionRequests.isEmpty());
         for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iter.next();
@@ -105,11 +105,11 @@ public class SuperUserActionTest extends KEWTestCase {
     }
     
     @Test public void testSuperUserInitiatorApprove() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.stateIsProcessed());
-        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertTrue("Should be active requests still", requests.size() == 2);//number of acks and fyi's configured through rules
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iter.next();
@@ -120,11 +120,11 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
 	@Test public void testSuperUserApproveWithNotifications() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "NotificationTestChild");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "NotificationTestChild");
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isSuperUser());
         document.superUserApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.stateIsProcessed());
-        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
+        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertTrue("Should be active requests still", requests.size() > 2);//number of acks and fyi's configured through rules - we need these for approvals too
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
 			ActionRequestValue request = (ActionRequestValue) iter.next();
@@ -135,10 +135,10 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
 	@Test public void testSuperUserApproveInvalidUser() throws Exception {
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         document.routeDocument("");
         
-        document = new WorkflowDocument(getPrincipalIdForName("quickstart"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId());
         try {
         	assertFalse("WorkflowDocument should not indicate quickstart as SuperUser", document.isSuperUser());
         	document.superUserApprove("");
@@ -153,7 +153,7 @@ public class SuperUserActionTest extends KEWTestCase {
 		String bmcgoughPrincipalId = getPrincipalIdForName("bmcgough");
 		
 	    // verify that the post processor class still throws exceptions when post processing document
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
             document.superUserApprove("");
             fail("Document should throw exception from post processor");
@@ -161,51 +161,51 @@ public class SuperUserActionTest extends KEWTestCase {
         }
         
         // test that ignoring the post processor works correctly
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(bmcgoughPrincipalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(bmcgoughPrincipalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()), "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserCancelAction");
         }
 
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(bmcgoughPrincipalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserDisapproveAction(bmcgoughPrincipalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()), "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserDisapproveAction");
         }
 
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserApprove(bmcgoughPrincipalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId()), "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserApprove(bmcgoughPrincipalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()), "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserApprove");
         }
 
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(bmcgoughPrincipalId, document.getRouteHeaderId(), "Acknowledge1", "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserNodeApproveAction(bmcgoughPrincipalId, document.getDocumentId(), "Acknowledge1", "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserNodeApprove");
         }
 
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
-            KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(bmcgoughPrincipalId, document.getRouteHeaderId(), "WorkflowDocumentTemplate", "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserReturnDocumentToPreviousNode(bmcgoughPrincipalId, document.getDocumentId(), "WorkflowDocumentTemplate", "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserReturnDocumentToPreviousNode");
         }
 
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
             Long actionRequestId = null;
             // get actionRequestId to use... there should only be one active action request
-            ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
+            ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getDocumentId());
             for (int i = 0; i < actionRequests.length; i++) {
                 ActionRequestDTO actionRequestVO = actionRequests[i];
                 if (actionRequestVO.isActivated()) {
@@ -217,7 +217,7 @@ public class SuperUserActionTest extends KEWTestCase {
                 }
             }
             
-            KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(bmcgoughPrincipalId, document.getRouteHeaderId(), actionRequestId, "", false);
+            KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(bmcgoughPrincipalId, document.getDocumentId(), actionRequestId, "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
             fail("Document should not throw an exception when ignoring post processor during superUserActionRequestApproveAction");
@@ -226,7 +226,7 @@ public class SuperUserActionTest extends KEWTestCase {
 	}
 	
 	private WorkflowDocument generateDummyEnrouteDocument(String initiatorNetworkId) throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName(initiatorNetworkId), "SuperUserActionInvalidPostProcessor");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName(initiatorNetworkId), "SuperUserActionInvalidPostProcessor");
         assertEquals("Document should be at start node","AdHoc", document.getNodeNames()[0]);
         document.routeDocument("");
         assertEquals("Document should be at WorkflowDocument2 node","WorkflowDocument2", document.getNodeNames()[0]);

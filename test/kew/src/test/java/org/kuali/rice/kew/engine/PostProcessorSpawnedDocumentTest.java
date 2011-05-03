@@ -39,26 +39,30 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
     }
 
     @Test public void testSpawnDocument() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("jitrue"), DOCUMENT_TYPE_THAT_SPAWNS);
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("jitrue"), DOCUMENT_TYPE_THAT_SPAWNS);
     	document.saveRoutingData();
-    	assertNotNull(document.getRouteHeaderId());
+    	assertNotNull(document.getDocumentId());
     	assertTrue("Document should be initiatied", document.stateIsInitiated());
     	document.routeDocument("Route");
 
         // should have generated a request to "bmcgough"
-    	document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Document should be enroute", document.stateIsEnroute());
         assertEquals("Document should be enroute.", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getRouteHeader().getDocRouteStatus());
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
-        Long originalRouteHeaderId = document.getRouteHeaderId();
-    	
+        
+        String originalDocumentId = document.getDocumentId();
+    	Long originalDocumentIdLong = Long.parseLong(originalDocumentId.trim());
+        Long spawnedDocumentIdLong = (originalDocumentIdLong + 1);
+        String spawnedDocumentId = spawnedDocumentIdLong.toString();
+        
     	// get spawned document (should be next document id)
-    	document = new WorkflowDocument(getPrincipalIdForName("jhopf"), Long.valueOf(originalRouteHeaderId.longValue() + 1));
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), spawnedDocumentId);
         assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
 
     	// get original document
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), originalRouteHeaderId);
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), originalDocumentId);
         assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getRouteHeader().getDocRouteStatus());
     }
 }

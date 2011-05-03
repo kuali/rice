@@ -62,7 +62,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 	public void recordAction() throws InvalidActionTakenException {
 		// TODO: this is used because calling this code from SuperUserAction without
         // it causes an optimistic lock
-		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getRouteHeaderId(), true));
+		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getDocumentId(), true));
 
 		DocumentType docType = getRouteHeader().getDocumentType();
 
@@ -95,7 +95,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 		try {
 			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
 			BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config, isRunPostProcessorLogic());
-			blanketApproveEngine.process(getRouteHeader().getRouteHeaderId(), null);
+			blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
 		} catch (Exception e) {
 			LOG.error("Failed to orchestrate the document to SuperUserApproved.", e);
 			throw new InvalidActionTakenException("Failed to orchestrate the document to SuperUserApproved.", e);
@@ -105,8 +105,8 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 	@SuppressWarnings("unchecked")
 	protected void completeAnyOutstandingCompleteApproveRequests(ActionTakenValue actionTaken, boolean sendNotifications) throws Exception {
-		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeaderId());
-		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, getRouteHeaderId()));
+		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getDocumentId());
+		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, getDocumentId()));
 		for (ActionRequestValue actionRequest : actionRequests) {
 			KEWServiceLocator.getActionRequestService().deactivateRequest(actionTaken, actionRequest);
 		}

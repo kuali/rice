@@ -82,7 +82,7 @@ public interface KualiWorkflowDocument {
     // ########################
     public abstract RouteHeaderDTO getRouteHeader();
 
-    public abstract Long getRouteHeaderId() throws WorkflowException;
+    public abstract String getDocumentId() throws WorkflowException;
 
     public abstract void setAppDocId(String appDocId);
 

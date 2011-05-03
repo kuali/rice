@@ -76,14 +76,14 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
 
     @Test public void testTakeWorkgroupAuthorityAction() throws Exception {
 
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("user1"), DOC_TYPE);
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("user1"), DOC_TYPE);
         doc.routeDocument("");
 
         String groupId = getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup");
 
         //verify that all members have the action item
         ActionListService aiService = KEWServiceLocator.getActionListService();
-        Collection actionItems = aiService.findByRouteHeaderId(doc.getRouteHeaderId());
+        Collection actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertTrue("There should be more than one action item", actionItems.size() > 1);
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
@@ -91,11 +91,11 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         }
 
         //have member rkirkend take authority
-        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
         doc.takeGroupAuthority("", groupId);
 
         //verify that only rkirkend has an action item now.
-        actionItems = aiService.findByRouteHeaderId(doc.getRouteHeaderId());
+        actionItems = aiService.findByDocumentId(doc.getDocumentId());
         assertEquals("There should only be a single action item to rkirkend", 1, actionItems.size());
         for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
             ActionItem actionItem = (ActionItem) iter.next();
@@ -104,7 +104,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
 
         //verify the action was recorded and by rkirkend
         WorkflowInfo wUtil = new WorkflowInfo();
-        ActionTakenDTO[] actionsTaken = wUtil.getActionsTaken(doc.getRouteHeaderId());
+        ActionTakenDTO[] actionsTaken = wUtil.getActionsTaken(doc.getDocumentId());
         boolean rkirkendATFound = false;
         for (int i = 0; i < actionsTaken.length; i++) {
             ActionTakenDTO at = actionsTaken[i];

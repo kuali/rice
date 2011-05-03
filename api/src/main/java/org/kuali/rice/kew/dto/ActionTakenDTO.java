@@ -28,7 +28,7 @@ import java.util.Calendar;
 public class ActionTakenDTO implements Serializable {
     static final long serialVersionUID = -8818100923517546091L;
     private Long actionTakenId;
-    private Long routeHeaderId;
+    private String documentId;
     private Integer docVersion;
     private String principalId;
     private String delegatorPrincpalId;
@@ -69,12 +69,12 @@ public class ActionTakenDTO implements Serializable {
         return docVersion;
     }
 
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public void setDocVersion(Integer docVersion) {

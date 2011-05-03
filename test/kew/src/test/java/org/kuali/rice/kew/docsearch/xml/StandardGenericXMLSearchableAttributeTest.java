@@ -71,7 +71,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     @Test public void testXMLStandardSearchableAttributeWithInvalidValue() throws Exception {
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
 
         /*
          *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
@@ -103,7 +103,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
 
         /*
          *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
@@ -134,8 +134,8 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
 
-        workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getRouteHeaderId());
-        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getDocumentId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
         /*
         assertEquals("Wrong number of searchable attributes", i, doc.getSearchableAttributeValues().size());
         for (Iterator iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
@@ -289,7 +289,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	String documentTypeName = "SearchDocType";
     	String key = "givenname";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
         WorkflowAttributeDefinitionDTO givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute");
 
         workflowDocument.setApplicationContent("<test></test>");
@@ -338,7 +338,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	String documentTypeName = "SearchDocType";
     	String key = "givenname";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
         WorkflowAttributeDefinitionDTO givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute");
 
         workflowDocument.setApplicationContent("<test></test>");
@@ -389,7 +389,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         String documentTypeName = "SearchDocTypeStandardSearchDataType";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
 
         /*
          *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
@@ -449,7 +449,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
 
     	String key = "givenname";
-    	WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName(networkId), documentTypeName);
+    	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName(networkId), documentTypeName);
         WorkflowAttributeDefinitionDTO givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute");
         givennameXMLDef.addProperty(key, "jack");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
@@ -482,7 +482,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         assertEquals("Search results should have one document.", 1, result.getSearchResults().size());
 
     	key = "givenname_nocase";
-        workflowDocument = new WorkflowDocument(getPrincipalIdForName(networkId), documentTypeName);
+        workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName(networkId), documentTypeName);
         WorkflowAttributeDefinitionDTO givenname_nocaseXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute_CaseInsensitive");
         givenname_nocaseXMLDef.addProperty(key, "jaCk");
         workflowDocument.addSearchableDefinition(givenname_nocaseXMLDef);
@@ -537,7 +537,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
      * @throws WorkflowException
      */
     @Test public void testRouteDocumentWithMalformedSearchableAttributeContent() throws WorkflowException {
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
 
         workflowDocument.setApplicationContent("hey, <I'm Not ] Even & XML");
 
@@ -561,7 +561,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	String documentTypeName = "SearchDocType";
     	String key = "givenname";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
 
         workflowDocument.setApplicationContent("<documentContent><searchableContent><garbage>" +
                                                "<blah>not going to match anything</blah>" +
@@ -607,7 +607,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	String documentTypeName = "SearchDocType";
     	String key = "givenname";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
 
         workflowDocument.setApplicationContent("<documentContent><NOTsearchableContent><garbage>" +
                                                "<blah>not going to match anything</blah>" +
@@ -646,7 +646,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
     /*
     @Test public void testAppendingSeachContentWithSearchableAttribute() throws Exception {
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
         WorkflowAttributeDefinitionDTO givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute");
 
         givennameXMLDef.addProperty("givenname", "jack");
@@ -656,17 +656,17 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         // look up document and verify the search valu is there
-        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
         assertEquals("Wrong number of searchable attributes", 1, doc.getSearchableAttributeValues().size());
 
-        workflowDocument = new WorkflowDocument(getPrincipalIdForName("jhopf"), workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), workflowDocument.getDocumentId());
         givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute");
 
         givennameXMLDef.addProperty("givenname", "jill");
         workflowDocument.addSearchableDefinition(givennameXMLDef);
         workflowDocument.approve("");
 
-        doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId());
+        doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
         assertEquals("Wrong number of searchable attributes", 2, doc.getSearchableAttributeValues().size());
 
         // check for jack and jill
@@ -689,19 +689,19 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     /*
     @Test public void testNoSearchableContentAction() throws Exception {
     	RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
-    	WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
+    	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
     	workflowDocument.saveDocument("");
 
     	//verify that a searchable attribute exists even though
-    	DocumentRouteHeaderValue document = routeHeaderService.getRouteHeader(workflowDocument.getRouteHeaderId());
+    	DocumentRouteHeaderValue document = routeHeaderService.getRouteHeader(workflowDocument.getDocumentId());
     	assertEquals("Should have a searchable attribute key", 1, document.getSearchableAttributeValues().size());
     	assertEquals("Searchable attribute key should be givenname", "givenname", ((SearchableAttributeValue)document.getSearchableAttributeValues().get(0)).getSearchableAttributeKey());
 
 
-    	WorkflowDocument workflowDocument2 = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "SearchDocType2");
+    	WorkflowDocument workflowDocument2 = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "SearchDocType2");
     	workflowDocument2.saveDocument("");
 
-    	DocumentRouteHeaderValue document2 = routeHeaderService.getRouteHeader(workflowDocument2.getRouteHeaderId());
+    	DocumentRouteHeaderValue document2 = routeHeaderService.getRouteHeader(workflowDocument2.getDocumentId());
     	assertEquals("Should have a searchable attribute key", 1, document2.getSearchableAttributeValues().size());
     	assertEquals("Searchable attribute key should be givenname", "givenname", ((SearchableAttributeValue)document2.getSearchableAttributeValues().get(0)).getSearchableAttributeKey());
     }
@@ -720,11 +720,11 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     //SearchableAttributeProcessor is working.  An actual OptimisticLockException is not being created because it's
     //too much of a pain in this single threaded testing env.
 //    public void testIndexingRequeue() throws Exception {
-//    	Long routeHeaderId = new Long(1);
+//    	String documentId = new Long(1);
 //
 //        PersistedMessageBO searchIndexingWork = new PersistedMessageBO();
 //        searchIndexingWork.setProcessorClassName(SearchableAttributeProcessor.class.getName());
-//        searchIndexingWork.setRouteHeaderId(routeHeaderId);
+//        searchIndexingWork.setDocumentId(documentId);
 //        searchIndexingWork.setQueuePriority(new Integer(6));
 //        searchIndexingWork.setQueueStatus("Q");
 //        searchIndexingWork.setQueueDate(new Timestamp(System.currentTimeMillis()));
@@ -737,7 +737,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 //        for (Iterator iter = queueEntries.iterator(); iter.hasNext();) {
 //			PersistedMessageBO queueEntry = (PersistedMessageBO) iter.next();
 //			//all entries should have certain similarities
-//			assertEquals("Wrong routeHeaderid", searchIndexingWork.getRouteHeaderId(), queueEntry.getRouteHeaderId());
+//			assertEquals("Wrong DocumentId", searchIndexingWork.getDocumentId(), queueEntry.getDocumentId());
 //			assertEquals("Wrong queue status", searchIndexingWork.getQueueStatus(), queueEntry.getQueueStatus());
 //			assertEquals("Wrong queue priority", searchIndexingWork.getQueuePriority(), queueEntry.getQueuePriority());
 //		}
@@ -747,7 +747,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     @Test public void testClearingSearchContentWithSearchableAttribute() throws Exception {
     	RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
 
-    	WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
+    	WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "SearchDocType");
         WorkflowAttributeDefinitionDTO givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute");
 
         givennameXMLDef.addProperty("givenname", "jack");
@@ -757,10 +757,10 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         workflowDocument.routeDocument("routing this document.");
 
         // look up document and verify the search valu is there
-        DocumentRouteHeaderValue doc = routeHeaderService.getRouteHeader(workflowDocument.getRouteHeaderId());
+        DocumentRouteHeaderValue doc = routeHeaderService.getRouteHeader(workflowDocument.getDocumentId());
         assertEquals("Wrong number of searchable attributes", 1, doc.getSearchableAttributeValues().size());
 
-        workflowDocument = new WorkflowDocument(getPrincipalIdForName("jhopf"), workflowDocument.getRouteHeaderId());
+        workflowDocument = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), workflowDocument.getDocumentId());
         workflowDocument.clearSearchableContent();
 
         givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLSearchableAttribute");
@@ -777,7 +777,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 
         workflowDocument.approve("");
 
-        doc = routeHeaderService.getRouteHeader(workflowDocument.getRouteHeaderId());
+        doc = routeHeaderService.getRouteHeader(workflowDocument.getDocumentId());
         assertEquals("Wrong number of searchable attributes", 3, doc.getSearchableAttributeValues().size());
 
         // check for jack and jill
@@ -1122,7 +1122,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	String key = "givenname";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
 
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "SearchDocTypeXStream");
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "SearchDocTypeXStream");
         WorkflowAttributeDefinitionDTO givennameXMLDef = new WorkflowAttributeDefinitionDTO("XMLXStreamSearchableAttribute");
 
         workflowDocument.setApplicationContent("<test></test>");
@@ -1170,7 +1170,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	String documentTypeName = "AttributeWithQuickfinderDocType";
     	String key = "chart";
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-    	 WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
+    	 WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
 
     	 // define the chart for the searchable attribute
     	 WorkflowAttributeDefinitionDTO chartDef = new WorkflowAttributeDefinitionDTO("SearchableAttributeWithQuickfinder");
@@ -1193,8 +1193,8 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
          List searchResults = results.getSearchResults();
          assertEquals("Search results should have one document.", 1, searchResults.size());
          DocumentSearchResult result = (DocumentSearchResult)searchResults.get(0);
-         org.kuali.rice.kew.web.KeyValueSort kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
-         assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
+         org.kuali.rice.kew.web.KeyValueSort kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID);  
+         assertEquals("Wrong document in search results.", document.getDocumentId(), kvs.getSortValue());
 
          // search with no searchable attribute criteria, should return our document as well
          criteria = new DocSearchCriteriaDTO();
@@ -1203,8 +1203,8 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
          searchResults = results.getSearchResults();
          assertEquals("Search results should have one document.", 1, searchResults.size());
          result = (DocumentSearchResult)searchResults.get(0);
-         kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
-         assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
+         kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID);
+         assertEquals("Wrong document in search results.", document.getDocumentId(), kvs.getSortValue());
 
     }
 
@@ -1222,7 +1222,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     	DocumentType documentType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(docType);
 
     	String attributeName = "SearchableAttributeWithHiddens";
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), docType);
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), docType);
 
    	 	// define the chart for the searchable attribute
    	 	WorkflowAttributeDefinitionDTO chartDef = new WorkflowAttributeDefinitionDTO(attributeName);
@@ -1247,8 +1247,8 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         List searchResults = results.getSearchResults();
         assertEquals("Search results should have one document.", 1, searchResults.size());
         DocumentSearchResult result = (DocumentSearchResult)searchResults.get(0);
-        KeyValueSort kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
-        assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
+        KeyValueSort kvs = result.getResultContainer(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID);
+        assertEquals("Wrong document in search results.", document.getDocumentId(), kvs.getSortValue());
         // also check that the chart field is not in the result set and the org field is
         kvs = null;
         kvs = result.getResultContainer("chart");
@@ -1267,7 +1267,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         String documentTypeName = "SearchDocType";
         String key = "givenname";
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
+        WorkflowDocument workflowDocument = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), documentTypeName);
         workflowDocument.setApplicationContent("<documentContent><searchableContent><putWhateverWordsIwantInsideThisTag>" +
                                                "<givenname><value>jack</value></givenname>" +
                                                "</putWhateverWordsIwantInsideThisTag></searchableContent></documentContent>");

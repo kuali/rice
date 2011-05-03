@@ -39,9 +39,9 @@ public class NoteDAOJpaImpl implements NoteDAO {
         return (Note) query.getSingleResult();          
     }
 
-    public List getNotesByRouteHeaderId(Long routeHeaderId) {
-    	Query query = entityManager.createNamedQuery("KewNote.FindNoteByRouteHeaderId");
-    	query.setParameter("routeHeaderId", routeHeaderId);
+    public List getNotesByDocumentId(String documentId) {
+    	Query query = entityManager.createNamedQuery("KewNote.FindNoteByDocumentId");
+    	query.setParameter("documentId", documentId);
         return (List) query.getResultList();        
     }
     

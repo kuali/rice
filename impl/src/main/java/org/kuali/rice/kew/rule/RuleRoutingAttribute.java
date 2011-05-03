@@ -147,7 +147,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
 			
 			if (StringUtils.isBlank(docTypeName)) {
 				throw new WorkflowRuntimeException("Could not locate Document Type Name on the document: " + 
-						docContent.getRouteContext().getDocument().getRouteHeaderId());
+						docContent.getRouteContext().getDocument().getDocumentId());
 			}
 		} 
 		return docTypeName;

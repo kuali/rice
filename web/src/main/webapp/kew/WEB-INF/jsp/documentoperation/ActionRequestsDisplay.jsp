@@ -37,7 +37,7 @@
 		  </tr>
 		  <tr>
 		    <td width="33%" class="thnormal" align=right> Document ID: </td>
-		    <td width="66%" class="datacell"><c:out value="${actionRequest.routeHeaderId}" />&nbsp;
+		    <td width="66%" class="datacell"><c:out value="${actionRequest.documentId}" />&nbsp;
 		  </tr>
 		   <tr>
 	  	    <td width="33%" align=right class="thnormal">Action Requested:</td>

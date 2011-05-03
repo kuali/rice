@@ -62,19 +62,19 @@ public class EmailMessageTest extends KEWTestCase {
         String nid = getPrincipalNameForId(user.getPrincipalName());
 
         for (String docType: docTypes) {
-            WorkflowDocument document = new WorkflowDocument(nid, docType);
+            WorkflowDocument document = WorkflowDocument.createDocument(nid, docType);
             document.setTitle("a title");
             document.routeDocument("");
-            document = new WorkflowDocument(nid, docType);
+            document = WorkflowDocument.createDocument(nid, docType);
             document.setTitle("a title");
             document.routeDocument("");
-            document = new WorkflowDocument(nid, docType);
+            document = WorkflowDocument.createDocument(nid, docType);
             document.setTitle("a title");
             document.routeDocument("");
-            document = new WorkflowDocument(nid, docType);
+            document = WorkflowDocument.createDocument(nid, docType);
             document.setTitle("a title");
             document.routeDocument("");
-            document = new WorkflowDocument(nid, docType);
+            document = WorkflowDocument.createDocument(nid, docType);
             document.setTitle("a title");
             document.routeDocument("");
         }

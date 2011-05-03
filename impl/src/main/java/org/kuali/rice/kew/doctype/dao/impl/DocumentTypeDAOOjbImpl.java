@@ -48,9 +48,9 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		this.getPersistenceBrokerTemplate().delete(documentType);
 	}
 
-	public DocumentType findByDocId(Long docId) {
+	public DocumentType findById(Long docTypeId) {
 		Criteria crit = new Criteria();
-		crit.addEqualTo("documentTypeId", docId);
+		crit.addEqualTo("documentTypeId", docTypeId);
 		return (DocumentType) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentType.class, crit));
 	}
 
@@ -131,9 +131,9 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		this.getPersistenceBrokerTemplate().store(documentType);
 	}
 
-	public List findByRouteHeaderId(Long routeHeaderId) {
+	public List findByDocumentId(String documentId) {
 		Criteria crit = new Criteria();
-		crit.addEqualTo("routeHeaderId", routeHeaderId);
+		crit.addEqualTo("documentId", documentId);
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
 	}
 
@@ -256,9 +256,9 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentTypeAttribute.class, crit));
     }
 
-    public Long findDocumentTypeIdByDocumentId(Long documentId) {
+    public Long findDocumentTypeIdByDocumentId(String documentId) {
     	Criteria crit = new Criteria();
-    	crit.addEqualTo("routeHeaderId", documentId);
+    	crit.addEqualTo("documentId", documentId);
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
     	query.setAttributes(new String[] { "documentTypeId" });
 

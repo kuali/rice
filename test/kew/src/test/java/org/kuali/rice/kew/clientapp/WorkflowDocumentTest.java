@@ -38,18 +38,18 @@ public class WorkflowDocumentTest extends KEWTestCase {
     }
 
     @Test public void testLoadNonExistentDocument() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), new Long(123456789));
+    	WorkflowDocument document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), "123456789");
     	assertNull("RouteHeaderVO should be null.", document.getRouteHeader());
     }
 
     @Test public void testWorkflowDocument() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         document.approve("");
 
         RouteNodeInstanceDTO[] nodeInstances = document.getRouteNodeInstances();
@@ -79,29 +79,29 @@ public class WorkflowDocumentTest extends KEWTestCase {
      */
     @Test public void testReturnToPreviousCorrectlyUpdatingDocumentStatus() throws Exception {
 
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.returnToPreviousNode("", "Initiated");
 
         assertFalse("ewestfal should no longer have approval status", document.isApprovalRequested());
         assertFalse("ewestfal should no long have blanket approve status", document.isBlanketApproveCapable());
 
         //just for good measure
-        document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should now have an approve request", document.isApprovalRequested());
     }
 
     @Test public void testGetPreviousRouteNodeNames() throws Exception {
 
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
         document.routeDocument("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.approve("");
 
-        document = new WorkflowDocument(getPrincipalIdForName("jhopf"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         String[] previousNodeNames = document.getPreviousNodeNames();
         assertEquals("Should have 2 previous Node Names", 2, previousNodeNames.length);
         assertEquals("Last node name should be the first visisted", "Initiated", previousNodeNames[0]);
@@ -118,25 +118,25 @@ public class WorkflowDocumentTest extends KEWTestCase {
 
     @Test public void testIsRouteCapable() throws Exception {
 
-    	WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+    	WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
 
-    	verifyIsRouteCapable(false, getPrincipalIdForName("ewestfal"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(false, "2001", doc.getRouteHeaderId());
+    	verifyIsRouteCapable(false, getPrincipalIdForName("ewestfal"), doc.getDocumentId());
+    	verifyIsRouteCapable(false, "2001", doc.getDocumentId());
 
-    	verifyIsRouteCapable(true, getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
-    	verifyIsRouteCapable(true, "2002", doc.getRouteHeaderId());
+    	verifyIsRouteCapable(true, getPrincipalIdForName("rkirkend"), doc.getDocumentId());
+    	verifyIsRouteCapable(true, "2002", doc.getDocumentId());
 
-        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "NonInitiatorCanRouteDocument");
+        doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "NonInitiatorCanRouteDocument");
 
-        verifyIsRouteCapable(true, getPrincipalIdForName("ewestfal"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, "2001", doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, getPrincipalIdForName("ewestfal"), doc.getDocumentId());
+        verifyIsRouteCapable(true, "2001", doc.getDocumentId());
 
-        verifyIsRouteCapable(true, getPrincipalIdForName("rkirkend"), doc.getRouteHeaderId());
-        verifyIsRouteCapable(true, "2002", doc.getRouteHeaderId());
+        verifyIsRouteCapable(true, getPrincipalIdForName("rkirkend"), doc.getDocumentId());
+        verifyIsRouteCapable(true, "2002", doc.getDocumentId());
     }
 
-    private void verifyIsRouteCapable(boolean routeCapable, String userId, Long docId) throws Exception {
-    	WorkflowDocument doc = new WorkflowDocument(userId, docId);
+    private void verifyIsRouteCapable(boolean routeCapable, String userId, String docId) throws Exception {
+    	WorkflowDocument doc = WorkflowDocument.loadDocument(userId, docId);
     	assertEquals(routeCapable, doc.isRouteCapable());
     }
 

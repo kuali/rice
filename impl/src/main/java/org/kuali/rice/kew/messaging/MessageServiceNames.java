@@ -93,7 +93,7 @@ public class MessageServiceNames {
 	}
 
 	public static ActionListImmediateEmailReminderService getImmediateEmailService() {
-		return (ActionListImmediateEmailReminderService) getServiceAsynchronously(getQName(ACTION_LIST_IMMEDIATE_REMINDER_SERVICE, (DocumentRouteHeaderValue) null), (Long)null);
+		return (ActionListImmediateEmailReminderService) getServiceAsynchronously(getQName(ACTION_LIST_IMMEDIATE_REMINDER_SERVICE, (DocumentRouteHeaderValue) null), (String)null);
 	}
 
 	public static SearchableAttributeProcessingService getSearchableAttributeService(DocumentRouteHeaderValue document) {
@@ -101,10 +101,10 @@ public class MessageServiceNames {
 	}
 
 	public static RuleCacheProcessor getRuleCacheProcessor() {
-		return (RuleCacheProcessor) getServiceAsynchronously(new QName(MessageServiceNames.RULE_CACHE_PROCESSOR_SERVICE), (Long)null);
+		return (RuleCacheProcessor) getServiceAsynchronously(new QName(MessageServiceNames.RULE_CACHE_PROCESSOR_SERVICE), (String)null);
 	}
 
-	public static DocumentRequeuerService getDocumentRequeuerService(String serviceNamespace, Long documentId, long waitTime) {
+	public static DocumentRequeuerService getDocumentRequeuerService(String serviceNamespace, String documentId, long waitTime) {
 		QName serviceName = getQName(DOCUMENT_REQUEUE_PROCESSING_SERVICE, serviceNamespace);
 		if (waitTime > 0) {
 			return (DocumentRequeuerService) getDelayedServiceAsynchronously(serviceName, documentId, waitTime);
@@ -116,7 +116,7 @@ public class MessageServiceNames {
 		return getServiceAsynchronously(serviceName, getDocId(document));
 	}
 
-	public static Object getServiceAsynchronously(QName serviceName, Long documentId) {
+	public static Object getServiceAsynchronously(QName serviceName, String documentId) {
 		return KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, (documentId == null ? null : documentId.toString()), null);
 	}
 
@@ -124,12 +124,12 @@ public class MessageServiceNames {
 		return getDelayedServiceAsynchronously(serviceName, getDocId(document), waitTime);
 	}
 
-	public static Object getDelayedServiceAsynchronously(QName serviceName, Long documentId, long waitTime) {
+	public static Object getDelayedServiceAsynchronously(QName serviceName, String documentId, long waitTime) {
 		return KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, (documentId == null ? null : documentId.toString()), null, waitTime);
 	}
 
-	private static Long getDocId(DocumentRouteHeaderValue document) {
-		return (document == null ? null : document.getRouteHeaderId());
+	private static String getDocId(DocumentRouteHeaderValue document) {
+		return (document == null ? null : document.getDocumentId());
 	}
 
 }

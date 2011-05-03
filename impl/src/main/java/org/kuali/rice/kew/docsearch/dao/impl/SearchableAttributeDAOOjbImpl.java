@@ -46,12 +46,12 @@ public class SearchableAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport i
 	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeDateTimeValuesByKey(java.lang.Long, java.lang.String)
 	 */
 	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 
 		List<Timestamp> lRet = null;
 
 		Criteria crit = new Criteria();
-		crit.addEqualTo("routeHeaderId", documentId);
+		crit.addEqualTo("documentId", documentId);
 		crit.addEqualTo("searchableAttributeKey", key);
 		Collection<SearchableAttributeDateTimeValue> collection = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(SearchableAttributeDateTimeValue.class, crit));
 
@@ -71,11 +71,11 @@ public class SearchableAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport i
 	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeFloatValuesByKey(java.lang.Long, java.lang.String)
 	 */
 	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 		List<BigDecimal> lRet = null;
 
 		Criteria crit = new Criteria();
-		crit.addEqualTo("routeHeaderId", documentId);
+		crit.addEqualTo("documentId", documentId);
 		crit.addEqualTo("searchableAttributeKey", key);
 		Collection<SearchableAttributeFloatValue> collection = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(SearchableAttributeFloatValue.class, crit));
 
@@ -95,12 +95,12 @@ public class SearchableAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport i
 	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeStringValuesByKey(java.lang.Long, java.lang.String)
 	 */
 	public List<String> getSearchableAttributeStringValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 
 		List<String> lRet = null;
 
 		Criteria crit = new Criteria();
-		crit.addEqualTo("routeHeaderId", documentId);
+		crit.addEqualTo("documentId", documentId);
 		crit.addEqualTo("searchableAttributeKey", key);
 		Collection<SearchableAttributeStringValue> collection = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(SearchableAttributeStringValue.class, crit));
 
@@ -119,12 +119,12 @@ public class SearchableAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport i
 	 *
 	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeValuesByKey(java.lang.Long, java.lang.String)
 	 */
-	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
+	public List<Long> getSearchableAttributeLongValuesByKey(String documentId,
 			String key) {
 		List<Long> lRet = null;
 
 			Criteria crit = new Criteria();
-			crit.addEqualTo("routeHeaderId", documentId);
+			crit.addEqualTo("documentId", documentId);
 			crit.addEqualTo("searchableAttributeKey", key);
 			Collection<SearchableAttributeLongValue> collection = getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(SearchableAttributeLongValue.class, crit));
 

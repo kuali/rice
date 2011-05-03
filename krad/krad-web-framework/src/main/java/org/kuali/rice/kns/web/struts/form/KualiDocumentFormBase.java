@@ -186,7 +186,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
          	 		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
-         	 	 	workflowDocument = KNSServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(getDocument().getDocumentNumber()), person);
+         	 		workflowDocument = KNSServiceLocatorWeb.getWorkflowDocumentService().loadWorkflowDocument(getDocument().getDocumentNumber(), person);
          	 	 	sessionDocumentService.addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)
          	 	 	{
@@ -194,7 +194,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
          	 	 	}
          	 	 	else
          	 	 	{
-         	 	 	LOG.debug("Retrieved workflow Document ID: " + workflowDocument.getRouteHeaderId().toString());
+         	 	 	LOG.debug("Retrieved workflow Document ID: " + workflowDocument.getDocumentId());
          	 	 	}
          	 	}
 

@@ -158,7 +158,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessorRemote {
         }
     }
 
-    protected static void postEvent(Long docId, Object event, String eventName) {
+    protected static void postEvent(String docId, Object event, String eventName) {
     	try {
     		Document doc = getEDLContent(docId);
     		if(LOG.isDebugEnabled()){
@@ -224,29 +224,29 @@ public class EDocLitePostProcessor extends DefaultPostProcessorRemote {
 
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO event) throws RemoteException {
         LOG.debug("doRouteStatusChange: " + event);
-        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ROUTE_STATUS_CHANGE);
+        postEvent(event.getDocumentId(), event, EVENT_TYPE_ROUTE_STATUS_CHANGE);
         return true;
     }
 
     public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
         LOG.debug("doActionTaken: " + event);
-        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ACTION_TAKEN);
+        postEvent(event.getDocumentId(), event, EVENT_TYPE_ACTION_TAKEN);
         return true;
     }
 
     public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
         LOG.debug("doDeleteRouteHeader: " + event);
-        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_DELETE_ROUTE_HEADER);
+        postEvent(event.getDocumentId(), event, EVENT_TYPE_DELETE_ROUTE_HEADER);
         return false;
     }
 
     public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO event) throws RemoteException {
         LOG.debug("doRouteLevelChange: " + event);
-        postEvent(event.getRouteHeaderId(), event, EVENT_TYPE_ROUTE_LEVEL_CHANGE);
+        postEvent(event.getDocumentId(), event, EVENT_TYPE_ROUTE_LEVEL_CHANGE);
         return true;
     }
 
-    public static Document getEDLContent(Long documentId) {
+    public static Document getEDLContent(String documentId) {
     	try {
     		WorkflowInfo workflowInfo = new WorkflowInfo();
     		DocumentContentDTO documentContent = workflowInfo.getDocumentContent(documentId);

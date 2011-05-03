@@ -37,17 +37,17 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
     @PersistenceContext(unitName = "kew-unit")
     private EntityManager entityManager;
 
-    public Dump getDumpByRouteHeaderId(Long docId) {
-        LOG.debug("finding Document Extract by routeHeaderId " + docId);
+    public Dump getDumpByDocumentId(String docId) {
+        LOG.debug("finding Document Extract by documentId " + docId);
         Criteria crit = new Criteria(Dump.class.getName());
         crit.eq("docId", docId);
         return (Dump) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
-    public List<Fields> getFieldsByRouteHeaderId(Long docId) {
-        LOG.debug("finding Extract Fileds by routeHeaderId " + docId);
+    public List<Fields> getFieldsByDocumentId(String docId) {
+        LOG.debug("finding Extract Fileds by documentId " + docId);
         Criteria crit = new Criteria(Fields.class.getName());
-        crit.eq("routeHeaderId", docId);
+        crit.eq("documentId", docId);
         crit.orderBy("docId", true);
 
         return (List<Fields>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
@@ -90,9 +90,9 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
         }
     }
 
-    public void deleteDump(Long routeHeaderId) {
+    public void deleteDump(String documentId) {
         LOG.debug("deleting record form Extract Dump table");
-        entityManager.remove(entityManager.find(Note.class, routeHeaderId));
+        entityManager.remove(entityManager.find(Note.class, documentId));
     }
 
     public EntityManager getEntityManager() {

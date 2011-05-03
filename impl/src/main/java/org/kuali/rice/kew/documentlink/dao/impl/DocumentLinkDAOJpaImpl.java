@@ -53,7 +53,7 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 	 * 
 	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#deleteDocmentLinksByDocId(java.lang.Long)
 	 */
-	public void deleteDocmentLinksByDocId(Long docId) {
+	public void deleteDocmentLinksByDocId(String docId) {
 		List<DocumentLink> links = getLinkedDocumentsByDocId(docId);
 		for(DocumentLink link: links){
 			deleteDocumentLink(link);
@@ -91,7 +91,7 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 	 * 
 	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#getLinkedDocumentsByDocId(java.lang.Long)
 	 */
-	public List<DocumentLink> getLinkedDocumentsByDocId(Long docId) {
+	public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
 		Criteria crit = new Criteria(DocumentLink.class.getName());
 		crit.eq("orgnDocId", docId);
 		return (List<DocumentLink>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();

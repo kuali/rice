@@ -135,9 +135,9 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		this.getPersistenceBrokerTemplate().delete(findRuleBaseValuesById(ruleBaseValuesId));
 	}
 
-	public List findByRouteHeaderId(Long routeHeaderId) {
+	public List findByDocumentId(String documentId) {
 		Criteria crit = new Criteria();
-		crit.addEqualTo("routeHeaderId", routeHeaderId);
+		crit.addEqualTo("documentId", documentId);
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 

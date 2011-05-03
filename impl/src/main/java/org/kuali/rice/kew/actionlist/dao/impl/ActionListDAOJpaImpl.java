@@ -96,7 +96,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		actionItemExt.setDateAssigned(actionItem.getDateAssigned());
 		actionItemExt.setActionRequestCd(actionItem.getActionRequestCd());
 		actionItemExt.setActionRequestId(actionItem.getActionRequestId());
-		actionItemExt.setRouteHeaderId(actionItem.getRouteHeaderId());
+		actionItemExt.setDocumentId(actionItem.getDocumentId());
 		actionItemExt.setResponsibilityId(actionItem.getResponsibilityId());
 		actionItemExt.setGroupId(actionItem.getGroupId());
 		actionItemExt.setRoleName(actionItem.getRoleName());
@@ -108,7 +108,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		actionItemExt.setDelegatorGroupId(actionItem.getDelegatorGroupId());
 		actionItemExt.setDelegationType(actionItem.getDelegationType());
 		actionItemExt.setLockVerNbr(actionItem.getLockVerNbr());
-		actionItemExt.setRouteHeaderId(actionItem.getRouteHeaderId());
+		actionItemExt.setDocumentId(actionItem.getDocumentId());
 		actionItemExt.setRequestLabel(actionItem.getRequestLabel());
 		//actionItemExt.setRouteHeader(toDocumentRouteHeaderValueActionListExtension(actionItem.getRouteHeader()));
 		
@@ -141,7 +141,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		
 		DocumentRouteHeaderValueActionListExtension extension = new DocumentRouteHeaderValueActionListExtension();
 		
-		extension.setRouteHeaderId(routeHeader.getRouteHeaderId());
+		extension.setDocumentId(routeHeader.getDocumentId());
 		extension.setDocumentTypeId(routeHeader.getDocumentTypeId());
 		extension.setDocRouteStatus(routeHeader.getDocRouteStatus());
 		extension.setDocRouteLevel(routeHeader.getDocRouteLevel());
@@ -162,13 +162,13 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		return extension;
 	}
 
-	public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
-        LOG.debug("getting action list for route header id " + routeHeaderId);
+	public Collection<ActionItem> getActionListForSingleDocument(String documentId) {
+        LOG.debug("getting action list for document id " + documentId);
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("documentId", documentId);
         crit.eq("TYPE(__JPA_ALIAS[[0]]__)", ActionItem.class);
         Collection<ActionItem> collection = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-        LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
+        LOG.debug("found " + collection.size() + " action items for document id " + documentId);
         return toActionItemActionListExtensions(createActionListForRouteHeader(collection));
     }
     
@@ -464,12 +464,12 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      * @return the Action List as a Collection of ActionItems
      */
     private <T extends ActionItem> Collection<T> createActionListForUser(Collection<T> actionItems) {
-        Map<Long, T> actionItemMap = new HashMap<Long, T>();
+        Map<String, T> actionItemMap = new HashMap<String, T>();
         ActionListPriorityComparator comparator = new ActionListPriorityComparator();
         for (T potentialActionItem: actionItems) {
-            T existingActionItem = actionItemMap.get(potentialActionItem.getRouteHeaderId());
+            T existingActionItem = actionItemMap.get(potentialActionItem.getDocumentId());
             if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
-                actionItemMap.put(potentialActionItem.getRouteHeaderId(), potentialActionItem);
+                actionItemMap.put(potentialActionItem.getDocumentId(), potentialActionItem);
             }
         }
         return actionItemMap.values();
@@ -546,9 +546,9 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      * 
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentId(java.lang.Long)
      */
-    public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId) {
+    public OutboxItemActionListExtension getOutboxByDocumentId(String documentId) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
-        crit.eq("routeHeaderId", documentId);
+        crit.eq("documentId", documentId);
         return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
     
@@ -557,9 +557,9 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      * 
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(Long, String)
      */
-    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId) {
+    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(String documentId, String userId) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
-        crit.eq("routeHeaderId", documentId);
+        crit.eq("documentId", documentId);
         crit.eq("principalId", userId);
        	return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }

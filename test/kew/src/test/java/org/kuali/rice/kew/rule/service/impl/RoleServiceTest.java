@@ -45,7 +45,7 @@ public class RoleServiceTest extends KEWTestCase {
 	private static final String TEST_GROUP_1 = "TestGroup1";
 	private static final String TEST_GROUP_2 = "TestGroup2";
 	private RoleService roleService;
-	private Long documentId;
+	private String documentId;
 	private List<String> group1 = new ArrayList<String>();
 	private List<String> group2 = new ArrayList<String>();
 
@@ -69,11 +69,11 @@ public class RoleServiceTest extends KEWTestCase {
 		TestRuleAttribute.setRecipientPrincipalIds(TEST_ROLE, TEST_GROUP_2, group2);
 	}
 
-	private Long routeDocument() throws Exception {
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+	private String routeDocument() throws Exception {
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.routeDocument("testing only");
-        return document.getRouteHeaderId();
+        return document.getDocumentId();
 	}
 
 	@Test public void testReResolveQualifiedRole() throws Exception {
@@ -125,10 +125,10 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
-        DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
         try {
             roleService.reResolveQualifiedRole(baDoc, TEST_ROLE, TEST_GROUP_1);
             fail("Shouldn't be able to resolve on a document with no active nodes.");
@@ -181,10 +181,10 @@ public class RoleServiceTest extends KEWTestCase {
         } catch (Exception e) {}
 
         // now blanket approve a document to make it processed
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         document.setApplicationContent(TestRouteModuleXMLHelper.toXML(generateDocContent()));
         document.blanketApprove("");
-        DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        DocumentRouteHeaderValue baDoc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
         try {
             roleService.reResolveRole(baDoc, TEST_ROLE);
             fail("Shouldn't be able to re-resolve on a document with no active nodes.");
@@ -196,7 +196,7 @@ public class RoleServiceTest extends KEWTestCase {
 	 */
 	private List getTestRoleRequests(DocumentRouteHeaderValue document) {
 		List testRoleRequests = new ArrayList();
-		List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteLevel(document.getRouteHeaderId(), document.getDocRouteLevel());
+		List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteLevel(document.getDocumentId(), document.getDocRouteLevel());
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
 			if (TEST_ROLE.equals(actionRequest.getRoleName())) {

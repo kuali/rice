@@ -178,13 +178,13 @@ public final class TestUtilities {
     /**
      * Asserts that the given document id is in the given user's action list.
      */
-    public static void assertInActionList(String principalId, Long documentId) {
+    public static void assertInActionList(String principalId, String documentId) {
     	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
-			if (actionItem.getRouteHeaderId().equals(documentId)) {
+			if (actionItem.getDocumentId().equals(documentId)) {
 				return;
 			}
 		}
@@ -194,19 +194,19 @@ public final class TestUtilities {
     /**
      * Asserts that the given document id is NOT in the given user's action list.
      */
-    public static void assertNotInActionList(String principalId, Long documentId) {
+    public static void assertNotInActionList(String principalId, String documentId) {
     	KimPrincipal principal = KimApiServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
 			ActionItem actionItem = (ActionItem) iterator.next();
-			if (actionItem.getRouteHeaderId().equals(documentId)) {
+			if (actionItem.getDocumentId().equals(documentId)) {
 				Assert.fail("Found an action item in the user's acton list for the given document id.");
 			}
 		}
     }
 
-    public static void assertNumberOfPendingRequests(Long documentId, int numberOfPendingRequests) {
+    public static void assertNumberOfPendingRequests(String documentId, int numberOfPendingRequests) {
     	List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
     	Assert.assertEquals("Wrong number of pending requests for document: " + documentId, numberOfPendingRequests, actionRequests.size());
     }
@@ -214,7 +214,7 @@ public final class TestUtilities {
     /**
      * Asserts that the user with the given network id has a pending request on the given document
      */
-    public static void assertUserHasPendingRequest(Long documentId, String principalName) throws WorkflowException {
+    public static void assertUserHasPendingRequest(String documentId, String principalName) throws WorkflowException {
     	String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(principalName);
     	List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
     	boolean foundRequest = false;
@@ -239,11 +239,11 @@ public final class TestUtilities {
      * @param shouldHaveApproval whether they should have an approval outstanding
      * @throws WorkflowException
      */
-    public static void assertApprovals(Long docId, String[] users, boolean shouldHaveApproval) throws WorkflowException {
+    public static void assertApprovals(String docId, String[] users, boolean shouldHaveApproval) throws WorkflowException {
         List<String> failedUsers = new ArrayList<String>();
         IdentityManagementService ims = KimApiServiceLocator.getIdentityManagementService();
         for (String user: users) {
-            WorkflowDocument doc = new WorkflowDocument(ims.getPrincipalByPrincipalName(user).getPrincipalId(), docId);
+            WorkflowDocument doc = WorkflowDocument.loadDocument(ims.getPrincipalByPrincipalName(user).getPrincipalId(), docId);
             boolean appRqsted = doc.isApprovalRequested();
             if (shouldHaveApproval != appRqsted) {
                 failedUsers.add(user);
@@ -263,11 +263,11 @@ public final class TestUtilities {
     }
     
     public static WorkflowDocument switchPrincipalId(String principalId, WorkflowDocument document) throws WorkflowException {
-    	return new WorkflowDocument(principalId, document.getRouteHeaderId());
+    	return WorkflowDocument.loadDocument(principalId, document.getDocumentId());
     }
 
-    public static void logActionRequests(Long docId) {
-        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(docId);
+    public static void logActionRequests(String docId) {
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(docId);
         LOG.info("Current action requests:");
         for (ActionRequestValue ar: actionRequests) {
             LOG.info(ar);

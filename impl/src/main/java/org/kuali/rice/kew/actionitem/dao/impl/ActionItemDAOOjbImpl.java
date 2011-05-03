@@ -65,29 +65,29 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         this.getPersistenceBrokerTemplate().delete(actionItem);
     }
 
-    public void deleteByRouteHeaderIdWorkflowUserId(Long routeHeaderId, String workflowUserId) {
+    public void deleteByDocumentIdWorkflowUserId(String documentId, String workflowUserId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("principalId", workflowUserId);
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 
-    public void deleteByRouteHeaderId(Long routeHeaderId) {
+    public void deleteByDocumentId(String documentId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 
-    public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
+    public Collection<ActionItem> findByWorkflowUserDocumentId(String workflowId, String documentId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("principalId", workflowId);
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 
-    public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId) {
+    public Collection<ActionItem> findByDocumentId(String documentId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 
@@ -201,7 +201,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 		 Criteria crit = new Criteria();
 	     crit.addEqualTo("principalId", principalId);
 	     QueryByCriteria query = new QueryByCriteria(ActionItem.class, crit);
-	     query.addOrderByAscending("routeHeaderId");
+	     query.addOrderByAscending("documentId");
 	     return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
 	}
 

@@ -57,24 +57,24 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
             server.start();
 
             EDocLitePostProcessor postProcessor = new EDocLitePostProcessor();
-            postProcessor.doActionTaken(new ActionTakenEvent(document.getRouteHeaderId(), document.getAppDocId(), new ActionTakenValue()));
+            postProcessor.doActionTaken(new ActionTakenEvent(document.getDocumentId(), document.getAppDocId(), new ActionTakenValue()));
             String eventType = EDocLitePostProcessor.EVENT_TYPE_ACTION_TAKEN;
-            testPostProcessorMethod(document.getRouteHeaderId(), dummyData, eventType);
+            testPostProcessorMethod(document.getDocumentId(), dummyData, eventType);
 
             postProcessor = new EDocLitePostProcessor();
-            postProcessor.doRouteLevelChange(new DocumentRouteLevelChange(document.getRouteHeaderId(), document.getAppDocId(), 1, 2, null, null, null, null));
+            postProcessor.doRouteLevelChange(new DocumentRouteLevelChange(document.getDocumentId(), document.getAppDocId(), 1, 2, null, null, null, null));
             eventType = EDocLitePostProcessor.EVENT_TYPE_ROUTE_LEVEL_CHANGE;
-            testPostProcessorMethod(document.getRouteHeaderId(), dummyData, eventType);
+            testPostProcessorMethod(document.getDocumentId(), dummyData, eventType);
 
             postProcessor = new EDocLitePostProcessor();
-            postProcessor.doRouteStatusChange(new DocumentRouteStatusChange(document.getRouteHeaderId(), document.getAppDocId(), KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ROUTE_HEADER_ENROUTE_CD));
+            postProcessor.doRouteStatusChange(new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ROUTE_HEADER_ENROUTE_CD));
             eventType = EDocLitePostProcessor.EVENT_TYPE_ROUTE_STATUS_CHANGE;
-            testPostProcessorMethod(document.getRouteHeaderId(), dummyData, eventType);
+            testPostProcessorMethod(document.getDocumentId(), dummyData, eventType);
 
             postProcessor = new EDocLitePostProcessor();
-            postProcessor.doDeleteRouteHeader(new DeleteEvent(document.getRouteHeaderId(), document.getAppDocId()));
+            postProcessor.doDeleteRouteHeader(new DeleteEvent(document.getDocumentId(), document.getAppDocId()));
             eventType = EDocLitePostProcessor.EVENT_TYPE_DELETE_ROUTE_HEADER;
-            testPostProcessorMethod(document.getRouteHeaderId(), dummyData, eventType);
+            testPostProcessorMethod(document.getDocumentId(), dummyData, eventType);
 
         } finally {
             if (server != null) {
@@ -87,10 +87,10 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
         }
     } */
 
-    private void testPostProcessorMethod(Long routeHeaderId, String dummyData, String eventType) {
+    private void testPostProcessorMethod(String documentId, String dummyData, String eventType) {
         int maxWaitSeconds = EDocLitePostProcessor.SUBMIT_URL_MILLISECONDS_WAIT + 10000;
         assertTrue("Test Servlet data map should not be null after wait period", waitForData(maxWaitSeconds, 5000));
-        testForStringExistence("Route Header Id", routeHeaderId.toString());
+        testForStringExistence("Document Id", documentId);
         testForStringExistence("Dummy Data", dummyData);
         testForStringExistence("Event Type '" + eventType + "'", eventType);
     }

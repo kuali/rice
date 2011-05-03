@@ -69,7 +69,7 @@ public abstract class QualifierResolverBase implements QualifierResolver {
      * @return the id of the document
      */
     protected String getDocumentId(RouteContext context) {
-        final Long documentID = context.getNodeInstance().getDocumentId();
+        final String documentID = context.getNodeInstance().getDocumentId();
         return documentID != null ? documentID.toString() : null;
     }
 
@@ -102,7 +102,7 @@ public abstract class QualifierResolverBase implements QualifierResolver {
      * @param routeLevel the document's current route level
      */
     protected void addCommonQualifiersToAttributeSet(AttributeSet qualifier, RouteContext context, String customDocTypeName) {    	
-        qualifier.put(KIM_ATTRIBUTE_DOCUMENT_NUMBER, context.getDocument().getRouteHeaderId().toString() );
+        qualifier.put(KIM_ATTRIBUTE_DOCUMENT_NUMBER, context.getDocument().getDocumentId() );
         if ( !qualifier.containsKey(KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME) ) {
 	        if ( StringUtils.isBlank(customDocTypeName)) {
 	        	qualifier.put(KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME, 

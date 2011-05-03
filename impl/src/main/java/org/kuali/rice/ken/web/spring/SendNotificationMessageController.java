@@ -233,8 +233,8 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 		NotificationWorkflowDocument document;
 		Map<String, Object> model = new HashMap<String, Object>();
 		String view;
-		try {
-			document = new NotificationWorkflowDocument(
+		try {	
+			document = NotificationWorkflowDocument.createNotificationDocument(
 					initiatorId,
 					NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
 

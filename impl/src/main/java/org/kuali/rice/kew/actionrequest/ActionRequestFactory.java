@@ -115,7 +115,7 @@ public class ActionRequestFactory {
         actionRequest.setDocVersion(document.getDocVersion());
         actionRequest.setPriority(priority);
         actionRequest.setRouteHeader(document);
-        actionRequest.setRouteHeaderId(document.getRouteHeaderId());
+        actionRequest.setDocumentId(document.getDocumentId());
         actionRequest.setRouteLevel(document.getDocRouteLevel());
     	actionRequest.setNodeInstance(routeNode);
     	actionRequest.setResponsibilityId(responsibilityId);
@@ -135,7 +135,7 @@ public class ActionRequestFactory {
 		ActionRequestValue request = new ActionRequestValue();
 		request.setRouteHeader(document);
 		if (document != null) {
-			request.setRouteHeaderId(document.getRouteHeaderId());
+			request.setDocumentId(document.getDocumentId());
 		}
 		request.setNodeInstance(routeNode);
 		return request;
@@ -244,7 +244,7 @@ public class ActionRequestFactory {
         actionRequest.setJrfVerNbr(0);
         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
         actionRequest.setRouteHeader(document);
-        actionRequest.setRouteHeaderId(document.getRouteHeaderId());
+        actionRequest.setDocumentId(document.getDocumentId());
     }
 
     private static void resolveRecipient(ActionRequestValue actionRequest, Recipient recipient) {
@@ -268,7 +268,7 @@ public class ActionRequestFactory {
     		Recipient targetRecipient = role.getTarget();
     		if (role.getTarget() != null) {
     			if (targetRecipient instanceof RoleRecipient) {
-    				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getRouteHeaderId());
+    				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getDocumentId());
     			}
     			resolveRecipient(actionRequest, role.getTarget());
     		}
@@ -282,7 +282,7 @@ public class ActionRequestFactory {
     		Recipient targetRecipient = roleRecipient.getTarget();
     		if (targetRecipient != null) {
     			if (targetRecipient instanceof RoleRecipient) {
-    				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getRouteHeaderId());
+    				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getDocumentId());
     			}
     			resolveRecipient(actionRequest, roleRecipient.getTarget());
     		}

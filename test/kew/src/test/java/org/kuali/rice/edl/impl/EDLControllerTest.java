@@ -44,7 +44,7 @@ public class EDLControllerTest extends KEWTestCase {
 		ConfigContext.getCurrentContextConfig().putProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 
 
-		EDLController edlController = getEDLService().getEDLController("FakeyEDL");
+		EDLController edlController = getEDLService().getEDLControllerUsingEdlName("FakeyEDL");
 		edlController.setEdlContext(getEDLcontext());
 		assertNotNull("There should be a default dom in the edlcontoller", edlController.getDefaultDOM());
 		edlController.notifyComponents();

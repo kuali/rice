@@ -44,7 +44,7 @@
 		  </tr>
 		  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Document ID:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].routeHeaderId" /></td>
+	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].documentId" /></td>
 		  </tr>	    
 		  <tr>
 		  	<td width="33%" align="right" class="thnormal">* Route Node Instance ID:</td>

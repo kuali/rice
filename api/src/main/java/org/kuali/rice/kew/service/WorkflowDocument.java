@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -29,10 +28,8 @@ import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentLinkDTO;
-import org.kuali.rice.kew.dto.EmplIdDTO;
 import org.kuali.rice.kew.dto.ModifiableDocumentContentDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -40,15 +37,9 @@ import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-//import org.kuali.rice.kim.api.services.IdentityManagementService;
-import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * Represents a document in Workflow from the perspective of the client.  This class is one of two
@@ -93,81 +84,50 @@ public class WorkflowDocument implements java.io.Serializable {
     private ModifiableDocumentContentDTO documentContent;
 
     /**
-     * @deprecated Use the constructor which takes a principal ID instead.
-     */
-    /*public WorkflowDocument(UserIdDTO userId, String documentType) throws WorkflowException {
-    	String principalId = convertUserIdToPrincipalId(userId);
-    	init(principalId, documentType, null);
-    }*/
-
-    /**
-     * @deprecated Use the constructor which takes a principal ID instead.
-     */
-   /* public WorkflowDocument(UserIdDTO userId, Long routeHeaderId) throws WorkflowException {
-    	String principalId = convertUserIdToPrincipalId(userId);
-    	init(principalId, null, routeHeaderId);
-    }*/
-
-   /* private String convertUserIdToPrincipalId(UserIdDTO userId) {
-
-        if (userId == null) {
-            return null;
-        } else if (userId instanceof WorkflowIdDTO) {
-            return ((WorkflowIdDTO)userId).getWorkflowId();
-        } else if (userId instanceof NetworkIdDTO) {
-            IdentityManagementService identityManagementService = (IdentityManagementService)GlobalResourceLoader.getService(KimConstants.KIM_IDENTITY_MANAGEMENT_SERVICE);
-            String principalName = ((NetworkIdDTO)userId).getNetworkId();
-            KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName(principalName);
-            return principal.getPrincipalId();
-        } else if (userId instanceof EmplIdDTO) {
-            PersonService personService = (PersonService)GlobalResourceLoader.getService(KimConstants.KIM_PERSON_SERVICE);
-            String employeeId = ((EmplIdDTO)userId).getEmplId();
-            Person person = personService.getPersonByEmployeeId(employeeId);
-            if (person == null) {
-                throw new RiceRuntimeException("Could not locate a person with the given employee id of " + employeeId);
-            }
-            return person.getPrincipalId();
-        }
-        throw new IllegalArgumentException("Invalid UserIdDTO type was passed: " + userId);
-    }*/
-
-    /**
-     * Constructs a WorkflowDocument representing a new document in the workflow system.
-     * Creation/committing of the new document is deferred until the first action is
-     * taken on the document.
+     * This method constructs a WorkflowDocument representing a new document in the 
+     * workflow system.  Creation/committing of the new document is deferred until
+     *  the first action is taken on the document.
+     * 
      * @param principalId the user as which to take actions on the document
      * @param documentType the type of the document to create
      * @throws WorkflowException if anything goes awry
      */
-    public WorkflowDocument(String principalId, String documentType) throws WorkflowException {
-        init(principalId, documentType, null);
-    }
-
+	public static WorkflowDocument createDocument(String principalId, String documentType) throws WorkflowException {
+		return new WorkflowDocument(principalId, documentType, null);
+	}
+	
     /**
-     * Loads a workflow document with the given route header ID for the given User.  If no document
-     * can be found with the given ID, then the {@link getRouteHeader()} method of the WorkflowDocument
+     * This method loads a workflow document with the given document ID for the 
+     * given principalId.  If no document can be found with the 
+     * given ID, then the {@link getRouteHeader()} method of the WorkflowDocument
      * which is created will return null.
-     *
-     * @throws WorkflowException if there is a problem loading the WorkflowDocument
+     * 
+     * @param principalId the user as which to take actions on the document
+     * @param documentId the document id of the document to load
+     * @throws WorkflowException if anything goes awry
      */
-    public WorkflowDocument(String principalId, Long routeHeaderId) throws WorkflowException {
-        init(principalId, null, routeHeaderId);
+	public static WorkflowDocument loadDocument(String principalId, String documentId) throws WorkflowException {
+		return new WorkflowDocument(principalId, null, documentId);
+	}
+	
+	protected WorkflowDocument(String principalId, String documentType, String documentId) throws WorkflowException {
+        init(principalId, documentType, documentId);
     }
-
+    
     /**
-     * Initializes this WorkflowDocument object, by either attempting to load an existing document by routeHeaderid
+     * Initializes this WorkflowDocument object, by either attempting to load an existing document by documentId
      * if one is supplied (non-null), or by constructing an empty document of the specified type.
      * @param principalId the user under which actions via this API on the specified document will be taken
-     * @param documentType the type of document this WorkflowDocument should represent (either this parameter or routeHeaderId must be specified, non-null)
-     * @param routeHeaderId the id of an existing document to load (either this parameter or documentType must be specified, non-null)
-     * @throws WorkflowException if a routeHeaderId is specified but an exception occurs trying to load the document route header
+     * @param documentType the type of document this WorkflowDocument should represent (either this parameter or documentId must be specified, non-null)
+     * @param documentId the id of an existing document to load (either this parameter or documentType must be specified, non-null)
+     * @throws WorkflowException if a documentId is specified but an exception occurs trying to load the document route header
      */
-    private void init(String principalId, String documentType, Long routeHeaderId) throws WorkflowException {
+    private void init(String principalId, String documentType, String documentId) throws WorkflowException {
     	this.principalId = principalId;
     	routeHeader = new RouteHeaderDTO();
     	routeHeader.setDocTypeName(documentType);
-    	if (routeHeaderId != null) {
-    		routeHeader = getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, routeHeaderId);
+    	if (documentId != null) {
+    		routeHeader = getWorkflowUtility().getRouteHeaderWithPrincipal(principalId, documentId);
     	}
     }
 
@@ -207,11 +167,11 @@ public class WorkflowDocument implements java.io.Serializable {
     public DocumentContentDTO getDocumentContent() {
     	try {
     		// create the document if it hasn't already been created
-    		if (getRouteHeader().getRouteHeaderId() == null) {
+    		if (getRouteHeader().getDocumentId() == null) {
         		routeHeader = getWorkflowDocumentActions().createDocument(principalId, getRouteHeader());
         	}
     		if (documentContent == null || documentContentDirty) {
-    			documentContent = new ModifiableDocumentContentDTO(getWorkflowUtility().getDocumentContent(routeHeader.getRouteHeaderId()));
+    			documentContent = new ModifiableDocumentContentDTO(getWorkflowUtility().getDocumentContent(routeHeader.getDocumentId()));
     			documentContentDirty = false;
     		}
     	} catch (Exception e) {
@@ -386,9 +346,9 @@ public class WorkflowDocument implements java.io.Serializable {
      * @return the id of the workflow document this WorkflowDocument represents
      * @throws WorkflowException if an error occurs during document creation
      */
-    public Long getRouteHeaderId() throws WorkflowException {
+    public String getDocumentId() throws WorkflowException {
     	createDocumentIfNeccessary();
-    	return getRouteHeader().getRouteHeaderId();
+    	return getRouteHeader().getDocumentId();
     }
 
     /**
@@ -403,10 +363,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getActionRequests(Long)
      */
     public ActionRequestDTO[] getActionRequests() throws WorkflowException {
-        if (getRouteHeaderId() == null) {
+        if (getDocumentId() == null) {
             return new ActionRequestDTO[0];
         }
-        return getWorkflowUtility().getAllActionRequests(getRouteHeaderId());
+        return getWorkflowUtility().getAllActionRequests(getDocumentId());
     }
 
     /**
@@ -421,10 +381,10 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getActionsTaken(Long)
      */
     public ActionTakenDTO[] getActionsTaken() throws WorkflowException {
-        if (getRouteHeaderId() == null) {
+        if (getDocumentId() == null) {
             return new ActionTakenDTO[0];
         }
-        return getWorkflowUtility().getActionsTaken(getRouteHeaderId());
+        return getWorkflowUtility().getActionsTaken(getDocumentId());
     }
 
     /**
@@ -608,7 +568,7 @@ public class WorkflowDocument implements java.io.Serializable {
      */
     public void refreshContent() throws WorkflowException {
     	createDocumentIfNeccessary();
-    	routeHeader = getWorkflowUtility().getRouteHeader(getRouteHeaderId());
+    	routeHeader = getWorkflowUtility().getRouteHeader(getDocumentId());
     	documentContentDirty = true;
     }
 
@@ -675,7 +635,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#revokeAdHocRequests(UserIdDTO, RouteHeaderDTO, AdHocRevokeDTO, String)
      */
     public void revokeAdHocRequests(AdHocRevokeDTO revoke, String annotation) throws WorkflowException {
-    	if (getRouteHeader().getRouteHeaderId() == null) {
+    	if (getRouteHeader().getDocumentId() == null) {
     		throw new WorkflowException("Can't revoke request, the workflow document has not yet been created!");
     	}
     	createDocumentIfNeccessary();
@@ -991,13 +951,13 @@ public class WorkflowDocument implements java.io.Serializable {
     }
 
     /**
-     * Checks if the document has been created or not (i.e. has a route header id or not) and issues
+     * Checks if the document has been created or not (i.e. has a document id or not) and issues
      * a call to the server to create the document if it has not yet been created.
      *
      * Also checks if the document content has been updated and saves it if it has.
      */
     private void createDocumentIfNeccessary() throws WorkflowException {
-    	if (getRouteHeader().getRouteHeaderId() == null) {
+    	if (getRouteHeader().getDocumentId() == null) {
     		routeHeader = getWorkflowDocumentActions().createDocument(principalId, getRouteHeader());
     	}
     	if (documentContent != null && documentContent.isModified()) {
@@ -1079,7 +1039,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getActiveNodeInstances(Long)
      */
     public String[] getNodeNames() throws WorkflowException {
-    	RouteNodeInstanceDTO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getRouteHeaderId());
+    	RouteNodeInstanceDTO[] activeNodeInstances = getWorkflowUtility().getActiveNodeInstances(getDocumentId());
     	String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
     	for (int index = 0; index < activeNodeInstances.length; index++) {
     		nodeNames[index] = activeNodeInstances[index].getName();
@@ -1136,7 +1096,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getDocumentRouteNodeInstances(Long)
      */
     public RouteNodeInstanceDTO[] getRouteNodeInstances() throws WorkflowException {
-    	return getWorkflowUtility().getDocumentRouteNodeInstances(getRouteHeaderId());
+    	return getWorkflowUtility().getDocumentRouteNodeInstances(getDocumentId());
     }
 
     /**
@@ -1148,7 +1108,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowUtility#getPreviousRouteNodeNames(Long)
      */
     public String[] getPreviousNodeNames() throws WorkflowException {
-    	return getWorkflowUtility().getPreviousRouteNodeNames(getRouteHeaderId());
+    	return getWorkflowUtility().getPreviousRouteNodeNames(getDocumentId());
 	}
 
     /**
@@ -1158,7 +1118,7 @@ public class WorkflowDocument implements java.io.Serializable {
      * @throws WorkflowException
      */
     public DocumentDetailDTO getDetail() throws WorkflowException {
-    	return getWorkflowUtility().getDocumentDetail(getRouteHeaderId());
+    	return getWorkflowUtility().getDocumentDetail(getDocumentId());
     }
 
     /**
@@ -1168,13 +1128,13 @@ public class WorkflowDocument implements java.io.Serializable {
      * @see WorkflowDocumentActions#saveDocumentContent(DocumentContentDTO)
      */
     public DocumentContentDTO saveDocumentContent(DocumentContentDTO documentContent) throws WorkflowException {
-    	if (documentContent.getRouteHeaderId() == null) {
+    	if (documentContent.getDocumentId() == null) {
     		throw new WorkflowException("Document Content does not have a valid document ID.");
     	}
-    	// important to check directly against getRouteHeader().getRouteHeaderId() instead of just getRouteHeaderId() because saveDocumentContent
-    	// is called from createDocumentIfNeccessary which is called from getRouteHeaderId().  If that method was used, we would have an infinite loop.
-    	if (!documentContent.getRouteHeaderId().equals(getRouteHeader().getRouteHeaderId())) {
-    		throw new WorkflowException("Attempted to save content on this document with an invalid document id of " + documentContent.getRouteHeaderId());
+    	// important to check directly against getRouteHeader().getDocumentId() instead of just getDocumentId() because saveDocumentContent
+    	// is called from createDocumentIfNeccessary which is called from getDocumentId().  If that method was used, we would have an infinite loop.
+    	if (!documentContent.getDocumentId().equals(getRouteHeader().getDocumentId())) {
+    		throw new WorkflowException("Attempted to save content on this document with an invalid document id of " + documentContent.getDocumentId());
     	}
     	DocumentContentDTO newDocumentContent = getWorkflowDocumentActions().saveDocumentContent(documentContent);
     	this.documentContent = new ModifiableDocumentContentDTO(newDocumentContent);
@@ -1234,7 +1194,7 @@ public class WorkflowDocument implements java.io.Serializable {
     	if (noteVO != null && noteVO.getNoteId()!=null){
     		NoteDTO noteToDelete = new NoteDTO();
     		noteToDelete.setNoteId(new Long(noteVO.getNoteId().longValue()));
-    		/*noteToDelete.setRouteHeaderId(noteVO.getRouteHeaderId());
+    		/*noteToDelete.setDocumentId(noteVO.getDocumentId());
     		noteToDelete.setNoteAuthorWorkflowId(noteVO.getNoteAuthorWorkflowId());
     		noteToDelete.setNoteCreateDate(noteVO.getNoteCreateDate());
     		noteToDelete.setNoteText(noteVO.getNoteText());
@@ -1257,12 +1217,12 @@ public class WorkflowDocument implements java.io.Serializable {
 				copyNote.setNoteId(new Long(noteVO.getNoteId().longValue()));
 			}
 
-			if (noteVO.getRouteHeaderId() != null){
-				copyNote.setRouteHeaderId(new Long(noteVO.getRouteHeaderId().longValue()));
+			if (noteVO.getDocumentId() != null){
+				copyNote.setDocumentId(noteVO.getDocumentId());
 			} else {
-				copyNote.setRouteHeaderId(routeHeader.getRouteHeaderId());
+				copyNote.setDocumentId(routeHeader.getDocumentId());
 			}
-
+			
 			if (noteVO.getNoteAuthorWorkflowId() != null){
 				copyNote.setNoteAuthorWorkflowId(new String(noteVO.getNoteAuthorWorkflowId()));
 			} else {
@@ -1433,11 +1393,11 @@ public class WorkflowDocument implements java.io.Serializable {
    }
    
    //get all links to orgn doc
-   public List<DocumentLinkDTO> getLinkedDocumentsByDocId(Long id) throws WorkflowException{
-	   if(id == null)
-		   throw new WorkflowException("doc id is null");
+   public List<DocumentLinkDTO> getLinkedDocumentsByDocId(String documentId) throws WorkflowException{
+	   if(documentId == null)
+		   throw new WorkflowException("document Id is null");
 	   try{   
-		   return getWorkflowUtility().getLinkedDocumentsByDocId(id);
+		   return getWorkflowUtility().getLinkedDocumentsByDocId(documentId);
 	   } 
 	   catch (Exception e) {
 		   throw handleExceptionAsRuntime(e);
@@ -1445,7 +1405,7 @@ public class WorkflowDocument implements java.io.Serializable {
    }
    
    //remove all links from orgn: double links removed
-   public void removeLinkedDocuments(Long docId) throws WorkflowException{
+   public void removeLinkedDocuments(String docId) throws WorkflowException{
 	   
 	   if(docId == null)
 		   throw new WorkflowException("doc id is null");

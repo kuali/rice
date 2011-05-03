@@ -178,7 +178,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     	assertNull("Config should not be cached initially.", config);
 
     	// fetch the edl controller which should result in caching
-		EDLController edlController = EdlServiceLocator.getEDocLiteService().getEDLController("EDocLiteDocType");
+		EDLController edlController = EdlServiceLocator.getEDocLiteService().getEDLControllerUsingEdlName("EDocLiteDocType");
 		assertNotNull(edlController);
 
 		config = EDLControllerFactory.fetchConfigFromCache("profile");
@@ -198,7 +198,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     	assertNull("Config should no longer be cached.", config);
 
     	// fetch again and we should be back in action
-		edlController = EdlServiceLocator.getEDocLiteService().getEDLController("EDocLiteDocType");
+		edlController = EdlServiceLocator.getEDocLiteService().getEDLControllerUsingEdlName("EDocLiteDocType");
 		assertNotNull(edlController);
 		config = EDLControllerFactory.fetchConfigFromCache("profile");
     	assertNotNull("Config should now be cached.", config);

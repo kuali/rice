@@ -36,7 +36,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="attributeContent" nillable="true" type="soapenc:string"/>
      <element name="attributeDefinitions" nillable="true" type="impl:ArrayOf_tns1_WorkflowAttributeDefinitionVO"/>
      <element name="fullContent" nillable="true" type="soapenc:string"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
      <element name="searchableContent" nillable="true" type="soapenc:string"/>
      <element name="searchableDefinitions" nillable="true" type="impl:ArrayOf_tns1_WorkflowAttributeDefinitionVO"/>
     </sequence>
@@ -61,7 +61,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="noteCreateDate" nillable="true" type="xsd:dateTime"/>
      <element name="noteId" nillable="true" type="soapenc:long"/>
      <element name="noteText" nillable="true" type="soapenc:string"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
     </sequence>
    </complexType>
    <complexType name="RouteHeaderVO">
@@ -87,7 +87,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="notes" nillable="true" type="impl:ArrayOf_tns1_NoteVO"/>
      <element name="notesToDelete" nillable="true" type="impl:ArrayOf_tns1_NoteVO"/>
      <element name="overrideInd" nillable="true" type="soapenc:string"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
      <element name="userBlanketApprover" type="xsd:boolean"/>
     </sequence>
    </complexType>
@@ -99,7 +99,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="annotation" nillable="true" type="soapenc:string"/>
      <element name="delegatorVO" nillable="true" type="tns1:UserVO"/>
      <element name="docVersion" nillable="true" type="soapenc:int"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
      <element name="userVO" nillable="true" type="tns1:UserVO"/>
     </sequence>
    </complexType>
@@ -152,7 +152,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
      <element name="responsibilityId" nillable="true" type="soapenc:long"/>
      <element name="roleName" nillable="true" type="soapenc:string"/>
      <element name="roleRequest" type="xsd:boolean"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
      <element name="routeLevel" nillable="true" type="soapenc:int"/>
      <element name="routeMethodName" nillable="true" type="soapenc:string"/>
      <element name="routeModuleRequest" type="xsd:boolean"/>
@@ -286,7 +286,7 @@ Built on Jun 14, 2005 (09:15:57 EDT)-->
     <sequence>
      <element name="documentTypeName" nillable="true" type="soapenc:string"/>
      <element name="nodeNames" nillable="true" type="impl:ArrayOf_soapenc_string"/>
-     <element name="routeHeaderId" nillable="true" type="soapenc:long"/>
+     <element name="documentId" nillable="true" type="soapenc:long"/>
      <element name="ruleTemplateNames" nillable="true" type="impl:ArrayOf_soapenc_string"/>
      <element name="targetNodeName" nillable="true" type="soapenc:string"/>
      <element name="targetUsers" nillable="true" type="impl:ArrayOf_tns1_UserIdVO"/>

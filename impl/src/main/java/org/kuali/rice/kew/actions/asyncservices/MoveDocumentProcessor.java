@@ -36,15 +36,15 @@ public class MoveDocumentProcessor implements MoveDocumentService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MoveDocumentProcessor.class);
 
 	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set<String> nodeNames) {
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getRouteHeaderId(), true);
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getDocumentId(), true);
 		KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 		MoveDocumentAction moveAction = new MoveDocumentAction(document, principal, "", null);
-        LOG.debug("Doing move document work " + document.getRouteHeaderId());
+        LOG.debug("Doing move document work " + document.getDocumentId());
         try {
 			moveAction.performDeferredMoveDocumentWork(actionTaken, nodeNames);
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
-        LOG.debug("Work done and document requeued, document " + document.getRouteHeaderId());
+        LOG.debug("Work done and document requeued, document " + document.getDocumentId());
 	}
 }

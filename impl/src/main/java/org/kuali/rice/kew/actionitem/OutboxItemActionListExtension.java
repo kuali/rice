@@ -35,7 +35,7 @@ import javax.persistence.Table;
     @AttributeOverride(name="dateAssigned", column=@Column(name="ASND_DT")),
     @AttributeOverride(name="actionRequestCd", column=@Column(name="RQST_CD")),
     @AttributeOverride(name="actionRequestId", column=@Column(name="ACTN_RQST_ID")),
-    @AttributeOverride(name="routeHeaderId", column=@Column(name="DOC_HDR_ID")),//, insertable=false, updatable=false)),
+    @AttributeOverride(name="documentId", column=@Column(name="DOC_HDR_ID")),//, insertable=false, updatable=false)),
     @AttributeOverride(name="responsibilityId", column=@Column(name="RSP_ID")),
     @AttributeOverride(name="groupId", column=@Column(name="GRP_ID")),
     @AttributeOverride(name="roleName", column=@Column(name="ROLE_NM")),
@@ -70,7 +70,7 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
 	this.setDocTitle(actionItem.getDocTitle());
 	this.setResponsibilityId(actionItem.getResponsibilityId());
 	this.setRoleName(actionItem.getRoleName());
-	this.setRouteHeaderId(actionItem.getRouteHeaderId());
+	this.setDocumentId(actionItem.getDocumentId());
 	this.setPrincipalId(actionItem.getPrincipalId());
 	this.setGroupId(actionItem.getGroupId());
 	this.setRequestLabel(actionItem.getRequestLabel());

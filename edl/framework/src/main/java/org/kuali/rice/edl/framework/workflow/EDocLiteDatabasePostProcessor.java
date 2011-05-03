@@ -51,25 +51,25 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 
 	   public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO event) throws RemoteException {
 	        LOG.debug("doRouteStatusChange: " + event);
-	        Long documentId = event.getRouteHeaderId();
+	        String documentId = event.getDocumentId();
 	        super.postEvent(documentId, event, "statusChange");
 	        Document doc = getEDLContent(documentId);
 	        if (LOG.isDebugEnabled()) {
                 LOG.debug("Submitting doc: " + XmlJotter.jotNode(doc));
             }
-			extractEDLData(documentId, getNodeNames(event.getRouteHeaderId()), doc);
+			extractEDLData(documentId, getNodeNames(event.getDocumentId()), doc);
 	        return super.doRouteStatusChange(event);
 	    }
 
 	    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
 	        LOG.debug("doActionTaken: " + event);
-	        Long documentId = event.getRouteHeaderId();
+	        String documentId = event.getDocumentId();
 	        super.postEvent(documentId, event, "actionTaken");
 	        
 	        // if the action requested is a save, go ahead and update the database with the most current information. -grpatter
 	 	 	if (KEWConstants.ACTION_TAKEN_SAVED_CD.equals(event.getActionTaken().getActionTaken())) {
 	 	 		Document doc = getEDLContent(documentId);
-	 	 		extractEDLData(documentId, getNodeNames(event.getRouteHeaderId()), doc);
+	 	 		extractEDLData(documentId, getNodeNames(event.getDocumentId()), doc);
 	 	 	}
 	        
 	        return super.doActionTaken(event);
@@ -77,13 +77,13 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 
 	    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
 	        LOG.debug("doDeleteRouteHeader: " + event);
-	        super.postEvent(event.getRouteHeaderId(), event, "deleteRouteHeader");
+	        super.postEvent(event.getDocumentId(), event, "deleteRouteHeader");
 	        return super.doDeleteRouteHeader(event);
 	    }
 
 	    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO event) throws RemoteException {
 	        LOG.debug("doRouteLevelChange: " + event);
-	        Long documentId = event.getRouteHeaderId();
+	        String documentId = event.getDocumentId();
 	        super.postEvent(documentId, event, "routeLevelChange");
 	        Document doc = getEDLContent(documentId);
             if (LOG.isDebugEnabled()) {
@@ -99,7 +99,7 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 //	        return doc;
 //	    }
 
-	    private String[] getNodeNames(Long documentId) {
+	    private String[] getNodeNames(String documentId) {
 	    	try {
 	            RouteNodeInstanceDTO[] activeNodeInstances = new WorkflowInfo().getActiveNodeInstances(documentId);
 	            if (activeNodeInstances == null || activeNodeInstances.length == 0) {
@@ -115,15 +115,15 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 	    	}
 	    }
 
-	    private void extractEDLData(Long documentId, String[] nodeNames, Document documentContent) {
+	    private void extractEDLData(String documentId, String[] nodeNames, Document documentContent) {
 	    	try {
 	    	RouteHeaderDTO routeHeader = new WorkflowInfo().getRouteHeader(documentId);
 	    	DocumentTypeDTO documentType = new WorkflowInfo().getDocType(routeHeader.getDocTypeId());
-	    	DumpDTO dump = getExtractService().getDumpByDocumentId(routeHeader.getRouteHeaderId());
+	    	DumpDTO dump = getExtractService().getDumpByDocumentId(routeHeader.getDocumentId());
 	    	if (dump == null) {
 	    		dump = new DumpDTO();
 	    	}
-	    	dump.setDocId(routeHeader.getRouteHeaderId());
+	    	dump.setDocId(routeHeader.getDocumentId());
 			dump.setDocCreationDate(new Timestamp(routeHeader.getDateCreated().getTimeInMillis()));
 	    	dump.setDocCurrentNodeName(StringUtils.join(nodeNames, ","));
 			dump.setDocDescription(documentType.getDocTypeDescription());

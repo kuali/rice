@@ -78,7 +78,7 @@ public class ActionItem implements RowStyleable, Serializable {
     @Column(name="ACTN_RQST_ID", nullable=false)
 	private Long actionRequestId;
     @Column(name="DOC_HDR_ID")//, insertable=false, updatable=false)
-	private Long routeHeaderId;
+	private String documentId;
     @Column(name="GRP_ID")
 	private String groupId;
     @Column(name="DOC_HDR_TTL")
@@ -148,8 +148,8 @@ public class ActionItem implements RowStyleable, Serializable {
         return actionRequestId;
     }
     
-    public Long getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
     
     public String getGroupId() {
@@ -308,8 +308,8 @@ public class ActionItem implements RowStyleable, Serializable {
         this.lockVerNbr = lockVerNbr;
     }
 
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public void setActionItemId(Long actionItemId) {
@@ -385,7 +385,7 @@ public class ActionItem implements RowStyleable, Serializable {
                                         .append("dateAssigned", dateAssigned)
                                         .append("actionRequestCd", actionRequestCd)
                                         .append("actionRequestId", actionRequestId)
-                                        .append("routeHeaderId", routeHeaderId)
+                                        .append("documentId", documentId)
                                         .append("groupId", groupId)
                                         .append("docTitle", docTitle)
                                         .append("docLabel", docLabel)

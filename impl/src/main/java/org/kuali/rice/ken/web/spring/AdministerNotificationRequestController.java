@@ -58,7 +58,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
      */
     public static class AdministerNotificationRequestCommand {
         // incoming
-        private Long docId;
+        private String docId;
 
         // outgoing
         private NotificationWorkflowDocument document;
@@ -67,10 +67,10 @@ public class AdministerNotificationRequestController extends MultiActionControll
         private boolean valid = true;
         private String message;
 
-        public Long getDocId() {
+        public String getDocId() {
             return docId;
         }
-        public void setDocId(Long docId) {
+        public void setDocId(String docId) {
             this.docId = docId;
         }
         public NotificationWorkflowDocument getDocument() {
@@ -161,7 +161,6 @@ public class AdministerNotificationRequestController extends MultiActionControll
      */
     public ModelAndView view(HttpServletRequest request, HttpServletResponse response, AdministerNotificationRequestCommand command) {
         // obtain a workflow user object first
-        //WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
         String initiatorId = request.getRemoteUser();
 
         // now construct the workflow document, which will interact with workflow
@@ -181,7 +180,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
         // set into model whether we are dealing with a pop up or an inline window
         model.put(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW, standaloneWindow);
         try {
-            document = new NotificationWorkflowDocument(initiatorId, new Long(command.getDocId()));
+            document = NotificationWorkflowDocument.loadNotificationDocument(initiatorId, command.getDocId());
 
             Notification notification = retrieveNotificationForWorkflowDocument(document);
 
@@ -224,7 +223,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
                     }
                     // if the current user is a reviewer, then disapprove as that user
                     if (user != null) {
-                        new WorkflowDocument(user, new Long(command.getDocId())).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
+	                    WorkflowDocument.loadDocument(user, command.getDocId()).disapprove("Disapproving notification request.  Auto-remove datetime has already passed.");
                         disapproved = true;
                     }
                 }
@@ -314,7 +313,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
 
         try {
             // now construct the workflow document, which will interact with workflow
-            NotificationWorkflowDocument document = new NotificationWorkflowDocument(userId, command.getDocId());
+            NotificationWorkflowDocument document = NotificationWorkflowDocument.loadNotificationDocument(userId, command.getDocId());
 
             Notification notification = retrieveNotificationForWorkflowDocument(document);
 

@@ -44,9 +44,9 @@ public class DocumentRequeuerTest extends KEWTestCase {
     }
 
     @Test public void testDocumentRequeueSingleNode() throws Exception {
-       WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
+       WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
        document.routeDocument("");
-       document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+       document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
        assertTrue(document.stateIsEnroute());
        ActionRequestDTO[] requests = document.getActionRequests();
        assertEquals("Should be 2 requests.", 2, requests.length);
@@ -57,14 +57,14 @@ public class DocumentRequeuerTest extends KEWTestCase {
             requestIds.add(requestVO.getActionRequestId());
         }
 
-       DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
-       DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getServiceNamespace(), documentH.getRouteHeaderId(), 0);
-       documentRequeuer.requeueDocument(document.getRouteHeaderId());
+       DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
+       DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getServiceNamespace(), documentH.getDocumentId(), 0);
+       documentRequeuer.requeueDocument(document.getDocumentId());
 
        // initiate a requeue of the document
-//       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getRouteHeaderId(), DocumentRequeuerImpl.class.getName());
+//       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(), DocumentRequeuerImpl.class.getName());
 
-       document = new WorkflowDocument(getPrincipalIdForName("bmcgough"), document.getRouteHeaderId());
+       document = WorkflowDocument.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
        assertTrue(document.stateIsEnroute());
        requests = document.getActionRequests();
        assertEquals("Should be 2 requests.", 2, requests.length);
@@ -77,9 +77,9 @@ public class DocumentRequeuerTest extends KEWTestCase {
 
        // now there should just be a pending request to ryan, let's requeue again, because of force action = false we should still
        // have only one pending request to ryan
-//       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getRouteHeaderId(), DocumentRequeuerImpl.class.getName());
-       documentRequeuer.requeueDocument(document.getRouteHeaderId());
-       document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), document.getRouteHeaderId());
+//       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(), DocumentRequeuerImpl.class.getName());
+       documentRequeuer.requeueDocument(document.getDocumentId());
+       document = WorkflowDocument.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
        assertTrue(document.stateIsEnroute());
        requests = document.getActionRequests();
        assertEquals("Should be 2 requests.", 2, requests.length);

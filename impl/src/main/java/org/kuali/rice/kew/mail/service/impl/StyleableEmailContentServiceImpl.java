@@ -209,7 +209,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         Element root = doc.createElement("summarizedActionItem");
 
         // add in all items from action list as preliminary default dataset
-        addTextElement(doc, root, "routeHeaderId", actionItem.getRouteHeaderId());
+        addTextElement(doc, root, "documentId", actionItem.getDocumentId());
         addTextElement(doc, root, "docName", actionItem.getDocName());
         addCDataElement(doc, root, "docLabel", actionItem.getDocLabel());
         addCDataElement(doc, root, "docTitle", actionItem.getDocTitle());
@@ -230,10 +230,10 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     	if (routeHeaderService == null) {
     		routeHeaderService = KEWServiceLocator.getRouteHeaderService();
     	}
-        return routeHeaderService.getRouteHeader(actionItem.getRouteHeaderId());
+        return routeHeaderService.getRouteHeader(actionItem.getDocumentId());
     }
 
-    protected Map<Long,DocumentRouteHeaderValue> getRouteHeaders(Collection<ActionItem> actionItems) {
+    protected Map<String,DocumentRouteHeaderValue> getRouteHeaders(Collection<ActionItem> actionItems) {
     	if (routeHeaderService == null) {
     		routeHeaderService = KEWServiceLocator.getRouteHeaderService();
     	}
@@ -294,7 +294,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         DocumentBuilder db = getDocumentBuilder(false);
         Document doc = db.newDocument();
         Element element = doc.createElement(name);
-        Map<Long,DocumentRouteHeaderValue> routeHeaders = getRouteHeaders(actionItems);
+        Map<String,DocumentRouteHeaderValue> routeHeaders = getRouteHeaders(actionItems);
         
         setStandardAttributes(element);
         doc.appendChild(element);
@@ -303,7 +303,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             addObjectXML(doc, user, element, "user");
             for (ActionItem actionItem: actionItems) {
                 try {
-                    addSummarizedActionItem(doc, actionItem, user, element, routeHeaders.get(actionItem.getRouteHeaderId()));
+                    addSummarizedActionItem(doc, actionItem, user, element, routeHeaders.get(actionItem.getDocumentId()));
                 } catch (Exception e) {
                     String message = "Error generating XML for action item: " + actionItem;
                     LOG.error(message, e);
@@ -491,7 +491,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
                 }
             }
         }*/
-        LOG.info("form: " + form.getRouteHeaderId());
+        LOG.info("form: " + form.getDocumentId());
         try {
             addObjectXML(doc, form, null, "feedback");
         } catch (Exception e) {

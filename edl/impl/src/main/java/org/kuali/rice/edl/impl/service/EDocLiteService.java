@@ -46,8 +46,8 @@ public interface EDocLiteService extends XmlLoader, XmlExporter {
     public Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
     public List<EDocLiteAssociation> search(EDocLiteAssociation edocLite);
 
-    public EDLController getEDLController(String edlName);
-	public EDLController getEDLController(Long documentTypeId);
+    public EDLController getEDLControllerUsingEdlName(String edlName);
+	public EDLController getEDLControllerUsingDocumentId(String documentId);
 	public void initEDLGlobalConfig();
     public void saveEDocLiteDefinition(EDocLiteDefinition data) ;
     public void saveEDocLiteAssociation(EDocLiteAssociation assoc);

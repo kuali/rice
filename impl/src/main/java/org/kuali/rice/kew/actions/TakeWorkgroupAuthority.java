@@ -88,7 +88,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
 //            throw new InvalidActionTakenException(getUser().getPrincipalName() + " not a member of workgroup " + workgroup.getDisplayName());
 //        }
 
-        List<ActionRequestValue> documentRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        List<ActionRequestValue> documentRequests = getActionRequestService().findPendingByDoc(getDocumentId());
         List<ActionRequestValue> workgroupRequests = new ArrayList<ActionRequestValue>();
         for (ActionRequestValue actionRequest : documentRequests)
         {
@@ -102,7 +102,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
         notifyActionTaken(actionTaken);
 
         ActionListService actionListService = KEWServiceLocator.getActionListService();
-        Collection<ActionItem> actionItems = actionListService.findByRouteHeaderId(getRouteHeaderId());
+        Collection<ActionItem> actionItems = actionListService.findByDocumentId(getDocumentId());
         for (ActionItem actionItem : actionItems)
         {
             //delete all requests for this workgroup on this document not to this user

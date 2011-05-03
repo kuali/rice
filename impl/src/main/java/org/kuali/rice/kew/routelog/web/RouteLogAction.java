@@ -64,16 +64,16 @@ public class RouteLogAction extends KewKualiAction {
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RouteLogForm rlForm = (RouteLogForm) form;
-        Long routeHeaderId = null;
-        if (! org.apache.commons.lang.StringUtils.isEmpty(rlForm.getRouteHeaderId())) {
-            routeHeaderId = new Long(rlForm.getRouteHeaderId());
+        String documentId = null;
+        if (! org.apache.commons.lang.StringUtils.isEmpty(rlForm.getDocumentId())) {
+        	documentId = rlForm.getDocumentId();
         } else if (! org.apache.commons.lang.StringUtils.isEmpty(rlForm.getDocId())) {
-            routeHeaderId = new Long(rlForm.getDocId());
+        	documentId =rlForm.getDocId();
         } else {
         	throw new WorkflowRuntimeException("No paramater provided to fetch document");
         }
 
-        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 
         DocumentSecurityService security = KEWServiceLocator.getDocumentSecurityService();
         if (!security.routeLogAuthorized(getUserSession(), routeHeader, new SecuritySession(GlobalVariables.getUserSession()))) {
@@ -202,7 +202,7 @@ public class RouteLogAction extends KewKualiAction {
      */
     public void populateRouteLogFutureRequests(RouteLogForm rlForm, DocumentRouteHeaderValue document) throws Exception {
 
-        ReportCriteriaDTO reportCriteria = new ReportCriteriaDTO(document.getRouteHeaderId());
+        ReportCriteriaDTO reportCriteria = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
         String serviceNamespace = document.getDocumentType().getServiceNamespace();
         WorkflowUtility workflowUtility = 
         	(WorkflowUtility) GlobalResourceLoader.getService(new QName(serviceNamespace, "WorkflowUtilityService"));
@@ -248,7 +248,7 @@ public class RouteLogAction extends KewKualiAction {
 		Set<Long> actionRequestIds = new HashSet<Long>();
 
 		List<ActionRequestValue> actionRequests = 
-			KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
+			KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
 		
 		if (actionRequests != null) {
 			for (ActionRequestValue actionRequest : actionRequests) {
@@ -521,16 +521,16 @@ public class RouteLogAction extends KewKualiAction {
 			HttpServletResponse response) throws Exception {
 		RouteLogForm routeLogForm = (RouteLogForm) form;
 
-		Long routeHeaderId = null;
-		if (!org.apache.commons.lang.StringUtils.isEmpty(routeLogForm.getRouteHeaderId())) {
-			routeHeaderId = new Long(routeLogForm.getRouteHeaderId());
+		String documentId = null;
+		if (!org.apache.commons.lang.StringUtils.isEmpty(routeLogForm.getDocumentId())) {
+			documentId = routeLogForm.getDocumentId();
 		} else if (!org.apache.commons.lang.StringUtils.isEmpty(routeLogForm.getDocId())) {
-			routeHeaderId = new Long(routeLogForm.getDocId());
+			documentId = routeLogForm.getDocId();
 		} else {
 			throw new WorkflowRuntimeException("No paramater provided to fetch document");
 		}
 		
-		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		
 		// check user has permission to add a route log message
 		boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
@@ -544,7 +544,7 @@ public class RouteLogAction extends KewKualiAction {
 		}
 
 		LOG.info("Logging new action message for user " + GlobalVariables.getUserSession().getPrincipalName()
-				+ ", route header id " + routeHeader);
+				+ ", route header " + routeHeader);
 		KEWServiceLocator.getWorkflowDocumentService().logDocumentAction(
 				GlobalVariables.getUserSession().getPrincipalId(), routeHeader,
 				routeLogForm.getNewRouteLogActionMessage());
@@ -552,7 +552,7 @@ public class RouteLogAction extends KewKualiAction {
 		routeLogForm.setNewRouteLogActionMessage("");
 
 		// retrieve routeHeader again to pull new action taken
-		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId, true);
+		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId, true);
 		fixActionRequestsPositions(routeHeader);
 		request.setAttribute("routeHeader", routeHeader);
 

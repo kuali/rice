@@ -99,7 +99,7 @@ public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
 		}
 	}
 
-    public String getLockRouteHeaderQuerySQL(Long routeHeaderId, boolean wait) {
+    public String getLockRouteHeaderQuerySQL(String documentId, boolean wait) {
     	long timeoutSeconds = getTimeoutSeconds();
     	String waitClause = "";
     	if (!wait) {

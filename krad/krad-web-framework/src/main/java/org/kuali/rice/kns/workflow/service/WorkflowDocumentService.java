@@ -37,16 +37,16 @@ public interface WorkflowDocumentService {
 
 
     /**
-     * Given a documentTypeId and workflowUser, returns a new workflowDocument from the workflow server.
+     * Given a documentTypeName and workflowUser, returns a new workflowDocument from the workflow server.
      * 
-     * @param documentTypeId
+     * @param documentTypeName
      * @param workflowUser
      * @return newly-created workflowDocument instance
-     * @throws IllegalArgumentException if the given documentTypeId is blank
+     * @throws IllegalArgumentException if the given documentTypeName is blank
      * @throws IllegalArgumentException if the given workflowUser is null or contains no id
      * @throws ResourceUnavailableException
      */
-    public KualiWorkflowDocument createWorkflowDocument(String documentTypeId, Person workflowUser) throws WorkflowException;
+    public KualiWorkflowDocument createWorkflowDocument(String documentTypeName, Person workflowUser) throws WorkflowException;
 
     /**
      * Given a documentHeaderId and workflowUser, retrieves the workflowDocument associated with that documentHeaderId from the workflow
@@ -58,8 +58,8 @@ public interface WorkflowDocumentService {
      * @throws IllegalArgumentException if the given documentHeaderId is null
      * @throws IllegalArgumentException if the given workflowUser is null or contains no id
      */
-    public KualiWorkflowDocument createWorkflowDocument(Long documentHeaderId, Person workflowUser) throws WorkflowException;
-
+    public KualiWorkflowDocument loadWorkflowDocument(String documentHeaderId, Person workflowUser) throws WorkflowException;
+  
     /**
      * This method will first determine if the {@link KualiWorkflowDocument#saveDocument(String)} method is valid to be called.  If so the method
      * will save the document to workflows action list optionally providing an annotation which will show up in the route log for this

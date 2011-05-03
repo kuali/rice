@@ -61,7 +61,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 		String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
 		
 		// this document type has a group responsibility
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
 		doc.routeDocument("");
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
@@ -88,7 +88,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 		String user1PrincipalId = getPrincipalIdForName("user1");
 		
 		// this document type has a group responsibility
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "EmailTestUserDocType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestUserDocType");
 		doc.routeDocument("");
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
@@ -114,7 +114,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 		String user1PrincipalId = getPrincipalIdForName("user1");
 		
 		// this document type has a group responsibility
-		WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
+		WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "EmailTestWorkgroupDocType");
 		doc.routeDocument("");
 		
 		ActionListFilter actionListFilter = new ActionListFilter();

@@ -89,7 +89,7 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
             config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
             try {
             	BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config, isRunPostProcessorLogic());
-    			blanketApproveEngine.process(getRouteHeader().getRouteHeaderId(), null);
+    			blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
             } catch (Exception e) {
             	if (e instanceof RuntimeException) {
         		throw (RuntimeException)e;

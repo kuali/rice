@@ -26,15 +26,15 @@ public class PerformanceLogger {
     private static final org.apache.log4j.Logger LOG =
         org.apache.log4j.Logger.getLogger(PerformanceLogger.class);
     private long startTime;
-    private Long routeHeaderId;
+    private String documentId;
     
     public PerformanceLogger() {
         recordStartTime();
     }
     
-    public PerformanceLogger(Long routeHeaderId) {
+    public PerformanceLogger(String documentId) {
         this();
-        this.routeHeaderId = routeHeaderId;
+        this.documentId = documentId;
     }
     
     private void recordStartTime() {
@@ -50,8 +50,8 @@ public class PerformanceLogger {
 	        long endTime = System.currentTimeMillis();
 	        long totalTime = endTime - startTime;
 	        String logMessage = "Time: "+totalTime+" ms, ";
-	        if (routeHeaderId != null) {
-	            logMessage+="docId="+routeHeaderId+", ";
+	        if (documentId != null) {
+	            logMessage+="docId="+documentId+", ";
 	        }
 	        logMessage += message;
 	        if (terminalPoint) {

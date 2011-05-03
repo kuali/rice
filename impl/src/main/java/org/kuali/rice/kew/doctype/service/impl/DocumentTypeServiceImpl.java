@@ -82,13 +82,13 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	}
     	DocumentType documentType = fetchFromCacheById(documentTypeId);
     	if (documentType == null) {
-    		documentType = getDocumentTypeDAO().findByDocId(documentTypeId);
+    		documentType = getDocumentTypeDAO().findById(documentTypeId);
     		insertIntoCache(documentType);
     	}
         return documentType;
     }
 
-    public DocumentType findByDocumentId(Long documentId) {
+    public DocumentType findByDocumentId(String documentId) {
     	if (documentId == null) {
     		return null;
     	}
@@ -335,7 +335,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     		// which has modified the parent (and therefore made it non-current)
     		// be sure to get the parent doc type directly from the db and not from the cache
     		if (documentType.getDocTypeParentId() != null) {
-    			DocumentType parent = getDocumentTypeDAO().findByDocId(documentType.getDocTypeParentId());
+    			DocumentType parent = getDocumentTypeDAO().findById(documentType.getDocTypeParentId());
     			save(parent, false);
     			if ( LOG.isInfoEnabled() ) { 
     				LOG.info("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");

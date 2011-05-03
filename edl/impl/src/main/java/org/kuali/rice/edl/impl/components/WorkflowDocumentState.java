@@ -100,7 +100,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 				addActions(dom, documentState, validActions);
 				boolean isAnnotatable = isAnnotatable(validActions);
 				EDLXmlUtils.createTextElementOnParent(documentState, "annotatable", String.valueOf(isAnnotatable));
-				EDLXmlUtils.createTextElementOnParent(documentState, "docId", document.getRouteHeaderId().toString());
+				EDLXmlUtils.createTextElementOnParent(documentState, "docId", document.getDocumentId());
 				Element workflowDocumentStatus = EDLXmlUtils.getOrCreateChildElement(documentState, "workflowDocumentState", true);
 				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "status", document.getStatusDisplayValue());
 				EDLXmlUtils.createTextElementOnParent(workflowDocumentStatus, "createDate", RiceConstants.getDefaultDateAndTimeFormat().format(document.getDateCreated()));
@@ -112,7 +112,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 					EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames[i]);
 				    }
 				}
-				String[] currentNodeNames = info.getCurrentNodeNames(document.getRouteHeaderId());
+				String[] currentNodeNames = info.getCurrentNodeNames(document.getDocumentId());
 				for (String currentNodeName : currentNodeNames) {
 				    EDLXmlUtils.createTextElementOnParent(documentState, "currentNodeName", currentNodeName);
 				}

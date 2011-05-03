@@ -37,11 +37,11 @@ public class ClearFYIActionTest extends KEWTestCase {
     }
 
     @Test public void testSavedDocumentAdhocRequest() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
         doc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "annotation1", getPrincipalIdForName("dewey"), "respDesc1", false);
         String userId = getPrincipalIdForName("dewey");
-        doc = new WorkflowDocument(userId, doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(userId, doc.getDocumentId());
         assertTrue("FYI should be requested of user " + userId, doc.isFYIRequested());
         try {
             doc.clearFYI();
@@ -51,11 +51,11 @@ public class ClearFYIActionTest extends KEWTestCase {
         assertTrue("Document should be " + getSavedStatusDisplayValue(), doc.stateIsSaved());
 
         String workgroupUserId = getPrincipalIdForName("dewey");
-        doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
+        doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
         doc.saveDocument("");
 
         doc.adHocRouteDocumentToGroup(KEWConstants.ACTION_REQUEST_FYI_REQ, "annotation1", getGroupIdForName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT"), "respDesc1", false);
-        doc = new WorkflowDocument(workgroupUserId, doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(workgroupUserId, doc.getDocumentId());
         assertTrue("FYI should be requested of user " + workgroupUserId, doc.isFYIRequested());
         try {
             doc.clearFYI();

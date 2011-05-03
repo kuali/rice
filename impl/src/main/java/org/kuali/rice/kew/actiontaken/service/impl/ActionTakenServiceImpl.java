@@ -71,7 +71,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         for (String id : principalIds)
         {
             List<ActionTakenValue> actionsTakenByUser =
-                getActionTakenDAO().findByRouteHeaderIdWorkflowId(actionRequest.getRouteHeaderId(), id );
+                getActionTakenDAO().findByDocumentIdWorkflowId(actionRequest.getDocumentId(), id );
             if (simulatedActionsTaken != null) {
                 for (ActionTakenValue simulatedAction : simulatedActionsTaken)
                 {
@@ -95,24 +95,24 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return foundActionTaken;
     }
 
-    public Collection findByDocIdAndAction(Long docId, String action) {
+    public Collection findByDocIdAndAction(String docId, String action) {
         return getActionTakenDAO().findByDocIdAndAction(docId, action);
     }
 
-    public Collection<ActionTakenValue> findByRouteHeaderId(Long routeHeaderId) {
-        return getActionTakenDAO().findByRouteHeaderId(routeHeaderId);
+    public Collection<ActionTakenValue> findByDocumentId(String documentId) {
+        return getActionTakenDAO().findByDocumentId(documentId);
     }
 
-    public List findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId) {
-        return getActionTakenDAO().findByRouteHeaderIdWorkflowId(routeHeaderId, workflowId);
+    public List findByDocumentIdWorkflowId(String documentId, String workflowId) {
+        return getActionTakenDAO().findByDocumentIdWorkflowId(documentId, workflowId);
     }
 
-    public Collection getActionsTaken(Long routeHeaderId) {
-        return getActionTakenDAO().findByRouteHeaderId(routeHeaderId);
+    public Collection getActionsTaken(String documentId) {
+        return getActionTakenDAO().findByDocumentId(documentId);
     }
 
-    public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
-        return getActionTakenDAO().findByRouteHeaderIdIgnoreCurrentInd(routeHeaderId);
+    public List findByDocumentIdIgnoreCurrentInd(String documentId) {
+        return getActionTakenDAO().findByDocumentIdIgnoreCurrentInd(documentId);
     }
 
     public void saveActionTaken(ActionTakenValue actionTaken) {
@@ -131,19 +131,19 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         this.actionTakenDAO = actionTakenDAO;
     }
 
-    public void deleteByRouteHeaderId(Long routeHeaderId){
-        actionTakenDAO.deleteByRouteHeaderId(routeHeaderId);
+    public void deleteByDocumentId(String documentId){
+        actionTakenDAO.deleteByDocumentId(documentId);
     }
 
     public void validateActionTaken(ActionTakenValue actionTaken){
         LOG.debug("Enter validateActionTaken(..)");
         List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
 
-        Long routeHeaderId = actionTaken.getRouteHeaderId();
-        if(routeHeaderId == null){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken routeheaderid null.", "actiontaken.routeheaderid.empty", actionTaken.getActionTakenId().toString()));
-        } else if(getRouteHeaderService().getRouteHeader(routeHeaderId) == null){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken routeheaderid invalid.", "actiontaken.routeheaderid.invalid", actionTaken.getActionTakenId().toString()));
+        String documentId = actionTaken.getDocumentId();
+        if(documentId == null){
+            errors.add(new WorkflowServiceErrorImpl("ActionTaken documentid null.", "actiontaken.documentid.empty", actionTaken.getActionTakenId().toString()));
+        } else if(getRouteHeaderService().getRouteHeader(documentId) == null){
+            errors.add(new WorkflowServiceErrorImpl("ActionTaken documentid invalid.", "actiontaken.documentid.invalid", actionTaken.getActionTakenId().toString()));
         }
 
         String principalId = actionTaken.getPrincipalId();
@@ -174,7 +174,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         }
     }
 
-    public boolean hasUserTakenAction(String principalId, Long documentId) {
+    public boolean hasUserTakenAction(String principalId, String documentId) {
     	return getActionTakenDAO().hasUserTakenAction(principalId, documentId);
     }
 
@@ -182,10 +182,10 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 
-    public Timestamp getLastApprovedDate(Long routeHeaderId)
+    public Timestamp getLastApprovedDate(String documentId)
     {
     	Timestamp dateLastApproved = null;
-    	Collection<ActionTakenValue> actionsTaken= getActionTakenDAO().findByDocIdAndAction(routeHeaderId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
+    	Collection<ActionTakenValue> actionsTaken= getActionTakenDAO().findByDocIdAndAction(documentId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
         for (ActionTakenValue actionTaken : actionsTaken)
         {
             // search for the most recent approval action
@@ -194,7 +194,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
                 dateLastApproved = actionTaken.getActionDate();
             }
         }
-    	LOG.info("Exit getLastApprovedDate("+routeHeaderId+") "+dateLastApproved);
+    	LOG.info("Exit getLastApprovedDate("+documentId+") "+dateLastApproved);
     	return dateLastApproved;
     }
 

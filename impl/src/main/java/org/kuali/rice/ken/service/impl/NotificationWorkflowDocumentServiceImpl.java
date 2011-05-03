@@ -52,13 +52,13 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
      * passed in user id.
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#createAndAdHocRouteNotificationWorkflowDocument(org.kuali.rice.ken.bo.NotificationMessageDelivery, java.lang.String, java.lang.String, java.lang.String)
      */
-    public Long createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId,
+    public String createAndAdHocRouteNotificationWorkflowDocument(NotificationMessageDelivery messageDelivery, String initiatorUserId,
 	    String recipientUserId, String annotation) throws WorkflowException {
 	// obtain a workflow user object first
 	//WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
 
 	// now construct the workflow document, which will interact with workflow
-	NotificationWorkflowDocument document = new NotificationWorkflowDocument(initiatorUserId);
+	NotificationWorkflowDocument document = NotificationWorkflowDocument.createNotificationDocument(initiatorUserId);
 
 	// this is our loose foreign key to our message delivery record in notification
 	document.getRouteHeader().setAppDocId(messageDelivery.getId().toString());
@@ -96,22 +96,22 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
 	// now actually route it along its way
 	document.routeDocument(annotation);
 
-	return document.getRouteHeaderId();
+	return document.getDocumentId();
     }
 
     /**
      * This service method is implemented by constructing a NotificationWorkflowDocument using the pre-existing document Id
      * that is passed in.
-     * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#findNotificationWorkflowDocumentByDocumentId(java.lang.String, java.lang.Long)
+     * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#findNotificationWorkflowDocumentByDocumentId(java.lang.String, java.lang.String)
      */
-    public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, Long workflowDocumentId) throws WorkflowException {
+    public NotificationWorkflowDocument getNotificationWorkflowDocumentByDocumentId(String initiatorUserId, String workflowDocumentId) throws WorkflowException {
 	// construct the workflow id value object
 	//WorkflowIdDTO initiator = new WorkflowIdDTO(initiatorUserId);
 
 
 	// now return the actual document instance
 	// this handles going out and getting the workflow document
-	return new NotificationWorkflowDocument(initiatorUserId, workflowDocumentId);
+	return NotificationWorkflowDocument.loadNotificationDocument(initiatorUserId, workflowDocumentId);
     }
 
     /**
@@ -127,7 +127,7 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
                 workflowDocument.logDocumentAction(annotation);
                 workflowDocument.clearFYI();
             } else {
-                throw new WorkflowException("Invalid notification action request in workflow document (" + workflowDocument.getRouteHeaderId().toString() + ") was encountered.  Should be either an acknowledge or fyi and was not.");
+                throw new WorkflowException("Invalid notification action request in workflow document (" + workflowDocument.getDocumentId() + ") was encountered.  Should be either an acknowledge or fyi and was not.");
             }
         }
     }
@@ -136,6 +136,6 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
      * @see org.kuali.rice.ken.service.NotificationWorkflowDocumentService#terminateWorkflowDocument(org.kuali.rice.kew.service.WorkflowDocument)
      */
     public void terminateWorkflowDocument(WorkflowDocument document) throws WorkflowException {
-        document.superUserCancel("terminating document: routeHeaderId=" + document.getRouteHeaderId() + ", appDocId=" + document.getAppDocId());
+        document.superUserCancel("terminating document: documentId=" + document.getDocumentId() + ", appDocId=" + document.getAppDocId());
     }
 }

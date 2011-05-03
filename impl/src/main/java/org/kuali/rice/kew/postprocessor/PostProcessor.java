@@ -80,6 +80,6 @@ public interface PostProcessor {
      * 
      * @return a List of document ids to lock prior to execution of the workflow engine
      */
-    public List<Long> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception;
+    public List<String> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception;
     
 }

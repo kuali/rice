@@ -63,7 +63,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         mvo.setProducer("kew@localhost");
         mvo.setTitle(actionItem.getDocLabel() + " - " + actionItem.getDocName() + " - " + actionItem.getDocTitle());
         if (StringUtils.isNotBlank(actionItem.getDocHandlerURL())) {
-        	mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getRouteHeaderId());
+        	mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getDocumentId());
         }
         mvo.setOriginId(String.valueOf(actionItem.getActionItemId()));
         try {

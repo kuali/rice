@@ -58,10 +58,10 @@ public class AnnotationComponent implements EDLModelComponent {
             actionsTaken = document.getActionsTaken();
         } catch (WorkflowException we) {
             try {
-                LOG.error("Error retrieving actions taken on document " + document.getRouteHeaderId() + " (" + document.getDocumentType() + ")", we);
+                LOG.error("Error retrieving actions taken on document " + document.getDocumentId() + " (" + document.getDocumentType() + ")", we);
             } catch (WorkflowException we2) {
                 // give me a break :/
-                LOG.error("Error retrieving route header id from document");
+                LOG.error("Error retrieving document id from document");
             }
             return;
         }

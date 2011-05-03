@@ -170,7 +170,7 @@
 			   <permission name="Log In" namespace="KUALI">
 			     <qualification name="principalId">${document.initiatorPrincipalId}</qualification>
 			     <qualification name="documentTypeName">${document.docTypeName}</qualification>
-			     <qualification name="documentId">${document.routeHeaderId}</qualification>
+			     <qualification name="documentId">${document.documentId}</qualification>
 			     <qualification name="dateCreated">${document.dateCreated}</qualification>
 			     <qualification name="fyiRequested">${document.fyiRequested}</qualification>
 			   </permission>

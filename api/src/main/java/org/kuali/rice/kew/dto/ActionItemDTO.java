@@ -31,7 +31,7 @@ public class ActionItemDTO implements Serializable {
     private Timestamp dateAssigned;
     private String actionRequestCd;
     private Long actionRequestId;
-    private Long routeHeaderId;
+    private String documentId;
     private String docTitle;
     private String docLabel;
     private String docHandlerURL;
@@ -87,11 +87,11 @@ public class ActionItemDTO implements Serializable {
     public void setActionRequestId(Long actionRequestId) {
         this.actionRequestId = actionRequestId;
     }
-    public Long getRouteHeaderId() {
-        return this.routeHeaderId;
+    public String getDocumentId() {
+        return this.documentId;
     }
-    public void setRouteHeaderId(Long routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
     public String getDocTitle() {
         return this.docTitle;

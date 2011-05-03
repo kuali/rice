@@ -48,40 +48,40 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     private DocumentRouteHeaderDAO routeHeaderDAO;
     private SearchableAttributeDAO searchableAttributeDAO;
 
-    public DocumentRouteHeaderValue getRouteHeader(Long routeHeaderId) {
-        return getRouteHeaderDAO().findRouteHeader(routeHeaderId);
+    public DocumentRouteHeaderValue getRouteHeader(String documentId) {
+        return getRouteHeaderDAO().findRouteHeader(documentId);
     }
 
-    public DocumentRouteHeaderValue getRouteHeader(Long routeHeaderId, boolean clearCache) {
-    	return getRouteHeaderDAO().findRouteHeader(routeHeaderId, clearCache);
+    public DocumentRouteHeaderValue getRouteHeader(String documentId, boolean clearCache) {
+    	return getRouteHeaderDAO().findRouteHeader(documentId, clearCache);
     }
 
-    public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<Long> routeHeaderIds) {
-    	return getRouteHeaderDAO().findRouteHeaders(routeHeaderIds);
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<String> documentIds) {
+    	return getRouteHeaderDAO().findRouteHeaders(documentIds);
     }
     
-    public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache) {
-    	return getRouteHeaderDAO().findRouteHeaders(routeHeaderIds, clearCache);
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<String> documentIds, boolean clearCache) {
+    	return getRouteHeaderDAO().findRouteHeaders(documentIds, clearCache);
     }
     
-    public Map<Long,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems) {
-    	Map<Long,DocumentRouteHeaderValue> routeHeaders = new HashMap<Long,DocumentRouteHeaderValue>();
-    	List<Long> routeHeaderIds = new ArrayList<Long>(actionItems.size());
+    public Map<String,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems) {
+    	Map<String,DocumentRouteHeaderValue> routeHeaders = new HashMap<String,DocumentRouteHeaderValue>();
+    	List<String> documentIds = new ArrayList<String>(actionItems.size());
     	for (ActionItem actionItem : actionItems) {
-    		routeHeaderIds.add(actionItem.getRouteHeaderId());
+    		documentIds.add(actionItem.getDocumentId());
     	}
-    	Collection<DocumentRouteHeaderValue> actionItemRouteHeaders = getRouteHeaders(routeHeaderIds);
+    	Collection<DocumentRouteHeaderValue> actionItemRouteHeaders = getRouteHeaders(documentIds);
     	if (actionItemRouteHeaders != null) {
     		for (DocumentRouteHeaderValue routeHeader : actionItemRouteHeaders) {
-    			routeHeaders.put(routeHeader.getRouteHeaderId(), routeHeader);
+    			routeHeaders.put(routeHeader.getDocumentId(), routeHeader);
     		}
     	}
     	return routeHeaders;
     }
     
-    public void lockRouteHeader(Long routeHeaderId, boolean wait) {
-        getRouteHeaderDAO().lockRouteHeader(routeHeaderId, wait);
-        LOG.debug("Successfully locked document [docId=" + routeHeaderId + "]");
+    public void lockRouteHeader(String documentId, boolean wait) {
+        getRouteHeaderDAO().lockRouteHeader(documentId, wait);
+        LOG.debug("Successfully locked document [docId=" + documentId + "]");
     }
 
     public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {
@@ -92,20 +92,20 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         getRouteHeaderDAO().deleteRouteHeader(routeHeader);
     }
 
-    public Long getNextRouteHeaderId() {
-        return getRouteHeaderDAO().getNextRouteHeaderId();
+    public String getNextDocumentId() {
+        return getRouteHeaderDAO().getNextDocumentId();
     }
 
     public Collection findPendingByResponsibilityIds(Set responsibilityIds) {
         return getRouteHeaderDAO().findPendingByResponsibilityIds(responsibilityIds);
     }
 
-    public void clearRouteHeaderSearchValues(Long routeHeaderId) {
-        getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeaderId);
+    public void clearRouteHeaderSearchValues(String documentId) {
+        getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
     }
     
-    public void updateRouteHeaderSearchValues(Long routeHeaderId, List<SearchableAttributeValue> searchAttributes) {
-    	getRouteHeaderDAO().clearRouteHeaderSearchValues(routeHeaderId);
+    public void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes) {
+    	getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
     	for (SearchableAttributeValue searchAttribute : searchAttributes) {
     		getRouteHeaderDAO().save(searchAttribute);
     	}
@@ -161,30 +161,30 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         }
     }
 
-    public String getServiceNamespaceByDocumentId(Long documentId) {
+    public String getServiceNamespaceByDocumentId(String documentId) {
     	return getRouteHeaderDAO().getServiceNamespaceByDocumentId(documentId);
     }
 
-    public DocumentRouteHeaderValueContent getContent(Long routeHeaderId) {
-    	if (routeHeaderId == null) {
+    public DocumentRouteHeaderValueContent getContent(String documentId) {
+    	if (documentId == null) {
     		return new DocumentRouteHeaderValueContent();
     	}
-    	DocumentRouteHeaderValueContent content = getRouteHeaderDAO().getContent(routeHeaderId);
+    	DocumentRouteHeaderValueContent content = getRouteHeaderDAO().getContent(documentId);
     	if (content == null) {
-    		content = new DocumentRouteHeaderValueContent(routeHeaderId);
+    		content = new DocumentRouteHeaderValueContent(documentId);
     	}
     	return content;
     }
 
-    public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
+    public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue) {
 	return getRouteHeaderDAO().hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue);
     }
 
-    public String getDocumentStatus(Long documentId) {
+    public String getDocumentStatus(String documentId) {
     	return getRouteHeaderDAO().getDocumentStatus(documentId);
     }
     
-    public String getAppDocId(Long documentId) {
+    public String getAppDocId(String documentId) {
  	 	if (documentId == null) {
  	 		return null;
  	 	}
@@ -200,22 +200,22 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     }
 
 	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 		return getSearchableAttributeDAO().getSearchableAttributeDateTimeValuesByKey(documentId, key);
 	}
 
 	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 		return getSearchableAttributeDAO().getSearchableAttributeFloatValuesByKey(documentId, key);
 	}
 
-	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
+	public List<Long> getSearchableAttributeLongValuesByKey(String documentId,
 			String key) {
 		return getSearchableAttributeDAO().getSearchableAttributeLongValuesByKey(documentId, key);
 	}
 
 	public List<String> getSearchableAttributeStringValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 
 		return getSearchableAttributeDAO().getSearchableAttributeStringValuesByKey(documentId, key);
 	}

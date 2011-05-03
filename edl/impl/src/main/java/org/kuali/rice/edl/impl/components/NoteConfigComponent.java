@@ -102,7 +102,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 		try {
 			//establish notes depends on a document id being set on noteform or nothing happens
 			if (document != null) {
-				noteForm.setDocId(document.getRouteHeaderId());
+				noteForm.setDocId(document.getDocumentId());
 			}
 			establishNotes(noteForm, edlContext, dom);
 			addNotes(dom, noteForm);
@@ -147,7 +147,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 
     private void retrieveNoteList(NoteForm form, EDLContext edlContext) throws Exception {
         if (form.getDocId() != null) {
-            List allNotes = getNoteService().getNotesByRouteHeaderId(form.getDocId());
+            List allNotes = getNoteService().getNotesByDocumentId(form.getDocId());
             CustomNoteAttribute customNoteAttribute = null;
             DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(form.getDocId());
             boolean canAddNotes = false;
@@ -253,13 +253,13 @@ public class NoteConfigComponent implements EDLModelComponent {
         } else {
             noteToSave = new Note();
             noteToSave.setNoteId(null);
-            noteToSave.setRouteHeaderId(form.getDocId());
+            noteToSave.setDocumentId(form.getDocId());
             noteToSave.setNoteCreateDate(new Timestamp((new Date()).getTime()));
             noteToSave.setNoteAuthorWorkflowId(edlContext.getUserSession().getPrincipalId());
             noteToSave.setNoteText(form.getAddText());
         }
         CustomNoteAttribute customNoteAttribute = null;
-        DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteToSave.getRouteHeaderId());
+        DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteToSave.getDocumentId());
         boolean canEditNote = false;
         boolean canAddNotes = false;
         if (routeHeader != null) {
@@ -632,7 +632,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 		private Long idInEdit;
 		private Note note;
 		private String noteText;
-		private Long docId;
+		private String docId;
 		private String methodToCall;
 		private FileItem file;
 
@@ -775,11 +775,11 @@ public class NoteConfigComponent implements EDLModelComponent {
 			this.sortOrder = sortOrder;
 		}
 
-		public Long getDocId() {
+		public String getDocId() {
 			return docId;
 		}
 
-		public void setDocId(Long docId) {
+		public void setDocId(String docId) {
 			this.docId = docId;
 		}
 

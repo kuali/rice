@@ -353,7 +353,7 @@ public final class MaintenanceUtils {
             // createWorkflowDocument call - the throw itself causes transaction rollback problems to
             // occur, even though the exception would be caught here
             if (getWorkflowDocumentService().workflowDocumentExists(blockingDocId)) {
-                lockedDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(blockingDocId), GlobalVariables.getUserSession().getPerson());
+                lockedDocument = getWorkflowDocumentService().loadWorkflowDocument(blockingDocId, GlobalVariables.getUserSession().getPerson());
             }
         } catch (Exception ex) {
             // clean up the lock and notify the admins

@@ -64,27 +64,26 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		validateRequiredAttributesAgainstReceived(qualification);
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();		
 		if(qualification!=null && !qualification.isEmpty()){
-			String documentNumber = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
-			if (StringUtils.isNotBlank(documentNumber)) {
-				Long documentNumberLong = Long.parseLong(documentNumber);
+			String documentId = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
+			if (StringUtils.isNotBlank(documentId)) {
 				try{
 					if (INITIATOR_ROLE_NAME.equals(roleName)) {
-					    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong);
+					    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentId);
 	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
 					} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
-					    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentNumberLong, true);
+					    List<String> ids = workflowInfo.getPrincipalIdsInRouteLog(documentId, true);
 					    for ( String id : ids ) {
 					    	if ( StringUtils.isNotBlank(id) ) {
 					    		members.add( new RoleMembershipInfo(null/*roleId*/, null, id, Role.PRINCIPAL_MEMBER_TYPE, null) );
 					    	}
 					    }
 					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
-					    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong);
+					    String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentId);
 	                    members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
 					}
 				} catch(WorkflowException wex){
 					throw new RuntimeException(
-					"Error in getting principal Ids in route log for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
+					"Error in getting principal Ids in route log for document id: "+ documentId +" :"+wex.getLocalizedMessage(),wex);
 				}
 			}
 		}
@@ -100,21 +99,18 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		validateRequiredAttributesAgainstReceived(qualification);
         boolean isUserInRouteLog = false;
 		if(qualification!=null && !qualification.isEmpty()){
-			String documentNumber = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
+			String documentId = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
 			try {
-				Long documentNumberLong = Long.parseLong(documentNumber);
 				if (INITIATOR_ROLE_NAME.equals(roleName)){
-					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentNumberLong));
+					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentId));
 				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
-					isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentNumberLong, principalId, true);
+					isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentId, principalId, true);
 				} else if(ROUTER_ROLE_NAME.equals(roleName)){
-					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentNumberLong));
+					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentId));
 				}
-			} catch (NumberFormatException e) {
-				throw new RuntimeException("Invalid (non-numeric) document number: "+documentNumber,e);
 			} catch (WorkflowException wex) {
-				throw new RuntimeException("Error in determining whether the principal Id: "+principalId+" is in route log " +
-						"for document number: "+documentNumber+" :"+wex.getLocalizedMessage(),wex);
+				throw new RuntimeException("Error in determining whether the principal Id: " + principalId + " is in route log " +
+						"for document id: " + documentId + " :"+wex.getLocalizedMessage(),wex);
 			}
 		}
 		return isUserInRouteLog;

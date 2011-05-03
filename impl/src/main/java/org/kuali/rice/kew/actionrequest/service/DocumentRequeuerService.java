@@ -23,6 +23,6 @@ package org.kuali.rice.kew.actionrequest.service;
  */
 public interface DocumentRequeuerService {
 
-	public void requeueDocument(Long documentId);
+	public void requeueDocument(String documentId);
 	
 }

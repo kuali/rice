@@ -27,7 +27,7 @@ import java.util.Set;
 public final class KEWPropertyConstants {
 
     // Constants used by Document Search and the document search results
-    public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID = "routeHeaderId";
+    public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID = "documentId";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL = "docTypeLabel";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE = "documentTitle";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC = "docRouteStatusCodeDesc";
@@ -52,7 +52,6 @@ public final class KEWPropertyConstants {
     public static final String ROUTE_NODE_INSTANCE_ID = "routeNodeInstanceId";
     public static final String NODE_INSTANCE_ID = "nodeInstanceId";
     public static final String DOCUMENT_ID = "documentId";
-    public static final String ROUTE_HEADER_ID = "routeHeaderId";
     public static final String ROUTE_NODE_NAME = "routeNodeName";
     public static final String PROCESS_ID = "processId";
     public static final String COMPLETE = "complete";
@@ -63,7 +62,7 @@ public final class KEWPropertyConstants {
     
     public static final Set<String> DOC_SEARCH_RESULT_PROPERTY_NAME_SET = new HashSet<String>();
     static {
-        DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID);
+        DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_TYPE_LABEL);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_TITLE);
         DOC_SEARCH_RESULT_PROPERTY_NAME_SET.add(DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_STATUS_DESC);

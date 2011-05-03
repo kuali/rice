@@ -66,24 +66,24 @@ public class VariablesTest extends KEWTestCase {
     }
 
     @Test public void testVariables() throws Exception {
-        WorkflowDocument doc = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "VariablesTest");
+        WorkflowDocument doc = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "VariablesTest");
         doc.routeDocument("");
 
         //rock some preapprovals and other actions...
-        doc = new WorkflowDocument(getPrincipalIdForName("ewestfal"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), doc.getDocumentId());
         dumpInfoAboutDoc(doc);
         doc.setVariable("myexcellentvariable", "righton");
         doc.approve("");
         assertEquals("startedVariableValue", doc.getVariable("started"));
         assertEquals("startedVariableValue", doc.getVariable("copiedVar"));
 
-        doc = new WorkflowDocument(getPrincipalIdForName("user2"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), doc.getDocumentId());
         assertEquals("righton", doc.getVariable("myexcellentvariable"));
         doc.setVariable("vartwo", "two");
         doc.setVariable("myexcellentvariable", "ichangedit");
         doc.acknowledge("");
 
-        doc = new WorkflowDocument(getPrincipalIdForName("user3"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user3"), doc.getDocumentId());
         assertEquals("ichangedit", doc.getVariable("myexcellentvariable"));
         assertEquals("two", doc.getVariable("vartwo"));
         doc.setVariable("another", "another");
@@ -91,7 +91,7 @@ public class VariablesTest extends KEWTestCase {
         doc.complete("");
 
         //approve as the person the doc is routed to so we can move the documen on and hopefully to final
-        doc = new WorkflowDocument(getPrincipalIdForName("user1"), doc.getRouteHeaderId());
+        doc = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), doc.getDocumentId());
         assertEquals("ichangedit", doc.getVariable("myexcellentvariable"));
         assertEquals(null, doc.getVariable("vartwo"));
         assertEquals("another", doc.getVariable("another"));

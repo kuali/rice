@@ -112,7 +112,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
 
         this.setActionTaken();
 
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
 
         LOG.debug("Super User Delegation Action on action request: " + annotation);
         KimPrincipalRecipient superUserRecipient = null;

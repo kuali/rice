@@ -34,7 +34,7 @@ public class RouteLogForm extends KualiForm {
 
     private static final long serialVersionUID = -3997667167734868281L;
     private String methodToCall = "";
-    private String routeHeaderId;
+    private String documentId;
     private List rootRequests = new ArrayList();
     private int pendingActionRequestCount;
     private List futureRootRequests = new ArrayList();
@@ -89,11 +89,11 @@ public class RouteLogForm extends KualiForm {
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
     }
-    public String getRouteHeaderId() {
-        return routeHeaderId;
+    public String getDocumentId() {
+        return documentId;
     }
-    public void setRouteHeaderId(String routeHeaderId) {
-        this.routeHeaderId = routeHeaderId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public int getPendingActionRequestCount() {
@@ -161,8 +161,8 @@ public class RouteLogForm extends KualiForm {
 		Properties parameters = new Properties();
         parameters.put("showFuture", isShowFuture());
         parameters.put("showNotes", isShowNotes());
-		if (getRouteHeaderId() != null) {
-			parameters.put("routeHeaderId", getRouteHeaderId());
+		if (getDocumentId() != null) {
+			parameters.put("documentId", getDocumentId());
 		}
 		if (getDocId() != null) {
 			parameters.put("docId", getDocId());

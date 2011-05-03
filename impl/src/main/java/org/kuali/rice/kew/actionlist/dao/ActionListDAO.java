@@ -33,7 +33,7 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
  */
 public interface ActionListDAO {
     public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
-    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId);
+    public Collection<ActionItem> getActionListForSingleDocument(String documentId);
     public int getCount(String workflowId);
 
     /**
@@ -47,6 +47,6 @@ public interface ActionListDAO {
     public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
     public void removeOutboxItems(String principalId, List<String> outboxItems);
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
-    public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId);
-    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId);
+    public OutboxItemActionListExtension getOutboxByDocumentId(String documentId);
+    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(String documentId, String userId);
 }

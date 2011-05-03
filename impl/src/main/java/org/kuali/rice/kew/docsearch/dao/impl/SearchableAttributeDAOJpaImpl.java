@@ -48,11 +48,11 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	 *      java.lang.String)
 	 */
 	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 
 		List<Timestamp> lRet = null;
 		Query query = entityManager.createNamedQuery("SearchableAttributeDateTimeValue.FindByKey");
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeDateTimeValue> results = query.getResultList();
         if (!results.isEmpty()) {
@@ -71,10 +71,10 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	 *      java.lang.String)
 	 */
 	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 		List<BigDecimal> lRet = null;
 		Query query = entityManager.createNamedQuery("SearchableAttributeFloatValue.FindByKey");
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeFloatValue> results = query.getResultList();
         if (!results.isEmpty()) {
@@ -92,11 +92,11 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeLongValuesByKey(java.lang.Long,
 	 *      java.lang.String)
 	 */
-	public List<Long> getSearchableAttributeLongValuesByKey(Long documentId,
+	public List<Long> getSearchableAttributeLongValuesByKey(String documentId,
 			String key) {
 		List<Long> lRet = null;
 		Query query = entityManager.createNamedQuery("SearchableAttributeLongValue.FindByKey");
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeLongValue> results = query.getResultList();
         if (!results.isEmpty()) {
@@ -115,10 +115,10 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	 *      java.lang.String)
 	 */
 	public List<String> getSearchableAttributeStringValuesByKey(
-			Long documentId, String key) {
+			String documentId, String key) {
 		List<String> lRet = null;
 		Query query = entityManager.createNamedQuery("SearchableAttributeStringValue.FindByKey");
-        query.setParameter("routeHeaderId", documentId);
+        query.setParameter("documentId", documentId);
         query.setParameter("searchableAttributeKey", key);
         List<SearchableAttributeStringValue> results = query.getResultList();
         if (!results.isEmpty()) {

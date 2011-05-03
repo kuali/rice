@@ -52,7 +52,7 @@ public class DocumentContentTest extends KEWTestCase {
         String emptyContent1 = startContent+endContent;
         String emptyContent2 = "<"+DOCUMENT_CONTENT+"/>";
         
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
         
         // test no content prior to server creation
         assertEquals("Content should be empty.", "", document.getApplicationContent());
@@ -62,23 +62,23 @@ public class DocumentContentTest extends KEWTestCase {
         assertTrue("Invalid content conversion.", fullContent.equals(emptyContent1) || fullContent.equals(emptyContent2));
         
         // test content after server creation
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
         // this will create the document on the server
         document.saveRoutingData();
-        assertNotNull(document.getRouteHeaderId());
-        // the route header id on the document content should be there now
-        assertEquals("Incorrect document id.", document.getRouteHeaderId(), document.getDocumentContent().getRouteHeaderId());
+        assertNotNull(document.getDocumentId());
+        // the document id on the document content should be there now
+        assertEquals("Incorrect document id.", document.getDocumentId(), document.getDocumentContent().getDocumentId());
         assertEquals("Content should be empty.", "", document.getApplicationContent());
         assertEquals("Content should be empty.", "", document.getAttributeContent());
         assertEquals("Content should be empty.", "", document.getDocumentContent().getSearchableContent());
         fullContent = document.getDocumentContent().getFullContent();
         assertTrue("Invalid content conversion.", fullContent.equals(emptyContent1) || fullContent.equals(emptyContent2));
         // verify the content on the actual document stored in the database
-        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
         assertTrue("Invalid initial content.", routeHeader.getDocContent().equals(emptyContent1) || routeHeader.getDocContent().equals(emptyContent2));
         
         // test simple case, no attributes
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
         String attributeContent = "<attribute1><id value=\"3\"/></attribute1>";
         String searchableContent = "<searchable1><data>hello</data></searchable1>";
         DocumentContentDTO contentVO = document.getDocumentContent();
@@ -86,7 +86,7 @@ public class DocumentContentTest extends KEWTestCase {
         contentVO.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
         document.saveRoutingData();
         // now reload the document
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         String expectedContent = startContent+constructContent(ATTRIBUTE_CONTENT, attributeContent)+constructContent(SEARCHABLE_CONTENT, searchableContent)+endContent;
         fullContent = document.getDocumentContent().getFullContent();
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(expectedContent), StringUtils.deleteWhitespace(fullContent));
@@ -111,7 +111,7 @@ public class DocumentContentTest extends KEWTestCase {
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(expectedContent), StringUtils.deleteWhitespace(fullContent));
 
         // let's reload the document and try appending a couple of attributes for good measure, this will test appending to existing content on non-materialized document content
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         document.addAttributeDefinition(attributeDefinition);
         document.addAttributeDefinition(attributeDefinition);
         document.saveRoutingData();
@@ -136,12 +136,12 @@ public class DocumentContentTest extends KEWTestCase {
         // like <myRadContent>abcd</myRadContent>, when converted to the new form, it should come out like
         // <documentContent><applicationContent><myRadContent>abcd</myRadContent></applicationContent></documentContent>
         String myRadContent = "<myRadContent>abcd</myRadContent>";
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
-        DocumentRouteHeaderValue documentValue = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+        DocumentRouteHeaderValue documentValue = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
         documentValue.setDocContent(myRadContent);
         KEWServiceLocator.getRouteHeaderService().saveRouteHeader(documentValue);
         // reload the client document and check that the XML has been auto-magically converted
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         String expected = startContent+constructContent(APPLICATION_CONTENT, myRadContent)+endContent;
         fullContent = document.getDocumentContent().getFullContent();
         assertEquals("Backward compatibility failure.", StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(fullContent));
@@ -158,7 +158,7 @@ public class DocumentContentTest extends KEWTestCase {
      * Tests that the lazy loading of document content is functioning properly.
      */
     @Test public void testLazyContentLoading() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
         assertFalse("Content should not be loaded yet.", isContentLoaded(document));
         
         // save the document, the content should still not be loaded
@@ -172,7 +172,7 @@ public class DocumentContentTest extends KEWTestCase {
         assertTrue("Content should now be loaded.", isContentLoaded(document));
         
         // create a new document, try saving it, and make sure the content has not been loaded
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+        document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
         document.saveDocument("");
         assertFalse("Content should not be loaded yet.", isContentLoaded(document));
         
@@ -183,7 +183,7 @@ public class DocumentContentTest extends KEWTestCase {
         document.saveRoutingData();
         
         // reload the document
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertFalse("Content should not be loaded yet.", isContentLoaded(document));
 
         XMLAssert.assertXMLEqual("Invalid application content", applicationContent, document.getApplicationContent());
@@ -203,14 +203,14 @@ public class DocumentContentTest extends KEWTestCase {
      * calls.
      */
     @Test public void testDocumentContentConsistency() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
     	String appContent = "<app>content</app>";
     	document.setApplicationContent(appContent);
     	document.saveRoutingData();
         XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());
     	
     	// load the document and modify the content
-    	WorkflowDocument document2 = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	WorkflowDocument document2 = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	XMLAssert.assertXMLEqual(appContent, document2.getApplicationContent());
     	String appContent2 = "<app>content2</app>";
     	document2.setApplicationContent(appContent2);
@@ -225,7 +225,7 @@ public class DocumentContentTest extends KEWTestCase {
     	
     	// also verify that just setting the content, but not saving it, doesn't get persisted
     	document2.setApplicationContent("<bad>content</bad>");
-    	document2 = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document2.getRouteHeaderId());
+    	document2 = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document2.getDocumentId());
     	XMLAssert.assertXMLEqual(appContent2, document.getApplicationContent());
     }
     
@@ -233,11 +233,11 @@ public class DocumentContentTest extends KEWTestCase {
      * Tests modification of the DocumentContentVO object directly.
      */
     @Test public void testManualDocumentContentModification() throws Exception {
-    	WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+    	WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
     	document.saveRoutingData();
     	
     	// fetch it from WorkflowInfo
-    	DocumentContentDTO content = new WorkflowInfo().getDocumentContent(document.getRouteHeaderId());
+    	DocumentContentDTO content = new WorkflowInfo().getDocumentContent(document.getDocumentId());
     	assertTrue("Should contain default content, was " + content.getFullContent(), KEWConstants.DEFAULT_DOCUMENT_CONTENT.equals(content.getFullContent()) ||
     			KEWConstants.DEFAULT_DOCUMENT_CONTENT2.equals(content.getFullContent()));
     	
@@ -251,7 +251,7 @@ public class DocumentContentTest extends KEWTestCase {
     	XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());
     	
     	// fetch the document fresh and make sure the content is correct
-    	document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+    	document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
     	XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());
     	
     }

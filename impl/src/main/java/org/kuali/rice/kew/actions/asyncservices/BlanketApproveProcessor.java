@@ -37,17 +37,17 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
 	
-	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames) {
+	public void doBlanketApproveWork(String documentId, String principalId, Long actionTakenId, Set<String> nodeNames) {
 		doBlanketApproveWork(documentId, principalId, actionTakenId, nodeNames, false);
 	}
 
-	public void doBlanketApproveWork(Long documentId, String principalId, Long actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) {
+	public void doBlanketApproveWork(String documentId, String principalId, Long actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
 		KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, principal, "", nodeNames);
-		LOG.debug("Doing blanket approve work document " + document.getRouteHeaderId());
+		LOG.debug("Doing blanket approve work document " + document.getDocumentId());
 		try {
 			blanketApprove.performDeferredBlanketApproveWork(actionTaken);
 		} catch (Exception e) {
@@ -57,6 +57,6 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId));
 			searchableAttService.indexDocument(documentId);
 		}
-		LOG.debug("Work done and document requeued, document " + document.getRouteHeaderId());
+		LOG.debug("Work done and document requeued, document " + document.getDocumentId());
 	}
 }

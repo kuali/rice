@@ -63,7 +63,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 			Map<String, String[]> parameters) {
 		WebRuleUtils.validateRuleTemplateAndDocumentType(getOldRule(document), getNewRule(document), parameters);
 		WebRuleUtils.establishDefaultRuleValues(getNewRule(document));
-		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
+		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		
 		getNewRule(document).setPreviousVersionId(getOldRule(document).getRuleBaseValuesId());       
 
-		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
+		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 		super.processAfterEdit(document, parameters);
 	}
 

@@ -72,7 +72,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
     @Override
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {
     	DocumentRouteHeaderValue routeHeader = null;
-        if (actionItem.getRouteHeaderId() != null) {
+        if (actionItem.getDocumentId() != null) {
             routeHeader = super.getRouteHeader(actionItem);
         }
         if (routeHeader == null) {
@@ -84,15 +84,15 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
     }
 
     @Override
-    public Map<Long,DocumentRouteHeaderValue> getRouteHeaders(Collection<ActionItem> actionItems) {
-    	Map<Long,DocumentRouteHeaderValue> routeHeaders = super.getRouteHeaders(actionItems);
+    public Map<String,DocumentRouteHeaderValue> getRouteHeaders(Collection<ActionItem> actionItems) {
+    	Map<String,DocumentRouteHeaderValue> routeHeaders = super.getRouteHeaders(actionItems);
     	DocumentRouteHeaderValue routeHeader = null;
     	for (ActionItem actionItem : actionItems) {
-    		if (routeHeaders.get(actionItem.getRouteHeaderId()) == null) {
+    		if (routeHeaders.get(actionItem.getDocumentId()) == null) {
     			routeHeader = new DocumentRouteHeaderValue();
             	routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
             	routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
-            	routeHeaders.put(actionItem.getRouteHeaderId(), routeHeader);
+            	routeHeaders.put(actionItem.getDocumentId(), routeHeader);
     		}
     	}
     	return routeHeaders;

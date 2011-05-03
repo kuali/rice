@@ -44,14 +44,22 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
 
     private WorkflowDocument workflowDocument;
     
-    public KualiWorkflowDocumentImpl(String principalId, String documentType) throws WorkflowException {
-    	workflowDocument = new WorkflowDocument(principalId, documentType);
+    public static KualiWorkflowDocumentImpl createKualiDocumentImpl(String principalId, String documentType) throws WorkflowException {
+		return new KualiWorkflowDocumentImpl(principalId, documentType, null);
+	}
+    
+	public static KualiWorkflowDocumentImpl LoadKualiDocumentImpl(String principalId, String documentId) throws WorkflowException {
+		return new KualiWorkflowDocumentImpl(principalId, null, documentId);
+	}
+        
+    private KualiWorkflowDocumentImpl(String principalId, String documentType, String documentId) throws WorkflowException {
+        if (StringUtils.isNotBlank(documentType)) { 
+            workflowDocument = WorkflowDocument.createDocument(principalId, documentType);
+        } else if (StringUtils.isNotBlank(documentId)) {
+            workflowDocument = WorkflowDocument.loadDocument(principalId, documentId);
+    	}
     }
     
-    public KualiWorkflowDocumentImpl(String principalId, Long routeHeaderId) throws WorkflowException {
-        workflowDocument = new WorkflowDocument(principalId, routeHeaderId);
-    }
-
     // ########################
     // Document Content methods
     // ########################
@@ -143,8 +151,8 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         return workflowDocument.getRouteHeader();
     }
 
-    public Long getRouteHeaderId() throws WorkflowException {
-        return workflowDocument.getRouteHeaderId();
+    public String getDocumentId() throws WorkflowException {
+        return workflowDocument.getDocumentId();
     }
 
     public void setAppDocId(String appDocId) {
@@ -256,13 +264,13 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      */
     public boolean isAdHocRequested() {
         boolean isAdHocRequested = false;
-        Long routeHeaderId = null;
+        String documentId = null;
         KualiWorkflowInfo workflowInfo = null;
         try {
-            routeHeaderId = getRouteHeaderId();
+            documentId = getDocumentId();
             workflowInfo = KNSServiceLocatorWeb.getWorkflowInfoService();
             String principalId = workflowDocument.getPrincipalId();
-            ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
+            ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(documentId);
             for (int actionRequestIndex = 0; actionRequestIndex < actionRequests.length; actionRequestIndex++) {
                 if (actionRequests[actionRequestIndex].isActivated() && actionRequests[actionRequestIndex].isAdHocRequest()) {
                     if (actionRequests[actionRequestIndex].isUserRequest() && principalId.equals(actionRequests[actionRequestIndex].getPrincipalId())) {
@@ -277,7 +285,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
             }
         }
         catch (WorkflowException e) {
-            throw new RuntimeException(new StringBuffer(getClass().getName()).append(" encountered an exception while attempting to get the actoins requests for routeHeaderId: ").append(routeHeaderId).toString(), e);
+            throw new RuntimeException(new StringBuffer(getClass().getName()).append(" encountered an exception while attempting to get the actoins requests for documentId: ").append(documentId).toString(), e);
         }
         return isAdHocRequested;
     }

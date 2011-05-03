@@ -44,7 +44,7 @@ public class MockRuleServiceImpl implements RuleService {
     Map responsibilitiesByKey = new HashMap();
     Map responsibilitiesById = new HashMap();
     Map responsibilitiesByReviewer = new HashMap();
-    Map rulesByRouteHeaderId = new HashMap();
+    Map rulesByDocumentId = new HashMap();
 
     public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
         return null;
@@ -52,10 +52,10 @@ public class MockRuleServiceImpl implements RuleService {
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         return null;
     }
-    public Long isLockedForRouting(Long currentRuleBaseValuesId) {
+    public String isLockedForRouting(Long currentRuleBaseValuesId) {
         return null;
     }
-    public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
+    public String routeRuleWithDelegate(String documentId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         return null;
     }
     public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
@@ -83,13 +83,13 @@ public class MockRuleServiceImpl implements RuleService {
         }
 
         List routeHeaderList = null;
-        if(rulesByRouteHeaderId.get(rule.getRouteHeaderId()) != null){
-            routeHeaderList = (List)rulesByRouteHeaderId.get(rule.getRouteHeaderId());
+        if(rulesByDocumentId.get(rule.getDocumentId()) != null){
+            routeHeaderList = (List)rulesByDocumentId.get(rule.getDocumentId());
         } else {
             routeHeaderList = new ArrayList();
         }
         routeHeaderList.add(rule);
-        rulesByRouteHeaderId.put(rule.getRouteHeaderId(), routeHeaderList);
+        rulesByDocumentId.put(rule.getDocumentId(), routeHeaderList);
 
         for (Iterator iter = rule.getResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibility resp = (RuleResponsibility) iter.next();
@@ -147,11 +147,11 @@ public class MockRuleServiceImpl implements RuleService {
         return ruleBaseValues;
     }
 
-    public List findByRouteHeaderId(Long routeHeaderId) {
-        return (List) rulesByRouteHeaderId.get(routeHeaderId);
+    public List findByDocumentId(String documentId) {
+        return (List) rulesByDocumentId.get(documentId);
     }
 
-    public void makeCurrent(Long routeHeaderId) {
+    public void makeCurrent(String documentId) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 

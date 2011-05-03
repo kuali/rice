@@ -24,12 +24,12 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 public class ActionTakenEvent implements IDocumentEvent {
 
 	private static final long serialVersionUID = 2945081851810845704L;
-	private Long routeHeaderId;
+	private String documentId;
 	private String appDocId;
 	private ActionTakenValue actionTaken;
 
-	public ActionTakenEvent(Long routeHeaderId, String appDocId, ActionTakenValue actionTaken) {
-		this.routeHeaderId = routeHeaderId;
+	public ActionTakenEvent(String documentId, String appDocId, ActionTakenValue actionTaken) {
+		this.documentId = documentId;
 		this.appDocId = appDocId;
 		this.actionTaken = actionTaken;
 	}
@@ -38,8 +38,8 @@ public class ActionTakenEvent implements IDocumentEvent {
 		return ACTION_TAKEN;
 	}
 
-	public Long getRouteHeaderId() {
-		return routeHeaderId;
+	public String getDocumentId() {
+		return documentId;
 	}
 
 	public ActionTakenValue getActionTaken() {

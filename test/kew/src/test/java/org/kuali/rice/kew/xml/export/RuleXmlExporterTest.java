@@ -177,7 +177,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         if(!oldRule.getDelegateRule().booleanValue())
         	assertEquals(oldRule.getPreviousVersionId(), newRule.getPreviousVersionId());
         
-        assertEquals(oldRule.getRouteHeaderId(), newRule.getRouteHeaderId());
+        assertEquals(oldRule.getDocumentId(), newRule.getDocumentId());
         
         if (oldRule.getRuleTemplate() == null) {
             assertNull(newRule.getRuleTemplate());

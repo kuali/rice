@@ -72,12 +72,12 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //        return createActionListForUser(collection);
     }
 
-    public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
-        LOG.debug("getting action list for route header id " + routeHeaderId);
+    public Collection<ActionItem> getActionListForSingleDocument(String documentId) {
+        LOG.debug("getting action list for document id " + documentId);
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", routeHeaderId);
+        crit.addEqualTo("documentId", documentId);
         Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
-        LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
+        LOG.debug("found " + collection.size() + " action items for document id " + documentId);
         return createActionListForRouteHeader(collection);
     }
 
@@ -594,12 +594,12 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      * @return the Action List as a Collection of ActionItems
      */
     private Collection<ActionItem> createActionListForUser(Collection<ActionItem> actionItems) {
-        Map<Long, ActionItem> actionItemMap = new HashMap<Long, ActionItem>();
+        Map<String, ActionItem> actionItemMap = new HashMap<String, ActionItem>();
         ActionListPriorityComparator comparator = new ActionListPriorityComparator();
         for (ActionItem potentialActionItem: actionItems) {
-            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getRouteHeaderId());
+            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getDocumentId());
             if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
-                actionItemMap.put(potentialActionItem.getRouteHeaderId(), potentialActionItem);
+                actionItemMap.put(potentialActionItem.getDocumentId(), potentialActionItem);
             }
         }
         return actionItemMap.values();
@@ -677,22 +677,22 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     /**
      * Gets the outbox item associated with the document id
      *
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentId(java.lang.Long)
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentId(java.lang.String)
      */
-    public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId) {
+    public OutboxItemActionListExtension getOutboxByDocumentId(String documentId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", documentId);
+        crit.addEqualTo("documentId", documentId);
         return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
 
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(java.lang.Long)
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(java.lang.String)
      */
-    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId) {
+    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(String documentId, String userId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeaderId", documentId);
+        crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("principalId", userId);
         return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }

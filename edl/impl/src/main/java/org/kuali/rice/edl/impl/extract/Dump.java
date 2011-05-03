@@ -58,7 +58,7 @@ public class Dump {
 
     @Id
 	@Column(name="DOC_HDR_ID")
-	private Long docId;
+	private String docId;
 	@Column(name="DOC_TYP_NM")
 	private String docTypeName;
 	@Column(name="DOC_HDR_STAT_CD")
@@ -105,7 +105,7 @@ public class Dump {
 	public void setDocDescription(final String docDescription) {
 		this.docDescription = docDescription;
 	}
-	public Long getDocId() {
+	public String getDocId() {
 		return docId;
 	}
 	public String getDocInitiatorId() {
@@ -155,7 +155,7 @@ public class Dump {
         DateFormat dateFormat = RiceConstants.getDefaultDateFormat();
         return dateFormat.format(date);
     }
-	public void setDocId(final Long docId) {
+	public void setDocId(final String docId) {
 		this.docId = docId;
 	}
 

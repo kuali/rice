@@ -73,7 +73,7 @@ public class DisapproveAction extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-    	return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getRouteHeaderId()));
+    	return validateActionRules(getActionRequestService().findAllPendingRequests(routeHeader.getDocumentId()));
     }
 
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
@@ -122,12 +122,12 @@ public class DisapproveAction extends ActionTakenEvent {
      * @throws InvalidActionTakenException
      */
     public void recordAction() throws InvalidActionTakenException {
-        MDC.put("docId", getRouteHeader().getRouteHeaderId());
+        MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
         LOG.debug("Disapproving document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
@@ -139,7 +139,7 @@ public class DisapproveAction extends ActionTakenEvent {
         ActionTakenValue actionTaken = saveActionTaken(delegator);
 
         LOG.debug("Deactivate all pending action requests");
-        actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        actionRequests = getActionRequestService().findPendingByDoc(getDocumentId());
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
         notifyActionTaken(actionTaken);
 
@@ -191,7 +191,7 @@ public class DisapproveAction extends ActionTakenEvent {
             }
         }
         ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
-        Collection<ActionTakenValue> actions = KEWServiceLocator.getActionTakenService().findByRouteHeaderId(getRouteHeaderId());
+        Collection<ActionTakenValue> actions = KEWServiceLocator.getActionTakenService().findByDocumentId(getDocumentId());
         //one notification per person
         Set<String> usersNotified = new HashSet<String>();
         for (ActionTakenValue action : actions)

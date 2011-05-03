@@ -37,8 +37,8 @@ public class NoteServiceImpl implements NoteService {
 		return getNoteDAO().getNoteByNoteId(noteId);
 	}
 
-	public List getNotesByRouteHeaderId(Long routeHeaderId) {
-		return getNoteDAO().getNotesByRouteHeaderId(routeHeaderId);
+	public List getNotesByDocumentId(String documentId) {
+		return getNoteDAO().getNotesByDocumentId(documentId);
 	}
 
 	public void saveNote(Note note) {

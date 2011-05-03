@@ -71,11 +71,11 @@ public class FeedbackAction extends KewKualiAction {
         }
         feedbackForm.setPageUrl(pageUrl);
 
-        String routeHeaderId = request.getParameter("routeHeaderId");
-        if (routeHeaderId == null) {
-            routeHeaderId = "";
+        String documentId = request.getParameter("documentId");
+        if (documentId == null) {
+            documentId = "";
         }
-        feedbackForm.setRouteHeaderId(routeHeaderId);
+        feedbackForm.setDocumentId(documentId);
 
         String exception = request.getParameter("exception");
         if (exception == null) {

@@ -605,21 +605,21 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	@Test
 	public void testRoleRouteModule_FirstApprove() throws Exception {
 		
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
 		document.routeDocument("");
 
 		// in this case we should have a first approve role that contains admin and user2, we
 		// should also have a first approve role that contains just user1
 
-		document = new WorkflowDocument(getPrincipalIdForName("admin"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
 
 		// examine the action requests
-		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
+		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getDocumentId());
 		// there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and one containing the request for "IN"
 		assertEquals("Should have 3 action requests.", 3, actionRequests.length);
 		int numRoots = 0;
@@ -635,14 +635,14 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		assertEquals("There should have been 3 root requests.", 3, numRoots);
 
 		// let's approve as "user1" and verify the document is still ENROUTE
-		document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
 		document.approve("");
 		assertTrue("Document should be ENROUTE.", document.stateIsEnroute());
 
 		// verify that admin and user2 still have requests
-		document = new WorkflowDocument(getPrincipalIdForName("admin"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
 
 		// let's approve as "user2" and verify the document is still ENROUTE
@@ -650,7 +650,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		assertTrue("Document should be ENROUTE.", document.stateIsEnroute());
 
 		// let's approve as "admin" and verify the document has gone FINAL
-		document = new WorkflowDocument(getPrincipalIdForName("admin"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
 		document.approve("");
 		assertTrue("Document should be FINAL.", document.stateIsFinal());
 	}
@@ -658,20 +658,20 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	@Test
 	public void testRoleRouteModule_AllApprove() throws Exception {
 
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest2");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest2");
 		document.routeDocument("");
 
 		// in this case we should have all approve roles for admin, user1 and user2
 
-		document = new WorkflowDocument(getPrincipalIdForName("admin"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
 
 		// examine the action requests
-		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getRouteHeaderId());
+		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getDocumentId());
 		assertEquals("Should have 3 action requests.", 3, actionRequests.length);
 		int numRoots = 0;
 		for (ActionRequestDTO actionRequest : actionRequests) {
@@ -685,14 +685,14 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		assertEquals("There should have been 3 root requests.", 3, numRoots);
 
 		// let's approve as "user1" and verify the document does NOT go FINAL
-		document = new WorkflowDocument(getPrincipalIdForName("user1"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
 		document.approve("");
 		assertTrue("Document should still be enroute.", document.stateIsEnroute());
 
 		// verify that admin and user2 still have requests
-		document = new WorkflowDocument(getPrincipalIdForName("admin"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = new WorkflowDocument(getPrincipalIdForName("user2"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
 
 		// approve as "user2" and verify document is still ENROUTE
@@ -700,7 +700,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		assertTrue("Document should be ENROUTE.", document.stateIsEnroute());
 
 		// now approve as "admin", coument should be FINAL
-		document = new WorkflowDocument(getPrincipalIdForName("admin"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
 		document.approve("");
 		assertTrue("Document should be FINAL.", document.stateIsFinal());
 	}
@@ -709,13 +709,13 @@ public class RoleRouteModuleTest extends KEWTestCase {
     public void testDelegate() throws Exception{
 		this.createDelegate();
 		
-        WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
+        WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
         document.routeDocument("");
 
         String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
 
         // now our fancy new delegate should have an action request
-        document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+        document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertTrue("ewestfal should be able to approve", document.isApprovalRequested());
 
         // let's look at the action requests
@@ -740,11 +740,11 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	public void testDelegateApproval() throws Exception{
 		this.createDelegate();
 
-		WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
+		WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
 		document.routeDocument("");
 
 		// See if the delegate can approve the document
-		document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), document.getRouteHeaderId());
+		document = WorkflowDocument.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
 		assertTrue("ewestfal should have an approval request", document.isApprovalRequested());
 		document.approve("");
 
@@ -776,7 +776,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 					assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
 				
 					// now that we've removed all members from the Role, let's trying routing the doc!
-					WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
+					WorkflowDocument document = WorkflowDocument.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
 					document.routeDocument("");
 					
 					// the document should be final now, because the role has no members so all nodes should have been skipped for routing purposes

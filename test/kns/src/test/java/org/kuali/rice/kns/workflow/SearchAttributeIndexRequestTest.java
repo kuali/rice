@@ -94,7 +94,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		documentService.routeDocument(document, "Routed SearchAttributeIndexTestDocument", null);
 		
 		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
-		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
+		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumber);
 						
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
 				new String[] {"1","0","2","7"},
@@ -115,7 +115,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
 		documentService.approveDocument(document, "User1 approved document", null);
 		
-		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
+		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumber);
 						
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
 				new String[] {"1","0","2","7"},
@@ -138,7 +138,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
 		documentService.approveDocument(document, "User1 approved document", null);
 		
-		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
+		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumber);
 				
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
 				new String[] {"1","0","2","3","4","7"},
@@ -161,7 +161,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
 		documentService.approveDocument(document, "User3 approved document", null);
 		
-		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
+		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumber);
 						
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
 				new String[] {"1","0","2","3","4","7"},
@@ -203,7 +203,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 		documentService.blanketApproveDocument(document, "Blanket Approved SearchAttributeIndexTestDocument", null);
 		
 		document = (SearchAttributeIndexTestDocument)documentService.getByDocumentHeaderId(documentNumber);
-		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(new Long(documentNumber));
+		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumber);
 						
 		assertDDSearchableAttributesWork(docType,principalId,"routeLevelCount",
 				new String[] {"1","0","2","3","7"},

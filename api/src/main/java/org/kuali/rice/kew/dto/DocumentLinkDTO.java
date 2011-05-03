@@ -30,8 +30,8 @@ public class DocumentLinkDTO implements Serializable {
 	private static final long serialVersionUID = 4454393424187842416L;
 
 	private Long docLinkId;
-	private Long orgnDocId;
-	private Long destDocId;
+	private String orgnDocId;
+	private String destDocId;
 	/**
 	 * @return the linbkId
 	 */
@@ -47,25 +47,25 @@ public class DocumentLinkDTO implements Serializable {
 	/**
 	 * @return the orgnDocId
 	 */
-	public Long getOrgnDocId() {
+	public String getOrgnDocId() {
 		return this.orgnDocId;
 	}
 	/**
 	 * @param orgnDocId the orgnDocId to set
 	 */
-	public void setOrgnDocId(Long orgnDocId) {
+	public void setOrgnDocId(String orgnDocId) {
 		this.orgnDocId = orgnDocId;
 	}
 	/**
 	 * @return the destDocId
 	 */
-	public Long getDestDocId() {
+	public String getDestDocId() {
 		return this.destDocId;
 	}
 	/**
 	 * @param destDocId the destDocId to set
 	 */
-	public void setDestDocId(Long destDocId) {
+	public void setDestDocId(String destDocId) {
 		this.destDocId = destDocId;
 	}
 

@@ -91,7 +91,7 @@ public class RoleNode extends RequestsNode {
 				KimResponsibilityInfo resp = getFirstResponsibilityWithMandatoryRouteFlag( document, node );
 				if ( resp != null ) {
 					throw new RouteManagerException( "No requests generated for KIM Responsibility-based mandatory route.\n" +
-							"Document Id:    " + document.getRouteHeaderId() + "\n" +
+							"Document Id:    " + document.getDocumentId() + "\n" +
 							"DocumentType:   " + document.getDocumentType().getName() + "\n" +
 							"Route Node:     " + node.getRouteNodeName() + "\n" + 
 							"Responsibility: " + resp,
@@ -176,14 +176,14 @@ public class RoleNode extends RequestsNode {
 	@SuppressWarnings("unchecked")
 	public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document,
 			RouteNodeInstance nodeInstance) throws WorkflowException {
-		MDC.put( "docId", document.getRouteHeaderId() );
-		PerformanceLogger performanceLogger = new PerformanceLogger( document.getRouteHeaderId() );
+		MDC.put( "docId", document.getDocumentId() );
+		PerformanceLogger performanceLogger = new PerformanceLogger( document.getDocumentId() );
 		List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
 		List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
 		if ( context.isSimulation() ) {
 			for ( ActionRequestValue ar : context.getDocument().getActionRequests() ) {
 				// logic check below duplicates behavior of the
-				// ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(routeHeaderId,
+				// ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(documentId,
 				// routeNodeInstanceId) method
 				if ( ar.getCurrentIndicator()
 						&& (KEWConstants.ACTION_REQUEST_INITIALIZED.equals( ar.getStatus() ) || KEWConstants.ACTION_REQUEST_ACTIVATED
@@ -197,7 +197,7 @@ public class RoleNode extends RequestsNode {
 			requests.addAll( context.getEngineState().getGeneratedRequests() );
 		} else {
 			requests = KEWServiceLocator.getActionRequestService()
-					.findPendingRootRequestsByDocIdAtRouteNode( document.getRouteHeaderId(),
+					.findPendingRootRequestsByDocIdAtRouteNode( document.getDocumentId(),
 							nodeInstance.getRouteNodeInstanceId() );
 		}
 		if ( LOG.isDebugEnabled() ) {

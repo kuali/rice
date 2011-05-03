@@ -40,7 +40,7 @@ public interface NotificationMessageDeliveryService {
      * @param id the external deliverer system id
      * @return NotificationMessageDelivery
      */
-    public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(Long id);
+    public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(String id);
 
     /**
      * This method will return all NotificationMessageDelivery objects in the system 

@@ -74,7 +74,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     }
 
     protected static CustomEmailAttribute getCustomEmailAttribute(Person user, ActionItem actionItem) throws WorkflowException {
-    	DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
+    	DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
         CustomEmailAttribute customEmailAttribute = routeHeader.getCustomEmailAttribute();
         if (customEmailAttribute != null) {
             RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, user.getPrincipalId());

@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.UifParameters;
 import org.kuali.rice.kns.uif.UifPropertyPaths;
+import org.kuali.rice.kns.uif.control.Control;
 import org.kuali.rice.kns.uif.core.BindingInfo;
 import org.kuali.rice.kns.uif.core.DataBinding;
 import org.kuali.rice.kns.uif.field.ActionField;
@@ -167,7 +168,10 @@ public class CollectionGroupBuilder implements Serializable {
     		    if(f instanceof AttributeField){
     		        //sets up - skipping these fields in add area during standard form validation calls
     		        //custom addLineToCollection js call will validate these fields manually on an add
-    		        ((AttributeField) f).getControl().addStyleClass("ignoreValid");
+    		    	Control control = ((AttributeField) f).getControl();
+    		    	if (control != null) {
+    		    		control.addStyleClass("ignoreValid");
+    		    	}
     		    }
     		}
     		for(ActionField action: actions){

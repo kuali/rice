@@ -6,6 +6,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.EqualPredicate;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.GreaterThanOrEqualPredicate;
@@ -29,6 +30,7 @@ import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -92,9 +94,9 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         @SuppressWarnings("unchecked")
         final Collection<T> rows = getPersistenceBrokerTemplate().getCollectionByQuery(ojbQuery);
 
-        results.setMoreResultsAvailable(rows.size() == criteria.getMaxResults() + 1);
+        results.setMoreResultsAvailable(criteria.getMaxResults() != null && rows.size() == criteria.getMaxResults() + 1);
         final List<T> rowsMinusOne = new ArrayList<T>(rows);
-        if (rows.size() >= 1) {
+        if (criteria.getMaxResults() != null && rows.size() >= 1) {
             rowsMinusOne.remove(rows.size() - 1);
         }
 
@@ -148,7 +150,7 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
     }
 
     private void addSingleValuePredicate(SingleValuedPredicate p, Criteria ojbCriteria) {
-        final Object value = p.getValue();
+        final Object value = p.getValue().getValue();
         final String pp = p.getPropertyPath();
         if (p instanceof EqualPredicate) {
             ojbCriteria.addEqualTo(pp, value);
@@ -171,7 +173,10 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
     }
 
     private void addMultiValuePredicate(MultiValuedPredicate p, Criteria ojbCriteria) {
-        final Set<?> values = p.getValues();
+        final Set<Object> values = new HashSet<Object>();
+        for (CriteriaValue<?> value : p.getValues()) {
+            values.add(value.getValue());
+        }
         final String pp = p.getPropertyPath();
         if (p instanceof InPredicate) {
             ojbCriteria.addIn(pp, values);

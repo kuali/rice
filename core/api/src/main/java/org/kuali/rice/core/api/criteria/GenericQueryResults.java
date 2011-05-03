@@ -15,11 +15,17 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class GenericQueryResults<T> implements CountAwareQueryResults<T> {
+public final class GenericQueryResults<T> implements CountAwareQueryResults<T>, ModelObjectComplete{
 
 	private final List<T> results;
 	private final Integer totalRowCount;
@@ -46,7 +52,22 @@ public final class GenericQueryResults<T> implements CountAwareQueryResults<T> {
 		return moreResultsAvailable;
 	}
 
-	public static final class Builder<T> {
+    @Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(obj, this);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public static final class Builder<T> implements ModelBuilder {
 
 		private List<T> results;
 		private Integer totalRowCount;
@@ -61,6 +82,7 @@ public final class GenericQueryResults<T> implements CountAwareQueryResults<T> {
 			this.moreResultsAvailable = false;
 		}
 
+        @Override
 		public GenericQueryResults<T> build() {
 			return new GenericQueryResults<T>(this);
 		}

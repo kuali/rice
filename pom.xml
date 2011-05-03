@@ -388,7 +388,9 @@
               <goals>
                 <goal>generateStubs</goal>
                 <goal>compile</goal>
-                <goal>generateTestStubs</goal>
+                <!-- test stubs aren't needed now since we are not creating
+                     groovy test code for reference in java test code-->
+                <!--<goal>generateTestStubs</goal>-->
                 <goal>testCompile</goal>
               </goals>
             </execution>

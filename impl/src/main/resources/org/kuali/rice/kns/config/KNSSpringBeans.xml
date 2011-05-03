@@ -1438,5 +1438,5 @@
   </bean>
 
     <!-- this should go in the core spring beans once ojb is available-->
-  <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl"/>
+  <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>
 </beans>

@@ -1,5 +1,5 @@
 <config>
-	<param name="module.name">krms</param>
+	<param name="module.name">core</param>
 	
 	<param name="krms.mode">LOCAL</param>
 	

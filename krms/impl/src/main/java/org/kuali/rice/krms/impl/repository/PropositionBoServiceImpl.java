@@ -26,7 +26,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 
-public final class PropositionRepositoryServiceImpl implements PropositionRepositoryService {
+public final class PropositionBoServiceImpl implements PropositionBoService {
 
     private BusinessObjectService businessObjectService;
 
@@ -34,7 +34,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	 * This overridden method creates a Proposition if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#createProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#createProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
 	 */
 	@Override
 	public void createProposition(PropositionDefinition prop) {
@@ -53,7 +53,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method updates an existing proposition
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#updateProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#updateProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
 	 */
 	@Override
 	public void updateProposition(PropositionDefinition prop) {
@@ -80,7 +80,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method retrieves a proposition by the give proposition id.
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#getPropositionById(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#getPropositionById(java.lang.String)
 	 */
 	@Override
 	public PropositionDefinition getPropositionById(String propId) {
@@ -95,7 +95,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	 * This overridden method creates a PropositionParameter if it does not 
 	 * already exist in the repository.
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#createParameter(org.kuali.rice.krms.api.repository.proposition.PropositionParameter)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#createParameter(org.kuali.rice.krms.api.repository.proposition.PropositionParameter)
 	 */
 	@Override
 	public void createParameter(PropositionParameter parameter) {
@@ -115,7 +115,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method updates an existing proposition parameter
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#updateParameter(org.kuali.rice.krms.api.repository.proposition.PropositionParameter)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#updateParameter(org.kuali.rice.krms.api.repository.proposition.PropositionParameter)
 	 */
 	@Override
 	public void updateParameter(PropositionParameter parameter) {
@@ -143,7 +143,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method retrieves a list of parameters for a given proposition
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#getParameters(java.lang.Long)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#getParameters(java.lang.Long)
 	 */
 	@Override
 	public List<PropositionParameter> getParameters(String propId) {
@@ -159,7 +159,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method gets a parameter by the parameter id
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#getParameterById(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#getParameterById(java.lang.String)
 	 */
 	@Override
 	public PropositionParameter getParameterById(String id) {
@@ -173,7 +173,7 @@ public final class PropositionRepositoryServiceImpl implements PropositionReposi
 	/**
 	 * This overridden method gets a parameter by the Proposition Id and Sequence Number
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.PropositionRepositoryService#getParameterByPropIdAndSequenceNumber(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.PropositionBoService#getParameterByPropIdAndSequenceNumber(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public PropositionParameter getParameterByPropIdAndSequenceNumber(

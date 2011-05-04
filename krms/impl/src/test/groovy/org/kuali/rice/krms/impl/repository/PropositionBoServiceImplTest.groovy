@@ -36,10 +36,10 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
 import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 
-class PropositionServiceImplTest {
+class PropositionBoServiceImplTest {
     private def MockFor mock
     private final shouldFail = new GroovyTestCase().&shouldFail
-	private PropositionRepositoryServiceImpl pservice;
+	private PropositionBoServiceImpl pservice;
 
 	// Simple Proposition data structures	
 	private static final List <PropositionParameter.Builder> parmList1 = createPropositionParametersSet1()
@@ -102,7 +102,7 @@ class PropositionServiceImplTest {
     @Before
     void setupBoServiceMockContext() {
         mock = new MockFor(BusinessObjectService.class)
-		pservice = new PropositionRepositoryServiceImpl()
+		pservice = new PropositionBoServiceImpl()
     }
 
 //
@@ -419,7 +419,7 @@ class PropositionServiceImplTest {
 			def String description = "Is campus type = Bloomington"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
-			def List<? extends PropositionParameterContract> parameters = PropositionServiceImplTest.parmList1
+			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmList1
 			def String compoundOpCode = null
 			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 		}).build()
@@ -431,7 +431,7 @@ class PropositionServiceImplTest {
 			def String description = "Is campus type = Muir"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
-			def List<? extends PropositionParameterContract> parameters = PropositionServiceImplTest.parmListA
+			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmListA
 			def String compoundOpCode = null
 			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 		})
@@ -443,7 +443,7 @@ class PropositionServiceImplTest {
 			def String description = "Is campus type = Thurgood Marshall"
 			def String typeId = "1"
 			def String propositionTypeCode = "S"
-			def List<? extends PropositionParameterContract> parameters = PropositionServiceImplTest.parmListB
+			def List<? extends PropositionParameterContract> parameters = PropositionBoServiceImplTest.parmListB
 			def String compoundOpCode = null
 			def List<? extends PropositionDefinition> compoundComponents = new ArrayList<PropositionDefinition>()
 		})
@@ -457,7 +457,7 @@ class PropositionServiceImplTest {
 			def String propositionTypeCode = "C"
 			def List<? extends PropositionParameterContract> parameters = new ArrayList<PropositionParameter.Builder>()
 			def String compoundOpCode = LogicalOperator.OR.opCode()
-			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionServiceImplTest.propositionABuilder, PropositionServiceImplTest.propositionBBuilder)
+			def List<? extends PropositionDefinition> compoundComponents = Arrays.asList(PropositionBoServiceImplTest.propositionABuilder, PropositionBoServiceImplTest.propositionBBuilder)
 		}).build()
 	}
 		

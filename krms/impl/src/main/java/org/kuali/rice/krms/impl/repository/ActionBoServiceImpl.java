@@ -31,14 +31,14 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.action.ActionAttribute;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 
-public final class ActionRepositoryServiceImpl implements ActionRepositoryService {
+public final class ActionBoServiceImpl implements ActionBoService {
 
     private BusinessObjectService businessObjectService;
 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#createAction(org.kuali.rice.krms.api.repository.action.ActionDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#createAction(org.kuali.rice.krms.api.repository.action.ActionDefinition)
 	 */
 	@Override
 	public void createAction(ActionDefinition action) {
@@ -57,7 +57,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#updateAction(org.kuali.rice.krms.api.repository.action.ActionDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#updateAction(org.kuali.rice.krms.api.repository.action.ActionDefinition)
 	 */
 	@Override
 	public void updateAction(ActionDefinition action) {
@@ -84,7 +84,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#getActionsByRuleId(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByRuleId(java.lang.String)
 	 */
 	@Override
 	public ActionDefinition getActionByActionId(String actionId) {
@@ -115,7 +115,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#getActionsByRuleId(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByRuleId(java.lang.String)
 	 */
 	@Override
 	public List<ActionDefinition> getActionsByRuleId(String ruleId) {
@@ -131,7 +131,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#getActionByRuleIdAndSequenceNumber(java.lang.String, java.lang.Integer)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionByRuleIdAndSequenceNumber(java.lang.String, java.lang.Integer)
 	 */
 	@Override
 	public ActionDefinition getActionByRuleIdAndSequenceNumber(String ruleId, Integer sequenceNumber) {
@@ -151,7 +151,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#createActionAttribute(org.kuali.rice.krms.api.repository.action.ActionAttribute)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#createActionAttribute(org.kuali.rice.krms.api.repository.action.ActionAttribute)
 	 */
 	@Override
 	public void createActionAttribute(ActionAttribute attribute) {
@@ -170,7 +170,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#updateActionAttribute(org.kuali.rice.krms.api.repository.action.ActionAttribute)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#updateActionAttribute(org.kuali.rice.krms.api.repository.action.ActionAttribute)
 	 */
 	@Override
 	public void updateActionAttribute(ActionAttribute attribute) {
@@ -198,7 +198,7 @@ public final class ActionRepositoryServiceImpl implements ActionRepositoryServic
 	/**
 	 * This method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ActionRepositoryService#getActionsByRuleId(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByRuleId(java.lang.String)
 	 */
 	public ActionAttribute getActionAttributeById(String attrId) {
 		if (StringUtils.isBlank(attrId)){

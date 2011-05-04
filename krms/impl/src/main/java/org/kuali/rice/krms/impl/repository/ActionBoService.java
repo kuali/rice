@@ -26,7 +26,7 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface ActionRepositoryService {
+public interface ActionBoService {
 	public void createAction(ActionDefinition action);
 	public void updateAction(ActionDefinition action);
 	

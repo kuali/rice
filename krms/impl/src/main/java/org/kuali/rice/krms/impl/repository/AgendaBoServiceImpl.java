@@ -25,7 +25,7 @@ import java.util.List;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
-public final class AgendaRepositoryServiceImpl implements AgendaRepositoryService {
+public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	private BusinessObjectService businessObjectService;
 

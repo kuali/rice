@@ -19,7 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
 
-public interface AgendaRepositoryService {
+public interface AgendaBoService {
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object

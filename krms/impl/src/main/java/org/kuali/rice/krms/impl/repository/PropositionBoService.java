@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 
-public interface PropositionRepositoryService {
+public interface PropositionBoService {
 
     /**
      * This will create a {@link PropositionDefinition} exactly like the parameter passed in.

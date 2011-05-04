@@ -49,7 +49,7 @@ import org.kuali.rice.krms.framework.engine.expression.FunctionExpression;
 import org.kuali.rice.krms.framework.engine.expression.TermExpression;
 import org.kuali.rice.krms.framework.type.FunctionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
-import org.kuali.rice.krms.impl.repository.TermRepositoryService;
+import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
@@ -64,7 +64,7 @@ import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 public class SimplePropositionTypeService implements PropositionTypeService {
 
 	private TermResolutionEngine termResolutionEngine;
-	private TermRepositoryService termRepositoryService;
+	private TermBoService termBoService;
 	private FunctionRepositoryService functionRepositoryService;
 	private KrmsTypeResolver typeResolver;
 	
@@ -124,7 +124,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 			} else if (parameterType == PropositionParameterType.TERM) {
 				String termId = parameter.getValue();
 
-				TermDefinition termDefinition = termRepositoryService.getTermById(termId);
+				TermDefinition termDefinition = termBoService.getTermById(termId);
 				if (termDefinition == null) { throw new RepositoryDataException("unable to load term with id " + termId);}
 				Term term = translateTermDefinition(termDefinition);
 				
@@ -161,10 +161,10 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 	}
 	
 	/**
-	 * @param termRepositoryService the termRepositoryService to set
+	 * @param termBoService the termBoService to set
 	 */
-	public void setTermRepositoryService(TermRepositoryService termRepositoryService) {
-		this.termRepositoryService = termRepositoryService;
+	public void setTermBoService(TermBoService termBoService) {
+		this.termBoService = termBoService;
 	}
 
 	public void setFunctionRepositoryService(FunctionRepositoryService functionRepositoryService) {

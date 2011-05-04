@@ -24,7 +24,7 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface ContextRepositoryService {
+public interface ContextBoService {
 	public ContextDefinition createContext(ContextDefinition context);
 	public void updateContext(ContextDefinition context);
 	

@@ -23,14 +23,14 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 
 import java.util.*;
 
-public final class ContextRepositoryServiceImpl implements ContextRepositoryService {
+public final class ContextBoServiceImpl implements ContextBoService {
 
     private BusinessObjectService businessObjectService;
 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
 	@Override
 	public ContextDefinition createContext(ContextDefinition context) {
@@ -49,7 +49,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#updateContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#updateContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
 	@Override
 	public void updateContext(ContextDefinition context) {
@@ -76,7 +76,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#getContextsByRuleId(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#getContextsByRuleId(java.lang.String)
 	 */
 	@Override
 	public ContextDefinition getContextByContextId(String contextId) {
@@ -91,7 +91,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 	 * 
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#getContextByNameAndNamespace(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#getContextByNameAndNamespace(java.lang.String, java.lang.String)
 	 */
 	public ContextDefinition getContextByNameAndNamespace( String name, String namespace ){
 		if (StringUtils.isBlank(name)){
@@ -110,7 +110,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 //	/**
 //	 * This overridden method ...
 //	 * 
-//	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#createContextAttribute(org.kuali.rice.krms.api.repository.ContextAttribute)
+//	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#createContextAttribute(org.kuali.rice.krms.api.repository.ContextAttribute)
 //	 */
 //	@Override
 //	public void createContextAttribute(ContextAttribute attribute) {
@@ -129,7 +129,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 //	/**
 //	 * This overridden method ...
 //	 * 
-//	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#updateContextAttribute(org.kuali.rice.krms.api.repository.ContextAttribute)
+//	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#updateContextAttribute(org.kuali.rice.krms.api.repository.ContextAttribute)
 //	 */
 //	@Override
 //	public void updateContextAttribute(ContextAttribute attribute) {
@@ -157,7 +157,7 @@ public final class ContextRepositoryServiceImpl implements ContextRepositoryServ
 //	/**
 //	 * This method ...
 //	 * 
-//	 * @see org.kuali.rice.krms.impl.repository.ContextRepositoryService#getContextsByRuleId(java.lang.String)
+//	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#getContextsByRuleId(java.lang.String)
 //	 */
 //	public ContextAttribute getContextAttributeById(String attrId) {
 //		if (StringUtils.isBlank(attrId)){

@@ -11,7 +11,7 @@ import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class FunctionRepositoryServiceImpl extends RepositoryServiceBase implements FunctionRepositoryService {
+public class FunctionBoServiceImpl extends RepositoryServiceBase implements FunctionRepositoryService {
 		
 	@Override
 	public FunctionDefinition getFunction(String functionId) {

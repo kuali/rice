@@ -30,7 +30,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants
 import org.kuali.rice.krms.api.repository.action.ActionAttribute
 import org.kuali.rice.krms.api.repository.action.ActionDefinition
 
-class ActionRepositoryServiceImplTest {
+class ActionBoServiceImplTest {
 
 	private final shouldFail = new GroovyTestCase().&shouldFail
 
@@ -78,7 +78,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {clazz, id -> TEST_ACTION_BO}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		ActionDefinition myAction = service.getActionByActionId(ACTION_ID_1)
 
@@ -91,7 +91,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> null}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		ActionDefinition myAction = service.getActionByActionId("I_DONT_EXIST")
 
@@ -102,14 +102,14 @@ class ActionRepositoryServiceImplTest {
 	@Test
 	public void test_getActionByActionId_empty_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByActionId("")
+			new ActionBoServiceImpl().getActionByActionId("")
 		}
 	}
 
 	@Test
 	public void test_getActionByActionId_null_action_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByActionId(null)
+			new ActionBoServiceImpl().getActionByActionId(null)
 		}
 	}
 	
@@ -118,7 +118,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {clazz, map -> TEST_ACTION_BO}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		ActionDefinition myAction = service.getActionByNameAndNamespace(ACTION_ID_1, NAMESPACE)
 
@@ -131,7 +131,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		ActionDefinition myAction = service.getActionByNameAndNamespace("I_DONT_EXIST", NAMESPACE)
 
@@ -142,28 +142,28 @@ class ActionRepositoryServiceImplTest {
 	@Test
 	public void test_getActionByNameAndNamespace_empty_name() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByNameAndNamespace("", NAMESPACE)
+			new ActionBoServiceImpl().getActionByNameAndNamespace("", NAMESPACE)
 		}
 	}
 
 	@Test
 	public void test_getActionByNameAndNamespace_null_name() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByNameAndNamespace(null, NAMESPACE)
+			new ActionBoServiceImpl().getActionByNameAndNamespace(null, NAMESPACE)
 		}
 	}
 
 	@Test
 	public void test_getActionByNameAndNamespace_empty_namespace() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByNameAndNamespace(ACTION_ID_1, "")
+			new ActionBoServiceImpl().getActionByNameAndNamespace(ACTION_ID_1, "")
 		}
 	}
 
 	@Test
 	public void test_getActionByNameAndNamespace_null_namespace() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByNameAndNamespace(ACTION_ID_1, null)
+			new ActionBoServiceImpl().getActionByNameAndNamespace(ACTION_ID_1, null)
 		}
 	}
 
@@ -172,7 +172,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findMatchingOrderBy(1..1) {Class clazz, Map map, String columnName, boolean bool -> [TEST_ACTION_BO]}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		List<ActionDefinition> myActions = service.getActionsByRuleId(RULE_ID_1)
 
@@ -185,7 +185,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findMatchingOrderBy(1..1) {Class clazz, Map map, String columnName, boolean bool -> null}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		List<ActionDefinition> myActions = service.getActionsByRuleId("I_DONT_EXIST")
 
@@ -196,14 +196,14 @@ class ActionRepositoryServiceImplTest {
 	@Test
 	public void test_getActionsByRuleId_empty_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionsByRuleId("")
+			new ActionBoServiceImpl().getActionsByRuleId("")
 		}
 	}
 
 	@Test
 	public void test_getActionsByRuleId_null_rule_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionsByRuleId(null)
+			new ActionBoServiceImpl().getActionsByRuleId(null)
 		}
 	}
 
@@ -212,7 +212,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {clazz, map -> TEST_ACTION_BO}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		ActionDefinition myAction = service.getActionByRuleIdAndSequenceNumber(RULE_ID_1, SEQUENCE_1)
 
@@ -225,7 +225,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map id -> null}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		ActionDefinition myAction = service.getActionByRuleIdAndSequenceNumber("I_DONT_EXIST", SEQUENCE_1)
 
@@ -236,28 +236,28 @@ class ActionRepositoryServiceImplTest {
 	@Test
 	public void test_getActionByRuleIdAndSequenceNumber_empty_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByRuleIdAndSequenceNumber("", SEQUENCE_1)
+			new ActionBoServiceImpl().getActionByRuleIdAndSequenceNumber("", SEQUENCE_1)
 		}
 	}
 
 	@Test
 	public void test_getActionByRuleIdAndSequenceNumber_null_rule_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByRuleIdAndSequenceNumber(null, SEQUENCE_1)
+			new ActionBoServiceImpl().getActionByRuleIdAndSequenceNumber(null, SEQUENCE_1)
 		}
 	}
 	
 	@Test
 	public void test_getActionByRuleIdAndSequenceNumber_null_rule_sequence() {
 		shouldFail(IllegalArgumentException.class) {
-			new ActionRepositoryServiceImpl().getActionByRuleIdAndSequenceNumber(RULE_ID_1, null)
+			new ActionBoServiceImpl().getActionByRuleIdAndSequenceNumber(RULE_ID_1, null)
 		}
 	}
 
   @Test
   public void test_createAction_null_input() {
 	  def boService = mockBusinessObjectService.proxyDelegateInstance()
-	  ActionRepositoryService service = new ActionRepositoryServiceImpl()
+	  ActionBoService service = new ActionBoServiceImpl()
 	  service.setBusinessObjectService(boService)
 	  shouldFail(IllegalArgumentException.class) {
 		  service.createAction(null)
@@ -271,7 +271,7 @@ class ActionRepositoryServiceImplTest {
 			Class clazz, Map map -> TEST_ACTION_BO
 		}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		shouldFail(IllegalStateException.class) {
 			service.createAction(TEST_ACTION_DEF)
@@ -285,7 +285,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 		
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		
 		service.createAction(TEST_ACTION_DEF)
@@ -295,7 +295,7 @@ class ActionRepositoryServiceImplTest {
   @Test
   public void test_updateAction_null_input() {
 	  def boService = mockBusinessObjectService.proxyDelegateInstance()
-	  ActionRepositoryService service = new ActionRepositoryServiceImpl()
+	  ActionBoService service = new ActionBoServiceImpl()
 	  service.setBusinessObjectService(boService)
 	  shouldFail(IllegalArgumentException.class) {
 		  service.updateAction(null)
@@ -309,7 +309,7 @@ class ActionRepositoryServiceImplTest {
 			Class clazz, String id -> null
 		}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		shouldFail(IllegalStateException.class) {
 			service.updateAction(TEST_ACTION_DEF)
@@ -322,7 +322,7 @@ class ActionRepositoryServiceImplTest {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_ACTION_BO}
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-		ActionRepositoryService service = new ActionRepositoryServiceImpl()
+		ActionBoService service = new ActionBoServiceImpl()
 		service.setBusinessObjectService(bos)
 		service.updateAction(TEST_ACTION_DEF)
 		mockBusinessObjectService.verify(bos)

@@ -39,7 +39,6 @@ public interface ServiceRegistry {
 	public List<ServiceInfo> fetchAll();
 	public List<ServiceInfo> fetchAllActive();
 	public List<ServiceInfo> fetchActiveByName(QName serviceName);
-	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace);
 	public void markServicesDead(List<ServiceInfo> serviceEntries);
 	//public List<ServiceInfo> findLocallyPublishedServices();
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);

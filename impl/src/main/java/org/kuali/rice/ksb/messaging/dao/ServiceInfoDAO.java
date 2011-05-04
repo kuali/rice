@@ -29,7 +29,6 @@ public interface ServiceInfoDAO {
 	public List<ServiceInfo> fetchAll();
 	public List<ServiceInfo> fetchAllActive();
 	public List<ServiceInfo> fetchActiveByName(QName serviceName);
-	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace);
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public ServiceInfo findServiceInfo(Long serviceInfoId);

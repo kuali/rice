@@ -62,14 +62,7 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     	query.setParameter("serviceName", serviceName.toString());
     	return (List<ServiceInfo>) query.getResultList();    	
     }
-    
-    @SuppressWarnings("unchecked")
-    public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
-    	Query query = entityManager.createNamedQuery("ServiceInfo.FetchActiveByName");
-    	query.setParameter("serviceNamespace", "{"+serviceNamespace+"}%");
-    	return (List<ServiceInfo>) query.getResultList();    	
-    }
-    
+        
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
     	Query query = entityManager.createNamedQuery("ServiceInfo.FindLocallyPublishedServices");

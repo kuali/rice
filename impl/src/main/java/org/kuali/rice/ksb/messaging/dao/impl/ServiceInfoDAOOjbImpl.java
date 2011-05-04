@@ -60,16 +60,7 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
 				new QueryByCriteria(ServiceInfo.class, crit));
     }
-    
-    @SuppressWarnings("unchecked")
-    public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
-    	Criteria crit = new Criteria();
-    	crit.addEqualTo("alive", Boolean.TRUE);
-    	crit.addEqualTo("serviceNamespace", "{"+serviceNamespace+"}%");	
-    	return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
-    			new QueryByCriteria(ServiceInfo.class, crit));
-    }
-    
+        
     @SuppressWarnings("unchecked")
     public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
     	Criteria crit = new Criteria();

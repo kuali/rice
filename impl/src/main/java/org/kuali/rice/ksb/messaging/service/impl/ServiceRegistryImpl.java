@@ -79,11 +79,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	public List<ServiceInfo> fetchActiveByName(QName serviceName) {
 		return getDao().fetchActiveByName(serviceName);		
 	}
-	
-	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
-		return getDao().fetchActiveByNamespace(serviceNamespace);
-	}
-	
+		
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace) {
 		if (ConfigContext.getCurrentContextConfig().getDevMode()) {
 			return new ArrayList<ServiceInfo>();

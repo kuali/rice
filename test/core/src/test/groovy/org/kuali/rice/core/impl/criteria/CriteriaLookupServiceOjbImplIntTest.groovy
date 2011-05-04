@@ -1,5 +1,7 @@
 package org.kuali.rice.core.impl.criteria
 
+import org.kuali.rice.core.api.criteria.PredicateFactory as pf
+
 import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.core.api.criteria.QueryByCriteria
@@ -11,7 +13,7 @@ import org.kuali.rice.test.data.UnitTestData
 import org.kuali.rice.test.data.UnitTestSql
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 
 @PerSuiteUnitTestData(value = [@UnitTestData(sqlStatements = [
   @UnitTestSql("INSERT INTO KRNS_NMSPC_T(NMSPC_CD, OBJ_ID, VER_NBR, NM, ACTV_IND, APPL_NMSPC_CD) VALUES('FOO-NS', '53680C68F595AD9BE0404F8189D80A6B', 1, 'FOO System', 'Y', 'FOO-KUALI')"),
@@ -20,6 +22,12 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal
 
   @UnitTestSql("INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD) VALUES('FOO-NS', 'ALL-FOO', 'TURN_FOO_ON', '5A689075D35E7AEBE0404F8189D80326', 1, 'FOO-T', 'Y', 'turn the foo on.', 'A', 'FOO-KUALI')"),
   @UnitTestSql("INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD) VALUES('FOO-NS', 'ALL-FOO', 'TURN_ANOTHER_FOO_ON', '5A689075D35E7AEBE0404F8189D80325', 1, 'FOO-T', 'N', 'turn another the foo on.', 'A', 'FOO-KUALI')"),
+
+  //using ver_num for the numerics - sort of hacky
+  @UnitTestSql("INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD) VALUES('FOO-NS', 'ALL-FOO', 'FOO_NUMERIC', '5A689075D35E7AEBE0404F8189D80328', 99, 'FOO-T', '99', 'low num.', 'A', 'FOO-KUALI')"),
+  @UnitTestSql("INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD) VALUES('FOO-NS', 'ALL-FOO', 'ANOTHER_FOO_NUMERIC', '5A689075D35E7AEBE0404F8189D80329', 100, 'FOO-T', '100', 'high num.', 'A', 'FOO-KUALI')"),
+  @UnitTestSql("INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD) VALUES('FOO-NS', 'ALL-FOO', 'FOO_NUMERIC2', '5C689075D35E7AEBE0404F8189D80328', -99, 'FOO-T', '-99', 'high num.', 'A', 'FOO-KUALI')"),
+  @UnitTestSql("INSERT INTO KRNS_PARM_T(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD) VALUES('FOO-NS', 'ALL-FOO', 'ANOTHER_FOO_NUMERIC2', '5B689075D35E7AEBE0404F8189D80329', -100, 'FOO-T', '-100', null, 'A', 'FOO-KUALI')"),
 ])])
 class CriteriaLookupServiceOjbImplIntTest extends CORETestCase {
 
@@ -34,16 +42,203 @@ class CriteriaLookupServiceOjbImplIntTest extends CORETestCase {
     void test_no_predicate() {
         def builder = QueryByCriteria.Builder.<ParameterBo>create()
         def results = lookup.lookup(ParameterBo.class, builder.build());
+        //we at least have more than one result in the system....
         assertTrue "results size are ${results.getResults().size()}", results.getResults().size() > 1
     }
 
     @Test
-    void test_basic_lookup() {
+    void test_basic_equal_lookup() {
         def builder = QueryByCriteria.Builder.<ParameterBo>create()
         builder.predicates = equal("name", "TURN_ANOTHER_FOO_ON")
 
         def results = lookup.lookup(ParameterBo.class, builder.build());
         assertEquals 1, results.getResults().size()
         assertEquals "TURN_ANOTHER_FOO_ON", results.getResults()[0].name
+    }
+
+    @Test
+    void test_basic_not_equal_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = and(equal("namespaceCode", "FOO-NS"), notEqual("name", "TURN_ANOTHER_FOO_ON"))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 5, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC2"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC2"} != null
+    }
+
+    @Test
+    void test_basic_like_multi_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = like("name", "TURN*FOO_ON")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 2, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_ANOTHER_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+    }
+
+    @Test
+    void test_basic_not_like_multi_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = and(equal("namespaceCode", "FOO-NS"), notLike("name", "TURN*FOO_ON"))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 4, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC2"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC2"} != null
+    }
+
+    @Test
+    void test_basic_like_single_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = like("name", "TURN?FOO_ON")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 1, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+    }
+
+    @Test
+    void test_basic_not_like_single_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = and(equal("namespaceCode", "FOO-NS"), notLike("name", "TURN?FOO_ON"))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 5, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_ANOTHER_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC2"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC2"} != null
+    }
+
+    @Test
+    void test_basic_in_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = pf.in("name", "TURN_ANOTHER_FOO_ON", "TURN_FOO_ON")
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 2, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_ANOTHER_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_basic_in_empty_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = pf.in("name", [] as Object[])
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    void test_basic_in_null_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = pf.in("name", null)
+    }
+
+    @Test
+    void test_basic_greater_than_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = greaterThan("versionNumber", 99)
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 1, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC"} != null
+    }
+
+    @Test
+    void test_basic_greater_than_equal_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = greaterThanOrEqual("versionNumber", 99)
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 2, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC"} != null
+    }
+
+    @Test
+    void test_basic_less_than_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = lessThan("versionNumber", -99)
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 1, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC2"} != null
+    }
+
+    @Test
+    void test_basic_less_than_equal_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        //doing "and" just so the test is less fragile
+        builder.predicates = lessThanOrEqual("versionNumber", -99)
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 2, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC2"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC2"} != null
+    }
+
+    @Test
+    void test_basic_and_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = and(equal("value", "Y"), like("name", "TURN*FOO_ON"))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 1, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+    }
+
+    @Test
+    void test_basic_or_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = or(equal("name", "TURN_FOO_ON"), equal("name", "TURN_ANOTHER_FOO_ON"))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 2, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_ANOTHER_FOO_ON"} != null
+    }
+
+    @Test
+    void test_basic_null_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = and(isNull("description"), equal("namespaceCode", "FOO-NS"))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 1, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC2"} != null
+    }
+
+    @Test
+    void test_basic_not_null_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates = and(isNotNull("description"), equal("namespaceCode", "FOO-NS"))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 5, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_ANOTHER_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "ANOTHER_FOO_NUMERIC"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "FOO_NUMERIC2"} != null
+    }
+
+    @Test
+    void test_nested_or_lookup() {
+        def builder = QueryByCriteria.Builder.<ParameterBo>create()
+        builder.predicates =
+            and(equal("namespaceCode", "FOO-NS"),
+                or(equal("name", "TURN_FOO_ON"), equal("name", "TURN_ANOTHER_FOO_ON")))
+
+        def results = lookup.lookup(ParameterBo.class, builder.build());
+        assertEquals 2, results.getResults().size()
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_FOO_ON"} != null
+        assertTrue results.toString(), results.getResults().find {it.name  == "TURN_ANOTHER_FOO_ON"} != null
     }
 }

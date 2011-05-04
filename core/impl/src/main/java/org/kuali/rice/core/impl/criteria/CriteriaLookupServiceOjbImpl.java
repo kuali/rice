@@ -46,14 +46,16 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
             throw new IllegalArgumentException("criteria is null");
         }
 
-        final Criteria ojbCriteria = fromPredicates(criteria.getPredicate());
+        final Criteria parent = new Criteria();
+        addPredicate(parent, criteria.getPredicate());
+
         switch (criteria.getCountFlag()) {
             case ONLY:
-                return forCountOnly(queryClass, criteria, ojbCriteria);
+                return forCountOnly(queryClass, criteria, parent);
             case NONE:
-                return forCountNone(queryClass, criteria, ojbCriteria);
+                return forCountNone(queryClass, criteria, parent);
             case INCLUDE:
-                return forCountInclude(queryClass, criteria, ojbCriteria);
+                return forCountInclude(queryClass, criteria, parent);
         }
 
         throw new UnsupportedOperationException("unsupported count flag.");
@@ -123,74 +125,69 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         return results.build();
     }
 
-    private Criteria fromPredicates(Predicate... predicates) {
-        Criteria ojbCriteria = newCriteria();
-        if (predicates == null) {
-            return ojbCriteria;
-        }
+    private void addPredicate(Criteria parent, Predicate p) {
 
-        for (Predicate p : predicates) {
-            if (p instanceof PropertyPathPredicate) {
-                final String pp = ((PropertyPathPredicate) p).getPropertyPath();
-                if (p instanceof NotNullPredicate) {
-                    ojbCriteria.addNotNull(pp);
-                } else if (p instanceof NullPredicate) {
-                    ojbCriteria.addIsNull(pp);
-                } else if (p instanceof SingleValuedPredicate) {
-                    addSingleValuePredicate((SingleValuedPredicate) p, ojbCriteria);
-                } else if (p instanceof MultiValuedPredicate) {
-                    addMultiValuePredicate((MultiValuedPredicate) p, ojbCriteria);
-                } else if (p instanceof CompositePredicate) {
-                    addCompositePredicate((CompositePredicate) p, ojbCriteria);
-                }
+        if (p instanceof PropertyPathPredicate) {
+            final String pp = ((PropertyPathPredicate) p).getPropertyPath();
+            if (p instanceof NotNullPredicate) {
+                parent.addNotNull(pp);
+            } else if (p instanceof NullPredicate) {
+                parent.addIsNull(pp);
+            } else if (p instanceof SingleValuedPredicate) {
+                addSingleValuePredicate((SingleValuedPredicate) p, parent);
+            } else if (p instanceof MultiValuedPredicate) {
+                addMultiValuePredicate((MultiValuedPredicate) p, parent);
             }
+        } else if (p instanceof CompositePredicate) {
+            addCompositePredicate((CompositePredicate) p, parent);
         }
-
-        return ojbCriteria;
     }
 
-    private void addSingleValuePredicate(SingleValuedPredicate p, Criteria ojbCriteria) {
+    private void addSingleValuePredicate(SingleValuedPredicate p, Criteria parent) {
         final Object value = p.getValue().getValue();
         final String pp = p.getPropertyPath();
         if (p instanceof EqualPredicate) {
-            ojbCriteria.addEqualTo(pp, value);
+            parent.addEqualTo(pp, value);
         } else if (p instanceof GreaterThanOrEqualPredicate) {
-            ojbCriteria.addGreaterOrEqualThan(pp, value);
+            parent.addGreaterOrEqualThan(pp, value);
         } else if (p instanceof GreaterThanPredicate) {
-            ojbCriteria.addGreaterThan(pp, value);
+            parent.addGreaterThan(pp, value);
         } else if (p instanceof LessThanOrEqualPredicate) {
-            ojbCriteria.addLessOrEqualThan(pp, value);
+            parent.addLessOrEqualThan(pp, value);
         } else if (p instanceof LessThanPredicate) {
-            ojbCriteria.addLessThan(pp, value);
+            parent.addLessThan(pp, value);
         } else if (p instanceof LikePredicate) {
             //no need to convert * or ? since ojb handles the conversion/escaping
-            ojbCriteria.addLike(pp, value);
+            parent.addLike(pp, value);
         } else if (p instanceof NotEqualPredicate) {
-            ojbCriteria.addNotEqualTo(pp, value);
+            parent.addNotEqualTo(pp, value);
         } else if (p instanceof NotLikePredicate) {
-            ojbCriteria.addNotLike(pp, value);
+            parent.addNotLike(pp, value);
         }
     }
 
-    private void addMultiValuePredicate(MultiValuedPredicate p, Criteria ojbCriteria) {
+    private void addMultiValuePredicate(MultiValuedPredicate p, Criteria parent) {
         final Set<Object> values = new HashSet<Object>();
         for (CriteriaValue<?> value : p.getValues()) {
             values.add(value.getValue());
         }
         final String pp = p.getPropertyPath();
         if (p instanceof InPredicate) {
-            ojbCriteria.addIn(pp, values);
+            parent.addIn(pp, values);
         } else if (p instanceof NotInPredicate) {
-            ojbCriteria.addNotIn(pp, values);
+            parent.addNotIn(pp, values);
         }
     }
 
-    private void addCompositePredicate(CompositePredicate p, Criteria ojbCriteria) {
-        final Predicate[] innerPreds = p.getPredicates().toArray(new Predicate[]{});
-        if (p instanceof AndPredicate) {
-            ojbCriteria.addAndCriteria(fromPredicates(innerPreds));
-        } else if (p instanceof OrPredicate) {
-            ojbCriteria.addOrCriteria(fromPredicates(innerPreds));
+    private void addCompositePredicate(final CompositePredicate p, final Criteria parent) {
+        for (Predicate ip : p.getPredicates()) {
+            final Criteria inner = new Criteria();
+            addPredicate(inner, ip);
+            if (p instanceof AndPredicate) {
+                parent.addAndCriteria(inner);
+            } else if (p instanceof OrPredicate) {
+                parent.addOrCriteria(inner);
+            }
         }
     }
 

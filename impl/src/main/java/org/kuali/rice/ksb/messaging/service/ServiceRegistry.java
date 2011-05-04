@@ -40,7 +40,6 @@ public interface ServiceRegistry {
 	public List<ServiceInfo> fetchAllActive();
 	public List<ServiceInfo> fetchActiveByName(QName serviceName);
 	public void markServicesDead(List<ServiceInfo> serviceEntries);
-	//public List<ServiceInfo> findLocallyPublishedServices();
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public FlattenedServiceDefinition getFlattenedServiceDefinition(Long flattenedServiceDefinitionId);
